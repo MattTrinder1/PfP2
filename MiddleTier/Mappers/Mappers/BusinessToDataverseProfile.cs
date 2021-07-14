@@ -19,12 +19,12 @@ namespace API.Mappers
         {
 
             //SourceMemberNamingConvention = new ();
-            RecognizePrefixes("em_");
-            RecognizeDestinationPrefixes("em_");
+            //RecognizePrefixes("cp_");
+            RecognizeDestinationPrefixes("cp_");
 
             CreateMap<PocketNotebook, DVPocketNotebookImages>()
-                .ForMember(dest => dest.em_sketch, map => map.MapFrom(src => src.Sketch))
-                .ForMember(dest => dest.em_signature, map => map.MapFrom(src => src.Signature))
+                .ForMember(dest => dest.cp_sketch, map => map.MapFrom(src => src.Sketch))
+                .ForMember(dest => dest.cp_signature, map => map.MapFrom(src => src.Signature))
             ;
 
             CreateMap<Note, DVNote>()
@@ -33,10 +33,10 @@ namespace API.Mappers
             ;
 
             CreateMap<PocketNotebook, DVPocketNotebook>()
-                .ForMember(dest => dest.ownerid, map => map.MapFrom(src => src.OwnerId))
-                .ForMember(dest => dest.em_notedate, map => map.MapFrom(src => src.NoteDateAndTime))
-                .ForMember(dest => dest.em_signaturedate, map => map.MapFrom(src => src.SignatureDateandTime))
-                .ForMember(dest => dest.em_pocketnotebookid, map => map.MapFrom(src => src.Id))
+                //.ForMember(dest => dest.ownerid, map => map.MapFrom(src => $"/systemusers({src.OwnerId.Id})"))
+              //  .ForMember(dest => dest.cp_notedateandtime, map => map.MapFrom(src => src.NoteDateAndTime))
+              //  .ForMember(dest => dest.cp_signaturedateandtime, map => map.MapFrom(src => src.SignatureDateandTime))
+                .ForMember(dest => dest.cp_pocketnotebookid, map => map.MapFrom(src => src.Id))
             ;
 
             //CreateMap<PocketNotebook, DynamicEntity>()
@@ -48,8 +48,8 @@ namespace API.Mappers
 
             CreateMap<Photo, DVPhoto>()
                 .ForMember(dest => dest.cp_phototitle, map => map.MapFrom(src => src.Caption))
-                .ForMember(dest => dest.cp_pocketnotebook, map => map.MapFrom(src => $"/em_pocketnotebooks({src.PocketNotebookId})" ))
-                .ForMember(dest => dest.ownerid, map => map.MapFrom(src => $"/systemusers({src.OwnerId})"))
+                .ForMember(dest => dest.cp_pocketnotebook, map => map.MapFrom(src => $"/cp_pocketnotebooks({src.PocketNotebookId})" ))
+                //.ForMember(dest => dest.ownerid, map => map.MapFrom(src => $"/systemusers({src.OwnerId.Id})"))
             ;
 
             CreateMap<Photo, DVPhotoImages>()

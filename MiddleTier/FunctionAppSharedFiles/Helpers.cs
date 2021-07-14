@@ -18,7 +18,7 @@ namespace FunctionApps
             {
                 req.RequestFormat = DataFormat.Json;
                 req.AddHeader("Prefer", "return=representation");
-                req.AddHeader("UserEmail", "userEmailAddress");
+                req.AddHeader("UserEmail", userEmailAddress);
                 
             }
 

@@ -27,7 +27,7 @@ namespace API.Models.IYC
         public DateTime? IncidentDate { get; set; }
         public DateTime? SignatureDateandTime { get; set; }
         public string SignatoryName { get; set; }
-
+        
 
     }
     

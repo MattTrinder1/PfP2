@@ -19,7 +19,7 @@ namespace API.Mappers
         {
 
             //SourceMemberNamingConvention = new ();
-            RecognizePrefixes("em_");
+            //RecognizePrefixes("em_");
             RecognizePrefixes("cp_");
 
 
@@ -28,8 +28,8 @@ namespace API.Mappers
                 .ForMember(dest => dest.Id, map => map.MapFrom(src => src.cp_lookupvalueid));
 
             CreateMap<DVPocketNotebook, PocketNotebookListEntry>()
-                .ForMember(dest => dest.Id, map => map.MapFrom(src => src.em_pocketnotebookid))
-                .ForMember(dest => dest.NoteDateAndTime, map => map.MapFrom(src => src.em_notedate))
+                .ForMember(dest => dest.Id, map => map.MapFrom(src => src.cp_pocketnotebookid))
+                
                 ;
 
             CreateMap<DVVehicleTicket, VehicleTicket>()

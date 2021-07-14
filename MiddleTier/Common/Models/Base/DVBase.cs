@@ -10,11 +10,20 @@ namespace API.Models.Base
     public class DVBase
     {
 
-        [JsonPropertyName("ownerid@odata.bind")]
-        [RelatedEntityName("systemuser")]
-        public EntityReference ownerid { get; set; }
+        public DVBase()
+        {
+            Id = Guid.NewGuid();
+        }
 
-        public Guid? _ownerid_value { get; init; }
+
+        //[JsonPropertyName("ownerid@odata.bind")]
+        //[RelatedEntityName("systemuser")]
+        //public string ownerid { get; set; }
+
+        [JsonIgnore]
+        public Guid Id { get; set; }
+
+        //public Guid? _ownerid_value { get; init; }
 
         //   public string IncidentNumber { get; set; }
         //  public DateTime? IncidentDate { get; set; }

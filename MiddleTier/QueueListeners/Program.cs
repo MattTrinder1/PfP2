@@ -22,7 +22,7 @@ namespace QueueListeners
                 .ConfigureServices(
                                    services => services
                                         .AddSingleton(new RestClient(Environment.GetEnvironmentVariable("APIUrl")))
-                                        .AddSingleton(new BlobContainerClient(Environment.GetEnvironmentVariable("BlobStorageConnectionString"), "pnb"))
+                                        .AddSingleton(new BlobContainerClient(Environment.GetEnvironmentVariable("AzureWebJobsStorage"), "pnb"))
                                         .AddSingleton<MapperConfig>()
                                    )
                 .Build();

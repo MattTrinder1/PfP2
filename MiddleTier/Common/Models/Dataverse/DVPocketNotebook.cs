@@ -18,23 +18,24 @@ namespace API.Models.PNB
             
         }
 
-        public Guid? em_pocketnotebookid { get; set; }
+        public Guid? cp_pocketnotebookid { get; set; }
 
-        public string em_notes { get; set; }
+        public string cp_notes { get; set; }
        
-        public DateTime? em_notedate{ get; set; }
-        
-        public string em_incidentnumber { get; set; }
-        
-        
-        public DateTime? em_signaturedate { get; set; }
-        
-        public DateTime? em_incidentdate { get; set; }
-        
-        public string em_signatoryname { get; set; }
+        public DateTime? cp_notedateandtime{ get; set; }
+
+        [JsonPropertyName("cp_IncidentNo@odata.bind")]
+        public string cp_incidentno { get; set; }
+
+
+        public DateTime? cp_signaturedateandtime { get; set; }
+        public string cp_signatoryname { get; set; }
 
 
     }
+
+  
+
 
 
     [DataContract(Name = "cp_pocketnotebook")]
@@ -46,10 +47,10 @@ namespace API.Models.PNB
         }
 
         [DataMember]
-        public string em_sketch { get; set; }
+        public string cp_sketch { get; set; }
 
         [DataMember]
-        public string em_signature { get; set; }
+        public string cp_signature { get; set; }
 
 
     }

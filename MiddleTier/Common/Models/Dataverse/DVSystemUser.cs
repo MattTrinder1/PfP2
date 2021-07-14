@@ -10,5 +10,6 @@ namespace Common.Models.Dataverse
     {
         [DataMember]
         public Guid SystemUserId { get; set; }
+        public Guid AzureActiveDirectoryObjectId { get; set; }
     }
 }

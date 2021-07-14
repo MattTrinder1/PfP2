@@ -1,8 +1,11 @@
-﻿using System;
+﻿using Microsoft.CSharp.RuntimeBinder;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Dynamic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+//using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -22,6 +25,13 @@ namespace Common.Models.Dataverse
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
             return dictionary.TryGetValue(binder.Name, out result);
+        }
+        public T GetValue<T>(string memberName)
+        {
+            var binder = Binder.GetMember(CSharpBinderFlags.None, memberName, this.GetType(), new[] { CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, null) });
+            var callsite = CallSite<Func<CallSite, object, object>>.Create(binder);
+            return (T)callsite.Target(callsite, this);
+
         }
 
         public override bool TrySetMember(SetMemberBinder binder, object value)

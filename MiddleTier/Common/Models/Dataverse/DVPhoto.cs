@@ -13,16 +13,11 @@ namespace API.Models.PNB
         {
         }
 
-        [DataMember]
         public string cp_phototitle { get; set; }
 
         [JsonPropertyName("cp_PocketNotebook@odata.bind")]
-        [DataMember]
         public string cp_pocketnotebook { get; set; }
 
-        [JsonPropertyName("ownerid@odata.bind")]
-        [DataMember]
-        public string ownerid { get; set; }
 
 
     }
@@ -36,7 +31,6 @@ namespace API.Models.PNB
         {
         }
 
-        [DataMember]
         public string cp_image { get; set; }
 
     }
