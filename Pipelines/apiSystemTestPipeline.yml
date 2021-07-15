@@ -1,0 +1,14 @@
+trigger: none
+
+pool:
+  vmImage: windows-latest
+
+stages:
+  - stage: DeployApiSystemTest
+    displayName: Deploy API to System Test
+    jobs:
+    - job : BuildAndDeploy
+      steps:
+        - template: buildAndDeployAPI.yml
+          parameters:
+            serviceConnectionName: CumbriaSystemTestAzureConnection
