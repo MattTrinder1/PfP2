@@ -1,6 +1,8 @@
 parameters:
 - name: serviceConnectionName
   type: string
+- name: configuration
+  type: string
 
 steps:
 - task: DotNetCoreCLI@2
@@ -8,7 +10,7 @@ steps:
     command: 'publish'
     publishWebProjects: false
     projects: 'MiddleTier/QueueListeners/QueueListeners.csproj'
-    arguments: '-o $(Build.ArtifactStagingDirectory)/QueueListeners'
+    arguments: '-o $(Build.ArtifactStagingDirectory)/QueueListeners -c ${{parameters.configuration}}'
     zipAfterPublish: true
     modifyOutputPath: false
 

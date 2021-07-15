@@ -1,6 +1,8 @@
 parameters:
 - name: serviceConnectionName
   type: string
+- name: configuration
+  type: string
 
 steps:
 - task: DotNetCoreCLI@2
@@ -8,7 +10,7 @@ steps:
     command: 'publish'
     publishWebProjects: false
     projects: 'MiddleTier/API/API.csproj'
-    arguments: '-o $(Build.ArtifactStagingDirectory)/PoliceAPI'
+    arguments: '-o $(Build.ArtifactStagingDirectory)/PoliceAPI -c ${{parameters.configuration}}'
     zipAfterPublish: true
     modifyOutputPath: false
 
