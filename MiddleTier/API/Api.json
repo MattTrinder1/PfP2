@@ -7,8 +7,13 @@
   "paths": {
     "/api/PNB/getwhereowner": {
       "get": {
-        "tags": [
-          "PNB"
+        "parameters": [
+          {
+            "in": "header",
+            "name": "userEmail",
+            "type": "string",
+            "required": "true"
+          }
         ],
         "produces": [
           "text/plain",

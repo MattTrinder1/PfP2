@@ -25,10 +25,10 @@ using System.Net;
 
 namespace API.Controllers
 {
-
     public class PNBMapperProfile : Profile
     {
     }
+
     [Route("api/[controller]")]
     [ApiController]
     public class PNBController : ControllerBase
@@ -49,17 +49,23 @@ namespace API.Controllers
         [HttpGet("getwhereowner")]
         public ActionResult<List<PocketNotebookListEntry>> GetListForUser()
         {
-            logger.LogDebug(Request.Headers["UserEmail"].ToString());
+            ICollection<DVPocketNotebook> pnb = null;
+            try
+            {
+                logger.LogDebug(Request.Headers["UserEmail"].ToString());
 
-            var userId = adminDataAccess.GetUserId(Request.Headers["UserEmail"].ToString());
+                var userId = adminDataAccess.GetUserId(Request.Headers["UserEmail"].ToString());
 
-            logger.LogDebug(userId.ToString());
-            
+                logger.LogDebug(userId.ToString());
 
-            var pnb = userDataAccess.GetAll<DVPocketNotebook>($"_ownerid_value eq { userId}","cp_notedateandtime");
+                pnb = userDataAccess.GetAll<DVPocketNotebook>($"_ownerid_value eq {userId}", "cp_notedateandtime");
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, new ApiError(e.Message));
+            }
 
             return mapper.Map<List<PocketNotebookListEntry>>(pnb);
-
         }
 
 
@@ -86,7 +92,6 @@ namespace API.Controllers
             
         }
 
-
         [HttpPost()]
         public ActionResult<Guid> Post([FromBody] PocketNotebook pnb)
         {
@@ -105,7 +110,6 @@ namespace API.Controllers
                     dvPb.cp_incidentno = $"/cp_incidents({incidentId})";
                 }
 
-                //dvPb.ownerid = dataAccessHelper.GetUserId(Request.Headers["UserEmail"].ToString());
                 pnbGuid = userDataAccess.CreateEntity(dvPb);
 
                 var dvPbImages = mapper.Map<PocketNotebook, DVPocketNotebookImages>(pnb);
@@ -124,15 +128,10 @@ namespace API.Controllers
             }
             catch (Exception e)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new Error { ErrorMessage = e.Message });
+                return StatusCode((int)HttpStatusCode.InternalServerError, new ApiError (e.Message));
             }
 
             return pnbGuid ;
-        }
-
-        public class Error
-        {
-            public string ErrorMessage { get; set; }
         }
     }
 }

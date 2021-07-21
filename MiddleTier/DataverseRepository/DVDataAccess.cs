@@ -144,7 +144,7 @@ namespace API.DataverseAccess
 
         }
 
-        public ICollection<T> GetAll<T>( string filter, string orderby)
+        public ICollection<T> GetAll<T>(string filter, string orderby)
         {
             var entityName = GetEntityName<T>();
 
@@ -166,16 +166,12 @@ namespace API.DataverseAccess
                 query += "?" + string.Join("&", queryParts);
             }
 
-
             var req = GetRestRequest(query, Method.GET);
             var resp = client.Execute<DVGETResponse<T>>(req);
 
             PopulateEntityReferences(resp.Data.value);
 
             return resp.Data.value;
-
-
-
         }
 
 

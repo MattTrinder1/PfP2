@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,6 +23,27 @@ using System.Threading.Tasks;
 
 namespace EmergeAPI
 {
+    public class CustomHeaderSwaggerAttribute : IOperationFilter
+    {
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
+        {
+            if (operation.Parameters == null)
+                operation.Parameters = new List<OpenApiParameter>();
+
+            //Add UserEmail header parameter to swagger definition for all operations.
+            operation.Parameters.Add(new OpenApiParameter
+            {
+                Name = "UserEmail",
+                In = ParameterLocation.Header,
+                Required = true,
+                Schema = new OpenApiSchema
+                {
+                    Type = "string"
+                }
+            });
+        }
+    }
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -34,11 +56,11 @@ namespace EmergeAPI
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PoliceAPI", Version = "v1" });
+                c.OperationFilter<CustomHeaderSwaggerAttribute>();
             });
 
             services.AddSingleton(new BlobContainerClient(Configuration.GetValue<string>("AzureWebJobsStorage"), "pnb"));
@@ -70,10 +92,6 @@ namespace EmergeAPI
             });
 
             services.AddSingleton<DVDataAccess>();
-
-
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
