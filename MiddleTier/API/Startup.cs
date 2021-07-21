@@ -83,8 +83,8 @@ namespace EmergeAPI
             {
                 app.UseDeveloperExceptionPage();
             }
-            app.UseSwagger();
-            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PoliceAPI v1"));
+            app.UseSwagger(c=>c.SerializeAsV2 = true);
+            app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "PoliceAPI v1")) ;
 
             app.UseHttpsRedirection();
 
