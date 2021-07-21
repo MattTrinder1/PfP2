@@ -21,6 +21,7 @@ using API.Models.Business;
 using System.Dynamic;
 using Common.Models.Dataverse;
 using Microsoft.Extensions.Logging;
+using System.Net;
 
 namespace API.Controllers
 {
@@ -89,39 +90,49 @@ namespace API.Controllers
         [HttpPost()]
         public ActionResult<Guid> Post([FromBody] PocketNotebook pnb)
         {
+            Guid pnbGuid = Guid.Empty;
 
-            string userEmail = Request.Headers["UserEmail"].ToString();
-
-
-            var dvPb = mapper.Map<DVPocketNotebook>(pnb);
-            
-            //find/create the related incident
-            Guid? incidentId = FindOrCreateIncident(pnb.IncidentNumber);
-            if (incidentId != null)
+            try
             {
-                dvPb.cp_incidentno = $"/cp_incidents({incidentId})";
+                string userEmail = Request.Headers["UserEmail"].ToString();
+
+                var dvPb = mapper.Map<DVPocketNotebook>(pnb);
+
+                //find/create the related incident
+                Guid? incidentId = FindOrCreateIncident(pnb.IncidentNumber);
+                if (incidentId != null)
+                {
+                    dvPb.cp_incidentno = $"/cp_incidents({incidentId})";
+                }
+
+                //dvPb.ownerid = dataAccessHelper.GetUserId(Request.Headers["UserEmail"].ToString());
+                pnbGuid = userDataAccess.CreateEntity(dvPb);
+
+                var dvPbImages = mapper.Map<PocketNotebook, DVPocketNotebookImages>(pnb);
+                userDataAccess.CreateEntityImage(pnbGuid, dvPbImages, x => x.cp_sketch);
+                userDataAccess.CreateEntityImage(pnbGuid, dvPbImages, x => x.cp_signature);
+
+                foreach (var photo in pnb.Photos)
+                {
+                    photo.PocketNotebookId = pnbGuid;
+                    var dvPhoto = mapper.Map<DVPhoto>(photo);
+                    var dvPhotoId = userDataAccess.CreateEntity(dvPhoto);
+
+                    var dvPhotoImage = mapper.Map<DVPhotoImages>(photo);
+                    userDataAccess.CreateEntityImage(dvPhotoId, dvPhotoImage, x => x.cp_image);
+                }
             }
-
-
-            //dvPb.ownerid = dataAccessHelper.GetUserId(Request.Headers["UserEmail"].ToString());
-            var pnbGuid = userDataAccess.CreateEntity( dvPb);
-
-            var dvPbImages = mapper.Map<PocketNotebook, DVPocketNotebookImages>(pnb);
-            userDataAccess.CreateEntityImage(pnbGuid, dvPbImages, x => x.cp_sketch);
-            userDataAccess.CreateEntityImage(pnbGuid, dvPbImages, x => x.cp_signature);
-
-            foreach (var photo in pnb.Photos)
+            catch (Exception e)
             {
-                photo.PocketNotebookId = pnbGuid;
-                var dvPhoto = mapper.Map<DVPhoto>(photo);
-                var dvPhotoId = userDataAccess.CreateEntity(dvPhoto);
-
-                var dvPhotoImage = mapper.Map<DVPhotoImages>(photo);
-                userDataAccess.CreateEntityImage(dvPhotoId, dvPhotoImage, x => x.cp_image);
-
+                return StatusCode((int)HttpStatusCode.InternalServerError, new Error { ErrorMessage = e.Message });
             }
 
             return pnbGuid ;
+        }
+
+        public class Error
+        {
+            public string ErrorMessage { get; set; }
         }
     }
 }

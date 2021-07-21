@@ -45,9 +45,11 @@ namespace QueueListeners
             req.AddJsonBody(pocketNotebook, "application/json");
             var resp = _restClient.Execute(req);
 
-            if (resp.ErrorException != null)
+            if (!resp.IsSuccessful)
             {
-                throw new Exception("error calling web api",resp.ErrorException);
+                string errorMessage = "Error calling API" + 
+                    (resp.ErrorMessage != null ? $": {resp.ErrorMessage}" : "");
+                throw new Exception(errorMessage, resp.ErrorException);
             }
 
             log.LogInformation(resp.Content);
