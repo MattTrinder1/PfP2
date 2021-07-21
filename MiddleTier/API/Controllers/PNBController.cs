@@ -20,6 +20,7 @@ using Microsoft.Extensions.Caching.Memory;
 using API.Models.Business;
 using System.Dynamic;
 using Common.Models.Dataverse;
+using Microsoft.Extensions.Logging;
 
 namespace API.Controllers
 {
@@ -34,18 +35,24 @@ namespace API.Controllers
         IMapper mapper;
         DVDataAccess adminDataAccess;
         DVDataAccess userDataAccess;
+        ILogger logger;
 
-        public PNBController(MapperConfig mapperconfig, Func<string, DVDataAccess> da)
+        public PNBController(MapperConfig mapperconfig, Func<string, DVDataAccess> da, ILogger<PNBController> log)
         {
             mapper = new Mapper(mapperconfig.mapperConfig);
             adminDataAccess = da("Admin");
             userDataAccess = da("User");
+            logger = log;
         }
 
         [HttpGet("getwhereowner")]
         public ActionResult<List<PocketNotebookListEntry>> GetListForUser()
         {
+            logger.LogDebug(Request.Headers["UserEmail"].ToString());
+
             var userId = adminDataAccess.GetUserId(Request.Headers["UserEmail"].ToString());
+
+            logger.LogDebug(userId.ToString());
             
 
             var pnb = userDataAccess.GetAll<DVPocketNotebook>($"_ownerid_value eq { userId}","cp_notedateandtime");

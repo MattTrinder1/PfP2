@@ -1,0 +1,179 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "PoliceAPI",
+    "version": "v1"
+  },
+  "paths": {
+    "/api/PNB/getwhereowner": {
+      "get": {
+        "tags": [
+          "PNB"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/PocketNotebookListEntry"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/PNB": {
+      "post": {
+        "tags": [
+          "PNB"
+        ],
+        "consumes": [
+          "application/json",
+          "text/json",
+          "application/*+json"
+        ],
+        "produces": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/PocketNotebook"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "schema": {
+              "format": "uuid",
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Photo": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "ownerId": {
+          "$ref": "#/definitions/User"
+        },
+        "name": {
+          "type": "string"
+        },
+        "pocketNotebookId": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "blob": {
+          "type": "string"
+        },
+        "caption": {
+          "type": "string"
+        }
+      }
+    },
+    "PocketNotebook": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "ownerId": {
+          "$ref": "#/definitions/User"
+        },
+        "name": {
+          "type": "string"
+        },
+        "photos": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Photo"
+          }
+        },
+        "notes": {
+          "type": "string"
+        },
+        "noteDateAndTime": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "sketch": {
+          "type": "string"
+        },
+        "signature": {
+          "type": "string"
+        },
+        "incidentNumber": {
+          "type": "string"
+        },
+        "incidentDate": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "signatureDateandTime": {
+          "format": "date-time",
+          "type": "string"
+        },
+        "signatoryName": {
+          "type": "string"
+        }
+      }
+    },
+    "PocketNotebookListEntry": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "ownerId": {
+          "$ref": "#/definitions/User"
+        },
+        "name": {
+          "type": "string"
+        },
+        "notes": {
+          "type": "string"
+        },
+        "noteDateAndTime": {
+          "format": "date-time",
+          "type": "string"
+        }
+      }
+    },
+    "User": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "format": "uuid",
+          "type": "string"
+        },
+        "ownerId": {
+          "$ref": "#/definitions/User"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    }
+  }
+}
