@@ -1,6 +1,8 @@
 parameters:
 - name: serviceConnectionName
   type: string
+- name: appName
+  type: string
 - name: configuration
   type: string
 
@@ -10,20 +12,20 @@ steps:
     command: 'publish'
     publishWebProjects: false
     projects: 'MiddleTier/QueueListeners/QueueListeners.csproj'
-    arguments: '-o $(Build.ArtifactStagingDirectory)/QueueListeners -c ${{parameters.configuration}}'
+    arguments: '-o $(Build.ArtifactStagingDirectory)/${{parameters.appName}} -c ${{parameters.configuration}}'
     zipAfterPublish: true
     modifyOutputPath: false
 
 #Production of Artifact is optional!
 #- task: PublishBuildArtifacts@1
 #  inputs:
-#    PathtoPublish: '$(Build.ArtifactStagingDirectory)/QueueListeners'
-#    ArtifactName: 'QueueListeners'
+#    PathtoPublish: '$(Build.ArtifactStagingDirectory)/${{parameters.appName}}'
+#    ArtifactName: '${{parameters.appName}}'
 #    publishLocation: 'Container'
 
 - task: AzureFunctionApp@1
   inputs:
     azureSubscription: '${{parameters.serviceConnectionName}}'
     appType: 'functionApp'
-    appName: 'TisskiPolicingQueueListeners'
-    package: $(Build.ArtifactStagingDirectory)/QueueListeners/**/*.zip
+    appName: '${{parameters.appName}}'
+    package: $(Build.ArtifactStagingDirectory)/${{parameters.appName}}/**/*.zip
