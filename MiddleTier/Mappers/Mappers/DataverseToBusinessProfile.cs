@@ -22,7 +22,12 @@ namespace API.Mappers
             //RecognizePrefixes("em_");
             RecognizePrefixes("cp_");
 
-
+            CreateMap<DVPocketNotebook, PocketNotebook>()
+                //.ForMember(dest => dest.ownerid, map => map.MapFrom(src => $"/systemusers({src.OwnerId.Id})"))
+                //  .ForMember(dest => dest.cp_notedateandtime, map => map.MapFrom(src => src.NoteDateAndTime))
+                //  .ForMember(dest => dest.cp_signaturedateandtime, map => map.MapFrom(src => src.SignatureDateandTime))
+                .ForMember(dest => dest.Id, map => map.MapFrom(src => src.cp_pocketnotebookid))
+            ;
 
             CreateMap<DVLookupValue, LookupValue>()
                 .ForMember(dest => dest.Id, map => map.MapFrom(src => src.cp_lookupvalueid));

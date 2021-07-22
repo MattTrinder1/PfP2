@@ -92,6 +92,24 @@ namespace API.Controllers
             
         }
 
+        [HttpGet()]
+        public ActionResult<PocketNotebook> Get([FromHeader] string id)
+        {
+            DVPocketNotebook pnb = null;
+            try
+            {
+                logger.LogDebug(Request.Headers["UserEmail"].ToString());
+
+                pnb = userDataAccess.GetEntityByField<DVPocketNotebook>("cp_pocketnotebookid", id);
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, new ApiError(e.Message));
+            }
+
+            return mapper.Map<PocketNotebook>(pnb);
+        }
+
         [HttpPost()]
         public ActionResult<Guid> Post([FromBody] PocketNotebook pnb)
         {
