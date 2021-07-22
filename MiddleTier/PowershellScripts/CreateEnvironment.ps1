@@ -22,4 +22,4 @@ Set-AzWebApp -ResourceGroupName $environmentName -Name $EnvironmentName"APIWebAp
 New-AzFunctionAppPlan -ResourceGroupName $environmentName -Name $environmentName"FunctionAppPlan" -Sku "EP2" -Location "UK South" -WorkerType Windows
 New-AzFunctionApp -ResourceGroupName $environmentName -Name $environmentName"QueueListeners" -StorageAccountName $environmentName.ToLower()  -Runtime "dotnet" -planName $environmentName"FunctionAppPlan" -FunctionsVersion 3 -RuntimeVersion 3
 
-Update-AzFunctionAppSetting  -ResourceGroupName $environmentName -Name $environmentName"QueueListeners" -AppSetting @{"FUNCTIONS_WORKER_RUNTIME" ="dontnet-isolated"} -Force
+Update-AzFunctionAppSetting  -ResourceGroupName $environmentName -Name $environmentName"QueueListeners" -AppSetting @{"FUNCTIONS_WORKER_RUNTIME" ="dotnet-isolated"} -Force
