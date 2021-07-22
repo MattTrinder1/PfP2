@@ -1,0 +1,15 @@
+trigger: none
+
+pool:
+  vmImage: windows-latest
+
+stages:
+  - stage: DeployApiDev
+    displayName: Deploy API to Dev
+    jobs:
+    - job : BuildAndDeploy
+      steps:
+        - template: buildAndDeployAPI.yml
+          parameters:
+            serviceConnectionName: CumbriaDevResourceGroupConnection
+            configuration: Debug
