@@ -1,0 +1,15 @@
+trigger: none
+
+pool:
+  vmImage: windows-latest
+
+stages:
+  - stage: DeployQueueListenersDev
+    displayName: Deploy Queue Listeners to Dev
+    jobs:
+    - job : BuildAndDeploy
+      steps:
+        - template: buildAndDeployQueueListeners.yml
+          parameters:
+            serviceConnectionName: CumbriaDevResourceGroupConnection
+            configuration: Debug
