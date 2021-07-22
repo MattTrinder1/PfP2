@@ -1,6 +1,8 @@
 parameters:
 - name: serviceConnectionName
   type: string
+- name: webAppName
+  type: string
 - name: configuration
   type: string
 
@@ -10,15 +12,15 @@ steps:
     command: 'publish'
     publishWebProjects: false
     projects: 'MiddleTier/API/API.csproj'
-    arguments: '-o $(Build.ArtifactStagingDirectory)/PoliceAPI -c ${{parameters.configuration}}'
+    arguments: '-o $(Build.ArtifactStagingDirectory)/${{parameters.webAppName}} -c ${{parameters.configuration}}'
     zipAfterPublish: true
     modifyOutputPath: false
 
 #Production of Artifact is optional!
 #- task: PublishBuildArtifacts@1
 #  inputs:
-#    PathtoPublish: '$(Build.ArtifactStagingDirectory)/PoliceAPI'
-#    ArtifactName: 'PoliceAPI'
+#    PathtoPublish: '$(Build.ArtifactStagingDirectory)/${{parameters.webAppName}}'
+#    ArtifactName: '${{parameters.webAppName}}'
 #    publishLocation: 'Container'
 
 - task: AzureRmWebAppDeployment@4
@@ -26,5 +28,5 @@ steps:
     ConnectionType: 'AzureRM'
     azureSubscription: '${{parameters.serviceConnectionName}}'
     appType: 'webApp'
-    WebAppName: 'PoliceAPI'
-    Package: $(Build.ArtifactStagingDirectory)/PoliceAPI/**/*.zip
+    WebAppName: '${{parameters.webAppName}}'
+    Package: $(Build.ArtifactStagingDirectory)/${{parameters.webAppName}}/**/*.zip
