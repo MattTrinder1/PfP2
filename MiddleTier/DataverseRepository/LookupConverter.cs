@@ -1,11 +1,12 @@
 ﻿using API.Models.IYC;
 using Common.Models.Business;
+using Common.Models.Dataverse;
 using System;
 using System.Globalization;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace SystemTextJsonSamples
+namespace API.DataverseAccess
 {
     public class LookupJsonConverter : JsonConverter<EntityReference>
     {
@@ -19,6 +20,6 @@ namespace SystemTextJsonSamples
             Utf8JsonWriter writer,
             EntityReference er,
             JsonSerializerOptions options) =>
-                writer.WriteStringValue( $"{er.EntityLogicalName}s({er.EntityId.ToString()})" );
+                writer.WriteStringValue( $"/{SchemaHelpers.GetEntityPluralName(er.EntityLogicalName)}({er.EntityId.ToString()})" );
     }
 }

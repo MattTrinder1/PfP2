@@ -1,5 +1,4 @@
-﻿using API.Helpers;
-using API.Models.Base;
+﻿using API.Models.Base;
 using API.Models.IYC;
 using Common.Models.Business;
 using Common.Models.Dataverse;
@@ -33,7 +32,7 @@ namespace API.DataverseAccess
         private IMemoryCache _cache;
         private Guid? _contextUserADObjectId;
 
-        public DVDataAccess(ConnectionConfiguration config,IMemoryCache cache,Guid contexUserADObjectId)
+        public DVDataAccess(ConnectionConfiguration config, IMemoryCache cache, Guid contexUserADObjectId)
         {
             _dvUrl = config.DVUrl;
             _serviceUrl = config.ServiceUrl;
@@ -101,12 +100,7 @@ namespace API.DataverseAccess
 
         }
 
-        private static string GetEntityPluralName(string entityName)
-        {
-            //todo exceptions to the general rule here
 
-            return entityName + "s";
-        }
 
         public ICollection<T> GetAll<T>()
         {
@@ -131,17 +125,16 @@ namespace API.DataverseAccess
             return (dataContractAttr as DataContractAttribute).Name;
         }
 
-        public T GetEntityByField<T>(string field,string value)
+        public T GetEntityByField<T>(string field, string value)
         {
 
             var client = GetRestClient();
-            var req = GetRestRequest($"{GetEntityPluralName(GetEntityName<T>())}?$filter={field} eq '{value}'", Method.GET);
+            var req = GetRestRequest($"{SchemaHelpers.GetEntityPluralName(GetEntityName<T>())}?$filter={field} eq '{value}'", Method.GET);
             var resp = client.Execute<DVGETResponse<T>>(req);
 
-            //PopulateEntityReferences<T>(resp.Data.value);
+            PopulateEntityReferences<T>(resp.Data.value);
 
             return resp.Data.value.SingleOrDefault();
-
         }
 
         public ICollection<T> GetAll<T>(string filter, string orderby)
@@ -160,7 +153,7 @@ namespace API.DataverseAccess
                 queryParts.Add($"$orderby={orderby}");
             }
 
-            string query = $"{GetEntityPluralName(entityName)}";
+            string query = $"{SchemaHelpers.GetEntityPluralName(entityName)}";
             if (queryParts.Any())
             {
                 query += "?" + string.Join("&", queryParts);
@@ -175,7 +168,7 @@ namespace API.DataverseAccess
         }
 
 
-  
+
         private static void PopulateEntityReferences<T>(ICollection<T> collection)
         {
             foreach (var ent in collection)
@@ -197,13 +190,17 @@ namespace API.DataverseAccess
                         var matchingProp = ent.GetType().GetProperty($"_{prop.Name}_value");
                         if (matchingProp != null)
                         {
-                            er = new EntityReference((attr as RelatedEntityNameAttribute).Name, (Guid)matchingProp.GetValue(ent));
-                            prop.SetValue(ent, er);
+                            var matchingPropValue = matchingProp.GetValue(ent);
+                            if (matchingPropValue != null)
+                            {
+                                er = new EntityReference((attr as RelatedEntityNameAttribute).Name, (Guid)matchingPropValue);
+                                prop.SetValue(ent, er);
+                            }
                         }
                     }
                 }
             }
-          
+
         }
 
         private RestClient GetRestClient()
@@ -216,7 +213,7 @@ namespace API.DataverseAccess
             {
                 client.AddDefaultHeader("CallerObjectId", _contextUserADObjectId.ToString());
             }
-            
+
 
             var options = new JsonSerializerOptions
             {
@@ -245,27 +242,31 @@ namespace API.DataverseAccess
                 req.AddHeader("Prefer", "odata.include-annotations=*");
             }
 
-
-
             return req;
         }
 
         public Guid CreateEntity(DVBase entity)
         {
-
             var entityName = GetEntityName(entity);
             var client = GetRestClient();
             var req = GetRestRequest($"{entityName}s", Method.POST);
             req.AddJsonBody(entity);
             var response = client.Execute(req);
 
-            JObject j = JObject.Parse(response.Content);
+            if (response.IsSuccessful)
+            {
+                JObject j = JObject.Parse(response.Content);
 
-            return new Guid(j.Root.SelectToken($"{entityName}id").Value<string>());
+                return new Guid(j.Root.SelectToken($"{entityName}id").Value<string>());
+            }
+            else
+            {
+                throw new Exception($"CreateEntity request failed: {response.Content}");
+            }
         }
 
-        
-        public  void CreateEntityImage<T>(Guid entityId, T entity, Expression<Func<T, string>> imageProperty)
+
+        public void CreateEntityImage<T>(Guid entityId, T entity, Expression<Func<T, string>> imageProperty)
         {
 
             var attrs = entity.GetType().GetCustomAttributes(true);
@@ -289,9 +290,5 @@ namespace API.DataverseAccess
             var respSketch = client.Execute(reqSketch);
 
         }
-
-
-        
-
-}
+    }
 }

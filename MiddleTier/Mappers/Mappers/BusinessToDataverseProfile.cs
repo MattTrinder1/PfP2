@@ -17,9 +17,6 @@ namespace API.Mappers
     {
         public BusinessToDataverseProfile()
         {
-
-            //SourceMemberNamingConvention = new ();
-            //RecognizePrefixes("cp_");
             RecognizeDestinationPrefixes("cp_");
 
             CreateMap<PocketNotebook, DVPocketNotebookImages>()
@@ -29,36 +26,20 @@ namespace API.Mappers
 
             CreateMap<Note, DVNote>()
                 .ForMember(dest => dest.documentbody, map => map.MapFrom(src => src.Attachment))
-
             ;
 
             CreateMap<PocketNotebook, DVPocketNotebook>()
-                //.ForMember(dest => dest.ownerid, map => map.MapFrom(src => $"/systemusers({src.OwnerId.Id})"))
-              //  .ForMember(dest => dest.cp_notedateandtime, map => map.MapFrom(src => src.NoteDateAndTime))
-              //  .ForMember(dest => dest.cp_signaturedateandtime, map => map.MapFrom(src => src.SignatureDateandTime))
                 .ForMember(dest => dest.cp_pocketnotebookid, map => map.MapFrom(src => src.Id))
             ;
 
-            //CreateMap<PocketNotebook, DynamicEntity>()
-            //    .ForMember("ownerid", map => map.MapFrom(src => src.OwnerId))
-            //    .ForMember("em_notedate", map => map.MapFrom(src => src.NoteDateAndTime))
-            //    .ForMember("em_signaturedate", map => map.MapFrom(src => src.SignatureDateandTime))
-            //    .ForMember("em_pocketnotebookid", map => map.MapFrom(src => src.Id))
-            //;
-
             CreateMap<Photo, DVPhoto>()
                 .ForMember(dest => dest.cp_phototitle, map => map.MapFrom(src => src.Caption))
-                .ForMember(dest => dest.cp_pocketnotebook, map => map.MapFrom(src => $"/cp_pocketnotebooks({src.PocketNotebookId})" ))
-                //.ForMember(dest => dest.ownerid, map => map.MapFrom(src => $"/systemusers({src.OwnerId.Id})"))
+                .ForMember(dest => dest.cp_pocketnotebook, map => map.MapFrom(src => new EntityReference("cp_pocketnotebook", src.PocketNotebookId.Value)))
             ;
 
-            CreateMap<Photo, DVPhotoImages>()
-                .ForMember(dest => dest.cp_image, map => map.MapFrom(src => src.Blob))
-                
+            CreateMap<Photo, DVPhotoImage>()
+                .ForMember(dest => dest.cp_image, map => map.MapFrom(src => src.Blob))                
             ;
-
-
-
         }
 
     }

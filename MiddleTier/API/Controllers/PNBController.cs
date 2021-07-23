@@ -49,7 +49,6 @@ namespace API.Controllers
         [HttpGet("getwhereowner")]
         public ActionResult<List<PocketNotebookListEntry>> GetListForUser()
         {
-            ICollection<DVPocketNotebook> pnb = null;
             try
             {
                 logger.LogDebug(Request.Headers["UserEmail"].ToString());
@@ -58,14 +57,14 @@ namespace API.Controllers
 
                 logger.LogDebug(userId.ToString());
 
-                pnb = userDataAccess.GetAll<DVPocketNotebook>($"_ownerid_value eq {userId}", "cp_notedateandtime");
+                ICollection<DVPocketNotebook> pnb = userDataAccess.GetAll<DVPocketNotebook>($"_ownerid_value eq {userId}", "cp_notedateandtime");
+
+                return mapper.Map<List<PocketNotebookListEntry>>(pnb);
             }
             catch (Exception e)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, new ApiError(e.Message));
             }
-
-            return mapper.Map<List<PocketNotebookListEntry>>(pnb);
         }
 
 
@@ -92,29 +91,61 @@ namespace API.Controllers
             
         }
 
-        [HttpGet()]
-        public ActionResult<PocketNotebook> Get([FromHeader] string id)
+        [HttpGet("{id}")]
+        public ActionResult<PocketNotebook> Get(string id)
         {
-            DVPocketNotebook pnb = null;
             try
             {
                 logger.LogDebug(Request.Headers["UserEmail"].ToString());
 
-                pnb = userDataAccess.GetEntityByField<DVPocketNotebook>("cp_pocketnotebookid", id);
+                DVPocketNotebook pnb = userDataAccess.GetEntityByField<DVPocketNotebook>("cp_pocketnotebookid", id);
+                DVPocketNotebookImages pnbImages = userDataAccess.GetEntityByField<DVPocketNotebookImages>("cp_pocketnotebookid", id);
+                DVIncident incident = null;
+                if (pnb.cp_incidentno != null)
+                {
+                    incident = userDataAccess.GetEntityByField<DVIncident>("cp_incidentid", pnb.cp_incidentno.EntityId.Value.ToString());
+                }
+
+                var pnbPhotosCol = userDataAccess.GetAll<DVPhoto>($"_cp_pocketnotebook_value eq {pnb.cp_pocketnotebookid}");
+                var pnbPhotoImagesCol = userDataAccess.GetAll<DVPhotoImage>($"_cp_pocketnotebook_value eq {pnb.cp_pocketnotebookid}");
+
+                PocketNotebook result = mapper.Map<PocketNotebook>(pnb);
+                result = mapper.Map(pnbImages, result);
+                if (incident != null)
+                {
+                    result = mapper.Map(incident, result);
+                }
+                if (pnbPhotosCol != null && pnbPhotosCol.Count > 0)
+                {
+                    DVPhoto[] pnbPhotos = new DVPhoto[pnbPhotosCol.Count];
+                    pnbPhotosCol.CopyTo(pnbPhotos, 0);
+                    DVPhotoImage[] pnbPhotoImages = new DVPhotoImage[pnbPhotoImagesCol.Count];
+                    pnbPhotoImagesCol.CopyTo(pnbPhotoImages, 0);
+
+                    List<Photo> photos = new List<Photo>(pnbPhotosCol.Count);
+                    for (int i = 0; i < pnbPhotos.Length; i++)
+                    {
+                        Photo photo = mapper.Map<Photo>(pnbPhotos[i]);
+                        if (i < pnbPhotoImages.Length)
+                        {
+                            photo = mapper.Map(pnbPhotoImages[i], photo);
+                        }
+                        photos.Add(photo);
+                    }
+                    result.Photos = photos;
+                }
+
+                return result;
             }
             catch (Exception e)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, new ApiError(e.Message));
             }
-
-            return mapper.Map<PocketNotebook>(pnb);
         }
 
         [HttpPost()]
         public ActionResult<Guid> Post([FromBody] PocketNotebook pnb)
         {
-            Guid pnbGuid = Guid.Empty;
-
             try
             {
                 string userEmail = Request.Headers["UserEmail"].ToString();
@@ -125,10 +156,10 @@ namespace API.Controllers
                 Guid? incidentId = FindOrCreateIncident(pnb.IncidentNumber);
                 if (incidentId != null)
                 {
-                    dvPb.cp_incidentno = $"/cp_incidents({incidentId})";
+                    dvPb.cp_incidentno = new EntityReference("cp_incident", incidentId);
                 }
 
-                pnbGuid = userDataAccess.CreateEntity(dvPb);
+                Guid pnbGuid = userDataAccess.CreateEntity(dvPb);
 
                 var dvPbImages = mapper.Map<PocketNotebook, DVPocketNotebookImages>(pnb);
                 userDataAccess.CreateEntityImage(pnbGuid, dvPbImages, x => x.cp_sketch);
@@ -140,16 +171,16 @@ namespace API.Controllers
                     var dvPhoto = mapper.Map<DVPhoto>(photo);
                     var dvPhotoId = userDataAccess.CreateEntity(dvPhoto);
 
-                    var dvPhotoImage = mapper.Map<DVPhotoImages>(photo);
+                    var dvPhotoImage = mapper.Map<DVPhotoImage>(photo);
                     userDataAccess.CreateEntityImage(dvPhotoId, dvPhotoImage, x => x.cp_image);
                 }
+
+                return pnbGuid;
             }
             catch (Exception e)
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, new ApiError (e.Message));
             }
-
-            return pnbGuid ;
         }
     }
 }

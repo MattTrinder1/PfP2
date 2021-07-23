@@ -1,4 +1,6 @@
-﻿[System.AttributeUsage(System.AttributeTargets.Property)]
+﻿using Common.Models.Dataverse;
+
+[System.AttributeUsage(System.AttributeTargets.Property)]
 public class RelatedEntityNameAttribute : System.Attribute
 {
     private string _name;
@@ -9,16 +11,13 @@ public class RelatedEntityNameAttribute : System.Attribute
         this._name = name;
         if (string.IsNullOrEmpty(pluralName))
         {
-            this._pluralName = this._name + "s";
+            this._pluralName = SchemaHelpers.GetEntityPluralName(this._name);
         }
         else
         {
             this._pluralName = pluralName;
         }
-
- 
-
-}
+    }
     public string Name { get { return _name; } }
     public string PluralName { get { return _pluralName; } }
 }

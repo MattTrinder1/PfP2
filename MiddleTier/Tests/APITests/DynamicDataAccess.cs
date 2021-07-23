@@ -1,5 +1,4 @@
-﻿using API.Helpers;
-using API.Models.Base;
+﻿using API.Models.Base;
 using API.Models.IYC;
 using Common.Models.Business;
 using Common.Models.Dataverse;
@@ -46,14 +45,6 @@ namespace API.DataverseAccess
 
         }
 
-        private static string GetEntityPluralName(string entityName)
-        {
-            //todo exceptions to the general rule here
-
-            return entityName + "s";
-        }
-
-
         private string GetEntityName<T>()
         {
             var attrs = typeof(T).GetCustomAttributes(true);
@@ -65,7 +56,7 @@ namespace API.DataverseAccess
         public dynamic GetEntityByField(string entityName, string fieldName,string fieldValue)
         {
             var client = GetRestClient();
-            var req = GetRestRequest($"{GetEntityPluralName(entityName)}?$filter={fieldName} eq '{fieldValue}'", Method.GET);
+            var req = GetRestRequest($"{SchemaHelpers.GetEntityPluralName(entityName)}?$filter={fieldName} eq '{fieldValue}'", Method.GET);
             var resp = client.Execute(req);
 
             var a = JsonSerializer.Deserialize<JsonElement>(resp.Content);
@@ -128,7 +119,7 @@ namespace API.DataverseAccess
         public dynamic GetEntity(string entityName, Guid entityId)
         {
             var client = GetRestClient();
-            var req = GetRestRequest($"{GetEntityPluralName(entityName)}({entityId})", Method.GET);
+            var req = GetRestRequest($"{SchemaHelpers.GetEntityPluralName(entityName)}({entityId})", Method.GET);
             var resp = client.Execute(req);
 
             //var entity = resp.Data;
@@ -143,7 +134,7 @@ namespace API.DataverseAccess
         public List<dynamic> GetAll(string entityName, string filter)
         {
             var client = GetRestClient();
-            var req = GetRestRequest($"{GetEntityPluralName(entityName)}?$filter={filter}", Method.GET);
+            var req = GetRestRequest($"{SchemaHelpers.GetEntityPluralName(entityName)}?$filter={filter}", Method.GET);
             var resp = client.Execute(req);
 
             //var entity = resp.Data;

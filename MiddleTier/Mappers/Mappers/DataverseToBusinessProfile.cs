@@ -17,45 +17,48 @@ namespace API.Mappers
     {
         public DataverseToBusinessProfile()
         {
-
-            //SourceMemberNamingConvention = new ();
-            //RecognizePrefixes("em_");
             RecognizePrefixes("cp_");
 
             CreateMap<DVPocketNotebook, PocketNotebook>()
-                //.ForMember(dest => dest.ownerid, map => map.MapFrom(src => $"/systemusers({src.OwnerId.Id})"))
-                //  .ForMember(dest => dest.cp_notedateandtime, map => map.MapFrom(src => src.NoteDateAndTime))
-                //  .ForMember(dest => dest.cp_signaturedateandtime, map => map.MapFrom(src => src.SignatureDateandTime))
                 .ForMember(dest => dest.Id, map => map.MapFrom(src => src.cp_pocketnotebookid))
             ;
 
+            CreateMap<DVPocketNotebookImages, PocketNotebook>()
+            ;
+
+            CreateMap<DVIncident, PocketNotebook>()
+            ;
+
+            CreateMap<DVPhoto, Photo>()
+                .ForMember(dest => dest.Caption, map => map.MapFrom(src => src.cp_phototitle))
+                .ForMember(dest => dest.PocketNotebookId, map => map.MapFrom(src => src.cp_pocketnotebook.EntityId))
+            ;
+
+            CreateMap<DVPhotoImage, Photo>()
+                .ForMember(dest => dest.Blob, map => map.MapFrom(src => src.cp_image))
+            ;
+
             CreateMap<DVLookupValue, LookupValue>()
-                .ForMember(dest => dest.Id, map => map.MapFrom(src => src.cp_lookupvalueid));
+                .ForMember(dest => dest.Id, map => map.MapFrom(src => src.cp_lookupvalueid))
+            ;
 
             CreateMap<DVPocketNotebook, PocketNotebookListEntry>()
-                .ForMember(dest => dest.Id, map => map.MapFrom(src => src.cp_pocketnotebookid))
-                
-                ;
+                .ForMember(dest => dest.Id, map => map.MapFrom(src => src.cp_pocketnotebookid))                
+            ;
 
             CreateMap<DVVehicleTicket, VehicleTicket>()
-                ;
+            ;
 
             CreateMap<ExpandoObject, EntityBase>()
-                //.ForMember(dest => dest.Id, map => map.MapFrom(src => src.Single(x => x.Key == "cp_policevehiclenumber").Value))
-                //.ForMember(dest => dest.OffenceDateTime, map => map.MapFrom(src => DateTime.Parse(src.Single(x => x.Key == "cp_offencedatetime").Value.ToString())))
                 .ForMember(dest => dest.OwnerId, map => map.MapFrom(src => MapEntityBaseFields<User>(src, "ownerid")))
-                ;
-
+            ;
 
             CreateMap<ExpandoObject, VehicleTicket>()
                 .IncludeBase<ExpandoObject, EntityBase>()
                 .ForMember(dest => dest.PoliceVehicleNumber, map => map.MapFrom(src => src.Single(x => x.Key == "cp_policevehiclenumber").Value))
                 .ForMember(dest => dest.OffenceDateTime, map => map.MapFrom(src => DateTime.Parse(src.Single(x => x.Key == "cp_offencedatetime").Value.ToString())))
                 .ForMember(dest => dest.IssuedTo, map => map.MapFrom(src => MapEntityBaseFields<LookupValue>(src, "cp_issuedto")));
-                 ;
-
-            //.ForMember(dest => dest.cp_notedateandtime, map => map.MapFrom(src => src.NoteDateAndTime));
-
+            ;
         }
 
         public T MapEntityBaseFields<T>(ExpandoObject src, string fieldName) where T : EntityBase,new()
