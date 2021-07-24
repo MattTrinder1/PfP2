@@ -9,23 +9,30 @@ namespace API.Models.Base
 {
     public class DVBase
     {
+        private Guid? id = null;
 
         public DVBase()
         {
-            Id = Guid.NewGuid();
         }
 
-
-        //[JsonPropertyName("ownerid@odata.bind")]
-        //[RelatedEntityName("systemuser")]
-        //public string ownerid { get; set; }
-
         [JsonIgnore]
-        public Guid Id { get; set; }
+        public Guid? Id {
+            get
+            {
+                return id;
+            }
 
-        //public Guid? _ownerid_value { get; init; }
-
-        //   public string IncidentNumber { get; set; }
-        //  public DateTime? IncidentDate { get; set; }
+            set
+            {
+                if (value != Guid.Empty)
+                {
+                    id = value;
+                }
+                else
+                {
+                    value = null;
+                }
+            }
+        }
     }
 }

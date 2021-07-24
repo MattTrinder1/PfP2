@@ -9,12 +9,14 @@ namespace Common.Models.Business
 {
     public class EntityBase
     {
-        public EntityBase(Guid id, string name)
+        private Guid? id = null;
+
+        public EntityBase(Guid? id, string name)
         {
             Id = id;
             Name = name;
         }
-        public EntityBase(Guid id)
+        public EntityBase(Guid? id)
         {
             Id = id;
         }
@@ -22,11 +24,28 @@ namespace Common.Models.Business
         {
         }
 
-        public Guid Id { get; set; }
+        public Guid? Id
+        {
+            get
+            {
+                return id;
+            }
+
+            set
+            {
+                if (value != Guid.Empty)
+                {
+                    id = value;
+                }
+                else
+                {
+                    value = null;
+                }
+            }
+        }
         public User OwnerId { get; set; }
         public string Name { get; set; }
 
         //public string EnteredBy { get; set; }
-
     }
 }

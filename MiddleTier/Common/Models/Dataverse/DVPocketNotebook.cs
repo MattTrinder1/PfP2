@@ -14,7 +14,7 @@ namespace API.Models.PNB
         {            
         }
 
-        public Guid? cp_pocketnotebookid { get; set; }
+        public Guid? cp_pocketnotebookid { get { return base.Id; } set { base.Id = value.Value; } }
 
         public string cp_notes { get; set; }
        
@@ -24,7 +24,7 @@ namespace API.Models.PNB
         [RelatedEntityName("cp_incident")]
         [JsonPropertyName("cp_IncidentNo@odata.bind")]
         public EntityReference cp_incidentno { get; set; }
-        public Guid? _cp_incidentno_value { internal get; set; }
+        public Guid? _cp_incidentno_value { get; set; }
 
 
         public DateTime? cp_signaturedateandtime { get; set; }
@@ -39,10 +39,12 @@ namespace API.Models.PNB
         {
         }
 
-        [DataMember]
+        public Guid? cp_pocketnotebookid { get { return base.Id; } set { base.Id = value.Value; } }
+
+        [DVImage(true)]
         public string cp_sketch { get; set; }
 
-        [DataMember]
+        [DVImage(true)]
         public string cp_signature { get; set; }
     }
 }

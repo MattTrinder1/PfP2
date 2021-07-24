@@ -99,7 +99,7 @@ namespace API.Controllers
                 logger.LogDebug(Request.Headers["UserEmail"].ToString());
 
                 DVPocketNotebook pnb = userDataAccess.GetEntityByField<DVPocketNotebook>("cp_pocketnotebookid", id);
-                DVPocketNotebookImages pnbImages = userDataAccess.GetEntityByField<DVPocketNotebookImages>("cp_pocketnotebookid", id);
+                DVPocketNotebookImages pnbImages = userDataAccess.GetEntityByField<DVPocketNotebookImages>("cp_pocketnotebookid", id, true);
                 DVIncident incident = null;
                 if (pnb.cp_incidentno != null)
                 {
@@ -107,7 +107,7 @@ namespace API.Controllers
                 }
 
                 var pnbPhotosCol = userDataAccess.GetAll<DVPhoto>($"_cp_pocketnotebook_value eq {pnb.cp_pocketnotebookid}");
-                var pnbPhotoImagesCol = userDataAccess.GetAll<DVPhotoImage>($"_cp_pocketnotebook_value eq {pnb.cp_pocketnotebookid}");
+                var pnbPhotoImagesCol = userDataAccess.GetAll<DVPhotoImage>($"_cp_pocketnotebook_value eq {pnb.cp_pocketnotebookid}", true);
 
                 PocketNotebook result = mapper.Map<PocketNotebook>(pnb);
                 result = mapper.Map(pnbImages, result);
@@ -152,7 +152,6 @@ namespace API.Controllers
 
                 var dvPb = mapper.Map<DVPocketNotebook>(pnb);
 
-                //find/create the related incident
                 Guid? incidentId = FindOrCreateIncident(pnb.IncidentNumber);
                 if (incidentId != null)
                 {

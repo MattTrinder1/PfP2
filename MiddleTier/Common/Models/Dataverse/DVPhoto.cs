@@ -13,6 +13,8 @@ namespace API.Models.PNB
         {
         }
 
+        public Guid? cp_photoid { get { return base.Id; } set { base.Id = value.Value; } }
+
         public string cp_phototitle { get; set; }
 
 
@@ -29,6 +31,9 @@ namespace API.Models.PNB
         {
         }
 
+        public Guid? cp_photoid { get { return base.Id; } set { base.Id = value.Value; } }
+
+        [DVImage(true)]
         public string cp_image { get; set; }
     }
 }

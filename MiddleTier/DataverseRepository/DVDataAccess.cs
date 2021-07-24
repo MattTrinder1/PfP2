@@ -101,17 +101,6 @@ namespace API.DataverseAccess
         }
 
 
-
-        public ICollection<T> GetAll<T>()
-        {
-            return GetAll<T>(null, null);
-        }
-
-        public ICollection<T> GetAll<T>(string filter)
-        {
-            return GetAll<T>(filter, null);
-        }
-
         private string GetEntityName<T>()
         {
             var attrs = typeof(T).GetCustomAttributes(true);
@@ -125,19 +114,48 @@ namespace API.DataverseAccess
             return (dataContractAttr as DataContractAttribute).Name;
         }
 
-        public T GetEntityByField<T>(string field, string value)
+        public T GetEntityByField<T>(string field, string value) where T : DVBase
         {
+            return GetEntityByField<T>(field, value, false);
+        }
 
+        public T GetEntityByField<T>(string field, string value, bool retrieveFullImages = false) where T : DVBase
+        {
             var client = GetRestClient();
             var req = GetRestRequest($"{SchemaHelpers.GetEntityPluralName(GetEntityName<T>())}?$filter={field} eq '{value}'", Method.GET);
             var resp = client.Execute<DVGETResponse<T>>(req);
 
             PopulateEntityReferences<T>(resp.Data.value);
 
+            if (retrieveFullImages)
+            {
+                RetrieveFullImages(resp.Data.value, true);
+            }
+
             return resp.Data.value.SingleOrDefault();
         }
 
-        public ICollection<T> GetAll<T>(string filter, string orderby)
+        public ICollection<T> GetAll<T>() where T : DVBase
+        {
+            return GetAll<T>(null, null, false);
+        }
+
+        public ICollection<T> GetAll<T>(string filter) where T : DVBase
+        {
+            return GetAll<T>(filter, null, false);
+        }
+
+        public ICollection<T> GetAll<T>(string filter, bool retrieveFullImages) where T : DVBase
+        {
+            return GetAll<T>(filter, null, retrieveFullImages);
+        }
+
+        public ICollection<T> GetAll<T>(string filter, string orderby) where T : DVBase
+        {
+            return GetAll<T>(filter, orderby, false);
+        }
+
+        public ICollection<T> GetAll<T>(string filter, string orderby, bool retrieveFullImages = false) where T : DVBase
         {
             var entityName = GetEntityName<T>();
 
@@ -164,10 +182,13 @@ namespace API.DataverseAccess
 
             PopulateEntityReferences(resp.Data.value);
 
+            if (retrieveFullImages)
+            {
+                RetrieveFullImages(resp.Data.value, true);
+            }
+
             return resp.Data.value;
         }
-
-
 
         private static void PopulateEntityReferences<T>(ICollection<T> collection)
         {
@@ -217,7 +238,8 @@ namespace API.DataverseAccess
 
             var options = new JsonSerializerOptions
             {
-                PropertyNameCaseInsensitive = true
+                PropertyNameCaseInsensitive = true,
+                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
             };
             options.Converters.Add(new LookupJsonConverter());
             client.UseSystemTextJson(options);
@@ -282,13 +304,70 @@ namespace API.DataverseAccess
             }
 
             var client = GetRestClient();
-            var reqSketch = GetRestRequest($"{entityName}s({entityId})/{prop.Name}", Method.PUT);
+            var reqSketch = GetRestRequest($"{SchemaHelpers.GetEntityPluralName(entityName)}({entityId})/{prop.Name}", Method.PUT);
 
             reqSketch.AddHeader("Content-Type", "application/octet-stream");
             reqSketch.RequestFormat = DataFormat.None;
             reqSketch.AddParameter("", Convert.FromBase64String((string)prop.GetValue(entity)), ParameterType.RequestBody);
             var respSketch = client.Execute(reqSketch);
 
+        }
+
+        private void RetrieveFullImages<T>(ICollection<T> collection, bool overwriteExisting = false) where T : DVBase
+        {
+            foreach (var ent in collection)
+            {
+                RetrieveFullImages(ent, overwriteExisting);
+            }
+        }
+
+        private void RetrieveFullImages<T>(T ent , bool overwriteExisting = false) where T : DVBase
+        {
+            string entityName = null;
+            var dataContractAttrib = typeof(T).GetCustomAttribute<DataContractAttribute>();
+            if (dataContractAttrib != null)
+            {
+                entityName = dataContractAttrib.Name;
+            }
+
+            if (entityName != null)
+            {
+                foreach (var property in typeof(T).GetProperties().Where(x => x.PropertyType == typeof(string)))
+                {
+                    var propertyValue = property.GetValue(ent);
+                    if (overwriteExisting || propertyValue is null)
+                    {
+                        foreach (var imageRetrieveAttrib in property.GetCustomAttributes().Where(x => x.GetType() == typeof(DVImageAttribute)))
+                        {
+                            if ((imageRetrieveAttrib as DVImageAttribute).RetrieveFullImage)
+                            {
+                                string fullImage = RetrieveFullImage(entityName, ((DVBase)ent).Id.Value, property.Name);
+                                if (fullImage != null)
+                                {
+                                    property.SetValue(ent, fullImage);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        public string RetrieveFullImage(string entityName, Guid id, string imageColumnName)
+        {
+            var client = GetRestClient();
+            var req = GetRestRequest($"{SchemaHelpers.GetEntityPluralName(entityName)}({id})/{imageColumnName}/$value?size=full", Method.GET);
+            req.AddHeader("Content-Type", "application/octet-stream");
+            var resp = client.Execute(req);
+
+            if (resp.IsSuccessful)
+            {
+                return Convert.ToBase64String(resp.RawBytes);
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

@@ -14,7 +14,7 @@ namespace API.Models.PNB
         {            
         }
 
-        public Guid cp_incidentid { get { return base.Id; } set { base.Id = value; } }
+        public Guid? cp_incidentid { get { return base.Id; } set { base.Id = value.Value; } }
 
         public string cp_incidentnumber { get; set; }
        
