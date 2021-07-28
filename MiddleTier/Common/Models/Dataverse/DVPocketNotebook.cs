@@ -41,10 +41,10 @@ namespace API.Models.PNB
 
         public Guid? cp_pocketnotebookid { get { return base.Id; } set { base.Id = value.Value; } }
 
-        [DVImage(true)]
+        [DVImage()]
         public string cp_sketch { get; set; }
 
-        [DVImage(true)]
+        [DVImage()]
         public string cp_signature { get; set; }
     }
 }

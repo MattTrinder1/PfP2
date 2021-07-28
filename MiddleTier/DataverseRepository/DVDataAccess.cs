@@ -32,6 +32,16 @@ namespace API.DataverseAccess
         private IMemoryCache _cache;
         private Guid? _contextUserADObjectId;
 
+        public enum SelectColumns
+        {
+            AllTypeProperties,
+            TypePropertiesWithoutImages,
+            TypeImagePropertyThumbnails,
+            AllTableColumns
+        }
+        public const SelectColumns DefaultSelectColumns = SelectColumns.TypePropertiesWithoutImages;
+
+
         public DVDataAccess(ConnectionConfiguration config, IMemoryCache cache, Guid contexUserADObjectId)
         {
             _dvUrl = config.DVUrl;
@@ -114,48 +124,102 @@ namespace API.DataverseAccess
             return (dataContractAttr as DataContractAttribute).Name;
         }
 
-        public T GetEntityByField<T>(string field, string value) where T : DVBase
+        private IEnumerable<string> GetPropertyNames<T>(bool includeNonImages = true, bool includeImages = true)
         {
-            return GetEntityByField<T>(field, value, false);
+            List<string> propertyNames = new List<string>();
+            foreach (var property in typeof(T).GetProperties())
+            {
+                if (property.PropertyType == typeof(EntityReference)) continue;
+                if (property.DeclaringType != typeof(T)) continue;
+
+                if (includeNonImages && includeImages)
+                {
+                    propertyNames.Add(property.Name);
+                }
+                else
+                {
+                    DVImageAttribute imageAttrib = property.GetCustomAttribute<DVImageAttribute>();
+                    if ((imageAttrib != null && includeImages) || 
+                        (imageAttrib == null && includeNonImages))
+                    {
+                        propertyNames.Add(property.Name);
+                    }
+                }
+            }
+            return propertyNames;
         }
 
-        public T GetEntityByField<T>(string field, string value, bool retrieveFullImages = false) where T : DVBase
+        private string GetSelectColumnNamesCsv<T>(SelectColumns selectColumns = DefaultSelectColumns) where T : DVBase
+        {
+            IEnumerable<string> selectColumnNames = null;
+            switch (selectColumns)
+            {
+                case SelectColumns.AllTypeProperties:
+                    selectColumnNames = GetPropertyNames<T>(true, true);
+                    break;
+
+                case SelectColumns.TypePropertiesWithoutImages:
+                    selectColumnNames = GetPropertyNames<T>(true, false);
+                    break;
+
+                case SelectColumns.TypeImagePropertyThumbnails:
+                    selectColumnNames = GetPropertyNames<T>(false, true);
+                    break;
+
+                default:
+                    break;
+            }
+            if (selectColumnNames != null)
+            {
+                return string.Join(',', selectColumnNames);
+            }
+            return null;
+        }
+
+        public T GetEntityByField<T>(string field, string value) where T : DVBase
+        {
+            return GetEntityByField<T>(field, value, DefaultSelectColumns);
+        }
+
+        public T GetEntityByField<T>(string field, string value, SelectColumns selectColumns = DefaultSelectColumns) where T : DVBase
         {
             var client = GetRestClient();
-            var req = GetRestRequest($"{SchemaHelpers.GetEntityPluralName(GetEntityName<T>())}?$filter={field} eq '{value}'", Method.GET);
+
+            string selectParam = "";
+            string selectColumnNamesCsv = GetSelectColumnNamesCsv<T>(selectColumns);
+            if (!string.IsNullOrWhiteSpace(selectColumnNamesCsv))
+            {
+                selectParam = $"$select={selectColumnNamesCsv}&";
+            }
+            var req = GetRestRequest($"{SchemaHelpers.GetEntityPluralName(GetEntityName<T>())}?{selectParam}$filter={field} eq '{value}'", Method.GET);
             var resp = client.Execute<DVGETResponse<T>>(req);
 
             PopulateEntityReferences<T>(resp.Data.value);
-
-            if (retrieveFullImages)
-            {
-                RetrieveFullImages(resp.Data.value, true);
-            }
 
             return resp.Data.value.SingleOrDefault();
         }
 
         public ICollection<T> GetAll<T>() where T : DVBase
         {
-            return GetAll<T>(null, null, false);
+            return GetAll<T>(null, null, DefaultSelectColumns);
         }
 
         public ICollection<T> GetAll<T>(string filter) where T : DVBase
         {
-            return GetAll<T>(filter, null, false);
+            return GetAll<T>(filter, null, DefaultSelectColumns);
         }
 
-        public ICollection<T> GetAll<T>(string filter, bool retrieveFullImages) where T : DVBase
+        public ICollection<T> GetAll<T>(string filter, SelectColumns selectColumns) where T : DVBase
         {
-            return GetAll<T>(filter, null, retrieveFullImages);
+            return GetAll<T>(filter, null, selectColumns);
         }
 
         public ICollection<T> GetAll<T>(string filter, string orderby) where T : DVBase
         {
-            return GetAll<T>(filter, orderby, false);
+            return GetAll<T>(filter, orderby, DefaultSelectColumns);
         }
 
-        public ICollection<T> GetAll<T>(string filter, string orderby, bool retrieveFullImages = false) where T : DVBase
+        public ICollection<T> GetAll<T>(string filter, string orderby, SelectColumns selectColumns = DefaultSelectColumns) where T : DVBase
         {
             var entityName = GetEntityName<T>();
 
@@ -171,6 +235,12 @@ namespace API.DataverseAccess
                 queryParts.Add($"$orderby={orderby}");
             }
 
+            string selectColumnNamesCsv = GetSelectColumnNamesCsv<T>(selectColumns);
+            if (!string.IsNullOrWhiteSpace(selectColumnNamesCsv))
+            {
+                queryParts.Add($"$select={selectColumnNamesCsv}");
+            }
+
             string query = $"{SchemaHelpers.GetEntityPluralName(entityName)}";
             if (queryParts.Any())
             {
@@ -182,16 +252,13 @@ namespace API.DataverseAccess
 
             PopulateEntityReferences(resp.Data.value);
 
-            if (retrieveFullImages)
-            {
-                RetrieveFullImages(resp.Data.value, true);
-            }
-
             return resp.Data.value;
         }
 
         private static void PopulateEntityReferences<T>(ICollection<T> collection)
         {
+            if (collection == null) return;
+
             foreach (var ent in collection)
             {
                 PopulateEntityReferences(ent);
@@ -313,16 +380,45 @@ namespace API.DataverseAccess
 
         }
 
-        private void RetrieveFullImages<T>(ICollection<T> collection, bool overwriteExisting = false) where T : DVBase
+        public enum PrePopulatedImageBehaviour
         {
+            Overwrite,
+            Retain,
+            RegardAsThumbnail,
+            RegardAsFullImage
+        }
+        public const PrePopulatedImageBehaviour DefaultPrePopulatedImageBehaviour = PrePopulatedImageBehaviour.Overwrite;
+        public const bool DefaultRequestFullImage = true;
+
+        public void GetImages<T>(ICollection<T> collection) where T : DVBase
+        {
+            GetImages(collection, DefaultRequestFullImage, DefaultPrePopulatedImageBehaviour);
+        }
+        public void GetImages<T>(
+            ICollection<T> collection,
+            bool requestFullImages = true,
+            PrePopulatedImageBehaviour prePopulatedBehaviour = PrePopulatedImageBehaviour.Overwrite) where T : DVBase
+        {
+            if (collection == null) return;
+
             foreach (var ent in collection)
             {
-                RetrieveFullImages(ent, overwriteExisting);
+                GetImages(ent, requestFullImages, prePopulatedBehaviour);
             }
         }
 
-        private void RetrieveFullImages<T>(T ent , bool overwriteExisting = false) where T : DVBase
+        public void GetImages<T>(T ent) where T : DVBase
         {
+            GetImages(ent, DefaultRequestFullImage, DefaultPrePopulatedImageBehaviour);
+        }
+
+        public void GetImages<T>(
+            T ent, 
+            bool requestFullImages = DefaultRequestFullImage, 
+            PrePopulatedImageBehaviour prePopulatedBehaviour = DefaultPrePopulatedImageBehaviour) where T : DVBase
+        {
+            if (ent == null) return;
+
             string entityName = null;
             var dataContractAttrib = typeof(T).GetCustomAttribute<DataContractAttribute>();
             if (dataContractAttrib != null)
@@ -334,18 +430,25 @@ namespace API.DataverseAccess
             {
                 foreach (var property in typeof(T).GetProperties().Where(x => x.PropertyType == typeof(string)))
                 {
-                    var propertyValue = property.GetValue(ent);
-                    if (overwriteExisting || propertyValue is null)
+                    DVImageAttribute imageAttrib = property.GetCustomAttribute<DVImageAttribute>();
+                    if (imageAttrib != null)
                     {
-                        foreach (var imageRetrieveAttrib in property.GetCustomAttributes().Where(x => x.GetType() == typeof(DVImageAttribute)))
+                        var propertyValue = property.GetValue(ent);
+                        if (propertyValue is null || 
+                            prePopulatedBehaviour == PrePopulatedImageBehaviour.Overwrite || 
+                            (prePopulatedBehaviour == PrePopulatedImageBehaviour.RegardAsThumbnail && 
+                                imageAttrib.RetrieveImageType == ImageRetrieveBehaviour.AlwaysFullImage) ||
+                            (prePopulatedBehaviour == PrePopulatedImageBehaviour.RegardAsFullImage && 
+                                imageAttrib.RetrieveImageType == ImageRetrieveBehaviour.AlwaysThumbnail))
                         {
-                            if ((imageRetrieveAttrib as DVImageAttribute).RetrieveFullImage)
+                            bool retrieveFullImage = 
+                                (imageAttrib.RetrieveImageType == ImageRetrieveBehaviour.AlwaysFullImage ||
+                                (requestFullImages && imageAttrib.RetrieveImageType != ImageRetrieveBehaviour.AlwaysThumbnail));
+
+                            string image = GetImage(entityName, ((DVBase)ent).Id.Value, property.Name, retrieveFullImage);
+                            if (image != null)
                             {
-                                string fullImage = RetrieveFullImage(entityName, ((DVBase)ent).Id.Value, property.Name);
-                                if (fullImage != null)
-                                {
-                                    property.SetValue(ent, fullImage);
-                                }
+                                property.SetValue(ent, image);
                             }
                         }
                     }
@@ -353,10 +456,11 @@ namespace API.DataverseAccess
             }
         }
 
-        public string RetrieveFullImage(string entityName, Guid id, string imageColumnName)
+        public string GetImage(string entityName, Guid id, string imageColumnName, bool fullImage = true)
         {
             var client = GetRestClient();
-            var req = GetRestRequest($"{SchemaHelpers.GetEntityPluralName(entityName)}({id})/{imageColumnName}/$value?size=full", Method.GET);
+            string sizeParam = fullImage ? "?size=full" : "";
+            var req = GetRestRequest($"{SchemaHelpers.GetEntityPluralName(entityName)}({id})/{imageColumnName}/$value{sizeParam}", Method.GET);
             req.AddHeader("Content-Type", "application/octet-stream");
             var resp = client.Execute(req);
 
