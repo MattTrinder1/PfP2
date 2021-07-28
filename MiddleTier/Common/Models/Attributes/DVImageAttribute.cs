@@ -1,11 +1,18 @@
-﻿[System.AttributeUsage(System.AttributeTargets.Property)]
+﻿[System.AttributeUsage(System.AttributeTargets.Property, AllowMultiple = false)]
 public class DVImageAttribute : System.Attribute
 {
-    private bool retrieveFullImage;
+    private ImageRetrieveBehaviour retrieveImageType;
 
-    public DVImageAttribute(bool retrieveFullImage)
+    public DVImageAttribute(ImageRetrieveBehaviour retrieveImageType = ImageRetrieveBehaviour.RequestDefault)
     {
-        this.retrieveFullImage = retrieveFullImage;
+        this.retrieveImageType = retrieveImageType;
     }
-    public bool RetrieveFullImage { get { return retrieveFullImage; } }
+    public ImageRetrieveBehaviour RetrieveImageType { get { return this.retrieveImageType; } }
+}
+
+public enum ImageRetrieveBehaviour
+{
+    RequestDefault,
+    AlwaysThumbnail,
+    AlwaysFullImage
 }
