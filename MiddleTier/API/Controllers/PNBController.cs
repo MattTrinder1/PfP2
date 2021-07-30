@@ -1,26 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using API.Models.Base;
-//using System.Web.Mvc.Filters;
-using API.Models.IYC;
-using AutoMapper;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using Newtonsoft.Json.Linq;
-using RestSharp;
-using System.Text.Json.Serialization;
-using System.Text.Json;
-using API.Models.PNB;
-using API.DataverseAccess;
+﻿using API.DataverseAccess;
 using API.Mappers;
+using API.Models.IYC;
+using API.Models.PNB;
+using AutoMapper;
 using Common.Models.Business;
-using Microsoft.Extensions.Caching.Memory;
-using API.Models.Business;
-using System.Dynamic;
-using Common.Models.Dataverse;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
 using System.Net;
 
 namespace API.Controllers
@@ -57,7 +44,7 @@ namespace API.Controllers
 
                 logger.LogDebug(userId.ToString());
 
-                ICollection<DVPocketNotebook> pnb = userDataAccess.GetAll<DVPocketNotebook>($"_ownerid_value eq {userId}", "cp_notedateandtime");
+                ICollection<DVPocketNotebook> pnb = userDataAccess.GetAll<DVPocketNotebook>("ownerid", userId, "cp_notedateandtime");
 
                 return mapper.Map<List<PocketNotebookListEntry>>(pnb);
             }
@@ -109,9 +96,8 @@ namespace API.Controllers
                     incident = userDataAccess.GetEntityByField<DVIncident>("cp_incidentid", pnb.cp_incidentno.EntityId.Value.ToString());
                 }
 
-                var pnbPhotosCol = userDataAccess.GetAll<DVPhoto>($"_cp_pocketnotebook_value eq {pnb.cp_pocketnotebookid}");
-                var pnbPhotoImagesCol = userDataAccess.GetAll<DVPhotoImage>($"_cp_pocketnotebook_value eq {pnb.cp_pocketnotebookid}", DVDataAccess.SelectColumns.TypePropertiesWithoutImages);
-                userDataAccess.GetImages(pnbPhotoImagesCol, true);
+                var pnbPhotosCol = userDataAccess.GetAll<DVPhoto>("cp_pocketnotebook", pnb.cp_pocketnotebookid, DVDataAccess.SelectColumns.TypePropertiesWithoutImages);
+                userDataAccess.GetImages(pnbPhotosCol, true);
 
                 PocketNotebook result = mapper.Map<PocketNotebook>(pnb);
                 result = mapper.Map(pnbImages, result);
@@ -121,19 +107,10 @@ namespace API.Controllers
                 }
                 if (pnbPhotosCol != null && pnbPhotosCol.Count > 0)
                 {
-                    DVPhoto[] pnbPhotos = new DVPhoto[pnbPhotosCol.Count];
-                    pnbPhotosCol.CopyTo(pnbPhotos, 0);
-                    DVPhotoImage[] pnbPhotoImages = new DVPhotoImage[pnbPhotoImagesCol.Count];
-                    pnbPhotoImagesCol.CopyTo(pnbPhotoImages, 0);
-
                     List<Photo> photos = new List<Photo>(pnbPhotosCol.Count);
-                    for (int i = 0; i < pnbPhotos.Length; i++)
+                    foreach (var pnbPhoto in pnbPhotosCol)
                     {
-                        Photo photo = mapper.Map<Photo>(pnbPhotos[i]);
-                        if (i < pnbPhotoImages.Length)
-                        {
-                            photo = mapper.Map(pnbPhotoImages[i], photo);
-                        }
+                        Photo photo = mapper.Map<Photo>(pnbPhoto);
                         photos.Add(photo);
                     }
                     result.Photos = photos;
@@ -173,9 +150,6 @@ namespace API.Controllers
                     photo.PocketNotebookId = pnbGuid;
                     var dvPhoto = mapper.Map<DVPhoto>(photo);
                     var dvPhotoId = userDataAccess.CreateEntity(dvPhoto);
-
-                    var dvPhotoImage = mapper.Map<DVPhotoImage>(photo);
-                    userDataAccess.CreateEntityImage(dvPhotoId, dvPhotoImage, x => x.cp_image);
                 }
 
                 return pnbGuid;

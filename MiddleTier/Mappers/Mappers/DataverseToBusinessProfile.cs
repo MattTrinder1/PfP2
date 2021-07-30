@@ -32,9 +32,6 @@ namespace API.Mappers
             CreateMap<DVPhoto, Photo>()
                 .ForMember(dest => dest.Caption, map => map.MapFrom(src => src.cp_phototitle))
                 .ForMember(dest => dest.PocketNotebookId, map => map.MapFrom(src => src.cp_pocketnotebook.EntityId))
-            ;
-
-            CreateMap<DVPhotoImage, Photo>()
                 .ForMember(dest => dest.Blob, map => map.MapFrom(src => src.cp_image))
             ;
 

@@ -1,24 +1,16 @@
 ﻿using API.Models.Base;
-using API.Models.IYC;
-using Common.Models.Business;
-using Common.Models.Dataverse;
 using DataverseRepository;
-using Microsoft.AspNetCore.Http;
+using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using Newtonsoft.Json.Linq;
-using RestSharp;
-using RestSharp.Serializers.SystemTextJson;
+using Microsoft.PowerPlatform.Dataverse.Client;
+using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Query;
 using System;
 using System.Collections.Generic;
-using System.Dynamic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.Serialization;
-using System.Text.Json;
-using System.Threading.Tasks;
-using SystemTextJsonSamples;
 
 namespace API.DataverseAccess
 {
@@ -31,6 +23,8 @@ namespace API.DataverseAccess
         private string _authority;
         private IMemoryCache _cache;
         private Guid? _contextUserADObjectId;
+
+        private ServiceClient dvService;
 
         public enum SelectColumns
         {
@@ -52,6 +46,9 @@ namespace API.DataverseAccess
             _cache = cache;
             _contextUserADObjectId = contexUserADObjectId;
 
+            Uri uri = new Uri(_dvUrl);
+            dvService = new ServiceClient(uri, _clientId, _clientSecret, true);
+            dvService.CallerAADObjectId = contexUserADObjectId;
         }
 
         public DVDataAccess(ConnectionConfiguration config, IMemoryCache cache)
@@ -62,69 +59,65 @@ namespace API.DataverseAccess
             _clientSecret = config.ClientSecret;
             _authority = config.Authority;
             _cache = cache;
-
-
             _contextUserADObjectId = null;
+
+            Uri uri = new Uri(_dvUrl);
+            dvService = new ServiceClient(uri, _clientId, _clientSecret, true);
         }
 
-        public async Task<string> GetAuthToken()
-        {
-
-            var authContext = new AuthenticationContext(_authority);
-            ClientCredential credential = new ClientCredential(_clientId, _clientSecret);
-            AuthenticationResult result = await authContext.AcquireTokenAsync(_serviceUrl, credential);
-            return result.AccessToken;
-
-        }
 
         public Guid GetUserId(string emailAddress)
         {
             Guid userId;
             if (!_cache.TryGetValue($"{emailAddress}:UserId", out userId))
             {
-                var client = GetRestClient();
-                var req = GetRestRequest($"systemusers?$filter=internalemailaddress eq '{emailAddress}'&$select=systemuserid", Method.GET);
-                var response = client.Execute<DVGETResponse<DVSystemUser>>(req);
+                QueryExpression query = new QueryExpression("systemuser");
+                query.Criteria.AddCondition("internalemailaddress", ConditionOperator.Equal, emailAddress);
+                query.ColumnSet = new ColumnSet("systemuserid");
 
-                _cache.Set($"{emailAddress}:UserId", response.Data.value.Single().SystemUserId);
-                return response.Data.value.Single().SystemUserId;
+                var dvResponse = dvService.RetrieveMultiple(query);
+
+                userId = dvResponse.Entities.Single().GetAttributeValue<Guid>("systemuserid");
+
+                _cache.Set($"{emailAddress}:UserId", userId);
             }
 
             return userId;
-
         }
+
         public Guid GetUserADObjectId(string emailAddress)
         {
-            Guid userId;
-            if (!_cache.TryGetValue($"{emailAddress}:AzureActiveDirectoryObjectId", out userId))
+            Guid adId;
+            if (!_cache.TryGetValue($"{emailAddress}:AzureActiveDirectoryObjectId", out adId))
             {
-                var client = GetRestClient();
-                var req = GetRestRequest($"systemusers?$filter=internalemailaddress eq '{emailAddress}'&$select=azureactivedirectoryobjectid", Method.GET);
-                var response = client.Execute<DVGETResponse<DVSystemUser>>(req);
+                QueryExpression query = new QueryExpression("systemuser");
+                query.Criteria.AddCondition("internalemailaddress", ConditionOperator.Equal, emailAddress);
+                query.ColumnSet = new ColumnSet("azureactivedirectoryobjectid");
 
-                _cache.Set($"{emailAddress}:AzureActiveDirectoryObjectId", response.Data.value.Single().AzureActiveDirectoryObjectId);
-                return response.Data.value.Single().AzureActiveDirectoryObjectId;
+                var dvResponse = dvService.RetrieveMultiple(query);
+
+                adId = dvResponse.Entities.Single().GetAttributeValue<Guid>("azureactivedirectoryobjectid");
+
+                _cache.Set($"{emailAddress}:AzureActiveDirectoryObjectId", adId);
             }
 
-            return userId;
-
+            return adId;
         }
 
 
         private string GetEntityName<T>()
         {
-            var attrs = typeof(T).GetCustomAttributes(true);
-            var dataContractAttr = attrs.SingleOrDefault(x => x.GetType() == typeof(DataContractAttribute));
+            var dataContractAttr = typeof(T).GetCustomAttribute<DataContractAttribute>();
             return (dataContractAttr as DataContractAttribute).Name;
         }
         private string GetEntityName(DVBase entity)
         {
-            var attrs = entity.GetType().GetCustomAttributes(true);
-            var dataContractAttr = attrs.SingleOrDefault(x => x.GetType() == typeof(DataContractAttribute));
+            var dataContractAttr = entity.GetType().GetCustomAttribute<DataContractAttribute>();
             return (dataContractAttr as DataContractAttribute).Name;
         }
 
-        private IEnumerable<string> GetPropertyNames<T>(bool includeNonImages = true, bool includeImages = true)
+
+        private string[] GetPropertyNames<T>(bool includeNonImages = true, bool includeImages = true)
         {
             List<string> propertyNames = new List<string>();
             foreach (var property in typeof(T).GetProperties())
@@ -146,12 +139,12 @@ namespace API.DataverseAccess
                     }
                 }
             }
-            return propertyNames;
+            return propertyNames.ToArray();
         }
 
-        private string GetSelectColumnNamesCsv<T>(SelectColumns selectColumns = DefaultSelectColumns) where T : DVBase
+        private ColumnSet GetColumnSet<T>(SelectColumns selectColumns = DefaultSelectColumns) where T : DVBase
         {
-            IEnumerable<string> selectColumnNames = null;
+            string[] selectColumnNames = null;
             switch (selectColumns)
             {
                 case SelectColumns.AllTypeProperties:
@@ -166,218 +159,194 @@ namespace API.DataverseAccess
                     selectColumnNames = GetPropertyNames<T>(false, true);
                     break;
 
+                case SelectColumns.AllTableColumns:
+                    return new ColumnSet(true);
+
                 default:
                     break;
             }
             if (selectColumnNames != null)
             {
-                return string.Join(',', selectColumnNames);
+                return new ColumnSet(selectColumnNames);
             }
             return null;
         }
 
-        public T GetEntityByField<T>(string field, string value) where T : DVBase
-        {
-            return GetEntityByField<T>(field, value, DefaultSelectColumns);
-        }
 
-        public T GetEntityByField<T>(string field, string value, SelectColumns selectColumns = DefaultSelectColumns) where T : DVBase
+        private T ConvertFromDvEntity<T>(Entity entity) where T : DVBase, new()
         {
-            var client = GetRestClient();
+            if (entity == null) return null;
 
-            string selectParam = "";
-            string selectColumnNamesCsv = GetSelectColumnNamesCsv<T>(selectColumns);
-            if (!string.IsNullOrWhiteSpace(selectColumnNamesCsv))
+            T result = new T();
+
+            foreach (var property in typeof(T).GetProperties())
             {
-                selectParam = $"$select={selectColumnNamesCsv}&";
-            }
-            var req = GetRestRequest($"{SchemaHelpers.GetEntityPluralName(GetEntityName<T>())}?{selectParam}$filter={field} eq '{value}'", Method.GET);
-            var resp = client.Execute<DVGETResponse<T>>(req);
+                if (property.DeclaringType != typeof(T)) continue;
 
-            PopulateEntityReferences<T>(resp.Data.value);
-
-            return resp.Data.value.SingleOrDefault();
-        }
-
-        public ICollection<T> GetAll<T>() where T : DVBase
-        {
-            return GetAll<T>(null, null, DefaultSelectColumns);
-        }
-
-        public ICollection<T> GetAll<T>(string filter) where T : DVBase
-        {
-            return GetAll<T>(filter, null, DefaultSelectColumns);
-        }
-
-        public ICollection<T> GetAll<T>(string filter, SelectColumns selectColumns) where T : DVBase
-        {
-            return GetAll<T>(filter, null, selectColumns);
-        }
-
-        public ICollection<T> GetAll<T>(string filter, string orderby) where T : DVBase
-        {
-            return GetAll<T>(filter, orderby, DefaultSelectColumns);
-        }
-
-        public ICollection<T> GetAll<T>(string filter, string orderby, SelectColumns selectColumns = DefaultSelectColumns) where T : DVBase
-        {
-            var entityName = GetEntityName<T>();
-
-            var client = GetRestClient();
-
-            List<string> queryParts = new List<string>();
-            if (!string.IsNullOrEmpty(filter))
-            {
-                queryParts.Add($"$filter={filter}");
-            }
-            if (!string.IsNullOrEmpty(orderby))
-            {
-                queryParts.Add($"$orderby={orderby}");
-            }
-
-            string selectColumnNamesCsv = GetSelectColumnNamesCsv<T>(selectColumns);
-            if (!string.IsNullOrWhiteSpace(selectColumnNamesCsv))
-            {
-                queryParts.Add($"$select={selectColumnNamesCsv}");
-            }
-
-            string query = $"{SchemaHelpers.GetEntityPluralName(entityName)}";
-            if (queryParts.Any())
-            {
-                query += "?" + string.Join("&", queryParts);
-            }
-
-            var req = GetRestRequest(query, Method.GET);
-            var resp = client.Execute<DVGETResponse<T>>(req);
-
-            PopulateEntityReferences(resp.Data.value);
-
-            return resp.Data.value;
-        }
-
-        private static void PopulateEntityReferences<T>(ICollection<T> collection)
-        {
-            if (collection == null) return;
-
-            foreach (var ent in collection)
-            {
-                PopulateEntityReferences(ent);
-            }
-        }
-
-        private static void PopulateEntityReferences<T>(T ent)
-        {
-            foreach (var prop in typeof(T).GetProperties().Where(x => x.PropertyType == typeof(EntityReference)))
-            {
-                var er = prop.GetValue(ent);
-                if (er is null)
+                if (entity.Attributes.Contains(property.Name))
                 {
-                    foreach (var attr in prop.GetCustomAttributes().Where(x => x.GetType() == typeof(RelatedEntityNameAttribute)))
+                    Microsoft.Xrm.Sdk.EntityReference sdkEntityReference = entity[property.Name] as Microsoft.Xrm.Sdk.EntityReference;
+                    if (sdkEntityReference != null)
                     {
-                        //find the matching property
-                        var matchingProp = ent.GetType().GetProperty($"_{prop.Name}_value");
-                        if (matchingProp != null)
-                        {
-                            var matchingPropValue = matchingProp.GetValue(ent);
-                            if (matchingPropValue != null)
-                            {
-                                er = new EntityReference((attr as RelatedEntityNameAttribute).Name, (Guid)matchingPropValue);
-                                prop.SetValue(ent, er);
-                            }
-                        }
+                        Common.Models.Business.EntityReference modelEntityReference = new Common.Models.Business.EntityReference(
+                            sdkEntityReference.LogicalName,
+                            sdkEntityReference.Id);
+
+                        property.SetValue(result, modelEntityReference);
+                    }
+                    else
+                    {
+                        property.SetValue(result, entity[property.Name]);
                     }
                 }
             }
 
+            return result;
         }
 
-        private RestClient GetRestClient()
+        private Entity ConvertToDvEntity<T>(T candidate, bool includeNulls = false) where T : DVBase
         {
-            RestClient client;
+            if (candidate == null) return null;
 
-            client = new RestClient(_dvUrl);
-            client.AddDefaultHeader("Authorization", "Bearer " + GetAuthToken().Result);
-            if (_contextUserADObjectId.HasValue)
+            var entityName = GetEntityName<T>();
+
+            Entity entity = new Entity(entityName);
+
+            foreach (var property in typeof(T).GetProperties())
             {
-                client.AddDefaultHeader("CallerObjectId", _contextUserADObjectId.ToString());
+                if (property.DeclaringType != typeof(T)) continue;
+
+                var propertyValue = property.GetValue(candidate);
+                if (includeNulls || propertyValue != null)
+                {
+                    Common.Models.Business.EntityReference modelEntityReference = propertyValue as Common.Models.Business.EntityReference;
+                    if (modelEntityReference != null)
+                    {
+                        if (modelEntityReference.EntityId.HasValue)
+                        {
+                            Microsoft.Xrm.Sdk.EntityReference sdkEntityReference = new Microsoft.Xrm.Sdk.EntityReference(
+                                modelEntityReference.EntityLogicalName,
+                                modelEntityReference.EntityId.Value);
+                            
+                            entity.Attributes.Add(property.Name, sdkEntityReference);
+                        }
+                    }
+                    else
+                    {
+                        entity.Attributes.Add(property.Name, propertyValue);
+                    }
+                }
             }
 
-
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true,
-                DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull
-            };
-            options.Converters.Add(new LookupJsonConverter());
-            client.UseSystemTextJson(options);
-
-            return client;
-        }
-
-
-        private RestRequest GetRestRequest(string url, Method method)
-        {
-            var req = new RestRequest(url, method);// { RootElement = "value" };
-
-            //req.JsonSerializer = new IntegrationService.JsonSerializer();
-
-            if (method == Method.POST || method == Method.PATCH) //adding or updating
-            {
-                req.RequestFormat = DataFormat.Json;
-                req.AddHeader("Prefer", "return=representation");
-            }
-            else if (method == Method.GET)
-            {
-                req.AddHeader("Prefer", "odata.include-annotations=*");
-            }
-
-            return req;
-        }
-
-        public Guid CreateEntity(DVBase entity)
-        {
-            var entityName = GetEntityName(entity);
-            var client = GetRestClient();
-            var req = GetRestRequest($"{entityName}s", Method.POST);
-            req.AddJsonBody(entity);
-            var response = client.Execute(req);
-
-            if (response.IsSuccessful)
-            {
-                JObject j = JObject.Parse(response.Content);
-
-                return new Guid(j.Root.SelectToken($"{entityName}id").Value<string>());
-            }
-            else
-            {
-                throw new Exception($"CreateEntity request failed: {response.Content}");
-            }
+            return entity;
         }
 
 
-        public void CreateEntityImage<T>(Guid entityId, T entity, Expression<Func<T, string>> imageProperty)
+        public T GetEntityByField<T>(string field, object value) where T : DVBase, new()
         {
+            return GetEntityByField<T>(field, value, DefaultSelectColumns);
+        }
 
-            var attrs = entity.GetType().GetCustomAttributes(true);
-            var dataContractAttr = attrs.SingleOrDefault(x => x.GetType() == typeof(DataContractAttribute));
-            var entityName = (dataContractAttr as DataContractAttribute).Name;
+        public T GetEntityByField<T>(string field, object value, SelectColumns selectColumns = DefaultSelectColumns) where T : DVBase, new()
+        {
+            QueryExpression query = new QueryExpression(GetEntityName<T>());
+            query.Criteria.AddCondition(field, ConditionOperator.Equal, value);
+            query.ColumnSet = GetColumnSet<T>(selectColumns);
+
+            var dvResponse = dvService.RetrieveMultiple(query);
+
+            return ConvertFromDvEntity<T>(dvResponse.Entities.SingleOrDefault());
+        }
+
+
+        public ICollection<T> GetAll<T>() where T : DVBase, new()
+        {
+            return GetAll<T>(null, null, null, DefaultSelectColumns);
+        }
+
+        public ICollection<T> GetAll<T>(string field, object value) where T : DVBase, new()
+        {
+            return GetAll<T>(field, value, null, DefaultSelectColumns);
+        }
+
+        public ICollection<T> GetAll<T>(string field, object value, SelectColumns selectColumns) where T : DVBase, new()
+        {
+            return GetAll<T>(field, value, null, selectColumns);
+        }
+
+        public ICollection<T> GetAll<T>(string field, object value, string orderby) where T : DVBase, new()
+        {
+            return GetAll<T>(field, value, orderby, DefaultSelectColumns);
+        }
+
+        public ICollection<T> GetAll<T>(
+            string field = null, 
+            object value = null, 
+            string orderby = null, 
+            SelectColumns selectColumns = DefaultSelectColumns) where T : DVBase, new()
+        {
+            var entityName = GetEntityName<T>();
+
+            QueryExpression query = new QueryExpression(entityName);
+            query.ColumnSet = GetColumnSet<T>(selectColumns);
+
+            if (!string.IsNullOrEmpty(field))
+            {
+                query.Criteria.AddCondition(field, ConditionOperator.Equal, value);
+            }
+
+            if (!string.IsNullOrEmpty(orderby))
+            {
+                query.AddOrder(orderby, OrderType.Ascending);
+            }
+
+            List<T> result = new List<T>();
+
+            var dvResponse = dvService.RetrieveMultiple(query);
+            if (dvResponse != null && dvResponse.Entities != null && dvResponse.Entities.Count > 0)
+            {
+                foreach(var dvEntity in dvResponse.Entities)
+                {
+                    result.Add(ConvertFromDvEntity<T>(dvEntity));
+                }
+            }
+
+            return result;
+        }
+
+
+        public Guid CreateEntity<T>(T entity) where T : DVBase
+        {
+            Guid id = Guid.Empty;
+
+            Entity dvEntity = ConvertToDvEntity(entity);
+            if (dvEntity != null)
+            {
+                id = dvService.Create(dvEntity);
+            }
+
+            return id;
+        }
+
+
+        public void CreateEntityImage<T>(Guid entityId, T entity, Expression<Func<T, string>> imageProperty) where T : DVBase
+        {
+            string entityName = GetEntityName(entity);
 
             var expr = (MemberExpression)imageProperty.Body;
             var prop = (PropertyInfo)expr.Member;
 
-            if (string.IsNullOrEmpty((string)prop.GetValue(entity)))
+            string imageData = (string)prop.GetValue(entity);
+
+            if (string.IsNullOrEmpty(imageData))
             {
                 return;
             }
 
-            var client = GetRestClient();
-            var reqSketch = GetRestRequest($"{SchemaHelpers.GetEntityPluralName(entityName)}({entityId})/{prop.Name}", Method.PUT);
+            Entity updateImage = new Entity(entityName, entityId);
+            updateImage[prop.Name] = imageData;
 
-            reqSketch.AddHeader("Content-Type", "application/octet-stream");
-            reqSketch.RequestFormat = DataFormat.None;
-            reqSketch.AddParameter("", Convert.FromBase64String((string)prop.GetValue(entity)), ParameterType.RequestBody);
-            var respSketch = client.Execute(reqSketch);
-
+            dvService.Update(updateImage);
         }
 
         public enum PrePopulatedImageBehaviour
@@ -394,6 +363,7 @@ namespace API.DataverseAccess
         {
             GetImages(collection, DefaultRequestFullImage, DefaultPrePopulatedImageBehaviour);
         }
+
         public void GetImages<T>(
             ICollection<T> collection,
             bool requestFullImages = true,
@@ -458,20 +428,28 @@ namespace API.DataverseAccess
 
         public string GetImage(string entityName, Guid id, string imageColumnName, bool fullImage = true)
         {
-            var client = GetRestClient();
-            string sizeParam = fullImage ? "?size=full" : "";
-            var req = GetRestRequest($"{SchemaHelpers.GetEntityPluralName(entityName)}({id})/{imageColumnName}/$value{sizeParam}", Method.GET);
-            req.AddHeader("Content-Type", "application/octet-stream");
-            var resp = client.Execute(req);
+            InitializeFileBlocksDownloadRequest initDlRequest = new InitializeFileBlocksDownloadRequest()
+            {
+                Target = new EntityReference(entityName, id),
+                FileAttributeName = imageColumnName
+            };
 
-            if (resp.IsSuccessful)
+            var initDlResponse = (InitializeFileBlocksDownloadResponse)dvService.Execute(initDlRequest);
+
+            DownloadBlockRequest dlBlockRequest = new DownloadBlockRequest()
             {
-                return Convert.ToBase64String(resp.RawBytes);
-            }
-            else
+                FileContinuationToken = initDlResponse.FileContinuationToken
+            };
+
+            var dlBlockResponse = (DownloadBlockResponse)dvService.Execute(dlBlockRequest);
+
+            //TODO: Handle multiple blocks.
+
+            if (dlBlockResponse != null && dlBlockResponse.Data != null)
             {
-                return null;
+                return Convert.ToBase64String(dlBlockResponse.Data);
             }
+            return null;
         }
     }
 }
