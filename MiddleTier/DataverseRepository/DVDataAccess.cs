@@ -4,6 +4,7 @@ using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.PowerPlatform.Dataverse.Client;
 using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Query;
 using System;
 using System.Collections.Generic;
@@ -24,7 +25,7 @@ namespace API.DataverseAccess
         private IMemoryCache _cache;
         private Guid? _contextUserADObjectId;
 
-        private ServiceClient dvService;
+        protected ServiceClient dvService;
 
         public enum SelectColumns
         {
@@ -35,6 +36,8 @@ namespace API.DataverseAccess
         }
         public const SelectColumns DefaultSelectColumns = SelectColumns.TypePropertiesWithoutImages;
 
+        protected ExecuteTransactionRequest transaction = null;
+        protected DVDataAccess() { }
 
         public DVDataAccess(ConnectionConfiguration config, IMemoryCache cache, Guid contexUserADObjectId)
         {
@@ -211,6 +214,10 @@ namespace API.DataverseAccess
             var entityName = GetEntityName<T>();
 
             Entity entity = new Entity(entityName);
+            if (candidate.Id.HasValue)
+            {
+                entity.Id = candidate.Id.Value;
+            }
 
             foreach (var property in typeof(T).GetProperties())
             {
@@ -233,7 +240,15 @@ namespace API.DataverseAccess
                     }
                     else
                     {
-                        entity.Attributes.Add(property.Name, propertyValue);
+                        DVImageAttribute imageAttribute = property.GetCustomAttribute<DVImageAttribute>();
+                        if (imageAttribute == null)
+                        {
+                            entity.Attributes.Add(property.Name, propertyValue);
+                        }
+                        else
+                        {
+                            entity.Attributes.Add(property.Name, Convert.FromBase64String((string)propertyValue));
+                        }
                     }
                 }
             }
@@ -315,6 +330,26 @@ namespace API.DataverseAccess
         }
 
 
+        public void UpdateEntity<T>(T entity) where T : DVBase
+        {
+            if (entity.Id == null || entity.Id == Guid.Empty) throw new ArgumentException("entity.Id is required.");
+
+            Entity dvEntity = ConvertToDvEntity(entity);
+            if (dvEntity != null)
+            {
+                if (transaction == null)
+                {
+                    dvService.Update(dvEntity);
+                }
+                else
+                {
+                    UpdateRequest updateRequest = new UpdateRequest();
+                    updateRequest.Target = dvEntity;
+                    transaction.Requests.Add(updateRequest);
+                }
+            }
+        }
+
         public Guid CreateEntity<T>(T entity) where T : DVBase
         {
             Guid id = Guid.Empty;
@@ -322,14 +357,26 @@ namespace API.DataverseAccess
             Entity dvEntity = ConvertToDvEntity(entity);
             if (dvEntity != null)
             {
-                id = dvService.Create(dvEntity);
+                if (transaction == null)
+                {
+                    id = dvService.Create(dvEntity);
+                }
+                else
+                {
+                    CreateRequest createRequest = new CreateRequest();
+                    createRequest.Target = dvEntity;
+                    transaction.Requests.Add(createRequest);
+                }
             }
 
             return id;
         }
 
 
-        public void CreateEntityImage<T>(Guid entityId, T entity, Expression<Func<T, string>> imageProperty) where T : DVBase
+        public void CreateEntityImage<T>(
+            Guid entityId, 
+            T entity, 
+            Expression<Func<T, string>> imageProperty) where T : DVBase
         {
             string entityName = GetEntityName(entity);
 
@@ -344,9 +391,18 @@ namespace API.DataverseAccess
             }
 
             Entity updateImage = new Entity(entityName, entityId);
-            updateImage[prop.Name] = imageData;
+            updateImage[prop.Name] = Convert.FromBase64String(imageData);
 
-            dvService.Update(updateImage);
+            if (transaction == null)
+            {
+                dvService.Update(updateImage);
+            }
+            else
+            {
+                UpdateRequest updateRequest = new UpdateRequest();
+                updateRequest.Target = updateImage;
+                transaction.Requests.Add(updateRequest);
+            }
         }
 
         public enum PrePopulatedImageBehaviour
@@ -450,6 +506,11 @@ namespace API.DataverseAccess
                 return Convert.ToBase64String(dlBlockResponse.Data);
             }
             return null;
+        }
+
+        public void ExecuteTransaction(ExecuteTransactionRequest transaction)
+        {
+            var dvResponse = (ExecuteTransactionResponse)dvService.Execute(transaction);
         }
     }
 }

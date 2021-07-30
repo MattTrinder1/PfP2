@@ -6,16 +6,13 @@ using AutoMapper;
 using Common.Models.Business;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Xrm.Sdk.Messages;
 using System;
 using System.Collections.Generic;
 using System.Net;
 
 namespace API.Controllers
 {
-    public class PNBMapperProfile : Profile
-    {
-    }
-
     [Route("api/[controller]")]
     [ApiController]
     public class PNBController : ControllerBase
@@ -75,7 +72,7 @@ namespace API.Controllers
                 return incident.cp_incidentid;
             }
 
-            
+
         }
 
         [HttpGet("{id}")]
@@ -133,30 +130,62 @@ namespace API.Controllers
 
                 var dvPb = mapper.Map<DVPocketNotebook>(pnb);
 
-                Guid? incidentId = FindOrCreateIncident(pnb.IncidentNumber);
+                DVTransaction transaction = new DVTransaction();
+
+                Guid? incidentId = null;
+                if (!string.IsNullOrEmpty(pnb.IncidentNumber))
+                {
+                    var incident = adminDataAccess.GetEntityByField<DVIncident>("cp_incidentnumber", pnb.IncidentNumber);
+                    if (incident == null)
+                    {
+                        incident = new DVIncident();
+                        incident.cp_incidentnumber = pnb.IncidentNumber;
+                        incidentId = Guid.NewGuid();
+                        incident.cp_incidentid = incidentId;
+
+                        transaction.CreateEntity(incident);
+                    }
+                    else
+                    {
+                        incidentId = incident.cp_incidentid;
+                    }
+                }
+
                 if (incidentId != null)
                 {
                     dvPb.cp_incidentno = new EntityReference("cp_incident", incidentId);
                 }
 
-                Guid pnbGuid = userDataAccess.CreateEntity(dvPb);
+                Guid pnbGuid = Guid.Empty;
+                if (dvPb.cp_pocketnotebookid.HasValue)
+                {
+                    pnbGuid = dvPb.cp_pocketnotebookid.Value;
+                }
+                if (pnbGuid == Guid.Empty)
+                {
+                    pnbGuid = Guid.NewGuid();
+                    dvPb.cp_pocketnotebookid = pnbGuid;
+                }
+                transaction.CreateEntity(dvPb);
 
                 var dvPbImages = mapper.Map<PocketNotebook, DVPocketNotebookImages>(pnb);
-                userDataAccess.CreateEntityImage(pnbGuid, dvPbImages, x => x.cp_sketch);
-                userDataAccess.CreateEntityImage(pnbGuid, dvPbImages, x => x.cp_signature);
+                transaction.CreateEntityImage(pnbGuid, dvPbImages, x => x.cp_sketch);
+                transaction.CreateEntityImage(pnbGuid, dvPbImages, x => x.cp_signature);
 
                 foreach (var photo in pnb.Photos)
                 {
                     photo.PocketNotebookId = pnbGuid;
                     var dvPhoto = mapper.Map<DVPhoto>(photo);
-                    var dvPhotoId = userDataAccess.CreateEntity(dvPhoto);
+                    transaction.CreateEntity(dvPhoto);
                 }
+
+                transaction.Execute(userDataAccess);
 
                 return pnbGuid;
             }
             catch (Exception e)
             {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new ApiError (e.Message));
+                return StatusCode((int)HttpStatusCode.InternalServerError, new ApiError(e.Message));
             }
         }
     }
