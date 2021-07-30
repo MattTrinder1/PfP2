@@ -1,9 +1,7 @@
 ﻿using API.Models.Base;
-using API.Models.IYC;
 using Common.Models.Business;
 using System;
 using System.Runtime.Serialization;
-using System.Text.Json.Serialization;
 
 namespace API.Models.PNB
 {
@@ -20,12 +18,8 @@ namespace API.Models.PNB
        
         public DateTime? cp_notedateandtime{ get; set; }
 
-
         [RelatedEntityName("cp_incident")]
-        [JsonPropertyName("cp_IncidentNo@odata.bind")]
         public EntityReference cp_incidentno { get; set; }
-        public Guid? _cp_incidentno_value { get; set; }
-
 
         public DateTime? cp_signaturedateandtime { get; set; }
         public string cp_signatoryname { get; set; }
