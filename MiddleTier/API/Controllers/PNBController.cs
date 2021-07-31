@@ -84,7 +84,7 @@ namespace API.Controllers
 
                 DVPocketNotebook pnb = userDataAccess.GetEntityByField<DVPocketNotebook>("cp_pocketnotebookid", id);
 
-                DVPocketNotebookImages pnbImages = userDataAccess.GetEntityByField<DVPocketNotebookImages>("cp_pocketnotebookid", id, DVDataAccess.SelectColumns.TypePropertiesWithoutImages);
+                DVPocketNotebookImages pnbImages = userDataAccess.GetEntityByField<DVPocketNotebookImages>("cp_pocketnotebookid", id, SelectColumns.TypePropertiesWithoutImages);
                 userDataAccess.GetImages(pnbImages, true);
 
                 DVIncident incident = null;
@@ -93,7 +93,7 @@ namespace API.Controllers
                     incident = userDataAccess.GetEntityByField<DVIncident>("cp_incidentid", pnb.cp_incidentno.EntityId.Value.ToString());
                 }
 
-                var pnbPhotosCol = userDataAccess.GetAll<DVPhoto>("cp_pocketnotebook", pnb.cp_pocketnotebookid, DVDataAccess.SelectColumns.TypePropertiesWithoutImages);
+                var pnbPhotosCol = userDataAccess.GetAll<DVPhoto>("cp_pocketnotebook", pnb.cp_pocketnotebookid, SelectColumns.TypePropertiesWithoutImages);
                 userDataAccess.GetImages(pnbPhotosCol, true);
 
                 PocketNotebook result = mapper.Map<PocketNotebook>(pnb);
@@ -143,7 +143,7 @@ namespace API.Controllers
                         incidentId = Guid.NewGuid();
                         incident.cp_incidentid = incidentId;
 
-                        transaction.CreateEntity(incident);
+                        transaction.AddCreateEntity(incident);
                     }
                     else
                     {
@@ -166,20 +166,20 @@ namespace API.Controllers
                     pnbGuid = Guid.NewGuid();
                     dvPb.cp_pocketnotebookid = pnbGuid;
                 }
-                transaction.CreateEntity(dvPb);
+                transaction.AddCreateEntity(dvPb);
 
                 var dvPbImages = mapper.Map<PocketNotebook, DVPocketNotebookImages>(pnb);
-                transaction.CreateEntityImage(pnbGuid, dvPbImages, x => x.cp_sketch);
-                transaction.CreateEntityImage(pnbGuid, dvPbImages, x => x.cp_signature);
+                transaction.AddCreateEntityImage(pnbGuid, dvPbImages, x => x.cp_sketch);
+                transaction.AddCreateEntityImage(pnbGuid, dvPbImages, x => x.cp_signature);
 
                 foreach (var photo in pnb.Photos)
                 {
                     photo.PocketNotebookId = pnbGuid;
                     var dvPhoto = mapper.Map<DVPhoto>(photo);
-                    transaction.CreateEntity(dvPhoto);
+                    transaction.AddCreateEntity(dvPhoto);
                 }
 
-                transaction.Execute(userDataAccess);
+                transaction.Execute(userDataAccess.DVService);
 
                 return pnbGuid;
             }
