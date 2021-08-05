@@ -17,17 +17,9 @@ namespace API.Controllers
     [ApiController]
     public class PNBController : ControllerBase
     {
-        IMapper mapper;
-        DVDataAccess adminDataAccess;
-        DVDataAccess userDataAccess;
-        ILogger logger;
-
-        public PNBController(MapperConfig mapperconfig, Func<string, DVDataAccess> da, ILogger<PNBController> log)
+        public PNBController(MapperConfig mapperconfig, DVDataAccessFactory dataAccessFactory, ILogger<PNBController> log) : 
+            base(mapperconfig, dataAccessFactory, log)
         {
-            mapper = new Mapper(mapperconfig.mapperConfig);
-            adminDataAccess = da("Admin");
-            userDataAccess = da("User");
-            logger = log;
         }
 
         [HttpGet("getwhereowner")]
@@ -37,11 +29,11 @@ namespace API.Controllers
             {
                 logger.LogDebug(Request.Headers["UserEmail"].ToString());
 
-                var userId = adminDataAccess.GetUserId(Request.Headers["UserEmail"].ToString());
+                var userId = AdminDataAccess.GetUserId(Request.Headers["UserEmail"].ToString());
 
                 logger.LogDebug(userId.ToString());
 
-                ICollection<DVPocketNotebook> pnb = userDataAccess.GetAll<DVPocketNotebook>("ownerid", userId, "cp_notedateandtime");
+                ICollection<DVPocketNotebook> pnb = UserDataAccess.GetAll<DVPocketNotebook>("ownerid", userId, "cp_notedateandtime");
 
                 return mapper.Map<List<PocketNotebookListEntry>>(pnb);
             }
@@ -52,27 +44,37 @@ namespace API.Controllers
         }
 
 
-        private Guid? FindOrCreateIncident(string incidentNumber)
+        private Guid? FindOrCreateIncident(string incidentNumber, DVTransaction transaction)
         {
             if (string.IsNullOrEmpty(incidentNumber))
             {
                 return null;
             }
 
-            var incident = adminDataAccess.GetEntityByField<DVIncident>("cp_incidentnumber", incidentNumber);
+            Guid? incidentId = null;
+            var incident = AdminDataAccess.GetEntityByField<DVIncident>("cp_incidentnumber", incidentNumber);
             if (incident == null)
             {
                 incident = new DVIncident();
                 incident.cp_incidentnumber = incidentNumber;
-                var incidentId = userDataAccess.CreateEntity(incident);
-                return incidentId;
+                incidentId = Guid.NewGuid();
+                incident.cp_incidentid = incidentId;
+
+                if (transaction != null)
+                {
+                    transaction.AddCreateEntity(incident);
+                }
+                else
+                {
+                    incidentId = UserDataAccess.CreateEntity(incident);
+                }
             }
             else
             {
-                return incident.cp_incidentid;
+                incidentId = incident.cp_incidentid;
             }
 
-
+            return incidentId;
         }
 
         [HttpGet("{id}")]
@@ -82,19 +84,19 @@ namespace API.Controllers
             {
                 logger.LogDebug(Request.Headers["UserEmail"].ToString());
 
-                DVPocketNotebook pnb = userDataAccess.GetEntityByField<DVPocketNotebook>("cp_pocketnotebookid", id);
+                DVPocketNotebook pnb = UserDataAccess.GetEntityByField<DVPocketNotebook>("cp_pocketnotebookid", id);
 
-                DVPocketNotebookImages pnbImages = userDataAccess.GetEntityByField<DVPocketNotebookImages>("cp_pocketnotebookid", id, SelectColumns.TypePropertiesWithoutImages);
-                userDataAccess.GetImages(pnbImages, true);
+                DVPocketNotebookImages pnbImages = UserDataAccess.GetEntityByField<DVPocketNotebookImages>("cp_pocketnotebookid", id, SelectColumns.TypePropertiesWithoutImages);
+                UserDataAccess.GetImages(pnbImages, true);
 
                 DVIncident incident = null;
                 if (pnb.cp_incidentno != null)
                 {
-                    incident = userDataAccess.GetEntityByField<DVIncident>("cp_incidentid", pnb.cp_incidentno.EntityId.Value.ToString());
+                    incident = UserDataAccess.GetEntityByField<DVIncident>("cp_incidentid", pnb.cp_incidentno.EntityId.Value.ToString());
                 }
 
-                var pnbPhotosCol = userDataAccess.GetAll<DVPhoto>("cp_pocketnotebook", pnb.cp_pocketnotebookid, SelectColumns.TypePropertiesWithoutImages);
-                userDataAccess.GetImages(pnbPhotosCol, true);
+                var pnbPhotosCol = UserDataAccess.GetAll<DVPhoto>("cp_pocketnotebook", pnb.cp_pocketnotebookid, SelectColumns.TypePropertiesWithoutImages);
+                UserDataAccess.GetImages(pnbPhotosCol, true);
 
                 PocketNotebook result = mapper.Map<PocketNotebook>(pnb);
                 result = mapper.Map(pnbImages, result);
@@ -132,25 +134,7 @@ namespace API.Controllers
 
                 DVTransaction transaction = new DVTransaction();
 
-                Guid? incidentId = null;
-                if (!string.IsNullOrEmpty(pnb.IncidentNumber))
-                {
-                    var incident = adminDataAccess.GetEntityByField<DVIncident>("cp_incidentnumber", pnb.IncidentNumber);
-                    if (incident == null)
-                    {
-                        incident = new DVIncident();
-                        incident.cp_incidentnumber = pnb.IncidentNumber;
-                        incidentId = Guid.NewGuid();
-                        incident.cp_incidentid = incidentId;
-
-                        transaction.AddCreateEntity(incident);
-                    }
-                    else
-                    {
-                        incidentId = incident.cp_incidentid;
-                    }
-                }
-
+                Guid? incidentId = FindOrCreateIncident(pnb.IncidentNumber, transaction);
                 if (incidentId != null)
                 {
                     dvPb.cp_incidentno = new EntityReference("cp_incident", incidentId);
@@ -179,7 +163,7 @@ namespace API.Controllers
                     transaction.AddCreateEntity(dvPhoto);
                 }
 
-                transaction.Execute(userDataAccess.DVService);
+                transaction.Execute(UserDataAccess.DVService);
 
                 return pnbGuid;
             }

@@ -65,33 +65,17 @@ namespace EmergeAPI
 
             services.AddSingleton(new BlobContainerClient(Configuration.GetValue<string>("AzureWebJobsStorage"), "pnb"));
             services.AddSingleton<MapperConfig>();
-            services.AddSingleton(new ConnectionConfiguration(Configuration.GetValue<string>("Connection:DataverseUrl"),
+
+            ConnectionConfiguration connectionConfiguration = new ConnectionConfiguration(Configuration.GetValue<string>("Connection:DataverseUrl"),
                                                                  Configuration.GetValue<string>("Connection:ServiceUrl"),
                                                                  Configuration.GetValue<string>("Connection:ClientId"),
                                                                  Configuration.GetValue<string>("Connection:ClientSecret"),
-                                                                 Configuration.GetValue<string>("Connection:Authority")));
+                                                                 Configuration.GetValue<string>("Connection:Authority"));
+            services.AddSingleton(connectionConfiguration);
             services.AddMemoryCache();
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            services.AddTransient<Func<string,DVDataAccess>>(serviceProvider => key => {
-                switch (key)
-                {
-                    case "Admin":
-                        return new DVDataAccess(serviceProvider.GetService<ConnectionConfiguration>(), 
-                                                serviceProvider.GetService<IMemoryCache>());
-                    case "User":
-                        return new DVDataAccess(serviceProvider.GetService<ConnectionConfiguration>(),
-                                                serviceProvider.GetService<IMemoryCache>(),
-                                                new DVDataAccess(
-                                                        serviceProvider.GetService<ConnectionConfiguration>(),
-                                                        serviceProvider.GetService<IMemoryCache>())
-                                                            .GetUserADObjectId(serviceProvider.GetService<IHttpContextAccessor>().HttpContext.Request.Headers["UserEmail"]));
-                    default:
-                        return null;
-                }
-            });
-
-            services.AddSingleton<DVDataAccess>();
+            services.AddSingleton<DVDataAccessFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

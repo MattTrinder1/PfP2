@@ -52,26 +52,6 @@ namespace API.DataverseAccess
             return userId;
         }
 
-        protected Guid GetUserADObjectId(string emailAddress)
-        {
-            Guid adId;
-            if (!cache.TryGetValue($"{emailAddress}:AzureActiveDirectoryObjectId", out adId))
-            {
-                QueryExpression query = new QueryExpression("systemuser");
-                query.Criteria.AddCondition("internalemailaddress", ConditionOperator.Equal, emailAddress);
-                query.ColumnSet = new ColumnSet("azureactivedirectoryobjectid");
-
-                var dvResponse = dvService.RetrieveMultiple(query);
-
-                adId = dvResponse.Entities.Single().GetAttributeValue<Guid>("azureactivedirectoryobjectid");
-
-                cache.Set($"{emailAddress}:AzureActiveDirectoryObjectId", adId);
-            }
-
-            return adId;
-        }
-
-
         protected string GetEntityName<T>()
         {
             var dataContractAttr = typeof(T).GetCustomAttribute<DataContractAttribute>();

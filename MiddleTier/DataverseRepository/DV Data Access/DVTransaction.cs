@@ -36,5 +36,10 @@ namespace API.DataverseAccess
         {
             base.CreateEntityImage<T>(entityId, entity, imageProperty);
         }
+
+        public void AddUpdateEntity<T>(T entity) where T : DVBase
+        {
+            base.UpdateEntity(entity);
+        }
     }
 }
