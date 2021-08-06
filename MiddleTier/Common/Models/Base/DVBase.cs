@@ -34,5 +34,7 @@ namespace API.Models.Base
                 }
             }
         }
+
+        public int statecode { get; set; }
     }
 }

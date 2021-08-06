@@ -1,6 +1,5 @@
 ﻿using API;
 using API.DataverseAccess;
-using EmergeAPI;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;

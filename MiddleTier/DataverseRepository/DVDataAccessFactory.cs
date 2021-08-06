@@ -29,7 +29,7 @@ namespace API.DataverseAccess
         private ServiceClient dvService = null;
 
         private const int userDvServiceCacheSlidingExpirationMinutes = 240;
-        private const int userDvServiceCacheAbsoluateExpirationMinutes = 720;
+        private const int userDvServiceCacheAbsoluteExpirationMinutes = 720;
 
         private IHttpContextAccessor httpContextAccessor = null;
         private ConnectionConfiguration connectionConfiguration = null;
@@ -99,7 +99,7 @@ namespace API.DataverseAccess
                 cache.Set($"{emailAddress}:ServiceClient", userServiceClient, new MemoryCacheEntryOptions()
                 {
                     SlidingExpiration = TimeSpan.FromMinutes(userDvServiceCacheSlidingExpirationMinutes),
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(userDvServiceCacheAbsoluateExpirationMinutes)
+                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(userDvServiceCacheAbsoluteExpirationMinutes)
                 });
             }
 
