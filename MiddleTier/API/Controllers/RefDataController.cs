@@ -1,9 +1,7 @@
 ﻿using API.DataverseAccess;
-using API.Mappers;
 using API.Models.Dataverse;
 using Common.Models.Business;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -15,8 +13,11 @@ namespace API.Controllers
     [ApiController]
     public class RefDataController : ControllerBase
     {
-        public RefDataController(MapperConfig mapperconfig, DVDataAccessFactory dataAccessFactory, CacheOrchestrator cache, ILogger<PNBController> log) :
-            base(mapperconfig, dataAccessFactory, cache, log)
+        public RefDataController(
+            ApiConfiguration configuration,
+            DVDataAccessFactory dataAccessFactory, 
+            CacheOrchestrator cache, 
+            ILogger<PNBController> log) : base(configuration, dataAccessFactory, cache, log)
         {
         }
 
@@ -25,7 +26,7 @@ namespace API.Controllers
         {
             try
             {
-                if (!VerifyIntegrationKey()) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
+                if (!VerifyIntegrationKey("RefData:GET:lookupfield")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
 
                 string cacheKey = $"LookupField:{filterId}";
                 LookupField lookupField;

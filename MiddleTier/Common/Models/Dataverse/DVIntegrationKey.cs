@@ -15,5 +15,7 @@ namespace API.Models.Dataverse
         public string cp_name { get; set; }
 
         public DateTime? cp_expiry { get; set; }
+
+        public string cp_restrictedto { get; set; }
     }
 }

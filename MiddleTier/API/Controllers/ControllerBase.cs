@@ -1,5 +1,4 @@
 ﻿using API.DataverseAccess;
-using API.Mappers;
 using API.Models.Dataverse;
 using AutoMapper;
 using Microsoft.Extensions.Logging;
@@ -16,10 +15,16 @@ namespace API.Controllers
         protected IMapper mapper = null;
         protected ILogger logger = null;
         protected CacheOrchestrator cache = null;
+        protected ApiConfiguration configuration = null; 
 
-        public ControllerBase(MapperConfig mapperconfig, DVDataAccessFactory dataAccessFactory, CacheOrchestrator cache, ILogger<PNBController> logger)
+        public ControllerBase(
+            ApiConfiguration configuration, 
+            DVDataAccessFactory dataAccessFactory, 
+            CacheOrchestrator cache, 
+            ILogger<PNBController> logger)
         {
-            this.mapper = new Mapper(mapperconfig.mapperConfig);
+            this.configuration = configuration;
+            this.mapper = new Mapper(configuration.MapperConfiguration.mapperConfig);
             this.dataAccessFactory = dataAccessFactory;
             this.cache = cache;
             this.logger = logger;
@@ -51,12 +56,18 @@ namespace API.Controllers
             }
         }
 
-        protected bool VerifyIntegrationKey()
+        protected bool VerifyIntegrationKey(string forInvocationOf)
         {
             string userEmail = Request.Headers["UserEmail"];
             string integrationKeyString = Request.Headers["IntegrationKey"];
 
             logger.LogDebug($"UserEmail: {userEmail} IntegrationKey: {integrationKeyString}");
+
+            if (configuration.SuppressIntegrationKeyVerification)
+            {
+                logger.LogWarning("SuppressIntegrationKeyVerification = true");
+                return true;
+            }
 
             bool isValid = false;
             Guid integrationKeyId;
@@ -68,7 +79,7 @@ namespace API.Controllers
                 {
                     if (integrationKey.cp_expiry == null || integrationKey.cp_expiry.Value.ToUniversalTime() > DateTime.Now)
                     {
-                        isValid = true;
+                        isValid = IsInvocationAllowed(integrationKey, forInvocationOf);
                     }
                     else
                     {
@@ -80,7 +91,8 @@ namespace API.Controllers
                 if (!isValid)
                 {
                     //Not cached as a valid integration key so check DataVerse.
-                    //(Also covers scenario of previously cached expiry having been moved forward.)
+                    //(Also covers scenarios of previously cached expiry having been moved forward 
+                    // or previously cached restrictions having been loosened.)
                     KeyValuePair<string, object>[] queryConditions = new KeyValuePair<string, object>[]
                     {
                         new KeyValuePair<string, object>("cp_integrationkeyid", integrationKeyId),
@@ -90,21 +102,39 @@ namespace API.Controllers
 
                     if (integrationKey != null)
                     {
+                        //The key itself is valid so cache it (regardless of whether it is valid for this specific invocation or not).
                         if (integrationKey.cp_expiry == null)
                         {
-                            isValid = true;
                             cache.Set(cacheKey, integrationKey);
+                            isValid = IsInvocationAllowed(integrationKey, forInvocationOf);
                         }
                         else if (integrationKey.cp_expiry.Value.ToUniversalTime() > DateTime.Now)
                         {
-                            isValid = true;
                             cache.Set(cacheKey, integrationKey, integrationKey.cp_expiry.Value.ToUniversalTime());
+                            isValid = IsInvocationAllowed(integrationKey, forInvocationOf);
                         }
                     }
                 }
             }
 
             return isValid;
+        }
+
+        private bool IsInvocationAllowed(DVIntegrationKey integrationKey, string invocationOf)
+        {
+            if (string.IsNullOrWhiteSpace(integrationKey.cp_restrictedto) || string.IsNullOrWhiteSpace(invocationOf))
+            {
+                return true;
+            }
+            else
+            {
+                string[] validInvocations = integrationKey.cp_restrictedto.Split('\n');
+                foreach (string validInvocation in validInvocations)
+                {
+                    if (validInvocation == invocationOf) return true;
+                }
+            }
+            return false;
         }
     }
 }

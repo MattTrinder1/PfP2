@@ -1,5 +1,4 @@
 using API.DataverseAccess;
-using API.Mappers;
 using Azure.Storage.Blobs;
 using DataverseRepository;
 using Microsoft.AspNetCore.Builder;
@@ -27,21 +26,26 @@ namespace API
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddSingleton(Configuration);
+
+            services.AddSingleton(new BlobContainerClient(Configuration.GetValue<string>("AzureWebJobsStorage"), "pnb"));
+            services.AddSingleton<API.Mappers.MapperConfiguration>();
+
+            services.AddSingleton(new ConnectionConfiguration(
+                Configuration.GetValue<string>("Connection:DataverseUrl"),
+                Configuration.GetValue<string>("Connection:ServiceUrl"),
+                Configuration.GetValue<string>("Connection:ClientId"),
+                Configuration.GetValue<string>("Connection:ClientSecret"),
+                Configuration.GetValue<string>("Connection:Authority")));
+
+            services.AddSingleton<ApiConfiguration>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PoliceAPI", Version = "v1" });
-                c.OperationFilter<CustomHeaderSwaggerAttribute>();
+                c.OperationFilter<CustomHeaderSwaggerAttributes>();
             });
-
-            services.AddSingleton(new BlobContainerClient(Configuration.GetValue<string>("AzureWebJobsStorage"), "pnb"));
-            services.AddSingleton<MapperConfig>();
-
-            ConnectionConfiguration connectionConfiguration = new ConnectionConfiguration(Configuration.GetValue<string>("Connection:DataverseUrl"),
-                                                                 Configuration.GetValue<string>("Connection:ServiceUrl"),
-                                                                 Configuration.GetValue<string>("Connection:ClientId"),
-                                                                 Configuration.GetValue<string>("Connection:ClientSecret"),
-                                                                 Configuration.GetValue<string>("Connection:Authority"));
-            services.AddSingleton(connectionConfiguration);
 
             services.AddMemoryCache();
             services.AddSingleton<CacheOrchestrator>();
@@ -74,24 +78,33 @@ namespace API
         }
     }
 
-    public class CustomHeaderSwaggerAttribute : IOperationFilter
+    public class CustomHeaderSwaggerAttributes : IOperationFilter
     {
+        private ApiConfiguration configuration = null;
+        public CustomHeaderSwaggerAttributes(ApiConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+
         public void Apply(OpenApiOperation operation, OperationFilterContext context)
         {
             if (operation.Parameters == null)
                 operation.Parameters = new List<OpenApiParameter>();
 
-            //Add IntegrationKey header parameter to swagger definition for all operations.
-            operation.Parameters.Add(new OpenApiParameter
+            if (!configuration.SuppressIntegrationKeyVerification)
             {
-                Name = "IntegrationKey",
-                In = ParameterLocation.Header,
-                Required = true,
-                Schema = new OpenApiSchema
+                //Add IntegrationKey header parameter to swagger definition for all operations.
+                operation.Parameters.Add(new OpenApiParameter
                 {
-                    Type = "string"
-                }
-            });
+                    Name = "IntegrationKey",
+                    In = ParameterLocation.Header,
+                    Required = true,
+                    Schema = new OpenApiSchema
+                    {
+                        Type = "string"
+                    }
+                });
+            }
 
             if (context.MethodInfo.DeclaringType != typeof(API.Controllers.CacheController))
             {

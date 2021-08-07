@@ -1,7 +1,5 @@
 ﻿using API.DataverseAccess;
-using API.Mappers;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Net;
@@ -18,17 +16,21 @@ namespace API.Controllers
     [ApiController]
     public class CacheController : ControllerBase
     {
-        public CacheController(MapperConfig mapperconfig, DVDataAccessFactory dataAccessFactory, CacheOrchestrator cache, ILogger<PNBController> log) :
-            base(mapperconfig, dataAccessFactory, cache, log)
+        public CacheController(
+            ApiConfiguration configuration, 
+            DVDataAccessFactory dataAccessFactory, 
+            CacheOrchestrator cache, 
+            ILogger<PNBController> log) : base(configuration, dataAccessFactory, cache, log)
         {
         }
+
 
         [HttpPatch("removelookupfield/{filterId}")]
         public ActionResult RemoveLookupFieldFromCache(string filterId)
         {
             try
             {
-                if (!VerifyIntegrationKey()) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
+                if (!VerifyIntegrationKey("Cache:PATCH:removelookupfield")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
 
                 string cacheKey = $"LookupField:{filterId}";
                 cache.Remove(cacheKey);
@@ -46,7 +48,7 @@ namespace API.Controllers
         {
             try
             {
-                if (!VerifyIntegrationKey()) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
+                if (!VerifyIntegrationKey("Cache:PATCH:removeintegrationkey")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
 
                 Guid integrationKeyId;
                 if (Guid.TryParse(key, out integrationKeyId))

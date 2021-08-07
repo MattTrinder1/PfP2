@@ -1,5 +1,4 @@
 ﻿using API.DataverseAccess;
-using API.Mappers;
 using API.Models.PNB;
 using Common.Models.Business;
 using Microsoft.AspNetCore.Mvc;
@@ -14,8 +13,11 @@ namespace API.Controllers
     [ApiController]
     public class PNBController : ControllerBase
     {
-        public PNBController(MapperConfig mapperconfig, DVDataAccessFactory dataAccessFactory, CacheOrchestrator cache, ILogger<PNBController> log) : 
-            base(mapperconfig, dataAccessFactory, cache, log)
+        public PNBController(
+            ApiConfiguration configuration,
+            DVDataAccessFactory dataAccessFactory,
+            CacheOrchestrator cache,
+            ILogger<PNBController> log) : base(configuration, dataAccessFactory, cache, log)
         {
         }
 
@@ -24,7 +26,7 @@ namespace API.Controllers
         {
             try
             {
-                if (!VerifyIntegrationKey()) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
+                if (!VerifyIntegrationKey("PNB:GET:getwhereowner")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
 
                 var userId = AdminDataAccess.GetUserId(Request.Headers["UserEmail"].ToString());
 
@@ -79,7 +81,7 @@ namespace API.Controllers
         {
             try
             {
-                if (!VerifyIntegrationKey()) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
+                if (!VerifyIntegrationKey("PNB:GET")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
 
                 DVPocketNotebook pnb = UserDataAccess.GetEntityByField<DVPocketNotebook>("cp_pocketnotebookid", id);
 
@@ -125,7 +127,7 @@ namespace API.Controllers
         {
             try
             {
-                if (!VerifyIntegrationKey()) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
+                if (!VerifyIntegrationKey("PNB:POST")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
 
                 string userEmail = Request.Headers["UserEmail"].ToString();
 

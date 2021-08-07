@@ -18,7 +18,7 @@ namespace QueueListeners
         RestClient _restClient;
         Mapper _mapper;
         BlobContainerClient _containerClient;
-        public PNBQueueListener(MapperConfig mapperconfig, RestClient restClient, BlobContainerClient containerClient)
+        public PNBQueueListener(API.Mappers.MapperConfiguration mapperconfig, RestClient restClient, BlobContainerClient containerClient)
         {
             _mapper = new Mapper(mapperconfig.mapperConfig);
             _restClient = restClient;
