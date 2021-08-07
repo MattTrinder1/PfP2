@@ -1,18 +1,15 @@
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text.Json;
 using API.Mappers;
-using API.Models.IYC;
 using AutoMapper;
 using Azure.Storage.Blobs;
+using Common.Models.Business;
+using FunctionApps;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
-using FunctionApps;
 using RestSharp;
-using System.Dynamic;
-using Common.Models.Business;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text.Json;
 
 namespace QueueListeners
 {
@@ -21,7 +18,7 @@ namespace QueueListeners
         RestClient _restClient;
         Mapper _mapper;
         BlobContainerClient _containerClient;
-        public PNBQueueListener(MapperConfig mapperconfig, RestClient restClient,BlobContainerClient containerClient)
+        public PNBQueueListener(API.Mappers.MapperConfiguration mapperconfig, RestClient restClient, BlobContainerClient containerClient)
         {
             _mapper = new Mapper(mapperconfig.mapperConfig);
             _restClient = restClient;

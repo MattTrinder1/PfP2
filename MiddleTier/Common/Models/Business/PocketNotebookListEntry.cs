@@ -1,22 +1,15 @@
-﻿using Common.Models.Business;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using System;
 
-namespace API.Models.IYC
+namespace Common.Models.Business
 {
-    
-    public class PocketNotebookListEntry :EntityBase
-
+    public class PocketNotebookListEntry : EntityBase
     {
         public PocketNotebookListEntry()
         {
         }
 
         public string Notes { get; set; }
+
         public DateTime NoteDateAndTime { get; set; }
     }
-
-
 }

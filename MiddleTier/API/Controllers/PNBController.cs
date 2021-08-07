@@ -1,12 +1,8 @@
 ﻿using API.DataverseAccess;
-using API.Mappers;
-using API.Models.IYC;
 using API.Models.PNB;
-using AutoMapper;
 using Common.Models.Business;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Xrm.Sdk.Messages;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -17,8 +13,11 @@ namespace API.Controllers
     [ApiController]
     public class PNBController : ControllerBase
     {
-        public PNBController(MapperConfig mapperconfig, DVDataAccessFactory dataAccessFactory, ILogger<PNBController> log) : 
-            base(mapperconfig, dataAccessFactory, log)
+        public PNBController(
+            ApiConfiguration configuration,
+            DVDataAccessFactory dataAccessFactory,
+            CacheOrchestrator cache,
+            ILogger<PNBController> log) : base(configuration, dataAccessFactory, cache, log)
         {
         }
 
@@ -27,7 +26,7 @@ namespace API.Controllers
         {
             try
             {
-                logger.LogDebug(Request.Headers["UserEmail"].ToString());
+                if (!VerifyIntegrationKey("PNB:GET:getwhereowner")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
 
                 var userId = AdminDataAccess.GetUserId(Request.Headers["UserEmail"].ToString());
 
@@ -82,7 +81,7 @@ namespace API.Controllers
         {
             try
             {
-                logger.LogDebug(Request.Headers["UserEmail"].ToString());
+                if (!VerifyIntegrationKey("PNB:GET")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
 
                 DVPocketNotebook pnb = UserDataAccess.GetEntityByField<DVPocketNotebook>("cp_pocketnotebookid", id);
 
@@ -128,6 +127,8 @@ namespace API.Controllers
         {
             try
             {
+                if (!VerifyIntegrationKey("PNB:POST")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
+
                 string userEmail = Request.Headers["UserEmail"].ToString();
 
                 var dvPb = mapper.Map<DVPocketNotebook>(pnb);

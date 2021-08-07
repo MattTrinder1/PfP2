@@ -1,20 +1,15 @@
-﻿using AutoMapper;
-using Azure.Storage.Blobs;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Azure.Storage.Blobs;
 
 namespace API.Mappers
 {
-    public class MapperConfig
+    public class MapperConfiguration
     {
 
-        public MapperConfiguration mapperConfig;
+        public AutoMapper.MapperConfiguration mapperConfig;
 
-        public MapperConfig(BlobContainerClient containerClient)
+        public MapperConfiguration(BlobContainerClient containerClient)
         {
-            mapperConfig = new MapperConfiguration(
+            mapperConfig = new AutoMapper.MapperConfiguration(
                     cfg =>
                     {
                         cfg.AddProfile(new DataverseToBusinessProfile());

@@ -1,49 +1,18 @@
 using API.DataverseAccess;
-using API.Mappers;
-using AutoMapper;
 using Azure.Storage.Blobs;
 using DataverseRepository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Formatters;
-using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
-namespace EmergeAPI
+namespace API
 {
-    public class CustomHeaderSwaggerAttribute : IOperationFilter
-    {
-        public void Apply(OpenApiOperation operation, OperationFilterContext context)
-        {
-            if (operation.Parameters == null)
-                operation.Parameters = new List<OpenApiParameter>();
-
-            //Add UserEmail header parameter to swagger definition for all operations.
-            operation.Parameters.Add(new OpenApiParameter
-            {
-                Name = "UserEmail",
-                In = ParameterLocation.Header,
-                Required = true,
-                Schema = new OpenApiSchema
-                {
-                    Type = "string"
-                }
-            });
-        }
-    }
-
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -57,22 +26,30 @@ namespace EmergeAPI
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+
+            services.AddSingleton(Configuration);
+
+            services.AddSingleton(new BlobContainerClient(Configuration.GetValue<string>("AzureWebJobsStorage"), "pnb"));
+            services.AddSingleton<API.Mappers.MapperConfiguration>();
+
+            services.AddSingleton(new ConnectionConfiguration(
+                Configuration.GetValue<string>("Connection:DataverseUrl"),
+                Configuration.GetValue<string>("Connection:ServiceUrl"),
+                Configuration.GetValue<string>("Connection:ClientId"),
+                Configuration.GetValue<string>("Connection:ClientSecret"),
+                Configuration.GetValue<string>("Connection:Authority")));
+
+            services.AddSingleton<ApiConfiguration>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "PoliceAPI", Version = "v1" });
-                c.OperationFilter<CustomHeaderSwaggerAttribute>();
+                c.OperationFilter<CustomHeaderSwaggerAttributes>();
             });
 
-            services.AddSingleton(new BlobContainerClient(Configuration.GetValue<string>("AzureWebJobsStorage"), "pnb"));
-            services.AddSingleton<MapperConfig>();
-
-            ConnectionConfiguration connectionConfiguration = new ConnectionConfiguration(Configuration.GetValue<string>("Connection:DataverseUrl"),
-                                                                 Configuration.GetValue<string>("Connection:ServiceUrl"),
-                                                                 Configuration.GetValue<string>("Connection:ClientId"),
-                                                                 Configuration.GetValue<string>("Connection:ClientSecret"),
-                                                                 Configuration.GetValue<string>("Connection:Authority"));
-            services.AddSingleton(connectionConfiguration);
             services.AddMemoryCache();
+            services.AddSingleton<CacheOrchestrator>();
+
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddSingleton<DVDataAccessFactory>();
@@ -98,6 +75,51 @@ namespace EmergeAPI
             {
                 endpoints.MapControllers();
             });
+        }
+    }
+
+    public class CustomHeaderSwaggerAttributes : IOperationFilter
+    {
+        private ApiConfiguration configuration = null;
+        public CustomHeaderSwaggerAttributes(ApiConfiguration configuration)
+        {
+            this.configuration = configuration;
+        }
+
+        public void Apply(OpenApiOperation operation, OperationFilterContext context)
+        {
+            if (operation.Parameters == null)
+                operation.Parameters = new List<OpenApiParameter>();
+
+            if (!configuration.SuppressIntegrationKeyVerification)
+            {
+                //Add IntegrationKey header parameter to swagger definition for all operations.
+                operation.Parameters.Add(new OpenApiParameter
+                {
+                    Name = "IntegrationKey",
+                    In = ParameterLocation.Header,
+                    Required = true,
+                    Schema = new OpenApiSchema
+                    {
+                        Type = "string"
+                    }
+                });
+            }
+
+            if (context.MethodInfo.DeclaringType != typeof(API.Controllers.CacheController))
+            {
+                //Add UserEmail header parameter to swagger definition for all user level operations.
+                operation.Parameters.Add(new OpenApiParameter
+                {
+                    Name = "UserEmail",
+                    In = ParameterLocation.Header,
+                    Required = true,
+                    Schema = new OpenApiSchema
+                    {
+                        Type = "string"
+                    }
+                });
+            }
         }
     }
 }

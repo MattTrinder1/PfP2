@@ -33,6 +33,15 @@ namespace API.DataverseAccess
             return base.GetEntityByField<T>(field, value, selectColumns);
         }
 
+        public T GetEntityByFields<T>(IEnumerable<KeyValuePair<string, object>> fieldValues) where T : DVBase, new()
+        {
+            return base.GetEntityByFields<T>(fieldValues, DefaultSelectColumns);
+        }
+
+        public new T GetEntityByFields<T>(IEnumerable<KeyValuePair<string, object>> fieldValues, SelectColumns selectColumns) where T : DVBase, new()
+        {
+            return base.GetEntityByFields<T>(fieldValues, selectColumns);
+        }
 
         public ICollection<T> GetAll<T>() where T : DVBase, new()
         {

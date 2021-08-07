@@ -4,18 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace API.Models.Business
+namespace Common.Models.Business
 {
     public class LookupValue : EntityBase
     {
-        public LookupValue(Guid id, string name) : base(id, name)
-        {
-        }
+        public string AlternativeDisplayName { get; set; }
 
-        public LookupValue() : base()
-        {
-        }
-
-
+        public int DisplaySequenceNo { get; set; }                
     }
 }

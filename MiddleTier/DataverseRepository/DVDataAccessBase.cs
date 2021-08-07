@@ -143,7 +143,15 @@ namespace API.DataverseAccess
                     }
                     else
                     {
-                        property.SetValue(result, entity[property.Name]);
+                        Microsoft.Xrm.Sdk.OptionSetValue optionSetValue = entity[property.Name] as Microsoft.Xrm.Sdk.OptionSetValue;
+                        if (optionSetValue != null)
+                        {
+                            property.SetValue(result, optionSetValue.Value);
+                        }
+                        else
+                        {
+                            property.SetValue(result, entity[property.Name]);
+                        }
                     }
                 }
             }
@@ -205,6 +213,20 @@ namespace API.DataverseAccess
         {
             QueryExpression query = new QueryExpression(GetEntityName<T>());
             query.Criteria.AddCondition(field, ConditionOperator.Equal, value);
+            query.ColumnSet = GetColumnSet<T>(selectColumns);
+
+            var dvResponse = dvService.RetrieveMultiple(query);
+
+            return ConvertFromDvEntity<T>(dvResponse.Entities.SingleOrDefault());
+        }
+
+        protected T GetEntityByFields<T>(IEnumerable<KeyValuePair<string,object>> fieldValues, SelectColumns selectColumns = DefaultSelectColumns) where T : DVBase, new()
+        {
+            QueryExpression query = new QueryExpression(GetEntityName<T>());
+            foreach (var keyValuePair in fieldValues)
+            {
+                query.Criteria.AddCondition(keyValuePair.Key, ConditionOperator.Equal, keyValuePair.Value);
+            }
             query.ColumnSet = GetColumnSet<T>(selectColumns);
 
             var dvResponse = dvService.RetrieveMultiple(query);
