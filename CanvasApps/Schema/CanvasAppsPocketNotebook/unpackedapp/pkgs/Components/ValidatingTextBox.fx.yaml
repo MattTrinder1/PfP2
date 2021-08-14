@@ -1,0 +1,65 @@
+ValidatingTextBox As CanvasComponent:
+    Default: =
+    Editable: =true
+    Fill: =RGBA(0, 0, 0, 0)
+    Height: =100
+    HintText: ="Text"
+    Label: ="Label"
+    Mandatory: =true
+    MaxLength: =100
+    Singleline: =true
+    Text: =txtTextbox.Text
+    Width: =600
+    X: =0
+    Y: =0
+    ZIndex: =1
+
+    txtTextbox As text:
+        BorderColor: =RGBA(179, 179, 179, 1)
+        Default: =ValidatingTextBox.Default   
+        DisplayMode: =If(ValidatingTextBox.Editable, DisplayMode.Edit,DisplayMode.Disabled)
+        Fill: =If(ValidatingTextBox.Mandatory, If(Len(txtTextbox.Text) >0 , Transparent, LightGoldenRodYellow),Transparent)
+        Height: =ValidatingTextBox.Height-45
+        HintText: =ValidatingTextBox.HintText
+        MaxLength: =ValidatingTextBox.MaxLength
+        Mode: =If(ValidatingTextBox.Singleline,SingleLine,MultiLine)
+        RadiusBottomLeft: =1
+        RadiusBottomRight: =1
+        RadiusTopLeft: =1
+        RadiusTopRight: =1
+        Size: =19
+        Width: =ValidatingTextBox.Width-55-40
+        X: =40
+        Y: =35
+        ZIndex: =1
+
+    lblLabel As label:
+        DisplayMode: =If(ValidatingTextBox.Editable, DisplayMode.Edit,DisplayMode.Disabled)
+        Height: =37
+        PaddingLeft: =1
+        PaddingRight: =1
+        PaddingTop: =1
+        Size: =19
+        Text: =ValidatingTextBox.Label
+        Visible: =Len(lblLabel.Text)>0
+        Width: =476
+        X: =40
+        ZIndex: =2
+
+    lblAsterisk As label:
+        Align: =Center
+        Color: =RGBA(255, 0, 0, 1)
+        DisplayMode: =If(ValidatingTextBox.Editable, DisplayMode.Edit,DisplayMode.Disabled)
+        Height: =37
+        PaddingBottom: =1
+        PaddingLeft: =1
+        PaddingRight: =1
+        PaddingTop: =1
+        Size: =20
+        Text: ="*"
+        Visible: =ValidatingTextBox.Mandatory
+        Width: =25
+        X: =txtTextbox.Width+txtTextbox.X-20
+        Y: =txtTextbox.Y-30
+        ZIndex: =3
+

@@ -1,0 +1,1 @@
+& $PSScriptRoot\exportandextract.ps1 -folderName "CanvasAppsVehicle" -canvas $True -appName vehicletickets_8a92b

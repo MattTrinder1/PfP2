@@ -1,0 +1,1 @@
+& $PSScriptRoot\exportandextract.ps1 -folderName "Entities"

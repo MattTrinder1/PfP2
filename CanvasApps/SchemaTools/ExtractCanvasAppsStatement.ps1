@@ -1,0 +1,1 @@
+& $PSScriptRoot\exportandextract.ps1 -folderName "CanvasAppsStatement" -canvas $True -appName statementnew_8a5f2
