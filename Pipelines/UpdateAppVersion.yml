@@ -1,0 +1,32 @@
+parameters:
+- name: appFolderName
+  type: string
+- name: msappname
+  type: string
+
+steps:
+  - powershell: |
+        Write-Host "$(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}\unpacked\Other"
+        $inputpath = (Get-ChildItem -Path "$(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}\unpacked\Other" -Include Solution.xml -Recurse -File  -ErrorAction SilentlyContinue)
+        Write-Host $inputpath.Name
+        $regex = '(?<=<Version>).*?(?=<\/Version>)'
+        $version = Select-String -Path $inputpath -Pattern $regex -AllMatches | % { $_.Matches } | % { $_.Value }
+        $version = $version.Split(".")[3]
+        Write-Output "##vso[task.setvariable variable=projectVersion]$version"
+          
+  - task: ReplaceInFilesTextByText@2
+    inputs:
+      parameterSearchDirectory: '$(Build.SourcesDirectory)/Schema\${{parameters.appFolderName}}\unpackedapp\Src\'
+      parameterSearchText: '//Set(glbAppVersion,1);'
+      parameterReplaceText: 'Set(glbAppVersion,$(projectVersion));'
+      parameterTypeOfSearch: 'filesList'
+      parameterFilesPattern: 
+      parameterFilesList: 'App.fx.yaml'
+
+  - task: DeleteFiles@1
+    inputs:
+      SourceFolder: $(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}\unpacked\CanvasApps\
+      Contents: cp_${{parameters.msappname}}_DocumentUri.msapp
+
+  - powershell: |
+          $(Build.SourcesDirectory)\365Tools\Tools\PasOpa\PASopa.exe -pack $(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}\unpacked\CanvasApps\cp_${{parameters.msappname}}_DocumentUri.msapp $(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}\unpackedapp 

@@ -1,0 +1,62 @@
+parameters:
+- name: solutionName
+  type: string
+- name: folderNames
+  type: string
+- name: managed
+  type: string
+- name: solutionprefix
+  type: string
+- name: minorversion
+  type: string
+- name: releaseversion
+  type: string
+
+steps:
+  - task: MSCRMPackSolution@10
+    displayName: 'Pack - ${{parameters.solutionName}}'
+    inputs:
+      unpackedFilesFolder: 'Schema/${{parameters.solutionName}}/unpacked'
+      packageType: ${{parameters.managed}}
+      includeVersionInSolutionFile: true
+
+  - powershell: |
+              $GeneratedSolutionFile = get-childitem -path "$(Build.BinariesDirectory)/${{parameters.solutionprefix}}${{parameters.solutionName}}_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
+              $GeneratedSolutionFileName = $GeneratedSolutionFile.Name
+              Write-Host "##vso[task.setvariable variable=GeneratedSolutionFileName]$GeneratedSolutionFileName"
+
+
+  - task: CopyFiles@2
+    displayName: Copy to Live folder
+    inputs:
+      sourceFolder: '$(Build.BinariesDirectory)'
+      contents: '$(GeneratedSolutionFileName)' 
+      targetFolder: '$(Build.BinariesDirectory)\Live'
+      overWrite: true 
+      flattenFolders: true
+
+  - task: CopyFiles@2
+    inputs:
+      displayName: Copy to System Test folder
+      sourceFolder: '$(Build.BinariesDirectory)'
+      contents: '$(GeneratedSolutionFileName)' 
+      targetFolder: '$(Build.BinariesDirectory)\SystemTest'
+      overWrite: true 
+      flattenFolders: true
+
+  - task: CopyFiles@2
+    displayName: Copy to Live folder
+    inputs:
+      sourceFolder: '$(Build.BinariesDirectory)'
+      contents: '$(GeneratedSolutionFileName)' 
+      targetFolder: '$(Build.BinariesDirectory)\UAT'
+      overWrite: true 
+      flattenFolders: true
+
+
+  - task: Dynamics Solution Checker@0
+    displayName: 'Check ${{parameters.solutionName}} Solution'
+    inputs:
+      schemaFolder: '$(Build.StagingDirectory)/Schema'
+      solutionName: ${{parameters.solutionName}}
+      validFolderNames : ${{parameters.folderNames}}
