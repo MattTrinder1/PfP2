@@ -29,4 +29,4 @@ steps:
       Contents: cp_${{parameters.msappname}}_DocumentUri.msapp
 
   - powershell: |
-          $(Build.SourcesDirectory)\365Tools\Tools\PasOpa\PASopa.exe -pack $(Build.SourcesDirectory)\CanvasApps\Schema\${{parameters.appFolderName}}\unpacked\CanvasApps\cp_${{parameters.msappname}}_DocumentUri.msapp $(Build.SourcesDirectory)\CanvasApps\Schema\${{parameters.appFolderName}}\unpackedapp 
+          $(Build.SourcesDirectory)\CanvasApps\365Tools\Tools\PasOpa\PASopa.exe -pack $(Build.SourcesDirectory)\CanvasApps\Schema\${{parameters.appFolderName}}\unpacked\CanvasApps\cp_${{parameters.msappname}}_DocumentUri.msapp $(Build.SourcesDirectory)\CanvasApps\Schema\${{parameters.appFolderName}}\unpackedapp 
