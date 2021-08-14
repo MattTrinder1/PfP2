@@ -1,0 +1,490 @@
+trigger: none
+  #batch: true
+  #branches: 
+  #    include:
+  #    - master
+  #paths:
+  #  include:
+  #  - Schema/*
+  #  - Plugins/*
+  #  - Tests/*
+  #  - DataMigration/*
+
+#schedules:
+#- cron: "05 12 * * 1-5"
+#  displayName: Daily Lunchtime Release
+#  branches:
+#    include:
+#    - master
+
+#- cron: "05 17 * * 1-5"
+#  displayName: Daily Evening Release
+#  branches:
+#    include:
+#    - master
+
+name: $(BuildID)
+
+pool:
+#  vmImage: 'windows-2019'
+  name: MOD Pool
+  #demands: agent.name -equals ModTestHost2
+
+
+variables:
+- name: minor.version
+  value: 0
+- name: release.version
+  value: 0 
+- name: solution.prefix
+  value: CP
+
+#pre-test
+- name: pretest.username
+  value: matt.trinder@tisski.com
+- name: pretest.password
+  value: hsgwrmhbrcltjxlw 
+- name: pretest.instancename
+  value: cumbriapretest
+- name: pretest.url
+  value: https://$(pretest.instancename).crm11.dynamics.com
+- name: pretest.connection.string
+  value: RequireNewInstance=True;AuthType=Office365;Username=$(pretest.username);Password=$(pretest.password);Url=$(pretest.url)
+
+#cumbria-creds
+- name: cumbria.username
+  value: powerapps.service@cumbria.police.uk
+- name: cumbria.password
+  value: Shut.shower.dine1 
+
+#install-test
+#- name: installtest.instancename
+#  value: cumbria-build
+#- name: installtest.url
+#  value: https://$(installtest.instancename).crm11.dynamics.com
+#- name: installtest.connection.string
+#  value: RequireNewInstance=True;AuthType=Office365;Username=$(cumbria.username);Password=$(cumbria.password);Url=$(installtest.url)
+
+#install-test
+#- name: prerelease.instancename
+#  value: cumbria-prerelease
+#- name: prerelease.url
+#  value: https://$(prerelease.instancename).crm11.dynamics.com
+#- name: prerelease.connection.string
+#  value: RequireNewInstance=True;AuthType=Office365;Username=$(cumbria.username);Password=$(cumbria.password);Url=$(prerelease.url)
+
+#uat
+- name: uat.instancename
+  value: cumbria-build
+- name: uat.url
+  value: https://$(uat.instancename).crm11.dynamics.com
+- name: uat.connection.string
+  value: RequireNewInstance=True;AuthType=Office365;Username=$(cumbria.username);Password=$(cumbria.password);Url=$(uat.url)
+
+#live
+- name: prod.instancename
+  value: cops
+- name: prod.url
+  value: https://$(prod.instancename).crm11.dynamics.com
+- name: prod.connection.string
+  value: RequireNewInstance=True;AuthType=Office365;Username=$(cumbria.username);Password=$(cumbria.password);Url=$(prod.url)
+
+stages: 
+#----------------------------------Start Stage-------------------------------------------------------------------
+  - stage: AssembleRelease
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - job: Assemble
+      steps:
+      - template: assembleRelease.yml
+        parameters:
+          managed: Managed
+          minorversion : $(minor.version)
+          releaseversion : $(release.version)
+          solutionprefix : $(solution.prefix)
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#----------------------------------End Stage-------------------------------------------------------------------
+
+#----------------------------------Start Stage-------------------------------------------------------------------
+
+  - stage: ReleaseToTisskiSystemTest
+    dependsOn: AssembleRelease
+    displayName: Deploy to System Test
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: ReleaseToTisskiPreTest
+      environment: TisskiPreTest
+      displayName: Deploy Solutions
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            
+            steps:
+            - checkout: none
+
+            - task: MSCRMToolInstaller@12
+              inputs:
+                nugetFeed: 'official'
+                psFeed: 'official'   
+                
+            - template: get-solution-filenames.yml
+              parameters:
+                pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-SystemTest
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
+
+            - template: install-managed-solutions.yml
+              parameters:
+                pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-SystemTest
+                connectionstring : $(pretest.connection.string)
+                WebResourcesSolutionFileName : $(WebResourcesSolutionFileName)
+                OptionSetsSolutionFileName : $(OptionSetsSolutionFileName) 
+                EntitiesSolutionFileName : $(EntitiesSolutionFileName)
+                PluginsSolutionFileName : $(PluginsSolutionFileName)
+                ProcessesSolutionFileName : $(ProcessesSolutionFileName)
+                PluginStepsSolutionFileName : $(PluginStepsSolutionFileName)
+                SecurityRolesSolutionFileName : $(SecurityRolesSolutionFileName)
+                DashboardsSolutionFileName : $(DashboardsSolutionFileName)
+                ModelDrivenAppsSolutionFileName : $(ModelDrivenAppsSolutionFileName)
+                CanvasAppsCovidSolutionFileName : $(CanvasAppsCovidSolutionFileName)
+                CanvasAppsItsYourChoiceSolutionFileName : $(CanvasAppsItsYourChoiceSolutionFileName)
+                CanvasAppsStatementSolutionFileName : $(CanvasAppsStatementSolutionFileName)
+                CanvasAppsSuddenDeathSolutionFileName : $(CanvasAppsSuddenDeathSolutionFileName)
+                CanvasAppsUseOfForceSolutionFileName : $(CanvasAppsUseOfForceSolutionFileName)
+                CanvasAppsPocketNotebookSolutionFileName : $(CanvasAppsPocketNotebookSolutionFileName)
+                CanvasAppsVehicleSolutionFileName : $(CanvasAppsVehicleSolutionFileName)
+                FlowsSolutionFileName : $(FlowsSolutionFileName)
+                FlowsCovidSolutionFileName : $(FlowsCovidSolutionFileName)
+                FlowsItsYourChoiceSolutionFileName : $(FlowsItsYourChoiceSolutionFileName)
+                FlowsStatementSolutionFileName : $(FlowsStatementSolutionFileName)
+                FlowsSuddenDeathSolutionFileName : $(FlowsSuddenDeathSolutionFileName)
+                FlowsUseOfForceSolutionFileName : $(FlowsUseOfForceSolutionFileName)
+                FlowsPocketNotebookSolutionFileName : $(FlowsPocketNotebookSolutionFileName)
+                FlowsVehicleSolutionFileName : $(FlowsVehicleSolutionFileName)
+                FlowsPNCSolutionFileName : $(FlowsPNCSolutionFileName)
+                FlowsPDFSolutionFileName : $(FlowsPDFSolutionFileName)
+
+            - task: WorkItemUpdater@2
+              inputs:
+                workItemType: 'Bug,User Story'
+                workitemsSource: 'Build'
+                workItemCurrentState: 'Built'
+                workItemState: 'Released to Pre-Test'
+                linkBuild: true
+                updateAssignedTo: 'Never'
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - job: 
+      displayName: Deploy Config Data
+      dependsOn: ReleaseToTisskiPreTest
+      
+      variables:
+      - name: configExists
+      - name: currentConfigVersion  
+      - name: newConfigVersion  
+
+      steps:
+
+      - checkout: none
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          source: 'current' # Options: current, specific
+
+
+      - task: MSCRMToolInstaller@12
+        inputs:
+          nugetFeed: 'official'
+          psFeed: 'official'   
+
+      - task: MSCRMGetConfigurationRecord@12
+        inputs:
+          crmConnectionString: $(pretest.connection.string)
+          entityName: 'cp_configdatahistory'
+          lookupFieldName: 'cp_name'
+          valueFieldName: 'cp_value'
+          lookupValue: 'CurrentVersion'
+          existsVariableName: 'configExists'
+          valueVariableName: 'currentConfigVersion'
+      
+      - powershell: |
+                $value = Get-Content  -Path $(pipeline.workspace)/CumbriaBuild-Managed-SystemTest/DataMigration/Unzipped/ConfigDataHash.txt 
+                Write-Host "##vso[task.setvariable variable=newConfigVersion]$value"
+
+      - task: MSCRMImportCMData@12
+        displayName: Import Configuration Data
+        inputs:
+          crmConnectionString: $(pretest.connection.string)
+          dataFile: $(pipeline.workspace)/CumbriaBuild-Managed-SystemTest/DataMigration/newconfigData.zip
+        condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
+
+      
+      - task: MSCRMUpdateConfigurationRecords@12
+        inputs:
+          crmConnectionString: '$(pretest.connection.string)'
+          entityName: 'cp_configdatahistory'
+          lookupFieldName: 'cp_name'
+          valueFieldName: 'cp_value'
+          configurationRecordsJson: '[[''CurrentVersion'',''$(newConfigVersion)'']]'
+        condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
+
+
+#----------------------------------Start Stage (Cumbria UAT)-------------------------------------------------------------------
+
+  - stage: ReleaseToCumbriaUAT
+    dependsOn: ReleaseToTisskiSystemTest
+    displayName: Deploy to Cumbria UAT (cumbria-uat)
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: ReleaseToCumbriaUAT
+      environment: CumbriaUAT
+      displayName: Deploy Solutions
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            
+            steps:
+            - checkout: none
+
+            - task: MSCRMToolInstaller@12
+              inputs:
+                nugetFeed: 'official'
+                psFeed: 'official'   
+                
+            - template: get-solution-filenames.yml
+              parameters:
+                pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-UAT
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
+
+            - template: install-managed-solutions.yml
+              parameters:
+                pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-UAT
+                connectionstring : $(uat.connection.string)
+                WebResourcesSolutionFileName : $(WebResourcesSolutionFileName)
+                OptionSetsSolutionFileName : $(OptionSetsSolutionFileName) 
+                EntitiesSolutionFileName : $(EntitiesSolutionFileName)
+                PluginsSolutionFileName : $(PluginsSolutionFileName)
+                ProcessesSolutionFileName : $(ProcessesSolutionFileName)
+                PluginStepsSolutionFileName : $(PluginStepsSolutionFileName)
+                SecurityRolesSolutionFileName : $(SecurityRolesSolutionFileName)
+                DashboardsSolutionFileName : $(DashboardsSolutionFileName)
+                ModelDrivenAppsSolutionFileName : $(ModelDrivenAppsSolutionFileName)
+                CanvasAppsCovidSolutionFileName : $(CanvasAppsCovidSolutionFileName)
+                CanvasAppsItsYourChoiceSolutionFileName : $(CanvasAppsItsYourChoiceSolutionFileName)
+                CanvasAppsStatementSolutionFileName : $(CanvasAppsStatementSolutionFileName)
+                CanvasAppsSuddenDeathSolutionFileName : $(CanvasAppsSuddenDeathSolutionFileName)
+                CanvasAppsUseOfForceSolutionFileName : $(CanvasAppsUseOfForceSolutionFileName)
+                CanvasAppsPocketNotebookSolutionFileName : $(CanvasAppsPocketNotebookSolutionFileName)
+                CanvasAppsVehicleSolutionFileName : $(CanvasAppsVehicleSolutionFileName)
+                FlowsSolutionFileName : $(FlowsSolutionFileName)
+                FlowsCovidSolutionFileName : $(FlowsCovidSolutionFileName)
+                FlowsItsYourChoiceSolutionFileName : $(FlowsItsYourChoiceSolutionFileName)
+                FlowsStatementSolutionFileName : $(FlowsStatementSolutionFileName)
+                FlowsSuddenDeathSolutionFileName : $(FlowsSuddenDeathSolutionFileName)
+                FlowsUseOfForceSolutionFileName : $(FlowsUseOfForceSolutionFileName)
+                FlowsPocketNotebookSolutionFileName : $(FlowsPocketNotebookSolutionFileName)
+                FlowsVehicleSolutionFileName : $(FlowsVehicleSolutionFileName)
+                FlowsPNCSolutionFileName : $(FlowsPNCSolutionFileName)
+                FlowsPDFSolutionFileName : $(FlowsPDFSolutionFileName)
+
+
+            - task: WorkItemUpdater@2
+              inputs:
+                workItemType: 'Bug,User Story'
+                workitemsSource: 'Build'
+                workItemCurrentState: 'Released to Pre-Test,Passed in Pre-Test'
+                workItemState: 'Released To UAT'
+                linkBuild: true
+                updateAssignedTo: 'Never'
+                allWorkItemsSinceLastRelease: true
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - job: 
+      displayName: Deploy Config Data
+      dependsOn: ReleaseToCumbriaUAT
+      
+      variables:
+      - name: configExists
+      - name: currentConfigVersion  
+      - name: newConfigVersion  
+
+      steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          source: 'current' # Options: current, specific
+      - task: MSCRMToolInstaller@12
+        inputs:
+          nugetFeed: 'official'
+          psFeed: 'official'   
+
+      - task: MSCRMGetConfigurationRecord@12
+        inputs:
+          crmConnectionString: $(uat.connection.string)
+          entityName: 'cp_configdatahistory'
+          lookupFieldName: 'cp_name'
+          valueFieldName: 'cp_value'
+          lookupValue: 'CurrentVersion'
+          existsVariableName: 'configExists'
+          valueVariableName: 'currentConfigVersion'
+      
+      - powershell: |
+                $value = Get-Content  -Path $(pipeline.workspace)/CumbriaBuild-Managed-UAT/DataMigration/Unzipped/ConfigDataHash.txt 
+                Write-Host "##vso[task.setvariable variable=newConfigVersion]$value"
+
+      - task: MSCRMImportCMData@12
+        displayName: Import Configuration Data
+        inputs:
+          crmConnectionString: $(uat.connection.string)
+          dataFile: $(pipeline.workspace)/CumbriaBuild-Managed-UAT/DataMigration/newconfigData.zip
+        condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
+
+      
+      - task: MSCRMUpdateConfigurationRecords@12
+        inputs:
+          crmConnectionString: '$(uat.connection.string)'
+          entityName: 'cp_configdatahistory'
+          lookupFieldName: 'cp_name'
+          valueFieldName: 'cp_value'
+          configurationRecordsJson: '[[''CurrentVersion'',''$(newConfigVersion)'']]'
+        condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
+
+#----------------------------------Start Stage (Prod) (COPS)-------------------------------------------------------------------
+
+  - stage: ReleaseToCumbriaLive
+    dependsOn: ReleaseToCumbriaUAT
+    displayName: Deploy to Prod
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: ReleaseToCumbriaLive
+      environment: CumbriaLive
+      displayName: Deploy Solutions
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            
+            steps:
+            - checkout: none
+
+            - task: MSCRMToolInstaller@12
+              inputs:
+                nugetFeed: 'official'
+                psFeed: 'official'   
+                
+            - template: get-solution-filenames.yml
+              parameters:
+                pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-Live
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
+
+            - template: install-managed-solutions.yml
+              parameters:
+                pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-Live
+                connectionstring : $(prod.connection.string)
+                WebResourcesSolutionFileName : $(WebResourcesSolutionFileName)
+                OptionSetsSolutionFileName : $(OptionSetsSolutionFileName) 
+                EntitiesSolutionFileName : $(EntitiesSolutionFileName)
+                PluginsSolutionFileName : $(PluginsSolutionFileName)
+                ProcessesSolutionFileName : $(ProcessesSolutionFileName)
+                PluginStepsSolutionFileName : $(PluginStepsSolutionFileName)
+                SecurityRolesSolutionFileName : $(SecurityRolesSolutionFileName)
+                DashboardsSolutionFileName : $(DashboardsSolutionFileName)
+                ModelDrivenAppsSolutionFileName : $(ModelDrivenAppsSolutionFileName)
+                CanvasAppsCovidSolutionFileName : $(CanvasAppsCovidSolutionFileName)
+                CanvasAppsItsYourChoiceSolutionFileName : $(CanvasAppsItsYourChoiceSolutionFileName)
+                CanvasAppsStatementSolutionFileName : $(CanvasAppsStatementSolutionFileName)
+                CanvasAppsSuddenDeathSolutionFileName : $(CanvasAppsSuddenDeathSolutionFileName)
+                CanvasAppsUseOfForceSolutionFileName : $(CanvasAppsUseOfForceSolutionFileName)
+                CanvasAppsPocketNotebookSolutionFileName : $(CanvasAppsPocketNotebookSolutionFileName)
+                CanvasAppsVehicleSolutionFileName : $(CanvasAppsVehicleSolutionFileName)
+                FlowsSolutionFileName : $(FlowsSolutionFileName)
+                FlowsCovidSolutionFileName : $(FlowsCovidSolutionFileName)
+                FlowsItsYourChoiceSolutionFileName : $(FlowsItsYourChoiceSolutionFileName)
+                FlowsStatementSolutionFileName : $(FlowsStatementSolutionFileName)
+                FlowsSuddenDeathSolutionFileName : $(FlowsSuddenDeathSolutionFileName)
+                FlowsUseOfForceSolutionFileName : $(FlowsUseOfForceSolutionFileName)
+                FlowsPocketNotebookSolutionFileName : $(FlowsPocketNotebookSolutionFileName)
+                FlowsVehicleSolutionFileName : $(FlowsVehicleSolutionFileName)
+                FlowsPNCSolutionFileName : $(FlowsPNCSolutionFileName)
+                FlowsPDFSolutionFileName : $(FlowsPDFSolutionFileName)
+
+            - task: WorkItemUpdater@2
+              inputs:
+                workItemType: 'Bug,User Story'
+                workitemsSource: 'Build'
+                workItemCurrentState: 'Released to UAT,Passed in UAT'
+                workItemState: 'Released To Live'
+                linkBuild: true
+                updateAssignedTo: 'Never'
+                allWorkItemsSinceLastRelease: true
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - job: 
+      displayName: Deploy Config Data
+      dependsOn: ReleaseToCumbriaLive
+      
+      variables:
+      - name: configExists
+      - name: currentConfigVersion  
+      - name: newConfigVersion  
+
+      steps:
+      - checkout: none
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          source: 'current' # Options: current, specific
+      - task: MSCRMToolInstaller@12
+        inputs:
+          nugetFeed: 'official'
+          psFeed: 'official'   
+
+      - task: MSCRMGetConfigurationRecord@12
+        inputs:
+          crmConnectionString: $(prod.connection.string)
+          entityName: 'cp_configdatahistory'
+          lookupFieldName: 'cp_name'
+          valueFieldName: 'cp_value'
+          lookupValue: 'CurrentVersion'
+          existsVariableName: 'configExists'
+          valueVariableName: 'currentConfigVersion'
+      
+      - powershell: |
+                $value = Get-Content  -Path $(pipeline.workspace)/CumbriaBuild-Managed-Live/DataMigration/Unzipped/ConfigDataHash.txt 
+                Write-Host "##vso[task.setvariable variable=newConfigVersion]$value"
+
+      - task: MSCRMImportCMData@12
+        displayName: Import Configuration Data
+        inputs:
+          crmConnectionString: $(prod.connection.string)
+          dataFile: $(pipeline.workspace)/CumbriaBuild-Managed-Live/DataMigration/newconfigData.zip
+        condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
+
+      
+      - task: MSCRMUpdateConfigurationRecords@12
+        inputs:
+          crmConnectionString: '$(prod.connection.string)'
+          entityName: 'cp_configdatahistory'
+          lookupFieldName: 'cp_name'
+          valueFieldName: 'cp_value'
+          configurationRecordsJson: '[[''CurrentVersion'',''$(newConfigVersion)'']]'
+        condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
+
+

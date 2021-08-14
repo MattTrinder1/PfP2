@@ -1,0 +1,446 @@
+parameters:
+- name: Managed
+  type: string
+  values: 
+  - Managed
+  - Unmanaged
+- name: solutionprefix
+  type: string
+- name: minorversion
+  type: string
+- name: releaseversion
+  type: string
+
+
+steps:
+- task: NuGetToolInstaller@1
+  displayName: 'Use NuGet '
+
+- task: MSCRMToolInstaller@9
+  displayName: 'MSCRM Tool Installer'
+
+- task: DeleteFiles@1
+  displayName: 'Delete files from $(build.binariesdirectory)'
+  inputs:
+    SourceFolder: '$(build.binariesdirectory)'
+    Contents: '**'
+
+#- task: NuGetCommand@2
+#  displayName: 'NuGet restore - all solutions'
+#  inputs:
+#    restoreSolution: "**/*.sln"
+
+
+- template: UpdateWorkflows.yml
+
+- template: assembleAndCheckFlowsPDF.yml
+  parameters:
+    solutionName: FlowsPDF
+    folderNames: Workflows,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+
+- template: UpdateAppVersion.yml
+  parameters:
+    appFolderName: CanvasAppsPocketNotebook
+    msappname: pocketnotebooknew_3e93c
+
+- template: UpdateAppVersion.yml
+  parameters:
+    appFolderName: CanvasAppsStatement
+    msappname: statementnew_8a5f2
+
+- template: UpdateAppVersion.yml
+  parameters:
+    appFolderName: CanvasAppsSuddenDeath
+    msappname: suddendeathnew_1923b
+
+- template: UpdateAppVersion.yml
+  parameters:
+    appFolderName: CanvasAppsItsYourChoice
+    msappname: itsyourchoicenew_d46f4
+
+- template: UpdateAppVersion.yml
+  parameters:
+    appFolderName: CanvasAppsCovid
+    msappname: covidnew2_9950c
+
+- template: UpdateAppVersion.yml
+  parameters:
+    appFolderName: CanvasAppsUseOfForce
+    msappname: useofforcenew_0f460
+
+- template: UpdateAppVersion.yml
+  parameters:
+    appFolderName: CanvasAppsVehicle
+    msappname: vehicletickets_8a92b
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: WebResources
+    folderNames: WebResources,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: OptionSets
+    folderNames: OptionSets,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: SecurityRoles
+    folderNames: Roles,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: Entities
+    folderNames: Entities,Workflows,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: Plugins
+    folderNames: PluginAssemblies,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: PluginSteps
+    folderNames: SdkMessageProcessingSteps,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: Processes
+    folderNames: Workflows,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: Reports
+    folderNames: Reports,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: Dashboards
+    folderNames: Dashboards,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: ConnectionReferences
+    folderNames: Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+#- template: assembleAndCheck.yml
+#  parameters:
+#    solutionName: Sitemap
+#    folderNames: AppModuleSiteMaps,Other
+#    managed: ${{parameters.managed}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: ModelDrivenApps
+    folderNames: AppModules,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: CanvasAppsCovid
+    folderNames: CanvasApps,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: CanvasAppsItsYourChoice
+    folderNames: CanvasApps,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: CanvasAppsStatement
+    folderNames: CanvasApps,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: CanvasAppsSuddenDeath
+    folderNames: CanvasApps,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: CanvasAppsUseOfForce
+    folderNames: CanvasApps,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: CanvasAppsPocketNotebook
+    folderNames: CanvasApps,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: CanvasAppsVehicle
+    folderNames: CanvasApps,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+#- template: assembleAndCheck.yml
+#  parameters:
+#    solutionName: CanvasAppsControlPanel
+#   folderNames: CanvasApps,Other
+#    managed: ${{parameters.managed}}
+
+#- template: assembleAndCheck.yml
+#  parameters:
+#    solutionName: CanvasAppsSuddenDeathIdentifier
+#    folderNames: CanvasApps,Other
+#    managed: ${{parameters.managed}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: ConnectionReferences
+    folderNames: Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: Flows
+    folderNames: Workflows,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: FlowsCovid
+    folderNames: Workflows,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: FlowsItsYourChoice
+    folderNames: Workflows,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: FlowsStatement
+    folderNames: Workflows,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: FlowsSuddenDeath
+    folderNames: Workflows,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: FlowsUseOfForce
+    folderNames: Workflows,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: FlowsPocketNotebook
+    folderNames: Workflows,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: FlowsVehicle
+    folderNames: Workflows,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+- template: assembleAndCheck.yml
+  parameters:
+    solutionName: FlowsPNC
+    folderNames: Workflows,Other
+    managed: ${{parameters.managed}}
+    solutionprefix: ${{parameters.solutionprefix}}
+    minorversion: ${{parameters.minorversion}}
+    releaseversion: ${{parameters.releaseversion}}
+
+
+
+
+#- task: VSBuild@1
+#  displayName: 'Build solution Plugins/Plugins.sln'
+#  inputs:
+#    solution: Plugins/Plugins.sln
+#    configuration: debug
+
+#- task: VSTest@2
+#  displayName: 'VsTest - testAssemblies'
+#  inputs:
+#    searchFolder: '$(System.DefaultWorkingDirectory)/Plugins'
+
+
+#- task: CopyFiles@2
+#  displayName: 'Copy Files to: $(build.binariesdirectory)\test'
+#  inputs:
+#    SourceFolder: Tests
+#    Contents: |
+#      SystemTest.runsettings
+#     BuildTest.runsettings
+#   TargetFolder: '$(build.binariesdirectory)\test'    
+
+#- powershell: |
+#      copy-item "Plugins/MoD.ARAD.TemporaryRole.Plugins/bin/Debug/MoD.ARAD.TemporaryRole.Plugins.dll"                  -Destination "Schema/Plugins/PluginAssemblies/MoDARADTemporaryRolePlugins-7CC48D18-5A98-486A-8374-B8C8841360F6\MoDARADTemporaryRolePlugins.dll"
+#  displayName: 'Copy and Rename Plugins'
+
+#- task: MSCRMPackSolution@10
+#  displayName: 'MSCRM Pack Solution - Plugins'
+#  inputs:
+#    unpackedFilesFolder: 'Schema/Plugins'
+#    packageType: Managed
+#    includeVersionInSolutionFile: true
+
+- task: CopyFiles@2
+  inputs:
+    contents: 'DataMigration/newconfigData.zip' 
+    targetFolder: '$(build.binariesdirectory)/SystemTest'
+    overWrite: true 
+
+- task: CopyFiles@2
+  inputs:
+    contents: 'DataMigration/newconfigData.zip' 
+    targetFolder: '$(build.binariesdirectory)/UAT'
+    overWrite: true 
+
+- task: CopyFiles@2
+  inputs:
+    contents: 'DataMigration/newconfigData.zip' 
+    targetFolder: '$(build.binariesdirectory)/Live'
+    overWrite: true 
+
+- task: CopyFiles@2
+  inputs:
+    contents: 'DataMigration/AppVersion.zip' 
+    targetFolder: '$(build.binariesdirectory)/SystemTest'
+    overWrite: true 
+- task: CopyFiles@2
+  inputs:
+    contents: 'DataMigration/AppVersion.zip' 
+    targetFolder: '$(build.binariesdirectory)/UAT'
+    overWrite: true 
+- task: CopyFiles@2
+  inputs:
+    contents: 'DataMigration/AppVersion.zip' 
+    targetFolder: '$(build.binariesdirectory)/Live'
+    overWrite: true 
+
+- task: CopyFiles@2
+  inputs:
+    contents: 'DataMigration/Unzipped/ConfigDataHash.txt'
+    targetFolder: '$(build.binariesdirectory)/SystemTest'
+    overWrite: true 
+
+- task: CopyFiles@2
+  inputs:
+    contents: 'DataMigration/Unzipped/ConfigDataHash.txt'
+    targetFolder: '$(build.binariesdirectory)/UAT'
+    overWrite: true 
+
+- task: CopyFiles@2
+  inputs:
+    contents: 'DataMigration/Unzipped/ConfigDataHash.txt'
+    targetFolder: '$(build.binariesdirectory)/Live'
+    overWrite: true 
+
+- publish: '$(build.binariesdirectory)/SystemTest'
+  artifact: CumbriaBuild-${{parameters.managed}}-SystemTest
+
+- publish: '$(build.binariesdirectory)/UAT'
+  artifact: CumbriaBuild-${{parameters.managed}}-UAT
+
+- publish: '$(build.binariesdirectory)/Live'
+  artifact: CumbriaBuild-${{parameters.managed}}-Live
+
