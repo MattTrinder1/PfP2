@@ -16,7 +16,7 @@ steps:
   - task: MSCRMPackSolution@10
     displayName: 'Pack - ${{parameters.solutionName}}'
     inputs:
-      unpackedFilesFolder: 'Schema/${{parameters.solutionName}}/unpacked'
+      unpackedFilesFolder: 'CanvasApps/Schema/${{parameters.solutionName}}/unpacked'
       packageType: ${{parameters.managed}}
       includeVersionInSolutionFile: true
 
@@ -45,7 +45,7 @@ steps:
       flattenFolders: true
 
   - task: CopyFiles@2
-    displayName: Copy to Live folder
+    displayName: Copy to UAT folder
     inputs:
       sourceFolder: '$(Build.BinariesDirectory)'
       contents: '$(GeneratedSolutionFileName)' 
