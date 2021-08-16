@@ -23,6 +23,15 @@ steps:
       parameterFilesPattern: 
       parameterFilesList: 'App.fx.yaml'
 
+- task: ReplaceInFilesTextByText@2
+    inputs:
+      parameterSearchDirectory: '$(Build.SourcesDirectory)/CanvasApps\Schema\${{parameters.appFolderName}}\unpackedapp\Src\'
+      parameterSearchText: '//Set(glbDebug,false);'
+      parameterReplaceText: 'Set(glbDebug,false)'
+      parameterTypeOfSearch: 'filesList'
+      parameterFilesPattern: 
+      parameterFilesList: 'App.fx.yaml'
+
   - task: DeleteFiles@1
     inputs:
       SourceFolder: $(Build.SourcesDirectory)\CanvasApps\Schema\${{parameters.appFolderName}}\unpacked\CanvasApps\
