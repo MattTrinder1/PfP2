@@ -43,7 +43,7 @@ steps:
 
   - task: ReplaceInFilesTextByText@2
     inputs:
-      parameterSearchDirectory: '$(Build.SourcesDirectory)/CanvasApps\Schema\${{parameters.appFolderName}}\unpackedapp\CanvasApps\'
+      parameterSearchDirectory: '$(Build.SourcesDirectory)/CanvasApps\Schema\${{parameters.appFolderName}}\unpacked\CanvasApps\'
       parameterSearchText: '21aab98a-1b9f-4072-949f-61dbb5c7022e'
       parameterReplaceText: 'e0723811-3798-46f8-b9d3-a9583848f235'
       parameterTypeOfSearch: 'filesList'
@@ -61,7 +61,7 @@ steps:
 
   - task: ReplaceInFilesTextByText@2
     inputs:
-      parameterSearchDirectory: '$(Build.SourcesDirectory)/CanvasApps\Schema\${{parameters.appFolderName}}\unpackedapp\CanvasApps\'
+      parameterSearchDirectory: '$(Build.SourcesDirectory)/CanvasApps\Schema\${{parameters.appFolderName}}\unpacked\CanvasApps\'
       parameterSearchText: '0e3d837c-a328-4823-904f-999f848d1695'
       parameterReplaceText: 'f515b7e1-9199-4153-a754-407f763d95f6'
       parameterTypeOfSearch: 'filesList'
