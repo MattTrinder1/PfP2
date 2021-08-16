@@ -71,8 +71,26 @@ steps:
   - task: ReplaceInFilesTextByText@2
     inputs:
       parameterSearchDirectory: '$(Build.SourcesDirectory)/CanvasApps\Schema\${{parameters.appFolderName}}\unpackedapp\Connections\'
-      parameterSearchText: '0e3d837c-a328-4823-904f-999f848d1695'
+      parameterSearchText: '9fcac921-411c-4f4b-a520-0dd5f4542198'
       parameterReplaceText: 'f515b7e1-9199-4153-a754-407f763d95f6'
+      parameterTypeOfSearch: 'filesList'
+      parameterFilesPattern: 
+      parameterFilesList: 'Connections.json'
+
+  - task: ReplaceInFilesTextByText@2
+    inputs:
+      parameterSearchDirectory: '$(Build.SourcesDirectory)/CanvasApps\Schema\${{parameters.appFolderName}}\unpackedapp\Connections\'
+      parameterSearchText: '"accountName": "cumbriadev"'
+      parameterReplaceText: '"accountName": "cumbriasystemteststorage"'
+      parameterTypeOfSearch: 'filesList'
+      parameterFilesPattern: 
+      parameterFilesList: 'Connections.json'
+
+  - task: ReplaceInFilesTextByText@2
+    inputs:
+      parameterSearchDirectory: '$(Build.SourcesDirectory)/CanvasApps\Schema\${{parameters.appFolderName}}\unpackedapp\Connections\'
+      parameterSearchText: '78b78861a1014ebd9ac7833058ae73a1'
+      parameterReplaceText: '3715ee7919324475be6ffd933221367f'
       parameterTypeOfSearch: 'filesList'
       parameterFilesPattern: 
       parameterFilesList: 'Connections.json'
