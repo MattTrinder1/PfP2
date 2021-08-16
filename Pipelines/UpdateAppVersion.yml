@@ -77,7 +77,7 @@ steps:
       parameterFilesPattern: 
       parameterFilesList: 'Connections.json'
 
-- task: ReplaceInFilesTextByText@2
+  - task: ReplaceInFilesTextByText@2
     inputs:
       parameterSearchDirectory: '$(Build.SourcesDirectory)/CanvasApps\Schema\${{parameters.appFolderName}}\unpackedapp\Connections\'
       parameterSearchText: '"storageaccount": "cumbriadev"'
@@ -86,7 +86,7 @@ steps:
       parameterFilesPattern: 
       parameterFilesList: 'Connections.json'
 
-- task: ReplaceInFilesTextByText@2
+  - task: ReplaceInFilesTextByText@2
     inputs:
       parameterSearchDirectory: '$(Build.SourcesDirectory)/CanvasApps\Schema\${{parameters.appFolderName}}\unpackedapp\Connections\'
       parameterSearchText: '/providers/microsoft.powerapps/apis/shared_pnb-20get-5fec56f3da3c70054e-5fec37e65b69cd854d/connections/80073041d82a4a1ab8e3b6a7e4be32cf'
