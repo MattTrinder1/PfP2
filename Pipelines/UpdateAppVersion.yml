@@ -23,7 +23,7 @@ steps:
       parameterFilesPattern: 
       parameterFilesList: 'App.fx.yaml'
 
-- task: ReplaceInFilesTextByText@2
+  - task: ReplaceInFilesTextByText@2
     inputs:
       parameterSearchDirectory: '$(Build.SourcesDirectory)/CanvasApps\Schema\${{parameters.appFolderName}}\unpackedapp\Src\'
       parameterSearchText: '//Set(glbDebug,false);'
@@ -32,7 +32,7 @@ steps:
       parameterFilesPattern: 
       parameterFilesList: 'App.fx.yaml'
 
-- task: ReplaceInFilesTextByText@2
+  - task: ReplaceInFilesTextByText@2
     inputs:
       parameterSearchDirectory: '$(Build.SourcesDirectory)/CanvasApps\Schema\${{parameters.appFolderName}}\unpackedapp\Connections\'
       parameterSearchText: '21aab98a-1b9f-4072-949f-61dbb5c7022e'
@@ -41,7 +41,7 @@ steps:
       parameterFilesPattern: 
       parameterFilesList: 'Connections.json'
 
-- task: ReplaceInFilesTextByText@2
+  - task: ReplaceInFilesTextByText@2
     inputs:
       parameterSearchDirectory: '$(Build.SourcesDirectory)/CanvasApps\Schema\${{parameters.appFolderName}}\unpackedapp\CanvasApps\'
       parameterSearchText: '21aab98a-1b9f-4072-949f-61dbb5c7022e'
@@ -50,7 +50,7 @@ steps:
       parameterFilesPattern: 
       parameterFilesList: 'cp_pocketnotebookazure_5e5ef.meta.xml'
 
-- task: ReplaceInFilesTextByText@2
+  - task: ReplaceInFilesTextByText@2
     inputs:
       parameterSearchDirectory: '$(Build.SourcesDirectory)/CanvasApps\Schema\${{parameters.appFolderName}}\unpackedapp\Connections\'
       parameterSearchText: '9048514d-7f47-4fab-b619-0794436626de'
@@ -59,7 +59,7 @@ steps:
       parameterFilesPattern: 
       parameterFilesList: 'Connections.json'
 
-- task: ReplaceInFilesTextByText@2
+  - task: ReplaceInFilesTextByText@2
     inputs:
       parameterSearchDirectory: '$(Build.SourcesDirectory)/CanvasApps\Schema\${{parameters.appFolderName}}\unpackedapp\CanvasApps\'
       parameterSearchText: '0e3d837c-a328-4823-904f-999f848d1695'
@@ -68,7 +68,7 @@ steps:
       parameterFilesPattern: 
       parameterFilesList: 'cp_pocketnotebookazure_5e5ef.meta.xml'
 
-- task: ReplaceInFilesTextByText@2
+  - task: ReplaceInFilesTextByText@2
     inputs:
       parameterSearchDirectory: '$(Build.SourcesDirectory)/CanvasApps\Schema\${{parameters.appFolderName}}\unpackedapp\Connections\'
       parameterSearchText: '0e3d837c-a328-4823-904f-999f848d1695'
