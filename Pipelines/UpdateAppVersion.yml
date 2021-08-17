@@ -27,7 +27,7 @@ steps:
     inputs:
       parameterSearchDirectory: '$(Build.SourcesDirectory)/CanvasApps\Schema\${{parameters.appFolderName}}\unpackedapp\Src\'
       parameterSearchText: '//Set(glbDebug,false);'
-      parameterReplaceText: 'Set(glbDebug,false)'
+      parameterReplaceText: 'Set(glbDebug,false);'
       parameterTypeOfSearch: 'filesList'
       parameterFilesPattern: 
       parameterFilesList: 'App.fx.yaml'
