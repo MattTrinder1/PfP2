@@ -375,6 +375,7 @@ Screen_Home_Screen As screen:
         Start: =tmrBlobSaveStart
         Text: |-
             ="Blob Save " & Text(Time(0, 0, Self.Value/1000), "hh:mm:ss")
+        Visible: =glbDebug
         Width: =171
         X: =2
         Y: =1028
@@ -443,6 +444,7 @@ Screen_Home_Screen As screen:
         Repeat: =true
         Text: |-
             ="NoteValidate " & Text(Time(0, 0, Self.Value/1000), "hh:mm:ss")
+        Visible: =glbDebug
         Width: =171
         X: =177
         Y: =1028
@@ -513,6 +515,7 @@ Screen_Home_Screen As screen:
         Repeat: =true
         Text: |-
             ="Note Save " & Text(Time(0, 0, Self.Value/1000), "hh:mm:ss")
+        Visible: =glbDebug
         Width: =128
         X: =356
         Y: =1028
@@ -622,6 +625,7 @@ Screen_Home_Screen As screen:
         Repeat: =true
         Text: |-
             ="Note Populate " & Text(Time(0, 0, Self.Value/1000), "hh:mm:ss")
+        Visible: =glbDebug
         Width: =128
         X: =497
         Y: =1028
