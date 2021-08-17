@@ -33,7 +33,7 @@ steps:
       parameterFilesList: 'App.fx.yaml'
 
 #copy over schema replacements
-  - task: CopyFiles
+  - task: CopyFiles@2
     inputs:
       SourceFolder: 'CanvasApps\SchemaReplacements\SystemTest\CanvasAppsPocketNotebook'
       Contents: '**'
