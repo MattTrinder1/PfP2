@@ -4,6 +4,7 @@ parameters:
 - name: environmentConnection
   displayName: Azure Environment Connection
   type: string
+  default: 
   values:
   - CumbriaDevResourceGroupConnection
   - CumbriaSystemTestResourceGroupConnection
@@ -14,12 +15,12 @@ pool:
 
 stages:
   - stage: DeployQueueListeners
-    displayName: Deploy Queue Listeners to ${{environmentConnection}}
+    displayName: Deploy Queue Listeners to ${{parameters.environmentConnection}}
     jobs:
     - job : BuildAndDeploy
       steps:
         - template: buildAndDeployQueueListeners.yml
           parameters:
-            serviceConnectionName: ${{environmentConnection}}
+            serviceConnectionName: ${{parameters.environmentConnection}}
             configuration: Release
             appName: TisskiPolicingQueueListeners
