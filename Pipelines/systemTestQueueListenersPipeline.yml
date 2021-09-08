@@ -6,9 +6,9 @@ parameters:
   type: string
   default: 
   values:
-  - CumbriaDevResourceGroupConnection
-  - CumbriaSystemTestResourceGroupConnection
-  - PowerAppsForPolicingDevResourceGroupConnection
+  - CumbriaDev
+  - CumbriaSystemTest
+  - PowerAppsForPolicing
 
 pool:
   vmImage: windows-latest
@@ -21,6 +21,6 @@ stages:
       steps:
         - template: buildAndDeployQueueListeners.yml
           parameters:
-            serviceConnectionName: ${{parameters.environmentConnection}}
+            serviceConnectionName: ${{parameters.environmentConnection}}ResourceGroupConnection
             configuration: Release
-            appName: TisskiPolicingQueueListeners
+            appName: ${{parameters.environmentConnection}}QueueListeners
