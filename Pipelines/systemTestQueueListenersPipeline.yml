@@ -1,16 +1,25 @@
 trigger: none
 
+parameters:
+- name: environmentConnection
+  displayName: Azure Environment Connection
+  type: string
+  values:
+  - CumbriaDevResourceGroupConnection
+  - CumbriaSystemTestResourceGroupConnection
+  - PowerAppsForPolicingDevResourceGroupConnection
+
 pool:
   vmImage: windows-latest
 
 stages:
-  - stage: DeployQueueListenersSystemTest
-    displayName: Deploy Queue Listeners to System Test
+  - stage: DeployQueueListeners
+    displayName: Deploy Queue Listeners to ${{environmentConnection}}
     jobs:
     - job : BuildAndDeploy
       steps:
         - template: buildAndDeployQueueListeners.yml
           parameters:
-            serviceConnectionName: CumbriaSystemTestResourceGroupConnection
+            serviceConnectionName: ${{environmentConnection}}
             configuration: Release
             appName: TisskiPolicingQueueListeners
