@@ -13,7 +13,7 @@ namespace QueueListeners
 {
     public class Program
     {
-        public static void Main()
+        public static async Task Main()
         {
 
             var host = new HostBuilder()
@@ -26,7 +26,7 @@ namespace QueueListeners
                                         .AddSingleton<API.Mappers.MapperConfiguration>()
                                    )
                 .Build();
-            host.Run();
+            await host.RunAsync();
         }
 
         

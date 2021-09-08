@@ -11,6 +11,7 @@ New-AzStorageAccount -ResourceGroupName $environmentName -Name $environmentName.
 $Context = New-AzStorageContext -StorageAccountName $environmentName -UseConnectedAccount
 New-AzStorageQueue -Name "onlinecheckqueue" -Context $Context
 New-AzStorageQueue -Name "pocketnotebookqueue" -Context $Context
+New-AzStorageQueue -Name "suddendeathqueue" -Context $Context
 New-AzStorageContainer -Name "pnb" -Context $Context
 
 New-AzAppServicePlan -ResourceGroupName $environmentName -Name $EnvironmentName"AppServicePlan" -Location "UK South"
