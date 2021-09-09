@@ -1,0 +1,106 @@
+parameters:
+- name: canvasApp
+  type: string
+  default: 
+  values:
+  - WebResources
+  - OptionSets
+  - Entities
+  - SecurityRoles
+- name: customer
+  type: string
+  default: Cumbria
+  values:
+  - Cumbria
+  
+trigger: none
+
+pool:
+  name: MOD Pool
+
+variables:
+- name: minor.version
+  value: 0
+- name: release.version
+  value: 0 
+- name: solution.prefix
+  value: CP
+- template: connectionStrings.yml
+
+stages: 
+#----------------------------------Start Stage-------------------------------------------------------------------
+  - stage: AssembleRelease
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - job: Assemble
+      steps:
+      - template: assembleReleaseForBaseSolution.yml
+        parameters:
+          managed: Managed
+          minorversion : $(minor.version)
+          releaseversion : $(release.version)
+          solutionprefix : $(solution.prefix)
+          appFolderName : CanvasApps${{parameters.canvasApp}}
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#----------------------------------End Stage-------------------------------------------------------------------
+#----------------------------------Start Stage-------------------------------------------------------------------
+
+  - stage: ReleaseToPfPSystemTest
+    dependsOn: AssembleRelease
+    displayName: Deploy PfP System Test
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: ReleaseToPfPSystemTest
+      environment: PfPSystemTest
+      displayName: Deploy Solutions
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            
+            steps:
+            - template: deployBaseSolution.yml
+              parameters:
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
+                canvasApp: ${{parameters.canvasApp}}
+                connectionString: $(pfpsystemtest.connection.string)
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
+
+#----------------------------------Start Stage-------------------------------------------------------------------
+
+  - stage: ReleaseToUAT
+    dependsOn: ReleaseToPfPSystemTest
+    displayName: Deploy to ${{parameters.customer}} UAT
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: ReleaseTo${{parameters.customer}}UAT
+      environment: ${{parameters.customer}}UAT
+      displayName: Deploy Solutions
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            
+            steps:
+            - template: deployBaseSolution.yml
+              parameters:
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
+                canvasApp: ${{parameters.canvasApp}}
+                connectionString: $(${{parameters.customer}}uat.connection.string)
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
+
+
