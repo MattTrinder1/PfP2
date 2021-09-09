@@ -54,9 +54,9 @@ steps:
       flattenFolders: true
 
 
-  - task: Dynamics Solution Checker@0
-    displayName: 'Check ${{parameters.solutionName}} Solution'
-    inputs:
-      schemaFolder: '$(Build.StagingDirectory)/Schema'
-      solutionName: ${{parameters.solutionName}}
-      validFolderNames : ${{parameters.folderNames}}
+  #- task: Dynamics Solution Checker@0
+  #  displayName: 'Check ${{parameters.solutionName}} Solution'
+  #  inputs:
+  #    schemaFolder: '$(Build.StagingDirectory)/Schema'
+  #    solutionName: ${{parameters.solutionName}}
+  #    validFolderNames : ${{parameters.folderNames}}
