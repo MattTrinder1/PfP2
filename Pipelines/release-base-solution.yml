@@ -1,5 +1,5 @@
 parameters:
-- name: canvasApp
+- name: solutionName
   type: string
   default: 
   values:
@@ -40,7 +40,7 @@ stages:
           minorversion : $(minor.version)
           releaseversion : $(release.version)
           solutionprefix : $(solution.prefix)
-          appFolderName : ${{parameters.canvasApp}}
+          appFolderName : ${{parameters.solutionName}}
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #----------------------------------End Stage-------------------------------------------------------------------
 #----------------------------------Start Stage-------------------------------------------------------------------
@@ -65,7 +65,7 @@ stages:
                 minorversion : $(minor.version)
                 releaseversion : $(release.version)
                 solutionprefix : $(solution.prefix)
-                canvasApp: ${{parameters.canvasApp}}
+                canvasApp: ${{parameters.solutionName}}
                 connectionString: $(pfpsystemtest.connection.string)
 
 
@@ -95,7 +95,7 @@ stages:
                 minorversion : $(minor.version)
                 releaseversion : $(release.version)
                 solutionprefix : $(solution.prefix)
-                canvasApp: ${{parameters.canvasApp}}
+                canvasApp: ${{parameters.solutionName}}
                 connectionString: $(${{parameters.customer}}uat.connection.string)
 
 
