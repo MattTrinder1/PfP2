@@ -1,0 +1,133 @@
+parameters:
+- name: canvasApp
+  type: string
+  default: default
+  values:
+  - UseOfForce
+  - PocketNotebook
+- name: customer
+  type: string
+  default: Cumbria
+  values:
+  - Cumbria
+  - Durham
+
+trigger: none
+
+pool:
+  name: MOD Pool
+
+variables:
+- name: minor.version
+  value: 0
+- name: release.version
+  value: 0 
+- name: solution.prefix
+  value: CP
+- template: connectionStrings.yml
+
+stages: 
+#----------------------------------Start Stage-------------------------------------------------------------------
+  - stage: AssembleRelease
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - job: Assemble
+      steps:
+      - template: assembleReleaseForApp.yml
+        parameters:
+          managed: Managed
+          minorversion : $(minor.version)
+          releaseversion : $(release.version)
+          solutionprefix : $(solution.prefix)
+          appFolderName : CanvasApps${{parameters.canvasApp}}
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#----------------------------------End Stage-------------------------------------------------------------------
+#----------------------------------Start Stage-------------------------------------------------------------------
+
+  - stage: ReleaseToTisskiSystemTest
+    dependsOn: AssembleRelease
+    displayName: Deploy to System Test
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: ReleaseToTisskiSystemTest
+      environment: TisskiSystemTest
+      displayName: Deploy Solutions
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            
+            steps:
+            - template: deployCanvasAppSolution.yml
+              parameters:
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
+                canvasApp: ${{parameters.canvasApp}}
+                connectionString: $(pretest.connection.string)
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
+
+#----------------------------------Start Stage-------------------------------------------------------------------
+
+  - stage: ReleaseToUAT
+    dependsOn: ReleaseToTisskiSystemTest
+    displayName: Deploy to ${{parameters.customer}} UAT
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: ReleaseTo${{parameters.customer}}UAT
+      environment: ${{parameters.customer}}UAT
+      displayName: Deploy Solutions
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            
+            steps:
+            - template: deployCanvasAppSolution.yml
+              parameters:
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
+                canvasApp: ${{parameters.canvasApp}}
+                connectionString: $(${{parameters.customer}}uat.connection.string)
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
+
+#----------------------------------Start Stage-------------------------------------------------------------------
+
+  - stage: ReleaseToLive
+    dependsOn: ReleaseToUAT
+    displayName: Deploy to ${{parameters.customer}} Live
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: ReleaseTo${{parameters.customer}}Live
+      environment: ${{parameters.customer}}Live
+      displayName: Deploy Solutions
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            
+            steps:
+            - template: deployCanvasAppSolution.yml
+              parameters:
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
+                canvasApp: ${{parameters.canvasApp}}
+                connectionString: $(${{parameters.customer}}prod.connection.string)
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------

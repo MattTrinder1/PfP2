@@ -1,13 +1,11 @@
 parameters:
 - name: appFolderName
   type: string
-- name: msappname
-  type: string
 
 steps:
   - powershell: |
-        Write-Host "$(Build.SourcesDirectory)\CanvasApps\Schema\${{parameters.appFolderName}}\unpacked\Other"
-        $inputpath = (Get-ChildItem -Path "$(Build.SourcesDirectory)\CanvasApps\Schema\${{parameters.appFolderName}}\unpacked\Other" -Include Solution.xml -Recurse -File  -ErrorAction SilentlyContinue)
+        Write-Host "$(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}\unpacked\Other"
+        $inputpath = (Get-ChildItem -Path "$(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}\unpacked\Other" -Include Solution.xml -Recurse -File  -ErrorAction SilentlyContinue)
         Write-Host $inputpath.Name
         $regex = '(?<=<Version>).*?(?=<\/Version>)'
         $version = Select-String -Path $inputpath -Pattern $regex -AllMatches | % { $_.Matches } | % { $_.Value }
@@ -16,7 +14,7 @@ steps:
           
   - task: ReplaceInFilesTextByText@2
     inputs:
-      parameterSearchDirectory: '$(Build.SourcesDirectory)/CanvasApps\Schema\${{parameters.appFolderName}}\unpackedapp\Src\'
+      parameterSearchDirectory: '$(Build.SourcesDirectory)/Schema\${{parameters.appFolderName}}\unpackedapp\Src\'
       parameterSearchText: '//Set(glbAppVersion,1);'
       parameterReplaceText: 'Set(glbAppVersion,$(projectVersion));'
       parameterTypeOfSearch: 'filesList'
@@ -25,36 +23,23 @@ steps:
 
   - task: ReplaceInFilesTextByText@2
     inputs:
-      parameterSearchDirectory: '$(Build.SourcesDirectory)/CanvasApps\Schema\${{parameters.appFolderName}}\unpackedapp\Src\'
+      parameterSearchDirectory: '$(Build.SourcesDirectory)/Schema\${{parameters.appFolderName}}\unpackedapp\Src\'
       parameterSearchText: '//Set(glbDebug,false);'
       parameterReplaceText: 'Set(glbDebug,false);'
       parameterTypeOfSearch: 'filesList'
       parameterFilesPattern: 
       parameterFilesList: 'App.fx.yaml'
 
-#copy over schema replacements
-  - task: CopyFiles@2
-    inputs:
-      SourceFolder: 'CanvasApps\SchemaReplacements\SystemTest\CanvasAppsPocketNotebook'
-      Contents: '**'
-      targetFolder: 'CanvasApps\CanvasAppsPocketNotebook'
-      overwrite: true
-
-#  - task: ReplaceInFilesTextByText@2
-#    inputs:
-#      parameterSearchDirectory: '$(Build.SourcesDirectory)/CanvasApps\Schema\${{parameters.appFolderName}}\unpacked\CanvasApps\'
-#      parameterSearchText: '<ConnectionReferences>{"0e3d837c-a328-4823-904f-999f848d1695":{"id":"/providers/microsoft.powerapps/apis/shared_azureblob","displayName":"Azure Blob Storage","iconUri":"https://connectoricons-prod.azureedge.net/releases/v1.0.1496/1.0.1496.2493/azureblob/icon.png","dataSources":["AzureBlobStorage"],"dependencies":[],"dependents":[],"parameterHints":{},"parameterHintsV2":{},"isOnPremiseConnection":false,"sharedConnectionId":"2a275995-2bff-4389-9c1c-e88b3dacdf39","bypassConsent":false,"dataSets":{},"apiTier":"Premium","actions":["CreateFile"],"endpoints":["cumbriadev"],"isCustomApiSolutionAware":false},"21aab98a-1b9f-4072-949f-61dbb5c7022e":{"id":"/providers/microsoft.powerapps/apis/shared_azurequeues","displayName":"Azure Queues","iconUri":"https://connectoricons-prod.azureedge.net/releases/v1.0.1502/1.0.1502.2509/azurequeues/icon.png","dataSources":["AzureQueues"],"dependencies":[],"dependents":[],"parameterHints":{},"parameterHintsV2":{},"isOnPremiseConnection":false,"sharedConnectionId":"852d2911-8fb9-4815-abb5-669a3a126f21","bypassConsent":false,"dataSets":{},"apiTier":"Premium","actions":["PutMessage"],"isCustomApiSolutionAware":false},"9048514d-7f47-4fab-b619-0794436626de":{"id":"/providers/microsoft.powerapps/apis/shared_pnb-20get-5fec56f3da3c70054e-5fec37e65b69cd854d","displayName":"PNB Get","iconUri":"https://az787822.vo.msecnd.net/defaulticons/api-dedicated.png","dataSources":["PNBGet"],"dependencies":[],"dependents":[],"parameterHints":{},"parameterHintsV2":{},"isOnPremiseConnection":false,"bypassConsent":false,"dataSets":{},"apiTier":"Standard","actions":["GetSinglePNB","GetUserPNB"],"isCustomApiSolutionAware":false}}</ConnectionReferences>'
-#      parameterReplaceText: '<ConnectionReferences>{"f515b7e1-9199-4153-a754-407f763d95f6":{"id":"/providers/microsoft.powerapps/apis/shared_azureblob","displayName":"Azure Blob Storage","iconUri":"https://connectoricons-prod.azureedge.net/releases/v1.0.1496/1.0.1496.2493/azureblob/icon.png","dataSources":["AzureBlobStorage"],"dependencies":[],"dependents":[],"parameterHints":{},"parameterHintsV2":{},"isOnPremiseConnection":false,"sharedConnectionId":"56819914-85a9-4798-8463-0bc7dc7fd182","bypassConsent":false,"dataSets":{},"apiTier":"Premium","actions":["CreateFile"],"endpoints":["cumbriadev"],"isCustomApiSolutionAware":false},"e0723811-3798-46f8-b9d3-a9583848f235":{"id":"/providers/microsoft.powerapps/apis/shared_azurequeues","displayName":"Azure Queues","iconUri":"https://connectoricons-prod.azureedge.net/releases/v1.0.1502/1.0.1502.2509/azurequeues/icon.png","dataSources":["AzureQueues"],"dependencies":[],"dependents":[],"parameterHints":{},"parameterHintsV2":{},"isOnPremiseConnection":false,"sharedConnectionId":"5bd49c98-7e29-4811-adf7-49e45afb5c58","bypassConsent":false,"dataSets":{},"apiTier":"Premium","actions":["PutMessage"],"isCustomApiSolutionAware":false},"e8c42f10-b7a4-426f-8e21-790c4da4be9b":{"id":"/providers/microsoft.powerapps/apis/shared_pnb-20get-5fec56f3da3c70054e-5fec37e65b69cd854d","displayName":"PNB Get","iconUri":"https://az787822.vo.msecnd.net/defaulticons/api-dedicated.png","dataSources":["PNBGet"],"dependencies":[],"dependents":[],"parameterHints":{},"parameterHintsV2":{},"isOnPremiseConnection":false,"bypassConsent":false,"dataSets":{},"apiTier":"Standard","actions":["GetSinglePNB","GetUserPNB"],"isCustomApiSolutionAware":false}}</ConnectionReferences>'
-#      parameterTypeOfSearch: 'filesList'
-#      parameterFilesPattern: 
-#      parameterFilesList: 'cp_pocketnotebookazure_5e5ef.meta.xml'
-
-
+  #get the canvas app .msapp file name
+  - powershell: |
+                $MSAPPFile = get-childitem -path "$(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}\unpacked\CanvasApps\*.msapp"
+                $MSAPPFileName = $MSAPPFile.Name
+                Write-Host "##vso[task.setvariable variable=MSAPPFileName]$MSAPPFileName"
 
   - task: DeleteFiles@1
     inputs:
-      SourceFolder: $(Build.SourcesDirectory)\CanvasApps\Schema\${{parameters.appFolderName}}\unpacked\CanvasApps\
-      Contents: cp_${{parameters.msappname}}_DocumentUri.msapp
+      SourceFolder: $(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}\unpacked\CanvasApps\
+      Contents: $(MSAPPFileName)
 
   - powershell: |
-          $(Build.SourcesDirectory)\CanvasApps\365Tools\Tools\PasOpa\PASopa.exe -pack $(Build.SourcesDirectory)\CanvasApps\Schema\${{parameters.appFolderName}}\unpacked\CanvasApps\cp_${{parameters.msappname}}_DocumentUri.msapp $(Build.SourcesDirectory)\CanvasApps\Schema\${{parameters.appFolderName}}\unpackedapp 
+          $(Build.SourcesDirectory)\365Tools\Tools\PasOpa\PASopa.exe -pack $(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}\unpacked\CanvasApps\$(MSAPPFileName) $(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}\unpackedapp 
