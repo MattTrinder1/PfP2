@@ -79,11 +79,11 @@ stages:
 
   - stage: ReleaseToUAT
     dependsOn: ReleaseToPfPSystemTest
-    displayName: Deploy to ${{parameters.customer}} UAT
+    displayName: Deploy PfP UAT
     jobs:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    - deployment: ReleaseTo${{parameters.customer}}UAT
-      environment: ${{parameters.customer}}UAT
+    - deployment: ReleaseToPfPUAT
+      environment: PfPUAT
       displayName: Deploy Solutions
       workspace:
         clean: all 
@@ -98,7 +98,7 @@ stages:
                 releaseversion : $(release.version)
                 solutionprefix : $(solution.prefix)
                 solutionName: ${{parameters.solutionName}}
-                connectionString: $(${{parameters.customer}}uat.connection.string)
+                connectionString: $(pfpsystemtest.connection.string)
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
