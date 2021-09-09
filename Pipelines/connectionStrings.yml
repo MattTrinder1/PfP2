@@ -1,16 +1,22 @@
 variables: 
 #pre-test (Tisski System Test)
-- name: pfpsystemtest.username
-  value: matt.trinder@tisski.com
-- name: pfpsystemtest.password
-  value: hsgwrmhbrcltjxlw 
+#- name: pfpsystemtest.username
+#  value: matt.trinder@tisski.com
+#- name: pfpsystemtest.password
+#  value: hsgwrmhbrcltjxlw 
+
+- name: pfp.clientid
+  value: 83af4fce-10c3-4409-a43d-d67e300424aa
+- name: pfp.clientsecret
+  value: H.ARok4~mmJl_lfU~nfE9JqE.7pUE26u.t
 
 - name: pfpsystemtest.instancename
   value: policeproductsystemtest
 - name: pfpsystemtest.url
   value: https://$(pfpsystemtest.instancename).crm11.dynamics.com
 - name: pfpsystemtest.connection.string
-  value: RequireNewInstance=True;AuthType=Office365;Username=$(pfpsystemtest.username);Password=$(pfpsystemtest.password);Url=$(pfpsystemtest.url)
+#  value: RequireNewInstance=True;AuthType=Office365;Username=$(pfpsystemtest.username);Password=$(pfpsystemtest.password);Url=$(pfpsystemtest.url)
+  value: RequireNewInstance=True;AuthType=ClientSecret;ClientId=$(pfp.clientid);ClientSecret=$(pfp.clientsecret);Url=$(pfpsystemtest.url)
 
   
 
