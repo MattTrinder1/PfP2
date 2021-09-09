@@ -5,6 +5,19 @@ pool:
   vmImage: windows-latest
 
 stages:
+
+  - stage: BuildQueueListeners
+    displayName: BuildQueueListeners
+    jobs:
+    - job: BuildQueueListeners
+      steps:
+        - template: buildQueueListeners.yml
+          parameters:
+            serviceConnectionName: PfPDev-ab46c5b7b4fa
+            configuration: Release
+            appName: PfPDevQueueListeners
+
+
   - stage: DeployQueueListenersToDev
     displayName: Deploy Queue Listeners to Dev
     jobs:
