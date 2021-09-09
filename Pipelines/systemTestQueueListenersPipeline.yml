@@ -14,7 +14,7 @@ stages:
           parameters:
             serviceConnectionName: PfPDev-ab46c5b7b4fa
             configuration: Release
-            appName: PfPDev-ab46c5b7b4faQueueListeners
+            appName: PfPDevQueueListeners
 
   - stage: DeployQueueListenersToSysTest
     displayName: Deploy Queue Listeners to SysTest
@@ -25,7 +25,7 @@ stages:
           parameters:
             serviceConnectionName: PfPSysTest-ec70
             configuration: Release
-            appName: PfPSysTest-ec70QueueListeners
+            appName: PfPSysTestQueueListeners
 
   - stage: DeployQueueListenersToUAT
     displayName: Deploy Queue Listeners to UAT
@@ -36,4 +36,4 @@ stages:
           parameters:
             serviceConnectionName: PfPUAT-e4a7
             configuration: Release
-            appName: PfPUAT-e4a7QueueListeners
+            appName: PfPUATQueueListeners
