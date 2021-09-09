@@ -28,3 +28,4 @@ New-AzFunctionApp  -ResourceGroupName $environmentName-$guid -Name $environmentN
 #New-AzFunctionApp  -ResourceGroupName $environmentName-$guid -Name $environmentName-$guid"-QueueListeners" -StorageAccountName $storageAccountName  -Runtime "dotnet" -Location "UK South"  -FunctionsVersion 3 -RuntimeVersion 3
 
 Update-AzFunctionAppSetting  -ResourceGroupName $environmentName-$guid -Name $environmentName-$guid"-QueueListeners" -AppSetting @{"FUNCTIONS_WORKER_RUNTIME" ="dotnet-isolated"} -Force
+Update-AzFunctionAppSetting  -ResourceGroupName $environmentName-$guid -Name $environmentName-$guid"-QueueListeners" -AppSetting @{"APIUrl" ="https://$environmentName-$guid-apiwebapp.azurewebsites.net/api"} -Force

@@ -38,7 +38,7 @@ namespace QueueListeners
             pocketNotebook.Photos = _mapper.Map<List<Photo>>(docRoot.GetProperty("photos").EnumerateArray());
 
 
-            RestRequest req = Helpers.GetRestRequest("", Method.POST, docRoot.GetProperty("enteredBy").GetString() );
+            RestRequest req = Helpers.GetRestRequest("pnb", Method.POST, docRoot.GetProperty("enteredBy").GetString() );
             req.AddJsonBody(pocketNotebook, "application/json");
             var resp = _restClient.Execute(req);
 
