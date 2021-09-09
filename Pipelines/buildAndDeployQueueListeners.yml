@@ -5,6 +5,8 @@ parameters:
   type: string
 - name: configuration
   type: string
+- name: appId
+  type: string
 
 steps:
 - task: DotNetCoreCLI@2
@@ -27,5 +29,5 @@ steps:
   inputs:
     azureSubscription: '${{parameters.serviceConnectionName}}'
     appType: 'functionApp'
-    appName: '${{parameters.appName}}'
+    appName: '${{parameters.serviceConnectionName}}-${{parameters.appId}}-QueueListeners'
     package: $(Build.ArtifactStagingDirectory)/${{parameters.appName}}/**/*.zip
