@@ -2,7 +2,7 @@
 #Install-Module -Name Az -Scope CurrentUser -Repository PSGallery -Force 
 #connect-azaccount 
 $guid = New-Guid
-$guid = $guid.ToString().Substring(24)
+$guid = $guid.ToString().Substring(32)
 #set the environment name here
 $environmentName = Read-Host -Prompt "Enter the name for the new environment"
 $environmentType = Read-Host -Prompt "Enter the new environment type (dev,systemtest etc)"
@@ -22,9 +22,9 @@ New-AzWebApp -ResourceGroupName $environmentName-$guid -Name $EnvironmentName"-"
 Set-AzWebApp -ResourceGroupName $environmentName-$guid -Name $EnvironmentName"-"$guid"-APIWebApp" -NetFrameworkVersion 5.0 -AppSettings @{"ASPNETCORE_ENVIRONMENT" ="$environmentType"}
 
 
-#New-AzFunctionAppPlan -ResourceGroupName $environmentName -Name $environmentName"FunctionAppPlan" -Sku "EP2" -Location "UK South" -WorkerType Windows
+New-AzFunctionAppPlan -ResourceGroupName $environmentName-$guid -Name $environmentName-$guid"-FunctionAppPlan" -Sku "EP2" -Location "UK South" -WorkerType Windows
 
-#New-AzFunctionApp  -ResourceGroupName $environmentName -Name $environmentName"QueueListeners" -StorageAccountName $environmentName.ToLower()  -Runtime "dotnet" -planName $environmentName"FunctionAppPlan" -FunctionsVersion 3 -RuntimeVersion 3
-New-AzFunctionApp  -ResourceGroupName $environmentName-$guid -Name $environmentName-$guid"-QueueListeners" -StorageAccountName $storageAccountName  -Runtime "dotnet" -Location "UK South"  -FunctionsVersion 3 -RuntimeVersion 3
+New-AzFunctionApp  -ResourceGroupName $environmentName-$guid -Name $environmentName-$guid"-QueueListeners" -StorageAccountName $storageAccountName  -Runtime "dotnet" -planName $environmentName-$guid"-FunctionAppPlan" -FunctionsVersion 3 -RuntimeVersion 3
+#New-AzFunctionApp  -ResourceGroupName $environmentName-$guid -Name $environmentName-$guid"-QueueListeners" -StorageAccountName $storageAccountName  -Runtime "dotnet" -Location "UK South"  -FunctionsVersion 3 -RuntimeVersion 3
 
 Update-AzFunctionAppSetting  -ResourceGroupName $environmentName-$guid -Name $environmentName-$guid"-QueueListeners" -AppSetting @{"FUNCTIONS_WORKER_RUNTIME" ="dotnet-isolated"} -Force
