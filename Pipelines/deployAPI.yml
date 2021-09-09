@@ -9,5 +9,5 @@ steps:
     ConnectionType: 'AzureRM'
     azureSubscription: '${{parameters.serviceConnectionName}}ResourceGroupConnection'
     appType: 'webApp'
-    WebAppName: '${{parameters.serviceConnectionName}}-WebApp'
+    WebAppName: '${{parameters.serviceConnectionName}}-APIWebApp'
     Package: $(Pipeline.Workspace)/API/**/*.zip
