@@ -44,7 +44,7 @@ stages:
 
   - stage: ReleaseToTisskiSystemTest
     dependsOn: AssembleRelease
-    displayName: Deploy to System Test
+    displayName: Deploy PfP System Test
     jobs:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     - deployment: ReleaseToTisskiSystemTest
@@ -100,32 +100,4 @@ stages:
 
 #----------------------------------End Stage-------------------------------------------------------------------
 
-#----------------------------------Start Stage-------------------------------------------------------------------
 
-  - stage: ReleaseToLive
-    dependsOn: ReleaseToUAT
-    displayName: Deploy to ${{parameters.customer}} Live
-    jobs:
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    - deployment: ReleaseTo${{parameters.customer}}Live
-      environment: ${{parameters.customer}}Live
-      displayName: Deploy Solutions
-      workspace:
-        clean: all 
-      strategy:
-        runOnce:
-          deploy:
-            
-            steps:
-            - template: deployCanvasAppSolution.yml
-              parameters:
-                minorversion : $(minor.version)
-                releaseversion : $(release.version)
-                solutionprefix : $(solution.prefix)
-                canvasApp: ${{parameters.canvasApp}}
-                connectionString: $(${{parameters.customer}}prod.connection.string)
-
-
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-#----------------------------------End Stage-------------------------------------------------------------------
