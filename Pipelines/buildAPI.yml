@@ -1,8 +1,4 @@
 parameters:
-- name: serviceConnectionName
-  type: string
-- name: appName
-  type: string
 - name: configuration
   type: string
 
@@ -12,21 +8,14 @@ steps:
     command: 'publish'
     publishWebProjects: false
     projects: 'MiddleTier/API/API.csproj'
-    arguments: '-o $(Build.ArtifactStagingDirectory)/${{parameters.appName}} -c ${{parameters.configuration}}'
+    arguments: '-o $(Build.ArtifactStagingDirectory)/API -c ${{parameters.configuration}}'
     zipAfterPublish: true
     modifyOutputPath: false
 
 #Production of Artifact is optional!
-#- task: PublishBuildArtifacts@1
-#  inputs:
-#    PathtoPublish: '$(Build.ArtifactStagingDirectory)/${{parameters.appName}}'
-#    ArtifactName: '${{parameters.appName}}'
-#    publishLocation: 'Container'
-
-- task: AzureRmWebAppDeployment@4
+- task: PublishBuildArtifacts@1
   inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: '${{parameters.serviceConnectionName}}'
-    appType: 'webApp'
-    WebAppName: '${{parameters.appName}}'
-    Package: $(Build.ArtifactStagingDirectory)/${{parameters.appName}}/**/*.zip
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/API'
+    ArtifactName: 'API'
+    publishLocation: 'Container'
+
