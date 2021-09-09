@@ -1,40 +1,16 @@
 variables: 
 #pre-test (Tisski System Test)
-- name: pretest.username
+- name: pfpsystemtest.username
   value: matt.trinder@tisski.com
-- name: pretest.password
+- name: pfpsystemtest.password
   value: hsgwrmhbrcltjxlw 
 
-- name: pretest.instancename
-  value: cumbriapretest
-- name: pretest.url
-  value: https://$(pretest.instancename).crm11.dynamics.com
-- name: pretest.connection.string
-  value: RequireNewInstance=True;AuthType=Office365;Username=$(pretest.username);Password=$(pretest.password);Url=$(pretest.url)
+- name: pfpsystemtest.instancename
+  value: policeproductsystemtest
+- name: pfpsystemtest.url
+  value: https://$(pfpsystemtest.instancename).crm11.dynamics.com
+- name: pfpsystemtest.connection.string
+  value: RequireNewInstance=True;AuthType=Office365;Username=$(pfpsystemtest.username);Password=$(pfpsystemtest.password);Url=$(pfpsystemtest.url)
 
-  #cumbria-creds
-- name: cumbria.username
-  value: powerapps.service@cumbria.police.uk
-- name: cumbria.password
-  value: Shut.shower.dine1 
-
-  #uat
-- name: uat.instancename
-  value: cumbria-build
-- name: uat.url
-  value: https://$(uat.instancename).crm11.dynamics.com
-- name: uat.connection.string
-  value: RequireNewInstance=True;AuthType=Office365;Username=$(cumbria.username);Password=$(cumbria.password);Url=$(uat.url)
-- name: cumbriauat.connection.string
-  value: RequireNewInstance=True;AuthType=Office365;Username=$(cumbria.username);Password=$(cumbria.password);Url=$(uat.url)
-
-#live
-- name: prod.instancename
-  value: cops
-- name: prod.url
-  value: https://$(prod.instancename).crm11.dynamics.com
-- name: prod.connection.string
-  value: RequireNewInstance=True;AuthType=Office365;Username=$(cumbria.username);Password=$(cumbria.password);Url=$(prod.url)
-- name: cumbriaprod.connection.string
-  value: RequireNewInstance=True;AuthType=Office365;Username=$(cumbria.username);Password=$(cumbria.password);Url=$(prod.url)
+  
 
