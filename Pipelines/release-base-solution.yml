@@ -27,7 +27,7 @@ variables:
   value: CP
 - template: connectionStrings.yml
 
-name: 
+name: $(Build.DefinitionName) - $(Build.BuildId) - ${{parameters.solutionName}}
 
 stages: 
 #----------------------------------Start Stage-------------------------------------------------------------------
