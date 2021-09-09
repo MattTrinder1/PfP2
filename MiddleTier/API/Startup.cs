@@ -34,10 +34,8 @@ namespace API
 
             services.AddSingleton(new ConnectionConfiguration(
                 Configuration.GetValue<string>("Connection:DataverseUrl"),
-                Configuration.GetValue<string>("Connection:ServiceUrl"),
                 Configuration.GetValue<string>("Connection:ClientId"),
-                Configuration.GetValue<string>("Connection:ClientSecret"),
-                Configuration.GetValue<string>("Connection:Authority")));
+                Configuration.GetValue<string>("Connection:ClientSecret");
 
             services.AddSingleton<ApiConfiguration>();
 
