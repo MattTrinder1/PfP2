@@ -16,7 +16,7 @@ steps:
   - task: MSCRMPackSolution@10
     displayName: 'Pack - ${{parameters.solutionName}}'
     inputs:
-      unpackedFilesFolder: 'CanvasApps/Schema/${{parameters.solutionName}}/unpacked'
+      unpackedFilesFolder: 'Schema/${{parameters.solutionName}}/unpacked'
       packageType: ${{parameters.managed}}
       includeVersionInSolutionFile: true
 
