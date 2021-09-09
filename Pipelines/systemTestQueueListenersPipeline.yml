@@ -8,32 +8,53 @@ stages:
   - stage: DeployQueueListenersToDev
     displayName: Deploy Queue Listeners to Dev
     jobs:
-    - job : BuildAndDeploy
-      steps:
-        - template: buildAndDeployQueueListeners.yml
-          parameters:
-            serviceConnectionName: PfPDev-ab46c5b7b4fa
-            configuration: Release
-            appName: PfPDevQueueListeners
+    - deployment: ReleaseToPfPDev
+      environment: PfPDevAzure
+      displayName: Deploy Queue Listeners
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - template: buildAndDeployQueueListeners.yml
+                parameters:
+                  serviceConnectionName: PfPDev-ab46c5b7b4fa
+                  configuration: Release
+                  appName: PfPDevQueueListeners
 
   - stage: DeployQueueListenersToSysTest
     displayName: Deploy Queue Listeners to SysTest
     jobs:
-    - job : BuildAndDeploy
-      steps:
-        - template: buildAndDeployQueueListeners.yml
-          parameters:
-            serviceConnectionName: PfPSysTest-ec70
-            configuration: Release
-            appName: PfPSysTestQueueListeners
+    - deployment: ReleaseToPfPSysTest
+      environment: PfPSysTestAzure
+      displayName: Deploy Queue Listeners
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - template: buildAndDeployQueueListeners.yml
+                parameters:
+                  serviceConnectionName: PfPSysTest-ec70
+                  configuration: Release
+                  appName: PfPSysTestQueueListeners
 
   - stage: DeployQueueListenersToUAT
     displayName: Deploy Queue Listeners to UAT
     jobs:
-    - job : BuildAndDeploy
-      steps:
-        - template: buildAndDeployQueueListeners.yml
-          parameters:
-            serviceConnectionName: PfPUAT-e4a7
-            configuration: Release
-            appName: PfPUATQueueListeners
+    - deployment: ReleaseToPfPUAT
+      environment: PfPUATAzure
+      displayName: Deploy Queue Listeners
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - template: buildAndDeployQueueListeners.yml
+                parameters:
+                  serviceConnectionName: PfPUAT-e4a7
+                  configuration: Release
+                  appName: PfPUATQueueListeners
