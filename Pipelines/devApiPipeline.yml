@@ -15,5 +15,20 @@ stages:
           parameters:
             configuration: Release
 
+  - stage: DeployAPIToUAT
+    displayName: Deploy API to UAT
+    jobs:
+    - deployment: DeployAPIToPfPUAT
+      environment: PfPUATAzure
+      displayName: Deploy API
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - template: deployAPI.yml
+                parameters:
+                  serviceConnectionName: PfPUAT-8975
 
   
