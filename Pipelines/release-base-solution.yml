@@ -40,7 +40,7 @@ stages:
           minorversion : $(minor.version)
           releaseversion : $(release.version)
           solutionprefix : $(solution.prefix)
-          appFolderName : CanvasApps${{parameters.canvasApp}}
+          appFolderName : ${{parameters.canvasApp}}
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #----------------------------------End Stage-------------------------------------------------------------------
 #----------------------------------Start Stage-------------------------------------------------------------------
