@@ -12,12 +12,12 @@ variables:
 - name: pfpsystemtest.connection.string
   value: RequireNewInstance=True;AuthType=ClientSecret;ClientId=$(pfp.clientid);ClientSecret=$(pfp.clientsecret);Url=$(pfpsystemtest.url)
 
-- name: pfuat.instancename
+- name: pfpuat.instancename
   value: policeproductuat
-- name: pfuat.url
-  value: https://$(pfuat.instancename).crm11.dynamics.com
-- name: pfuat.connection.string
-  value: RequireNewInstance=True;AuthType=ClientSecret;ClientId=$(pfp.clientid);ClientSecret=$(pfp.clientsecret);Url=$(pfuat.url)
+- name: pfpuat.url
+  value: https://$(pfpuat.instancename).crm11.dynamics.com
+- name: pfpuat.connection.string
+  value: RequireNewInstance=True;AuthType=ClientSecret;ClientId=$(pfp.clientid);ClientSecret=$(pfp.clientsecret);Url=$(pfpuat.url)
 
   
 
