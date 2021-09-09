@@ -1,1 +1,0 @@
-& $PSScriptRoot\exportandextract.ps1 -folderName "CanvasAppsUseOfForce" -canvas $True -appName useofforcenew_0f460

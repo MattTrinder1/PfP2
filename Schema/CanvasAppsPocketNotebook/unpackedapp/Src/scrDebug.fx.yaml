@@ -1,0 +1,223 @@
+scrDebug As screen:
+
+    btnHome As button:
+        Height: =70
+        OnSelect: =Navigate(Screen_Home_Screen);
+        Size: =24
+        Text: ="Home"
+        Width: =177
+        ZIndex: =1
+
+    "Gallery1 As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+        Height: =484
+        Items: =blobsToSave
+        Layout: =Layout.Vertical
+        TemplatePadding: =0
+        TemplateSize: =Min(160, Self.Height - 60)
+        Y: =77
+        ZIndex: =2
+
+        Image2 As image:
+            Height: =128
+            Image: =ThisItem.blob
+            OnSelect: =Select(Parent)
+            Width: =128
+            X: =16
+            Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+            ZIndex: =1
+
+        Title1 As label:
+            Height: =25
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =13
+            Text: =ThisItem.id
+            VerticalAlign: =VerticalAlign.Top
+            Width: =467
+            X: =Image2.X + Image2.Width + 24
+            Y: =16
+            ZIndex: =2
+
+        Subtitle1 As label:
+            Height: =Self.Size * 1.8
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =13
+            Text: =ThisItem.caption
+            VerticalAlign: =VerticalAlign.Top
+            Width: =Title1.Width
+            X: =168
+            Y: =84
+            ZIndex: =3
+
+        NextArrow1 As icon.ChevronRight:
+            AccessibleLabel: =Self.Tooltip
+            Height: =60
+            Icon: =Icon.ChevronRight
+            OnSelect: =Select(Parent)
+            PaddingBottom: =10
+            PaddingLeft: =10
+            PaddingRight: =10
+            PaddingTop: =10
+            TabIndex: =0
+            Tooltip: ="View item details"
+            Width: =60
+            X: =Parent.TemplateWidth - Self.Width - 5
+            Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+            ZIndex: =4
+
+        Separator3 As rectangle:
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =Parent.TemplateWidth
+            Y: =Parent.TemplateHeight - 1
+            ZIndex: =5
+
+        Title1_1 As label:
+            Height: =25
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =13
+            Text: =ThisItem.blobId
+            VerticalAlign: =VerticalAlign.Top
+            Width: =467
+            X: =Image2.X + Image2.Width + 24
+            Y: =40
+            ZIndex: =6
+
+        Subtitle1_1 As label:
+            Height: =Self.Size * 1.8
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =13
+            Text: =ThisItem.noteId
+            VerticalAlign: =VerticalAlign.Top
+            Width: =Title1.Width
+            X: =168
+            Y: =127
+            ZIndex: =7
+
+    "Gallery4 As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+        Items: ='Notebook Offline'
+        Layout: =Layout.Vertical
+        TemplatePadding: =0
+        TemplateSize: =116
+        Y: =561
+        ZIndex: =3
+
+        Title3 As label:
+            Height: =Self.Size * 1.8
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =13
+            Text: =ThisItem.Id
+            VerticalAlign: =VerticalAlign.Top
+            Width: =Parent.TemplateWidth -  104
+            Y: =4
+            ZIndex: =2
+
+        Separator5 As rectangle:
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =Parent.TemplateWidth
+            Y: =Parent.TemplateHeight - 1
+            ZIndex: =5
+
+        Title3_1 As label:
+            Height: =Self.Size * 1.8
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =13
+            Text: ="complete   " & ThisItem.complete
+            VerticalAlign: =VerticalAlign.Top
+            Width: =Parent.TemplateWidth -  104
+            Y: =31
+            ZIndex: =6
+
+        Title3_2 As label:
+            Height: =Self.Size * 1.8
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =13
+            Text: ="ready to sync   " & ThisItem.readyToSync
+            VerticalAlign: =VerticalAlign.Top
+            Width: =Parent.TemplateWidth -  104
+            X: =1
+            Y: =59
+            ZIndex: =7
+
+        Title3_3 As label:
+            Height: =Self.Size * 1.8
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =13
+            Text: ="queued   " & ThisItem.queued
+            VerticalAlign: =VerticalAlign.Top
+            Width: =Parent.TemplateWidth -  104
+            X: =1
+            Y: =87
+            ZIndex: =8
+
+        Title3_4 As label:
+            Height: =28
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =13
+            Text: ="notes   " & ThisItem.Notes
+            VerticalAlign: =VerticalAlign.Top
+            Width: =442
+            X: =197
+            Y: =31
+            ZIndex: =9
+
+        Title3_5 As label:
+            Height: =44
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =13
+            Text: ="Sketch   " & ThisItem.SketchId
+            VerticalAlign: =VerticalAlign.Top
+            Width: =442
+            X: =197
+            Y: =54
+            ZIndex: =10
+
+    btnHome_1 As button:
+        Height: =70
+        OnSelect: =Clear(blobsToSave);Clear('Notebook Offline');Clear(UserPNBs)
+        Size: =24
+        Text: ="Clear All"
+        Width: =177
+        X: =351
+        ZIndex: =5
+

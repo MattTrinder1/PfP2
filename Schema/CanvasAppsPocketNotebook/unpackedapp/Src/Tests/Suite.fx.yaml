@@ -1,0 +1,38 @@
+"'ebd1d3f2-93bd-431f-93b2-521fac0186cb' As TestSuite":
+    Description: =""
+    DisplayName: ="Suite"
+
+    "'3ea60bed-cf2e-4cc9-9190-c94f9182388a' As TestCase":
+        Description: =""
+        DisplayName: ="Case"
+
+        Step1 As TestStep:
+            Description: ="Select 'Btn_save_56'"
+            Screen: =Screen_Home_Screen
+            Value: =Select(Btn_save_56)
+
+        Step2 As TestStep:
+            Description: ="Select 'Btn_save_56'"
+            Screen: =Screen_Home_Screen
+            Value: =Select(Btn_save_56)
+
+        Step3 As TestStep:
+            Description: ="Set 'txtNotes'.Text to ""12345"""
+            Screen: =Screen_Notes
+            Value: =SetProperty(txtNotes.Text, "12345")
+
+        Step4 As TestStep:
+            Description: ="Select 'Btn_save_Continue'"
+            Screen: =Screen_Notes
+            Value: =Select(Btn_save_Continue)
+
+        Step5 As TestStep:
+            Description: ="Select 'btnDebug'"
+            Screen: =Screen_Home_Screen
+            Value: =Select(btnDebug)
+
+        Step6 As TestStep:
+            Description: ="Select 'btnHome'"
+            Screen: =scrDebug
+            Value: =Select(btnHome)
+

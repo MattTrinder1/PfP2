@@ -1,0 +1,184 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{4b85f429-d674-4589-b4c1-cc4dfd49820e}</formid>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls">
+      <tabs>
+        <tab verticallayout="true" id="{67958a11-8073-4770-a9aa-65fc32a33295}" IsUserDefined="1">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{e756d14a-e884-4f24-976e-d214eb03456b}" columns="11">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{ce643131-7f16-48b2-a057-c218eb79566c}" locklevel="0">
+                        <labels>
+                          <label description="Ticket Type" languagecode="1033" />
+                        </labels>
+                        <control id="cp_tickettype" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_tickettype" disabled="false" />
+                      </cell>
+                      <cell locklevel="0" id="{b230039a-c3a3-402d-a7ff-4d175e7eaa0a}" rowspan="1" colspan="1">
+                        <labels>
+                          <label description="Offence Codes Violated" languagecode="1033" />
+                        </labels>
+                        <control id="Subgrid_1" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}" indicationOfSubgrid="true">
+                          <parameters>
+                            <TargetEntityType>cp_offencecode</TargetEntityType>
+                            <ViewId>{26348A78-6482-EB11-A812-000D3ADE2967}</ViewId>
+                            <ViewIds>{4351D0F5-34DF-405F-BCCE-51038CC17925},{26348A78-6482-EB11-A812-000D3ADE2967}</ViewIds>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <RelationshipName>cp_tickettypevdrs_cp_offencecode_cp_offen</RelationshipName>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{571c1e2b-900c-4c3b-b786-77e036516db8}">
+                        <labels>
+                          <label description="VDRS" languagecode="1033" />
+                        </labels>
+                        <control id="cp_vdrsid" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="cp_vdrsid" />
+                      </cell>
+                      <cell locklevel="0" id="{cec73f1c-13ad-4b6a-b76c-f104cdfa9963}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{dde715cf-e58a-4275-80f1-847e5df1d60b}" locklevel="0">
+                        <labels>
+                          <label description="VDRS Serial Number" languagecode="1033" />
+                        </labels>
+                        <control id="cp_vdrsserialnumber" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_vdrsserialnumber" disabled="false" />
+                      </cell>
+                      <cell locklevel="0" id="{ee1ccd3c-c42a-4ace-b108-402facc7d1b2}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{42f3558e-c601-44e5-a0c9-582ae3a9ef7c}" locklevel="0">
+                        <labels>
+                          <label description="Details" languagecode="1033" />
+                        </labels>
+                        <control id="cp_details" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="cp_details" disabled="false" />
+                      </cell>
+                      <cell locklevel="0" id="{7ac5d9d1-4111-474f-8c11-1458d5e39b79}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{fe829d02-7620-4954-8705-2ac872dc4c7a}" locklevel="0">
+                        <labels>
+                          <label description="VDRS Printed" languagecode="1033" />
+                        </labels>
+                        <control id="cp_vdrsprinted" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_vdrsprinted" disabled="false" />
+                      </cell>
+                      <cell locklevel="0" id="{12f8c85f-8735-40fb-92af-f286083b3405}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{51413bac-fa9a-4069-bc30-075a68369980}" locklevel="0">
+                        <labels>
+                          <label description="Offender Signature" languagecode="1033" />
+                        </labels>
+                        <control id="cp_offendersignature" classid="{7E548B0D-209C-477B-9DCD-F0F44472381D}" datafieldname="cp_offendersignature" disabled="false" />
+                      </cell>
+                      <cell locklevel="0" id="{def07b3c-e143-4fdc-ae6f-7e83e8fbd877}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{f65d2d3c-9f95-41e3-97a5-ae8e5b40cd60}">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+                      </cell>
+                      <cell locklevel="0" id="{66f45161-be3a-470f-886a-825247aa7050}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{bb5b9e43-3204-4d1c-9535-25dab011ebfb}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{9359b4b0-95e5-48bc-b89d-1311e1f5fe89}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{d24b3376-fcd3-4582-bcab-5dbb38b4a314}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{4beae33f-4d9b-452f-a694-6637c3dbd7cc}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <footer id="{dad23ed2-0b2f-47f3-ac5a-4b0cf0232563}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{7097c4a5-1f6d-42b8-b061-459cea54183e}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{ab749f17-ca9f-4e60-9e8f-d7b339fcc4a4}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{585ee35e-ffe4-43f6-809d-8e528a97bd32}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </footer>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Everyone />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

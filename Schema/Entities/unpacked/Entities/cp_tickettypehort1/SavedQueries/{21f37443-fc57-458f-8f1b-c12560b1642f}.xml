@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{21f37443-fc57-458f-8f1b-c12560b1642f}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cp_hort1id" select="1" icon="1" preview="1">
+        <row name="result" id="cp_tickettypehort1id">
+          <cell name="cp_tickettype" width="141" />
+          <cell name="cp_hort1id" width="174" />
+          <cell name="cp_checkorrecord" width="175" />
+          <cell name="cp_produceatstation" width="100" />
+          <cell name="cp_hort1serialnumber" width="179" />
+          <cell name="cp_hort1printed" width="100" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cp_tickettypehort1">
+          <attribute name="cp_tickettypehort1id" />
+          <attribute name="cp_hort1id" />
+          <attribute name="createdon" />
+          <order attribute="cp_hort1id" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="cp_tickettype" />
+          <attribute name="cp_hort1printed" />
+          <attribute name="cp_hort1serialnumber" />
+          <attribute name="cp_checkorrecord" />
+          <attribute name="cp_produceatstation" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Ticket Type - Hort1" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{220aa1c9-c7ce-4708-97fb-2fae030badf6}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cp_description" select="1" icon="1" preview="1">
+        <row name="result" id="cp_itsyourchoiceid">
+          <cell name="cp_incident" width="100" />
+          <cell name="cp_description" width="300" />
+          <cell name="cp_youthinvolved" width="100" />
+          <cell name="statuscode" width="100" />
+          <cell name="cp_alcoholrelated" width="100" />
+          <cell name="cp_actiontaken" width="100" />
+          <cell name="cp_tpa" width="100" />
+          <cell name="a_ab821b0f156deb11a8120022489abff7.cp_enteredby" width="100" disableSorting="1" />
+          <cell name="createdon" width="125" />
+          <cell name="cp_stwarninglettercreatedon" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+        <entity name="cp_itsyourchoice">
+          <attribute name="cp_description" />
+          <attribute name="createdon" />
+          <attribute name="cp_incident" />
+          <attribute name="cp_tpa" />
+          <attribute name="cp_actiontaken" />
+          <attribute name="cp_youthinvolved" />
+          <attribute name="cp_alcoholrelated" />
+          <attribute name="statuscode" />
+          <attribute name="cp_stwarninglettercreatedon" />
+          <order attribute="createdon" descending="true" />
+          <filter type="and">
+            <condition attribute="statuscode" operator="ne" value="778230003" />
+          </filter>
+          <link-entity alias="a_ab821b0f156deb11a8120022489abff7" name="cp_incident" from="cp_incidentid" to="cp_incident" link-type="outer" visible="false">
+            <attribute name="cp_enteredby" />
+          </link-entity>
+          <attribute name="cp_itsyourchoiceid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active It's Your Choices" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

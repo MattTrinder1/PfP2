@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{a454563f-9233-4899-ac1c-95ce558ed76f}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cp_vdrsid" select="1" icon="1" preview="1">
+        <row name="result" id="cp_tickettypevdrsid">
+          <cell name="cp_tickettype" width="100" />
+          <cell name="cp_vehicleticket" width="154" />
+          <cell name="cp_vdrsid" width="110" />
+          <cell name="cp_vdrsprinted" width="128" />
+          <cell name="cp_vdrsserialnumber" width="170" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cp_tickettypevdrs">
+          <attribute name="cp_tickettypevdrsid" />
+          <attribute name="cp_vdrsid" />
+          <attribute name="createdon" />
+          <order attribute="cp_vdrsid" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="cp_tickettype" />
+          <attribute name="cp_vehicleticket" />
+          <attribute name="cp_vdrsprinted" />
+          <attribute name="cp_vdrsserialnumber" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Ticket Type - VDRS" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

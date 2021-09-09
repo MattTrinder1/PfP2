@@ -1,0 +1,913 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{68eaa225-bb01-4175-9db3-94a23f736c34}</formid>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls">
+      <tabs>
+        <tab verticallayout="true" id="{07121468-9393-4b7c-aee3-45d437865472}" IsUserDefined="1" name="General_tab">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="50%">
+              <sections>
+                <section name="null_section_7" id="0e7c978d-2295-4ecf-ba33-4c91bd06f37a" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="Main Info" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{a82bd3b0-05e1-471f-8dfd-c62a27bdabc5}" locklevel="0">
+                        <labels>
+                          <label description="Vehicle Ticket STG" languagecode="1033" />
+                        </labels>
+                        <control id="cp_vehicleticketstgid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_vehicleticketstgid" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{65429161-f5f1-4b38-9dc4-8ab2aef87f05}" visible="true">
+                        <labels>
+                          <label description="Ticket Type" languagecode="1033" />
+                        </labels>
+                        <control id="cp_tickettype" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="cp_tickettype" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{9349ee58-a5fa-4375-a939-7eac817dad18}" locklevel="0">
+                        <labels>
+                          <label description="Ticket Type Value" languagecode="1033" />
+                        </labels>
+                        <control id="cp_tickettypevalue" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_tickettypevalue" disabled="false">
+                          <parameters>
+                            <AvailableViewIds>{EC3195C6-50C8-4196-8F2C-F237A7CD7D6B}</AvailableViewIds>
+                            <DisableViewPicker>true</DisableViewPicker>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{85257561-a980-4e14-9796-e3aa48a4af01}" locklevel="0">
+                        <labels>
+                          <label description="Staging Entry Status" languagecode="1033" />
+                        </labels>
+                        <control id="cp_stagingentrystatus" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="cp_stagingentrystatus" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{373071e9-b491-46a0-9dcc-0a37b50f998d}" locklevel="0" rowspan="5">
+                        <labels>
+                          <label description="Submission Error" languagecode="1033" />
+                        </labels>
+                        <control id="cp_submissionerror" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="cp_submissionerror" disabled="false" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row>
+                      <cell id="{70341095-11e6-47be-b3bd-5e98a3f3d7f5}" locklevel="0" rowspan="7">
+                        <labels>
+                          <label description="CTO Notes" languagecode="1033" />
+                        </labels>
+                        <control id="cp_ctonotes" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="cp_ctonotes" disabled="false" />
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row>
+                      <cell id="{1f2771f4-60cf-4e96-9c42-800d7fd68433}">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+            <column width="50%">
+              <sections>
+                <section showlabel="true" showbar="false" IsUserDefined="0" id="{fdce319d-6907-4431-b045-557b1a948d6f}" name="TrafficOffence">
+                  <labels>
+                    <label description="Traffic Offence Details" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{c1cc822c-494c-4d87-9bee-6d5878a75c2e}" locklevel="0" showlabel="true">
+                        <labels>
+                          <label description="Traffic Offence Code" languagecode="1033" />
+                        </labels>
+                        <control id="cp_offencecode" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_offencecode" disabled="false" uniqueid="{c0ead301-c85d-c74a-521b-1b42b85b4062}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{193c6548-f3a9-4deb-9d92-f70e2a5f1b30}" rowspan="7" colspan="1" auto="false" showlabel="true">
+                        <labels>
+                          <label description="Traffic Offence Codes" languagecode="1033" />
+                        </labels>
+                        <control id="Subgrid_TrafficOffenceCode" classid="{E7A81278-8635-4d9e-8D4D-59480B391C5B}" indicationOfSubgrid="true" uniqueid="{287ecddc-a572-b807-eca6-795d84696e43}">
+                          <parameters>
+                            <TargetEntityType>cp_offencecode</TargetEntityType>
+                            <ViewId>{8CFA5892-0667-EB11-A812-000D3AB40F79}</ViewId>
+                            <ViewIds>{4351D0F5-34DF-405F-BCCE-51038CC17925},{26348A78-6482-EB11-A812-000D3ADE2967},{8CFA5892-0667-EB11-A812-000D3AB40F79}</ViewIds>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <RelationshipName>cp_VehicleTicketOffencesSTG_Offencecode</RelationshipName>
+                            <RecordsPerPage>4</RecordsPerPage>
+                            <HeaderColorCode>#F3F3F3</HeaderColorCode>
+                            <IsUserView>false</IsUserView>
+                            <EnableQuickFind>true</EnableQuickFind>
+                            <EnableJumpBar>false</EnableJumpBar>
+                            <AutoExpand>Fixed</AutoExpand>
+                            <ChartGridMode>All</ChartGridMode>
+                            <VisualizationId />
+                            <IsUserChart>false</IsUserChart>
+                            <EnableChartPicker>true</EnableChartPicker>
+                            <RelationshipRoleOrdinal>2</RelationshipRoleOrdinal>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row>
+                      <cell id="{04453911-763c-4317-b1a2-e93df3e8ccd1}" locklevel="0">
+                        <labels>
+                          <label description="Contains Speed Limit" languagecode="1033" />
+                        </labels>
+                        <control id="cp_containsspeedlimit" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="cp_containsspeedlimit" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{e02a6544-7eb8-448e-bb69-6702d41c3e38}" locklevel="0">
+                        <labels>
+                          <label description="NIP Given" languagecode="1033" />
+                        </labels>
+                        <control id="cp_nipgiven" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="cp_nipgiven" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{08258873-f98b-440b-b767-fea26d0649d2}" locklevel="0">
+                        <labels>
+                          <label description="NIP Not Required" languagecode="1033" />
+                        </labels>
+                        <control id="cp_nipnotrequired" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="cp_nipnotrequired" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{3229a278-2d6a-4e3d-b168-5a8b9ec604a7}" locklevel="0">
+                        <labels>
+                          <label description="Offender Reply" languagecode="1033" />
+                        </labels>
+                        <control id="cp_offenderreply" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="cp_offenderreply" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{b161fccb-22d0-42ea-93a1-1fe033a361b1}" locklevel="0">
+                        <labels>
+                          <label description="Traffic Offence Serial Number" languagecode="1033" />
+                        </labels>
+                        <control id="cp_trafficoffenceserialnumber" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_trafficoffenceserialnumber" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{89ceadc1-d21f-44f0-83f0-4178049a9beb}" locklevel="0">
+                        <labels>
+                          <label description="Traffic Offence Printed" languagecode="1033" />
+                        </labels>
+                        <control id="cp_trafficoffenceprinted" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="cp_trafficoffenceprinted" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{22bbda12-6dd0-49c5-8443-ee3e54ec2ff9}" locklevel="0">
+                        <labels>
+                          <label description="Traffic Offence Signature" languagecode="1033" />
+                        </labels>
+                        <control id="cp_trafficoffencesignature" classid="{7E548B0D-209C-477B-9DCD-F0F44472381D}" datafieldname="cp_trafficoffencesignature" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="HORT1" id="83e86df4-f30e-4c97-b841-05fa9e8467ac" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="HORT1 Details" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{620ded93-9c9f-4f4e-8ec5-4ce221f240b8}" locklevel="0" visible="false">
+                        <labels>
+                          <label description="Document Type" languagecode="1033" />
+                        </labels>
+                        <control id="cp_documenttype" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_documenttype" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{525bb1cd-dfad-4bc5-9761-3df16ffd2c65}" rowspan="1" colspan="1">
+                        <labels>
+                          <label description="Documents" languagecode="1033" />
+                        </labels>
+                        <control id="Subgrid_HortDocuments" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}" indicationOfSubgrid="true">
+                          <parameters>
+                            <TargetEntityType>cp_vehicledocument</TargetEntityType>
+                            <ViewId>{D2401C64-5391-EB11-B1AC-000D3ADB2FD2}</ViewId>
+                            <ViewIds>{611A92A6-FE9C-4341-ABD0-A19538B78D0D},{D2401C64-5391-EB11-B1AC-000D3ADB2FD2}</ViewIds>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <RelationshipName>cp_VehicleTicketOffencesSTG_VehicleDoc</RelationshipName>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c65a4563-ed9d-4c84-a04f-8ca7955dc04f}" locklevel="0">
+                        <labels>
+                          <label description="Other Documents" languagecode="1033" />
+                        </labels>
+                        <control id="cp_otherdocuments" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="cp_otherdocuments" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{99c4e602-20cc-4dab-b771-2f7af50c33a2}" locklevel="0" visible="false">
+                        <labels>
+                          <label description="Check Or Record" languagecode="1033" />
+                        </labels>
+                        <control id="cp_checkorrecord" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_checkorrecord" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{b1de9405-eabd-eb14-d9c3-be9422097a14}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Check Or Record" languagecode="1033" />
+                        </labels>
+                        <control id="cp_checkorrecordvalue" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_checkorrecordvalue" disabled="false">
+                          <parameters>
+                            <DisableViewPicker>true</DisableViewPicker>
+                            <DefaultViewId>{59E0AE13-E05F-EB11-A812-0022489C7676}</DefaultViewId>
+                            <AvailableViewIds>{98C9EF77-661B-40BD-96EE-07219F646518},{E4F0EDD0-2171-EB11-A812-000D3AB01CF7},{C19B25C9-F454-EB11-A812-000D3A654F72},{C593B792-1460-EB11-A812-0022489C7676},{A57617C0-936F-EB11-A812-000D3AB02051},{8768549E-B184-EB11-A812-000D3AB52AB6},{BA199924-A173-EB11-A812-000D3ADC97FC},{CD69A3D1-ED66-EB11-A812-000D3AB40F79},{A3539D66-1460-EB11-A812-0022489C7676},{5F9FF6F5-AD55-EB11-A812-0022489BA6AD},{E1D5A784-7482-EB11-A812-000D3ADE2967},{A89CEB7D-FB38-4553-AC4C-05131A8C1D8E},{819C0A68-8E6F-EB11-A812-000D3AB01CF7},{A1A64C42-8D6F-EB11-A812-000D3AB02051},{B6B54E73-8D6F-EB11-A812-000D3AB02051},{3DCE2442-E2F0-4DB3-B452-AAE4F671E621},{DB04508E-DE5F-EB11-A812-0022489C7676},{0F3EFF22-1460-EB11-A812-0022489C7676},{19985683-355B-EB11-A812-000D3A654F72},{D195DC38-AF55-EB11-A812-0022489BA6AD},{382D4CE7-AE55-EB11-A812-0022489BA6AD},{3EFB640A-1460-EB11-A812-0022489C7676},{22B57983-AE55-EB11-A812-0022489BA6AD},{35CDF33B-2D80-EB11-A812-000D3ADE2019},{354721B3-DD6A-EB11-A812-0022489ABFF7},{FCBD2ED7-DD6A-EB11-A812-0022489ABFF7},{CAC23E60-FE5F-EB11-A812-0022489C7676},{9AAB6E30-A560-EB11-A812-0022489C79D7},{925419FF-5E61-EB11-A812-0022489C79D7},{CAADE9C7-DE5F-EB11-A812-0022489C79D7},{022C374E-DE5F-EB11-A812-0022489C79D7},{E710FBF2-9D58-EB11-A812-000D3A654F72},{945822DE-A558-EB11-A812-0022489BA6AD},{C10A993D-9F58-EB11-A812-000D3A654F72},{56AB753D-A658-EB11-A812-000D3A654F72},{8C71CAAC-A058-EB11-A812-000D3A654F72},{784982E5-B055-EB11-A812-0022489BA6AD},{840BC40C-B155-EB11-A812-0022489BA6AD},{1177AAF7-E058-EB11-A812-0022489BA6AD},{9C98B789-A558-EB11-A812-000D3A654F72},{2B1DC9D0-A458-EB11-A812-000D3A654F72},{62316204-A458-EB11-A812-000D3A654F72},{A8F5D347-A558-EB11-A812-000D3A654F72},{7B31CA6E-A458-EB11-A812-000D3A654F72},{BB7D072D-B155-EB11-A812-0022489BA6AD},{F6D357E3-BE67-EB11-A812-000D3AB403CD},{A1AE4C61-1360-EB11-A812-0022489C7676},{B64DB3E2-8473-EB11-A812-000D3ADC97FC},{3A9EA607-1360-EB11-A812-0022489C7676},{640F218B-1260-EB11-A812-0022489C79D7},{59E0AE13-E05F-EB11-A812-0022489C7676},{1BD06E48-E15F-EB11-A812-0022489C7676},{31015329-E15F-EB11-A812-0022489C7676},{7E70B7A4-1460-EB11-A812-0022489C7676},{59ACB3D7-1260-EB11-A812-0022489C7676},{43F23936-FA66-EB11-A812-000D3AB403CD},{01D3344E-1460-EB11-A812-0022489C7676},{9117323B-1460-EB11-A812-0022489C7676},{AE486149-1360-EB11-A812-0022489C7676},{C0C6A96D-0167-EB11-A812-000D3AB40F79},{3E00B7AD-1260-EB11-A812-0022489C7676},{1D9C4273-1360-EB11-A812-0022489C7676},{3821C329-1260-EB11-A812-0022489C7676},{640E53CD-FA66-EB11-A812-000D3AB40F79},{AB79147D-1460-EB11-A812-0022489C79D7},{A295F5B8-E45F-EB11-A812-0022489C79D7},{2880CBDA-E65F-EB11-A812-0022489C79D7},{A53BEDD5-1160-EB11-A812-0022489C7676},{0C68BA93-1160-EB11-A812-0022489C7676},{FFCB0C0E-1160-EB11-A812-0022489C7676},{7BFB745B-1160-EB11-A812-0022489C79D7},{E5D8B56F-1160-EB11-A812-0022489C7676},{9822EFB7-1160-EB11-A812-0022489C7676},{85A6965F-1260-EB11-A812-0022489C7676},{71EFB53B-1260-EB11-A812-0022489C7676},{CD7F9419-1360-EB11-A812-0022489C7676},{1DE85DF7-1160-EB11-A812-0022489C79D7},{F481B0C5-1260-EB11-A812-0022489C7676},{8F9FE2F1-FD66-EB11-A812-000D3AB403CD},{8667822B-1360-EB11-A812-0022489C7676}</AvailableViewIds>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{9f7ada13-6ff2-4907-97a9-66d17c4aa4e9}" locklevel="0" visible="false">
+                        <labels>
+                          <label description="Produce Station" languagecode="1033" />
+                        </labels>
+                        <control id="cp_producestation" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_producestation" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{e6d9a331-ecd0-d46d-9643-685bd4c56c3e}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Produce Station" languagecode="1033" />
+                        </labels>
+                        <control id="cp_producestationvalue" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_producestationvalue" disabled="false">
+                          <parameters>
+                            <DisableViewPicker>true</DisableViewPicker>
+                            <DefaultViewId>{7E70B7A4-1460-EB11-A812-0022489C7676}</DefaultViewId>
+                            <AvailableViewIds>{98C9EF77-661B-40BD-96EE-07219F646518},{E4F0EDD0-2171-EB11-A812-000D3AB01CF7},{C19B25C9-F454-EB11-A812-000D3A654F72},{C593B792-1460-EB11-A812-0022489C7676},{A57617C0-936F-EB11-A812-000D3AB02051},{8768549E-B184-EB11-A812-000D3AB52AB6},{BA199924-A173-EB11-A812-000D3ADC97FC},{CD69A3D1-ED66-EB11-A812-000D3AB40F79},{A3539D66-1460-EB11-A812-0022489C7676},{5F9FF6F5-AD55-EB11-A812-0022489BA6AD},{E1D5A784-7482-EB11-A812-000D3ADE2967},{A89CEB7D-FB38-4553-AC4C-05131A8C1D8E},{819C0A68-8E6F-EB11-A812-000D3AB01CF7},{A1A64C42-8D6F-EB11-A812-000D3AB02051},{B6B54E73-8D6F-EB11-A812-000D3AB02051},{3DCE2442-E2F0-4DB3-B452-AAE4F671E621},{DB04508E-DE5F-EB11-A812-0022489C7676},{0F3EFF22-1460-EB11-A812-0022489C7676},{19985683-355B-EB11-A812-000D3A654F72},{D195DC38-AF55-EB11-A812-0022489BA6AD},{382D4CE7-AE55-EB11-A812-0022489BA6AD},{3EFB640A-1460-EB11-A812-0022489C7676},{22B57983-AE55-EB11-A812-0022489BA6AD},{35CDF33B-2D80-EB11-A812-000D3ADE2019},{354721B3-DD6A-EB11-A812-0022489ABFF7},{FCBD2ED7-DD6A-EB11-A812-0022489ABFF7},{CAC23E60-FE5F-EB11-A812-0022489C7676},{9AAB6E30-A560-EB11-A812-0022489C79D7},{925419FF-5E61-EB11-A812-0022489C79D7},{CAADE9C7-DE5F-EB11-A812-0022489C79D7},{022C374E-DE5F-EB11-A812-0022489C79D7},{E710FBF2-9D58-EB11-A812-000D3A654F72},{945822DE-A558-EB11-A812-0022489BA6AD},{C10A993D-9F58-EB11-A812-000D3A654F72},{56AB753D-A658-EB11-A812-000D3A654F72},{8C71CAAC-A058-EB11-A812-000D3A654F72},{784982E5-B055-EB11-A812-0022489BA6AD},{840BC40C-B155-EB11-A812-0022489BA6AD},{1177AAF7-E058-EB11-A812-0022489BA6AD},{9C98B789-A558-EB11-A812-000D3A654F72},{2B1DC9D0-A458-EB11-A812-000D3A654F72},{62316204-A458-EB11-A812-000D3A654F72},{A8F5D347-A558-EB11-A812-000D3A654F72},{7B31CA6E-A458-EB11-A812-000D3A654F72},{BB7D072D-B155-EB11-A812-0022489BA6AD},{F6D357E3-BE67-EB11-A812-000D3AB403CD},{A1AE4C61-1360-EB11-A812-0022489C7676},{B64DB3E2-8473-EB11-A812-000D3ADC97FC},{3A9EA607-1360-EB11-A812-0022489C7676},{640F218B-1260-EB11-A812-0022489C79D7},{59E0AE13-E05F-EB11-A812-0022489C7676},{1BD06E48-E15F-EB11-A812-0022489C7676},{31015329-E15F-EB11-A812-0022489C7676},{7E70B7A4-1460-EB11-A812-0022489C7676},{59ACB3D7-1260-EB11-A812-0022489C7676},{43F23936-FA66-EB11-A812-000D3AB403CD},{01D3344E-1460-EB11-A812-0022489C7676},{9117323B-1460-EB11-A812-0022489C7676},{AE486149-1360-EB11-A812-0022489C7676},{C0C6A96D-0167-EB11-A812-000D3AB40F79},{3E00B7AD-1260-EB11-A812-0022489C7676},{1D9C4273-1360-EB11-A812-0022489C7676},{3821C329-1260-EB11-A812-0022489C7676},{640E53CD-FA66-EB11-A812-000D3AB40F79},{AB79147D-1460-EB11-A812-0022489C79D7},{A295F5B8-E45F-EB11-A812-0022489C79D7},{2880CBDA-E65F-EB11-A812-0022489C79D7},{A53BEDD5-1160-EB11-A812-0022489C7676},{0C68BA93-1160-EB11-A812-0022489C7676},{FFCB0C0E-1160-EB11-A812-0022489C7676},{7BFB745B-1160-EB11-A812-0022489C79D7},{E5D8B56F-1160-EB11-A812-0022489C7676},{9822EFB7-1160-EB11-A812-0022489C7676},{85A6965F-1260-EB11-A812-0022489C7676},{71EFB53B-1260-EB11-A812-0022489C7676},{CD7F9419-1360-EB11-A812-0022489C7676},{1DE85DF7-1160-EB11-A812-0022489C79D7},{F481B0C5-1260-EB11-A812-0022489C7676},{8F9FE2F1-FD66-EB11-A812-000D3AB403CD},{8667822B-1360-EB11-A812-0022489C7676}</AvailableViewIds>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{7836c5c5-b48d-44cf-ab8f-db2eb4d29c60}" locklevel="0">
+                        <labels>
+                          <label description="HORT1 Serial Number" languagecode="1033" />
+                        </labels>
+                        <control id="cp_hort1serialnumber" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_hort1serialnumber" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{951369b9-af54-418a-a480-5bd48671a662}" locklevel="0">
+                        <labels>
+                          <label description="HORT1 Printed" languagecode="1033" />
+                        </labels>
+                        <control id="cp_hort1printed" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="cp_hort1printed" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{e62ebb10-cc00-42ea-9560-2c0643542966}" locklevel="0">
+                        <labels>
+                          <label description="HORT1 Signature" languagecode="1033" />
+                        </labels>
+                        <control id="cp_hort1signature" classid="{7E548B0D-209C-477B-9DCD-F0F44472381D}" datafieldname="cp_hort1signature" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="VDRS" id="0d496247-2435-4006-95d0-86cc00aa0b9b" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="VDRS Details" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{d6bbfd59-b695-4eac-9ac0-965a9a5b5a89}" locklevel="0">
+                        <labels>
+                          <label description="VDR Offence Code" languagecode="1033" />
+                        </labels>
+                        <control id="cp_vdroffencecode" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_vdroffencecode" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{f1e8dd35-84a6-434c-84cb-49011b613c9f}" rowspan="7" colspan="1" auto="false" showlabel="true">
+                        <labels>
+                          <label description="VDRS Offence Codes" languagecode="1033" />
+                        </labels>
+                        <control id="Subgrid_VDRSOffenceCode" classid="{E7A81278-8635-4d9e-8D4D-59480B391C5B}" indicationOfSubgrid="true" uniqueid="{1228923c-357b-5571-d776-77d6311edca0}">
+                          <parameters>
+                            <TargetEntityType>cp_offencecode</TargetEntityType>
+                            <ViewId>{B71E4CBC-0667-EB11-A812-000D3AB40F79}</ViewId>
+                            <ViewIds>{4351D0F5-34DF-405F-BCCE-51038CC17925},{B71E4CBC-0667-EB11-A812-000D3AB40F79}</ViewIds>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <RelationshipName>cp_VehicleTicketOffencesSTG_Offencecode</RelationshipName>
+                            <RecordsPerPage>4</RecordsPerPage>
+                            <HeaderColorCode>#F3F3F3</HeaderColorCode>
+                            <IsUserView>false</IsUserView>
+                            <EnableQuickFind>true</EnableQuickFind>
+                            <EnableJumpBar>false</EnableJumpBar>
+                            <AutoExpand>Fixed</AutoExpand>
+                            <ChartGridMode>All</ChartGridMode>
+                            <VisualizationId />
+                            <IsUserChart>false</IsUserChart>
+                            <EnableChartPicker>true</EnableChartPicker>
+                            <RelationshipRoleOrdinal>2</RelationshipRoleOrdinal>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row />
+                    <row>
+                      <cell id="{5d809865-a27d-4868-9b7f-365b09eb078a}" locklevel="0">
+                        <labels>
+                          <label description="VDRS Serial Number" languagecode="1033" />
+                        </labels>
+                        <control id="cp_vdrsserialnumber" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_vdrsserialnumber" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{57494860-daa2-4e94-b4e0-a0d888d08a32}" locklevel="0">
+                        <labels>
+                          <label description="VDRS Printed" languagecode="1033" />
+                        </labels>
+                        <control id="cp_vdrsprinted" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="cp_vdrsprinted" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{1fb4ada4-501b-4064-8750-398dfae98825}" locklevel="0">
+                        <labels>
+                          <label description="VDRS Details" languagecode="1033" />
+                        </labels>
+                        <control id="cp_vdrsdetails" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="cp_vdrsdetails" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c767641a-72ea-4fdf-bfe6-a5f640536366}" locklevel="0">
+                        <labels>
+                          <label description="VDRS Signature" languagecode="1033" />
+                        </labels>
+                        <control id="cp_vdrssignature" classid="{7E548B0D-209C-477B-9DCD-F0F44472381D}" datafieldname="cp_vdrssignature" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="S165" id="a68a0b70-0254-4b80-b49e-9391d09b4000" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="Section 165 Details" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{f5a0a526-cc4b-4e8c-b20a-41db4b60207f}" locklevel="0" visible="false">
+                        <labels>
+                          <label description="Without" languagecode="1033" />
+                        </labels>
+                        <control id="cp_without" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_without" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{a02c09a1-1dc0-54cc-c6c9-4a064398cb55}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Without" languagecode="1033" />
+                        </labels>
+                        <control id="cp_withoutvalue" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_withoutvalue" disabled="false">
+                          <parameters>
+                            <DisableViewPicker>true</DisableViewPicker>
+                            <DefaultViewId>{2880CBDA-E65F-EB11-A812-0022489C79D7}</DefaultViewId>
+                            <AvailableViewIds>{98C9EF77-661B-40BD-96EE-07219F646518},{E4F0EDD0-2171-EB11-A812-000D3AB01CF7},{C19B25C9-F454-EB11-A812-000D3A654F72},{C593B792-1460-EB11-A812-0022489C7676},{A57617C0-936F-EB11-A812-000D3AB02051},{8768549E-B184-EB11-A812-000D3AB52AB6},{BA199924-A173-EB11-A812-000D3ADC97FC},{CD69A3D1-ED66-EB11-A812-000D3AB40F79},{A3539D66-1460-EB11-A812-0022489C7676},{5F9FF6F5-AD55-EB11-A812-0022489BA6AD},{E1D5A784-7482-EB11-A812-000D3ADE2967},{A89CEB7D-FB38-4553-AC4C-05131A8C1D8E},{819C0A68-8E6F-EB11-A812-000D3AB01CF7},{A1A64C42-8D6F-EB11-A812-000D3AB02051},{B6B54E73-8D6F-EB11-A812-000D3AB02051},{3DCE2442-E2F0-4DB3-B452-AAE4F671E621},{DB04508E-DE5F-EB11-A812-0022489C7676},{0F3EFF22-1460-EB11-A812-0022489C7676},{19985683-355B-EB11-A812-000D3A654F72},{D195DC38-AF55-EB11-A812-0022489BA6AD},{382D4CE7-AE55-EB11-A812-0022489BA6AD},{3EFB640A-1460-EB11-A812-0022489C7676},{22B57983-AE55-EB11-A812-0022489BA6AD},{35CDF33B-2D80-EB11-A812-000D3ADE2019},{354721B3-DD6A-EB11-A812-0022489ABFF7},{FCBD2ED7-DD6A-EB11-A812-0022489ABFF7},{CAC23E60-FE5F-EB11-A812-0022489C7676},{9AAB6E30-A560-EB11-A812-0022489C79D7},{925419FF-5E61-EB11-A812-0022489C79D7},{CAADE9C7-DE5F-EB11-A812-0022489C79D7},{022C374E-DE5F-EB11-A812-0022489C79D7},{E710FBF2-9D58-EB11-A812-000D3A654F72},{945822DE-A558-EB11-A812-0022489BA6AD},{C10A993D-9F58-EB11-A812-000D3A654F72},{56AB753D-A658-EB11-A812-000D3A654F72},{8C71CAAC-A058-EB11-A812-000D3A654F72},{784982E5-B055-EB11-A812-0022489BA6AD},{840BC40C-B155-EB11-A812-0022489BA6AD},{1177AAF7-E058-EB11-A812-0022489BA6AD},{9C98B789-A558-EB11-A812-000D3A654F72},{2B1DC9D0-A458-EB11-A812-000D3A654F72},{62316204-A458-EB11-A812-000D3A654F72},{A8F5D347-A558-EB11-A812-000D3A654F72},{7B31CA6E-A458-EB11-A812-000D3A654F72},{BB7D072D-B155-EB11-A812-0022489BA6AD},{F6D357E3-BE67-EB11-A812-000D3AB403CD},{A1AE4C61-1360-EB11-A812-0022489C7676},{B64DB3E2-8473-EB11-A812-000D3ADC97FC},{3A9EA607-1360-EB11-A812-0022489C7676},{640F218B-1260-EB11-A812-0022489C79D7},{59E0AE13-E05F-EB11-A812-0022489C7676},{1BD06E48-E15F-EB11-A812-0022489C7676},{31015329-E15F-EB11-A812-0022489C7676},{7E70B7A4-1460-EB11-A812-0022489C7676},{59ACB3D7-1260-EB11-A812-0022489C7676},{43F23936-FA66-EB11-A812-000D3AB403CD},{01D3344E-1460-EB11-A812-0022489C7676},{9117323B-1460-EB11-A812-0022489C7676},{AE486149-1360-EB11-A812-0022489C7676},{C0C6A96D-0167-EB11-A812-000D3AB40F79},{3E00B7AD-1260-EB11-A812-0022489C7676},{1D9C4273-1360-EB11-A812-0022489C7676},{3821C329-1260-EB11-A812-0022489C7676},{640E53CD-FA66-EB11-A812-000D3AB40F79},{AB79147D-1460-EB11-A812-0022489C79D7},{A295F5B8-E45F-EB11-A812-0022489C79D7},{2880CBDA-E65F-EB11-A812-0022489C79D7},{A53BEDD5-1160-EB11-A812-0022489C7676},{0C68BA93-1160-EB11-A812-0022489C7676},{FFCB0C0E-1160-EB11-A812-0022489C7676},{7BFB745B-1160-EB11-A812-0022489C79D7},{E5D8B56F-1160-EB11-A812-0022489C7676},{9822EFB7-1160-EB11-A812-0022489C7676},{85A6965F-1260-EB11-A812-0022489C7676},{71EFB53B-1260-EB11-A812-0022489C7676},{CD7F9419-1360-EB11-A812-0022489C7676},{1DE85DF7-1160-EB11-A812-0022489C79D7},{F481B0C5-1260-EB11-A812-0022489C7676},{8F9FE2F1-FD66-EB11-A812-000D3AB403CD},{8667822B-1360-EB11-A812-0022489C7676}</AvailableViewIds>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{f8eecaef-c9a0-4734-8111-6a9df99c8947}" locklevel="0" visible="false">
+                        <labels>
+                          <label description="Designated Station" languagecode="1033" />
+                        </labels>
+                        <control id="cp_designatedstation" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_designatedstation" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{dbbc56b8-cc96-6ea2-be59-c730477edea3}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Designated Station" languagecode="1033" />
+                        </labels>
+                        <control id="cp_designatedstationvalue" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_designatedstationvalue" disabled="false">
+                          <parameters>
+                            <DefaultViewId>{A295F5B8-E45F-EB11-A812-0022489C79D7}</DefaultViewId>
+                            <AvailableViewIds>{98C9EF77-661B-40BD-96EE-07219F646518},{E4F0EDD0-2171-EB11-A812-000D3AB01CF7},{C19B25C9-F454-EB11-A812-000D3A654F72},{C593B792-1460-EB11-A812-0022489C7676},{A57617C0-936F-EB11-A812-000D3AB02051},{8768549E-B184-EB11-A812-000D3AB52AB6},{BA199924-A173-EB11-A812-000D3ADC97FC},{CD69A3D1-ED66-EB11-A812-000D3AB40F79},{A3539D66-1460-EB11-A812-0022489C7676},{5F9FF6F5-AD55-EB11-A812-0022489BA6AD},{E1D5A784-7482-EB11-A812-000D3ADE2967},{A89CEB7D-FB38-4553-AC4C-05131A8C1D8E},{819C0A68-8E6F-EB11-A812-000D3AB01CF7},{A1A64C42-8D6F-EB11-A812-000D3AB02051},{B6B54E73-8D6F-EB11-A812-000D3AB02051},{3DCE2442-E2F0-4DB3-B452-AAE4F671E621},{DB04508E-DE5F-EB11-A812-0022489C7676},{0F3EFF22-1460-EB11-A812-0022489C7676},{19985683-355B-EB11-A812-000D3A654F72},{D195DC38-AF55-EB11-A812-0022489BA6AD},{382D4CE7-AE55-EB11-A812-0022489BA6AD},{3EFB640A-1460-EB11-A812-0022489C7676},{22B57983-AE55-EB11-A812-0022489BA6AD},{35CDF33B-2D80-EB11-A812-000D3ADE2019},{354721B3-DD6A-EB11-A812-0022489ABFF7},{FCBD2ED7-DD6A-EB11-A812-0022489ABFF7},{CAC23E60-FE5F-EB11-A812-0022489C7676},{9AAB6E30-A560-EB11-A812-0022489C79D7},{925419FF-5E61-EB11-A812-0022489C79D7},{CAADE9C7-DE5F-EB11-A812-0022489C79D7},{022C374E-DE5F-EB11-A812-0022489C79D7},{E710FBF2-9D58-EB11-A812-000D3A654F72},{945822DE-A558-EB11-A812-0022489BA6AD},{C10A993D-9F58-EB11-A812-000D3A654F72},{56AB753D-A658-EB11-A812-000D3A654F72},{8C71CAAC-A058-EB11-A812-000D3A654F72},{784982E5-B055-EB11-A812-0022489BA6AD},{840BC40C-B155-EB11-A812-0022489BA6AD},{1177AAF7-E058-EB11-A812-0022489BA6AD},{9C98B789-A558-EB11-A812-000D3A654F72},{2B1DC9D0-A458-EB11-A812-000D3A654F72},{62316204-A458-EB11-A812-000D3A654F72},{A8F5D347-A558-EB11-A812-000D3A654F72},{7B31CA6E-A458-EB11-A812-000D3A654F72},{BB7D072D-B155-EB11-A812-0022489BA6AD},{F6D357E3-BE67-EB11-A812-000D3AB403CD},{A1AE4C61-1360-EB11-A812-0022489C7676},{B64DB3E2-8473-EB11-A812-000D3ADC97FC},{3A9EA607-1360-EB11-A812-0022489C7676},{640F218B-1260-EB11-A812-0022489C79D7},{59E0AE13-E05F-EB11-A812-0022489C7676},{1BD06E48-E15F-EB11-A812-0022489C7676},{31015329-E15F-EB11-A812-0022489C7676},{7E70B7A4-1460-EB11-A812-0022489C7676},{59ACB3D7-1260-EB11-A812-0022489C7676},{43F23936-FA66-EB11-A812-000D3AB403CD},{01D3344E-1460-EB11-A812-0022489C7676},{9117323B-1460-EB11-A812-0022489C7676},{AE486149-1360-EB11-A812-0022489C7676},{C0C6A96D-0167-EB11-A812-000D3AB40F79},{3E00B7AD-1260-EB11-A812-0022489C7676},{1D9C4273-1360-EB11-A812-0022489C7676},{3821C329-1260-EB11-A812-0022489C7676},{640E53CD-FA66-EB11-A812-000D3AB40F79},{AB79147D-1460-EB11-A812-0022489C79D7},{A295F5B8-E45F-EB11-A812-0022489C79D7},{2880CBDA-E65F-EB11-A812-0022489C79D7},{A53BEDD5-1160-EB11-A812-0022489C7676},{0C68BA93-1160-EB11-A812-0022489C7676},{FFCB0C0E-1160-EB11-A812-0022489C7676},{7BFB745B-1160-EB11-A812-0022489C79D7},{E5D8B56F-1160-EB11-A812-0022489C7676},{9822EFB7-1160-EB11-A812-0022489C7676},{85A6965F-1260-EB11-A812-0022489C7676},{71EFB53B-1260-EB11-A812-0022489C7676},{CD7F9419-1360-EB11-A812-0022489C7676},{1DE85DF7-1160-EB11-A812-0022489C79D7},{F481B0C5-1260-EB11-A812-0022489C7676},{8F9FE2F1-FD66-EB11-A812-000D3AB403CD},{8667822B-1360-EB11-A812-0022489C7676}</AvailableViewIds>
+                            <DisableViewPicker>true</DisableViewPicker>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c852c7b2-e8ef-4e81-ab7c-30b9461f380c}" locklevel="0" visible="false">
+                        <labels>
+                          <label description="S165 Recovery Garage" languagecode="1033" />
+                        </labels>
+                        <control id="cp_s165recoverygarage" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_s165recoverygarage" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{ca29ec56-bca0-59ed-2929-89cd950dd0b9}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="S165 Recovery Garage" languagecode="1033" />
+                        </labels>
+                        <control id="cp_s165recoverygaragevalue" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_s165recoverygaragevalue" disabled="false">
+                          <parameters>
+                            <DefaultViewId>{3EE5AD83-827A-EB11-A812-000D3AB7AF16}</DefaultViewId>
+                            <AvailableViewIds>{A9AF0AB8-861D-4CFA-92A5-C6281FED7FAB},{15C63745-0A6E-4322-8416-A62C84D90279},{CFBCD7AF-AEE5-4E45-8ECC-C040D4020581},{49FB9771-09E1-4E70-B193-198752493577},{00000000-0000-0000-00AA-000010001002},{65FFAF9A-E8C5-432D-860B-32F841B00D87},{00000000-0000-0000-00AA-000010001031},{00000000-0000-0000-00AA-000010001001},{D234426E-1F37-4944-9255-50E19B541C4C},{3EE5AD83-827A-EB11-A812-000D3AB7AF16}</AvailableViewIds>
+                            <DisableViewPicker>true</DisableViewPicker>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{51f954e7-eb87-4461-8fa5-c29b9266c124}" locklevel="0">
+                        <labels>
+                          <label description="Section 165 Printed" languagecode="1033" />
+                        </labels>
+                        <control id="cp_section165printed" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="cp_section165printed" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{7a62c554-7a0c-4f5b-b768-3108abfe8a28}" locklevel="0">
+                        <labels>
+                          <label description="Section165 Signature" languagecode="1033" />
+                        </labels>
+                        <control id="cp_section165signature" classid="{7E548B0D-209C-477B-9DCD-F0F44472381D}" datafieldname="cp_section165signature" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="S59" id="b0cac2d2-89f2-4171-ba4e-96dc385f8c1d" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="Section 59 Details" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{34162a4d-14f1-4c3c-b348-57c89785d886}" locklevel="0" visible="false">
+                        <labels>
+                          <label description="Section" languagecode="1033" />
+                        </labels>
+                        <control id="cp_section" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_section" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{41b153ec-13e4-3296-e61e-b6bc7d569bb0}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Section" languagecode="1033" />
+                        </labels>
+                        <control id="cp_sectionvalue" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_sectionvalue" disabled="false">
+                          <parameters>
+                            <DisableViewPicker>true</DisableViewPicker>
+                            <DefaultViewId>{FFCB0C0E-1160-EB11-A812-0022489C7676}</DefaultViewId>
+                            <AvailableViewIds>{98C9EF77-661B-40BD-96EE-07219F646518},{E4F0EDD0-2171-EB11-A812-000D3AB01CF7},{C19B25C9-F454-EB11-A812-000D3A654F72},{C593B792-1460-EB11-A812-0022489C7676},{A57617C0-936F-EB11-A812-000D3AB02051},{8768549E-B184-EB11-A812-000D3AB52AB6},{BA199924-A173-EB11-A812-000D3ADC97FC},{CD69A3D1-ED66-EB11-A812-000D3AB40F79},{A3539D66-1460-EB11-A812-0022489C7676},{5F9FF6F5-AD55-EB11-A812-0022489BA6AD},{E1D5A784-7482-EB11-A812-000D3ADE2967},{A89CEB7D-FB38-4553-AC4C-05131A8C1D8E},{819C0A68-8E6F-EB11-A812-000D3AB01CF7},{A1A64C42-8D6F-EB11-A812-000D3AB02051},{B6B54E73-8D6F-EB11-A812-000D3AB02051},{3DCE2442-E2F0-4DB3-B452-AAE4F671E621},{DB04508E-DE5F-EB11-A812-0022489C7676},{0F3EFF22-1460-EB11-A812-0022489C7676},{19985683-355B-EB11-A812-000D3A654F72},{D195DC38-AF55-EB11-A812-0022489BA6AD},{382D4CE7-AE55-EB11-A812-0022489BA6AD},{3EFB640A-1460-EB11-A812-0022489C7676},{22B57983-AE55-EB11-A812-0022489BA6AD},{35CDF33B-2D80-EB11-A812-000D3ADE2019},{354721B3-DD6A-EB11-A812-0022489ABFF7},{FCBD2ED7-DD6A-EB11-A812-0022489ABFF7},{CAC23E60-FE5F-EB11-A812-0022489C7676},{9AAB6E30-A560-EB11-A812-0022489C79D7},{925419FF-5E61-EB11-A812-0022489C79D7},{CAADE9C7-DE5F-EB11-A812-0022489C79D7},{022C374E-DE5F-EB11-A812-0022489C79D7},{E710FBF2-9D58-EB11-A812-000D3A654F72},{945822DE-A558-EB11-A812-0022489BA6AD},{C10A993D-9F58-EB11-A812-000D3A654F72},{56AB753D-A658-EB11-A812-000D3A654F72},{8C71CAAC-A058-EB11-A812-000D3A654F72},{784982E5-B055-EB11-A812-0022489BA6AD},{840BC40C-B155-EB11-A812-0022489BA6AD},{1177AAF7-E058-EB11-A812-0022489BA6AD},{9C98B789-A558-EB11-A812-000D3A654F72},{2B1DC9D0-A458-EB11-A812-000D3A654F72},{62316204-A458-EB11-A812-000D3A654F72},{A8F5D347-A558-EB11-A812-000D3A654F72},{7B31CA6E-A458-EB11-A812-000D3A654F72},{BB7D072D-B155-EB11-A812-0022489BA6AD},{F6D357E3-BE67-EB11-A812-000D3AB403CD},{A1AE4C61-1360-EB11-A812-0022489C7676},{B64DB3E2-8473-EB11-A812-000D3ADC97FC},{3A9EA607-1360-EB11-A812-0022489C7676},{640F218B-1260-EB11-A812-0022489C79D7},{59E0AE13-E05F-EB11-A812-0022489C7676},{1BD06E48-E15F-EB11-A812-0022489C7676},{31015329-E15F-EB11-A812-0022489C7676},{7E70B7A4-1460-EB11-A812-0022489C7676},{59ACB3D7-1260-EB11-A812-0022489C7676},{43F23936-FA66-EB11-A812-000D3AB403CD},{01D3344E-1460-EB11-A812-0022489C7676},{9117323B-1460-EB11-A812-0022489C7676},{AE486149-1360-EB11-A812-0022489C7676},{C0C6A96D-0167-EB11-A812-000D3AB40F79},{3E00B7AD-1260-EB11-A812-0022489C7676},{1D9C4273-1360-EB11-A812-0022489C7676},{3821C329-1260-EB11-A812-0022489C7676},{640E53CD-FA66-EB11-A812-000D3AB40F79},{AB79147D-1460-EB11-A812-0022489C79D7},{A295F5B8-E45F-EB11-A812-0022489C79D7},{2880CBDA-E65F-EB11-A812-0022489C79D7},{A53BEDD5-1160-EB11-A812-0022489C7676},{0C68BA93-1160-EB11-A812-0022489C7676},{FFCB0C0E-1160-EB11-A812-0022489C7676},{7BFB745B-1160-EB11-A812-0022489C79D7},{E5D8B56F-1160-EB11-A812-0022489C7676},{9822EFB7-1160-EB11-A812-0022489C7676},{85A6965F-1260-EB11-A812-0022489C7676},{71EFB53B-1260-EB11-A812-0022489C7676},{CD7F9419-1360-EB11-A812-0022489C7676},{1DE85DF7-1160-EB11-A812-0022489C79D7},{F481B0C5-1260-EB11-A812-0022489C7676},{8F9FE2F1-FD66-EB11-A812-000D3AB403CD},{8667822B-1360-EB11-A812-0022489C7676}</AvailableViewIds>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{64ab5585-82db-4f4d-bd17-26693b033874}" locklevel="0" visible="false">
+                        <labels>
+                          <label description="Warning or Seizure?" languagecode="1033" />
+                        </labels>
+                        <control id="cp_warningorseizure" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_warningorseizure" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{0dac6726-0970-0b7c-adb3-60c50d69c2b2}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Warning or Seizure" languagecode="1033" />
+                        </labels>
+                        <control id="cp_warningorseizurevalue" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_warningorseizurevalue" disabled="false">
+                          <parameters>
+                            <DisableViewPicker>true</DisableViewPicker>
+                            <DefaultViewId>{7BFB745B-1160-EB11-A812-0022489C79D7}</DefaultViewId>
+                            <AvailableViewIds>{98C9EF77-661B-40BD-96EE-07219F646518},{E4F0EDD0-2171-EB11-A812-000D3AB01CF7},{C19B25C9-F454-EB11-A812-000D3A654F72},{C593B792-1460-EB11-A812-0022489C7676},{A57617C0-936F-EB11-A812-000D3AB02051},{8768549E-B184-EB11-A812-000D3AB52AB6},{BA199924-A173-EB11-A812-000D3ADC97FC},{CD69A3D1-ED66-EB11-A812-000D3AB40F79},{A3539D66-1460-EB11-A812-0022489C7676},{5F9FF6F5-AD55-EB11-A812-0022489BA6AD},{E1D5A784-7482-EB11-A812-000D3ADE2967},{A89CEB7D-FB38-4553-AC4C-05131A8C1D8E},{819C0A68-8E6F-EB11-A812-000D3AB01CF7},{A1A64C42-8D6F-EB11-A812-000D3AB02051},{B6B54E73-8D6F-EB11-A812-000D3AB02051},{3DCE2442-E2F0-4DB3-B452-AAE4F671E621},{DB04508E-DE5F-EB11-A812-0022489C7676},{0F3EFF22-1460-EB11-A812-0022489C7676},{19985683-355B-EB11-A812-000D3A654F72},{D195DC38-AF55-EB11-A812-0022489BA6AD},{382D4CE7-AE55-EB11-A812-0022489BA6AD},{3EFB640A-1460-EB11-A812-0022489C7676},{22B57983-AE55-EB11-A812-0022489BA6AD},{35CDF33B-2D80-EB11-A812-000D3ADE2019},{354721B3-DD6A-EB11-A812-0022489ABFF7},{FCBD2ED7-DD6A-EB11-A812-0022489ABFF7},{CAC23E60-FE5F-EB11-A812-0022489C7676},{9AAB6E30-A560-EB11-A812-0022489C79D7},{925419FF-5E61-EB11-A812-0022489C79D7},{CAADE9C7-DE5F-EB11-A812-0022489C79D7},{022C374E-DE5F-EB11-A812-0022489C79D7},{E710FBF2-9D58-EB11-A812-000D3A654F72},{945822DE-A558-EB11-A812-0022489BA6AD},{C10A993D-9F58-EB11-A812-000D3A654F72},{56AB753D-A658-EB11-A812-000D3A654F72},{8C71CAAC-A058-EB11-A812-000D3A654F72},{784982E5-B055-EB11-A812-0022489BA6AD},{840BC40C-B155-EB11-A812-0022489BA6AD},{1177AAF7-E058-EB11-A812-0022489BA6AD},{9C98B789-A558-EB11-A812-000D3A654F72},{2B1DC9D0-A458-EB11-A812-000D3A654F72},{62316204-A458-EB11-A812-000D3A654F72},{A8F5D347-A558-EB11-A812-000D3A654F72},{7B31CA6E-A458-EB11-A812-000D3A654F72},{BB7D072D-B155-EB11-A812-0022489BA6AD},{F6D357E3-BE67-EB11-A812-000D3AB403CD},{A1AE4C61-1360-EB11-A812-0022489C7676},{B64DB3E2-8473-EB11-A812-000D3ADC97FC},{3A9EA607-1360-EB11-A812-0022489C7676},{640F218B-1260-EB11-A812-0022489C79D7},{59E0AE13-E05F-EB11-A812-0022489C7676},{1BD06E48-E15F-EB11-A812-0022489C7676},{31015329-E15F-EB11-A812-0022489C7676},{7E70B7A4-1460-EB11-A812-0022489C7676},{59ACB3D7-1260-EB11-A812-0022489C7676},{43F23936-FA66-EB11-A812-000D3AB403CD},{01D3344E-1460-EB11-A812-0022489C7676},{9117323B-1460-EB11-A812-0022489C7676},{AE486149-1360-EB11-A812-0022489C7676},{C0C6A96D-0167-EB11-A812-000D3AB40F79},{3E00B7AD-1260-EB11-A812-0022489C7676},{1D9C4273-1360-EB11-A812-0022489C7676},{3821C329-1260-EB11-A812-0022489C7676},{640E53CD-FA66-EB11-A812-000D3AB40F79},{AB79147D-1460-EB11-A812-0022489C79D7},{A295F5B8-E45F-EB11-A812-0022489C79D7},{2880CBDA-E65F-EB11-A812-0022489C79D7},{A53BEDD5-1160-EB11-A812-0022489C7676},{0C68BA93-1160-EB11-A812-0022489C7676},{FFCB0C0E-1160-EB11-A812-0022489C7676},{7BFB745B-1160-EB11-A812-0022489C79D7},{E5D8B56F-1160-EB11-A812-0022489C7676},{9822EFB7-1160-EB11-A812-0022489C7676},{85A6965F-1260-EB11-A812-0022489C7676},{71EFB53B-1260-EB11-A812-0022489C7676},{CD7F9419-1360-EB11-A812-0022489C7676},{1DE85DF7-1160-EB11-A812-0022489C79D7},{F481B0C5-1260-EB11-A812-0022489C7676},{8F9FE2F1-FD66-EB11-A812-000D3AB403CD},{8667822B-1360-EB11-A812-0022489C7676}</AvailableViewIds>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{92f47cec-df1a-4711-bff9-03bd7852a31b}" locklevel="0" visible="false">
+                        <labels>
+                          <label description="You - Wording1" languagecode="1033" />
+                        </labels>
+                        <control id="cp_youwording1" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_youwording1" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{74c39150-3919-978a-6b06-67a41aa917a4}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="You - Wording1" languagecode="1033" />
+                        </labels>
+                        <control id="cp_youwording1value" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_youwording1value" disabled="false">
+                          <parameters>
+                            <DisableViewPicker>true</DisableViewPicker>
+                            <DefaultViewId>{E5D8B56F-1160-EB11-A812-0022489C7676}</DefaultViewId>
+                            <AvailableViewIds>{98C9EF77-661B-40BD-96EE-07219F646518},{E4F0EDD0-2171-EB11-A812-000D3AB01CF7},{C19B25C9-F454-EB11-A812-000D3A654F72},{C593B792-1460-EB11-A812-0022489C7676},{A57617C0-936F-EB11-A812-000D3AB02051},{8768549E-B184-EB11-A812-000D3AB52AB6},{BA199924-A173-EB11-A812-000D3ADC97FC},{CD69A3D1-ED66-EB11-A812-000D3AB40F79},{A3539D66-1460-EB11-A812-0022489C7676},{5F9FF6F5-AD55-EB11-A812-0022489BA6AD},{E1D5A784-7482-EB11-A812-000D3ADE2967},{A89CEB7D-FB38-4553-AC4C-05131A8C1D8E},{819C0A68-8E6F-EB11-A812-000D3AB01CF7},{A1A64C42-8D6F-EB11-A812-000D3AB02051},{B6B54E73-8D6F-EB11-A812-000D3AB02051},{3DCE2442-E2F0-4DB3-B452-AAE4F671E621},{DB04508E-DE5F-EB11-A812-0022489C7676},{0F3EFF22-1460-EB11-A812-0022489C7676},{19985683-355B-EB11-A812-000D3A654F72},{D195DC38-AF55-EB11-A812-0022489BA6AD},{382D4CE7-AE55-EB11-A812-0022489BA6AD},{3EFB640A-1460-EB11-A812-0022489C7676},{22B57983-AE55-EB11-A812-0022489BA6AD},{35CDF33B-2D80-EB11-A812-000D3ADE2019},{354721B3-DD6A-EB11-A812-0022489ABFF7},{FCBD2ED7-DD6A-EB11-A812-0022489ABFF7},{CAC23E60-FE5F-EB11-A812-0022489C7676},{9AAB6E30-A560-EB11-A812-0022489C79D7},{925419FF-5E61-EB11-A812-0022489C79D7},{CAADE9C7-DE5F-EB11-A812-0022489C79D7},{022C374E-DE5F-EB11-A812-0022489C79D7},{E710FBF2-9D58-EB11-A812-000D3A654F72},{945822DE-A558-EB11-A812-0022489BA6AD},{C10A993D-9F58-EB11-A812-000D3A654F72},{56AB753D-A658-EB11-A812-000D3A654F72},{8C71CAAC-A058-EB11-A812-000D3A654F72},{784982E5-B055-EB11-A812-0022489BA6AD},{840BC40C-B155-EB11-A812-0022489BA6AD},{1177AAF7-E058-EB11-A812-0022489BA6AD},{9C98B789-A558-EB11-A812-000D3A654F72},{2B1DC9D0-A458-EB11-A812-000D3A654F72},{62316204-A458-EB11-A812-000D3A654F72},{A8F5D347-A558-EB11-A812-000D3A654F72},{7B31CA6E-A458-EB11-A812-000D3A654F72},{BB7D072D-B155-EB11-A812-0022489BA6AD},{F6D357E3-BE67-EB11-A812-000D3AB403CD},{A1AE4C61-1360-EB11-A812-0022489C7676},{B64DB3E2-8473-EB11-A812-000D3ADC97FC},{3A9EA607-1360-EB11-A812-0022489C7676},{640F218B-1260-EB11-A812-0022489C79D7},{59E0AE13-E05F-EB11-A812-0022489C7676},{1BD06E48-E15F-EB11-A812-0022489C7676},{31015329-E15F-EB11-A812-0022489C7676},{7E70B7A4-1460-EB11-A812-0022489C7676},{59ACB3D7-1260-EB11-A812-0022489C7676},{43F23936-FA66-EB11-A812-000D3AB403CD},{01D3344E-1460-EB11-A812-0022489C7676},{9117323B-1460-EB11-A812-0022489C7676},{AE486149-1360-EB11-A812-0022489C7676},{C0C6A96D-0167-EB11-A812-000D3AB40F79},{3E00B7AD-1260-EB11-A812-0022489C7676},{1D9C4273-1360-EB11-A812-0022489C7676},{3821C329-1260-EB11-A812-0022489C7676},{640E53CD-FA66-EB11-A812-000D3AB40F79},{AB79147D-1460-EB11-A812-0022489C79D7},{A295F5B8-E45F-EB11-A812-0022489C79D7},{2880CBDA-E65F-EB11-A812-0022489C79D7},{A53BEDD5-1160-EB11-A812-0022489C7676},{0C68BA93-1160-EB11-A812-0022489C7676},{FFCB0C0E-1160-EB11-A812-0022489C7676},{7BFB745B-1160-EB11-A812-0022489C79D7},{E5D8B56F-1160-EB11-A812-0022489C7676},{9822EFB7-1160-EB11-A812-0022489C7676},{85A6965F-1260-EB11-A812-0022489C7676},{71EFB53B-1260-EB11-A812-0022489C7676},{CD7F9419-1360-EB11-A812-0022489C7676},{1DE85DF7-1160-EB11-A812-0022489C79D7},{F481B0C5-1260-EB11-A812-0022489C7676},{8F9FE2F1-FD66-EB11-A812-000D3AB403CD},{8667822B-1360-EB11-A812-0022489C7676}</AvailableViewIds>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{e2e70346-29e6-480e-bf69-507f6f4e9821}" locklevel="0" visible="false">
+                        <labels>
+                          <label description="Driving Vehicle In" languagecode="1033" />
+                        </labels>
+                        <control id="cp_drivingvehiclein" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_drivingvehiclein" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{0acb3d8d-6194-9231-a9c6-6939bec55416}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Driving Vehicle" languagecode="1033" />
+                        </labels>
+                        <control id="cp_drivingvehicleinvalue" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_drivingvehicleinvalue" disabled="false">
+                          <parameters>
+                            <DisableViewPicker>true</DisableViewPicker>
+                            <DefaultViewId>{0C68BA93-1160-EB11-A812-0022489C7676}</DefaultViewId>
+                            <AvailableViewIds>{98C9EF77-661B-40BD-96EE-07219F646518},{E4F0EDD0-2171-EB11-A812-000D3AB01CF7},{C19B25C9-F454-EB11-A812-000D3A654F72},{C593B792-1460-EB11-A812-0022489C7676},{A57617C0-936F-EB11-A812-000D3AB02051},{8768549E-B184-EB11-A812-000D3AB52AB6},{BA199924-A173-EB11-A812-000D3ADC97FC},{CD69A3D1-ED66-EB11-A812-000D3AB40F79},{A3539D66-1460-EB11-A812-0022489C7676},{5F9FF6F5-AD55-EB11-A812-0022489BA6AD},{E1D5A784-7482-EB11-A812-000D3ADE2967},{A89CEB7D-FB38-4553-AC4C-05131A8C1D8E},{819C0A68-8E6F-EB11-A812-000D3AB01CF7},{A1A64C42-8D6F-EB11-A812-000D3AB02051},{B6B54E73-8D6F-EB11-A812-000D3AB02051},{3DCE2442-E2F0-4DB3-B452-AAE4F671E621},{DB04508E-DE5F-EB11-A812-0022489C7676},{0F3EFF22-1460-EB11-A812-0022489C7676},{19985683-355B-EB11-A812-000D3A654F72},{D195DC38-AF55-EB11-A812-0022489BA6AD},{382D4CE7-AE55-EB11-A812-0022489BA6AD},{3EFB640A-1460-EB11-A812-0022489C7676},{22B57983-AE55-EB11-A812-0022489BA6AD},{35CDF33B-2D80-EB11-A812-000D3ADE2019},{354721B3-DD6A-EB11-A812-0022489ABFF7},{FCBD2ED7-DD6A-EB11-A812-0022489ABFF7},{CAC23E60-FE5F-EB11-A812-0022489C7676},{9AAB6E30-A560-EB11-A812-0022489C79D7},{925419FF-5E61-EB11-A812-0022489C79D7},{CAADE9C7-DE5F-EB11-A812-0022489C79D7},{022C374E-DE5F-EB11-A812-0022489C79D7},{E710FBF2-9D58-EB11-A812-000D3A654F72},{945822DE-A558-EB11-A812-0022489BA6AD},{C10A993D-9F58-EB11-A812-000D3A654F72},{56AB753D-A658-EB11-A812-000D3A654F72},{8C71CAAC-A058-EB11-A812-000D3A654F72},{784982E5-B055-EB11-A812-0022489BA6AD},{840BC40C-B155-EB11-A812-0022489BA6AD},{1177AAF7-E058-EB11-A812-0022489BA6AD},{9C98B789-A558-EB11-A812-000D3A654F72},{2B1DC9D0-A458-EB11-A812-000D3A654F72},{62316204-A458-EB11-A812-000D3A654F72},{A8F5D347-A558-EB11-A812-000D3A654F72},{7B31CA6E-A458-EB11-A812-000D3A654F72},{BB7D072D-B155-EB11-A812-0022489BA6AD},{F6D357E3-BE67-EB11-A812-000D3AB403CD},{A1AE4C61-1360-EB11-A812-0022489C7676},{B64DB3E2-8473-EB11-A812-000D3ADC97FC},{3A9EA607-1360-EB11-A812-0022489C7676},{640F218B-1260-EB11-A812-0022489C79D7},{59E0AE13-E05F-EB11-A812-0022489C7676},{1BD06E48-E15F-EB11-A812-0022489C7676},{31015329-E15F-EB11-A812-0022489C7676},{7E70B7A4-1460-EB11-A812-0022489C7676},{59ACB3D7-1260-EB11-A812-0022489C7676},{43F23936-FA66-EB11-A812-000D3AB403CD},{01D3344E-1460-EB11-A812-0022489C7676},{9117323B-1460-EB11-A812-0022489C7676},{AE486149-1360-EB11-A812-0022489C7676},{C0C6A96D-0167-EB11-A812-000D3AB40F79},{3E00B7AD-1260-EB11-A812-0022489C7676},{1D9C4273-1360-EB11-A812-0022489C7676},{3821C329-1260-EB11-A812-0022489C7676},{640E53CD-FA66-EB11-A812-000D3AB40F79},{AB79147D-1460-EB11-A812-0022489C79D7},{A295F5B8-E45F-EB11-A812-0022489C79D7},{2880CBDA-E65F-EB11-A812-0022489C79D7},{A53BEDD5-1160-EB11-A812-0022489C7676},{0C68BA93-1160-EB11-A812-0022489C7676},{FFCB0C0E-1160-EB11-A812-0022489C7676},{7BFB745B-1160-EB11-A812-0022489C79D7},{E5D8B56F-1160-EB11-A812-0022489C7676},{9822EFB7-1160-EB11-A812-0022489C7676},{85A6965F-1260-EB11-A812-0022489C7676},{71EFB53B-1260-EB11-A812-0022489C7676},{CD7F9419-1360-EB11-A812-0022489C7676},{1DE85DF7-1160-EB11-A812-0022489C79D7},{F481B0C5-1260-EB11-A812-0022489C7676},{8F9FE2F1-FD66-EB11-A812-000D3AB403CD},{8667822B-1360-EB11-A812-0022489C7676}</AvailableViewIds>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{3986ea0f-a67d-4e7f-95a5-21b298c16b2a}" locklevel="0" visible="false">
+                        <labels>
+                          <label description="You - Wording3" languagecode="1033" />
+                        </labels>
+                        <control id="cp_youwording3" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_youwording3" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{0b9de951-7c2c-3e4c-6b45-61caa4edcc44}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="You - Wording3" languagecode="1033" />
+                        </labels>
+                        <control id="cp_youwording3value" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_youwording3value" disabled="false">
+                          <parameters>
+                            <DefaultViewId>{9822EFB7-1160-EB11-A812-0022489C7676}</DefaultViewId>
+                            <AvailableViewIds>{98C9EF77-661B-40BD-96EE-07219F646518},{E4F0EDD0-2171-EB11-A812-000D3AB01CF7},{C19B25C9-F454-EB11-A812-000D3A654F72},{C593B792-1460-EB11-A812-0022489C7676},{A57617C0-936F-EB11-A812-000D3AB02051},{8768549E-B184-EB11-A812-000D3AB52AB6},{BA199924-A173-EB11-A812-000D3ADC97FC},{CD69A3D1-ED66-EB11-A812-000D3AB40F79},{A3539D66-1460-EB11-A812-0022489C7676},{5F9FF6F5-AD55-EB11-A812-0022489BA6AD},{E1D5A784-7482-EB11-A812-000D3ADE2967},{A89CEB7D-FB38-4553-AC4C-05131A8C1D8E},{819C0A68-8E6F-EB11-A812-000D3AB01CF7},{A1A64C42-8D6F-EB11-A812-000D3AB02051},{B6B54E73-8D6F-EB11-A812-000D3AB02051},{3DCE2442-E2F0-4DB3-B452-AAE4F671E621},{DB04508E-DE5F-EB11-A812-0022489C7676},{0F3EFF22-1460-EB11-A812-0022489C7676},{19985683-355B-EB11-A812-000D3A654F72},{D195DC38-AF55-EB11-A812-0022489BA6AD},{382D4CE7-AE55-EB11-A812-0022489BA6AD},{3EFB640A-1460-EB11-A812-0022489C7676},{22B57983-AE55-EB11-A812-0022489BA6AD},{35CDF33B-2D80-EB11-A812-000D3ADE2019},{354721B3-DD6A-EB11-A812-0022489ABFF7},{FCBD2ED7-DD6A-EB11-A812-0022489ABFF7},{CAC23E60-FE5F-EB11-A812-0022489C7676},{9AAB6E30-A560-EB11-A812-0022489C79D7},{925419FF-5E61-EB11-A812-0022489C79D7},{CAADE9C7-DE5F-EB11-A812-0022489C79D7},{022C374E-DE5F-EB11-A812-0022489C79D7},{E710FBF2-9D58-EB11-A812-000D3A654F72},{945822DE-A558-EB11-A812-0022489BA6AD},{C10A993D-9F58-EB11-A812-000D3A654F72},{56AB753D-A658-EB11-A812-000D3A654F72},{8C71CAAC-A058-EB11-A812-000D3A654F72},{784982E5-B055-EB11-A812-0022489BA6AD},{840BC40C-B155-EB11-A812-0022489BA6AD},{1177AAF7-E058-EB11-A812-0022489BA6AD},{9C98B789-A558-EB11-A812-000D3A654F72},{2B1DC9D0-A458-EB11-A812-000D3A654F72},{62316204-A458-EB11-A812-000D3A654F72},{A8F5D347-A558-EB11-A812-000D3A654F72},{7B31CA6E-A458-EB11-A812-000D3A654F72},{BB7D072D-B155-EB11-A812-0022489BA6AD},{F6D357E3-BE67-EB11-A812-000D3AB403CD},{A1AE4C61-1360-EB11-A812-0022489C7676},{B64DB3E2-8473-EB11-A812-000D3ADC97FC},{3A9EA607-1360-EB11-A812-0022489C7676},{640F218B-1260-EB11-A812-0022489C79D7},{59E0AE13-E05F-EB11-A812-0022489C7676},{1BD06E48-E15F-EB11-A812-0022489C7676},{31015329-E15F-EB11-A812-0022489C7676},{7E70B7A4-1460-EB11-A812-0022489C7676},{59ACB3D7-1260-EB11-A812-0022489C7676},{43F23936-FA66-EB11-A812-000D3AB403CD},{01D3344E-1460-EB11-A812-0022489C7676},{9117323B-1460-EB11-A812-0022489C7676},{AE486149-1360-EB11-A812-0022489C7676},{C0C6A96D-0167-EB11-A812-000D3AB40F79},{3E00B7AD-1260-EB11-A812-0022489C7676},{1D9C4273-1360-EB11-A812-0022489C7676},{3821C329-1260-EB11-A812-0022489C7676},{640E53CD-FA66-EB11-A812-000D3AB40F79},{AB79147D-1460-EB11-A812-0022489C79D7},{A295F5B8-E45F-EB11-A812-0022489C79D7},{2880CBDA-E65F-EB11-A812-0022489C79D7},{A53BEDD5-1160-EB11-A812-0022489C7676},{0C68BA93-1160-EB11-A812-0022489C7676},{FFCB0C0E-1160-EB11-A812-0022489C7676},{7BFB745B-1160-EB11-A812-0022489C79D7},{E5D8B56F-1160-EB11-A812-0022489C7676},{9822EFB7-1160-EB11-A812-0022489C7676},{85A6965F-1260-EB11-A812-0022489C7676},{71EFB53B-1260-EB11-A812-0022489C7676},{CD7F9419-1360-EB11-A812-0022489C7676},{1DE85DF7-1160-EB11-A812-0022489C79D7},{F481B0C5-1260-EB11-A812-0022489C7676},{8F9FE2F1-FD66-EB11-A812-000D3AB403CD},{8667822B-1360-EB11-A812-0022489C7676}</AvailableViewIds>
+                            <DisableViewPicker>true</DisableViewPicker>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c8fd10d5-0bd4-43fd-9481-e09ad48269d6}" locklevel="0" visible="false">
+                        <labels>
+                          <label description="Driving Manner" languagecode="1033" />
+                        </labels>
+                        <control id="cp_drivingmanner" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_drivingmanner" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{5e7e124b-9d98-c090-7e55-0dabcab9c6b4}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Driving Manner" languagecode="1033" />
+                        </labels>
+                        <control id="cp_drivingmannervalue" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_drivingmannervalue" disabled="false">
+                          <parameters>
+                            <DefaultViewId>{A53BEDD5-1160-EB11-A812-0022489C7676}</DefaultViewId>
+                            <AvailableViewIds>{98C9EF77-661B-40BD-96EE-07219F646518},{E4F0EDD0-2171-EB11-A812-000D3AB01CF7},{C19B25C9-F454-EB11-A812-000D3A654F72},{C593B792-1460-EB11-A812-0022489C7676},{A57617C0-936F-EB11-A812-000D3AB02051},{8768549E-B184-EB11-A812-000D3AB52AB6},{BA199924-A173-EB11-A812-000D3ADC97FC},{CD69A3D1-ED66-EB11-A812-000D3AB40F79},{A3539D66-1460-EB11-A812-0022489C7676},{5F9FF6F5-AD55-EB11-A812-0022489BA6AD},{E1D5A784-7482-EB11-A812-000D3ADE2967},{A89CEB7D-FB38-4553-AC4C-05131A8C1D8E},{819C0A68-8E6F-EB11-A812-000D3AB01CF7},{A1A64C42-8D6F-EB11-A812-000D3AB02051},{B6B54E73-8D6F-EB11-A812-000D3AB02051},{3DCE2442-E2F0-4DB3-B452-AAE4F671E621},{DB04508E-DE5F-EB11-A812-0022489C7676},{0F3EFF22-1460-EB11-A812-0022489C7676},{19985683-355B-EB11-A812-000D3A654F72},{D195DC38-AF55-EB11-A812-0022489BA6AD},{382D4CE7-AE55-EB11-A812-0022489BA6AD},{3EFB640A-1460-EB11-A812-0022489C7676},{22B57983-AE55-EB11-A812-0022489BA6AD},{35CDF33B-2D80-EB11-A812-000D3ADE2019},{354721B3-DD6A-EB11-A812-0022489ABFF7},{FCBD2ED7-DD6A-EB11-A812-0022489ABFF7},{CAC23E60-FE5F-EB11-A812-0022489C7676},{9AAB6E30-A560-EB11-A812-0022489C79D7},{925419FF-5E61-EB11-A812-0022489C79D7},{CAADE9C7-DE5F-EB11-A812-0022489C79D7},{022C374E-DE5F-EB11-A812-0022489C79D7},{E710FBF2-9D58-EB11-A812-000D3A654F72},{945822DE-A558-EB11-A812-0022489BA6AD},{C10A993D-9F58-EB11-A812-000D3A654F72},{56AB753D-A658-EB11-A812-000D3A654F72},{8C71CAAC-A058-EB11-A812-000D3A654F72},{784982E5-B055-EB11-A812-0022489BA6AD},{840BC40C-B155-EB11-A812-0022489BA6AD},{1177AAF7-E058-EB11-A812-0022489BA6AD},{9C98B789-A558-EB11-A812-000D3A654F72},{2B1DC9D0-A458-EB11-A812-000D3A654F72},{62316204-A458-EB11-A812-000D3A654F72},{A8F5D347-A558-EB11-A812-000D3A654F72},{7B31CA6E-A458-EB11-A812-000D3A654F72},{BB7D072D-B155-EB11-A812-0022489BA6AD},{F6D357E3-BE67-EB11-A812-000D3AB403CD},{A1AE4C61-1360-EB11-A812-0022489C7676},{B64DB3E2-8473-EB11-A812-000D3ADC97FC},{3A9EA607-1360-EB11-A812-0022489C7676},{640F218B-1260-EB11-A812-0022489C79D7},{59E0AE13-E05F-EB11-A812-0022489C7676},{1BD06E48-E15F-EB11-A812-0022489C7676},{31015329-E15F-EB11-A812-0022489C7676},{7E70B7A4-1460-EB11-A812-0022489C7676},{59ACB3D7-1260-EB11-A812-0022489C7676},{43F23936-FA66-EB11-A812-000D3AB403CD},{01D3344E-1460-EB11-A812-0022489C7676},{9117323B-1460-EB11-A812-0022489C7676},{AE486149-1360-EB11-A812-0022489C7676},{C0C6A96D-0167-EB11-A812-000D3AB40F79},{3E00B7AD-1260-EB11-A812-0022489C7676},{1D9C4273-1360-EB11-A812-0022489C7676},{3821C329-1260-EB11-A812-0022489C7676},{640E53CD-FA66-EB11-A812-000D3AB40F79},{AB79147D-1460-EB11-A812-0022489C79D7},{A295F5B8-E45F-EB11-A812-0022489C79D7},{2880CBDA-E65F-EB11-A812-0022489C79D7},{A53BEDD5-1160-EB11-A812-0022489C7676},{0C68BA93-1160-EB11-A812-0022489C7676},{FFCB0C0E-1160-EB11-A812-0022489C7676},{7BFB745B-1160-EB11-A812-0022489C79D7},{E5D8B56F-1160-EB11-A812-0022489C7676},{9822EFB7-1160-EB11-A812-0022489C7676},{85A6965F-1260-EB11-A812-0022489C7676},{71EFB53B-1260-EB11-A812-0022489C7676},{CD7F9419-1360-EB11-A812-0022489C7676},{1DE85DF7-1160-EB11-A812-0022489C79D7},{F481B0C5-1260-EB11-A812-0022489C7676},{8F9FE2F1-FD66-EB11-A812-000D3AB403CD},{8667822B-1360-EB11-A812-0022489C7676}</AvailableViewIds>
+                            <DisableViewPicker>true</DisableViewPicker>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c3f9e852-d117-40fe-967b-0edbb14f5639}" locklevel="0" visible="false">
+                        <labels>
+                          <label description="S59 Recovery Garage" languagecode="1033" />
+                        </labels>
+                        <control id="cp_s59recoverygarage" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_s59recoverygarage" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{49ba8639-c0aa-7031-7038-5b4a86cb7ed3}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="S59 Recovery Garage" languagecode="1033" />
+                        </labels>
+                        <control id="cp_s59recoverygaragevalue" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_s59recoverygaragevalue" disabled="false">
+                          <parameters>
+                            <DefaultViewId>{3EE5AD83-827A-EB11-A812-000D3AB7AF16}</DefaultViewId>
+                            <AvailableViewIds>{A9AF0AB8-861D-4CFA-92A5-C6281FED7FAB},{15C63745-0A6E-4322-8416-A62C84D90279},{CFBCD7AF-AEE5-4E45-8ECC-C040D4020581},{49FB9771-09E1-4E70-B193-198752493577},{00000000-0000-0000-00AA-000010001002},{65FFAF9A-E8C5-432D-860B-32F841B00D87},{00000000-0000-0000-00AA-000010001031},{00000000-0000-0000-00AA-000010001001},{D234426E-1F37-4944-9255-50E19B541C4C},{3EE5AD83-827A-EB11-A812-000D3AB7AF16}</AvailableViewIds>
+                            <DisableViewPicker>true</DisableViewPicker>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{aa90f9fa-eecb-4ef1-a3aa-ddd3cd798773}" locklevel="0">
+                        <labels>
+                          <label description="Section 59 Printed" languagecode="1033" />
+                        </labels>
+                        <control id="cp_section59printed" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="cp_section59printed" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{dc563cc4-446e-4a82-9848-43e818ea70ec}" locklevel="0">
+                        <labels>
+                          <label description="Section59 Signature" languagecode="1033" />
+                        </labels>
+                        <control id="cp_section59signature" classid="{7E548B0D-209C-477B-9DCD-F0F44472381D}" datafieldname="cp_section59signature" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="S163" id="a8bc86d3-6783-429d-8b61-6f9f5d1d22b2" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="Section 163 Details" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{8959deec-113d-4edf-9cda-00d1ab4eced7}" locklevel="0" visible="false">
+                        <labels>
+                          <label description="Reason For Using S163 Power" languagecode="1033" />
+                        </labels>
+                        <control id="cp_reasonforusings163power" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_reasonforusings163power" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{88bc877d-4c3c-21eb-eabc-9684b0e6b110}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Reason For Using S163 Power" languagecode="1033" />
+                        </labels>
+                        <control id="cp_reasonforusings163powervalue" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_reasonforusings163powervalue" disabled="false">
+                          <parameters>
+                            <DefaultViewId>{640E53CD-FA66-EB11-A812-000D3AB40F79}</DefaultViewId>
+                            <AvailableViewIds>{98C9EF77-661B-40BD-96EE-07219F646518},{E4F0EDD0-2171-EB11-A812-000D3AB01CF7},{C19B25C9-F454-EB11-A812-000D3A654F72},{C593B792-1460-EB11-A812-0022489C7676},{A57617C0-936F-EB11-A812-000D3AB02051},{8768549E-B184-EB11-A812-000D3AB52AB6},{BA199924-A173-EB11-A812-000D3ADC97FC},{CD69A3D1-ED66-EB11-A812-000D3AB40F79},{A3539D66-1460-EB11-A812-0022489C7676},{5F9FF6F5-AD55-EB11-A812-0022489BA6AD},{E1D5A784-7482-EB11-A812-000D3ADE2967},{A89CEB7D-FB38-4553-AC4C-05131A8C1D8E},{819C0A68-8E6F-EB11-A812-000D3AB01CF7},{A1A64C42-8D6F-EB11-A812-000D3AB02051},{B6B54E73-8D6F-EB11-A812-000D3AB02051},{3DCE2442-E2F0-4DB3-B452-AAE4F671E621},{DB04508E-DE5F-EB11-A812-0022489C7676},{0F3EFF22-1460-EB11-A812-0022489C7676},{19985683-355B-EB11-A812-000D3A654F72},{D195DC38-AF55-EB11-A812-0022489BA6AD},{382D4CE7-AE55-EB11-A812-0022489BA6AD},{3EFB640A-1460-EB11-A812-0022489C7676},{22B57983-AE55-EB11-A812-0022489BA6AD},{35CDF33B-2D80-EB11-A812-000D3ADE2019},{354721B3-DD6A-EB11-A812-0022489ABFF7},{FCBD2ED7-DD6A-EB11-A812-0022489ABFF7},{CAC23E60-FE5F-EB11-A812-0022489C7676},{9AAB6E30-A560-EB11-A812-0022489C79D7},{925419FF-5E61-EB11-A812-0022489C79D7},{CAADE9C7-DE5F-EB11-A812-0022489C79D7},{022C374E-DE5F-EB11-A812-0022489C79D7},{E710FBF2-9D58-EB11-A812-000D3A654F72},{945822DE-A558-EB11-A812-0022489BA6AD},{C10A993D-9F58-EB11-A812-000D3A654F72},{56AB753D-A658-EB11-A812-000D3A654F72},{8C71CAAC-A058-EB11-A812-000D3A654F72},{784982E5-B055-EB11-A812-0022489BA6AD},{840BC40C-B155-EB11-A812-0022489BA6AD},{1177AAF7-E058-EB11-A812-0022489BA6AD},{9C98B789-A558-EB11-A812-000D3A654F72},{2B1DC9D0-A458-EB11-A812-000D3A654F72},{62316204-A458-EB11-A812-000D3A654F72},{A8F5D347-A558-EB11-A812-000D3A654F72},{7B31CA6E-A458-EB11-A812-000D3A654F72},{BB7D072D-B155-EB11-A812-0022489BA6AD},{F6D357E3-BE67-EB11-A812-000D3AB403CD},{A1AE4C61-1360-EB11-A812-0022489C7676},{B64DB3E2-8473-EB11-A812-000D3ADC97FC},{3A9EA607-1360-EB11-A812-0022489C7676},{640F218B-1260-EB11-A812-0022489C79D7},{59E0AE13-E05F-EB11-A812-0022489C7676},{1BD06E48-E15F-EB11-A812-0022489C7676},{31015329-E15F-EB11-A812-0022489C7676},{7E70B7A4-1460-EB11-A812-0022489C7676},{59ACB3D7-1260-EB11-A812-0022489C7676},{43F23936-FA66-EB11-A812-000D3AB403CD},{01D3344E-1460-EB11-A812-0022489C7676},{9117323B-1460-EB11-A812-0022489C7676},{AE486149-1360-EB11-A812-0022489C7676},{C0C6A96D-0167-EB11-A812-000D3AB40F79},{3E00B7AD-1260-EB11-A812-0022489C7676},{1D9C4273-1360-EB11-A812-0022489C7676},{3821C329-1260-EB11-A812-0022489C7676},{640E53CD-FA66-EB11-A812-000D3AB40F79},{AB79147D-1460-EB11-A812-0022489C79D7},{A295F5B8-E45F-EB11-A812-0022489C79D7},{2880CBDA-E65F-EB11-A812-0022489C79D7},{A53BEDD5-1160-EB11-A812-0022489C7676},{0C68BA93-1160-EB11-A812-0022489C7676},{FFCB0C0E-1160-EB11-A812-0022489C7676},{7BFB745B-1160-EB11-A812-0022489C79D7},{E5D8B56F-1160-EB11-A812-0022489C7676},{9822EFB7-1160-EB11-A812-0022489C7676},{85A6965F-1260-EB11-A812-0022489C7676},{71EFB53B-1260-EB11-A812-0022489C7676},{CD7F9419-1360-EB11-A812-0022489C7676},{1DE85DF7-1160-EB11-A812-0022489C79D7},{F481B0C5-1260-EB11-A812-0022489C7676},{8F9FE2F1-FD66-EB11-A812-000D3AB403CD},{8667822B-1360-EB11-A812-0022489C7676}</AvailableViewIds>
+                            <DisableViewPicker>true</DisableViewPicker>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{d24da835-ba51-4840-897e-37d970d92670}" locklevel="0" visible="false">
+                        <labels>
+                          <label description="Outcome of Stop" languagecode="1033" />
+                        </labels>
+                        <control id="cp_outcomeofstop" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_outcomeofstop" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{4951000a-430b-703d-99ee-88c98dbc5453}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Outcome of Stop" languagecode="1033" />
+                        </labels>
+                        <control id="cp_outcomeofstopvalue" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_outcomeofstopvalue" disabled="false">
+                          <parameters>
+                            <DisableViewPicker>true</DisableViewPicker>
+                            <DefaultViewId>{80362AE2-5B86-EB11-A812-000D3AB52AB6}</DefaultViewId>
+                            <AvailableViewIds>{98C9EF77-661B-40BD-96EE-07219F646518},{E4F0EDD0-2171-EB11-A812-000D3AB01CF7},{C19B25C9-F454-EB11-A812-000D3A654F72},{C593B792-1460-EB11-A812-0022489C7676},{A57617C0-936F-EB11-A812-000D3AB02051},{8768549E-B184-EB11-A812-000D3AB52AB6},{BA199924-A173-EB11-A812-000D3ADC97FC},{CD69A3D1-ED66-EB11-A812-000D3AB40F79},{A3539D66-1460-EB11-A812-0022489C7676},{5F9FF6F5-AD55-EB11-A812-0022489BA6AD},{E1D5A784-7482-EB11-A812-000D3ADE2967},{A89CEB7D-FB38-4553-AC4C-05131A8C1D8E},{819C0A68-8E6F-EB11-A812-000D3AB01CF7},{A1A64C42-8D6F-EB11-A812-000D3AB02051},{B6B54E73-8D6F-EB11-A812-000D3AB02051},{3DCE2442-E2F0-4DB3-B452-AAE4F671E621},{DB04508E-DE5F-EB11-A812-0022489C7676},{0F3EFF22-1460-EB11-A812-0022489C7676},{19985683-355B-EB11-A812-000D3A654F72},{D195DC38-AF55-EB11-A812-0022489BA6AD},{382D4CE7-AE55-EB11-A812-0022489BA6AD},{3EFB640A-1460-EB11-A812-0022489C7676},{22B57983-AE55-EB11-A812-0022489BA6AD},{35CDF33B-2D80-EB11-A812-000D3ADE2019},{354721B3-DD6A-EB11-A812-0022489ABFF7},{FCBD2ED7-DD6A-EB11-A812-0022489ABFF7},{CAC23E60-FE5F-EB11-A812-0022489C7676},{9AAB6E30-A560-EB11-A812-0022489C79D7},{925419FF-5E61-EB11-A812-0022489C79D7},{CAADE9C7-DE5F-EB11-A812-0022489C79D7},{022C374E-DE5F-EB11-A812-0022489C79D7},{E710FBF2-9D58-EB11-A812-000D3A654F72},{945822DE-A558-EB11-A812-0022489BA6AD},{C10A993D-9F58-EB11-A812-000D3A654F72},{56AB753D-A658-EB11-A812-000D3A654F72},{8C71CAAC-A058-EB11-A812-000D3A654F72},{784982E5-B055-EB11-A812-0022489BA6AD},{840BC40C-B155-EB11-A812-0022489BA6AD},{1177AAF7-E058-EB11-A812-0022489BA6AD},{9C98B789-A558-EB11-A812-000D3A654F72},{2B1DC9D0-A458-EB11-A812-000D3A654F72},{62316204-A458-EB11-A812-000D3A654F72},{A8F5D347-A558-EB11-A812-000D3A654F72},{7B31CA6E-A458-EB11-A812-000D3A654F72},{BB7D072D-B155-EB11-A812-0022489BA6AD},{F6D357E3-BE67-EB11-A812-000D3AB403CD},{A1AE4C61-1360-EB11-A812-0022489C7676},{B64DB3E2-8473-EB11-A812-000D3ADC97FC},{3A9EA607-1360-EB11-A812-0022489C7676},{640F218B-1260-EB11-A812-0022489C79D7},{59E0AE13-E05F-EB11-A812-0022489C7676},{1BD06E48-E15F-EB11-A812-0022489C7676},{31015329-E15F-EB11-A812-0022489C7676},{7E70B7A4-1460-EB11-A812-0022489C7676},{59ACB3D7-1260-EB11-A812-0022489C7676},{43F23936-FA66-EB11-A812-000D3AB403CD},{01D3344E-1460-EB11-A812-0022489C7676},{9117323B-1460-EB11-A812-0022489C7676},{AE486149-1360-EB11-A812-0022489C7676},{C0C6A96D-0167-EB11-A812-000D3AB40F79},{3E00B7AD-1260-EB11-A812-0022489C7676},{1D9C4273-1360-EB11-A812-0022489C7676},{3821C329-1260-EB11-A812-0022489C7676},{80362AE2-5B86-EB11-A812-000D3AB52AB6},{640E53CD-FA66-EB11-A812-000D3AB40F79},{AB79147D-1460-EB11-A812-0022489C79D7},{A295F5B8-E45F-EB11-A812-0022489C79D7},{2880CBDA-E65F-EB11-A812-0022489C79D7},{A53BEDD5-1160-EB11-A812-0022489C7676},{0C68BA93-1160-EB11-A812-0022489C7676},{FFCB0C0E-1160-EB11-A812-0022489C7676},{7BFB745B-1160-EB11-A812-0022489C79D7},{E5D8B56F-1160-EB11-A812-0022489C7676},{9822EFB7-1160-EB11-A812-0022489C7676},{85A6965F-1260-EB11-A812-0022489C7676},{71EFB53B-1260-EB11-A812-0022489C7676},{CD7F9419-1360-EB11-A812-0022489C7676},{1DE85DF7-1160-EB11-A812-0022489C79D7},{F481B0C5-1260-EB11-A812-0022489C7676},{8F9FE2F1-FD66-EB11-A812-000D3AB403CD},{8667822B-1360-EB11-A812-0022489C7676}</AvailableViewIds>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{da34a88d-fe41-4b87-af61-725621baaa43}" locklevel="0">
+                        <labels>
+                          <label description="Outcome Description" languagecode="1033" />
+                        </labels>
+                        <control id="cp_outcomedescription" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="cp_outcomedescription" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{60b0a103-993b-4317-8db9-dff6f9fc6388}" locklevel="0">
+                        <labels>
+                          <label description="Link Between Reason For Stop And Outcome" languagecode="1033" />
+                        </labels>
+                        <control id="cp_linkbetweenreasonforstopandoutcome" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="cp_linkbetweenreasonforstopandoutcome" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{06be076d-0182-486e-a297-c1f15e62ad95}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{bc012021-3ce9-4699-b62d-348c05c3c3d0}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{6ccf9124-c33c-4f89-9fd3-8461549b0d5a}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{1771dd77-abdb-44df-87d9-88559732351e}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <footer id="{eba67945-db05-4116-a0e0-bf6c1981ae57}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{b51906a5-63b1-4fab-9fd4-15b5deaf44bb}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{d2d0f342-2681-462e-82c6-e3dab3ee37e4}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{772c7fdc-17d7-450f-bc59-3d6685ad66b2}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </footer>
+      <Navigation>
+        <NavBar></NavBar>
+        <NavBarAreas>
+          <NavBarArea Id="Info">
+            <Titles>
+              <Title LCID="1033" Text="Common" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Sales">
+            <Titles>
+              <Title LCID="1033" Text="Sales" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Service">
+            <Titles>
+              <Title LCID="1033" Text="Service" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Marketing">
+            <Titles>
+              <Title LCID="1033" Text="Marketing" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="ProcessCenter">
+            <Titles>
+              <Title LCID="1033" Text="Process Sessions" />
+            </Titles>
+          </NavBarArea>
+        </NavBarAreas>
+      </Navigation>
+      <controlDescriptions />
+      <formLibraries>
+        <Library name="cp_setLookupValue" libraryUniqueId="{a96e9a75-e589-4b9f-bbfd-5cfea6a2bf00}" />
+      </formLibraries>
+      <events>
+        <event name="onchange" application="true" active="true" attribute="cp_documenttypevalue">
+          <Handlers>
+            <Handler functionName="setLookupId" libraryName="cp_setLookupValue" handlerUniqueId="{026304a6-2425-4e0e-8678-44548d994fa1}" enabled="true" parameters="&quot;cp_documenttypevalue&quot;,&quot;cp_documenttype&quot;" passExecutionContext="true" />
+          </Handlers>
+        </event>
+        <event name="onchange" application="true" active="true" attribute="cp_checkorrecordvalue">
+          <Handlers>
+            <Handler functionName="setLookupId" libraryName="cp_setLookupValue" handlerUniqueId="{f51b659a-73ba-4a5c-be5a-5ce2c793ff68}" enabled="true" parameters="&quot;cp_checkorrecordvalue&quot;,&quot;cp_checkorrecord&quot;" passExecutionContext="true" />
+          </Handlers>
+        </event>
+        <event name="onchange" application="true" active="true" attribute="cp_producestationvalue">
+          <Handlers>
+            <Handler functionName="setLookupId" libraryName="cp_setLookupValue" handlerUniqueId="{01bbefaa-f83a-4f7b-87a7-3cf0a993dcaa}" enabled="true" parameters="&quot;cp_producestationvalue&quot;,&quot;cp_producestation&quot;" passExecutionContext="true" />
+          </Handlers>
+        </event>
+        <event name="onchange" application="true" active="true" attribute="cp_withoutvalue">
+          <Handlers>
+            <Handler functionName="setLookupId" libraryName="cp_setLookupValue" handlerUniqueId="{9e4e9cf5-65f2-48a2-843b-6628a1fd13fd}" enabled="true" parameters="&quot;cp_withoutvalue&quot;,&quot;cp_without&quot;" passExecutionContext="true" />
+          </Handlers>
+        </event>
+        <event name="onchange" application="true" active="true" attribute="cp_designatedstationvalue">
+          <Handlers>
+            <Handler functionName="setLookupId" libraryName="cp_setLookupValue" handlerUniqueId="{75fd8754-22bd-479e-8d87-d13090fdb399}" enabled="true" parameters="&quot;cp_designatedstationvalue&quot;,&quot;cp_designatedstation&quot;" passExecutionContext="true" />
+          </Handlers>
+        </event>
+        <event name="onchange" application="true" active="true" attribute="cp_s165recoverygaragevalue">
+          <Handlers>
+            <Handler functionName="setLookupId" libraryName="cp_setLookupValue" handlerUniqueId="{b6e7df16-001d-457c-9b69-535b91cf131d}" enabled="true" parameters="&quot;cp_s165recoverygaragevalue&quot;,&quot;cp_s165recoverygarage&quot;" passExecutionContext="true" />
+          </Handlers>
+        </event>
+        <event name="onchange" application="true" active="true" attribute="cp_sectionvalue">
+          <Handlers>
+            <Handler functionName="setLookupId" libraryName="cp_setLookupValue" handlerUniqueId="{fccb64f9-9d65-45b8-a617-964ebedf640a}" enabled="true" parameters="&quot;cp_sectionvalue&quot;,&quot;cp_section&quot;" passExecutionContext="true" />
+          </Handlers>
+        </event>
+        <event name="onchange" application="true" active="true" attribute="cp_warningorseizurevalue">
+          <Handlers>
+            <Handler functionName="setLookupId" libraryName="cp_setLookupValue" handlerUniqueId="{84262e8a-84a5-45dd-8b51-9b01bd3dc22d}" enabled="true" parameters="&quot;cp_warningorseizurevalue&quot;,&quot;cp_warningorseizure&quot;" passExecutionContext="true" />
+          </Handlers>
+        </event>
+        <event name="onchange" application="true" active="true" attribute="cp_youwording1value">
+          <Handlers>
+            <Handler functionName="setLookupId" libraryName="cp_setLookupValue" handlerUniqueId="{1bcafc74-eae4-48ee-a739-ecec323c5b99}" enabled="true" parameters="&quot;cp_youwording1value&quot;,&quot;cp_youwording1&quot;" passExecutionContext="true" />
+          </Handlers>
+        </event>
+        <event name="onchange" application="true" active="true" attribute="cp_drivingvehicleinvalue">
+          <Handlers>
+            <Handler functionName="setLookupId" libraryName="cp_setLookupValue" handlerUniqueId="{2ebda0d4-08b8-4ef1-ae93-450b7ea1f11d}" enabled="true" parameters="&quot;cp_drivingvehicleinvalue&quot;,&quot;cp_drivingvehiclein&quot;" passExecutionContext="true" />
+          </Handlers>
+        </event>
+        <event name="onchange" application="true" active="true" attribute="cp_youwording3value">
+          <Handlers>
+            <Handler functionName="setLookupId" libraryName="cp_setLookupValue" handlerUniqueId="{91e8f121-fa18-4c4d-bf0b-9e1259225068}" enabled="true" parameters="&quot;cp_youwording3value&quot;,&quot;cp_youwording3&quot;" passExecutionContext="true" />
+          </Handlers>
+        </event>
+        <event name="onchange" application="true" active="true" attribute="cp_drivingmannervalue">
+          <Handlers>
+            <Handler functionName="setLookupId" libraryName="cp_setLookupValue" handlerUniqueId="{9f333742-0502-4207-89bd-65e04aa3a8b1}" enabled="true" parameters="&quot;cp_drivingmannervalue&quot;,&quot;cp_drivingmanner&quot;" passExecutionContext="true" />
+          </Handlers>
+        </event>
+        <event name="onchange" application="true" active="true" attribute="cp_s59recoverygaragevalue">
+          <Handlers>
+            <Handler functionName="setLookupId" libraryName="cp_setLookupValue" handlerUniqueId="{ec55af3f-c2f1-4a7b-a1cd-0773ccd9a9b0}" enabled="true" parameters="&quot;cp_s59recoverygaragevalue&quot;,&quot;cp_s59recoverygarage&quot;" passExecutionContext="true" />
+          </Handlers>
+        </event>
+        <event name="onchange" application="true" active="true" attribute="cp_reasonforusings163powervalue">
+          <Handlers>
+            <Handler functionName="setLookupId" libraryName="cp_setLookupValue" handlerUniqueId="{cc2f9cc9-e34b-41b5-8c88-6354fedddc59}" enabled="true" parameters="&quot;cp_reasonforusings163powervalue&quot;,&quot;cp_reasonforusings163power&quot;" passExecutionContext="true" />
+          </Handlers>
+        </event>
+        <event name="onchange" application="true" active="true" attribute="cp_outcomeofstopvalue">
+          <Handlers>
+            <Handler functionName="setLookupId" libraryName="cp_setLookupValue" handlerUniqueId="{29026a8c-dabe-4561-80c9-5457eff8ecca}" enabled="true" parameters="&quot;cp_outcomeofstopvalue&quot;,&quot;cp_outcomeofstop&quot;" passExecutionContext="true" />
+          </Handlers>
+        </event>
+        <event name="onchange" application="true" active="true" attribute="cp_tickettype">
+          <Handlers>
+            <Handler functionName="subgridOnChangeUpdateTxtAttribute" libraryName="cp_setLookupValue" handlerUniqueId="{d2d5be79-326c-4f33-8395-55d5e043c9f6}" enabled="true" parameters="" passExecutionContext="true" />
+          </Handlers>
+        </event>
+        <event name="onload" application="true" active="true">
+          <Handlers>
+            <Handler functionName="subgridOnChangeUpdateTxtAttribute" libraryName="cp_setLookupValue" handlerUniqueId="{fe4362bc-8823-4eb0-8492-97a717f44a5a}" enabled="true" parameters="&quot;Subgrid_TrafficOffenceCode&quot;,&quot;cp_offencecode&quot;" passExecutionContext="true" />
+            <Handler functionName="subgridOnChangeUpdateTxtAttribute" libraryName="cp_setLookupValue" handlerUniqueId="{f3dbac30-9d69-4794-ac5e-34f81ad024ce}" enabled="true" parameters="&quot;Subgrid_VDRSOffenceCode&quot;,&quot;cp_vdroffencecode&quot;" passExecutionContext="true" />
+            <Handler functionName="showHideVehicleOffencesSections" libraryName="cp_setLookupValue" handlerUniqueId="{fb8108e1-1abd-4ab3-8ce7-af913e476b39}" enabled="true" parameters="&quot;General_tab&quot;,&quot;TrafficOffence&quot;,&quot;HORT1&quot;,&quot;VDRS&quot;,&quot;S165&quot;,&quot;S59&quot;,&quot;S163&quot;" passExecutionContext="true" />
+            <Handler functionName="subgridOnChangeUpdateTxtAttribute" libraryName="cp_setLookupValue" handlerUniqueId="{ffae6e20-3182-4a63-96c2-13d0e43b571a}" enabled="true" parameters="&quot;Subgrid_HortDocuments&quot;,&quot;cp_documenttype&quot;" passExecutionContext="true" />
+          </Handlers>
+        </event>
+        <event name="onchange" application="true" active="true" attribute="cp_tickettypevalue">
+          <Handlers>
+            <Handler functionName="setLookupId" libraryName="cp_setLookupValue" handlerUniqueId="{bfbd36a5-9251-459e-88c9-f6491a3b4aad}" enabled="true" parameters="&quot;cp_tickettypevalue&quot;,&quot;cp_tickettype&quot;" passExecutionContext="true" />
+            <Handler functionName="showHideVehicleOffencesSections" libraryName="cp_setLookupValue" handlerUniqueId="{9eab320c-52eb-4b0d-98f5-296a82e1a7e0}" enabled="true" parameters="&quot;General_tab&quot;,&quot;TrafficOffence&quot;,&quot;HORT1&quot;,&quot;VDRS&quot;,&quot;S165&quot;,&quot;S59&quot;,&quot;S163&quot;" passExecutionContext="true" />
+          </Handlers>
+        </event>
+      </events>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Everyone />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

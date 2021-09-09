@@ -1,0 +1,194 @@
+function setLookupValue(executionContext, fromAttribute, toAttribute, lookupEntity) {
+
+	var formContext = executionContext.getFormContext();
+	// Get value
+	var lookupId = formContext.getAttribute(fromAttribute).getValue();
+	//Set value
+	if (lookupId != null) {
+		var lookupValue = new Array();
+		lookupValue[0] = new Object();
+		lookupValue[0].entityType = lookupEntity;
+		lookupValue[0].id = lookupId ;
+
+		formContext.getAttribute(toAttribute).setValue(lookupValue);
+	} else {
+		formContext.getAttribute(toAttribute).setValue(null);		
+	}
+}
+
+function setLookupId(executionContext, fromAttribute, toAttribute)
+{
+  var formContext = executionContext.getFormContext();
+  // Get value
+  var lookupValueId = formContext.getAttribute(fromAttribute).getValue();
+
+
+	//Set value
+	if (lookupValueId == undefined || lookupValueId.length == 0) {
+		formContext.getAttribute(toAttribute).setValue(null);
+	} else {
+		
+		var Id = lookupValueId[0].id.slice(1,-1) ;
+		formContext.getAttribute(toAttribute).setValue(Id);		
+	}
+}
+
+
+var globalFormContext;
+var targetAttribute;
+var subgridName;
+
+function subgridOnChangeUpdateTxtAttribute(executionContext, gridName, txtAttribute) 
+{
+    globalFormContext = executionContext.getFormContext();
+    targetAttribute = txtAttribute;
+    subgridName = gridName;
+
+    addSubgridEventListener();
+}
+
+function addSubgridEventListener()
+{
+    var gridContext = globalFormContext.getControl(subgridName);
+    //ensure that the subgrid is ready…if not wait and call this function again
+    if (gridContext == null)
+    {
+        setTimeout(function () { addSubgridEventListener(); }, 500);
+        return;
+    }
+    //bind the event listener when the subgrid is ready
+    gridContext.addOnLoad(subgridEventListener);
+}
+
+function subgridEventListener(context)
+{
+    var gridContext = globalFormContext.getControl(subgridName);
+    var gridRecordCount = gridContext.getGrid().getTotalRecordCount();
+	var gridIds = '';
+
+    if (gridRecordCount > 0)
+    {
+		var gridRows = gridContext.getGrid().getRows();
+        
+        for (i = 0; i < gridRecordCount; i++) 
+        {
+            var gridColumns = gridRows.get(i).getData().getEntity().getId();
+            gridIds += gridColumns.slice(1,-1) + ',';
+        }
+        
+        globalFormContext.getAttribute(targetAttribute).setValue(gridIds.slice(0, -1));
+    } else {
+        globalFormContext.getAttribute(targetAttribute).setValue(null);
+    }
+}
+
+function showHideVehicleOffencesSections(executionContext, tabName, sectionTrafficOffence, sectionHort, sectionVDRS, sectionS165, sectionS59, sectionS163) 
+{
+    globalFormContext = executionContext.getFormContext();
+    var showTrafficOffenceSection = true;
+    var showHORTSection = true;
+    var showVDRSSection = true;
+    var showSection165Section = true;
+    var showSection59Section = true;
+    var showSection163Section = true;
+
+    var ticketTypeId = globalFormContext.getAttribute("cp_tickettypevalue").getValue();
+    var mainTab = globalFormContext.ui.tabs.get(tabName);
+
+    if (ticketTypeId == undefined || ticketTypeId.length == 0) {
+		showTrafficOffenceSection = true;
+        showHORTSection = true;
+        showVDRSSection = true;
+        showSection165Section = true;
+        showSection59Section = true;
+        showSection163Section = true;
+	} else {
+        switch (ticketTypeId[0].id) {
+            case "{5C45096F-5B39-EB11-BF68-000D3A654276}": // HORT
+                showTrafficOffenceSection = false;
+                showVDRSSection = false;
+                showSection165Section = false;
+                showSection163Section = false;
+                showSection59Section = false;
+                break;
+            case "{6245096F-5B39-EB11-BF68-000D3A654276}": // Traffic Offence
+                showVDRSSection = false;
+                showHORTSection = false;
+                showSection165Section = false;
+                showSection163Section = false;
+                showSection59Section = false;
+                break;
+            case "{6445096F-5B39-EB11-BF68-000D3A654276}": // VDRS
+                showTrafficOffenceSection = false;
+                showHORTSection = false;
+                showSection165Section = false;
+                showSection163Section = false;
+                showSection59Section = false;
+                break;
+            case "{5E45096F-5B39-EB11-BF68-000D3A654276}": // S165
+                showTrafficOffenceSection = false;
+                showHORTSection = false;
+                showVDRSSection = false;
+                showSection163Section = false;
+                showSection59Section = false;
+                break;
+            case "{9BDD1977-DE5F-EB11-A812-0022489C79D7}": // S163
+                showTrafficOffenceSection = false;
+                showHORTSection = false;
+                showVDRSSection = false;
+                showSection165Section = false;
+                showSection59Section = false;
+                break;
+            case "{6045096F-5B39-EB11-BF68-000D3A654276}": // S59
+                showTrafficOffenceSection = false;
+                showHORTSection = false;
+                showVDRSSection = false;
+                showSection165Section = false;
+                showSection163Section = false;
+                break;                                   
+        }
+    }
+
+    var trafficOffence = mainTab.sections.get(sectionTrafficOffence);
+    var HORT = mainTab.sections.get(sectionHort);
+    var VDRS = mainTab.sections.get(sectionVDRS);
+    var S165 = mainTab.sections.get(sectionS165);
+    var S59 = mainTab.sections.get(sectionS59);
+    var S163 = mainTab.sections.get(sectionS163);
+
+    trafficOffence.setVisible(showTrafficOffenceSection);
+    HORT.setVisible(showHORTSection);
+    VDRS.setVisible(showVDRSSection);
+    S165.setVisible(showSection165Section);
+    S59.setVisible(showSection59Section);
+    S163.setVisible(showSection163Section);
+
+}
+
+function setIncidentNumber(executionContext, fromAttribute, toAttribute)
+{
+    globalFormContext = executionContext.getFormContext();
+    // Get value
+    var suffixNumber = globalFormContext.getAttribute(fromAttribute).getValue();
+
+    //Set value
+	if (suffixNumber == null) {
+		globalFormContext.getAttribute(toAttribute).setValue(null);
+	} else {
+        var today = new Date();
+        var dd = today.getDate();
+        var mm = today.getMonth()+1; 
+        var yyyy = today.getFullYear();
+        if( dd < 10) 
+        {
+            dd = '0' + dd;
+        } 
+
+        if( mm < 10) 
+        {
+            mm ='0' + mm;
+        }      
+		var incidentNumber = 'CP-' +  yyyy + mm + dd + '-' + suffixNumber;
+		globalFormContext.getAttribute(toAttribute).setValue(incidentNumber);		
+	}
+}

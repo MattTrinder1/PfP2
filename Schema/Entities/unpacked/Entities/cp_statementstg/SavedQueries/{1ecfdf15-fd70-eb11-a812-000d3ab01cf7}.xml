@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{1ecfdf15-fd70-eb11-a812-000d3ab01cf7}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cp_statementstg" select="1" icon="1" preview="1">
+        <row name="result" id="cp_statementstgid">
+          <cell name="cp_incidentnumber" width="100" />
+          <cell name="cp_incidentsuffix" width="100" />
+          <cell name="cp_incidentdate" width="100" />
+          <cell name="cp_witnessforename" width="100" />
+          <cell name="cp_witnesssurname" width="100" />
+          <cell name="cp_statementstg" width="200" />
+          <cell name="cp_stagingentrystatus" width="100" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical">
+        <entity name="cp_statementstg">
+          <attribute name="cp_statementstg" />
+          <attribute name="cp_statementstgid" />
+          <attribute name="cp_incidentnumber" />
+          <attribute name="cp_incidentsuffix" />
+          <attribute name="cp_witnessforename" />
+          <attribute name="cp_witnesssurname" />
+          <attribute name="cp_stagingentrystatus" />
+          <attribute name="cp_incidentdate" />
+          <order attribute="cp_incidentdate" descending="false" />
+          <filter type="and">
+            <condition attribute="cp_stagingentrystatus" operator="in">
+              <value>778230000</value>
+              <value>778230002</value>
+            </condition>
+          </filter>
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Pending Statements" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

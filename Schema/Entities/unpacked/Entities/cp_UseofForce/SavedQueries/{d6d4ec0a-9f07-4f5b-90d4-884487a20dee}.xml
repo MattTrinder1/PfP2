@@ -1,0 +1,49 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{d6d4ec0a-9f07-4f5b-90d4-884487a20dee}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cp_name" select="1" icon="1" preview="1">
+        <row name="result" id="cp_useofforceid">
+          <cell name="cp_incident" width="100" />
+          <cell name="cp_officer" width="100" />
+          <cell name="cp_officermainduty" width="100" />
+          <cell name="cp_subjectrole" width="100" />
+          <cell name="createdon" width="125" />
+          <cell name="cp_tpa" width="100" />
+          <cell name="a_5adb7d7d8e55eb11a8120022489ba6ad.cp_enteredby" width="100" disableSorting="1" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cp_useofforce">
+          <attribute name="createdon" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="cp_incident" />
+          <attribute name="cp_officer" />
+          <attribute name="cp_tpa" />
+          <attribute name="cp_officermainduty" />
+          <attribute name="cp_subjectrole" />
+          <order attribute="createdon" descending="true" />
+          <link-entity alias="a_5adb7d7d8e55eb11a8120022489ba6ad" name="cp_incident" from="cp_incidentid" to="cp_incident" link-type="outer" visible="false">
+            <attribute name="cp_enteredby" />
+          </link-entity>
+          <attribute name="cp_useofforceid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Uses of Force" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

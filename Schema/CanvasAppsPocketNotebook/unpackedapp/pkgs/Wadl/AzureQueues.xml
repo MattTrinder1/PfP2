@@ -1,0 +1,230 @@
+<application xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:service="https://uk-001.azure-apim.net/apim/azurequeues" xmlns:siena="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11" siena:serviceId="AzureQueues" xmlns="http://wadl.dev.java.net/2009/02">
+  <doc title="Azure Queues">Azure Queue storage provides cloud messaging between application components. Queue storage also supports managing asynchronous tasks and building process work flows.</doc>
+  <grammars>
+    <jsonTypes targetNamespace="https://uk-001.azure-apim.net/apim/azurequeues" xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
+      <array typeRef="StorageAccount" name="StorageAccountList_value_def" />
+      <object name="StorageAccountList">
+        <property name="value" typeRef="StorageAccountList_value_def" />
+      </object>
+      <string name="StorageAccount_Name_def" />
+      <string name="StorageAccount_DisplayName_def" />
+      <object name="StorageAccount">
+        <property name="Name" type="string" />
+        <property name="DisplayName" type="string" />
+      </object>
+      <string name="Queue_Name_def" />
+      <object name="Queue">
+        <property name="Name" type="string" />
+      </object>
+      <array typeRef="Queue" name="QueueArray" />
+      <string name="MessagePost_Message_def" />
+      <object name="MessagePost">
+        <property name="Message" type="string" />
+      </object>
+      <string name="Messages_QueueMessagesList_def_QueueMessage_def_items_def_MessageId_def" />
+      <string name="Messages_QueueMessagesList_def_QueueMessage_def_items_def_InsertionTime_def" />
+      <string name="Messages_QueueMessagesList_def_QueueMessage_def_items_def_ExpirationTime_def" />
+      <string name="Messages_QueueMessagesList_def_QueueMessage_def_items_def_PopReceipt_def" />
+      <string name="Messages_QueueMessagesList_def_QueueMessage_def_items_def_TimeNextVisible_def" />
+      <string name="Messages_QueueMessagesList_def_QueueMessage_def_items_def_MessageText_def" />
+      <object name="Messages_QueueMessagesList_def_QueueMessage_def_items_def">
+        <property name="MessageId" type="string" />
+        <property name="InsertionTime" type="string" />
+        <property name="ExpirationTime" type="string" />
+        <property name="PopReceipt" type="string" />
+        <property name="TimeNextVisible" type="string" />
+        <property name="MessageText" type="string" />
+      </object>
+      <array typeRef="Messages_QueueMessagesList_def_QueueMessage_def_items_def" name="Messages_QueueMessagesList_def_QueueMessage_def" />
+      <object name="Messages_QueueMessagesList_def">
+        <property name="QueueMessage" typeRef="Messages_QueueMessagesList_def_QueueMessage_def" />
+      </object>
+      <object name="Messages">
+        <property name="QueueMessagesList" typeRef="Messages_QueueMessagesList_def" />
+      </object>
+      <string name="PutMessage_param_message_def" />
+      <string name="PutMessage_V2_param_message_def" />
+      <string name="PutQueue_responses_200_def" />
+      <string name="PutQueue_V2_responses_200_def" />
+    </jsonTypes>
+  </grammars>
+  <resources siena:authenticationProviderHref="#PowerAppAuth" base="https://uk-001.azure-apim.net/apim/azurequeues">
+    <resource path="/{connectionId}/list">
+      <param style="template" name="connectionId" type="xs:string" required="true" />
+      <method siena:requiresAuthentication="true" name="GET" id="ListQueues" visibility="advanced" siena:isDeprecated="true" siena:family="ListQueues" siena:revision="1" siena:status="Production">
+        <doc title="List queues&#xA;List all the queues for your storage account." />
+        <request />
+        <response>
+          <representation mediaType="application/json" element="service:QueueArray" />
+        </response>
+      </method>
+    </resource>
+    <resource path="/{connectionId}/v2/storageAccounts/{storageAccountName}/queues/list">
+      <param style="template" name="connectionId" type="xs:string" required="true" />
+      <param style="template" name="storageAccountName" type="xs:string" required="true">
+        <doc title="Azure Storage account name." />
+      </param>
+      <method siena:requiresAuthentication="true" name="GET" id="ListQueuesV2" visibility="advanced" siena:isDeprecated="false" siena:family="ListQueues" siena:revision="2" siena:status="Production">
+        <doc title="List queues (V2)&#xA;List all the queues for your storage account." />
+        <request />
+        <response>
+          <representation mediaType="application/json" element="service:QueueArray" />
+        </response>
+      </method>
+    </resource>
+    <resource path="/{connectionId}/{queueName}/messages">
+      <param style="template" name="connectionId" type="xs:string" required="true" />
+      <param style="template" name="queueName" type="xs:string" required="true">
+        <doc title="The queue to get Messages from." />
+      </param>
+      <method siena:requiresAuthentication="true" name="GET" id="GetMessages" visibility="important" siena:isDeprecated="true" siena:family="GetMessages" siena:revision="1" siena:status="Production">
+        <doc title="Get messages&#xA;Get a specific set of messages from the queue. The messages will be hidden but remain on the queue until the delete action is used." />
+        <request>
+          <param style="query" name="numofmessages" type="xs:string">
+            <doc title="The number of messages to grab from the queue (default 1)." />
+          </param>
+          <param style="query" name="visibilitytimeout" type="xs:string">
+            <doc title="The time in seconds that messages will be invisible to other consumers (default 30)." />
+          </param>
+        </request>
+        <response>
+          <representation mediaType="application/json" element="service:Messages" />
+        </response>
+      </method>
+    </resource>
+    <resource path="/{connectionId}/{queueName}/messages">
+      <param style="template" name="connectionId" type="xs:string" required="true" />
+      <param style="template" name="queueName" type="xs:string" required="true">
+        <doc title="The queue to put a message to." />
+      </param>
+      <method siena:requiresAuthentication="true" name="POST" id="PutMessage" visibility="important" siena:isDeprecated="true" siena:family="PutMessage" siena:revision="1" siena:status="Production">
+        <doc title="Put a message on a queue&#xA;Adds a message to the given queue." />
+        <request>
+          <representation mediaType="application/json">
+            <param style="plain" name="message" path="" type="xs:string" required="true">
+              <doc title="The message content to post to the queue." />
+            </param>
+          </representation>
+        </request>
+      </method>
+    </resource>
+    <resource path="/{connectionId}/v2/storageAccounts/{storageAccountName}/queues/{queueName}/messages">
+      <param style="template" name="connectionId" type="xs:string" required="true" />
+      <param style="template" name="storageAccountName" type="xs:string" required="true">
+        <doc title="Azure Storage account name." />
+      </param>
+      <param style="template" name="queueName" type="xs:string" required="true">
+        <doc title="The queue to get Messages from." />
+      </param>
+      <method siena:requiresAuthentication="true" name="GET" id="GetMessagesV2" visibility="important" siena:isDeprecated="false" siena:family="GetMessages" siena:revision="2" siena:status="Production">
+        <doc title="Get messages (V2)&#xA;Get a specific set of messages from the queue. The messages will be hidden but remain on the queue until the delete action is used." />
+        <request>
+          <param style="query" name="numofmessages" type="xs:string">
+            <doc title="The number of messages to grab from the queue (default 1)." />
+          </param>
+          <param style="query" name="visibilitytimeout" type="xs:string">
+            <doc title="The time in seconds that messages will be invisible to other consumers (default 30)." />
+          </param>
+        </request>
+        <response>
+          <representation mediaType="application/json" element="service:Messages" />
+        </response>
+      </method>
+    </resource>
+    <resource path="/{connectionId}/v2/storageAccounts/{storageAccountName}/queues/{queueName}/messages">
+      <param style="template" name="connectionId" type="xs:string" required="true" />
+      <param style="template" name="storageAccountName" type="xs:string" required="true">
+        <doc title="Azure Storage account name." />
+      </param>
+      <param style="template" name="queueName" type="xs:string" required="true">
+        <doc title="The queue to put a message to." />
+      </param>
+      <method siena:requiresAuthentication="true" name="POST" id="PutMessageV2" visibility="important" siena:isDeprecated="false" siena:family="PutMessage" siena:revision="2" siena:status="Production">
+        <doc title="Put a message on a queue (V2)&#xA;Adds a message to the given queue." />
+        <request>
+          <representation mediaType="application/json">
+            <param style="plain" name="message" path="" type="xs:string" required="true">
+              <doc title="The message content to post to the queue." />
+            </param>
+          </representation>
+        </request>
+      </method>
+    </resource>
+    <resource path="/{connectionId}/{queueName}/messages/{messageId}">
+      <param style="template" name="connectionId" type="xs:string" required="true" />
+      <param style="template" name="queueName" type="xs:string" required="true">
+        <doc title="The queue to delete a message from." />
+      </param>
+      <param style="template" name="messageId" type="xs:string" required="true">
+        <doc title="The ID of the message to delete." />
+      </param>
+      <method siena:requiresAuthentication="true" name="DELETE" id="DeleteMessage" visibility="advanced" siena:isDeprecated="true" siena:family="DeleteMessage" siena:revision="1" siena:status="Production">
+        <doc title="Delete message&#xA;Delete a specific message from the queue." />
+        <request>
+          <param style="query" name="popreceipt" type="xs:string" required="true">
+            <doc title="A valid pop receipt value returned from an earlier call to the Get Messages." />
+          </param>
+        </request>
+      </method>
+    </resource>
+    <resource path="/{connectionId}/v2/storageAccounts/{storageAccountName}/queues/{queueName}/messages/{messageId}">
+      <param style="template" name="connectionId" type="xs:string" required="true" />
+      <param style="template" name="storageAccountName" type="xs:string" required="true">
+        <doc title="Azure Storage account name." />
+      </param>
+      <param style="template" name="queueName" type="xs:string" required="true">
+        <doc title="The queue to delete a message from." />
+      </param>
+      <param style="template" name="messageId" type="xs:string" required="true">
+        <doc title="The ID of the message to delete." />
+      </param>
+      <method siena:requiresAuthentication="true" name="DELETE" id="DeleteMessageV2" visibility="advanced" siena:isDeprecated="false" siena:family="DeleteMessage" siena:revision="2" siena:status="Production">
+        <doc title="Delete message (V2)&#xA;Delete a specific message from the queue." />
+        <request>
+          <param style="query" name="popreceipt" type="xs:string" required="true">
+            <doc title="A valid pop receipt value returned from an earlier call to the Get Messages." />
+          </param>
+        </request>
+      </method>
+    </resource>
+    <resource path="/{connectionId}/putQueue">
+      <param style="template" name="connectionId" type="xs:string" required="true" />
+      <method siena:requiresAuthentication="true" name="PUT" id="PutQueue" visibility="advanced" siena:isDeprecated="true" siena:family="PutQueue" siena:revision="1" siena:status="Production">
+        <doc title="Create a new queue&#xA;Adds a queue to your account." />
+        <request>
+          <param style="query" name="queueName" type="xs:string" required="true">
+            <doc title="The name of the queue to create." />
+          </param>
+        </request>
+        <response>
+          <representation mediaType="application/json" element="xs:string" />
+        </response>
+      </method>
+    </resource>
+    <resource path="/{connectionId}/v2/storageAccounts/{storageAccountName}/queues/putQueue">
+      <param style="template" name="connectionId" type="xs:string" required="true" />
+      <param style="template" name="storageAccountName" type="xs:string" required="true">
+        <doc title="Azure Storage account name." />
+      </param>
+      <method siena:requiresAuthentication="true" name="PUT" id="PutQueueV2" visibility="advanced" siena:isDeprecated="false" siena:family="PutQueue" siena:revision="2" siena:status="Production">
+        <doc title="Create a new queue (V2)&#xA;Adds a queue to your account." />
+        <request>
+          <param style="query" name="queueName" type="xs:string" required="true">
+            <doc title="The name of the queue to create." />
+          </param>
+        </request>
+        <response>
+          <representation mediaType="application/json" element="xs:string" />
+        </response>
+      </method>
+    </resource>
+  </resources>
+  <authenticationProviders xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
+    <connectionProvider id="PowerAppAuth" siena:connectionProviderId="shared_azurequeues" />
+  </authenticationProviders>
+  <template xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
+    <variable name="connectionId">
+      <modifyParams style="template" name="connectionId" attribute="fixed" />
+    </variable>
+  </template>
+</application>

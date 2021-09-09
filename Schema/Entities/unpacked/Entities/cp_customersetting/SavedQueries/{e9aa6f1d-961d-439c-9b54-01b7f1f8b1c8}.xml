@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{e9aa6f1d-961d-439c-9b54-01b7f1f8b1c8}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cp_customername" select="1" icon="1" preview="1">
+        <row name="result" id="cp_customersettingid">
+          <cell name="cp_customername" width="300" />
+          <cell name="cp_active" width="100" />
+          <cell name="cp_incidentprefix" width="100" />
+          <cell name="cp_usetpa" width="100" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cp_customersetting">
+          <attribute name="cp_customersettingid" />
+          <attribute name="cp_customername" />
+          <order attribute="cp_customername" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="cp_incidentprefix" />
+          <attribute name="cp_usetpa" />
+          <attribute name="cp_active" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Customer Settings" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

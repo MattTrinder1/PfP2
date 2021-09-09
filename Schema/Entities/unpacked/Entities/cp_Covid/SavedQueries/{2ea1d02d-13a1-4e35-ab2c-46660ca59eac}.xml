@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{2ea1d02d-13a1-4e35-ab2c-46660ca59eac}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cp_name" select="1" icon="1" preview="1">
+        <row name="result" id="cp_covidid">
+          <cell name="cp_incident" width="120" />
+          <cell name="cp_contact" width="100" />
+          <cell name="cp_offence" width="234" />
+          <cell name="a_778faddae066eb11a812000d3ab403cd.cp_offencedescription" width="100" disableSorting="1" />
+          <cell name="a_778faddae066eb11a812000d3ab403cd.cp_offenceact" width="100" disableSorting="1" />
+          <cell name="cp_tpa" width="100" />
+          <cell name="statuscode" width="100" />
+          <cell name="a_80a7abd4e066eb11a812000d3ab403cd.cp_enteredby" width="100" disableSorting="1" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cp_covid">
+          <attribute name="createdon" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="cp_contact" />
+          <attribute name="cp_incident" />
+          <attribute name="cp_offence" />
+          <attribute name="cp_tpa" />
+          <order attribute="createdon" descending="true" />
+          <link-entity alias="a_778faddae066eb11a812000d3ab403cd" name="cp_covidoffences" from="cp_covidoffencesid" to="cp_offence" link-type="outer" visible="false">
+            <attribute name="cp_offencedescription" />
+            <attribute name="cp_offenceact" />
+          </link-entity>
+          <link-entity alias="a_80a7abd4e066eb11a812000d3ab403cd" name="cp_incident" from="cp_incidentid" to="cp_incident" link-type="outer" visible="false">
+            <attribute name="cp_enteredby" />
+          </link-entity>
+          <attribute name="cp_covidid" />
+          <attribute name="statuscode" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Covids" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

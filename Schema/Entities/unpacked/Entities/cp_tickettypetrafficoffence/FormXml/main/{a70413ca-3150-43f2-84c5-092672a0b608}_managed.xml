@@ -1,0 +1,225 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{a70413ca-3150-43f2-84c5-092672a0b608}</formid>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls">
+      <tabs>
+        <tab verticallayout="true" id="{0d899294-0570-47dd-b346-24d814109125}" IsUserDefined="1">
+          <labels>
+            <label description="General" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{8abf2929-4cc9-4fbe-bf02-44b754055063}" columns="11">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{a22455cb-7af8-4a06-8fcd-931ed0b72d21}">
+                        <labels>
+                          <label description="Traffic Offence" languagecode="1033" />
+                        </labels>
+                        <control id="cp_trafficoffenceid" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="cp_trafficoffenceid" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{365cffc2-2d5e-4023-8cb3-f3f7bf8696b7}" locklevel="0">
+                        <labels>
+                          <label description="Contains Speed Limit" languagecode="1033" />
+                        </labels>
+                        <control id="cp_containsspeedlimit" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="cp_containsspeedlimit" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{41649a82-8e36-4dce-84e0-eff79d8fcd03}" locklevel="0">
+                        <labels>
+                          <label description="NIP Given" languagecode="1033" />
+                        </labels>
+                        <control id="cp_nipgiven" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="cp_nipgiven" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{0fe8c8b5-6590-449a-b4ad-8e5e4e52f788}" locklevel="0">
+                        <labels>
+                          <label description="NIP Not Required" languagecode="1033" />
+                        </labels>
+                        <control id="cp_nipnotrequired" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="cp_nipnotrequired" disabled="false" />
+                      </cell>
+                      <cell locklevel="0" id="{405e5c48-3c9a-48fc-b1fe-4a71c23d6768}" rowspan="1" colspan="1">
+                        <labels>
+                          <label description="Offence Codes Violated" languagecode="1033" />
+                        </labels>
+                        <control id="Subgrid_1" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}" indicationOfSubgrid="true">
+                          <parameters>
+                            <TargetEntityType>cp_offencecode</TargetEntityType>
+                            <ViewId>{26348A78-6482-EB11-A812-000D3ADE2967}</ViewId>
+                            <ViewIds>{4351D0F5-34DF-405F-BCCE-51038CC17925},{26348A78-6482-EB11-A812-000D3ADE2967}</ViewIds>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <RelationshipName>cp_tickettypetrafficoffence_cp_offencecod</RelationshipName>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{4b8e7480-ed41-46d8-a4a3-c79b77bdbb18}" locklevel="0" rowspan="1">
+                        <labels>
+                          <label description="Offender Reply" languagecode="1033" />
+                        </labels>
+                        <control id="cp_offenderreply" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="cp_offenderreply" disabled="false" />
+                      </cell>
+                      <cell locklevel="0" id="{e99a35f5-e904-43e2-aaab-27bbc234f76d}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{d498625e-9def-41bd-a30b-37575dec06b4}" locklevel="0">
+                        <labels>
+                          <label description="Traffic Serial Number" languagecode="1033" />
+                        </labels>
+                        <control id="cp_trafficserialnumber" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_trafficserialnumber" disabled="false" />
+                      </cell>
+                      <cell locklevel="0" id="{595f1614-8755-49ce-a81d-c9f81c67ad8e}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{4810f278-963a-49e9-b94a-3e3a0a04fe88}" locklevel="0">
+                        <labels>
+                          <label description="Traffic Offence Printed" languagecode="1033" />
+                        </labels>
+                        <control id="cp_trafficoffenceprinted" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="cp_trafficoffenceprinted" disabled="false" />
+                      </cell>
+                      <cell locklevel="0" id="{9cfcab67-ce86-4a06-b912-6203a9d16fac}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{d019a9ae-147c-41e7-bf34-92fbb48e4e92}" locklevel="0">
+                        <labels>
+                          <label description="Offender Signature" languagecode="1033" />
+                        </labels>
+                        <control id="cp_offendersignature" classid="{7E548B0D-209C-477B-9DCD-F0F44472381D}" datafieldname="cp_offendersignature" disabled="false" />
+                      </cell>
+                      <cell locklevel="0" id="{fac8c809-5150-47cb-8dd0-6c0c1c845135}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{3034fb6c-7346-4456-9975-99beec4d0949}">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+                      </cell>
+                      <cell locklevel="0" id="{bcbf449b-51dd-431b-ab5d-277daa1cf5c8}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{b750c25f-0cfc-440c-8f35-6abe6aa5ef2e}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{7df52644-4f14-4415-861d-52cf4975334d}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{fb3d8f82-e0b9-4edf-9b66-ba3a36f870f7}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{34676007-53d9-4795-ba66-c610e3707152}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <footer id="{2dffead2-7378-44ef-b769-2304d12209a0}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{2a1b98b6-6c94-4efd-8701-339ee3c35e0f}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{fd230415-2590-4088-b2f6-681224465571}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{3b2203bc-d349-4d34-9f97-428157b49a76}" showlabel="false">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </footer>
+      <Navigation>
+        <NavBar />
+        <NavBarAreas>
+          <NavBarArea Id="Info">
+            <Titles>
+              <Title LCID="1033" Text="Common" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Sales">
+            <Titles>
+              <Title LCID="1033" Text="Sales" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Service">
+            <Titles>
+              <Title LCID="1033" Text="Service" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Marketing">
+            <Titles>
+              <Title LCID="1033" Text="Marketing" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="ProcessCenter">
+            <Titles>
+              <Title LCID="1033" Text="Process Sessions" />
+            </Titles>
+          </NavBarArea>
+        </NavBarAreas>
+      </Navigation>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Everyone />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

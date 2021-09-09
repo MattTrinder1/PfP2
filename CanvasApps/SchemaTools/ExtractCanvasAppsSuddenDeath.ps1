@@ -1,1 +1,0 @@
-& $PSScriptRoot\exportandextract.ps1 -folderName "CanvasAppsSuddenDeath" -canvas $True -appName suddendeathnew_1923b

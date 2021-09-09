@@ -1,1 +1,0 @@
-& $PSScriptRoot\exportandextract.ps1 -folderName "CanvasAppsItsYourChoice" -canvas $True -appName itsyourchoicenew_d46f4

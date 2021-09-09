@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{ddad4770-25d8-45e9-adb0-9c5521d1a5cc}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cp_name" select="1" icon="1" preview="1">
+        <row name="result" id="cp_vehicleticketid">
+          <cell name="cp_incident" width="129" />
+          <cell name="cp_offencedatetime" width="194" />
+          <cell name="cp_offender" width="172" />
+          <cell name="cp_vehicleticketstatus" width="100" />
+          <cell name="cp_tpa" width="100" />
+          <cell name="ownerid" width="100" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cp_vehicleticket">
+          <attribute name="createdon" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="cp_incident" />
+          <attribute name="cp_offencedatetime" />
+          <attribute name="cp_offender" />
+          <attribute name="cp_vehicleticketstatus" />
+          <order attribute="createdon" descending="true" />
+          <attribute name="cp_tpa" />
+          <attribute name="cp_vehicleticketid" />
+          <attribute name="ownerid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Vehicle Tickets" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

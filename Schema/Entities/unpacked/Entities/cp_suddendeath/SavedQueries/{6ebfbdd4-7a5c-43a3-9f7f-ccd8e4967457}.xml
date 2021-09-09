@@ -1,0 +1,55 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{6ebfbdd4-7a5c-43a3-9f7f-ccd8e4967457}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cp_name" select="1" icon="1" preview="1">
+        <row name="result" id="cp_suddendeathid">
+          <cell name="cp_incident" width="100" />
+          <cell name="cp_deceased" width="100" />
+          <cell name="cp_datetimedeathconfirmed" width="100" />
+          <cell name="cp_formalidentification" width="100" />
+          <cell name="cp_suspectsuicide" width="100" />
+          <cell name="statecode" width="100" />
+          <cell name="cp_tpa" width="100" />
+          <cell name="a_23da21a38660eb11a8120022489c79d7.cp_enteredby" width="100" disableSorting="1" />
+          <cell name="createdon" width="125" />
+          <cell name="cp_approvalstatus" width="100" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical">
+        <entity name="cp_suddendeath">
+          <attribute name="createdon" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <order attribute="createdon" descending="true" />
+          <attribute name="cp_incident" />
+          <attribute name="cp_deceased" />
+          <attribute name="cp_datetimedeathconfirmed" />
+          <attribute name="cp_formalidentification" />
+          <attribute name="cp_tpa" />
+          <attribute name="cp_suspectsuicide" />
+          <link-entity alias="a_23da21a38660eb11a8120022489c79d7" name="cp_incident" from="cp_incidentid" to="cp_incident" link-type="outer" visible="false">
+            <attribute name="cp_enteredby" />
+          </link-entity>
+          <attribute name="statecode" />
+          <attribute name="cp_approvalstatus" />
+          <attribute name="cp_suddendeathid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Sudden Deaths" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

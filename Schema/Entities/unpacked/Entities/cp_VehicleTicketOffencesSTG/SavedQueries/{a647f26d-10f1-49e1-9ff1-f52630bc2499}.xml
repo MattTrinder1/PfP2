@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{a647f26d-10f1-49e1-9ff1-f52630bc2499}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cp_tickettype" select="1" icon="1" preview="1">
+        <row name="result" id="cp_vehicleticketoffencesstgid">
+          <cell name="cp_tickettypevalue" width="100" />
+          <cell name="cp_containsspeedlimit" width="156" />
+          <cell name="cp_stagingentrystatus" width="100" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cp_vehicleticketoffencesstg">
+          <attribute name="cp_vehicleticketoffencesstgid" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="cp_containsspeedlimit" />
+          <attribute name="cp_stagingentrystatus" />
+          <attribute name="cp_tickettypevalue" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Vehicle Ticket Offences STGS" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

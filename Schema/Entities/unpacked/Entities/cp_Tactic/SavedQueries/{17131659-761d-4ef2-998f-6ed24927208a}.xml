@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{17131659-761d-4ef2-998f-6ed24927208a}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cp_name" select="1" icon="1" preview="1">
+        <row name="result" id="cp_tacticid">
+          <cell name="cp_sequenceno" width="100" />
+          <cell name="cp_tactictype" width="100" />
+          <cell name="cp_name" width="300" />
+          <cell name="cp_effective" width="100" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cp_tactic">
+          <attribute name="cp_tacticid" />
+          <attribute name="cp_name" />
+          <attribute name="createdon" />
+          <order attribute="cp_name" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="cp_sequenceno" />
+          <attribute name="cp_effective" />
+          <attribute name="cp_tactictype" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Tactics" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>
