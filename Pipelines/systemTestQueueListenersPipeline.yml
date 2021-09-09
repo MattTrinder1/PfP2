@@ -30,7 +30,7 @@ stages:
         runOnce:
           deploy:
             steps:
-              - template: buildAndDeployQueueListeners.yml
+              - template: deployQueueListeners.yml
                 parameters:
                   serviceConnectionName: PfPDev-ab46c5b7b4fa
                   configuration: Release
@@ -48,7 +48,7 @@ stages:
         runOnce:
           deploy:
             steps:
-              - template: buildAndDeployQueueListeners.yml
+              - template: deployQueueListeners.yml
                 parameters:
                   serviceConnectionName: PfPSysTest-ec70
                   configuration: Release
@@ -66,7 +66,7 @@ stages:
         runOnce:
           deploy:
             steps:
-              - template: buildAndDeployQueueListeners.yml
+              - template: deployQueueListeners.yml
                 parameters:
                   serviceConnectionName: PfPUAT-e4a7
                   configuration: Release
