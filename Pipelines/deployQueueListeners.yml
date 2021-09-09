@@ -7,14 +7,14 @@ parameters:
   type: string
 
 steps:
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'publish'
-    publishWebProjects: false
-    projects: 'MiddleTier/QueueListeners/QueueListeners.csproj'
-    arguments: '-o $(Build.ArtifactStagingDirectory)/${{parameters.appName}} -c ${{parameters.configuration}}'
-    zipAfterPublish: true
-    modifyOutputPath: false
+#- task: DotNetCoreCLI@2
+#  inputs:
+#    command: 'publish'
+#    publishWebProjects: false
+#    projects: 'MiddleTier/QueueListeners/QueueListeners.csproj'
+#    arguments: '-o $(Build.ArtifactStagingDirectory)/${{parameters.appName}} -c ${{parameters.configuration}}'
+#    zipAfterPublish: true
+#    modifyOutputPath: false
 
 #Production of Artifact is optional!
 #- task: PublishBuildArtifacts@1
