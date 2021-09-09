@@ -42,13 +42,13 @@ stages:
 #----------------------------------End Stage-------------------------------------------------------------------
 #----------------------------------Start Stage-------------------------------------------------------------------
 
-  - stage: ReleaseToTisskiSystemTest
+  - stage: ReleaseToPfPSystemTest
     dependsOn: AssembleRelease
     displayName: Deploy PfP System Test
     jobs:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    - deployment: ReleaseToTisskiSystemTest
-      environment: TisskiSystemTest
+    - deployment: ReleaseToPfPSystemTest
+      environment: PfPSystemTest
       displayName: Deploy Solutions
       workspace:
         clean: all 
@@ -63,7 +63,7 @@ stages:
                 releaseversion : $(release.version)
                 solutionprefix : $(solution.prefix)
                 canvasApp: ${{parameters.canvasApp}}
-                connectionString: $(pretest.connection.string)
+                connectionString: $(pfpsystemtest.connection.string)
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -73,7 +73,7 @@ stages:
 #----------------------------------Start Stage-------------------------------------------------------------------
 
   - stage: ReleaseToUAT
-    dependsOn: ReleaseToTisskiSystemTest
+    dependsOn: ReleaseToPfPSystemTest
     displayName: Deploy to ${{parameters.customer}} UAT
     jobs:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
