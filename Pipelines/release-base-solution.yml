@@ -95,7 +95,7 @@ stages:
                 minorversion : $(minor.version)
                 releaseversion : $(release.version)
                 solutionprefix : $(solution.prefix)
-                canvasApp: ${{parameters.solutionName}}
+                solutionName: ${{parameters.solutionName}}
                 connectionString: $(${{parameters.customer}}uat.connection.string)
 
 
