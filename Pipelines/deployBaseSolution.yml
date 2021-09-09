@@ -1,5 +1,5 @@
 parameters:
-- name: canvasApp
+- name: solutionName
   type: string
 - name: solutionprefix
   type: string
@@ -20,13 +20,13 @@ steps:
     
 - template: get-solution-filenames.yml
   parameters:
-    pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-CanvasApps${{parameters.canvasApp}}
+    pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-${{parameters.solutionName}}
     minorversion : ${{parameters.minorversion}}
     releaseversion : ${{parameters.releaseversion}}
     solutionprefix : ${{parameters.solutionprefix}}
 
 - template: install-managed-solution.yml
   parameters:
-    pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-CanvasApps${{parameters.canvasApp}}
+    pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-${{parameters.solutionName}}
     connectionstring : ${{parameters.connectionString}}
-    SolutionFileName : $(CanvasApps${{parameters.canvasApp}}SolutionFileName)
+    SolutionFileName : $(${{parameters.solutionName}}SolutionFileName)
