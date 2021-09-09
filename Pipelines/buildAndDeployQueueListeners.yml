@@ -29,5 +29,5 @@ steps:
   inputs:
     azureSubscription: ${{parameters.serviceConnectionName}}ResourceGroupConnection
     appType: 'functionApp'
-    appName: '${{parameters.serviceConnectionName}}-${{parameters.appId}}-QueueListeners'
+    appName: '${{parameters.serviceConnectionName}}-QueueListeners'
     package: $(Build.ArtifactStagingDirectory)/${{parameters.appName}}/**/*.zip
