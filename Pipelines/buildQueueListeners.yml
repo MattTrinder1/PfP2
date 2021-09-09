@@ -1,0 +1,31 @@
+parameters:
+- name: serviceConnectionName
+  type: string
+- name: appName
+  type: string
+- name: configuration
+  type: string
+
+steps:
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: 'MiddleTier/QueueListeners/QueueListeners.csproj'
+    arguments: '-o $(Build.ArtifactStagingDirectory)/${{parameters.appName}} -c ${{parameters.configuration}}'
+    zipAfterPublish: true
+    modifyOutputPath: false
+
+#Production of Artifact is optional!
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/${{parameters.appName}}'
+    ArtifactName: '${{parameters.appName}}'
+    publishLocation: 'Container'
+
+#- task: AzureFunctionApp@1
+#  inputs:
+#    azureSubscription: ${{parameters.serviceConnectionName}}ResourceGroupConnection
+#    appType: 'functionApp'
+#    appName: '${{parameters.serviceConnectionName}}-QueueListeners'
+#    package: $(Build.ArtifactStagingDirectory)/${{parameters.appName}}/**/*.zip
