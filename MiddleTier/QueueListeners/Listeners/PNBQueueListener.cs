@@ -28,7 +28,7 @@ namespace QueueListeners
         [Function("PNBQueueListener")]
         public void Run([QueueTrigger("pocketnotebookqueue")] string myQueueItem, FunctionContext context)
         {
-            var log = context.GetLogger("PNNQueueListener");
+            var log = context.GetLogger("PNBQueueListener");
             log.LogInformation($"C# Queue trigger function processed: {myQueueItem}");
 
             string newQueueItem = ParseQueueMessage(myQueueItem);

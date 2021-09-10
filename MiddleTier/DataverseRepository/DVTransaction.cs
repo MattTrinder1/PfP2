@@ -3,43 +3,70 @@ using Microsoft.PowerPlatform.Dataverse.Client;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using System;
+using System.Collections.Generic;
 using System.Linq.Expressions;
+using System.Reflection;
+using System.Runtime.Serialization;
 
 namespace API.DataverseAccess
 {
-    public sealed class DVTransaction : DVDataAccessBase
+    public enum RequestType
     {
-        public DVTransaction()
+        Create,
+        CreateImage,
+        Update
+    }
+    public class TransactionRequest
+    {
+
+        public TransactionRequest(RequestType requestType, DVBase baseEntity) 
         {
-            base.transaction = new ExecuteTransactionRequest()
-            {
-                Requests = new OrganizationRequestCollection(),
-                ReturnResponses = true
-            };
+            ReqType = requestType;
+            DVBaseEntity = baseEntity;
+        }
+        public TransactionRequest(RequestType requestType, DVBase baseEntity,Guid entityId, string imagePropertyName)
+        {
+            ReqType = requestType;
+            DVBaseEntity = baseEntity;
+            EntityId = entityId;
+            ImagePropertyName = imagePropertyName;
         }
 
-        public ExecuteTransactionResponse Execute(ServiceClient service)
+        public RequestType ReqType { get; set; }
+        public DVBase DVBaseEntity { get; set; }
+
+        public Guid? EntityId { get; set; }
+
+        public string ImagePropertyName { get; set; }
+
+    }
+
+    public sealed class DVTransaction 
+    {
+        public List<TransactionRequest> Requests;
+            
+
+        public DVTransaction()
         {
-            if (service == null) throw new ArgumentNullException("service");
-            return (ExecuteTransactionResponse)service.Execute(base.transaction);
+            Requests = new List<TransactionRequest>();
         }
 
         public void AddCreateEntity<T>(T entity) where T : DVBase
         {
-            base.CreateEntity(entity);
+            Requests.Add(new TransactionRequest(RequestType.Create, entity));
         }
 
-        public void AddCreateEntityImage<T>(
+        public void AddCreateEntityImage(
             Guid entityId,
-            T entity,
-            Expression<Func<T, string>> imageProperty) where T : DVBase
+            DVBase entity,
+            string imagePropertyName) 
         {
-            base.CreateEntityImage<T>(entityId, entity, imageProperty);
+            Requests.Add(new TransactionRequest(RequestType.CreateImage, entity,entityId,imagePropertyName));
         }
 
         public void AddUpdateEntity<T>(T entity) where T : DVBase
         {
-            base.UpdateEntity(entity);
+            Requests.Add(new TransactionRequest(RequestType.Update, entity));
         }
     }
 }

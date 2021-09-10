@@ -29,3 +29,4 @@ New-AzFunctionApp  -ResourceGroupName $environmentName-$guid -Name $environmentN
 
 Update-AzFunctionAppSetting  -ResourceGroupName $environmentName-$guid -Name $environmentName-$guid"-QueueListeners" -AppSetting @{"FUNCTIONS_WORKER_RUNTIME" ="dotnet-isolated"} -Force
 Update-AzFunctionAppSetting  -ResourceGroupName $environmentName-$guid -Name $environmentName-$guid"-QueueListeners" -AppSetting @{"APIUrl" ="https://$environmentName-$guid-apiwebapp.azurewebsites.net/api"} -Force
+Update-AzFunctionAppSetting  -ResourceGroupName $environmentName-$guid -Name $environmentName-$guid"-QueueListeners" -AppSetting @{"APIIntegrationKey" ="[IntegrationKeyGUID]"} -Force

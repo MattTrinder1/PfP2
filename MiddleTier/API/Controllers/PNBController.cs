@@ -151,11 +151,14 @@ namespace API.Controllers
                     pnbGuid = Guid.NewGuid();
                     dvPb.cp_pocketnotebookid = pnbGuid;
                 }
+
+                
+
                 transaction.AddCreateEntity(dvPb);
 
                 var dvPbImages = mapper.Map<PocketNotebook, DVPocketNotebookImages>(pnb);
-                transaction.AddCreateEntityImage(pnbGuid, dvPbImages, x => x.cp_sketch);
-                transaction.AddCreateEntityImage(pnbGuid, dvPbImages, x => x.cp_signature);
+                transaction.AddCreateEntityImage(pnbGuid, dvPbImages, "cp_sketch");
+                transaction.AddCreateEntityImage(pnbGuid, dvPbImages, "cp_signature");
 
                 foreach (var photo in pnb.Photos)
                 {
@@ -164,7 +167,8 @@ namespace API.Controllers
                     transaction.AddCreateEntity(dvPhoto);
                 }
 
-                transaction.Execute(UserDataAccess.DVService);
+                UserDataAccess.ExecuteTransaction(transaction);
+
 
                 return pnbGuid;
             }
