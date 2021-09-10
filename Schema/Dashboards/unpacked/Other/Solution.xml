@@ -1,0 +1,110 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ImportExportXml version="9.2.21083.136" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SolutionManifest>
+    <UniqueName>CPDashboards</UniqueName>
+    <LocalizedNames>
+      <LocalizedName description="090 - Dashboards" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions />
+    <Version>1.0.0.6</Version>
+    <Managed>1</Managed>
+    <Publisher>
+      <UniqueName>cumbriapolicepublisher</UniqueName>
+      <LocalizedNames>
+        <LocalizedName description="Cumbria Police Publisher" languagecode="1033" />
+      </LocalizedNames>
+      <Descriptions />
+      <EMailAddress xsi:nil="true"></EMailAddress>
+      <SupportingWebsiteUrl xsi:nil="true"></SupportingWebsiteUrl>
+      <CustomizationPrefix>cp</CustomizationPrefix>
+      <CustomizationOptionValuePrefix>77823</CustomizationOptionValuePrefix>
+      <Addresses>
+        <Address>
+          <AddressNumber>1</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode>1</ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+        <Address>
+          <AddressNumber>2</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode>1</ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+      </Addresses>
+    </Publisher>
+    <RootComponents>
+      <RootComponent type="60" id="{0f7d2fb5-fe70-eb11-a812-000d3ab02051}" behavior="0" />
+    </RootComponents>
+    <MissingDependencies>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_statement" displayName="Statement" solution="Active" />
+        <Dependent type="60" displayName="Statements Dashboard" id="{0f7d2fb5-fe70-eb11-a812-000d3ab02051}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_statementstg" displayName="Statement STG" solution="Active" />
+        <Dependent type="60" displayName="Statements Dashboard" id="{0f7d2fb5-fe70-eb11-a812-000d3ab02051}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Pending Statements" displayName="Pending Statements" parentSchemaName="cp_statementstg" parentDisplayName="Statement STG" solution="Active" id="{1ecfdf15-fd70-eb11-a812-000d3ab01cf7}" />
+        <Dependent type="60" displayName="Statements Dashboard" id="{0f7d2fb5-fe70-eb11-a812-000d3ab02051}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="26" schemaName="Active Statements" displayName="Active Statements" parentSchemaName="cp_statement" parentDisplayName="Statement" solution="Active" id="{eb8d0e82-aaca-4fe2-ad40-180ec44af3c5}" />
+        <Dependent type="60" displayName="Statements Dashboard" id="{0f7d2fb5-fe70-eb11-a812-000d3ab02051}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="59" schemaName="Pending Statements" displayName="Pending Statements" parentSchemaName="cp_statementstg" parentDisplayName="Statement STG" solution="Active" id="{055e896e-fd70-eb11-a812-000d3ab02051}" />
+        <Dependent type="60" displayName="Statements Dashboard" id="{0f7d2fb5-fe70-eb11-a812-000d3ab02051}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="59" schemaName="Statements per Type" displayName="Statements per Type" parentSchemaName="cp_statement" parentDisplayName="Statement" solution="Active" id="{4c0c6d5d-fa70-eb11-a812-000d3ab02051}" />
+        <Dependent type="60" displayName="Statements Dashboard" id="{0f7d2fb5-fe70-eb11-a812-000d3ab02051}" />
+      </MissingDependency>
+    </MissingDependencies>
+  </SolutionManifest>
+</ImportExportXml>
