@@ -27,15 +27,22 @@ namespace API.DataverseAccess
     {
         private IMemoryCache _cache;
         private ServiceClient _dvService;
-
+        private Guid? _userId;
 
         public const SelectColumns DefaultSelectColumns = SelectColumns.TypePropertiesWithoutImages;
 
-        
+
         public DVDataAccess(ServiceClient dvService, IMemoryCache cache)
         {
             _cache = cache;
             _dvService = dvService;
+        }
+
+        public DVDataAccess(ServiceClient dvService, IMemoryCache cache, Guid userId)
+        {
+            _cache = cache;
+            _dvService = dvService;
+            _userId = userId;
         }
 
 
@@ -265,6 +272,11 @@ namespace API.DataverseAccess
                             entity.Attributes.Add(property.Name, Convert.FromBase64String((string)propertyValue));
                         }
                     }
+                }
+                if (property.Name.ToLower() == "cp_enteredby" && _userId.HasValue)
+                {
+                    entity.Attributes.Add("cp_enteredby",new EntityReference("systemuser",_userId.Value));
+
                 }
             }
 

@@ -61,6 +61,24 @@ namespace API.DataverseAccess
             return adId;
         }
 
+        private Guid GetUserId(string emailAddress)
+        {
+            Guid userId;
+            if (!cache.TryGetValue($"{emailAddress}:UserId", out userId))
+            {
+                QueryExpression query = new QueryExpression("systemuser");
+                query.Criteria.AddCondition("internalemailaddress", ConditionOperator.Equal, emailAddress);
+                
+                var dvResponse = AdminDvService.RetrieveMultiple(query);
+
+                userId = dvResponse.Entities.Single().Id;
+
+                cache.Set($"{emailAddress}:UserId", userId);
+            }
+
+            return userId;
+        }
+
         public ServiceClient AdminDvService
         {
             get
@@ -95,15 +113,15 @@ namespace API.DataverseAccess
                 Uri uri = new Uri(connectionConfiguration.DVUrl);
                 userServiceClient = new ServiceClient(uri, connectionConfiguration.ClientId, connectionConfiguration.ClientSecret, false);
                 userServiceClient.CallerAADObjectId = GetUserADObjectId(emailAddress);
-
+                
                 cache.Set($"{emailAddress}:ServiceClient", userServiceClient, new MemoryCacheEntryOptions()
                 {
                     SlidingExpiration = TimeSpan.FromMinutes(userDvServiceCacheSlidingExpirationMinutes),
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(userDvServiceCacheAbsoluteExpirationMinutes)
                 });
             }
-
-            return new DVDataAccess(userServiceClient, cache);
+            
+            return new DVDataAccess(userServiceClient, cache, GetUserId(emailAddress));
         }
     }
 }
