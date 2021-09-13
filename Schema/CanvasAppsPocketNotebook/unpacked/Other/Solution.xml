@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ImportExportXml version="9.2.21083.136" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ImportExportXml version="9.2.21084.137" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SolutionManifest>
     <UniqueName>CPCanvasAppsPocketNotebook</UniqueName>
     <LocalizedNames>
       <LocalizedName description="126 - CanvasAppsPocketNotebook" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.0.0.8</Version>
+    <Version>1.0.0.9</Version>
     <Managed>1</Managed>
     <Publisher>
       <UniqueName>Tisski</UniqueName>
@@ -80,6 +80,11 @@
     <RootComponents>
       <RootComponent type="300" schemaName="cp_pocketnotebookazure_5e5ef" behavior="0" />
     </RootComponents>
-    <MissingDependencies />
+    <MissingDependencies>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cp_AzureBlobConnectionRef" solution="Active" id.connectionreferencelogicalname="cp_AzureBlobConnectionRef" />
+        <Dependent type="300" schemaName="cp_pocketnotebookazure_5e5ef" displayName="Pocket Notebook (Azure)" />
+      </MissingDependency>
+    </MissingDependencies>
   </SolutionManifest>
 </ImportExportXml>

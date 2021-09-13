@@ -28,7 +28,7 @@ Screen_Notes As screen:
                 DisplayMode.Edit
             )
         Fill: =RGBA(153, 153, 153, 1)
-        FontWeight: =FontWeight.Bold
+        FontWeight: =FontWeight.Normal
         Height: =65
         HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
         OnSelect: |
@@ -88,7 +88,7 @@ Screen_Notes As screen:
                 'Notebook Offline',
                 {
                     Id: newNoteId,
-                    Notes: txtNotes.Text,
+                    Notes:  txtNotes.Text,
                     'Signature Date and Time': If(
                         chkSignatureRequired.Value,
                         DateTimeValue(TextInput_Signature_datetime.Text)
@@ -262,13 +262,13 @@ Screen_Notes As screen:
                 BorderColor: =RGBA(202, 202, 202, 1)
                 Default: =""
                 Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
-                Height: =626
+                Height: =646
                 MaxLength: =1048576
                 Mode: =TextMode.MultiLine
                 Size: =21
-                Width: =560
+                Width: =559
                 X: =32
-                Y: =51
+                Y: =43
                 ZIndex: =1
 
             Label2 As label:

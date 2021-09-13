@@ -470,6 +470,9 @@ Screen_Home_Screen As screen:
                             )
                         )
                     },
+            
+                    UpdateContext({jsonText:JSON(First('Notebook Offline'))});
+            
                     ForAll(
                         unsavedNotes As unsavedNote,
                         Patch(
@@ -491,6 +494,7 @@ Screen_Home_Screen As screen:
                             'Notebook Offline',
                             "NotebookOfflineCache"
                         );
+                        
                         
                         If(
                             AzureQueues.PutMessage(
