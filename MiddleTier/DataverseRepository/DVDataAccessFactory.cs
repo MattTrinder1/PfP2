@@ -5,6 +5,12 @@ using Microsoft.PowerPlatform.Dataverse.Client;
 using Microsoft.Xrm.Sdk.Query;
 using System;
 using System.Linq;
+using Microsoft.Xrm.Sdk;
+
+#if MOCKUP
+using DG.Tools.XrmMockup;
+#endif
+
 
 namespace API.DataverseAccess
 {
@@ -26,7 +32,7 @@ namespace API.DataverseAccess
         //* Documentation is also not clear on how long a ServiceClient instance is valid for or likewise if there is significant overhead in 
         //  always instantiating new ServiceClient instances (even when useUniqueInstance is false) so again to be explicit/safe we cache each 
         //  ServiceClient instance for a specific amount of time.
-        private ServiceClient dvService = null;
+        private IOrganizationService dvService = null;
 
         private const int userDvServiceCacheSlidingExpirationMinutes = 240;
         private const int userDvServiceCacheAbsoluteExpirationMinutes = 720;
@@ -34,6 +40,10 @@ namespace API.DataverseAccess
         private ConnectionConfiguration connectionConfiguration = null;
         private IMemoryCache cache = null;
         private string impersonationEmailAddress;
+
+#if MOCKUP
+        private XrmMockupDataverse crm;
+#endif
 
         public DVDataAccessFactory(ConnectionConfiguration connectionConfiguration, IMemoryCache cache, IHttpContextAccessor httpContextAccessor)
         {
@@ -85,16 +95,44 @@ namespace API.DataverseAccess
             return userId;
         }
 
-        public ServiceClient AdminDvService
+        public IOrganizationService AdminDvService
         {
             get
             {
-                if (dvService == null || !dvService.IsReady)
+#if !MOCKUP
+                if (dvService == null || !(dvService as ServiceClient).IsReady)
                 {
                     Uri uri = new Uri(connectionConfiguration.DVUrl);
                     dvService = new ServiceClient(uri, connectionConfiguration.ClientId, connectionConfiguration.ClientSecret, false);
                 }
+            
+#else
+                if (dvService == null)
+                {
+                    var settings = new XrmMockupSettings
+                    {
+                        BasePluginTypes = new Type[] { },
+                        CodeActivityInstanceTypes = new Type[] { },
+                        EnableProxyTypes = false,
+                        IncludeAllWorkflows = true,
+                        AppendAndAppendToPrivilegeCheck = true,
+                        MetadataDirectoryPath = @"C:\dev\PowerAppsForPolicing\MiddleTier\Tests\APITests\Metadata\"
+                    };
+
+                    crm = XrmMockupDataverse.GetInstance(settings);
+
+                    dvService = crm.GetAdminService();
+
+                    var user = new Entity("systemuser");
+                    user.Id = Guid.Parse("eb976487-ccbd-4594-925a-c6a092b4a0e6");
+                    user["internalemailaddress"] = "matt.trinder@tisski.com";
+                    user["azureactivedirectoryobjectid"] = Guid.NewGuid();
+
+                    dvService.Create(user);
+                }
+#endif
                 return dvService;
+
             }
         }
 
@@ -105,26 +143,18 @@ namespace API.DataverseAccess
 
         public DVDataAccess GetUserDataAccess()
         {
-         
-            bool requireNewServiceClient = true;
-            ServiceClient userServiceClient = null;
-            if (cache.TryGetValue($"{impersonationEmailAddress}:ServiceClient", out userServiceClient))
-            {
-                requireNewServiceClient = !userServiceClient.IsReady;
-            }
+            IOrganizationService userServiceClient = null;
 
-            if (requireNewServiceClient)
-            {
-                Uri uri = new Uri(connectionConfiguration.DVUrl);
-                userServiceClient = new ServiceClient(uri, connectionConfiguration.ClientId, connectionConfiguration.ClientSecret, false);
-                userServiceClient.CallerAADObjectId = GetUserADObjectId(impersonationEmailAddress);
-                
-                cache.Set($"{impersonationEmailAddress}:ServiceClient", userServiceClient, new MemoryCacheEntryOptions()
-                {
-                    SlidingExpiration = TimeSpan.FromMinutes(userDvServiceCacheSlidingExpirationMinutes),
-                    AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(userDvServiceCacheAbsoluteExpirationMinutes)
-                });
-            }
+            Uri uri = new Uri(connectionConfiguration.DVUrl);
+
+            var impersonationId = GetUserADObjectId(impersonationEmailAddress);
+
+#if MOCKUP
+            userServiceClient = crm.CreateOrganizationService(impersonationId);
+#else
+            userServiceClient = new ServiceClient(uri, connectionConfiguration.ClientId, connectionConfiguration.ClientSecret, false);
+            (userServiceClient as ServiceClient).CallerAADObjectId = GetUserADObjectId(impersonationEmailAddress);
+#endif
             
             return new DVDataAccess(userServiceClient, cache, GetUserId(impersonationEmailAddress));
         }

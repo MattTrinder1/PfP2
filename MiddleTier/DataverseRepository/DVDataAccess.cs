@@ -26,19 +26,19 @@ namespace API.DataverseAccess
     public class DVDataAccess
     {
         private IMemoryCache _cache;
-        private ServiceClient _dvService;
+        private IOrganizationService _dvService;
         private Guid? _userId;
 
         public const SelectColumns DefaultSelectColumns = SelectColumns.TypePropertiesWithoutImages;
 
 
-        public DVDataAccess(ServiceClient dvService, IMemoryCache cache)
+        public DVDataAccess(IOrganizationService dvService, IMemoryCache cache)
         {
             _cache = cache;
             _dvService = dvService;
         }
 
-        public DVDataAccess(ServiceClient dvService, IMemoryCache cache, Guid userId)
+        public DVDataAccess(IOrganizationService dvService, IMemoryCache cache, Guid userId)
         {
             _cache = cache;
             _dvService = dvService;
