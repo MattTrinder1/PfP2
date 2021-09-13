@@ -19,10 +19,10 @@ namespace API.Models.PNB
         public DateTime? cp_notedateandtime{ get; set; }
 
         [RelatedEntityName("cp_incident")]
-        public EntityReference cp_incidentno { get; set; }
+        public EntityRef cp_incidentno { get; set; }
 
         [RelatedEntityName("systemuser")]
-        public EntityReference cp_enteredby { get; set; }
+        public EntityRef cp_enteredby { get; set; }
 
         public DateTime? cp_signaturedateandtime { get; set; }
         public string cp_signatoryname { get; set; }

@@ -1,5 +1,7 @@
 ﻿using RestSharp;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace FunctionApps
 {
@@ -23,6 +25,20 @@ namespace FunctionApps
             }
 
             return req;
+        }
+
+        internal static string ParseQueueMessage(string myQueueItem)
+        {
+            var parts = myQueueItem.Split("\\\\\\\"").ToList();
+            var newParts = new List<string>();
+            foreach (var part in parts)
+            {
+                string temp = part.Replace("\\n", Environment.NewLine).Replace("\\", "").Replace("\r", "\\r").Replace("\n", "\\n");
+                newParts.Add(temp);
+            }
+            var newQueueItem = string.Join("\\\"", newParts);
+            newQueueItem = newQueueItem.Trim(new Char[] { '\"' });
+            return newQueueItem;
         }
 
     }

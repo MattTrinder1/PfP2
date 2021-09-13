@@ -10,7 +10,7 @@ namespace Common.Models.Business
     {
         public string Attachment { get; set; }
         public string Subject { get; set; }
-        public EntityReference ParentRecord{ get; set; }
+        public EntityRef ParentRecord{ get; set; }
         public string MimeType { get; set; }
         public string FileName { get; set; }
     }

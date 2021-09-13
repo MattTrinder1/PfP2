@@ -1,9 +1,12 @@
 ﻿using API;
 using API.DataverseAccess;
+using DataverseRepository;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
+using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Extensions.PlatformAbstractions;
+using Microsoft.PowerPlatform.Dataverse.Client;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
@@ -20,7 +23,7 @@ namespace APITests
     {
 
         private static TestServer testServer;
-        public static DynamicDataAccess da;
+        public static ServiceClient adminService;
 
         [AssemblyInitialize]
         public static void Initialise(TestContext testContext)
@@ -32,14 +35,10 @@ namespace APITests
                 .UseStartup<Startup>()
                 );
 
-            da = new DynamicDataAccess("https://cumbriapoc.api.crm4.dynamics.com/api/data/v9.2/",
-                          "https://cumbriapoc.crm4.dynamics.com",
-                          "9b0a7eea-a4e3-4d8c-b941-5c0fb9046102",
-                          "5C_O93sL6ESBH.TYr6Q.ZpbWf-IM2o5BSR",
-                          "https://login.microsoftonline.com/66da2a16-0c51-49c1-ab7e-c5fe8eb76946");
-
-
-
+            var connConfig = new ConnectionConfiguration("https://policeproductdev.crm11.dynamics.com/appportal/sg/notification.aspx", "83af4fce-10c3-4409-a43d-d67e300424aa", "H.ARok4~mmJl_lfU~nfE9JqE.7pUE26u.t");
+            var daFactory = new DVDataAccessFactory(connConfig,new MemoryCache(new MemoryCacheOptions()),"matt.trinder@tisski.com");
+            adminService = daFactory.AdminDvService;
+            
         }
 
         public static HttpClient GetClient()

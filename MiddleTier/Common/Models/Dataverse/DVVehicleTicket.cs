@@ -18,7 +18,7 @@ namespace Common.Models.Dataverse
 
         [JsonPropertyName("cp_issuedto@odata.bind")]
         [RelatedEntityName("cp_lookupvalue")]
-        public EntityReference cp_issuedto { get; set; }
+        public EntityRef cp_issuedto { get; set; }
 
         public Guid? _cp_issuedto_value { get; init; }
 

@@ -2,13 +2,15 @@ using API;
 using API.DataverseAccess;
 using API.Models.IYC;
 using API.Models.PNB;
-using Common.Models.Business;
 using Common.Models.Dataverse;
 using Microsoft.AspNetCore;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.PlatformAbstractions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Query;
+using MoD.CAMS.Plugins.Common;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -19,6 +21,8 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Common.Models.Business;
+using Microsoft.Crm.Sdk.Messages;
 
 namespace APITests
 {
@@ -43,14 +47,19 @@ namespace APITests
             var postResp = await client.PostAsJsonAsync("api/pnb", pnb).Result.Content.ReadAsStringAsync();
             var guid = JsonSerializer.Deserialize<Guid>(postResp);
 
-            dynamic checkPNB = StartUp.da.GetEntity("cp_pocketnotebook", guid);
+            var checkPNB = StartUp.adminService.GetEntity("cp_pocketnotebook", guid);
+            ValidatePocketNotebook(pnb, checkPNB);
 
-            Assert.AreEqual(pnb.Notes, checkPNB.cp_notes);
-            Assert.AreEqual(pnb.SignatoryName, checkPNB.cp_signatoryname);
-            Assert.AreEqual(StartUp.da.GetUserId("matt.trinder@tisski.com"), checkPNB._ownerid_value);
-            Assert.IsNull(checkPNB.cp_incidentnumber);
-            Assert.IsTrue(DateTimesMatch(pnb.SignatureDateandTime, checkPNB.cp_signaturedateandtime));
-            Assert.IsTrue(DateTimesMatch(pnb.NoteDateAndTime, checkPNB.cp_notedateandtime));
+        }
+
+        private void ValidatePocketNotebook(PocketNotebook pnb, Entity checkPNB)
+        {
+            Assert.AreEqual(pnb.Notes, checkPNB.GetValue<string>("cp_notes"));
+            Assert.AreEqual(pnb.SignatoryName, checkPNB.GetValue<string>("cp_signatoryname"));
+            Assert.AreEqual(StartUp.adminService.GetUserId("matt.trinder@tisski.com"), checkPNB.GetValue<EntityReference>("ownerid").Id);
+            Assert.IsNull(checkPNB.GetValue<EntityReference>("cp_incidentnumber"));
+            Assert.IsTrue(DateTimesMatch(pnb.SignatureDateandTime, checkPNB.GetValue<DateTime?>("cp_signaturedateandtime")));
+            Assert.IsTrue(DateTimesMatch(pnb.NoteDateAndTime, checkPNB.GetValue<DateTime>("cp_notedateandtime")));
 
         }
 
@@ -70,17 +79,25 @@ namespace APITests
             var postResp = await client.PostAsJsonAsync("api/pnb", pnb).Result.Content.ReadAsStringAsync();
             var guid = JsonSerializer.Deserialize<Guid>(postResp);
 
-            dynamic checkPNB = StartUp.da.GetEntity("cp_pocketnotebook", guid);
-
-            Assert.AreEqual(pnb.Notes, checkPNB.cp_notes);
-            Assert.IsNotNull(checkPNB.cp_sketch);
-            Assert.AreEqual(pnb.SignatoryName, checkPNB.cp_signatoryname);
-            Assert.AreEqual(StartUp.da.GetUserId("matt.trinder@tisski.com"), checkPNB._ownerid_value);
-            Assert.IsNull(checkPNB.cp_incidentnumber);
-            Assert.IsTrue(DateTimesMatch(pnb.SignatureDateandTime, checkPNB.cp_signaturedateandtime));
-            Assert.IsTrue(DateTimesMatch(pnb.NoteDateAndTime, checkPNB.cp_notedateandtime));
-
+            var checkPNB = StartUp.adminService.GetEntity("cp_pocketnotebook", guid);
+            var sketch = GetImage(checkPNB, "cp_sketch");
+            ValidatePocketNotebook(pnb, checkPNB);
+            Assert.AreEqual(pnb.Sketch, sketch);
         }
+
+        private static string GetImage(Entity checkPNB,string fieldName)
+        {
+            var init = new InitializeFileBlocksDownloadRequest();
+            init.Target = checkPNB.ToEntityReference();
+            init.FileAttributeName = fieldName;
+            var resp = (InitializeFileBlocksDownloadResponse)StartUp.adminService.Execute(init);
+
+            var block = new DownloadBlockRequest();
+            block.FileContinuationToken = resp.FileContinuationToken;
+            var blockResp = (DownloadBlockResponse)StartUp.adminService.Execute(block);
+            return Convert.ToBase64String( blockResp.Data);
+        }
+
         [TestMethod]
         public async Task CreatePNBWithSignature()
         {
@@ -98,16 +115,10 @@ namespace APITests
             var postResp = await client.PostAsJsonAsync("api/pnb", pnb).Result.Content.ReadAsStringAsync();
             var guid = JsonSerializer.Deserialize<Guid>(postResp);
 
-            dynamic checkPNB = StartUp.da.GetEntity("cp_pocketnotebook", guid);
-
-            Assert.AreEqual(pnb.Notes, checkPNB.cp_notes);
-            Assert.IsNotNull(checkPNB.cp_signature);
-            Assert.IsNull(checkPNB.cp_sketch);
-            Assert.AreEqual(pnb.SignatoryName, checkPNB.cp_signatoryname);
-            Assert.AreEqual(StartUp.da.GetUserId("matt.trinder@tisski.com"), checkPNB._ownerid_value);
-            Assert.IsNull(checkPNB.cp_incidentnumber);
-            Assert.IsTrue(DateTimesMatch(pnb.SignatureDateandTime, checkPNB.cp_signaturedateandtime));
-            Assert.IsTrue(DateTimesMatch(pnb.NoteDateAndTime, checkPNB.cp_notedateandtime));
+            var checkPNB = StartUp.adminService.GetEntity("cp_pocketnotebook", guid);
+            var sig = GetImage(checkPNB, "cp_signature");
+            ValidatePocketNotebook(pnb, checkPNB);
+            Assert.AreEqual(pnb.Signature, sig);
 
         }
 
@@ -128,20 +139,16 @@ namespace APITests
             var postResp = await client.PostAsJsonAsync("api/pnb", pnb).Result.Content.ReadAsStringAsync();
             var guid = JsonSerializer.Deserialize<Guid>(postResp);
 
-            dynamic checkPNB = StartUp.da.GetEntity("cp_pocketnotebook", guid);
-            var checkPhotos = StartUp.da.GetAll("cp_photo", $"_cp_pocketnotebook_value eq {guid}");
+            var checkPNB = StartUp.adminService.GetEntity("cp_pocketnotebook", guid);
+            var q = new QueryExpression("cp_photo");
+            q.Criteria.AddCondition("cp_pocketnotebook", ConditionOperator.Equal, guid);
+            q.ColumnSet = new ColumnSet(true);
+            var checkPhotos = StartUp.adminService.GetAll(q);
 
-            Assert.AreEqual(pnb.Notes, checkPNB.cp_notes);
             Assert.AreEqual(1, checkPhotos.Count);
-            Assert.AreEqual("photo1", checkPhotos.First().cp_phototitle);
+            Assert.AreEqual("photo1", checkPhotos.First().GetValue<string>("cp_phototitle"));
 
-            Assert.IsNull(checkPNB.cp_signature);
-            Assert.IsNull(checkPNB.cp_sketch);
-            Assert.AreEqual(pnb.SignatoryName, checkPNB.cp_signatoryname);
-            Assert.AreEqual(StartUp.da.GetUserId("matt.trinder@tisski.com"), checkPNB._ownerid_value);
-            Assert.IsNull(checkPNB.cp_incidentnumber);
-            Assert.IsTrue(DateTimesMatch(pnb.SignatureDateandTime, checkPNB.cp_signaturedateandtime));
-            Assert.IsTrue(DateTimesMatch(pnb.NoteDateAndTime, checkPNB.cp_notedateandtime));
+            ValidatePocketNotebook(pnb, checkPNB);
 
         }
         [TestMethod]
@@ -160,16 +167,14 @@ namespace APITests
             var postResp = await client.PostAsJsonAsync("api/pnb", pnb).Result.Content.ReadAsStringAsync();
             var guid = JsonSerializer.Deserialize<Guid>(postResp);
 
-            dynamic checkPNB = StartUp.da.GetEntity("cp_pocketnotebook", guid);
-            dynamic checkInc = StartUp.da.GetEntityByField("cp_incident","cp_incidentnumber" ,pnb.IncidentNumber);
-
-            Assert.AreEqual(pnb.Notes, checkPNB.cp_notes);
-            Assert.AreEqual(pnb.SignatoryName, checkPNB.cp_signatoryname);
-            Assert.AreEqual(pnb.IncidentNumber, checkInc.cp_incidentnumber);
+            var checkPNB = StartUp.adminService.GetEntity("cp_pocketnotebook", guid);
+            var q = new QueryExpression("cp_incident");
+            var incident = DynamicsServiceHelper.GetEntity(StartUp.adminService, "cp_incident", "cp_incidentnumber", pnb.IncidentNumber);
             
-            Assert.AreEqual(StartUp.da.GetUserId("matt.trinder@tisski.com"), checkPNB._ownerid_value);
-            Assert.IsTrue(DateTimesMatch(pnb.SignatureDateandTime, checkPNB.cp_signaturedateandtime));
-            Assert.IsTrue(DateTimesMatch(pnb.NoteDateAndTime, checkPNB.cp_notedateandtime));
+
+            Assert.AreEqual(pnb.IncidentNumber, incident.GetValue<string>("cp_incidentnumber"));
+
+            ValidatePocketNotebook(pnb, checkPNB);
 
         }
 
@@ -189,14 +194,9 @@ namespace APITests
             var postResp = await client.PostAsJsonAsync("api/pnb", pnb).Result.Content.ReadAsStringAsync();
             var guid = JsonSerializer.Deserialize<Guid>(postResp);
 
-            dynamic checkPNB = StartUp.da.GetEntity("cp_pocketnotebook",guid);
+            var checkPNB = StartUp.adminService.GetEntity("cp_pocketnotebook", guid);
 
-            Assert.AreEqual(pnb.Notes, checkPNB.cp_notes);
-            Assert.AreEqual(pnb.SignatoryName, checkPNB.cp_signatoryname);
-            Assert.AreEqual(StartUp.da.GetUserId("matt.trinder@tisski.com"), checkPNB._ownerid_value);
-            Assert.IsTrue(DateTimesMatch(pnb.SignatureDateandTime, checkPNB.cp_signaturedateandtime));
-            Assert.IsTrue(DateTimesMatch(pnb.NoteDateAndTime, checkPNB.cp_notedateandtime));
-
+            ValidatePocketNotebook(pnb, checkPNB);
         }
 
         [TestMethod]
@@ -206,12 +206,15 @@ namespace APITests
 
             var pnbList = await client.GetFromJsonAsync<List<PocketNotebookListEntry>> ("api/pnb/getwhereowner");
             
-            var userId = StartUp.da.GetUserId("matt.trinder@tisski.com");
-            var checkPNB = StartUp.da.GetAll("cp_pocketnotebook", $"_ownerid_value eq {userId}");
+            var userId = StartUp.adminService.GetUserId("matt.trinder@tisski.com");
+            var q = new QueryExpression("cp_pocketnotebook");
+            q.ColumnSet = new ColumnSet(true);
+            q.AddCriteria("ownerid", userId);
+            var checkPNB = StartUp.adminService.GetAll(q);
 
             Assert.AreEqual(checkPNB.Count, pnbList.Count);
-            Assert.AreEqual(checkPNB.ToList().OrderBy(x => x.cp_notedateandtime).First().cp_pocketnotebookid, pnbList.First().Id);
-            Assert.AreEqual(checkPNB.ToList().OrderBy(x => x.cp_notedateandtime).Last().cp_pocketnotebookid, pnbList.Last().Id);
+            Assert.AreEqual(checkPNB.ToList().OrderBy(x => x.GetAttributeValue<DateTime>("cp_notedateandtime")).First().Id, pnbList.First().Id);
+            Assert.AreEqual(checkPNB.ToList().OrderBy(x => x.GetAttributeValue<DateTime>("cp_notedateandtime")).Last().Id, pnbList.Last().Id);
 
 
         }

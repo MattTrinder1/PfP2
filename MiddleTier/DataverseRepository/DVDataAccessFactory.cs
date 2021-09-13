@@ -31,13 +31,19 @@ namespace API.DataverseAccess
         private const int userDvServiceCacheSlidingExpirationMinutes = 240;
         private const int userDvServiceCacheAbsoluteExpirationMinutes = 720;
 
-        private IHttpContextAccessor httpContextAccessor = null;
         private ConnectionConfiguration connectionConfiguration = null;
-        private IMemoryCache cache = null;        
+        private IMemoryCache cache = null;
+        private string impersonationEmailAddress;
 
         public DVDataAccessFactory(ConnectionConfiguration connectionConfiguration, IMemoryCache cache, IHttpContextAccessor httpContextAccessor)
         {
-            this.httpContextAccessor = httpContextAccessor;
+            this.impersonationEmailAddress = httpContextAccessor.HttpContext.Request.Headers["UserEmail"];
+            this.connectionConfiguration = connectionConfiguration;
+            this.cache = cache;
+        }
+        public DVDataAccessFactory(ConnectionConfiguration connectionConfiguration, IMemoryCache cache, string emailAddress)
+        {
+            impersonationEmailAddress = emailAddress;
             this.connectionConfiguration = connectionConfiguration;
             this.cache = cache;
         }
@@ -99,11 +105,10 @@ namespace API.DataverseAccess
 
         public DVDataAccess GetUserDataAccess()
         {
-            string emailAddress = httpContextAccessor.HttpContext.Request.Headers["UserEmail"];
-
+         
             bool requireNewServiceClient = true;
             ServiceClient userServiceClient = null;
-            if (cache.TryGetValue($"{emailAddress}:ServiceClient", out userServiceClient))
+            if (cache.TryGetValue($"{impersonationEmailAddress}:ServiceClient", out userServiceClient))
             {
                 requireNewServiceClient = !userServiceClient.IsReady;
             }
@@ -112,16 +117,16 @@ namespace API.DataverseAccess
             {
                 Uri uri = new Uri(connectionConfiguration.DVUrl);
                 userServiceClient = new ServiceClient(uri, connectionConfiguration.ClientId, connectionConfiguration.ClientSecret, false);
-                userServiceClient.CallerAADObjectId = GetUserADObjectId(emailAddress);
+                userServiceClient.CallerAADObjectId = GetUserADObjectId(impersonationEmailAddress);
                 
-                cache.Set($"{emailAddress}:ServiceClient", userServiceClient, new MemoryCacheEntryOptions()
+                cache.Set($"{impersonationEmailAddress}:ServiceClient", userServiceClient, new MemoryCacheEntryOptions()
                 {
                     SlidingExpiration = TimeSpan.FromMinutes(userDvServiceCacheSlidingExpirationMinutes),
                     AbsoluteExpirationRelativeToNow = TimeSpan.FromMinutes(userDvServiceCacheAbsoluteExpirationMinutes)
                 });
             }
             
-            return new DVDataAccess(userServiceClient, cache, GetUserId(emailAddress));
+            return new DVDataAccess(userServiceClient, cache, GetUserId(impersonationEmailAddress));
         }
     }
 }

@@ -138,7 +138,7 @@ namespace API.Controllers
                 Guid? incidentId = FindOrCreateIncident(pnb.IncidentNumber, transaction);
                 if (incidentId != null)
                 {
-                    dvPb.cp_incidentno = new EntityReference("cp_incident", incidentId);
+                    dvPb.cp_incidentno = new EntityRef("cp_incident", incidentId);
                 }
 
                 Guid pnbGuid = Guid.Empty;

@@ -31,7 +31,7 @@ namespace QueueListeners
             var log = context.GetLogger("PNBQueueListener");
             log.LogInformation($"C# Queue trigger function processed: {myQueueItem}");
 
-            string newQueueItem = ParseQueueMessage(myQueueItem);
+            string newQueueItem = Helpers.ParseQueueMessage(myQueueItem);
             var docRoot = JsonDocument.Parse(newQueueItem).RootElement;
 
             PocketNotebook pocketNotebook = _mapper.Map<PocketNotebook>(docRoot);
@@ -54,19 +54,6 @@ namespace QueueListeners
 
 
 
-        private static string ParseQueueMessage(string myQueueItem)
-        {
-            var parts = myQueueItem.Split("\\\\\\\"").ToList();
-            var newParts = new List<string>();
-            foreach (var part in parts)
-            {
-                string temp = part.Replace("\\n", Environment.NewLine).Replace("\\", "").Replace("\r","\\r").Replace("\n","\\n");
-                newParts.Add(temp);
-            }
-            var newQueueItem = string.Join("\\\"", newParts);
-            newQueueItem = newQueueItem.Trim(new Char[] { '\"' });
-            return newQueueItem;
-        }
 
         
     }

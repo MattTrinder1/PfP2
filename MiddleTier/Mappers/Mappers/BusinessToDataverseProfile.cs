@@ -32,9 +32,14 @@ namespace API.Mappers
                 .ForMember(dest => dest.cp_pocketnotebookid, map => map.MapFrom(src => src.Id))
             ;
 
+            CreateMap<SuddenDeath, DVSuddenDeath>()
+                .ForMember(dest => dest.cp_suddendeathid, map => map.MapFrom(src => src.Id))
+                .ForMember(dest => dest.cp_arealastseenalive, map => map.MapFrom(src => src.WhereLastSeenAlive))
+            ;
+
             CreateMap<Photo, DVPhoto>()
                 .ForMember(dest => dest.cp_phototitle, map => map.MapFrom(src => src.Caption))
-                .ForMember(dest => dest.cp_pocketnotebook, map => map.MapFrom(src => new EntityReference("cp_pocketnotebook", src.PocketNotebookId.Value)))
+                .ForMember(dest => dest.cp_pocketnotebook, map => map.MapFrom(src => new EntityRef("cp_pocketnotebook", src.PocketNotebookId.Value)))
                 .ForMember(dest => dest.cp_image, map => map.MapFrom(src => src.Blob))
             ;
         }

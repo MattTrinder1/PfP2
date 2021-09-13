@@ -17,7 +17,7 @@ namespace API.Models.PNB
         public string cp_phototitle { get; set; }
 
         [RelatedEntityName("cp_pocketnotebook")]
-        public EntityReference cp_pocketnotebook { get; set; }
+        public EntityRef cp_pocketnotebook { get; set; }
 
         [DVImage()]
         public string cp_image { get; set; }

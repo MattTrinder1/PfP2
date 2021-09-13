@@ -26,16 +26,29 @@ namespace API.Mappers
             RecognizePrefixes("cp_");
 
 
-            CreateMap<AppPocketNotebook, PocketNotebook>()
+            //CreateMap<AppPocketNotebook, PocketNotebook>()
             // .ForMember(dest => dest.Sketch, map => map.MapFrom(src => GetBlob(src.SketchId)))
             // .ForMember(dest => dest.Signature, map => map.MapFrom(src => GetBlob(src.SignatureId)))
 
             ;
+            
+
 
             CreateMap<JsonElement, Photo>()
                 .ForMember(dest => dest.Caption, map => map.MapFrom(src => src.GetProperty("caption").GetString()))
                 .ForMember(dest => dest.Blob, map => map.MapFrom(src => GetBlob(src.GetProperty("blobId").GetString())))
                 ;
+
+            CreateMap<JsonElement, SuddenDeath>()
+                //string fields
+                .ForMember(dest => dest.WhereLastSeenAlive, map => map.MapFrom(src => src.GetProperty("WhereLastSeenAlive").GetString()))
+                .ForMember(dest => dest.IncidentNumber, map => map.MapFrom(src => src.GetProperty("Incident Number").GetString()))
+                //guid fields
+                .ForMember(dest => dest.Id, map => map.MapFrom(src => src.GetProperty("Id").GetGuid()))
+                //date fields
+                .ForMember(dest => dest.IncidentDate, map => map.MapFrom(src => src.GetProperty("Inicident Date").GetDateTime()))
+                ;
+
 
 
             CreateMap<JsonElement, PocketNotebook>()
@@ -58,9 +71,9 @@ namespace API.Mappers
 ;
 
 
-            CreateMap<AppPhoto, Photo>()
+           // CreateMap<AppPhoto, Photo>()
                // .ForMember(dest => dest.Blob, map => map.MapFrom(src => GetBlob(src.blobId)))
-            ;
+          //  ;
 
         }
 

@@ -205,7 +205,7 @@ namespace API.DataverseAccess
                     Microsoft.Xrm.Sdk.EntityReference sdkEntityReference = entity[property.Name] as Microsoft.Xrm.Sdk.EntityReference;
                     if (sdkEntityReference != null)
                     {
-                        Common.Models.Business.EntityReference modelEntityReference = new Common.Models.Business.EntityReference(
+                        Common.Models.Business.EntityRef modelEntityReference = new Common.Models.Business.EntityRef(
                             sdkEntityReference.LogicalName,
                             sdkEntityReference.Id);
 
@@ -248,7 +248,7 @@ namespace API.DataverseAccess
                 var propertyValue = property.GetValue(candidate);
                 if (includeNulls || propertyValue != null)
                 {
-                    Common.Models.Business.EntityReference modelEntityReference = propertyValue as Common.Models.Business.EntityReference;
+                    Common.Models.Business.EntityRef modelEntityReference = propertyValue as Common.Models.Business.EntityRef;
                     if (modelEntityReference != null)
                     {
                         if (modelEntityReference.EntityId.HasValue)
