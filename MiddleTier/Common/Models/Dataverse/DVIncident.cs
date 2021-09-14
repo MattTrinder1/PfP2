@@ -19,5 +19,9 @@ namespace API.Models.PNB
         public string cp_incidentnumber { get; set; }
        
         public DateTime? cp_incidentdate { get; set; }
+
+        [RelatedEntityName("cp_incidenttype")]
+        public EntityRef cp_incidenttype { get; set; }
+
     }
 }

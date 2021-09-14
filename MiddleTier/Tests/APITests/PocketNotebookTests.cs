@@ -162,6 +162,7 @@ namespace APITests
             pnb.SignatureDateandTime = DateTime.Now;
             pnb.SignatoryName = "fred";
             pnb.IncidentNumber = $"CP-{DateTime.Now.ToString("yyyyMMddHHmmss")}-1234";
+            pnb.IncidentDate = DateTime.Now;
             pnb.Id = Guid.NewGuid();
 
             var postResp = await client.PostAsJsonAsync("api/pnb", pnb).Result.Content.ReadAsStringAsync();
@@ -170,9 +171,14 @@ namespace APITests
             var checkPNB = StartUp.adminService.GetEntity("cp_pocketnotebook", guid);
             var q = new QueryExpression("cp_incident");
             var incident = DynamicsServiceHelper.GetEntity(StartUp.adminService, "cp_incident", "cp_incidentnumber", pnb.IncidentNumber);
-            
+
 
             Assert.AreEqual(pnb.IncidentNumber, incident.GetValue<string>("cp_incidentnumber"));
+            Assert.IsTrue(DateTimesMatch(pnb.IncidentDate, incident.GetValue<DateTime>("cp_incidentdate")));
+
+            //check incident type
+            var incidentType = DynamicsServiceHelper.GetEntity(StartUp.adminService, "cp_incidenttype", "cp_incidenttypename", "Pocket Notebook");
+            Assert.AreEqual(incidentType.Id, incident.GetEntityReferenceValue("cp_incidenttype").Id);
 
             ValidatePocketNotebook(pnb, checkPNB);
 

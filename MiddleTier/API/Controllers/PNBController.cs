@@ -43,7 +43,7 @@ namespace API.Controllers
         }
 
 
-        private Guid? FindOrCreateIncident(string incidentNumber, DVTransaction transaction)
+        private Guid? FindOrCreateIncident(string incidentNumber,DateTime? incidentDate,string incidentType, DVTransaction transaction)
         {
             if (string.IsNullOrEmpty(incidentNumber))
             {
@@ -54,9 +54,16 @@ namespace API.Controllers
             var incident = AdminDataAccess.GetEntityByField<DVIncident>("cp_incidentnumber", incidentNumber);
             if (incident == null)
             {
+                var incidentTypeId = AdminDataAccess.GetEntityId("cp_incidenttype", "cp_incidenttypename", incidentType);
+
                 incident = new DVIncident();
                 incident.cp_incidentnumber = incidentNumber;
+                incident.cp_incidenttype = new EntityRef("cp_incidenttype", incidentTypeId);
                 incidentId = Guid.NewGuid();
+                if (incidentDate.HasValue)
+                {
+                    incident.cp_incidentdate = incidentDate;
+                }
                 incident.cp_incidentid = incidentId;
 
                 if (transaction != null)
@@ -125,17 +132,22 @@ namespace API.Controllers
         [HttpPost()]
         public ActionResult<Guid> Post([FromBody] PocketNotebook pnb)
         {
+
+            logger.LogInformation("Post");
+
             try
             {
+                logger.LogDebug("Authorising");
                 if (!VerifyIntegrationKey("PNB:POST")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
 
-                string userEmail = Request.Headers["UserEmail"].ToString();
 
+                logger.LogDebug("Mapping to DV entity");
                 var dvPb = mapper.Map<DVPocketNotebook>(pnb);
 
                 DVTransaction transaction = new DVTransaction();
 
-                Guid? incidentId = FindOrCreateIncident(pnb.IncidentNumber, transaction);
+                logger.LogDebug("Find/Create incident");
+                Guid? incidentId = FindOrCreateIncident(pnb.IncidentNumber,pnb.IncidentDate,"Pocket Notebook", transaction);
                 if (incidentId != null)
                 {
                     dvPb.cp_incidentno = new EntityRef("cp_incident", incidentId);
@@ -156,10 +168,12 @@ namespace API.Controllers
 
                 transaction.AddCreateEntity(dvPb);
 
+                logger.LogDebug("Create images");
                 var dvPbImages = mapper.Map<PocketNotebook, DVPocketNotebookImages>(pnb);
                 transaction.AddCreateEntityImage(pnbGuid, dvPbImages, "cp_sketch");
                 transaction.AddCreateEntityImage(pnbGuid, dvPbImages, "cp_signature");
 
+                logger.LogDebug("Create photos");
                 foreach (var photo in pnb.Photos)
                 {
                     photo.PocketNotebookId = pnbGuid;
@@ -167,6 +181,7 @@ namespace API.Controllers
                     transaction.AddCreateEntity(dvPhoto);
                 }
 
+                logger.LogDebug("Save");
                 UserDataAccess.ExecuteTransaction(transaction);
 
 
@@ -174,6 +189,7 @@ namespace API.Controllers
             }
             catch (Exception e)
             {
+                logger.LogError(e,e.Message);
                 return StatusCode((int)HttpStatusCode.InternalServerError, new ApiError(e.Message));
             }
         }

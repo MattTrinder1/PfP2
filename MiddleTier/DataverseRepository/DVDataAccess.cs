@@ -294,6 +294,23 @@ namespace API.DataverseAccess
 
             return ConvertFromDvEntity<T>(dvResponse.Entities.SingleOrDefault());
         }
+        public Guid? GetEntityId(string entityName, string fieldName, object value ) 
+        {
+            QueryExpression query = new QueryExpression(entityName);
+            query.Criteria.AddCondition(fieldName, ConditionOperator.Equal, value);
+            
+            var dvResponse = _dvService.RetrieveMultiple(query);
+            if (dvResponse.Entities.SingleOrDefault() != null)
+            {
+                return dvResponse.Entities.Single().Id;
+            }
+            else
+            {
+                return null;
+            }
+
+            
+        }
 
         public T GetEntityByFields<T>(IEnumerable<KeyValuePair<string,object>> fieldValues, SelectColumns selectColumns = DefaultSelectColumns) where T : DVBase, new()
         {
