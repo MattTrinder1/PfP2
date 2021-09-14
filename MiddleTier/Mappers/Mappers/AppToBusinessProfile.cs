@@ -41,7 +41,7 @@ namespace API.Mappers
 
             CreateMap<JsonElement, SuddenDeath>()
                 //string fields
-                .ForMember(dest => dest.WhereLastSeenAlive, map => map.MapFrom(src => src.GetProperty("WhereLastSeenAlive").GetString()))
+                .ForMember(dest => dest.AreaLastSeenAlive, map => map.MapFrom(src => src.GetProperty("WhereLastSeenAlive").GetString()))
                 .ForMember(dest => dest.IncidentNumber, map => map.MapFrom(src => src.GetProperty("Incident Number").GetString()))
                 //guid fields
                 .ForMember(dest => dest.Id, map => map.MapFrom(src => src.GetProperty("Id").GetGuid()))

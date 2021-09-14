@@ -34,7 +34,8 @@ namespace API.Mappers
 
             CreateMap<SuddenDeath, DVSuddenDeath>()
                 .ForMember(dest => dest.cp_suddendeathid, map => map.MapFrom(src => src.Id))
-                .ForMember(dest => dest.cp_arealastseenalive, map => map.MapFrom(src => src.WhereLastSeenAlive))
+                .ForMember(dest => dest.cp_sdfamilylaisonofficer, map => map.MapFrom(src => src.FamilyLiaisonOfficer))
+                .ForMember(dest => dest.cp_sdlastseenaliveby, map => map.MapFrom(src => src.LastSeenAliveBy))
             ;
 
             CreateMap<Photo, DVPhoto>()

@@ -35,11 +35,11 @@ namespace API.Controllers
 
                 DVTransaction transaction = new DVTransaction();
 
-                //Guid? incidentId = FindOrCreateIncident(pnb.IncidentNumber, transaction);
-                //if (incidentId != null)
-                //{
-                //    dvPb.cp_incidentno = new EntityReference("cp_incident", incidentId);
-                //}
+                Guid? incidentId = FindOrCreateIncident(sd.IncidentNumber,sd.IncidentDate,"Sudden Death", transaction);
+                if (incidentId != null)
+                {
+                    dvSD.cp_incident = new EntityRef("cp_incident", incidentId);
+                }
 
                 Guid pnbGuid = Guid.Empty;
                 if (dvSD.cp_suddendeathid.HasValue)

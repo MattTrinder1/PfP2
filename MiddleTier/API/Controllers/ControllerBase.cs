@@ -1,6 +1,8 @@
 ﻿using API.DataverseAccess;
 using API.Models.Dataverse;
+using API.Models.PNB;
 using AutoMapper;
+using Common.Models.Business;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -55,6 +57,40 @@ namespace API.Controllers
                 return adminDataAccess;
             }
         }
+
+        protected Guid? FindOrCreateIncident(string incidentNumber, DateTime? incidentDate, string incidentType, DVTransaction transaction)
+        {
+            if (string.IsNullOrEmpty(incidentNumber))
+            {
+                return null;
+            }
+
+            Guid? incidentId = null;
+            var incident = AdminDataAccess.GetEntityByField<DVIncident>("cp_incidentnumber", incidentNumber);
+            if (incident == null)
+            {
+                var incidentTypeId = AdminDataAccess.GetEntityId("cp_incidenttype", "cp_incidenttypename", incidentType);
+
+                incident = new DVIncident();
+                incident.cp_incidentnumber = incidentNumber;
+                incident.cp_incidenttype = new EntityRef("cp_incidenttype", incidentTypeId);
+                incidentId = Guid.NewGuid();
+                if (incidentDate.HasValue)
+                {
+                    incident.cp_incidentdate = incidentDate;
+                }
+                incident.cp_incidentid = incidentId;
+
+                transaction.AddCreateEntity(incident);
+            }
+            else
+            {
+                incidentId = incident.cp_incidentid;
+            }
+
+            return incidentId;
+        }
+
 
         protected bool VerifyIntegrationKey(string forInvocationOf)
         {

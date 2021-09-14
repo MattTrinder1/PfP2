@@ -8,8 +8,20 @@ namespace Common.Models.Business
 {
     public class SuddenDeath : EntityBase
     {
-        public string WhereLastSeenAlive { get; set; }
-        public string IncidentNumber { get; set; }
-        public DateTime IncidentDate { get; set; }
+        //text fields
+
+        public string AreaLastSeenAlive { get; set; }
+        public string NextOfKinInformedMethod { get; set; }
+        public string DeathDiagnosedBy { get; set; }
+        public string IdentificationLocation { get; set; }
+        public string UndertakerArrangingFuneral { get; set; }
+        public string FamilyLiaisonOfficer { get; set; }
+        public string LastSeenAliveBy { get; set; }
+        public string NextOfKinActionToInform { get; set; }
+        public string CertifiedBy { get; set; }
+        public string PlaceOfDeath { get; set; }
+        public string BodyRemovedTo { get; set; }
+        public string BodyFoundBy { get; set; }
+        public string BodyLabel { get; set; }
     }
 }

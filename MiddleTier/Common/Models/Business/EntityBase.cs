@@ -42,6 +42,10 @@ namespace Common.Models.Business
         }
 
         public string Name { get; set; }
+        public string IncidentNumber { get; set; }
+
+        public DateTime? IncidentDate { get; set; }
+
 
         //public User OwnerId { get; set; }
     }

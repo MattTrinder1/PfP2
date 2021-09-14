@@ -23,5 +23,8 @@ namespace API.Models.PNB
         [RelatedEntityName("cp_incidenttype")]
         public EntityRef cp_incidenttype { get; set; }
 
+        [RelatedEntityName("systemuser")]
+        public EntityRef cp_enteredby { get; set; }
+
     }
 }

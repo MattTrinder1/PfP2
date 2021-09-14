@@ -20,10 +20,7 @@ namespace Common.Models.Business
 
         public string Signature { get; set; }
 
-        public string IncidentNumber { get; set; }
-
-        public DateTime? IncidentDate { get; set; }
-
+        
         public DateTime? SignatureDateandTime { get; set; }
 
         public string SignatoryName { get; set; }
