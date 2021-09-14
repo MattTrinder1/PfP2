@@ -1,28 +1,11 @@
-using API;
-using API.DataverseAccess;
-using API.Models.IYC;
-using API.Models.PNB;
-using Common.Models.Dataverse;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.PlatformAbstractions;
+using Common.Models.Business;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xrm.Sdk;
-using Microsoft.Xrm.Sdk.Query;
 using MoD.CAMS.Plugins.Common;
-using RestSharp;
 using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Common.Models.Business;
-using Microsoft.Crm.Sdk.Messages;
 
 namespace APITests
 {
@@ -71,7 +54,6 @@ namespace APITests
         private void ValidateSuddenDeath(SuddenDeath sd, Entity checkSD)
         {
             Assert.AreEqual(sd.AreaLastSeenAlive, checkSD.GetValue<string>("cp_arealastseenalive"));
-
             Assert.AreEqual(sd.BodyFoundBy , "fred");
             Assert.AreEqual(sd.BodyLabel , "body label");
             Assert.AreEqual(sd.BodyRemovedTo , "morgue");

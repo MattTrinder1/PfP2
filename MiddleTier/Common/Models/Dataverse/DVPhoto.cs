@@ -1,25 +1,23 @@
-﻿using API.Models.Base;
-using Common.Models.Business;
+﻿using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Client;
 using System;
-using System.Runtime.Serialization;
 
 namespace API.Models.PNB
 {
-    [DataContract(Name = "cp_photo")]
-    public class DVPhoto : DVBase
+    [EntityLogicalName("cp_photo")]
+    public class DVPhoto : Entity
     {
         public DVPhoto()
         {
+            this.LogicalName = "cp_photo";
         }
 
         public Guid? cp_photoid { get { return base.Id; } set { base.Id = value.Value; } }
 
-        public string cp_phototitle { get; set; }
+        public string cp_phototitle { get { return this.GetAttributeValue<string>(nameof(cp_phototitle)); } set { this.Attributes[nameof(cp_phototitle)] = value; } }
 
-        [RelatedEntityName("cp_pocketnotebook")]
-        public EntityRef cp_pocketnotebook { get; set; }
+        public EntityReference cp_pocketnotebook { get { return this.GetAttributeValue<EntityReference>(nameof(cp_pocketnotebook)); } set { this.Attributes[nameof(cp_pocketnotebook)] = value; } }
 
-        [DVImage()]
-        public string cp_image { get; set; }
+        public byte[] cp_image { get { return this.GetAttributeValue<byte[]>(nameof(cp_image)); } set { this.Attributes[nameof(cp_image)] = value; } }
     }
 }

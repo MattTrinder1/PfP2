@@ -1,29 +1,15 @@
-using API;
-using API.DataverseAccess;
-using API.Models.IYC;
-using API.Models.PNB;
-using Common.Models.Dataverse;
-using Microsoft.AspNetCore;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.Extensions.PlatformAbstractions;
+using Common.Models.Business;
+using Microsoft.Crm.Sdk.Messages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Query;
 using MoD.CAMS.Plugins.Common;
-using RestSharp;
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Net.Http.Json;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
-using Common.Models.Business;
-using Microsoft.Crm.Sdk.Messages;
-using API.Models.Base;
 
 namespace APITests
 {
@@ -75,7 +61,7 @@ namespace APITests
             pnb.Notes = "this is some notes";
             pnb.SignatureDateandTime = DateTime.Now;
             pnb.SignatoryName = "fred";
-            pnb.Sketch = imageString;
+            pnb.Sketch = Convert.FromBase64String(imageString);
             pnb.Id = Guid.NewGuid();
 
             var postResp = await client.PostAsJsonAsync("api/pnb", pnb).Result.Content.ReadAsStringAsync();
@@ -84,10 +70,10 @@ namespace APITests
             var checkPNB = StartUp.adminService.GetEntity("cp_pocketnotebook", guid);
             var sketch = GetImage(checkPNB, "cp_sketch");
             ValidatePocketNotebook(pnb, checkPNB);
-            Assert.AreEqual(pnb.Sketch, sketch);
+            Assert.IsTrue(pnb.Sketch.SequenceEqual(sketch));
         }
 
-        private static string GetImage(Entity checkPNB,string fieldName)
+        private static byte[] GetImage(Entity checkPNB,string fieldName)
         {
             var init = new InitializeFileBlocksDownloadRequest();
             init.Target = checkPNB.ToEntityReference();
@@ -97,7 +83,7 @@ namespace APITests
             var block = new DownloadBlockRequest();
             block.FileContinuationToken = resp.FileContinuationToken;
             var blockResp = (DownloadBlockResponse)StartUp.adminService.Execute(block);
-            return Convert.ToBase64String( blockResp.Data);
+            return  blockResp.Data;
         }
 
         [TestMethod]
@@ -111,7 +97,7 @@ namespace APITests
             pnb.Notes = "this is some notes";
             pnb.SignatureDateandTime = DateTime.Now;
             pnb.SignatoryName = "fred";
-            pnb.Signature = imageString;
+            pnb.Signature = Convert.FromBase64String(imageString);
             pnb.Id = Guid.NewGuid();
 
             var postResp = await client.PostAsJsonAsync("api/pnb", pnb).Result.Content.ReadAsStringAsync();
@@ -120,7 +106,7 @@ namespace APITests
             var checkPNB = StartUp.adminService.GetEntity("cp_pocketnotebook", guid);
             var sig = GetImage(checkPNB, "cp_signature");
             ValidatePocketNotebook(pnb, checkPNB);
-            Assert.AreEqual(pnb.Signature, sig);
+            Assert.IsTrue(pnb.Signature.SequenceEqual(sig));
 
         }
 
@@ -136,7 +122,7 @@ namespace APITests
             pnb.SignatureDateandTime = DateTime.Now;
             pnb.SignatoryName = "fred";
             pnb.Id = Guid.NewGuid();
-            pnb.Photos.Add(new Photo() { Blob = imageString, Caption = "photo1" });
+            pnb.Photos.Add(new Photo() { Blob = Convert.FromBase64String(imageString), Caption = "photo1" });
 
             var postResp = await client.PostAsJsonAsync("api/pnb", pnb).Result.Content.ReadAsStringAsync();
             var guid = JsonSerializer.Deserialize<Guid>(postResp);

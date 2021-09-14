@@ -3,6 +3,7 @@ using API.Models.PNB;
 using Common.Models.Business;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Xrm.Sdk;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -59,7 +60,7 @@ namespace API.Controllers
                 DVIncident incident = null;
                 if (pnb.cp_incidentno != null)
                 {
-                    incident = UserDataAccess.GetEntityByField<DVIncident>("cp_incidentid", pnb.cp_incidentno.EntityId.Value.ToString());
+                    incident = UserDataAccess.GetEntityByField<DVIncident>("cp_incidentid", pnb.cp_incidentno.Id.ToString());
                 }
 
                 var pnbPhotosCol = UserDataAccess.GetAll<DVPhoto>("cp_pocketnotebook", pnb.cp_pocketnotebookid, SelectColumns.TypePropertiesWithoutImages);
@@ -104,6 +105,7 @@ namespace API.Controllers
 
                 logger.LogDebug("Mapping to DV entity");
                 var dvPb = mapper.Map<DVPocketNotebook>(pnb);
+                dvPb.cp_enteredby = new EntityReference("systemuser", UserDataAccess.UserId.Value );
 
                 DVTransaction transaction = new DVTransaction();
 
@@ -111,7 +113,7 @@ namespace API.Controllers
                 Guid? incidentId = FindOrCreateIncident(pnb.IncidentNumber,pnb.IncidentDate,"Pocket Notebook", transaction);
                 if (incidentId != null)
                 {
-                    dvPb.cp_incidentno = new EntityRef("cp_incident", incidentId);
+                    dvPb.cp_incidentno =new EntityReference("cp_incident", incidentId.Value);
                 }
 
                 Guid pnbGuid = Guid.Empty;
@@ -154,5 +156,7 @@ namespace API.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, new ApiError(e.Message));
             }
         }
+
+       
     }
 }

@@ -3,6 +3,7 @@ using Common.Models.Business;
 using Common.Models.Dataverse;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Xrm.Sdk;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,7 @@ namespace API.Controllers
                 Guid? incidentId = FindOrCreateIncident(sd.IncidentNumber,sd.IncidentDate,"Sudden Death", transaction);
                 if (incidentId != null)
                 {
-                    dvSD.cp_incident = new EntityRef("cp_incident", incidentId);
+                    dvSD.cp_incident = new EntityReference("cp_incident", incidentId.Value);
                 }
 
                 Guid pnbGuid = Guid.Empty;

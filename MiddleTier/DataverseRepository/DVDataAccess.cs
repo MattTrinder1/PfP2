@@ -1,7 +1,5 @@
-﻿using API.Models.Base;
-using Microsoft.Crm.Sdk.Messages;
+﻿using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Extensions.Caching.Memory;
-using Microsoft.PowerPlatform.Dataverse.Client;
 using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Query;
@@ -11,7 +9,6 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Runtime.Serialization;
-using System.Security.Cryptography.Xml;
 
 namespace API.DataverseAccess
 {
@@ -45,6 +42,7 @@ namespace API.DataverseAccess
             _userId = userId;
         }
 
+        public Guid? UserId { get { return _userId; } }
 
         public ExecuteTransactionResponse ExecuteTransaction(DVTransaction trans)
         {
@@ -57,47 +55,43 @@ namespace API.DataverseAccess
 
             foreach (var transReq in trans.Requests)
             {
-                var entity = ConvertToDvEntity(transReq.DVBaseEntity);
-                
-                if (entity != null)
+
+                switch (transReq.ReqType)
                 {
-                    switch (transReq.ReqType)
-                    {
-                        case RequestType.Create:
-                            var createReq = new CreateRequest();
-                            createReq.Target = entity;
-                            transaction.Requests.Add(createReq);
-                            break;
-                        case RequestType.CreateImage:
+                    case RequestType.Create:
+                        var createReq = new CreateRequest();
+                        createReq.Target = transReq.Target;
+                        transaction.Requests.Add(createReq);
+                        break;
+                    case RequestType.CreateImage:
 
-                            string entityName = GetEntityName(transReq.DVBaseEntity);
+                        string entityName = transReq.Target.LogicalName;
 
 
-                            var prop = transReq.DVBaseEntity.GetType().GetProperty(transReq.ImagePropertyName);
-                            string imageData = (string)prop.GetValue(transReq.DVBaseEntity);
+                        var prop = transReq.Target.GetType().GetProperty(transReq.ImagePropertyName);
+                        var imageData = (byte[])prop.GetValue(transReq.Target);
 
-                            if (!string.IsNullOrEmpty(imageData))
-                            {
-                                Entity updateImage = new Entity(entityName, transReq.EntityId.Value);
-                                updateImage[prop.Name] = Convert.FromBase64String(imageData);
+                        if (imageData.Any())
+                        {
+                            Entity updateImage = new Entity(entityName, transReq.EntityId.Value);
+                            updateImage[prop.Name] = imageData;
 
-                                var updateImageReq = new UpdateRequest();
-                                updateImageReq.Target = updateImage;
-                                transaction.Requests.Add(updateImageReq);
-                            }
-
-
-                            break;
-                        case RequestType.Update:
-                            var updateReq = new UpdateRequest();
-                            updateReq.Target = entity;
-                            transaction.Requests.Add(updateReq);
-
-                            break;
-                    }
+                            var updateImageReq = new UpdateRequest();
+                            updateImageReq.Target = updateImage;
+                            transaction.Requests.Add(updateImageReq);
+                        }
 
 
+                        break;
+                    case RequestType.Update:
+                        var updateReq = new UpdateRequest();
+                        updateReq.Target = transReq.Target;
+                        transaction.Requests.Add(updateReq);
+
+                        break;
                 }
+
+
 
             }
             return (ExecuteTransactionResponse)_dvService.Execute(transaction);
@@ -122,16 +116,9 @@ namespace API.DataverseAccess
             return userId;
         }
 
-        public string GetEntityName<T>()
-        {
-            var dataContractAttr = typeof(T).GetCustomAttribute<DataContractAttribute>();
-            return (dataContractAttr as DataContractAttribute).Name;
-        }
-        public string GetEntityName(DVBase entity)
-        {
-            var dataContractAttr = entity.GetType().GetCustomAttribute<DataContractAttribute>();
-            return (dataContractAttr as DataContractAttribute).Name;
-        }
+      
+       
+
 
 
         public string[] GetPropertyNames<T>(bool includeNonImages = true, bool includeImages = true)
@@ -159,7 +146,7 @@ namespace API.DataverseAccess
             return propertyNames.ToArray();
         }
 
-        public ColumnSet GetColumnSet<T>(SelectColumns selectColumns = DefaultSelectColumns) where T : DVBase
+        public ColumnSet GetColumnSet<T>(SelectColumns selectColumns = DefaultSelectColumns) where T : Entity
         {
             string[] selectColumnNames = null;
             switch (selectColumns)
@@ -190,109 +177,118 @@ namespace API.DataverseAccess
         }
 
 
-        public T ConvertFromDvEntity<T>(Entity entity) where T : DVBase, new()
+        //public T ConvertFromDvEntity<T>(Entity entity) where T : DVBase, new()
+        //{
+        //    if (entity == null) return null;
+
+        //    T result = new T();
+
+        //    foreach (var property in typeof(T).GetProperties())
+        //    {
+        //        if (property.DeclaringType != typeof(T)) continue;
+
+        //        if (entity.Attributes.Contains(property.Name))
+        //        {
+        //            Microsoft.Xrm.Sdk.EntityReference sdkEntityReference = entity[property.Name] as Microsoft.Xrm.Sdk.EntityReference;
+        //            if (sdkEntityReference != null)
+        //            {
+        //                Common.Models.Business.EntityRef modelEntityReference = new Common.Models.Business.EntityRef(
+        //                    sdkEntityReference.LogicalName,
+        //                    sdkEntityReference.Id);
+
+        //                property.SetValue(result, modelEntityReference);
+        //            }
+        //            else
+        //            {
+        //                Microsoft.Xrm.Sdk.OptionSetValue optionSetValue = entity[property.Name] as Microsoft.Xrm.Sdk.OptionSetValue;
+        //                if (optionSetValue != null)
+        //                {
+        //                    property.SetValue(result, optionSetValue.Value);
+        //                }
+        //                else
+        //                {
+        //                    property.SetValue(result, entity[property.Name]);
+        //                }
+        //            }
+        //        }
+        //    }
+
+        //    return result;
+        //}
+
+        //public Entity ConvertToDvEntity<T>(T candidate, bool includeNulls = false) where T : DVBase
+        //{
+        //    if (candidate == null) return null;
+
+        //    var entityName = GetEntityName(candidate);
+
+        //    Entity entity = new Entity(entityName);
+        //    if (candidate.Id.HasValue)
+        //    {
+        //        entity.Id = candidate.Id.Value;
+        //    }
+
+        //    foreach (var property in candidate.GetType().GetProperties())
+        //    {
+        //        if (property.DeclaringType != candidate.GetType()) continue;
+
+        //        var propertyValue = property.GetValue(candidate);
+        //        if (includeNulls || propertyValue != null)
+        //        {
+        //            Common.Models.Business.EntityRef modelEntityReference = propertyValue as Common.Models.Business.EntityRef;
+        //            if (modelEntityReference != null)
+        //            {
+        //                if (modelEntityReference.EntityId.HasValue)
+        //                {
+        //                    Microsoft.Xrm.Sdk.EntityReference sdkEntityReference = new Microsoft.Xrm.Sdk.EntityReference(
+        //                        modelEntityReference.EntityLogicalName,
+        //                        modelEntityReference.EntityId.Value);
+
+        //                    entity.Attributes.Add(property.Name, sdkEntityReference);
+        //                }
+        //            }
+        //            else
+        //            {
+        //                DVImageAttribute imageAttribute = property.GetCustomAttribute<DVImageAttribute>();
+        //                if (imageAttribute == null)
+        //                {
+        //                    entity.Attributes.Add(property.Name, propertyValue);
+        //                }
+        //                else
+        //                {
+        //                    entity.Attributes.Add(property.Name, Convert.FromBase64String((string)propertyValue));
+        //                }
+        //            }
+        //        }
+        //        if (property.Name.ToLower() == "cp_enteredby" && _userId.HasValue)
+        //        {
+        //            entity.Attributes.Add("cp_enteredby",new EntityReference("systemuser",_userId.Value));
+
+        //        }
+        //    }
+
+        //    return entity;
+        //}
+
+
+        public T GetEntityByField<T>(string field, object value, SelectColumns selectColumns = DefaultSelectColumns) where T : Entity, new()
         {
-            if (entity == null) return null;
-
-            T result = new T();
-
-            foreach (var property in typeof(T).GetProperties())
-            {
-                if (property.DeclaringType != typeof(T)) continue;
-
-                if (entity.Attributes.Contains(property.Name))
-                {
-                    Microsoft.Xrm.Sdk.EntityReference sdkEntityReference = entity[property.Name] as Microsoft.Xrm.Sdk.EntityReference;
-                    if (sdkEntityReference != null)
-                    {
-                        Common.Models.Business.EntityRef modelEntityReference = new Common.Models.Business.EntityRef(
-                            sdkEntityReference.LogicalName,
-                            sdkEntityReference.Id);
-
-                        property.SetValue(result, modelEntityReference);
-                    }
-                    else
-                    {
-                        Microsoft.Xrm.Sdk.OptionSetValue optionSetValue = entity[property.Name] as Microsoft.Xrm.Sdk.OptionSetValue;
-                        if (optionSetValue != null)
-                        {
-                            property.SetValue(result, optionSetValue.Value);
-                        }
-                        else
-                        {
-                            property.SetValue(result, entity[property.Name]);
-                        }
-                    }
-                }
-            }
-
-            return result;
-        }
-
-        public Entity ConvertToDvEntity<T>(T candidate, bool includeNulls = false) where T : DVBase
-        {
-            if (candidate == null) return null;
-
-            var entityName = GetEntityName(candidate);
-
-            Entity entity = new Entity(entityName);
-            if (candidate.Id.HasValue)
-            {
-                entity.Id = candidate.Id.Value;
-            }
-
-            foreach (var property in candidate.GetType().GetProperties())
-            {
-                if (property.DeclaringType != candidate.GetType()) continue;
-
-                var propertyValue = property.GetValue(candidate);
-                if (includeNulls || propertyValue != null)
-                {
-                    Common.Models.Business.EntityRef modelEntityReference = propertyValue as Common.Models.Business.EntityRef;
-                    if (modelEntityReference != null)
-                    {
-                        if (modelEntityReference.EntityId.HasValue)
-                        {
-                            Microsoft.Xrm.Sdk.EntityReference sdkEntityReference = new Microsoft.Xrm.Sdk.EntityReference(
-                                modelEntityReference.EntityLogicalName,
-                                modelEntityReference.EntityId.Value);
-
-                            entity.Attributes.Add(property.Name, sdkEntityReference);
-                        }
-                    }
-                    else
-                    {
-                        DVImageAttribute imageAttribute = property.GetCustomAttribute<DVImageAttribute>();
-                        if (imageAttribute == null)
-                        {
-                            entity.Attributes.Add(property.Name, propertyValue);
-                        }
-                        else
-                        {
-                            entity.Attributes.Add(property.Name, Convert.FromBase64String((string)propertyValue));
-                        }
-                    }
-                }
-                if (property.Name.ToLower() == "cp_enteredby" && _userId.HasValue)
-                {
-                    entity.Attributes.Add("cp_enteredby",new EntityReference("systemuser",_userId.Value));
-
-                }
-            }
-
-            return entity;
-        }
-
-
-        public T GetEntityByField<T>(string field, object value, SelectColumns selectColumns = DefaultSelectColumns) where T : DVBase, new()
-        {
-            QueryExpression query = new QueryExpression(GetEntityName<T>());
+            QueryExpression query = new QueryExpression(new T().LogicalName);
             query.Criteria.AddCondition(field, ConditionOperator.Equal, value);
             query.ColumnSet = GetColumnSet<T>(selectColumns);
+            
+            var ent = _dvService.RetrieveMultiple(query).Entities;
+            if (ent.Any())
+            {
+                return ent.Single().ToEntity<T>();
+            }
+            else
+            {
+                return null;
+            }
+            
 
-            var dvResponse = _dvService.RetrieveMultiple(query);
-
-            return ConvertFromDvEntity<T>(dvResponse.Entities.SingleOrDefault());
+            //return ConvertFromDvEntity<T>(dvResponse.Entities.SingleOrDefault());
         }
         public Guid? GetEntityId(string entityName, string fieldName, object value ) 
         {
@@ -312,33 +308,33 @@ namespace API.DataverseAccess
             
         }
 
-        public T GetEntityByFields<T>(IEnumerable<KeyValuePair<string,object>> fieldValues, SelectColumns selectColumns = DefaultSelectColumns) where T : DVBase, new()
+        public T GetEntityByFields<T>(IEnumerable<KeyValuePair<string,object>> fieldValues, SelectColumns selectColumns = DefaultSelectColumns) where T : Entity, new()
         {
-            QueryExpression query = new QueryExpression(GetEntityName<T>());
+            QueryExpression query = new QueryExpression(new T().LogicalName);
             foreach (var keyValuePair in fieldValues)
             {
                 query.Criteria.AddCondition(keyValuePair.Key, ConditionOperator.Equal, keyValuePair.Value);
             }
             query.ColumnSet = GetColumnSet<T>(selectColumns);
 
-            var dvResponse = _dvService.RetrieveMultiple(query);
+            return _dvService.RetrieveMultiple(query).Entities.SingleOrDefault().ToEntity<T>() ;
 
-            return ConvertFromDvEntity<T>(dvResponse.Entities.SingleOrDefault());
+            
         }
 
-        public ICollection<T> GetAll<T>(string field, object value, SelectColumns selectColumns) where T : DVBase, new()
+        public ICollection<T> GetAll<T>(string field, object value, SelectColumns selectColumns) where T : Entity, new()
         {
             return GetAll<T>(field, value, null, selectColumns);
         }
 
 
-        public ICollection<T> GetAll<T>(
+        public List<T> GetAll<T>(
             string field = null,
             object value = null,
             string orderby = null,
-            SelectColumns selectColumns = DefaultSelectColumns) where T : DVBase, new()
+            SelectColumns selectColumns = DefaultSelectColumns) where T : Entity, new()
         {
-            var entityName = GetEntityName<T>();
+            var entityName = new T().LogicalName;
 
             QueryExpression query = new QueryExpression(entityName);
             query.ColumnSet = GetColumnSet<T>(selectColumns);
@@ -355,50 +351,24 @@ namespace API.DataverseAccess
 
             List<T> result = new List<T>();
 
-            var dvResponse = _dvService.RetrieveMultiple(query);
-            if (dvResponse != null && dvResponse.Entities != null && dvResponse.Entities.Count > 0)
+            foreach (var e in _dvService.RetrieveMultiple(query).Entities)
             {
-                foreach (var dvEntity in dvResponse.Entities)
-                {
-                    result.Add(ConvertFromDvEntity<T>(dvEntity));
-                }
+                result.Add(e.ToEntity<T>());
             }
 
             return result;
-        }
 
-
-        public void UpdateEntity<T>(T entity) where T : DVBase
-        {
-            if (entity.Id == null || entity.Id == Guid.Empty) throw new ArgumentException("entity.Id is required.");
-
-            Entity dvEntity = ConvertToDvEntity(entity);
-            if (dvEntity != null)
-            {
-                    _dvService.Update(dvEntity);
-            }
-        }
-
-        public Guid CreateEntity<T>(T entity) where T : DVBase
-        {
-            Guid id = Guid.Empty;
-
-            Entity dvEntity = ConvertToDvEntity(entity);
-            if (dvEntity != null)
-            {
-                    id = _dvService.Create(dvEntity);
-            }
-
-            return id;
+            
+            
         }
 
 
         public void CreateEntityImage<T>(
             Guid entityId,
             T entity,
-            Expression<Func<T, string>> imageProperty) where T : DVBase
+            Expression<Func<T, string>> imageProperty) where T : Entity,new()
         {
-            string entityName = GetEntityName(entity);
+            string entityName = new T().LogicalName;
 
             var expr = (MemberExpression)imageProperty.Body;
             var prop = (PropertyInfo)expr.Member;
@@ -429,7 +399,7 @@ namespace API.DataverseAccess
         public void GetImages<T>(
             ICollection<T> collection,
             bool requestFullImages = true,
-            PrePopulatedImageBehaviour prePopulatedBehaviour = PrePopulatedImageBehaviour.Overwrite) where T : DVBase
+            PrePopulatedImageBehaviour prePopulatedBehaviour = PrePopulatedImageBehaviour.Overwrite) where T : Entity
         {
             if (collection == null) return;
 
@@ -442,7 +412,7 @@ namespace API.DataverseAccess
         public void GetImages<T>(
             T ent,
             bool requestFullImages = DefaultRequestFullImage,
-            PrePopulatedImageBehaviour prePopulatedBehaviour = DefaultPrePopulatedImageBehaviour) where T : DVBase
+            PrePopulatedImageBehaviour prePopulatedBehaviour = DefaultPrePopulatedImageBehaviour) where T : Entity
         {
             if (ent == null) return;
 
@@ -472,7 +442,7 @@ namespace API.DataverseAccess
                                 (imageAttrib.RetrieveImageType == ImageRetrieveBehaviour.AlwaysFullImage ||
                                 (requestFullImages && imageAttrib.RetrieveImageType != ImageRetrieveBehaviour.AlwaysThumbnail));
 
-                            string image = GetImage(entityName, ((DVBase)ent).Id.Value, property.Name, retrieveFullImage);
+                            string image = GetImage(entityName, ent.Id, property.Name, retrieveFullImage);
                             if (image != null)
                             {
                                 property.SetValue(ent, image);

@@ -4,6 +4,7 @@ using API.Models.PNB;
 using AutoMapper;
 using Common.Models.Business;
 using Microsoft.Extensions.Logging;
+using Microsoft.Xrm.Sdk;
 using System;
 using System.Collections.Generic;
 
@@ -73,13 +74,14 @@ namespace API.Controllers
 
                 incident = new DVIncident();
                 incident.cp_incidentnumber = incidentNumber;
-                incident.cp_incidenttype = new EntityRef("cp_incidenttype", incidentTypeId);
+                incident.cp_incidenttype = new EntityReference("cp_incidenttype", incidentTypeId.Value);
                 incidentId = Guid.NewGuid();
                 if (incidentDate.HasValue)
                 {
                     incident.cp_incidentdate = incidentDate;
                 }
                 incident.cp_incidentid = incidentId;
+                incident.cp_enteredby = new EntityReference("systemuser", UserDataAccess.UserId.Value);
 
                 transaction.AddCreateEntity(incident);
             }

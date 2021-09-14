@@ -1,15 +1,7 @@
-﻿using API.Models.Business;
-using API.Models.Dataverse;
-using API.Models.IYC;
+﻿using API.Models.Dataverse;
 using API.Models.PNB;
 using AutoMapper;
 using Common.Models.Business;
-using Common.Models.Dataverse;
-using System;
-using System.Collections.Generic;
-using System.Dynamic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace API.Mappers
 {
@@ -31,7 +23,7 @@ namespace API.Mappers
 
             CreateMap<DVPhoto, Photo>()
                 .ForMember(dest => dest.Caption, map => map.MapFrom(src => src.cp_phototitle))
-                .ForMember(dest => dest.PocketNotebookId, map => map.MapFrom(src => src.cp_pocketnotebook.EntityId))
+                .ForMember(dest => dest.PocketNotebookId, map => map.MapFrom(src => src.cp_pocketnotebook.Id))
                 .ForMember(dest => dest.Blob, map => map.MapFrom(src => src.cp_image))
             ;
 
@@ -47,8 +39,8 @@ namespace API.Mappers
                 .ForMember(dest => dest.Id, map => map.MapFrom(src => src.cp_lookupvalueid))
             ;
 
-            CreateMap<DVVehicleTicket, VehicleTicket>()
-            ;
+            //CreateMap<DVVehicleTicket, VehicleTicket>()
+            //;
 
             //CreateMap<ExpandoObject, EntityBase>()
             //    .ForMember(dest => dest.OwnerId, map => map.MapFrom(src => MapEntityBaseFields<User>(src, "ownerid")))

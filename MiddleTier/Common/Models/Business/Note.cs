@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Xrm.Sdk;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -10,7 +11,7 @@ namespace Common.Models.Business
     {
         public string Attachment { get; set; }
         public string Subject { get; set; }
-        public EntityRef ParentRecord{ get; set; }
+        public EntityReference ParentRecord { get; set; }
         public string MimeType { get; set; }
         public string FileName { get; set; }
     }

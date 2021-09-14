@@ -1,12 +1,11 @@
-﻿using API.Models.Base;
-using Common.Models.Business;
+﻿using Microsoft.Xrm.Sdk;
 using System;
 using System.Runtime.Serialization;
 
 namespace API.Models.Dataverse
 {
     [DataContract(Name = "cp_lookupvalue")]
-    public class DVLookupValue : DVBase
+    public class DVLookupValue : Entity
     {
         public DVLookupValue() { }
 

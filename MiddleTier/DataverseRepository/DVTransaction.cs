@@ -1,12 +1,6 @@
-﻿using API.Models.Base;
-using Microsoft.PowerPlatform.Dataverse.Client;
-using Microsoft.Xrm.Sdk;
-using Microsoft.Xrm.Sdk.Messages;
+﻿using Microsoft.Xrm.Sdk;
 using System;
 using System.Collections.Generic;
-using System.Linq.Expressions;
-using System.Reflection;
-using System.Runtime.Serialization;
 
 namespace API.DataverseAccess
 {
@@ -19,21 +13,21 @@ namespace API.DataverseAccess
     public class TransactionRequest
     {
 
-        public TransactionRequest(RequestType requestType, DVBase baseEntity) 
+        public TransactionRequest(RequestType requestType, Entity target) 
         {
             ReqType = requestType;
-            DVBaseEntity = baseEntity;
+            Target = target;
         }
-        public TransactionRequest(RequestType requestType, DVBase baseEntity,Guid entityId, string imagePropertyName)
+        public TransactionRequest(RequestType requestType, Entity target,Guid entityId, string imagePropertyName)
         {
             ReqType = requestType;
-            DVBaseEntity = baseEntity;
+            Target = target;
             EntityId = entityId;
             ImagePropertyName = imagePropertyName;
         }
 
         public RequestType ReqType { get; set; }
-        public DVBase DVBaseEntity { get; set; }
+        public Entity Target { get; set; }
 
         public Guid? EntityId { get; set; }
 
@@ -51,20 +45,20 @@ namespace API.DataverseAccess
             Requests = new List<TransactionRequest>();
         }
 
-        public void AddCreateEntity<T>(T entity) where T : DVBase
+        public void AddCreateEntity<T>(T entity) where T : Entity
         {
             Requests.Add(new TransactionRequest(RequestType.Create, entity));
         }
 
         public void AddCreateEntityImage(
             Guid entityId,
-            DVBase entity,
+            Entity entity,
             string imagePropertyName) 
         {
             Requests.Add(new TransactionRequest(RequestType.CreateImage, entity,entityId,imagePropertyName));
         }
 
-        public void AddUpdateEntity<T>(T entity) where T : DVBase
+        public void AddUpdateEntity<T>(T entity) where T : Entity
         {
             Requests.Add(new TransactionRequest(RequestType.Update, entity));
         }

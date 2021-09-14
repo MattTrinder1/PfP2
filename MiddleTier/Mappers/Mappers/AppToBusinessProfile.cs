@@ -1,17 +1,9 @@
-﻿using API.Models.Business;
-using API.Models.Dataverse;
-using API.Models.IYC;
-using API.Models.PNB;
-using AutoMapper;
+﻿using AutoMapper;
 using Azure.Storage.Blobs;
 using Common.Models.Business;
 using System;
-using System.Collections.Generic;
-using System.Dynamic;
 using System.IO;
-using System.Linq;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace API.Mappers
 {
@@ -78,7 +70,7 @@ namespace API.Mappers
         }
 
 
-        private string GetBlob(string blobId)
+        private byte[] GetBlob(string blobId)
         {
             if (string.IsNullOrEmpty(blobId))
             {
@@ -91,7 +83,7 @@ namespace API.Mappers
             {
                 blobClient.DownloadTo(memorystream);
 
-                return Convert.ToBase64String(memorystream.ToArray());
+                return memorystream.ToArray();
             }
         }
 
