@@ -15,6 +15,23 @@ stages:
           parameters:
             configuration: Release
 
+  - stage: DeployAPIToTest
+    displayName: Deploy API to SysTest
+    jobs:
+    - deployment: DeployAPIToPfPSysTest
+      environment: PfPSysTestAzure
+      displayName: Deploy API
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - template: deployAPI.yml
+                parameters:
+                  serviceConnectionName: PfPSysTest-ec70
+
+
   - stage: DeployAPIToUAT
     displayName: Deploy API to UAT
     jobs:
