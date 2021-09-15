@@ -3,6 +3,7 @@ using AutoMapper;
 using Common.Models.Business;
 using Common.Models.Dataverse;
 using Microsoft.Xrm.Sdk;
+using System;
 
 namespace API.Mappers
 {
@@ -13,8 +14,8 @@ namespace API.Mappers
             RecognizeDestinationPrefixes("cp_");
 
             CreateMap<PocketNotebook, DVPocketNotebookImages>()
-                .ForMember(dest => dest.cp_sketch, map => map.MapFrom(src => src.Sketch))
-                .ForMember(dest => dest.cp_signature, map => map.MapFrom(src => src.Signature))
+                .ForMember(dest => dest.cp_sketch, map => map.MapFrom(src => Convert.FromBase64String(src.Sketch)))
+                .ForMember(dest => dest.cp_signature, map => map.MapFrom(src => Convert.FromBase64String(src.Signature)))
             ;
 
 

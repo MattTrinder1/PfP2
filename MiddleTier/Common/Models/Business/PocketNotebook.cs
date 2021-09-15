@@ -16,9 +16,9 @@ namespace Common.Models.Business
 
         public DateTime NoteDateAndTime { get; set; }
 
-        public byte[] Sketch { get; set; }
+        public string Sketch { get; set; }
 
-        public byte[] Signature { get; set; }
+        public string Signature { get; set; }
 
         
         public DateTime? SignatureDateandTime { get; set; }

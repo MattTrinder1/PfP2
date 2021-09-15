@@ -70,7 +70,7 @@ namespace API.Mappers
         }
 
 
-        private byte[] GetBlob(string blobId)
+        private string GetBlob(string blobId)
         {
             if (string.IsNullOrEmpty(blobId))
             {
@@ -83,7 +83,7 @@ namespace API.Mappers
             {
                 blobClient.DownloadTo(memorystream);
 
-                return memorystream.ToArray();
+                return Convert.ToBase64String(memorystream.ToArray());
             }
         }
 

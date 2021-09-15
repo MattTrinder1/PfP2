@@ -61,7 +61,7 @@ namespace APITests
             pnb.Notes = "this is some notes";
             pnb.SignatureDateandTime = DateTime.Now;
             pnb.SignatoryName = "fred";
-            pnb.Sketch = Convert.FromBase64String(imageString);
+            pnb.Sketch = imageString;
             pnb.Id = Guid.NewGuid();
 
             var postResp = await client.PostAsJsonAsync("api/pnb", pnb).Result.Content.ReadAsStringAsync();
@@ -70,7 +70,7 @@ namespace APITests
             var checkPNB = StartUp.adminService.GetEntity("cp_pocketnotebook", guid);
             var sketch = GetImage(checkPNB, "cp_sketch");
             ValidatePocketNotebook(pnb, checkPNB);
-            Assert.IsTrue(pnb.Sketch.SequenceEqual(sketch));
+            Assert.AreEqual(pnb.Sketch,Convert.ToBase64String(sketch));
         }
 
         private static byte[] GetImage(Entity checkPNB,string fieldName)
@@ -97,7 +97,7 @@ namespace APITests
             pnb.Notes = "this is some notes";
             pnb.SignatureDateandTime = DateTime.Now;
             pnb.SignatoryName = "fred";
-            pnb.Signature = Convert.FromBase64String(imageString);
+            pnb.Signature = imageString;
             pnb.Id = Guid.NewGuid();
 
             var postResp = await client.PostAsJsonAsync("api/pnb", pnb).Result.Content.ReadAsStringAsync();
@@ -106,7 +106,7 @@ namespace APITests
             var checkPNB = StartUp.adminService.GetEntity("cp_pocketnotebook", guid);
             var sig = GetImage(checkPNB, "cp_signature");
             ValidatePocketNotebook(pnb, checkPNB);
-            Assert.IsTrue(pnb.Signature.SequenceEqual(sig));
+            Assert.AreEqual(pnb.Signature,Convert.ToBase64String( sig));
 
         }
 
