@@ -3,7 +3,7 @@ using System;
 
 namespace Common.Models.Dataverse
 {
-    public class DVSuddenDeath : Entity
+    public class DVSuddenDeath : DVEntityBase
     {
         public DVSuddenDeath()
         {

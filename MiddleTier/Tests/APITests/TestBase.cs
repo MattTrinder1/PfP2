@@ -14,7 +14,7 @@ namespace APITests
 
     public abstract class TestBase
     {
-        protected void ValidateIncident(EntityBase original, Entity incident,string incidentTypeName)
+        protected void ValidateIncident(EntityBase original, Entity incident,string incidentTypeName,string userEmail)
         {
             Assert.AreEqual(original.IncidentNumber, incident.GetValue<string>("cp_incidentnumber"));
             Assert.IsTrue(DateTimesMatch(original.IncidentDate, incident.GetValue<DateTime>("cp_incidentdate")));
@@ -23,8 +23,9 @@ namespace APITests
             var incidentType = DynamicsServiceHelper.GetEntity(StartUp.adminService, "cp_incidenttype", "cp_incidenttypename", incidentTypeName);
             Assert.AreEqual(incidentType.Id, incident.GetEntityReferenceValue("cp_incidenttype").Id);
 
-            var userId = StartUp.adminService.GetUserId("matt.trinder@tisski.com");
+            var userId = StartUp.adminService.GetUserId(userEmail);
             Assert.AreEqual(userId, incident.GetEntityReferenceValue("cp_enteredby").Id);
+            Assert.AreEqual(userId, incident.GetEntityReferenceValue("ownerid").Id);
         }
 
 

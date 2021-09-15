@@ -103,7 +103,7 @@ namespace API.DataverseAccess
                 if (dvService == null || !(dvService as ServiceClient).IsReady)
                 {
                     Uri uri = new Uri(connectionConfiguration.DVUrl);
-                    dvService = new ServiceClient(uri, connectionConfiguration.ClientId, connectionConfiguration.ClientSecret, false);
+                    dvService = new ServiceClient(uri, connectionConfiguration.ClientId, connectionConfiguration.ClientSecret, true);
                 }
             
 #else
@@ -152,7 +152,7 @@ namespace API.DataverseAccess
 #if MOCKUP
             userServiceClient = crm.CreateOrganizationService(impersonationId);
 #else
-            userServiceClient = new ServiceClient(uri, connectionConfiguration.ClientId, connectionConfiguration.ClientSecret, false);
+            userServiceClient = new ServiceClient(uri, connectionConfiguration.ClientId, connectionConfiguration.ClientSecret, true);
             (userServiceClient as ServiceClient).CallerAADObjectId = GetUserADObjectId(impersonationEmailAddress);
 #endif
             

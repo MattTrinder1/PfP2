@@ -1,11 +1,12 @@
-﻿using Microsoft.Xrm.Sdk;
+﻿using Common.Models.Dataverse;
+using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
 using System;
 
 namespace API.Models.PNB
 {
     [EntityLogicalName("cp_incident")]
-    public class DVIncident : Entity
+    public class DVIncident : DVEntityBase
     {
         public DVIncident()
         {

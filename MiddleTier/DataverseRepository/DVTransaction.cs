@@ -18,18 +18,15 @@ namespace API.DataverseAccess
             ReqType = requestType;
             Target = target;
         }
-        public TransactionRequest(RequestType requestType, Entity target,Guid entityId, string imagePropertyName)
+        public TransactionRequest(RequestType requestType, Entity target, string imagePropertyName)
         {
             ReqType = requestType;
             Target = target;
-            EntityId = entityId;
             ImagePropertyName = imagePropertyName;
         }
 
         public RequestType ReqType { get; set; }
         public Entity Target { get; set; }
-
-        public Guid? EntityId { get; set; }
 
         public string ImagePropertyName { get; set; }
 
@@ -51,11 +48,10 @@ namespace API.DataverseAccess
         }
 
         public void AddCreateEntityImage(
-            Guid entityId,
             Entity entity,
             string imagePropertyName) 
         {
-            Requests.Add(new TransactionRequest(RequestType.CreateImage, entity,entityId,imagePropertyName));
+            Requests.Add(new TransactionRequest(RequestType.CreateImage, entity,imagePropertyName));
         }
 
         public void AddUpdateEntity<T>(T entity) where T : Entity

@@ -73,7 +73,7 @@ namespace API.DataverseAccess
 
                         if (imageData.Any())
                         {
-                            Entity updateImage = new Entity(entityName, transReq.EntityId.Value);
+                            Entity updateImage = new Entity(entityName, transReq.Target.Id);
                             updateImage[prop.Name] = imageData;
 
                             var updateImageReq = new UpdateRequest();

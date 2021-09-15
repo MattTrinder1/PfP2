@@ -25,6 +25,7 @@ namespace APITests
         {
             var client = StartUp.GetClient();
 
+
             var pnb = new PocketNotebook();
             pnb.NoteDateAndTime = DateTime.Now;
             pnb.Notes = "this is some notes";
@@ -35,16 +36,18 @@ namespace APITests
             var postResp = await client.PostAsJsonAsync("api/pnb", pnb).Result.Content.ReadAsStringAsync();
             var guid = JsonSerializer.Deserialize<Guid>(postResp);
 
+            
+
             var checkPNB = StartUp.adminService.GetEntity("cp_pocketnotebook", guid);
-            ValidatePocketNotebook(pnb, checkPNB);
+            ValidatePocketNotebook(pnb, checkPNB, client.DefaultRequestHeaders.GetValues("UserEmail").Single());
 
         }
 
-        private void ValidatePocketNotebook(PocketNotebook pnb, Entity checkPNB)
+        private void ValidatePocketNotebook(PocketNotebook pnb, Entity checkPNB,string userEmail)
         {
             Assert.AreEqual(pnb.Notes, checkPNB.GetValue<string>("cp_notes"));
             Assert.AreEqual(pnb.SignatoryName, checkPNB.GetValue<string>("cp_signatoryname"));
-            Assert.AreEqual(StartUp.adminService.GetUserId("matt.trinder@tisski.com"), checkPNB.GetValue<EntityReference>("ownerid").Id);
+            Assert.AreEqual(StartUp.adminService.GetUserId(userEmail), checkPNB.GetValue<EntityReference>("ownerid").Id);
             Assert.IsNull(checkPNB.GetValue<EntityReference>("cp_incidentnumber"));
             Assert.IsTrue(DateTimesMatch(pnb.SignatureDateandTime, checkPNB.GetValue<DateTime?>("cp_signaturedateandtime")));
             Assert.IsTrue(DateTimesMatch(pnb.NoteDateAndTime, checkPNB.GetValue<DateTime>("cp_notedateandtime")));
@@ -69,7 +72,7 @@ namespace APITests
 
             var checkPNB = StartUp.adminService.GetEntity("cp_pocketnotebook", guid);
             var sketch = GetImage(checkPNB, "cp_sketch");
-            ValidatePocketNotebook(pnb, checkPNB);
+            ValidatePocketNotebook(pnb, checkPNB, client.DefaultRequestHeaders.GetValues("UserEmail").Single());
             Assert.AreEqual(pnb.Sketch,Convert.ToBase64String(sketch));
         }
 
@@ -105,7 +108,7 @@ namespace APITests
 
             var checkPNB = StartUp.adminService.GetEntity("cp_pocketnotebook", guid);
             var sig = GetImage(checkPNB, "cp_signature");
-            ValidatePocketNotebook(pnb, checkPNB);
+            ValidatePocketNotebook(pnb, checkPNB, client.DefaultRequestHeaders.GetValues("UserEmail").Single());
             Assert.AreEqual(pnb.Signature,Convert.ToBase64String( sig));
 
         }
@@ -135,8 +138,9 @@ namespace APITests
 
             Assert.AreEqual(1, checkPhotos.Count);
             Assert.AreEqual("photo1", checkPhotos.First().GetValue<string>("cp_phototitle"));
+            Assert.AreEqual(StartUp.adminService.GetUserId(client.DefaultRequestHeaders.GetValues("UserEmail").Single()), checkPhotos.First().GetValue<EntityReference>("ownerid").Id);
 
-            ValidatePocketNotebook(pnb, checkPNB);
+            ValidatePocketNotebook(pnb, checkPNB, client.DefaultRequestHeaders.GetValues("UserEmail").Single());
 
         }
         [TestMethod]
@@ -160,8 +164,8 @@ namespace APITests
             var q = new QueryExpression("cp_incident");
             var incident = DynamicsServiceHelper.GetEntity(StartUp.adminService, "cp_incident", "cp_incidentnumber", pnb.IncidentNumber);
             
-            ValidateIncident(pnb, incident,"Pocket Notebook");
-            ValidatePocketNotebook(pnb, checkPNB);
+            ValidateIncident(pnb, incident,"Pocket Notebook", client.DefaultRequestHeaders.GetValues("UserEmail").Single());
+            ValidatePocketNotebook(pnb, checkPNB, client.DefaultRequestHeaders.GetValues("UserEmail").Single());
 
         }
 
@@ -184,7 +188,7 @@ namespace APITests
 
             var checkPNB = StartUp.adminService.GetEntity("cp_pocketnotebook", guid);
 
-            ValidatePocketNotebook(pnb, checkPNB);
+            ValidatePocketNotebook(pnb, checkPNB, client.DefaultRequestHeaders.GetValues("UserEmail").Single());
         }
 
         [TestMethod]
@@ -194,7 +198,7 @@ namespace APITests
 
             var pnbList = await client.GetFromJsonAsync<List<PocketNotebookListEntry>> ("api/pnb/getwhereowner");
             
-            var userId = StartUp.adminService.GetUserId("matt.trinder@tisski.com");
+            var userId = StartUp.adminService.GetUserId(client.DefaultRequestHeaders.GetValues("UserEmail").Single());
             var q = new QueryExpression("cp_pocketnotebook");
             q.ColumnSet = new ColumnSet(true);
             q.AddCriteria("ownerid", userId);

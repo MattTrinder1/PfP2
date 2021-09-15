@@ -33,6 +33,8 @@ namespace API.Controllers
             this.logger = logger;
         }
 
+        public Guid UserId { get { return UserDataAccess.UserId.Value; } }
+
         public DVDataAccess UserDataAccess
         {
             get
@@ -81,7 +83,8 @@ namespace API.Controllers
                     incident.cp_incidentdate = incidentDate;
                 }
                 incident.cp_incidentid = incidentId;
-                incident.cp_enteredby = new EntityReference("systemuser", UserDataAccess.UserId.Value);
+                incident.cp_enteredby = new EntityReference("systemuser", UserId);
+                incident.ownerid = new EntityReference("systemuser", UserId);
 
                 transaction.AddCreateEntity(incident);
             }
@@ -173,6 +176,21 @@ namespace API.Controllers
                 }
             }
             return false;
+        }
+
+        protected T GetDataverseEntity<T>(EntityBase entity,Guid ownerId)
+        {
+            var dvEntity = mapper.Map<T>(entity);
+            if (typeof(T).GetProperty("cp_enteredby") != null)
+            {
+                typeof(T).GetProperty("cp_enteredby").SetValue(dvEntity, new EntityReference("systemuser", ownerId));
+            }
+            if (typeof(T).GetProperty("ownerid") != null)
+            {
+                typeof(T).GetProperty("ownerid").SetValue(dvEntity, new EntityReference("systemuser", ownerId));
+            }
+
+            return dvEntity;
         }
     }
 }

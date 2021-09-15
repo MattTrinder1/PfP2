@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xrm.Sdk;
 using MoD.CAMS.Plugins.Common;
 using System;
+using System.Linq;
 using System.Net.Http.Json;
 using System.Text.Json;
 using System.Threading.Tasks;
@@ -47,7 +48,7 @@ namespace APITests
             ValidateSuddenDeath(sd, checkSD);
 
             var incident = StartUp.adminService.GetEntity(checkSD.GetEntityReferenceValue("cp_incident"));
-            ValidateIncident(sd, incident,"Sudden Death");
+            ValidateIncident(sd, incident,"Sudden Death", client.DefaultRequestHeaders.GetValues("UserEmail").Single());
 
         }
 

@@ -1,11 +1,12 @@
-﻿using Microsoft.Xrm.Sdk;
+﻿using Common.Models.Dataverse;
+using Microsoft.Xrm.Sdk;
 using System;
 using System.Runtime.Serialization;
 
 namespace API.Models.Dataverse
 {
     [DataContract(Name = "cp_lookupfield")]
-    public class DVLookupField : Entity
+    public class DVLookupField : DVEntityBase
     {
         public DVLookupField() { }
 

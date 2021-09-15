@@ -1,11 +1,12 @@
-﻿using Microsoft.Xrm.Sdk;
+﻿using Common.Models.Dataverse;
+using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
 using System;
 
 namespace API.Models.PNB
 {
     [EntityLogicalName("cp_pocketnotebook")]
-    public class DVPocketNotebook : Entity
+    public class DVPocketNotebook : DVEntityBase
     {
         public DVPocketNotebook()
         {
@@ -24,6 +25,8 @@ namespace API.Models.PNB
 
         public DateTime? cp_signaturedateandtime { get { return this.GetAttributeValue<DateTime?>(nameof(cp_signaturedateandtime)); } set { this.Attributes[nameof(cp_signaturedateandtime)] = value; } }
         public string cp_signatoryname { get { return this.GetAttributeValue<string>(nameof(cp_signatoryname)); } set { this.Attributes[nameof(cp_signatoryname)] = value; } }
+
+
     }
 
 

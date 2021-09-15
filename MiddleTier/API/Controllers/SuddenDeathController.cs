@@ -32,7 +32,7 @@ namespace API.Controllers
                 if (!VerifyIntegrationKey("PNB:POST")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
 
 
-                var dvSD = mapper.Map<DVSuddenDeath>(sd);
+                var dvSD = GetDataverseEntity<DVSuddenDeath>(sd, UserId);
 
                 DVTransaction transaction = new DVTransaction();
 
@@ -42,15 +42,9 @@ namespace API.Controllers
                     dvSD.cp_incident = new EntityReference("cp_incident", incidentId.Value);
                 }
 
-                Guid pnbGuid = Guid.Empty;
-                if (dvSD.cp_suddendeathid.HasValue)
+                if (!dvSD.cp_suddendeathid.HasValue)
                 {
-                    pnbGuid = dvSD.cp_suddendeathid.Value;
-                }
-                if (pnbGuid == Guid.Empty)
-                {
-                    pnbGuid = Guid.NewGuid();
-                    dvSD.cp_suddendeathid = pnbGuid;
+                    dvSD.cp_suddendeathid = Guid.NewGuid();
                 }
 
 
@@ -67,10 +61,10 @@ namespace API.Controllers
                 //    transaction.AddCreateEntity(dvPhoto);
                 //}
 
-                UserDataAccess.ExecuteTransaction(transaction);
+                AdminDataAccess.ExecuteTransaction(transaction);
 
 
-                return pnbGuid;
+                return dvSD.cp_suddendeathid;
             }
             catch (Exception e)
             {

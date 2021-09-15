@@ -104,8 +104,8 @@ namespace API.Controllers
 
 
                 logger.LogDebug("Mapping to DV entity");
-                var dvPb = mapper.Map<DVPocketNotebook>(pnb);
-                dvPb.cp_enteredby = new EntityReference("systemuser", UserDataAccess.UserId.Value );
+                var dvPb = GetDataverseEntity<DVPocketNotebook>(pnb, UserId);
+
 
                 DVTransaction transaction = new DVTransaction();
 
@@ -116,39 +116,31 @@ namespace API.Controllers
                     dvPb.cp_incidentno =new EntityReference("cp_incident", incidentId.Value);
                 }
 
-                Guid pnbGuid = Guid.Empty;
-                if (dvPb.cp_pocketnotebookid.HasValue)
+                if (!dvPb.cp_pocketnotebookid.HasValue)
                 {
-                    pnbGuid = dvPb.cp_pocketnotebookid.Value;
+                    dvPb.cp_pocketnotebookid = Guid.NewGuid();
                 }
-                if (pnbGuid == Guid.Empty)
-                {
-                    pnbGuid = Guid.NewGuid();
-                    dvPb.cp_pocketnotebookid = pnbGuid;
-                }
-
                 
-
                 transaction.AddCreateEntity(dvPb);
 
                 logger.LogDebug("Create images");
                 var dvPbImages = mapper.Map<PocketNotebook, DVPocketNotebookImages>(pnb);
-                transaction.AddCreateEntityImage(pnbGuid, dvPbImages, "cp_sketch");
-                transaction.AddCreateEntityImage(pnbGuid, dvPbImages, "cp_signature");
+                transaction.AddCreateEntityImage(dvPbImages, "cp_sketch");
+                transaction.AddCreateEntityImage(dvPbImages, "cp_signature");
 
                 logger.LogDebug("Create photos");
                 foreach (var photo in pnb.Photos)
                 {
-                    photo.PocketNotebookId = pnbGuid;
-                    var dvPhoto = mapper.Map<DVPhoto>(photo);
+                    photo.PocketNotebookId = dvPb.cp_pocketnotebookid.Value;
+                    var dvPhoto = GetDataverseEntity<DVPhoto>(photo, UserId); 
                     transaction.AddCreateEntity(dvPhoto);
                 }
 
                 logger.LogDebug("Save");
-                UserDataAccess.ExecuteTransaction(transaction);
+                AdminDataAccess.ExecuteTransaction(transaction);
 
 
-                return pnbGuid;
+                return dvPb.cp_pocketnotebookid.Value;
             }
             catch (Exception e)
             {
