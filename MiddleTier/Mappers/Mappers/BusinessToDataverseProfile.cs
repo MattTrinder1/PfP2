@@ -32,7 +32,7 @@ namespace API.Mappers
             CreateMap<Photo, DVPhoto>()
                 .ForMember(dest => dest.cp_phototitle, map => map.MapFrom(src => src.Caption))
                 .ForMember(dest => dest.cp_pocketnotebook, map => map.MapFrom(src => new EntityReference("cp_pocketnotebook", src.PocketNotebookId.Value)))
-                .ForMember(dest => dest.cp_image, map => map.MapFrom(src => src.Blob))
+                .ForMember(dest => dest.cp_image, map => map.MapFrom(src => Convert.FromBase64String(src.Blob)))
             ;
         }
 
