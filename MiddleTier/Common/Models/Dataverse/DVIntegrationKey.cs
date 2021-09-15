@@ -1,13 +1,17 @@
 ﻿using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Client;
 using System;
 using System.Runtime.Serialization;
 
 namespace API.Models.Dataverse
 {
-    [DataContract(Name = "cp_integrationkey")]
+    [EntityLogicalName("cp_integrationkey")]
     public class DVIntegrationKey : Entity
     {
-        public DVIntegrationKey() { }
+        public DVIntegrationKey() 
+        {
+            this.LogicalName = "cp_integrationkey"; 
+        }
 
         public Guid? cp_integrationkeyid { get { return base.Id; } set { base.Id = value.Value; } }
 
