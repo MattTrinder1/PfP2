@@ -55,7 +55,7 @@ stages:
     jobs:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     - deployment: ReleaseToPfPSystemTest
-      environment: PfPSystemTest
+      environment: PfPSysTestAzure
       displayName: Deploy Solutions
       workspace:
         clean: all 
@@ -85,7 +85,7 @@ stages:
     jobs:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     - deployment: ReleaseToPfPUAT
-      environment: PfPUAT
+      environment: PfPUATAzure
       displayName: Deploy Solutions
       workspace:
         clean: all 
