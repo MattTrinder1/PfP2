@@ -50,7 +50,7 @@ namespace API
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
-            services.AddSingleton<DVDataAccessFactory>();
+            services.AddScoped<DVDataAccessFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
