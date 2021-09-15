@@ -34,12 +34,12 @@ namespace QueueListeners
             string newQueueItem = Helpers.ParseQueueMessage(myQueueItem);
             var docRoot = JsonDocument.Parse(newQueueItem).RootElement;
 
-            log.LogInformation($"\t mapping to business entities");
+            log.LogInformation($"\tmapping to business entities");
             PocketNotebook pocketNotebook = _mapper.Map<PocketNotebook>(docRoot);
             pocketNotebook.Photos = _mapper.Map<List<Photo>>(docRoot.GetProperty("photos").EnumerateArray());
 
 
-            log.LogInformation($"\t calling API");
+            log.LogInformation($"\tcalling API");
             RestRequest req = Helpers.GetRestRequest("/api/pnb", Method.POST, docRoot.GetProperty("enteredBy").GetString() );
             req.AddJsonBody(pocketNotebook, "application/json");
             var resp = _restClient.Execute(req);
