@@ -1,6 +1,7 @@
 ﻿using Microsoft.Crm.Sdk.Messages;
 using Microsoft.Extensions.Caching.Memory;
 using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Client;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Query;
 using System;
@@ -14,9 +15,21 @@ namespace API.DataverseAccess
 {
     public enum SelectColumns
     {
+        /// <summary>
+        /// Retrieve columns represented by the properties of the target DV class.
+        /// </summary>
         AllTypeProperties,
+        /// <summary>
+        /// Retrieve columns represented by the properties of the target DV class excluding images.
+        /// </summary>
         TypePropertiesWithoutImages,
+        /// <summary>
+        /// Retrieve thumbnails for image columns represented by the (byte[]) properties of the target DV class.
+        /// </summary>
         TypeImagePropertyThumbnails,
+        /// <summary>
+        /// Retrieve all columns of the DataVerse table.
+        /// </summary>
         AllTableColumns
     }
 
@@ -135,9 +148,14 @@ namespace API.DataverseAccess
                 }
                 else
                 {
-                    DVImageAttribute imageAttrib = property.GetCustomAttribute<DVImageAttribute>();
-                    if ((imageAttrib != null && includeImages) ||
-                        (imageAttrib == null && includeNonImages))
+                    bool isImage = (property.PropertyType == typeof(byte[]));
+                    if (isImage)
+                    {
+                        DVNotImageAttribute notImageAttrib = property.GetCustomAttribute<DVNotImageAttribute>();
+                        isImage = (notImageAttrib == null);
+                    }
+                    if ((isImage && includeImages) || 
+                        (!isImage && includeNonImages))
                     {
                         propertyNames.Add(property.Name);
                     }
@@ -362,28 +380,14 @@ namespace API.DataverseAccess
             
         }
 
-
-        public void CreateEntityImage<T>(
-            Guid entityId,
-            T entity,
-            Expression<Func<T, string>> imageProperty) where T : Entity,new()
+        public static string GetEntityLogicalName<T>(T ent) where T: Entity
         {
-            string entityName = new T().LogicalName;
+            if (!string.IsNullOrEmpty(ent.LogicalName)) return ent.LogicalName;
 
-            var expr = (MemberExpression)imageProperty.Body;
-            var prop = (PropertyInfo)expr.Member;
+            var logicalNameAttrib = typeof(T).GetCustomAttribute<EntityLogicalNameAttribute>();
+            if (logicalNameAttrib != null) return logicalNameAttrib.LogicalName;
 
-            string imageData = (string)prop.GetValue(entity);
-
-            if (string.IsNullOrEmpty(imageData))
-            {
-                return;
-            }
-
-            Entity updateImage = new Entity(entityName, entityId);
-            updateImage[prop.Name] = Convert.FromBase64String(imageData);
-
-                _dvService.Update(updateImage);
+            return null;
         }
 
         public enum PrePopulatedImageBehaviour
@@ -416,37 +420,34 @@ namespace API.DataverseAccess
         {
             if (ent == null) return;
 
-            string entityName = null;
-            var dataContractAttrib = typeof(T).GetCustomAttribute<DataContractAttribute>();
-            if (dataContractAttrib != null)
-            {
-                entityName = dataContractAttrib.Name;
-            }
+            string entityName = GetEntityLogicalName(ent);
 
             if (entityName != null)
             {
-                foreach (var property in typeof(T).GetProperties().Where(x => x.PropertyType == typeof(string)))
+                foreach (var property in typeof(T).GetProperties().Where(x => x.PropertyType == typeof(byte[])))
                 {
-                    DVImageAttribute imageAttrib = property.GetCustomAttribute<DVImageAttribute>();
-                    if (imageAttrib != null)
-                    {
-                        var propertyValue = property.GetValue(ent);
-                        if (propertyValue is null ||
-                            prePopulatedBehaviour == PrePopulatedImageBehaviour.Overwrite ||
-                            (prePopulatedBehaviour == PrePopulatedImageBehaviour.RegardAsThumbnail &&
-                                imageAttrib.RetrieveImageType == ImageRetrieveBehaviour.AlwaysFullImage) ||
-                            (prePopulatedBehaviour == PrePopulatedImageBehaviour.RegardAsFullImage &&
-                                imageAttrib.RetrieveImageType == ImageRetrieveBehaviour.AlwaysThumbnail))
-                        {
-                            bool retrieveFullImage =
-                                (imageAttrib.RetrieveImageType == ImageRetrieveBehaviour.AlwaysFullImage ||
-                                (requestFullImages && imageAttrib.RetrieveImageType != ImageRetrieveBehaviour.AlwaysThumbnail));
+                    DVNotImageAttribute notImageAttrib = property.GetCustomAttribute<DVNotImageAttribute>();
+                    if (notImageAttrib != null) continue;
 
-                            string image = GetImage(entityName, ent.Id, property.Name, retrieveFullImage);
-                            if (image != null)
-                            {
-                                property.SetValue(ent, image);
-                            }
+                    DVImageAttribute imageAttrib = property.GetCustomAttribute<DVImageAttribute>();
+
+                    var propertyValue = property.GetValue(ent);
+                    if (propertyValue is null || 
+                        prePopulatedBehaviour == PrePopulatedImageBehaviour.Overwrite || 
+                        imageAttrib == null || 
+                        (prePopulatedBehaviour == PrePopulatedImageBehaviour.RegardAsThumbnail && 
+                            imageAttrib.RetrieveImageType == ImageRetrieveBehaviour.AlwaysFullImage) ||
+                        (prePopulatedBehaviour == PrePopulatedImageBehaviour.RegardAsFullImage &&
+                            imageAttrib.RetrieveImageType == ImageRetrieveBehaviour.AlwaysThumbnail))
+                    {
+                        bool retrieveFullImage =
+                            (requestFullImages && (imageAttrib == null || imageAttrib.RetrieveImageType != ImageRetrieveBehaviour.AlwaysThumbnail)) || 
+                            (imageAttrib != null && imageAttrib.RetrieveImageType == ImageRetrieveBehaviour.AlwaysFullImage);
+
+                        string image = GetImage(entityName, ent.Id, property.Name, retrieveFullImage);
+                        if (image != null)
+                        {
+                            property.SetValue(ent, image);
                         }
                     }
                 }
