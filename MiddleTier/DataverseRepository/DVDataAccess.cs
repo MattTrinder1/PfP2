@@ -126,7 +126,7 @@ namespace API.DataverseAccess
             List<string> propertyNames = new List<string>();
             foreach (var property in typeof(T).GetProperties())
             {
-                if (property.PropertyType == typeof(EntityReference)) continue;
+                //if (property.PropertyType == typeof(EntityReference)) continue;
                 if (property.DeclaringType != typeof(T)) continue;
 
                 if (includeNonImages && includeImages)

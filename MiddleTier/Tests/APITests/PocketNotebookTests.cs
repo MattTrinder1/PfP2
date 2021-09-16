@@ -125,7 +125,7 @@ namespace APITests
             pnb.SignatureDateandTime = DateTime.Now;
             pnb.SignatoryName = "fred";
             pnb.Id = Guid.NewGuid();
-            pnb.Photos.Add(new Photo() { Blob = Convert.FromBase64String(imageString), Caption = "photo1" });
+            pnb.Photos.Add(new Photo() { Blob = imageString, Caption = "photo1" });
 
             var postResp = await client.PostAsJsonAsync("api/pnb", pnb).Result.Content.ReadAsStringAsync();
             var guid = JsonSerializer.Deserialize<Guid>(postResp);
