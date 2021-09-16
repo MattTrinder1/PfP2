@@ -43,7 +43,7 @@ Screen_Notes_viewscr As screen:
             Height: =831
             Width: =Parent.Width
             X: =0
-            Y: =3
+            Y: =2
             ZIndex: =1
 
             TextInput_Notes_3 As text:
@@ -87,7 +87,7 @@ Screen_Notes_viewscr As screen:
             Height: =52
             Width: =640
             X: =0
-            Y: =8
+            Y: =6
             ZIndex: =2
 
             Label_want_to_add_a_sketch_10 As label:
@@ -147,7 +147,7 @@ Screen_Notes_viewscr As screen:
                 )
             Width: =640
             X: =0
-            Y: =9
+            Y: =8
             ZIndex: =4
 
             Image3 As image:
@@ -195,7 +195,7 @@ Screen_Notes_viewscr As screen:
             Height: =70
             Width: =640
             X: =0
-            Y: =6
+            Y: =5
             ZIndex: =5
 
             Label_want_to_add_a_sketch_11 As label:
@@ -275,7 +275,7 @@ Screen_Notes_viewscr As screen:
             Height: =53
             Width: =640
             X: =0
-            Y: =4
+            Y: =3
             ZIndex: =7
 
             Label_want_to_add_a_sketch_7 As label:
@@ -309,7 +309,7 @@ Screen_Notes_viewscr As screen:
                 )
             Width: =640
             X: =0
-            Y: =5
+            Y: =4
             ZIndex: =8
 
             Image4 As image:
@@ -363,4 +363,53 @@ Screen_Notes_viewscr As screen:
                 X: =40
                 Y: =16
                 ZIndex: =1
+
+        DataCard16 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =138
+            Visible: |-
+                =If (
+                    IsBlank(
+                        LookUp('Notebook Offline',Id = ViewNoteId).SignatureId
+                    ),
+                    false,
+                    true
+                )
+            Width: =640
+            X: =0
+            Y: =9
+            ZIndex: =10
+
+            Label_want_to_add_a_sketch_12 As label:
+                Height: =67
+                Size: =21
+                Text: ="Signature Date"
+                Width: =545
+                X: =40
+                ZIndex: =1
+
+            TextInput_Notes_6 As text:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                Default: |
+                    =Text( LookUp('Notebook Offline',Id = ViewNoteId).'Signature Date and Time',"dd/mm/yyyy hh:mm")
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisplayMode: =DisplayMode.Disabled
+                EnableSpellCheck: =true
+                Fill: =notecol
+                Height: =57
+                HoverBorderColor: =RGBA(116, 116, 116, 1)
+                OnChange: |-
+                    =If(Len(TextInput_Notes_6.Text)>0,UpdateContext({notecol:Transparent}),UpdateContext({notecol:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(TextInput_Notes_6.Text)>0,UpdateContext({notecol:Transparent}),UpdateContext({notecol:LightGoldenRodYellow}));
+                Reset: |
+                    =
+                Size: =19
+                Width: =545
+                X: =40
+                Y: =60
+                ZIndex: =2
 

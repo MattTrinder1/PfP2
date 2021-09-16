@@ -76,7 +76,7 @@ Screen_Search_notes As screen:
         NextArrow5_1 As icon.ChevronRight:
             AccessibleLabel: =Self.Tooltip
             Color: =RGBA(116, 116, 116, 1)
-            Fill: =If(ThisItem.inDataverse,RGBA(182,221,140,0.3),RGBA(250,155,112,0.3))
+            Fill: =If(ThisItem.queued,RGBA(182,221,140,0.3),RGBA(250,155,112,0.3))
             Height: =53
             Icon: =
             OnSelect: |-
@@ -97,10 +97,10 @@ Screen_Search_notes As screen:
             Height: =36
             Icon: =Icon.Check
             OnSelect: =Select(Parent)
-            Visible: =glbDebug And ThisItem.inDataverse
+            Visible: =ThisItem.inDataverse
             Width: =41
-            X: =535
-            Y: =12
+            X: =576
+            Y: =14
             ZIndex: =4
 
         Icon5_1 As icon.Add:
@@ -110,8 +110,8 @@ Screen_Search_notes As screen:
             OnSelect: =Select(Parent)
             Visible: =glbDebug And ThisItem.fullyPopulated
             Width: =41
-            X: =576
-            Y: =12
+            X: =535
+            Y: =14
             ZIndex: =5
 
     iconReload As icon.Cancel:
@@ -168,6 +168,7 @@ Screen_Search_notes As screen:
         ZIndex: =10
 
     tmrNoteRefresh As timer:
+        AutoPause: =false
         AutoStart: =true
         Duration: =10000
         Height: =75

@@ -21,9 +21,6 @@ App As appinfo:
         Set(tmrGetPNBStart,true);
         
         
-        
-        
-        
         IfError(
             LoadData(
                 'Notebook Offline',
@@ -32,14 +29,12 @@ App As appinfo:
             ),
             true
         );
-        //IfError(
-        //    LoadData(
-        //        Photos,
-        //        "PhotosCache",
-        //        true
-        //    ),
-        //    true
-        //);
+        LoadData(
+            blobsToSave,
+            "blobsToSaveCache",
+            true
+        );
+        
         Set(
             gblLoading,
             false

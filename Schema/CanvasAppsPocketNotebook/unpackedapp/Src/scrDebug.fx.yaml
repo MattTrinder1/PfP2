@@ -18,12 +18,12 @@ scrDebug As screen:
         ZIndex: =2
 
         Image2 As image:
-            Height: =128
+            Height: =68
             Image: =ThisItem.blob
             OnSelect: =Select(Parent)
-            Width: =128
-            X: =16
-            Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+            Width: =101
+            X: =18
+            Y: =16
             ZIndex: =1
 
         Title1 As label:
@@ -42,17 +42,17 @@ scrDebug As screen:
             ZIndex: =2
 
         Subtitle1 As label:
-            Height: =Self.Size * 1.8
+            Height: =26
             OnSelect: =Select(Parent)
             PaddingBottom: =0
             PaddingLeft: =0
             PaddingRight: =0
             PaddingTop: =0
             Size: =13
-            Text: =ThisItem.caption
+            Text: =ThisItem.blob
             VerticalAlign: =VerticalAlign.Top
-            Width: =Title1.Width
-            X: =168
+            Width: =617
+            X: =18
             Y: =84
             ZIndex: =3
 
