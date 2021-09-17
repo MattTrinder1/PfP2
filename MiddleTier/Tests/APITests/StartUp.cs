@@ -31,7 +31,7 @@ namespace APITests
         public static void Initialise(TestContext testContext)
         {
 
-            var connConfig = new ConnectionConfiguration("https://policeproductuat.crm11.dynamics.com/appportal/sg/notification.aspx", "83af4fce-10c3-4409-a43d-d67e300424aa", "H.ARok4~mmJl_lfU~nfE9JqE.7pUE26u.t");
+            var connConfig = new ConnectionConfiguration("https://policeproductdev.crm11.dynamics.com/appportal/sg/notification.aspx", "83af4fce-10c3-4409-a43d-d67e300424aa", "H.ARok4~mmJl_lfU~nfE9JqE.7pUE26u.t");
             var daFactory = new DVDataAccessFactory(connConfig, new MemoryCache(new MemoryCacheOptions()), "matt.trinder@tisski.com");
             adminService = daFactory.AdminDvService;
 
