@@ -10,7 +10,7 @@ namespace API
     {
         public ApiConfiguration(
             IConfiguration configuration,
-            API.Mappers.MapperConfiguration mapperConfiguration)
+            API.Mappers.MapperConfig mapperConfiguration)
         {
             SuppressIntegrationKeyVerification = configuration.GetValue("API:SuppressIntegrationKeyVerification", false);
             MapperConfiguration = mapperConfiguration;
@@ -18,6 +18,6 @@ namespace API
 
         public bool SuppressIntegrationKeyVerification { get; set; }
 
-        public API.Mappers.MapperConfiguration MapperConfiguration { get; set; }
+        public API.Mappers.MapperConfig MapperConfiguration { get; set; }
     }
 }

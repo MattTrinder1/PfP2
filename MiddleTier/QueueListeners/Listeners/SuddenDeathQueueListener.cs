@@ -1,10 +1,12 @@
 using API.Mappers;
-using AutoMapper;
 using Azure.Storage.Blobs;
 using Common.Models.Business;
+using Common.Models.Queue;
 using FunctionApps;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json.Linq;
+using QueueListeners.Listeners;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -13,32 +15,32 @@ using System.Text.Json;
 
 namespace QueueListeners
 {
-    public class SuddenDeathQueueListener
+    public class SuddenDeathQueueListener : QueueListenerBase
     {
-        RestClient _restClient;
-        Mapper _mapper;
-        BlobContainerClient _containerClient;
-        public SuddenDeathQueueListener(API.Mappers.MapperConfiguration mapperconfig, RestClient restClient, BlobContainerClient containerClient)
+
+        public SuddenDeathQueueListener(QueueMapperConfig mapperconfig, RestClient restClient, QueueClientFactory queueClientFactory) : base(mapperconfig, restClient, queueClientFactory)
         {
-            _mapper = new Mapper(mapperconfig.mapperConfig);
-            _restClient = restClient;
-            _containerClient = containerClient;
         }
 
         [Function("SuddenDeathQueueListener")]
         public void Run([QueueTrigger("suddendeathqueue")] string myQueueItem, FunctionContext context)
         {
-            var log = context.GetLogger("SuddenDeathQueueListener");
-            log.LogInformation($"C# Queue trigger function processed: {myQueueItem}");
+            CreateLogger(context);
+            LogInfo($"C# Queue trigger function processed: {myQueueItem}");
 
             string newQueueItem = Helpers.ParseQueueMessage(myQueueItem);
-            var docRoot = JsonDocument.Parse(newQueueItem).RootElement;
 
-            SuddenDeath suddenDeath = _mapper.Map<SuddenDeath>(docRoot);
+            //archive queue message
+            ArchiveQueueMessage(myQueueItem);
+
+            var docRoot = JsonDocument.Parse(newQueueItem).RootElement;
+            var queueSD = JsonSerializer.Deserialize<QueueSuddenDeath>(docRoot.ToString());
+
+            SuddenDeath suddenDeath = _mapper.Map<SuddenDeath>(queueSD);
             //suddenDeath.Photos = _mapper.Map<List<Photo>>(docRoot.GetProperty("photos").EnumerateArray());
 
 
-            RestRequest req = Helpers.GetRestRequest("/api/suddendeath", Method.POST, docRoot.GetProperty("enteredBy").GetString() );
+            RestRequest req = Helpers.GetRestRequest("/api/suddendeath", Method.POST, suddenDeath.EnteredBy );
             req.AddJsonBody(suddenDeath, "application/json");
             var resp = _restClient.Execute(req);
 
@@ -49,7 +51,10 @@ namespace QueueListeners
                 throw new Exception(errorMessage, resp.ErrorException);
             }
 
-            log.LogInformation(resp.Content);
+            LogInfo(resp.Content);
+
+            
+
         }
 
 

@@ -5,6 +5,7 @@ using Common.Models.Business;
 using FunctionApps;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
+using QueueListeners.Listeners;
 using RestSharp;
 using System;
 using System.Collections.Generic;
@@ -13,33 +14,30 @@ using System.Text.Json;
 
 namespace QueueListeners
 {
-    public class PNBQueueListener
+    public class PNBQueueListener : QueueListenerBase
     {
-        RestClient _restClient;
-        Mapper _mapper;
-        BlobContainerClient _containerClient;
-        public PNBQueueListener(API.Mappers.MapperConfiguration mapperconfig, RestClient restClient, BlobContainerClient containerClient)
+        public PNBQueueListener(QueueMapperConfig mapperconfig, RestClient restClient,QueueClientFactory queueClientFactory) : base(mapperconfig, restClient, queueClientFactory)
         {
-            _mapper = new Mapper(mapperconfig.mapperConfig);
-            _restClient = restClient;
-            _containerClient = containerClient;
         }
 
         [Function("PNBQueueListener")]
         public void Run([QueueTrigger("pocketnotebookqueue")] string myQueueItem, FunctionContext context)
         {
-            var log = context.GetLogger("PNBQueueListener");
-            log.LogInformation($"C# Queue trigger function processed: {myQueueItem}");
+            CreateLogger(context);
+            LogInfo($"C# Queue trigger function processed: {myQueueItem}");
 
             string newQueueItem = Helpers.ParseQueueMessage(myQueueItem);
             var docRoot = JsonDocument.Parse(newQueueItem).RootElement;
 
-            log.LogInformation($"\tmapping to business entities");
+            //archive queue message
+            ArchiveQueueMessage(myQueueItem);
+
+            LogInfo($"\tmapping to business entities");
             PocketNotebook pocketNotebook = _mapper.Map<PocketNotebook>(docRoot);
             pocketNotebook.Photos = _mapper.Map<List<Photo>>(docRoot.GetProperty("photos").EnumerateArray());
 
 
-            log.LogInformation($"\tcalling API");
+            LogInfo($"\tcalling API");
             RestRequest req = Helpers.GetRestRequest("/api/pnb", Method.POST, docRoot.GetProperty("enteredBy").GetString() );
             req.AddJsonBody(pocketNotebook, "application/json");
             var resp = _restClient.Execute(req);
@@ -51,7 +49,7 @@ namespace QueueListeners
                 throw new Exception(errorMessage, resp.ErrorException);
             }
 
-            log.LogInformation(resp.Content);
+            LogInfo(resp.Content);
         }
 
 

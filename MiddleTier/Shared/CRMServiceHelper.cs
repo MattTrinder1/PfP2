@@ -1227,8 +1227,22 @@
                 throw;
             }
         }
+
+        static Dictionary<Tuple<string, string>, int> osValueCache;
+
         internal static int GetOptionSetValue(IOrganizationService service, string optionSetName, string optionSetText, string entityName = "")
         {
+
+            if (osValueCache == null)
+            {
+                osValueCache = new Dictionary<Tuple<string, string>, int>();
+            }
+
+            if (osValueCache.ContainsKey(new Tuple<string, string>(optionSetName, optionSetText)))
+            {
+                return osValueCache[new Tuple<string, string>(optionSetName, optionSetText)];
+            }
+
             try
             {
                 var options = GetOptionSetMetadata(service, optionSetName, entityName);
@@ -1236,6 +1250,9 @@
                                                      where o.Value != null && o.Label.UserLocalizedLabel.Label == optionSetText
                                                      select o).ToList();
                 var optionSetLabel = (optionsList.Count > 0) ? optionsList.First().Value.Value : 0;
+                
+                osValueCache[new Tuple<string, string>(optionSetName, optionSetText)] = optionSetLabel;
+                
                 return optionSetLabel;
             }
             catch (Exception)
@@ -1412,7 +1429,12 @@
 
                     var resp = (RetrieveAttributeResponse)service.Execute(request);
 
-                    if (optionsetName.Contains("statecode"))
+                    if (optionsetName.Contains("familystatuscode"))
+                    {
+                        var retrievedPicklistAttributeMetadata = (PicklistAttributeMetadata)resp.AttributeMetadata;
+                        optionSetMetadata = retrievedPicklistAttributeMetadata.OptionSet;
+                    }
+                    else if (optionsetName.Contains("statecode"))
                     {
                         var retrievedPicklistAttributeMetadata = (StateAttributeMetadata)resp.AttributeMetadata;
                         optionSetMetadata = retrievedPicklistAttributeMetadata.OptionSet;

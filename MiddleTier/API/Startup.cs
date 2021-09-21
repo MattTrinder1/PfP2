@@ -1,4 +1,5 @@
 using API.DataverseAccess;
+using API.Mappers;
 using Azure.Storage.Blobs;
 using DataverseRepository;
 using Microsoft.AspNetCore.Builder;
@@ -30,13 +31,19 @@ namespace API
             services.AddSingleton(Configuration);
 
             services.AddSingleton(new BlobContainerClient(Configuration.GetValue<string>("AzureWebJobsStorage"), "pnb"));
-            services.AddSingleton<API.Mappers.MapperConfiguration>();
 
             services.AddSingleton(new ConnectionConfiguration(
                 Configuration.GetValue<string>("Connection:DataverseUrl"),
                 Configuration.GetValue<string>("Connection:ClientId"),
                 Configuration.GetValue<string>("Connection:ClientSecret")));
 
+
+
+            services.AddMemoryCache();
+            services.AddSingleton<CacheOrchestrator>();
+            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+            services.AddSingleton<DVDataAccessFactory>();
+            services.AddSingleton<MapperConfig>();
             services.AddSingleton<ApiConfiguration>();
 
             services.AddSwaggerGen(c =>
@@ -45,12 +52,6 @@ namespace API
                 c.OperationFilter<CustomHeaderSwaggerAttributes>();
             });
 
-            services.AddMemoryCache();
-            services.AddSingleton<CacheOrchestrator>();
-
-            services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
-
-            services.AddScoped<DVDataAccessFactory>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

@@ -4,6 +4,7 @@ using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
 using Microsoft.Xrm.Sdk.Messages;
 using Microsoft.Xrm.Sdk.Query;
+using MoD.CAMS.Plugins.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -108,6 +109,27 @@ namespace API.DataverseAccess
 
             }
             return (ExecuteTransactionResponse)_dvService.Execute(transaction);
+        }
+
+        public OptionSetValue GetOptionSetValue(string optionSetName, string optionSetText)
+        {
+
+            return GetOptionSetValue(optionSetName, optionSetText, "");
+        }
+        public OptionSetValue GetOptionSetValue(string optionSetName, string optionSetText, string entityName = "")
+        {
+
+            if (optionSetText == null)
+            {
+                return null;
+            }
+
+            var value = DynamicsServiceHelper.GetOptionSetValue(_dvService, optionSetName, optionSetText, entityName);
+            if (value == 0)
+            {
+                return null;
+            }
+            return new OptionSetValue(value);
         }
 
         public Guid GetUserId(string emailAddress)
@@ -294,7 +316,7 @@ namespace API.DataverseAccess
             QueryExpression query = new QueryExpression(new T().LogicalName);
             query.Criteria.AddCondition(field, ConditionOperator.Equal, value);
             query.ColumnSet = GetColumnSet<T>(selectColumns);
-            
+
             var ent = _dvService.RetrieveMultiple(query).Entities;
             if (ent.Any())
             {
@@ -304,15 +326,24 @@ namespace API.DataverseAccess
             {
                 return null;
             }
-            
+
 
             //return ConvertFromDvEntity<T>(dvResponse.Entities.SingleOrDefault());
         }
-        public Guid? GetEntityId(string entityName, string fieldName, object value ) 
+
+        public object GetEntityFieldValue(string entityName,Guid entityId, string fieldName)
+        {
+            var entity = _dvService.GetEntity(entityName, entityId);
+            return entity[fieldName];
+            
+        }
+
+
+        public Guid? GetEntityId(string entityName, string fieldName, object value)
         {
             QueryExpression query = new QueryExpression(entityName);
             query.Criteria.AddCondition(fieldName, ConditionOperator.Equal, value);
-            
+
             var dvResponse = _dvService.RetrieveMultiple(query);
             if (dvResponse.Entities.SingleOrDefault() != null)
             {
@@ -323,7 +354,7 @@ namespace API.DataverseAccess
                 return null;
             }
 
-            
+
         }
 
         public T GetEntityByFields<T>(IEnumerable<KeyValuePair<string,object>> fieldValues, SelectColumns selectColumns = DefaultSelectColumns) where T : Entity, new()

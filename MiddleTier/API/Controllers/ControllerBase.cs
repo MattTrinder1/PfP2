@@ -3,6 +3,7 @@ using API.Models.Dataverse;
 using API.Models.PNB;
 using AutoMapper;
 using Common.Models.Business;
+using Common.Models.Dataverse;
 using Microsoft.Extensions.Logging;
 using Microsoft.Xrm.Sdk;
 using System;
@@ -178,9 +179,14 @@ namespace API.Controllers
             return false;
         }
 
-        protected T GetDataverseEntity<T>(EntityBase entity,Guid ownerId)
+        protected T GetDataverseEntity<T>(EntityBase entity,Guid ownerId) where T:DVEntityBase
         {
             var dvEntity = mapper.Map<T>(entity);
+
+            if (dvEntity.Id == Guid.Empty)
+            {
+                dvEntity.Id = Guid.NewGuid();
+            }
             if (typeof(T).GetProperty("cp_enteredby") != null)
             {
                 typeof(T).GetProperty("cp_enteredby").SetValue(dvEntity, new EntityReference("systemuser", ownerId));

@@ -81,11 +81,11 @@ namespace API.DataverseAccess
             get
             {
 #if !MOCKUP
-                if (dvService == null || !(dvService as ServiceClient).IsReady)
-                {
+              //  if (dvService == null || !(dvService as ServiceClient).IsReady)
+                //{
                     Uri uri = new Uri(connectionConfiguration.DVUrl);
-                    dvService = new ServiceClient(uri, connectionConfiguration.ClientId, connectionConfiguration.ClientSecret, true);
-                }
+                    return new ServiceClient(uri, connectionConfiguration.ClientId, connectionConfiguration.ClientSecret, true);
+                //}
             
 #else
                 if (dvService == null)
@@ -112,7 +112,7 @@ namespace API.DataverseAccess
                     dvService.Create(user);
                 }
 #endif
-                return dvService;
+              //  return dvService;
 
             }
         }

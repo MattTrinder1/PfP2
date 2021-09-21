@@ -22,8 +22,9 @@ namespace QueueListeners
                 .ConfigureServices(
                                    services => services
                                         .AddSingleton(new RestClient(Environment.GetEnvironmentVariable("APIUrl")))
-                                        .AddSingleton(new BlobContainerClient(Environment.GetEnvironmentVariable("AzureWebJobsStorage"), "pnb"))
-                                        .AddSingleton<API.Mappers.MapperConfiguration>()
+                                        .AddSingleton(new QueueClientFactory(Environment.GetEnvironmentVariable("AzureWebJobsStorage")))
+                                        .AddSingleton(new BlobContainerClientFactory(Environment.GetEnvironmentVariable("AzureWebJobsStorage")))
+                                        .AddSingleton<QueueMapperConfig>()
                                    )
                 .Build();
             await host.RunAsync();

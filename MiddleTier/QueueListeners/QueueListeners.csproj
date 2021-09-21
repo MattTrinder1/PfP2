@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net5.0</TargetFramework>
     <AzureFunctionsVersion>v3</AzureFunctionsVersion>
@@ -15,6 +15,7 @@
     <Compile Include="..\FunctionAppSharedFiles\Helpers.cs" Link="Helpers.cs" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="Azure.Storage.Queues" Version="12.8.0" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Extensions.Storage" Version="4.0.4" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker.Sdk" Version="1.0.4" OutputItemType="Analyzer" />
     <PackageReference Include="Microsoft.Azure.Functions.Worker" Version="1.5.1" />
@@ -22,7 +23,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.csproj" />
-    <ProjectReference Include="..\Mappers\Mappers.csproj" />
+    <ProjectReference Include="..\QueueMappers\QueueMappers.csproj" />
   </ItemGroup>
   <ItemGroup>
     <None Update="host.json">

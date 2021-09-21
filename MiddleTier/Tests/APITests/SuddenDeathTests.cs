@@ -1,4 +1,5 @@
 using Common.Models.Business;
+using Microsoft.Crm.Sdk.Messages;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.Xrm.Sdk;
 using MoD.CAMS.Plugins.Common;
@@ -40,36 +41,112 @@ namespace APITests
             sd.NextOfKinInformedMethod = "postcard";
             sd.PlaceOfDeath = "sainsburys";
             sd.UndertakerArrangingFuneral = "millers";
+            sd.SupervisorNotes = "notes";
+
+            var now = DateTime.Now;
+            sd.IdentificationSignedOn = now;
+            sd.DatetimeDeathConfirmed = now;
+            sd.DatetimeBodyFound = now;
+            sd.DatetimeLastSeenAlive = now;
+            sd.AllPropertiesSignedOn = now;
+            sd.InquestDate = now;
+
+            sd.CIDCSIAttended = "Yes";
+            sd.CIDCSIPhotosTaken = "Yes";
+            sd.NextOfKinInformed = "Yes";
+            sd.BodyIdentified = "Yes";
+            sd.FormalIdentification = "Yes";
+            sd.UndertakerRemovingBody = "Yes";
+            sd.SuspectSuicide = "Yes";
+            sd.DeathCertificateIssued = "Yes";
+
+            sd.DeceasedAge = 51;
+
+            sd.DOLS = "Yes";
+            sd.DeathInHospital = "No";
+            sd.SuicideNoteLeft = "Unknown";
+            sd.IsSubmitted = "N/A";
+            sd.Smoker = "Yes";
+            sd.DeathInCustody = "Yes";
+            sd.DeathInHealthCare = "Yes";
+            sd.PoliceInvolvementPriorDeath = "Yes";
+            sd.ApprovalStatus = "Rejected";
+
+            sd.HouseTemperature = new Guid("46d79beb-5582-eb11-a812-000d3ade2967");
+            sd.TPA = new Guid("83f1595a-245b-eb11-a812-0022489ba6ad");
+
+            //sd.WorkRelatedDeath left as not set so we can check it gets set to null
+
 
             var postResp = await client.PostAsJsonAsync("api/suddendeath", sd).Result.Content.ReadAsStringAsync();
             var guid = JsonSerializer.Deserialize<Guid>(postResp);
 
             var checkSD = StartUp.adminService.GetEntity("cp_suddendeath", guid);
-            ValidateSuddenDeath(sd, checkSD);
+            ValidateSuddenDeath(sd, checkSD, now);
 
             var incident = StartUp.adminService.GetEntity(checkSD.GetEntityReferenceValue("cp_incident"));
             ValidateIncident(sd, incident,"Sudden Death", client.DefaultRequestHeaders.GetValues("UserEmail").Single());
 
         }
 
-        private void ValidateSuddenDeath(SuddenDeath sd, Entity checkSD)
+        private void ValidateSuddenDeath(SuddenDeath sd, Entity checkSD,DateTime checkDate)
         {
             Assert.AreEqual(sd.AreaLastSeenAlive, checkSD.GetValue<string>("cp_arealastseenalive"));
-            Assert.AreEqual(sd.BodyFoundBy , "fred");
-            Assert.AreEqual(sd.BodyLabel , "body label");
-            Assert.AreEqual(sd.BodyRemovedTo , "morgue");
-            Assert.AreEqual(sd.CertifiedBy , "doctor");
-            Assert.AreEqual(sd.DeathDiagnosedBy , "cat");
-            Assert.AreEqual(sd.FamilyLiaisonOfficer , "cathy carter smith");
-            Assert.AreEqual(sd.IdentificationLocation , "shop");
-            Assert.AreEqual(sd.LastSeenAliveBy , "dog");
-            Assert.AreEqual(sd.NextOfKinActionToInform , "phone call");
-            Assert.AreEqual(sd.NextOfKinInformedMethod , "postcard");
-            Assert.AreEqual(sd.PlaceOfDeath , "sainsburys");
-            Assert.AreEqual(sd.UndertakerArrangingFuneral , "millers");
+            Assert.AreEqual(sd.BodyFoundBy , checkSD.GetValue<string>("cp_bodyfoundby"));
+            Assert.AreEqual(sd.BodyLabel , checkSD.GetValue<string>("cp_bodylabel"));
+            Assert.AreEqual(sd.BodyRemovedTo , checkSD.GetValue<string>("cp_bodyremovedto"));
+            Assert.AreEqual(sd.CertifiedBy , checkSD.GetValue<string>("cp_certifiedby"));
+            Assert.AreEqual(sd.DeathDiagnosedBy , checkSD.GetValue<string>("cp_deathdiagnosedby"));
+            Assert.AreEqual(sd.FamilyLiaisonOfficer , checkSD.GetValue<string>("cp_sdfamilylaisonofficer"));
+            Assert.AreEqual(sd.IdentificationLocation , checkSD.GetValue<string>("cp_identificationlocation"));
+            Assert.AreEqual(sd.LastSeenAliveBy , checkSD.GetValue<string>("cp_sdlastseenaliveby"));
+            Assert.AreEqual(sd.NextOfKinActionToInform , checkSD.GetValue<string>("cp_nextofkinactiontoinform"));
+            Assert.AreEqual(sd.NextOfKinInformedMethod , checkSD.GetValue<string>("cp_nextofkininformedmethod"));
+            Assert.AreEqual(sd.PlaceOfDeath , checkSD.GetValue<string>("cp_placeofdeath"));
+            Assert.AreEqual(sd.UndertakerArrangingFuneral, checkSD.GetValue<string>("cp_undertakerarrangingfuneral"));
+            Assert.AreEqual(sd.SupervisorNotes, checkSD.GetValue<string>("cp_supervisornotes"));
 
+            Assert.IsTrue(DateTimesMatch(checkDate, checkSD.GetValue<DateTime>("cp_identificationsignedon")));
+            Assert.IsTrue(DateTimesMatch(checkDate, checkSD.GetValue<DateTime>("cp_datetimebodyfound")));
+            Assert.IsTrue(DateTimesMatch(checkDate, checkSD.GetValue<DateTime>("cp_datetimedeathconfirmed")));
+            Assert.IsTrue(DateTimesMatch(checkDate, checkSD.GetValue<DateTime>("cp_datetimelastseenalive")));
+            Assert.IsTrue(DateTimesMatch(checkDate, checkSD.GetValue<DateTime>("cp_allpropertiessignedon")));
+            Assert.IsTrue(DateTimesMatch(checkDate, checkSD.GetValue<DateTime>("cp_inquestdate")));
 
+            Assert.IsTrue(checkSD.GetValue<bool>("cp_cidcsiattended"));
+            Assert.IsTrue(checkSD.GetValue<bool>("cp_cidcsiphotostaken"));
+            Assert.IsTrue(checkSD.GetValue<bool>("cp_nextofkininformed"));
+            Assert.IsTrue(checkSD.GetValue<bool>("cp_bodyidentified"));
+            Assert.IsTrue(checkSD.GetValue<bool>("cp_formalidentification"));
+            Assert.IsTrue(checkSD.GetValue<bool>("cp_undertakerremovebody"));
+            Assert.IsTrue(checkSD.GetValue<bool>("cp_suspectsuicide"));
+            Assert.IsTrue(checkSD.GetValue<bool>("cp_deathcertificateissued"));
 
+            Assert.AreEqual(51, checkSD.GetValue<int>("cp_deceasedage"));
+
+            //sd.DOLS = "Yes";
+            //sd.DeathInHospital = "No";
+            //sd.SuicideNoteLeft = "Unknown";
+            //sd.IsSubmitted = "N/A";
+            //sd.Smoker = "Yes";
+            //sd.DeathInCustody = "Yes";
+            //sd.DeathInHealthCare = "Yes";
+            //sd.PoliceInvolvementPriorDeath = "Yes";
+            //sd.ApprovalStatus = "Rejected";
+            Assert.AreEqual(778230000, checkSD.GetValue<OptionSetValue>("cp_dols").Value);
+            Assert.AreEqual(778230001, checkSD.GetValue<OptionSetValue>("cp_deathinhospital").Value);
+            Assert.AreEqual(778230002, checkSD.GetValue<OptionSetValue>("cp_suicidenoteleft_new").Value);
+            Assert.AreEqual(778230002, checkSD.GetValue<OptionSetValue>("cp_issubmitted").Value);
+            Assert.AreEqual(778230000, checkSD.GetValue<OptionSetValue>("cp_smoker").Value);
+            Assert.AreEqual(778230000, checkSD.GetValue<OptionSetValue>("cp_deathincustody").Value);
+            Assert.AreEqual(778230000, checkSD.GetValue<OptionSetValue>("cp_deathinhealthcare").Value);
+            Assert.AreEqual(778230000, checkSD.GetValue<OptionSetValue>("cp_policeinvolvementpriordeath").Value);
+            Assert.AreEqual(778230002, checkSD.GetValue<OptionSetValue>("cp_approvalstatus").Value);
+
+            Assert.IsNull(checkSD.GetValue<OptionSetValue>("cp_workrelateddeath"));
+
+            Assert.AreEqual(sd.HouseTemperature, checkSD.GetValue<EntityReference>("cp_housetemperature").Id);
+            Assert.AreEqual(sd.TPA, checkSD.GetValue<EntityReference>("cp_tpa").Id);
 
         }
 

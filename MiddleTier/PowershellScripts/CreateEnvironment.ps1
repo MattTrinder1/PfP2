@@ -13,8 +13,11 @@ New-AzStorageAccount -ResourceGroupName $environmentName-$guid -Name $storageAcc
 $Context = New-AzStorageContext -StorageAccountName $storageAccountName -UseConnectedAccount
 New-AzStorageQueue -Name "onlinecheckqueue" -Context $Context
 New-AzStorageQueue -Name "pocketnotebookqueue" -Context $Context
+New-AzStorageQueue -Name "pocketnotebookqueue-archive" -Context $Context
 New-AzStorageQueue -Name "suddendeathqueue" -Context $Context
+New-AzStorageQueue -Name "suddendeathqueue-archive" -Context $Context
 New-AzStorageContainer -Name "pnb" -Context $Context
+New-AzStorageContainer -Name "suddendeath" -Context $Context
 
 New-AzAppServicePlan -ResourceGroupName $environmentName-$guid -Name $EnvironmentName"-"$guid"-AppServicePlan" -Location "UK South"
 
