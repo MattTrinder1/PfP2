@@ -3,18 +3,19 @@ using Azure.Storage.Blobs;
 using Common.Models.Business;
 using Common.Models.Queue;
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.Json;
 
 namespace API.Mappers
 {
-    public class AppToBusinessProfile : Profile
+    public class QueueToBusinessProfile : Profile
     {
         private BlobContainerClient _PNBcontainerClient;
         private BlobContainerClient _SDcontainerClient;
 
-        public AppToBusinessProfile(BlobContainerClientFactory containerClientFactory)
+        public QueueToBusinessProfile(BlobContainerClientFactory containerClientFactory)
         {
             _PNBcontainerClient = containerClientFactory.GetBlobContainerClient("pnb");
             _SDcontainerClient = containerClientFactory.GetBlobContainerClient("suddendeath");
@@ -26,12 +27,17 @@ namespace API.Mappers
 
             CreateMap<QueueContact, Contact>()
                 .ForMember(dest => dest.Id, map => map.MapFrom(src => Guid.Parse(src.ContactKey)))
-                .ForMember(dest => dest.ContactRoles, map => map.MapFrom(src => src.Contactrole.Split(new char[] { ',' }).Select(x=>Guid.Parse(x))))
+                .ForMember(dest => dest.ContactRoles, map => map.MapFrom(src => src.Contactrole.Split(new char[] { ',' }).Select(x => Guid.Parse(x))))
                 .ForMember(dest => dest.FirstName, map => map.MapFrom(src => src.Forename))
                 .ForMember(dest => dest.LastName, map => map.MapFrom(src => src.Surname))
                 .ForMember(dest => dest.DeceasedRelationship, map => map.MapFrom(src => src.Deceasedrelathionship))
                 .ForMember(dest => dest.Postcode, map => map.MapFrom(src => src.pcode))
 
+                ;
+
+            CreateMap<QueueSuddenDeathProperty, SuddenDeathProperty>()
+                .ForMember(dest => dest.PhotoProperty, map => map.MapFrom(src => GetBlob(_SDcontainerClient, src.PhotoPropertyBlobName)))
+                .ForMember(dest => dest.PropertySignature, map => map.MapFrom(src => GetBlob(_SDcontainerClient, src.PropertySignatureBlobName)))
                 ;
 
 
@@ -109,22 +115,16 @@ namespace API.Mappers
 
                     .ForMember(dest => dest.PhotoCircumstances, map => map.MapFrom(src => GetBlob(_SDcontainerClient, src.PhotoCircumstancesBlobName)))
                     .ForMember(dest => dest.PhotoSuicideNote, map => map.MapFrom(src => GetBlob(_SDcontainerClient, src.PhotoSuicideNoteBlobName)))
+                    .ForMember(dest => dest.IdentificationSignature, map => map.MapFrom(src => GetBlob(_SDcontainerClient, src.identificationSignatureBlobName)))
+
+                    .ForMember(dest => dest.CIDCSISelectedIds, map => map.MapFrom(src => GetGuids( src.CIDcsiselectid)))
 
 
                 ;
 
-            CreateMap<JsonElement, SuddenDeath>()
-                //string fields
-                .ForMember(dest => dest.AreaLastSeenAlive, map => map.MapFrom(src => src.GetProperty("WhereLastSeenAlive").GetString()))
-                .ForMember(dest => dest.IncidentNumber, map => map.MapFrom(src => src.GetProperty("Incident number").GetString()))
-                .ForMember(dest => dest.NextOfKinActionToInform, map => map.MapFrom(src => src.GetProperty("Action of next of Kin").GetString()))
-                .ForMember(dest => dest.BodyFoundBy, map => map.MapFrom(src => src.GetProperty("Body found By").GetString()))
-                .ForMember(dest => dest.CIDCSIAttended, map => map.MapFrom(src => src.GetProperty("CIDattended").GetString()))
-                //guid fields
-                  .ForMember(dest => dest.BurialCremation, map => map.MapFrom(src => src.GetProperty("Burial Or Cremation").GetGuid()))
-                //date fields
-                .ForMember(dest => dest.IncidentDate, map => map.MapFrom(src => src.GetProperty("Incident date").GetDateTime()))
-                ;
+
+
+          
 
 
 
@@ -154,6 +154,16 @@ namespace API.Mappers
 
         }
 
+
+        private List<Guid> GetGuids(string GuidCSVList)
+        {
+            if (string.IsNullOrEmpty(GuidCSVList))
+            {
+                return new List<Guid>();
+            }
+
+            return GuidCSVList.Split(new char[] { ',' }).Select(x => new Guid(x)).ToList();
+        }
 
         private string GetBlob(BlobContainerClient client, string blobId)
         {

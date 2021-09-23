@@ -12,7 +12,7 @@ namespace API.Mappers
             mapperConfig = new AutoMapper.MapperConfiguration(
                     cfg =>
                     {
-                        cfg.AddProfile(new AppToBusinessProfile(containerClientFactory));
+                        cfg.AddProfile(new QueueToBusinessProfile(containerClientFactory));
                     });
         }
     }

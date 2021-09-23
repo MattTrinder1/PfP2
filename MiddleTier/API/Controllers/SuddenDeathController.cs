@@ -6,6 +6,7 @@ using Common.Models.Dataverse;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Query;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,16 +44,37 @@ namespace API.Controllers
 
                 DVTransaction transaction = new DVTransaction();
 
-                Guid? incidentId = FindOrCreateIncident(sd.IncidentNumber,sd.IncidentDate,"Sudden Death", transaction);
-                if (incidentId != null)
+                var dvIncident = AdminDataAccess.GetEntityByField<DVIncident>("cp_incidentnumber", sd.IncidentNumber);
+                DVLocation dvLocation = null;
+
+                if (dvIncident != null)
                 {
-                    dvSD.cp_incident = new EntityReference("cp_incident", incidentId.Value);
+                    if (dvIncident.cp_incidentlocation == null)
+                    {
+                        dvLocation = GetDataverseEntity<DVLocation>(sd, UserId);
+                        dvLocation.cp_name = $"Location, Incident {sd.IncidentNumber}";
+                        transaction.AddCreateEntity(dvLocation);
+
+                        dvIncident.cp_incidentlocation = dvLocation.ToEntityReference();
+                        transaction.AddUpdateEntity(dvIncident);
+                    }
                 }
+                else
+                {
+                    dvLocation = GetDataverseEntity<DVLocation>(sd, UserId);
+                    dvLocation.cp_name = $"Location, Incident {sd.IncidentNumber}";
+                    transaction.AddCreateEntity(dvLocation);
 
+                    dvIncident = CreateIncident(sd.IncidentNumber, sd.IncidentDate, "Sudden Death");
+                    dvIncident.cp_incidentlocation = dvLocation.ToEntityReference();
+                    transaction.AddCreateEntity(dvIncident);
+                }
+                
+                dvSD.cp_incident = dvIncident.ToEntityReference();
 
+                var newInvolvedContacts = new List<DVSuddenDeathInvolvedContact>();
 
-
-                var newInvolvedContacts = new List<DVSuddenDeathInvolvedContact>();                
+                DVContact deceased = null;
 
                 foreach (var contact in sd.Contacts)
                 {
@@ -66,6 +88,7 @@ namespace API.Controllers
 
                         if (roleName == "Deceased")
                         {
+                            deceased = dvContact;
                             //set the deceased field on the sudden death record
                             dvSD.cp_deceased = dvContact.ToEntityReference();
                         }
@@ -73,6 +96,11 @@ namespace API.Controllers
                         {
                             //set the identified by field on the sudden death record, 
                             dvSD.cp_identifiedby = dvContact.ToEntityReference();
+
+                            //and get these 2 off the identifier contact
+                            dvSD.cp_identificationlocation = contact.LocationOfId;
+                            dvSD.cp_identificationsignedon = contact.SignDate;
+
                         }
                         if (roleName != "Deceased")
                         {
@@ -101,7 +129,8 @@ namespace API.Controllers
 
                 var dvSDImages = mapper.Map<SuddenDeath, DVSuddenDeathImages>(sd);
                 transaction.AddCreateEntityImage(dvSDImages, "cp_suicidenotepicture");
-                
+                transaction.AddCreateEntityImage(dvSDImages, "cp_identificationsignature");
+
                 //circumstances photo goes to photo 1
                 if (!string.IsNullOrEmpty(sd.PhotoCircumstances))
                 {
@@ -109,11 +138,55 @@ namespace API.Controllers
                     photo.SuddenDeathId = dvSD.Id;
                     photo.Caption = $"Photo 1, Sudden Death for Incident {sd.IncidentNumber}";
                     photo.Blob = sd.PhotoCircumstances;
-                    var dvPhoto = mapper.Map<DVPhoto>(photo);
+                    var dvPhoto = GetDataverseEntity<DVPhoto>(photo,UserId);
                     transaction.AddCreateEntity(dvPhoto);
                 }
 
+                foreach (var property in sd.Properties)
+                {
+                    var sdProperty = GetDataverseEntity<DVSuddenDeathProperty>(property, UserId);
+                    sdProperty.cp_suddendeath = dvSD.ToEntityReference();
+                    transaction.AddCreateEntity(sdProperty);
 
+                    var sdPropertyImages = GetDataverseEntity<DVSuddenDeathPropertyImages>(property, UserId);
+                    sdPropertyImages.Id = sdProperty.Id;
+                    transaction.AddCreateEntityImage(sdPropertyImages, "cp_propertyphoto");
+                    transaction.AddCreateEntityImage(sdPropertyImages, "cp_signature");
+
+
+                }
+
+                //if we have any of the medical fields populated
+                if (!
+                    (string.IsNullOrEmpty(sd.MedicalHistoryDiagnosisAnMedication)
+                    && string.IsNullOrEmpty(sd.MedicalHistoryLastVisitDate)
+                    && string.IsNullOrEmpty(sd.MedicalHistoryPastHistory)
+                    && string.IsNullOrEmpty(sd.MedicalHistoryReasonForVisit)
+                    && string.IsNullOrEmpty(sd.MedicalHistoryRiskFactors)))
+                {
+                    //if we have a gp name then locate/create the account for the GP
+                    Guid? accountId = null;
+                    if (!string.IsNullOrEmpty(sd.GPName))
+                    {
+                        accountId = FindOrCreateGPAccount(sd, transaction);
+                    }
+
+                    var dvMedicalHistory = GetDataverseEntity<DVMedicalHistory>(sd, UserId);
+                    if (accountId.HasValue)
+                    {
+                        dvMedicalHistory.cp_gp = new EntityReference("account", accountId.Value);
+                    }
+                    dvMedicalHistory.cp_contact = deceased.ToEntityReference();
+                    dvMedicalHistory.cp_medicalhistoryname = $"Medical History Deceased: {deceased.firstname} {deceased.lastname}";
+                    transaction.AddCreateEntity(dvMedicalHistory);
+
+
+                }
+
+                foreach (var CIDId in sd.CIDCSISelectedIds)
+                {
+                    transaction.AddAssociateEntities(dvSD.ToEntityReference(), new EntityReference("systemuser", CIDId), "cp_suddendeath_SystemUser_SystemUser");
+                }
 
                 //foreach (var photo in pnb.Photos)
                 //{
@@ -122,7 +195,7 @@ namespace API.Controllers
                 //    transaction.AddCreateEntity(dvPhoto);
                 //}
 
-                AdminDataAccess.ExecuteTransaction(transaction);
+                    AdminDataAccess.ExecuteTransaction(transaction);
 
 
                 return dvSD.Id;
@@ -131,6 +204,33 @@ namespace API.Controllers
             {
                 return StatusCode((int)HttpStatusCode.InternalServerError, new ApiError(e.Message));
             }
+        }
+
+
+        protected Guid? FindOrCreateGPAccount(SuddenDeath sd, DVTransaction transaction)
+        {
+            if (string.IsNullOrEmpty(sd.GPName))
+            {
+                return null;
+            }
+
+            var q = new QueryExpression("account");
+            q.Criteria.AddCondition("name", ConditionOperator.Equal, sd.GPName);
+            q.Criteria.AddCondition("telephone1", ConditionOperator.Equal, sd.GPPhoneNumber);
+            var existing = AdminDataAccess.GetMultiple(q);
+
+            if (existing.Any())
+            {
+                return existing.First().Id;
+            }
+            else
+            {
+                var newAccount = GetDataverseEntity<DVAccount>(sd);
+                transaction.AddCreateEntity(newAccount);
+                return newAccount.Id;
+            }
+
+            
         }
 
 

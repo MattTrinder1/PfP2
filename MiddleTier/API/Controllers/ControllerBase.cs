@@ -62,39 +62,27 @@ namespace API.Controllers
             }
         }
 
-        protected Guid? FindOrCreateIncident(string incidentNumber, DateTime? incidentDate, string incidentType, DVTransaction transaction)
+        protected DVIncident CreateIncident(string incidentNumber, DateTime? incidentDate, string incidentType)
         {
             if (string.IsNullOrEmpty(incidentNumber))
             {
                 return null;
             }
 
-            Guid? incidentId = null;
-            var incident = AdminDataAccess.GetEntityByField<DVIncident>("cp_incidentnumber", incidentNumber);
-            if (incident == null)
+            var incidentTypeId = AdminDataAccess.GetEntityId("cp_incidenttype", "cp_incidenttypename", incidentType);
+
+            var incident = new DVIncident();
+            incident.cp_incidentnumber = incidentNumber;
+            incident.cp_incidenttype = new EntityReference("cp_incidenttype", incidentTypeId.Value);
+            if (incidentDate.HasValue)
             {
-                var incidentTypeId = AdminDataAccess.GetEntityId("cp_incidenttype", "cp_incidenttypename", incidentType);
-
-                incident = new DVIncident();
-                incident.cp_incidentnumber = incidentNumber;
-                incident.cp_incidenttype = new EntityReference("cp_incidenttype", incidentTypeId.Value);
-                incidentId = Guid.NewGuid();
-                if (incidentDate.HasValue)
-                {
-                    incident.cp_incidentdate = incidentDate;
-                }
-                incident.cp_incidentid = incidentId;
-                incident.cp_enteredby = new EntityReference("systemuser", UserId);
-                incident.ownerid = new EntityReference("systemuser", UserId);
-
-                transaction.AddCreateEntity(incident);
+                incident.cp_incidentdate = incidentDate;
             }
-            else
-            {
-                incidentId = incident.cp_incidentid;
-            }
+            incident.cp_enteredby = new EntityReference("systemuser", UserId);
+            incident.ownerid = new EntityReference("systemuser", UserId);
 
-            return incidentId;
+
+            return incident;
         }
 
 
@@ -179,7 +167,7 @@ namespace API.Controllers
             return false;
         }
 
-        protected T GetDataverseEntity<T>(EntityBase entity,Guid ownerId) where T:DVEntityBase
+        protected T GetDataverseEntity<T>(EntityBase entity, Guid? ownerId = null) where T:DVEntityBase
         {
             var dvEntity = mapper.Map<T>(entity);
 
@@ -187,13 +175,13 @@ namespace API.Controllers
             {
                 dvEntity.Id = Guid.NewGuid();
             }
-            if (typeof(T).GetProperty("cp_enteredby") != null)
+            if (typeof(T).GetProperty("cp_enteredby") != null && ownerId.HasValue)
             {
-                typeof(T).GetProperty("cp_enteredby").SetValue(dvEntity, new EntityReference("systemuser", ownerId));
+                typeof(T).GetProperty("cp_enteredby").SetValue(dvEntity, new EntityReference("systemuser", ownerId.Value));
             }
-            if (typeof(T).GetProperty("ownerid") != null)
+            if (typeof(T).GetProperty("ownerid") != null && ownerId.HasValue)
             {
-                typeof(T).GetProperty("ownerid").SetValue(dvEntity, new EntityReference("systemuser", ownerId));
+                typeof(T).GetProperty("ownerid").SetValue(dvEntity, new EntityReference("systemuser", ownerId.Value));
             }
 
             return dvEntity;

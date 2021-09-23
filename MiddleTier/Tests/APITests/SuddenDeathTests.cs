@@ -35,7 +35,6 @@ namespace APITests
             sd.CertifiedBy = "doctor";
             sd.DeathDiagnosedBy = "cat";
             sd.FamilyLiaisonOfficer = "cathy carter smith";
-            sd.IdentificationLocation = "shop";
             sd.LastSeenAliveBy = "dog";
             sd.NextOfKinActionToInform = "phone call";
             sd.NextOfKinInformedMethod = "postcard";
@@ -98,7 +97,6 @@ namespace APITests
             Assert.AreEqual(sd.CertifiedBy , checkSD.GetValue<string>("cp_certifiedby"));
             Assert.AreEqual(sd.DeathDiagnosedBy , checkSD.GetValue<string>("cp_deathdiagnosedby"));
             Assert.AreEqual(sd.FamilyLiaisonOfficer , checkSD.GetValue<string>("cp_sdfamilylaisonofficer"));
-            Assert.AreEqual(sd.IdentificationLocation , checkSD.GetValue<string>("cp_identificationlocation"));
             Assert.AreEqual(sd.LastSeenAliveBy , checkSD.GetValue<string>("cp_sdlastseenaliveby"));
             Assert.AreEqual(sd.NextOfKinActionToInform , checkSD.GetValue<string>("cp_nextofkinactiontoinform"));
             Assert.AreEqual(sd.NextOfKinInformedMethod , checkSD.GetValue<string>("cp_nextofkininformedmethod"));

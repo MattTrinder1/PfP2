@@ -11,11 +11,11 @@ namespace Common.Models.Business
     {
         //text fields
         public List<Contact> Contacts { get; set; }
+        public List<SuddenDeathProperty> Properties { get; set; }
         public string EnteredBy { get; set; }
         public string AreaLastSeenAlive { get; set; }
         public string NextOfKinInformedMethod { get; set; }
         public string DeathDiagnosedBy { get; set; }
-        public string IdentificationLocation { get; set; }
         public string UndertakerArrangingFuneral { get; set; }
         public string FamilyLiaisonOfficer { get; set; }
         public string LastSeenAliveBy { get; set; }
@@ -38,7 +38,15 @@ namespace Common.Models.Business
         public string CoronerOfficeNotes { get; set; }
         public string Circumstances { get; set; }
         public string InquestLocation { get; set; }
-
+        public string HouseNameSuddenDeath { get; set; }
+        public string HouseNoSuddenDeath { get; set; }
+        public string CountySuddenDeath { get; set; }
+        public string CountrySuddenDeath { get; set; }
+        public string TownSuddenDeath { get; set; }
+        public string AddressSuddenDeath { get; set; }
+        public string DistrictSuddenDeath { get; set; }
+        public double LatitudeSuddenDeath { get; set; }
+        public double LongtitudeSuddenDeath { get; set; }
         public DateTime? IdentificationSignedOn { get; set; }
         public DateTime? DatetimeDeathConfirmed { get; set; }
         public DateTime? DatetimeBodyFound { get; set; }
@@ -57,6 +65,7 @@ namespace Common.Models.Business
 
         public string PhotoCircumstances { get; set; }
         public string PhotoSuicideNote { get; set; }
+        public string IdentificationSignature { get; set; }
 
         public int DeceasedAge { get; set; }
 
@@ -84,7 +93,25 @@ namespace Common.Models.Business
         public Guid? HouseSecure { get; set; }
         public Guid? IdentifiedBy { get; set; }
         public Guid? InvestigationStatus { get; set; }
+        public List<Guid> CIDCSISelectedIds { get; set; }
 
+
+        public string GPDistrict { get; set; }
+        public string GPAddress { get; set; }
+        public string GPCounty { get; set; }
+        public string GPName { get; set; }
+        public string GPPhoneNumber { get; set; }
+        public string GPPostcode { get; set; }
+        public string GPStreet { get; set; }
+        public string GPSurgery { get; set; }
+        public string GPTown { get; set; }
+
+
+        public string MedicalHistoryDiagnosisAnMedication { get; set; }
+        public string MedicalHistoryPastHistory { get; set; }
+        public string MedicalHistoryReasonForVisit { get; set; }
+        public string MedicalHistoryRiskFactors { get; set; }
+        public string MedicalHistoryLastVisitDate { get; set; }
 
 
 

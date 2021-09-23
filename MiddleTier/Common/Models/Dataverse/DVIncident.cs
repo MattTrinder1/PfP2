@@ -20,6 +20,7 @@ namespace API.Models.PNB
         public DateTime? cp_incidentdate { get { return this.GetAttributeValue<DateTime?>(nameof(cp_incidentdate)); } set { this.Attributes[nameof(cp_incidentdate)] = value; } }
 
         public EntityReference cp_incidenttype { get { return this.GetAttributeValue<EntityReference>(nameof(cp_incidenttype)); } set { this.Attributes[nameof(cp_incidenttype)] = value; } }
+        public EntityReference cp_incidentlocation { get { return this.GetAttributeValue<EntityReference>(nameof(cp_incidentlocation)); } set { this.Attributes[nameof(cp_incidentlocation)] = value; } }
 
         public EntityReference cp_enteredby { get { return this.GetAttributeValue<EntityReference>(nameof(cp_enteredby)); } set { this.Attributes[nameof(cp_enteredby)] = value; } }
 

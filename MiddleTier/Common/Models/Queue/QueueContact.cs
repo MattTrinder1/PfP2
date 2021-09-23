@@ -51,6 +51,7 @@ namespace Common.Models.Queue
         public string EMail { get; set; }
         public string Preferedcontactmethod { get; set; }
         public string Locationofid { get; set; }
+        public string signdate { get; set; }
 
     }
 }

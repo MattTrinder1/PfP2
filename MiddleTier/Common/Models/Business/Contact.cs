@@ -39,5 +39,7 @@ namespace Common.Models.Business
         public string DeceasedRelationship { get; set; }
         public string DeceasedRelationshipDuration { get; set; }
 
+        public DateTime?  SignDate { get; set; }
+        public string LocationOfId { get; set; }
     }
 }

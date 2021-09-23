@@ -14,6 +14,7 @@ namespace Common.Models.Dataverse
 
         public EntityReference cp_incident { get { return this.GetAttributeValue<EntityReference>(nameof(cp_incident)); } set { this.Attributes[nameof(cp_incident)] = value; } }
 
+        public string cp_arealastseenalive { get { return this.GetAttributeValue<string>(nameof(cp_arealastseenalive)); } set { this.Attributes[nameof(cp_arealastseenalive)] = value; } }
         public string cp_nextofkininformedmethod { get { return this.GetAttributeValue<string>(nameof(cp_nextofkininformedmethod)); } set { this.Attributes[nameof(cp_nextofkininformedmethod)] = value; } }
         public string cp_deathdiagnosedby { get { return this.GetAttributeValue<string>(nameof(cp_deathdiagnosedby)); } set { this.Attributes[nameof(cp_deathdiagnosedby)] = value; } }
         public string cp_identificationlocation { get { return this.GetAttributeValue<string>(nameof(cp_identificationlocation)); } set { this.Attributes[nameof(cp_identificationlocation)] = value; } }
@@ -48,7 +49,7 @@ namespace Common.Models.Dataverse
         public DateTime? cp_datetimelastseenalive { get { return this.GetAttributeValue<DateTime>(nameof(cp_datetimelastseenalive)); } set { this.Attributes[nameof(cp_datetimelastseenalive)] = value; } }
         public DateTime? cp_allpropertiessignedon { get { return this.GetAttributeValue<DateTime>(nameof(cp_allpropertiessignedon)); } set { this.Attributes[nameof(cp_allpropertiessignedon)] = value; } }
         public DateTime? cp_inquestdate { get { return this.GetAttributeValue<DateTime>(nameof(cp_inquestdate)); } set { this.Attributes[nameof(cp_inquestdate)] = value; } }
-
+        
         public bool cp_cidcsiattended { get { return this.GetAttributeValue<bool>(nameof(cp_cidcsiattended)); } set { this.Attributes[nameof(cp_cidcsiattended)] = value; } }
         public bool cp_nextofkininformed { get { return this.GetAttributeValue<bool>(nameof(cp_nextofkininformed)); } set { this.Attributes[nameof(cp_nextofkininformed)] = value; } }
         public bool cp_cidcsiphotostaken { get { return this.GetAttributeValue<bool>(nameof(cp_cidcsiphotostaken)); } set { this.Attributes[nameof(cp_cidcsiphotostaken)] = value; } }
@@ -85,6 +86,6 @@ namespace Common.Models.Dataverse
         public EntityReference cp_investigationstatus { get { return this.GetAttributeValue<EntityReference>(nameof(cp_investigationstatus)); } set { this.Attributes[nameof(cp_investigationstatus)] = value; } }
         public EntityReference cp_deceased { get { return this.GetAttributeValue<EntityReference>(nameof(cp_deceased)); } set { this.Attributes[nameof(cp_deceased)] = value; } }
 
-
+        
     }
 }

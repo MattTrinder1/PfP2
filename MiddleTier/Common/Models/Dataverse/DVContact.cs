@@ -13,7 +13,7 @@ namespace API.Models.Dataverse
             this.LogicalName = "contact";
         }
 
-        
+
         public string firstname { get { return this.GetAttributeValue<string>(nameof(firstname)); } set { this.Attributes[nameof(firstname)] = value; } }
         public string lastname { get { return this.GetAttributeValue<string>(nameof(lastname)); } set { this.Attributes[nameof(lastname)] = value; } }
 

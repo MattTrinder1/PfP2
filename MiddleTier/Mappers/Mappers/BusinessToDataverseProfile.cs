@@ -64,7 +64,63 @@ namespace API.Mappers
             CreateMap<SuddenDeath, DVSuddenDeathImages>()
                 .IncludeBase<EntityBase, DVEntityBase>()
                 .ForMember(dest => dest.cp_suicidenotepicture, map => map.MapFrom(src => Convert.FromBase64String(src.PhotoSuicideNote)))
+                .ForMember(dest => dest.cp_identificationsignature, map => map.MapFrom(src => Convert.FromBase64String(src.IdentificationSignature)))
             ;
+
+            CreateMap<SuddenDeathProperty, DVSuddenDeathProperty>()
+                .IncludeBase<EntityBase, DVEntityBase>()
+                .ForMember(dest => dest.cp_propertyname, map => map.MapFrom(src => src.PropertyDescription))
+                .ForMember(dest => dest.cp_actionrelatedwith, map => map.MapFrom(src => src.PersonAuthorisingProperty))
+                .ForMember(dest => dest.cp_actiontaken, map => map.MapFrom(src => src.IsDisposedOrRetained))
+                .ForMember(dest => dest.cp_location, map => map.MapFrom(src => src.PropertyLocation))
+                .ForMember(dest => dest.cp_relationshiptodeceased, map => map.MapFrom(src => src.PropertyRelationshipToDeceased))
+                .ForMember(dest => dest.cp_signedon, map => map.MapFrom(src => src.PropertyDate))
+            ;
+
+            CreateMap<SuddenDeathProperty, DVSuddenDeathPropertyImages>()
+                .IncludeBase<EntityBase, DVEntityBase>()
+                .ForMember(dest => dest.cp_propertyphoto, map => map.MapFrom(src => Convert.FromBase64String(src.PhotoProperty)))
+                .ForMember(dest => dest.cp_signature, map => map.MapFrom(src => Convert.FromBase64String(src.PropertySignature)))
+            ;
+
+            CreateMap<SuddenDeath, DVAccount>()
+                .IncludeBase<EntityBase, DVEntityBase>()
+                .ForMember(dest => dest.name, map => map.MapFrom(src => src.GPName))
+                .ForMember(dest => dest.cp_surgery, map => map.MapFrom(src => src.GPSurgery))
+                .ForMember(dest => dest.cp_isgp, map => map.MapFrom(src => true))
+                .ForMember(dest => dest.address1_city, map => map.MapFrom(src => src.GPTown))
+                .ForMember(dest => dest.address1_county, map => map.MapFrom(src => src.GPCounty))
+                .ForMember(dest => dest.address1_line1, map => map.MapFrom(src => src.GPAddress))
+                .ForMember(dest => dest.address1_line2, map => map.MapFrom(src => src.GPStreet))
+                .ForMember(dest => dest.address1_line3, map => map.MapFrom(src => src.GPDistrict))
+                .ForMember(dest => dest.address1_postalcode, map => map.MapFrom(src => src.GPPostcode))
+                .ForMember(dest => dest.telephone1, map => map.MapFrom(src => src.GPPhoneNumber))
+
+                ;
+
+            CreateMap<SuddenDeath, DVMedicalHistory>()
+                .IncludeBase<EntityBase, DVEntityBase>()
+                .ForMember(dest => dest.cp_diagnosismedicationprescribed, map => map.MapFrom(src => src.MedicalHistoryDiagnosisAnMedication))
+                .ForMember(dest => dest.cp_gpvisitdate, map => map.MapFrom(src => src.MedicalHistoryLastVisitDate))
+                .ForMember(dest => dest.cp_knownriskfactors, map => map.MapFrom(src => src.MedicalHistoryRiskFactors))
+                .ForMember(dest => dest.cp_pastmedicalhistory, map => map.MapFrom(src => src.MedicalHistoryPastHistory))
+                .ForMember(dest => dest.cp_reasonforvisit, map => map.MapFrom(src => src.MedicalHistoryReasonForVisit))
+
+                ;
+
+            CreateMap<SuddenDeath, DVLocation>()
+                .IncludeBase<EntityBase, DVEntityBase>()
+                .ForMember(dest => dest.cp_housename, map => map.MapFrom(src => src.HouseNameSuddenDeath))
+                .ForMember(dest => dest.cp_housenumber, map => map.MapFrom(src => src.HouseNoSuddenDeath))
+                .ForMember(dest => dest.cp_latitude, map => map.MapFrom(src => src.LatitudeSuddenDeath))
+                .ForMember(dest => dest.cp_longitude, map => map.MapFrom(src => src.LongtitudeSuddenDeath))
+                .ForMember(dest => dest.cp_street, map => map.MapFrom(src => src.AddressSuddenDeath))
+                .ForMember(dest => dest.cp_district, map => map.MapFrom(src => src.DistrictSuddenDeath))
+                .ForMember(dest => dest.cp_city, map => map.MapFrom(src => src.TownSuddenDeath))
+                .ForMember(dest => dest.cp_country, map => map.MapFrom(src => src.CountrySuddenDeath))
+                .ForMember(dest => dest.cp_county, map => map.MapFrom(src => src.CountySuddenDeath))
+                .ForMember(dest => dest.cp_description, map => map.MapFrom(src => src.PlaceOfDeath))
+                ;
 
 
             CreateMap<SuddenDeath, DVSuddenDeath>()
@@ -114,6 +170,7 @@ namespace API.Mappers
                 .ForMember(dest => dest.cp_image, map => map.MapFrom(src => Convert.FromBase64String(src.Blob)))
             ;
         }
+
 
         private EntityReference GetEntityReference(string entityName, Guid? id)
         {

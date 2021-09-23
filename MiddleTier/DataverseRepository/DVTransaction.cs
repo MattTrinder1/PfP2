@@ -8,15 +8,23 @@ namespace API.DataverseAccess
     {
         Create,
         CreateImage,
-        Update
+        Update,
+        Associate
     }
     public class TransactionRequest
     {
 
-        public TransactionRequest(RequestType requestType, Entity target) 
+        public TransactionRequest(RequestType requestType, Entity target)
         {
             ReqType = requestType;
             Target = target;
+        }
+        public TransactionRequest(RequestType requestType, EntityReference id1, EntityReference id2,string relationshipName)
+        {
+            ReqType = requestType;
+            Id1 = id1;
+            Id2 = id2;
+            RelationshipName = relationshipName;
         }
         public TransactionRequest(RequestType requestType, Entity target, string imagePropertyName)
         {
@@ -27,6 +35,10 @@ namespace API.DataverseAccess
 
         public RequestType ReqType { get; set; }
         public Entity Target { get; set; }
+
+        public EntityReference Id1 { get; set; }
+        public EntityReference Id2 { get; set; }
+        public string RelationshipName { get; set; }
 
         public string ImagePropertyName { get; set; }
 
@@ -45,6 +57,10 @@ namespace API.DataverseAccess
         public void AddCreateEntity<T>(T entity) where T : Entity
         {
             Requests.Add(new TransactionRequest(RequestType.Create, entity));
+        }
+        public void AddAssociateEntities(EntityReference id1,EntityReference id2,string relationshipName) 
+        {
+            Requests.Add(new TransactionRequest(RequestType.Associate, id1,id2,relationshipName));
         }
 
         public void AddCreateEntityImage(

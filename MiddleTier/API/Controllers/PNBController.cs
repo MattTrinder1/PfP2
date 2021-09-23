@@ -111,11 +111,11 @@ namespace API.Controllers
                 DVTransaction transaction = new DVTransaction();
 
                 logger.LogDebug("Find/Create incident");
-                Guid? incidentId = FindOrCreateIncident(pnb.IncidentNumber,pnb.IncidentDate,"Pocket Notebook", transaction);
-                if (incidentId != null)
-                {
-                    dvPb.cp_incidentno =new EntityReference("cp_incident", incidentId.Value);
-                }
+                //Guid? incidentId = FindOrCreateIncident(pnb.IncidentNumber,pnb.IncidentDate,"Pocket Notebook", transaction);
+                //if (incidentId != null)
+                //{
+                //    dvPb.cp_incidentno =new EntityReference("cp_incident", incidentId.Value);
+                //}
 
                 if (!dvPb.cp_pocketnotebookid.HasValue)
                 {

@@ -12,6 +12,7 @@ namespace Common.Models.Queue
     public class QueueSuddenDeath
     {
         public List<QueueContact> Contacts { get; set; }
+        public List<QueueSuddenDeathProperty> Properties { get; set; }
 
 
         public string Id{ get; set; }
@@ -126,7 +127,7 @@ namespace Common.Models.Queue
         public string HousenameSuddenDeath { get; set; }
 
         [JsonPropertyName("Houseno Sudden death")]
-        public string HousenoSuddenDdeath { get; set; }
+        public string HousenoSuddendeath { get; set; }
 
         public string IdentifierContactKey { get; set; }
 
@@ -185,6 +186,7 @@ namespace Common.Models.Queue
         public string PhotoCircumstancesBlobName { get; set; }
 
         public string PhotoSuicideNoteBlobName { get; set; }
+        public string identificationSignatureBlobName { get; set; }
 
         public string PhotosTakenbyCID { get; set; }
 

@@ -103,6 +103,14 @@ namespace API.DataverseAccess
                         transaction.Requests.Add(updateReq);
 
                         break;
+                    case RequestType.Associate:
+                        var associateReq = new AssociateEntitiesRequest();
+                        associateReq.Moniker1 = transReq.Id1;
+                        associateReq.Moniker2 = transReq.Id2;
+                        associateReq.RelationshipName = transReq.RelationshipName;
+                        transaction.Requests.Add(associateReq);
+
+                        break;
                 }
 
 
@@ -309,6 +317,11 @@ namespace API.DataverseAccess
 
         //    return entity;
         //}
+
+        public List<Entity> GetMultiple(QueryExpression q)
+        {
+            return DynamicsServiceHelper.GetMultiple(_dvService, q);
+        }
 
 
         public T GetEntityByField<T>(string field, object value, SelectColumns selectColumns = DefaultSelectColumns) where T : Entity, new()

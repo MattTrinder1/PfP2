@@ -24,23 +24,23 @@ namespace QueueTester
 
         private void button1_Click(object sender, EventArgs e)
         {
-            var l = new PNBQueueListener(new QueueMapperConfig
-                                            (new BlobContainerClient("DefaultEndpointsProtocol=https;AccountName=pfpuat8975stg;AccountKey=X4vxwhX+z9ICDgMjT+NTqKzQvY9s6tlza2/0C13A/w/qvFn/HmzVm9WJCcmZ3H3HGoobl8oAhF3yxZXp8zyhtA==;EndpointSuffix=core.windows.net", "pnb"))
-                                        , new RestClient("https://localhost:5001")
-                                        , new BlobContainerClient("DefaultEndpointsProtocol=https;AccountName=pfpuat8975stg;AccountKey=X4vxwhX+z9ICDgMjT+NTqKzQvY9s6tlza2/0C13A/w/qvFn/HmzVm9WJCcmZ3H3HGoobl8oAhF3yxZXp8zyhtA==;EndpointSuffix=core.windows.net", "pnb"));
+            //var l = new PNBQueueListener(new QueueMapperConfig
+            //                                (new BlobContainerClient("DefaultEndpointsProtocol=https;AccountName=pfpuat8975stg;AccountKey=X4vxwhX+z9ICDgMjT+NTqKzQvY9s6tlza2/0C13A/w/qvFn/HmzVm9WJCcmZ3H3HGoobl8oAhF3yxZXp8zyhtA==;EndpointSuffix=core.windows.net", "pnb"))
+            //                            , new RestClient("https://localhost:5001")
+            //                            , new BlobContainerClient("DefaultEndpointsProtocol=https;AccountName=pfpuat8975stg;AccountKey=X4vxwhX+z9ICDgMjT+NTqKzQvY9s6tlza2/0C13A/w/qvFn/HmzVm9WJCcmZ3H3HGoobl8oAhF3yxZXp8zyhtA==;EndpointSuffix=core.windows.net", "pnb"));
 
-            l.Run(textBox1.Text, null);
+            //l.Run(textBox1.Text, null);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
 
-            var l = new SuddenDeathQueueListener(new QueueMapperConfig
-                                            (new BlobContainerClient("DefaultEndpointsProtocol=https;AccountName=pfpuat8975stg;AccountKey=X4vxwhX+z9ICDgMjT+NTqKzQvY9s6tlza2/0C13A/w/qvFn/HmzVm9WJCcmZ3H3HGoobl8oAhF3yxZXp8zyhtA==;EndpointSuffix=core.windows.net", "pnb"))
-                                        , new RestClient("https://localhost:5001")
-                                        , new BlobContainerClient("DefaultEndpointsProtocol=https;AccountName=pfpuat8975stg;AccountKey=X4vxwhX+z9ICDgMjT+NTqKzQvY9s6tlza2/0C13A/w/qvFn/HmzVm9WJCcmZ3H3HGoobl8oAhF3yxZXp8zyhtA==;EndpointSuffix=core.windows.net", "pnb"));
+            //var l = new SuddenDeathQueueListener(new QueueMapperConfig
+            //                                (new BlobContainerClient("DefaultEndpointsProtocol=https;AccountName=pfpuat8975stg;AccountKey=X4vxwhX+z9ICDgMjT+NTqKzQvY9s6tlza2/0C13A/w/qvFn/HmzVm9WJCcmZ3H3HGoobl8oAhF3yxZXp8zyhtA==;EndpointSuffix=core.windows.net", "pnb"))
+            //                            , new RestClient("https://localhost:5001")
+            //                            , new BlobContainerClient("DefaultEndpointsProtocol=https;AccountName=pfpuat8975stg;AccountKey=X4vxwhX+z9ICDgMjT+NTqKzQvY9s6tlza2/0C13A/w/qvFn/HmzVm9WJCcmZ3H3HGoobl8oAhF3yxZXp8zyhtA==;EndpointSuffix=core.windows.net", "pnb"));
 
-            l.Run(textBox1.Text, null);
+            //l.Run(textBox1.Text, null);
         }
     }
 }
