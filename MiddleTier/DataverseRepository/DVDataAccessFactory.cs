@@ -20,7 +20,8 @@ namespace API.DataverseAccess
 
         private ConnectionConfiguration connectionConfiguration = null;
         private IMemoryCache cache = null;
-        private string impersonationEmailAddress;
+        private string overridenImpersonationEmailAddress;
+        private IHttpContextAccessor httpContextAccessor;
 
 #if MOCKUP
         private XrmMockupDataverse crm;
@@ -28,15 +29,30 @@ namespace API.DataverseAccess
 
         public DVDataAccessFactory(ConnectionConfiguration connectionConfiguration, IMemoryCache cache, IHttpContextAccessor httpContextAccessor)
         {
-            this.impersonationEmailAddress = httpContextAccessor.HttpContext.Request.Headers["UserEmail"];
+            this.httpContextAccessor = httpContextAccessor;
             this.connectionConfiguration = connectionConfiguration;
             this.cache = cache;
         }
         public DVDataAccessFactory(ConnectionConfiguration connectionConfiguration, IMemoryCache cache, string emailAddress)
         {
-            impersonationEmailAddress = emailAddress;
+            overridenImpersonationEmailAddress = emailAddress;
             this.connectionConfiguration = connectionConfiguration;
             this.cache = cache;
+        }
+
+        public string ImpersonationEmailAddress
+        {
+            get
+            {
+                if (!string.IsNullOrEmpty(overridenImpersonationEmailAddress))
+                {
+                    return overridenImpersonationEmailAddress;
+                }
+                else
+                {
+                    return httpContextAccessor.HttpContext.Request.Headers["UserEmail"];
+                }
+            }
         }
 
         private Guid GetUserADObjectId(string emailAddress)
@@ -128,16 +144,15 @@ namespace API.DataverseAccess
 
             Uri uri = new Uri(connectionConfiguration.DVUrl);
 
-            var impersonationId = GetUserADObjectId(impersonationEmailAddress);
-
 #if MOCKUP
+            var impersonationId = GetUserADObjectId(ImpersonationEmailAddress);
             userServiceClient = crm.CreateOrganizationService(impersonationId);
 #else
             userServiceClient = new ServiceClient(uri, connectionConfiguration.ClientId, connectionConfiguration.ClientSecret, true);
-            (userServiceClient as ServiceClient).CallerAADObjectId = GetUserADObjectId(impersonationEmailAddress);
+            (userServiceClient as ServiceClient).CallerAADObjectId = GetUserADObjectId(ImpersonationEmailAddress);
 #endif
             
-            return new DVDataAccess(userServiceClient, cache, GetUserId(impersonationEmailAddress));
+            return new DVDataAccess(userServiceClient, cache, GetUserId(ImpersonationEmailAddress));
         }
     }
 }
