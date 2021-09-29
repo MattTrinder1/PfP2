@@ -28,7 +28,7 @@ namespace API.Mappers
             CreateMap<DVPhoto, Photo>()
                 .ForMember(dest => dest.Caption, map => map.MapFrom(src => src.cp_phototitle))
                 .ForMember(dest => dest.PocketNotebookId, map => map.MapFrom(src => src.cp_pocketnotebook.Id))
-                .ForMember(dest => dest.Blob, map => map.MapFrom(src => src.cp_image))
+                .ForMember(dest => dest.Blob, map => map.MapFrom(src => Convert.ToBase64String(src.cp_image)))
             ;
 
             CreateMap<DVPocketNotebook, PocketNotebookListEntry>()
