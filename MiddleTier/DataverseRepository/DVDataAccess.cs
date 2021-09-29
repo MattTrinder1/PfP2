@@ -488,7 +488,7 @@ namespace API.DataverseAccess
                             (requestFullImages && (imageAttrib == null || imageAttrib.RetrieveImageType != ImageRetrieveBehaviour.AlwaysThumbnail)) || 
                             (imageAttrib != null && imageAttrib.RetrieveImageType == ImageRetrieveBehaviour.AlwaysFullImage);
 
-                        string image = GetImage(entityName, ent.Id, property.Name, retrieveFullImage);
+                        var image = GetImage(entityName, ent.Id, property.Name, retrieveFullImage);
                         if (image != null)
                         {
                             property.SetValue(ent, image);
@@ -498,7 +498,7 @@ namespace API.DataverseAccess
             }
         }
 
-        protected string GetImage(string entityName, Guid id, string imageColumnName, bool fullImage = true)
+        protected byte[] GetImage(string entityName, Guid id, string imageColumnName, bool fullImage = true)
         {
             InitializeFileBlocksDownloadRequest initDlRequest = new InitializeFileBlocksDownloadRequest()
             {
@@ -517,9 +517,9 @@ namespace API.DataverseAccess
 
             //TODO: Handle multiple blocks.
 
-            if (dlBlockResponse != null && dlBlockResponse.Data != null)
+            if (dlBlockResponse != null)
             {
-                return Convert.ToBase64String(dlBlockResponse.Data);
+                return dlBlockResponse.Data;
             }
             return null;
         }
