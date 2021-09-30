@@ -1,10 +1,7 @@
-﻿using Common.Models.Dataverse;
-using Microsoft.Xrm.Sdk;
-using Microsoft.Xrm.Sdk.Client;
+﻿using Microsoft.Xrm.Sdk.Client;
 using System;
-using System.Runtime.Serialization;
 
-namespace API.Models.Dataverse
+namespace Common.Models.Dataverse
 {
     [EntityLogicalName("cp_integrationkey")]
     public class DVIntegrationKey : DVEntityBase

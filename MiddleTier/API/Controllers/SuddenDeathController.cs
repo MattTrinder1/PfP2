@@ -1,6 +1,4 @@
 ﻿using API.DataverseAccess;
-using API.Models.Dataverse;
-using API.Models.PNB;
 using Common.Models.Business;
 using Common.Models.Dataverse;
 using Microsoft.AspNetCore.Mvc;
@@ -11,7 +9,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Threading.Tasks;
 
 namespace API.Controllers
 {
@@ -32,7 +29,7 @@ namespace API.Controllers
         {
             try
             {
-                if (!VerifyIntegrationKey("PNB:POST")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
+                if (!VerifyIntegrationKey("SuddenDeath:POST")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
 
 
                 sd.Name = $"Sudden Death for Incident {sd.IncidentNumber}";

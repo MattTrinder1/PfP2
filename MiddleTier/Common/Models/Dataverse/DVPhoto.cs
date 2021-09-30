@@ -1,9 +1,8 @@
-﻿using Common.Models.Dataverse;
-using Microsoft.Xrm.Sdk;
+﻿using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
 using System;
 
-namespace API.Models.Dataverse
+namespace Common.Models.Dataverse
 {
     [EntityLogicalName("cp_photo")]
     public class DVPhoto : DVEntityBase

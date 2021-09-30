@@ -1,5 +1,4 @@
-﻿using API.Models.Business;
-using System;
+﻿using System;
 
 namespace Common.Models.Business
 {

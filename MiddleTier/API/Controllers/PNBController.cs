@@ -1,10 +1,8 @@
 ﻿using API.DataverseAccess;
-using API.Models.Dataverse;
-using API.Models.PNB;
 using Common.Models.Business;
+using Common.Models.Dataverse;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
-using Microsoft.Xrm.Sdk;
 using System;
 using System.Collections.Generic;
 using System.Net;
