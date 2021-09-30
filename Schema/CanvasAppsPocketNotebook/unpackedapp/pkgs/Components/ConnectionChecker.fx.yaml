@@ -13,35 +13,53 @@ ConnectionChecker As CanvasComponent:
     Y: =0
     ZIndex: =1
 
-    Timer1 As timer:
+    tmrCheck As timer:
         AutoPause: =false
         AutoStart: =true
         Duration: =5000
         Height: =70
-        OnTimerEnd: |
-            =Set(
+        OnTimerEnd: |-
+            =Set(glbTimerStart, false);
+            Set(glbTimeoutReset, true);
+            Set(glbTimeoutReset, false);
+            Set(glbTimeoutStart, false);
+            Set(glbTimeoutStart, true);
+            Set(
                 glbOnline,
                 IfError(
-                AzureQueues.PutMessage(
-                    "onlinecheckqueue",
-                    User().Email
-                )
-                    ,
+                    AzureQueues.PutMessage(
+                        "onlinecheckqueue",
+                        User().Email
+                    ),
                     false,
                     true
                 )
             );
-        Repeat: =true
+            Set(glbTimeoutStart, false);
+            Set(glbTimerStart, true);
+        Start: =glbTimerStart
         Visible: =false
-        Width: =280
+        Width: =109
         ZIndex: =1
+
+    tmrTimeout As timer:
+        AutoPause: =false
+        Duration: =2000
+        Height: =70
+        OnTimerEnd: =Set(glbOnline, false)
+        Reset: =glbTimeoutReset
+        Start: =glbTimeoutStart
+        Visible: =false
+        Width: =105
+        X: =256
+        ZIndex: =2
 
     Label1_1 As label:
         Align: =Align.Center
-        Fill: =If(glbOnline,Green,Red)
+        Fill: =If(glbOnline,RGBA(187, 221, 140, 1),Red)
         Height: =ConnectionChecker.Height
         Size: =21
         Text: =If(glbOnline,"Online","Offline")
         Width: =ConnectionChecker.Width
-        ZIndex: =2
+        ZIndex: =3
 

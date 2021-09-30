@@ -80,7 +80,7 @@ Screen_Search_notes As screen:
             Height: =53
             Icon: =
             OnSelect: |-
-                =Set(ViewNoteId,galleryNotes.Selected.Id);
+                =Set(ViewNoteId, galleryNotes.Selected.Id);
                 Navigate(Screen_Notes_viewscr)
             PaddingBottom: =10
             PaddingLeft: =10
@@ -97,7 +97,7 @@ Screen_Search_notes As screen:
             Height: =36
             Icon: =Icon.Check
             OnSelect: =Select(Parent)
-            Visible: =ThisItem.inDataverse
+            Visible: =glbDebug And ThisItem.inDataverse
             Width: =41
             X: =576
             Y: =14
@@ -154,7 +154,10 @@ Screen_Search_notes As screen:
                                 'Notebook Offline',
                                 Id = GUID(userNote.id)
                             ),
-                            {inDataverse: true}
+                            {
+                                inDataverse: true,
+                                fullyPopulated: true
+                            }
                         )
                     )
                 );

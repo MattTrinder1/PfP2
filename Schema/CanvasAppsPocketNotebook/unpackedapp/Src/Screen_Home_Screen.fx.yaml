@@ -9,9 +9,8 @@ Screen_Home_Screen As screen:
         UpdateContext({timerreset: true});
 
     ConnectionChecker_2 As ConnectionChecker:
-        Height: =38
         Width: =640
-        Y: =1098
+        Y: =1101
 
     Lbl_header_2 As label:
         Align: =Align.Center
@@ -341,7 +340,7 @@ Screen_Home_Screen As screen:
         OnTimerEnd: |-
             =If(
                 ConnectionChecker_2.IsOnline,
-                tmrBlobSave.Start = false;
+                Set(tmrBlobSaveStart, false);
                 With (
                     {
                         unsavedBlobs: Filter(
@@ -368,8 +367,7 @@ Screen_Home_Screen As screen:
                         );
                     )
                 );
-                tmrBlobSave.Start = true;
-                
+                Set(tmrBlobSaveStart, true);
             )
         Repeat: =true
         Start: =tmrBlobSaveStart
@@ -389,7 +387,7 @@ Screen_Home_Screen As screen:
         OnTimerEnd: |-
             =If(
                 ConnectionChecker_2.IsOnline,
-                tmrNoteValidate.Start = false;
+                Set(tmrNoteValidateStart,  false);
                 With (
                     {
                         notesToValidate: Filter(
@@ -438,15 +436,15 @@ Screen_Home_Screen As screen:
                         );
                     );
                 );
-                tmrNoteValidate.Start = false;
-                
+                Set(tmrNoteValidateStart, true);
             )
         Repeat: =true
+        Start: =tmrNoteValidateStart
         Text: |-
             ="NoteValidate " & Text(Time(0, 0, Self.Value/1000), "hh:mm:ss")
         Visible: =glbDebug
         Width: =171
-        X: =177
+        X: =189
         Y: =1028
         ZIndex: =32
 
@@ -458,7 +456,7 @@ Screen_Home_Screen As screen:
         OnTimerEnd: |-
             =If(
                 ConnectionChecker_2.IsOnline,
-                tmrBlobSave.Start = false;
+                Set(tmrNoteSaveStart, false);
                 With (
                     {
                         unsavedNotes: Filter(
@@ -513,15 +511,15 @@ Screen_Home_Screen As screen:
                         );
                     )
                 );
-                tmrBlobSave.Start = true;
-                
+                Set(tmrNoteSaveStart, true);
             )
         Repeat: =true
+        Start: =tmrNoteSaveStart
         Text: |-
             ="Note Save " & Text(Time(0, 0, Self.Value/1000), "hh:mm:ss")
         Visible: =glbDebug
         Width: =128
-        X: =356
+        X: =369
         Y: =1028
         ZIndex: =33
 
@@ -529,110 +527,126 @@ Screen_Home_Screen As screen:
         AutoPause: =false
         AutoStart: =true
         Duration: =8500
+        Fill: =If(gblLastNotePopulateDoneWork, Red, RGBA(56, 96, 178, 1))
         Height: =70
         OnTimerEnd: |-
             =If(
                 ConnectionChecker_2.IsOnline,
+                Set(
+                    tmrNotePopulateStart,
+                    false
+                );
                 With (
                     {
                         unPopulatedNotes: Filter(
                             'Notebook Offline',
-                            And(fullyPopulated = false)
+                            And(
+                                Not IsBlank(fullyPopulated),
+                                fullyPopulated = false
+                            )
                         )
                     },
+                    Set(gblLastNotePopulateDoneWork, CountRows(unPopulatedNotes) > 0); //DEBUG
                     ForAll(
                         unPopulatedNotes As unpopulatedNote,
-                        With(
-                            {
-                                pnbRec: PNBGet.GetSinglePNB(
-                                    unpopulatedNote.Id,
-                                    Lower(User().Email)
-                                )
-                            },
-                            Patch(
-                                'Notebook Offline',
-                                unpopulatedNote,
+                        If (
+                            ConnectionChecker_2.IsOnline,
+                            With(
                                 {
-                                    IncidentNumber: pnbRec.incidentNumber,
-                                    SignatoryName: pnbRec.signatoryName,
-                                    'Signature Date and Time':pnbRec.signatureDateandTime,
-                                    fullyPopulated: true
-                                }
-                            );
-                            If(
-                                !IsBlank(pnbRec.sketch),
-                                Collect(
-                                    blobsToSave,
-                                    {
-                                        noteId: GUID(unpopulatedNote.Id),
-                                        caption: "",
-                                        type: "sketch",
-                                        index: 1,
-                                        id: unpopulatedNote.Id & "-sketch-1",
-                                        blob: "data:image;application/octet-stream;base64," & pnbRec.sketch,
-                                        blobId: unpopulatedNote.Id & "-sketch-1"
-                                    }
-                                );
+                                    pnbRec: PNBGet.GetSinglePNB(
+                                        unpopulatedNote.Id,
+                                        Lower(User().Email)
+                                    )
+                                },
                                 Patch(
                                     'Notebook Offline',
                                     unpopulatedNote,
-                                    {SketchId: unpopulatedNote.Id & "-sketch-1"}
-                                );
-                            );
-                            If(
-                                !IsBlank(pnbRec.signature),
-                                Collect(
-                                    blobsToSave,
                                     {
-                                        noteId: GUID(unpopulatedNote.Id),
-                                        caption: "",
-                                        type: "signature",
-                                        index: 1,
-                                        id: unpopulatedNote.Id & "-signature-1",
-                                        blob: "data:image;application/octet-stream;base64," & pnbRec.signature,
-                                        blobId: unpopulatedNote.Id & "-signature-1"
+                                        IncidentNumber: pnbRec.incidentNumber,
+                                        SignatoryName: pnbRec.signatoryName,
+                                        'Signature Date and Time': pnbRec.signatureDateandTime,
+                                        fullyPopulated: true
                                     }
                                 );
-                                Patch(
-                                    'Notebook Offline',
-                                    unpopulatedNote,
-                                    {SignatureId: unpopulatedNote.Id & "-signature-1"}
+                                If(
+                                    !IsBlank(pnbRec.sketch),
+                                    Collect(
+                                        blobsToSave,
+                                        {
+                                            noteId: GUID(unpopulatedNote.Id),
+                                            caption: "",
+                                            type: "sketch",
+                                            index: 1,
+                                            id: unpopulatedNote.Id & "-sketch-1",
+                                            blob: "data:image;application/octet-stream;base64," & pnbRec.sketch,
+                                            blobId: unpopulatedNote.Id & "-sketch-1"
+                                        }
+                                    );
+                                    Patch(
+                                        'Notebook Offline',
+                                        unpopulatedNote,
+                                        {SketchId: unpopulatedNote.Id & "-sketch-1"}
+                                    );
+                                );
+                                If(
+                                    !IsBlank(pnbRec.signature),
+                                    Collect(
+                                        blobsToSave,
+                                        {
+                                            noteId: GUID(unpopulatedNote.Id),
+                                            caption: "",
+                                            type: "signature",
+                                            index: 1,
+                                            id: unpopulatedNote.Id & "-signature-1",
+                                            blob: "data:image;application/octet-stream;base64," & pnbRec.signature,
+                                            blobId: unpopulatedNote.Id & "-signature-1"
+                                        }
+                                    );
+                                    Patch(
+                                        'Notebook Offline',
+                                        unpopulatedNote,
+                                        {SignatureId: unpopulatedNote.Id & "-signature-1"}
+                                    );
+                                );
+                                ForAll(
+                                    pnbRec.photos,
+                                    Collect(
+                                        blobsToSave,
+                                        {
+                                            noteId: GUID(unpopulatedNote.Id),
+                                            caption: ThisRecord.caption,
+                                            type: "photo",
+                                            index: 1,
+                                            id: ThisRecord.id,
+                                            blob: "data:image;application/octet-stream;base64," & ThisRecord.blob,
+                                            blobId: ThisRecord.id
+                                        }
+                                    );
                                 );
                             );
-                            ForAll(
-                                pnbRec.photos,
-                                Collect(
-                                    blobsToSave,
-                                    {
-                                        noteId: GUID(unpopulatedNote.Id),
-                                        caption: ThisRecord.caption,
-                                        type: "photo",
-                                        index: 1,
-                                        id: ThisRecord.id,
-                                        blob: "data:image;application/octet-stream;base64," & ThisRecord.blob,
-                                        blobId: ThisRecord.id
-                                    }
-                                );
+                            SaveData(
+                                'Notebook Offline',
+                                "NotebookOfflineCache"
                             );
-                        );
-                        SaveData(
-                            'Notebook Offline',
-                            "NotebookOfflineCache"
-                        );
-                        SaveData(
-                            blobsToSave,
-                            "blobsToSaveCache"
-                        );
+                            SaveData(
+                                blobsToSave,
+                                "blobsToSaveCache"
+                            );
+                        )
                     )
                 );
-                
+                Set(
+                    tmrNotePopulateStart,
+                    true
+                );    
             )
         Repeat: =true
+        Start: =tmrNotePopulateStart
         Text: |-
             ="Note Populate " & Text(Time(0, 0, Self.Value/1000), "hh:mm:ss")
         Visible: =glbDebug
         Width: =128
-        X: =497
+        X: =512
         Y: =1028
         ZIndex: =34
 
