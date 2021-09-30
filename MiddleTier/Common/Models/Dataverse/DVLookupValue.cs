@@ -1,21 +1,22 @@
-﻿using Common.Models.Dataverse;
-using Microsoft.Xrm.Sdk;
+﻿using Microsoft.Xrm.Sdk.Client;
 using System;
-using System.Runtime.Serialization;
 
-namespace API.Models.Dataverse
+namespace Common.Models.Dataverse
 {
-    [DataContract(Name = "cp_lookupvalue")]
+    [EntityLogicalName("cp_lookupvalue")]
     public class DVLookupValue : DVEntityBase
     {
-        public DVLookupValue() { }
+        public DVLookupValue()
+        {
+            this.LogicalName = "cp_lookupvalue";
+        }
 
         public Guid? cp_lookupvalueid { get { return base.Id; } set { base.Id = value.Value; } }
 
-        public string cp_name { get; set; }
+        public string cp_name { get { return this.GetAttributeValue<string>(nameof(cp_name)); } set { this.Attributes[nameof(cp_name)] = value; } }
 
-        public string cp_alternativedisplayname { get; set; }
+        public string cp_alternativedisplayname { get { return this.GetAttributeValue<string>(nameof(cp_alternativedisplayname)); } set { this.Attributes[nameof(cp_alternativedisplayname)] = value; } }
 
-        public int? cp_displaysequenceno { get; set; }
+        public int? cp_displaysequenceno { get { return this.GetAttributeValue<int>(nameof(cp_displaysequenceno)); } set { this.Attributes[nameof(cp_displaysequenceno)] = value; } }
     }
 }

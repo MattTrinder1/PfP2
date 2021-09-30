@@ -1,9 +1,8 @@
-﻿using Common.Models.Dataverse;
-using Microsoft.Xrm.Sdk;
+﻿using Microsoft.Xrm.Sdk;
 using Microsoft.Xrm.Sdk.Client;
 using System;
 
-namespace API.Models.PNB
+namespace Common.Models.Dataverse
 {
     [EntityLogicalName("cp_pocketnotebook")]
     public class DVPocketNotebook : DVEntityBase

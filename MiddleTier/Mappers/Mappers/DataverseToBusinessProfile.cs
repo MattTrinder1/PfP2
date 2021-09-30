@@ -1,7 +1,6 @@
-﻿using API.Models.Dataverse;
-using API.Models.PNB;
-using AutoMapper;
+﻿using AutoMapper;
 using Common.Models.Business;
+using Common.Models.Dataverse;
 using System;
 
 namespace API.Mappers
@@ -36,11 +35,26 @@ namespace API.Mappers
             ;
 
             CreateMap<DVLookupField, LookupField>()
-                .ForMember(dest => dest.FilterId, map => map.MapFrom(src => src.cp_id))
             ;
 
             CreateMap<DVLookupValue, LookupValue>()
                 .ForMember(dest => dest.Id, map => map.MapFrom(src => src.cp_lookupvalueid))
+                .ForMember(dest => dest.DisplayValue, map => map.MapFrom(src => src.cp_name))
+            ;
+
+            CreateMap<DVTerritorialPolicingArea, LookupValue>()
+                .ForMember(dest => dest.Id, map => map.MapFrom(src => src.cp_territorialpolicingareaid))
+                .ForMember(dest => dest.DisplayValue, map => map.MapFrom(src => src.cp_name))
+            ;
+
+            CreateMap<DVContactRoleType, LookupValue>()
+                .ForMember(dest => dest.Id, map => map.MapFrom(src => src.cp_contactroletypeid))
+                .ForMember(dest => dest.DisplayValue, map => map.MapFrom(src => src.cp_name))
+            ;
+
+            CreateMap<DVUser, User>()
+                .ForMember(dest => dest.Id, map => map.MapFrom(src => src.systemuserid))
+                .ForMember(dest => dest.DisplayValue, map => map.MapFrom(src => src.fullname))
             ;
 
             //CreateMap<DVVehicleTicket, VehicleTicket>()

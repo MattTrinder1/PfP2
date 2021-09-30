@@ -1,9 +1,6 @@
-﻿using Common.Models.Dataverse;
-using Microsoft.Xrm.Sdk;
-using Microsoft.Xrm.Sdk.Client;
-using System;
+﻿using Microsoft.Xrm.Sdk.Client;
 
-namespace API.Models.Dataverse
+namespace Common.Models.Dataverse
 {
     [EntityLogicalName("cp_location")]
     public class DVLocation : DVEntityBase

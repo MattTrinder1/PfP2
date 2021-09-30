@@ -420,9 +420,34 @@ namespace API.DataverseAccess
 
             return result;
 
-            
-            
+                      
         }
+
+        public List<T> GetAll<T>(
+            FilterExpression criteria, 
+            OrderExpression order = null, 
+            SelectColumns selectColumns = DefaultSelectColumns) where T : Entity, new()
+        {
+            var entityName = new T().LogicalName;
+
+            QueryExpression query = new QueryExpression(entityName);
+            query.ColumnSet = GetColumnSet<T>(selectColumns);
+            query.Criteria = criteria;
+            if (order != null)
+            {
+                query.Orders.Add(order);
+            }
+
+            List<T> result = new List<T>();
+
+            foreach (var e in _dvService.RetrieveMultiple(query).Entities)
+            {
+                result.Add(e.ToEntity<T>());
+            }
+
+            return result;
+        }
+
 
         public static string GetEntityLogicalName<T>(T ent) where T: Entity
         {
