@@ -1,6 +1,4 @@
 ﻿using API.DataverseAccess;
-using Common.Models.Dataverse;
-using Common.Models.Dataverse;
 using AutoMapper;
 using Common.Models.Business;
 using Common.Models.Dataverse;
