@@ -12,7 +12,6 @@ namespace API.Mappers
             RecognizePrefixes("cp_");
 
             CreateMap<DVPocketNotebook, PocketNotebook>()
-                .ForMember(dest => dest.Id, map => map.MapFrom(src => src.cp_pocketnotebookid))
                 .ForMember(dest => dest.IncidentNumber, map => map.MapFrom(src => src.cp_incidentno.Name))
             ;
 
@@ -31,30 +30,26 @@ namespace API.Mappers
             ;
 
             CreateMap<DVPocketNotebook, PocketNotebookListEntry>()
-                .ForMember(dest => dest.Id, map => map.MapFrom(src => src.cp_pocketnotebookid))                
             ;
 
             CreateMap<DVLookupField, LookupField>()
             ;
 
             CreateMap<DVLookupValue, LookupValue>()
-                .ForMember(dest => dest.Id, map => map.MapFrom(src => src.cp_lookupvalueid))
                 .ForMember(dest => dest.DisplayValue, map => map.MapFrom(src => src.cp_name))
             ;
 
             CreateMap<DVTerritorialPolicingArea, LookupValue>()
-                .ForMember(dest => dest.Id, map => map.MapFrom(src => src.cp_territorialpolicingareaid))
                 .ForMember(dest => dest.DisplayValue, map => map.MapFrom(src => src.cp_name))
             ;
 
             CreateMap<DVContactRoleType, LookupValue>()
-                .ForMember(dest => dest.Id, map => map.MapFrom(src => src.cp_contactroletypeid))
                 .ForMember(dest => dest.DisplayValue, map => map.MapFrom(src => src.cp_name))
             ;
 
             CreateMap<DVUser, User>()
-                .ForMember(dest => dest.Id, map => map.MapFrom(src => src.systemuserid))
-                .ForMember(dest => dest.DisplayValue, map => map.MapFrom(src => src.fullname))
+                .ForMember(dest => dest.Name, map => map.MapFrom(src => src.fullname))
+                .ForMember(dest => dest.DisplayValue, map => map.MapFrom(src => $"{src.cp_badgenumber} - {src.fullname}"))
             ;
 
             //CreateMap<DVVehicleTicket, VehicleTicket>()

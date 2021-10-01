@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Common.Models.Business
 {
-    public class Contact : EntityBase
+    public class Contact : IncidentRelatedEntityBase
     {
         public List<Guid> ContactRoles { get; set; }
         public string FirstName { get; set; }

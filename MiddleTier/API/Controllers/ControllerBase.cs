@@ -165,7 +165,7 @@ namespace API.Controllers
             return false;
         }
 
-        protected T GetDataverseEntity<T>(EntityBase entity, Guid? ownerId = null) where T:DVEntityBase
+        protected T GetDataverseEntity<T>(IncidentRelatedEntityBase entity, Guid? ownerId = null) where T:DVEntityBase
         {
             var dvEntity = mapper.Map<T>(entity);
 

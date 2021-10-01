@@ -14,7 +14,7 @@ namespace APITests
 
     public abstract class TestBase
     {
-        protected void ValidateIncident(EntityBase original, Entity incident,string incidentTypeName,string userEmail)
+        protected void ValidateIncident(IncidentRelatedEntityBase original, Entity incident,string incidentTypeName,string userEmail)
         {
             Assert.AreEqual(original.IncidentNumber, incident.GetValue<string>("cp_incidentnumber"));
             Assert.IsTrue(DateTimesMatch(original.IncidentDate, incident.GetValue<DateTime>("cp_incidentdate")));

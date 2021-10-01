@@ -2,7 +2,7 @@
 
 namespace Common.Models.Business
 {
-    public class Photo : EntityBase
+    public class Photo : IncidentRelatedEntityBase
     {
         public Guid? PocketNotebookId { get; set; }
         public Guid? SuddenDeathId { get; set; }

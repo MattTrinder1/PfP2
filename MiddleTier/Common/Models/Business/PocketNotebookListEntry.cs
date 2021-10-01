@@ -2,7 +2,7 @@
 
 namespace Common.Models.Business
 {
-    public class PocketNotebookListEntry : EntityBase
+    public class PocketNotebookListEntry : IncidentRelatedEntityBase
     {
         public PocketNotebookListEntry()
         {

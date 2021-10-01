@@ -15,6 +15,7 @@ namespace Common.Models.Dataverse
 
         public string cp_displayname { get { return this.GetAttributeValue<string>(nameof(cp_displayname)); } set { this.Attributes[nameof(cp_displayname)] = value; } }
 
+        //FilterId
         public string cp_id { get { return this.GetAttributeValue<string>(nameof(cp_id)); } set { this.Attributes[nameof(cp_id)] = value; } }
 
         public int? cp_totalvalues { get { return this.GetAttributeValue<int>(nameof(cp_totalvalues)); } set { this.Attributes[nameof(cp_totalvalues)] = value; } }

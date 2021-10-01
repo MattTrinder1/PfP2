@@ -6,21 +6,11 @@ namespace Common.Models.Business
     {
         private Guid? id = null;
 
-        public EntityBase()
-        {
+        public EntityBase() 
+        { 
         }
 
-        public EntityBase(Guid? id, string name)
-        {
-            Id = id;
-            Name = name;
-        }
-        public EntityBase(Guid? id)
-        {
-            Id = id;
-        }
-
-        public Guid? Id
+        public virtual Guid? Id
         {
             get
             {
@@ -40,12 +30,17 @@ namespace Common.Models.Business
             }
         }
 
-        public string Name { get; set; }
+        public virtual string Name { get; set; }
+    }
+
+    public class IncidentRelatedEntityBase : EntityBase
+    {
+        public IncidentRelatedEntityBase()
+        {
+        }
+
         public string IncidentNumber { get; set; }
 
         public DateTime? IncidentDate { get; set; }
-
-
-        //public User OwnerId { get; set; }
     }
 }

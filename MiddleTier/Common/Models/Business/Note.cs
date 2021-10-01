@@ -2,7 +2,7 @@
 
 namespace Common.Models.Business
 {
-    public class Note : EntityBase
+    public class Note : IncidentRelatedEntityBase
     {
         public string Attachment { get; set; }
         public string Subject { get; set; }
