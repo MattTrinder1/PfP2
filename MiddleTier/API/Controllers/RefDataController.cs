@@ -27,7 +27,7 @@ namespace API.Controllers
         {
             try
             {
-                if (!VerifyIntegrationKey("RefData:GET")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
+                if (!VerifyIntegrationKey("RefData:GET:lookupfield")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
 
                 string cacheKey = $"LookupField:{filterId}";
                 LookupField lookupField;
@@ -61,7 +61,84 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("users/{badgeNumberBeginsWith}")]
+        [HttpGet("territorialpolicingarea")]
+        public ActionResult<LookupField> GetTerritorialPolicingArea()
+        {
+            try
+            {
+                if (!VerifyIntegrationKey("RefData:GET:lookupfield")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
+
+                string cacheKey = $"TerritorialPolicingArea";
+                LookupField lookupField;
+                if (!cache.TryGetValue(cacheKey, out lookupField))
+                {
+                    lookupField = new LookupField();
+                    var dvTerritorialPolicingAreas = AdminDataAccess.GetAll<DVTerritorialPolicingArea>(orderby: "cp_name");
+                    if (dvTerritorialPolicingAreas != null && dvTerritorialPolicingAreas.Count > 0)
+                    {
+                        List<LookupValue> lookupValues = new List<LookupValue>(dvTerritorialPolicingAreas.Count);
+                        foreach (var dvTerritorialPolicingArea in dvTerritorialPolicingAreas)
+                        {
+                            LookupValue lookupValue = mapper.Map<LookupValue>(dvTerritorialPolicingArea);
+                            lookupValues.Add(lookupValue);
+                        }
+                        lookupField.Values = lookupValues;
+                    }
+
+                    cache.Set(cacheKey, lookupField);
+                }
+
+                return lookupField;
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, new ApiError(e.Message));
+            }
+        }
+
+        [HttpGet("contactroletype")]
+        public ActionResult<LookupField> GetContactRoleType()
+        {
+            try
+            {
+                if (!VerifyIntegrationKey("RefData:GET:lookupfield")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
+
+                string cacheKey = $"ContactRoleType";
+                LookupField lookupField;
+                if (!cache.TryGetValue(cacheKey, out lookupField))
+                {
+                    lookupField = new LookupField();
+                    var dvContactRoleTypes = AdminDataAccess.GetAll<DVContactRoleType>(orderby: "cp_name");
+                    if (dvContactRoleTypes != null && dvContactRoleTypes.Count > 0)
+                    {
+                        List<LookupValue> lookupValues = new List<LookupValue>(dvContactRoleTypes.Count);
+                        foreach (var dvContactRoleType in dvContactRoleTypes)
+                        {
+                            LookupValue lookupValue = mapper.Map<LookupValue>(dvContactRoleType);
+                            lookupValues.Add(lookupValue);
+                        }
+                        lookupField.Values = lookupValues;
+                    }
+
+                    cache.Set(cacheKey, lookupField);
+                }
+
+                return lookupField;
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, new ApiError(e.Message));
+            }
+        }
+
+
+        [HttpGet("civilianusers")]
+        public ActionResult<User[]> GetCivilianUsers()
+        {
+            return GetUsers(null);
+        }
+
+        [HttpGet("officers/{badgeNumberBeginsWith}")]
         public ActionResult<User[]> GetUsers(string badgeNumberBeginsWith)
         {
             try
@@ -98,77 +175,7 @@ namespace API.Controllers
                     }
                 }
 
-                return users != null ? users.ToArray() : null;
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new ApiError(e.Message));
-            }
-        }
-
-        [HttpGet("territorialpolicingarea")]
-        public ActionResult<LookupField> GetTerritorialPolicingArea()
-        {
-            try
-            {
-                if (!VerifyIntegrationKey("RefData:GET")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
-
-                string cacheKey = $"TerritorialPolicingArea";
-                LookupField lookupField;
-                if (!cache.TryGetValue(cacheKey, out lookupField))
-                {
-                    lookupField = new LookupField();
-                    var dvTerritorialPolicingAreas = AdminDataAccess.GetAll<DVTerritorialPolicingArea>();
-                    if (dvTerritorialPolicingAreas != null && dvTerritorialPolicingAreas.Count > 0)
-                    {
-                        List<LookupValue> lookupValues = new List<LookupValue>(dvTerritorialPolicingAreas.Count);
-                        foreach (var dvTerritorialPolicingArea in dvTerritorialPolicingAreas)
-                        {
-                            LookupValue lookupValue = mapper.Map<LookupValue>(dvTerritorialPolicingArea);
-                            lookupValues.Add(lookupValue);
-                        }
-                        lookupField.Values = lookupValues;
-                    }
-
-                    cache.Set(cacheKey, lookupField);
-                }
-
-                return lookupField;
-            }
-            catch (Exception e)
-            {
-                return StatusCode((int)HttpStatusCode.InternalServerError, new ApiError(e.Message));
-            }
-        }
-
-        [HttpGet("contactroletype")]
-        public ActionResult<LookupField> GetContactRoleType()
-        {
-            try
-            {
-                if (!VerifyIntegrationKey("RefData:GET")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
-
-                string cacheKey = $"ContactRoleType";
-                LookupField lookupField;
-                if (!cache.TryGetValue(cacheKey, out lookupField))
-                {
-                    lookupField = new LookupField();
-                    var dvContactRoleTypes = AdminDataAccess.GetAll<DVContactRoleType>();
-                    if (dvContactRoleTypes != null && dvContactRoleTypes.Count > 0)
-                    {
-                        List<LookupValue> lookupValues = new List<LookupValue>(dvContactRoleTypes.Count);
-                        foreach (var dvContactRoleType in dvContactRoleTypes)
-                        {
-                            LookupValue lookupValue = mapper.Map<LookupValue>(dvContactRoleType);
-                            lookupValues.Add(lookupValue);
-                        }
-                        lookupField.Values = lookupValues;
-                    }
-
-                    cache.Set(cacheKey, lookupField);
-                }
-
-                return lookupField;
+                return users != null ? users.ToArray() : new User[0];
             }
             catch (Exception e)
             {

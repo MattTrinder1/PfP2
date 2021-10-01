@@ -20,24 +20,24 @@ namespace API.Mappers
             RecognizeDestinationPrefixes("cp_");
             RecognizeDestinationPrefixes("address1_");
 
-            CreateMap<EntityBase, DVEntityBase>()
+            CreateMap<IncidentRelatedEntityBase, DVEntityBase>()
             ;
 
 
             CreateMap<PocketNotebook, DVPocketNotebookImages>()
-                .IncludeBase<EntityBase, DVEntityBase>()
+                .IncludeBase<IncidentRelatedEntityBase, DVEntityBase>()
                 .ForMember(dest => dest.cp_sketch, map => map.MapFrom(src => Convert.FromBase64String(src.Sketch)))
                 .ForMember(dest => dest.cp_signature, map => map.MapFrom(src => Convert.FromBase64String(src.Signature)))
             ;
 
 
             CreateMap<PocketNotebook, DVPocketNotebook>()
-                .IncludeBase<EntityBase, DVEntityBase>()
+                .IncludeBase<IncidentRelatedEntityBase, DVEntityBase>()
                 .ForMember(dest => dest.cp_pocketnotebookid, map => map.MapFrom(src => src.Id))
             ;
 
             CreateMap<Contact, DVContact>()
-                .IncludeBase<EntityBase, DVEntityBase>()
+                .IncludeBase<IncidentRelatedEntityBase, DVEntityBase>()
                 .ForMember(dest => dest.birthdate, map => map.MapFrom(src => src.DateOfBirth))
                 .ForMember(dest => dest.address1_city, map => map.MapFrom(src => src.Town))
                 .ForMember(dest => dest.address1_line1, map => map.MapFrom(src => src.Address1))
@@ -60,13 +60,13 @@ namespace API.Mappers
 
 
             CreateMap<SuddenDeath, DVSuddenDeathImages>()
-                .IncludeBase<EntityBase, DVEntityBase>()
+                .IncludeBase<IncidentRelatedEntityBase, DVEntityBase>()
                 .ForMember(dest => dest.cp_suicidenotepicture, map => map.MapFrom(src => Convert.FromBase64String(src.PhotoSuicideNote)))
                 .ForMember(dest => dest.cp_identificationsignature, map => map.MapFrom(src => Convert.FromBase64String(src.IdentificationSignature)))
             ;
 
             CreateMap<SuddenDeathProperty, DVSuddenDeathProperty>()
-                .IncludeBase<EntityBase, DVEntityBase>()
+                .IncludeBase<IncidentRelatedEntityBase, DVEntityBase>()
                 .ForMember(dest => dest.cp_propertyname, map => map.MapFrom(src => src.PropertyDescription))
                 .ForMember(dest => dest.cp_actionrelatedwith, map => map.MapFrom(src => src.PersonAuthorisingProperty))
                 .ForMember(dest => dest.cp_actiontaken, map => map.MapFrom(src => src.IsDisposedOrRetained))
@@ -76,13 +76,13 @@ namespace API.Mappers
             ;
 
             CreateMap<SuddenDeathProperty, DVSuddenDeathPropertyImages>()
-                .IncludeBase<EntityBase, DVEntityBase>()
+                .IncludeBase<IncidentRelatedEntityBase, DVEntityBase>()
                 .ForMember(dest => dest.cp_propertyphoto, map => map.MapFrom(src => Convert.FromBase64String(src.PhotoProperty)))
                 .ForMember(dest => dest.cp_signature, map => map.MapFrom(src => Convert.FromBase64String(src.PropertySignature)))
             ;
 
             CreateMap<SuddenDeath, DVAccount>()
-                .IncludeBase<EntityBase, DVEntityBase>()
+                .IncludeBase<IncidentRelatedEntityBase, DVEntityBase>()
                 .ForMember(dest => dest.name, map => map.MapFrom(src => src.GPName))
                 .ForMember(dest => dest.cp_surgery, map => map.MapFrom(src => src.GPSurgery))
                 .ForMember(dest => dest.cp_isgp, map => map.MapFrom(src => true))
@@ -97,7 +97,7 @@ namespace API.Mappers
                 ;
 
             CreateMap<SuddenDeath, DVMedicalHistory>()
-                .IncludeBase<EntityBase, DVEntityBase>()
+                .IncludeBase<IncidentRelatedEntityBase, DVEntityBase>()
                 .ForMember(dest => dest.cp_diagnosismedicationprescribed, map => map.MapFrom(src => src.MedicalHistoryDiagnosisAnMedication))
                 .ForMember(dest => dest.cp_gpvisitdate, map => map.MapFrom(src => src.MedicalHistoryLastVisitDate))
                 .ForMember(dest => dest.cp_knownriskfactors, map => map.MapFrom(src => src.MedicalHistoryRiskFactors))
@@ -107,7 +107,7 @@ namespace API.Mappers
                 ;
 
             CreateMap<SuddenDeath, DVLocation>()
-                .IncludeBase<EntityBase, DVEntityBase>()
+                .IncludeBase<IncidentRelatedEntityBase, DVEntityBase>()
                 .ForMember(dest => dest.cp_housename, map => map.MapFrom(src => src.HouseNameSuddenDeath))
                 .ForMember(dest => dest.cp_housenumber, map => map.MapFrom(src => src.HouseNoSuddenDeath))
                 .ForMember(dest => dest.cp_latitude, map => map.MapFrom(src => src.LatitudeSuddenDeath))
@@ -122,7 +122,7 @@ namespace API.Mappers
 
 
             CreateMap<SuddenDeath, DVSuddenDeath>()
-                .IncludeBase<EntityBase, DVEntityBase>()
+                .IncludeBase<IncidentRelatedEntityBase, DVEntityBase>()
                 //string exceptions
                 .ForMember(dest => dest.cp_sdfamilylaisonofficer, map => map.MapFrom(src => src.FamilyLiaisonOfficer))
                 .ForMember(dest => dest.cp_sdlastseenaliveby, map => map.MapFrom(src => src.LastSeenAliveBy))
@@ -161,7 +161,7 @@ namespace API.Mappers
             ;
 
             CreateMap<Photo, DVPhoto>()
-                .IncludeBase<EntityBase, DVEntityBase>()
+                .IncludeBase<IncidentRelatedEntityBase, DVEntityBase>()
                 .ForMember(dest => dest.cp_phototitle, map => map.MapFrom(src => src.Caption))
                 .ForMember(dest => dest.cp_pocketnotebook, map => map.MapFrom(src => GetEntityReference("cp_pocketnotebook", src.PocketNotebookId)))
                 .ForMember(dest => dest.cp_suddendeath, map => map.MapFrom(src => GetEntityReference("cp_suddendeath", src.SuddenDeathId)))

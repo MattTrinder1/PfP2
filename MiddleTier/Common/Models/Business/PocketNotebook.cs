@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Common.Models.Business
 {
-    public class PocketNotebook : EntityBase
+    public class PocketNotebook : IncidentRelatedEntityBase
     {
         public PocketNotebook()
         {

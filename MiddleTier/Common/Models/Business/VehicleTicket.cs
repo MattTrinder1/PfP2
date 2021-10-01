@@ -2,7 +2,7 @@
 
 namespace Common.Models.Business
 {
-    public class VehicleTicket : EntityBase
+    public class VehicleTicket : IncidentRelatedEntityBase
     {
         public DateTime? OffenceDateTime { get; set; }
         public LookupValue IssuedTo { get; set; }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Common.Models.Business
 {
-    public class SuddenDeath : EntityBase
+    public class SuddenDeath : IncidentRelatedEntityBase
     {
         //text fields
         public List<Contact> Contacts { get; set; }
