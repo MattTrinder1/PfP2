@@ -50,6 +50,7 @@ namespace API.Mappers
             CreateMap<DVUser, User>()
                 .ForMember(dest => dest.Name, map => map.MapFrom(src => src.fullname))
                 .ForMember(dest => dest.DisplayValue, map => map.MapFrom(src => $"{src.cp_badgenumber} - {src.fullname}"))
+                .ForMember(dest => dest.EmailAddress, map => map.MapFrom(src => src.internalemailaddress))
             ;
 
             //CreateMap<DVVehicleTicket, VehicleTicket>()
