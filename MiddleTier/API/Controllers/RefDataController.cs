@@ -96,30 +96,26 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("contactroletype")]
-        public ActionResult<LookupField> GetContactRoleType()
+        [HttpGet("contactroletype/{application}")]
+        public ActionResult<LookupField> GetContactRoleType(int application)
         {
             try
             {
                 if (!VerifyIntegrationKey("RefData:GET:lookupfield")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
 
-                string cacheKey = $"ContactRoleType";
+                string cacheKey = $"ContactRoleType:{application}";
                 LookupField lookupField;
                 if (!cache.TryGetValue(cacheKey, out lookupField))
                 {
                     lookupField = new LookupField();
-                    var dvContactRoleTypes = AdminDataAccess.GetAll<DVContactRoleType>(orderby: "cp_name");
-                    if (dvContactRoleTypes != null && dvContactRoleTypes.Count > 0)
-                    {
-                        List<LookupValue> lookupValues = new List<LookupValue>(dvContactRoleTypes.Count);
-                        foreach (var dvContactRoleType in dvContactRoleTypes)
-                        {
-                            LookupValue lookupValue = mapper.Map<LookupValue>(dvContactRoleType);
-                            lookupValues.Add(lookupValue);
-                        }
-                        lookupField.Values = lookupValues;
-                    }
+                    var f = new FilterExpression();
+                    f.AddCondition("cp_applicationused", ConditionOperator.Equal, application);
+                    var o = new OrderExpression("cp_name", OrderType.Ascending);
 
+                    var dvContactRoleTypes = AdminDataAccess.GetAll<DVContactRoleType>(f,o);
+                
+                    lookupField.Values = mapper.Map<List<LookupValue>>(dvContactRoleTypes);
+                
                     cache.Set(cacheKey, lookupField);
                 }
 
