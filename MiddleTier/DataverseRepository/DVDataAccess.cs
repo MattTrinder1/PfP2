@@ -525,27 +525,47 @@ namespace API.DataverseAccess
 
         protected byte[] GetImage(string entityName, Guid id, string imageColumnName, bool fullImage = true)
         {
-            InitializeFileBlocksDownloadRequest initDlRequest = new InitializeFileBlocksDownloadRequest()
+            if (fullImage)
             {
-                Target = new EntityReference(entityName, id),
-                FileAttributeName = imageColumnName
-            };
+                QueryExpression imagePopulatedQuery = new QueryExpression(entityName);
+                imagePopulatedQuery.Criteria.AddCondition($"{entityName}id", ConditionOperator.Equal, id);
+                imagePopulatedQuery.Criteria.AddCondition(imageColumnName, ConditionOperator.NotNull);
+                var queryResponse = _dvService.RetrieveMultiple(imagePopulatedQuery);
 
-            var initDlResponse = (InitializeFileBlocksDownloadResponse)_dvService.Execute(initDlRequest);
+                if (queryResponse != null && queryResponse.Entities != null && queryResponse.Entities.Count > 0)
+                {
+                    InitializeFileBlocksDownloadRequest initDlRequest = new InitializeFileBlocksDownloadRequest()
+                    {
+                        Target = new EntityReference(entityName, id),
+                        FileAttributeName = imageColumnName
+                    };
 
-            DownloadBlockRequest dlBlockRequest = new DownloadBlockRequest()
-            {
-                FileContinuationToken = initDlResponse.FileContinuationToken
-            };
+                    var initDlResponse = (InitializeFileBlocksDownloadResponse)_dvService.Execute(initDlRequest);
 
-            var dlBlockResponse = (DownloadBlockResponse)_dvService.Execute(dlBlockRequest);
+                    DownloadBlockRequest dlBlockRequest = new DownloadBlockRequest()
+                    {
+                        FileContinuationToken = initDlResponse.FileContinuationToken
+                    };
 
-            //TODO: Handle multiple blocks.
+                    var dlBlockResponse = (DownloadBlockResponse)_dvService.Execute(dlBlockRequest);
 
-            if (dlBlockResponse != null)
-            {
-                return dlBlockResponse.Data;
+                    //TODO: Handle multiple blocks.
+
+                    if (dlBlockResponse != null)
+                    {
+                        return dlBlockResponse.Data;
+                    }
+                }
             }
+            else
+            {
+                var entity = _dvService.Retrieve(entityName, id, new ColumnSet(imageColumnName));
+                if (entity.Attributes.Contains(imageColumnName))
+                {
+                    return entity.GetAttributeValue<byte[]>(imageColumnName);
+                }
+            }
+
             return null;
         }
     }
