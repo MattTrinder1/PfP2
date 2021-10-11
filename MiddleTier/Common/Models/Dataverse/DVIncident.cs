@@ -23,5 +23,9 @@ namespace Common.Models.Dataverse
 
         public EntityReference cp_enteredby { get { return this.GetAttributeValue<EntityReference>(nameof(cp_enteredby)); } set { this.Attributes[nameof(cp_enteredby)] = value; } }
 
+        public OptionSetValue cp_reportingofficer { get { return this.GetAttributeValue<OptionSetValue>(nameof(cp_reportingofficer)); } set { this.Attributes[nameof(cp_reportingofficer)] = value; } }
+        public OptionSetValue cp_singleofficerevent { get { return this.GetAttributeValue<OptionSetValue>(nameof(cp_singleofficerevent)); } set { this.Attributes[nameof(cp_singleofficerevent)] = value; } }
+        public EntityReference cp_additionalofficer { get { return this.GetAttributeValue<EntityReference>(nameof(cp_additionalofficer)); } set { this.Attributes[nameof(cp_additionalofficer)] = value; } }
+
     }
 }

@@ -109,12 +109,18 @@ namespace API.Controllers
                 DVTransaction transaction = new DVTransaction();
 
                 logger.LogDebug("Find/Create incident");
-                //Guid? incidentId = FindOrCreateIncident(pnb.IncidentNumber,pnb.IncidentDate,"Pocket Notebook", transaction);
-                //if (incidentId != null)
-                //{
-                //    dvPb.cp_incidentno =new EntityReference("cp_incident", incidentId.Value);
-                //}
+                if (!string.IsNullOrEmpty(pnb.IncidentNumber))
+                {
+                    var dvIncident = AdminDataAccess.GetEntityByField<DVIncident>("cp_incidentnumber", pnb.IncidentNumber);
+                    
+                    if (dvIncident == null)
+                    {
+                        dvIncident = CreateIncident(pnb, "Pocket Noteboook");
+                        transaction.AddCreateEntity(dvIncident);
+                    }
 
+                    dvPb.cp_incidentno= dvIncident.ToEntityReference();
+                }
                 if (!dvPb.cp_pocketnotebookid.HasValue)
                 {
                     dvPb.cp_pocketnotebookid = Guid.NewGuid();

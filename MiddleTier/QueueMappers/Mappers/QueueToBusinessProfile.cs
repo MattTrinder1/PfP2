@@ -117,14 +117,15 @@ namespace API.Mappers
                     .ForMember(dest => dest.PhotoSuicideNote, map => map.MapFrom(src => GetBlob(_SDcontainerClient, src.PhotoSuicideNoteBlobName)))
                     .ForMember(dest => dest.IdentificationSignature, map => map.MapFrom(src => GetBlob(_SDcontainerClient, src.identificationSignatureBlobName)))
 
-                    .ForMember(dest => dest.CIDCSISelectedIds, map => map.MapFrom(src => GetGuids( src.CIDcsiselectid)))
+                    .ForMember(dest => dest.CIDCSISelectedIds, map => map.MapFrom(src => GetGuids(src.CIDcsiselectid)))
+                    .ForMember(dest => dest.AdditionalOfficerIds, map => map.MapFrom(src => GetGuids(src.Additionalofficerid)))
 
 
                 ;
 
 
 
-          
+
 
 
 

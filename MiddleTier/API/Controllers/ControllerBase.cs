@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Xrm.Sdk;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace API.Controllers
 {
@@ -60,9 +61,9 @@ namespace API.Controllers
             }
         }
 
-        protected DVIncident CreateIncident(string incidentNumber, DateTime? incidentDate, string incidentType)
+        protected DVIncident CreateIncident(IncidentRelatedEntityBase sd, string incidentType)
         {
-            if (string.IsNullOrEmpty(incidentNumber))
+            if (string.IsNullOrEmpty(sd.IncidentNumber))
             {
                 return null;
             }
@@ -70,12 +71,27 @@ namespace API.Controllers
             var incidentTypeId = AdminDataAccess.GetEntityId("cp_incidenttype", "cp_incidenttypename", incidentType);
 
             var incident = new DVIncident();
-            incident.cp_incidentnumber = incidentNumber;
+            incident.cp_incidentnumber = sd.IncidentNumber;
             incident.cp_incidenttype = new EntityReference("cp_incidenttype", incidentTypeId.Value);
-            if (incidentDate.HasValue)
+            if (sd.IncidentDate.HasValue)
             {
-                incident.cp_incidentdate = incidentDate;
+                incident.cp_incidentdate = sd.IncidentDate;
             }
+            if (!string.IsNullOrEmpty(sd.PrimaryOfficer))
+            {
+                incident.cp_reportingofficer = adminDataAccess.GetOptionSetValue("cp_yes_no_na_list", sd.PrimaryOfficer);
+            }
+            if (!string.IsNullOrEmpty(sd.SingleOfficer))
+            {
+                incident.cp_singleofficerevent = adminDataAccess.GetOptionSetValue("cp_yes_no_na_list", sd.SingleOfficer);
+            }
+            if (sd.AdditionalOfficerIds.Any())
+            {
+                //should only be one
+                incident.cp_additionalofficer = new EntityReference("systemuser", sd.AdditionalOfficerIds.Single());
+            }
+
+
             incident.cp_enteredby = new EntityReference("systemuser", UserId);
             incident.ownerid = new EntityReference("systemuser", UserId);
 

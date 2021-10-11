@@ -30,7 +30,7 @@ namespace Common.Models.Queue
         public string Fullname { get; set; }
         public string Gender { get; set; }
         public string Gendername { get; set; }
-        public bool HasAdditionalNames { get; set; }
+        public string HasAdditionalNames { get; set; }
         public string Housename { get; set; }
         public string Housenumber{ get; set; }
         public string Key { get; set; }

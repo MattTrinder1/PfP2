@@ -91,7 +91,6 @@ namespace Common.Models.Business
         public Guid? InvestigationStatus { get; set; }
         public List<Guid> CIDCSISelectedIds { get; set; }
 
-
         public string GPDistrict { get; set; }
         public string GPAddress { get; set; }
         public string GPCounty { get; set; }

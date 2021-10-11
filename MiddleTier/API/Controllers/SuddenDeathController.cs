@@ -62,7 +62,7 @@ namespace API.Controllers
                     dvLocation.cp_name = $"Location, Incident {sd.IncidentNumber}";
                     transaction.AddCreateEntity(dvLocation);
 
-                    dvIncident = CreateIncident(sd.IncidentNumber, sd.IncidentDate, "Sudden Death");
+                    dvIncident = CreateIncident(sd, "Sudden Death");
                     dvIncident.cp_incidentlocation = dvLocation.ToEntityReference();
                     transaction.AddCreateEntity(dvIncident);
                 }

@@ -14,9 +14,9 @@ namespace Common.Models.Queue
         public List<QueueContact> Contacts { get; set; }
         public List<QueueSuddenDeathProperty> Properties { get; set; }
 
-
         public string Id{ get; set; }
 
+        
         public string EnteredBy { get; set; }
 
         [JsonPropertyName("Action of next of Kin")]

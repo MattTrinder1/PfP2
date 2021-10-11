@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Common.Models.Business
 {
@@ -42,5 +43,10 @@ namespace Common.Models.Business
         public string IncidentNumber { get; set; }
 
         public DateTime? IncidentDate { get; set; }
+
+        public List<Guid> AdditionalOfficerIds { get; set; }
+        public string SingleOfficer { get; set; }
+        public string PrimaryOfficer { get; set; }
+
     }
 }

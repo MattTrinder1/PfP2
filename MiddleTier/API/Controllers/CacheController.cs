@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
+using System.Collections;
 using System.Net;
 
 namespace API.Controllers
@@ -42,6 +43,8 @@ namespace API.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, new ApiError(e.Message));
             }
         }
+
+        
 
         [HttpPatch("removeintegrationkey/{key}")]
         public ActionResult RemoveIntegrationKeyFromCache(string key)
