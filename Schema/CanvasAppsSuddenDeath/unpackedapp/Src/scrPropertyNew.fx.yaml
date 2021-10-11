@@ -1,0 +1,432 @@
+"scrPropertyNew As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    Fill: =RGBA(245, 245, 245, 1)
+    OnHidden: |-
+        =UpdateContext({canvasVisible:false})
+    OnVisible: |
+        =UpdateContext({canvasVisible: true});
+
+    Canvas2_10 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =968
+        Visible: =canvasVisible
+        Width: =Parent.Width
+        Y: =lblHeaderDeceased_6.Y + lblHeaderDeceased_6.Height
+        ZIndex: =3
+
+        DataCard96 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =866
+            Width: =640
+            X: =0
+            Y: =0
+            ZIndex: =3
+
+            txtAddPropertyDescription As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Property offline',PropertyKey=Property_Key And SuddenDeathKey=Sudden_Primary_key).PropertyDescription
+                Height: =200
+                Label: ="Property Description"
+                Singleline: =false
+                ZIndex: =1
+
+            imgProperty As ImageManager:
+                Image: =LookUp('Property offline',PropertyKey=Property_Key And SuddenDeathKey=Sudden_Primary_key).PhotoProperty
+                Y: =388
+                ZIndex: =5
+
+            Group53 As group:
+                Height: =5
+                Width: =5
+                X: =60
+                Y: =60
+                ZIndex: =6
+
+                radPropertyAction As radio:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    BorderThickness: =2
+                    Default: =LookUp('Property offline',PropertyKey=Property_Key And SuddenDeathKey=Sudden_Primary_key).IsDisposedOrRetained
+                    Fill: =If(IsBlank(Self.Selected.Value),LightGoldenRodYellow,White)
+                    Height: =140
+                    Items: =["To be disposed of","To be retained by next of kin","Seized"]
+                    OnChange: =
+                    OnSelect: |
+                        =
+                        
+                        
+                        
+                        
+                        
+                        
+                    RadioBorderColor: =RGBA(128, 128, 128, 1)
+                    RadioSize: =40
+                    Size: =19
+                    Width: =545
+                    X: =40
+                    Y: =236
+                    ZIndex: =2
+
+                Lbl_asteriks_33 As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =32
+                    Size: =20
+                    Text: ="*"
+                    Width: =25
+                    X: =565
+                    Y: =203
+                    ZIndex: =3
+
+                Label2_40 As label:
+                    Height: =36
+                    Size: =19
+                    Text: ="Action"
+                    Width: =475
+                    X: =40
+                    Y: =200
+                    ZIndex: =4
+
+        DataCard104 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radPropertyAction.Selected.Value <> "Seized"
+            Width: =640
+            X: =0
+            Y: =1
+            ZIndex: =4
+
+            txtAddPropertyLocation As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Property offline',PropertyKey=Property_Key And SuddenDeathKey=Sudden_Primary_key).PropertyLocation
+                Label: ="Location"
+                Visible: =true
+                ZIndex: =1
+
+        DataCard105 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =Or(radPropertyAction.Selected.Value <> "Seized" ,And(radPropertyAction.Selected.Value = "Seized",radAddPropertyAuthorisation.SelectedText ="Yes"))
+            Width: =640
+            X: =0
+            Y: =5
+            ZIndex: =5
+
+            txtAddPropertyRetainedBy As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Property offline',PropertyKey=Property_Key And SuddenDeathKey=Sudden_Primary_key).PersonAuthorisingProperty
+                Label: =If (radPropertyAction.Selected.Value = "Seized","Person authorising disposal","Retained by")
+                ZIndex: =1
+
+        DataCard106 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =Or(radPropertyAction.Selected.Value <> "Seized" ,And(radPropertyAction.Selected.Value = "Seized",radAddPropertyAuthorisation.SelectedText ="Yes"))
+            Width: =640
+            X: =0
+            Y: =6
+            ZIndex: =6
+
+            txtAddPropertyRelationship As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Property offline',PropertyKey=Property_Key And SuddenDeathKey=Sudden_Primary_key).PropertyRelationshipToDeceased
+                Label: ="Relationship to deceased"
+                ZIndex: =1
+
+        DataCard107 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =Or(radPropertyAction.Selected.Value <> "Seized" ,And(radPropertyAction.Selected.Value = "Seized",radAddPropertyAuthorisation.SelectedText ="Yes"))
+            Width: =640
+            X: =0
+            Y: =7
+            ZIndex: =7
+
+            dtpAddPropertyDate As ValidatingDateTimePicker:
+                DefaultDateValue: =LookUp('Property offline',PropertyKey=Property_Key And SuddenDeathKey=Sudden_Primary_key).PropertyDate    
+                Label: ="Date"
+                Mandatory: =false
+
+        DataCard108 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =And(CountRows(Filter(PropertySignatures,Key = Sudden_Primary_key And PropertyKey = Property_Key)) = 0,radPropertyAction.Selected.Value <> "Seized")
+            Width: =640
+            X: =0
+            Y: =8
+            ZIndex: =8
+
+            Btn_save_37 As button:
+                DisplayMode: |-
+                    =/*If(
+                        And(
+                            (Radio_Identification_completion_1.Selected.Value = "Yes" 
+                            And !IsBlank(Drpdn_title_2.Selected.cp_name) 
+                            And !IsBlank(Txt_forename_1.Text) 
+                            And !IsBlank(Txt_surname_1.Text) 
+                            And !IsBlank(Text(DatePicker_dob_1.SelectedDate)) 
+                            And !IsBlank(Txt_housename_1.Text) 
+                            And !IsBlank(Txt_address_1.Text) 
+                            And !IsBlank(Txt_town_2.Text) 
+                            And !IsBlank(Txt_county_2.Text) 
+                            And !IsBlank(Txt_pobox_2.Text) 
+                            And !IsBlank(Coombobox_country_2.Selected.cp_name) 
+                            And (!IsBlank(Txt_homeph_4.Text) 
+                                Or !IsBlank(Txt_workphone_4.Text) 
+                                Or !IsBlank(Txt_mobileph_4.Text) 
+                                Or !IsBlank(Txt_mail_4.Text)) 
+                            And !IsBlank(Drpdn_pref_contact_method_1.Selected.cp_name) 
+                            And !IsBlank(Radio_retired_1.Selected.Value) 
+                            And !IsBlank(Txt_deceased_relathionship_duration_1.Text) 
+                            And !IsBlank(Txt_relationship_deceased_1.Text) 
+                            And Len(Txt_Deceased_detailsforename.Text) > 0 
+                            And Len(Txt_Deceased_details_surname.Text) > 0 
+                            And Len(Text(Datepicker_Deceased_details_dob.SelectedDate)) > 0 
+                            And Len(Txt_Deceased_details_address.Text) > 0 
+                            And Len(Txt_Deceased_details_housename.Text) > 0 
+                            And Len(Txt_Deceased_details_town.Text) > 0 
+                            And Len(Txt_Deceased_details_county.Text) > 0 
+                            And Len(Txt_Deceased_details_pobox.Text) > 0 
+                            And Len(Coombobox_country_3.Selected.cp_name) > 0 
+                            And Len(Dropdown_dec_gender.Selected.cp_name) > 0 
+                            And Len(Dropdown_def_ethnicity.Selected.cp_name) > 0 
+                            And Len(Dropdown_def_ethnicity.Selected.cp_name) > 0 
+                            And Len(txtDeceasedOccupation.Text) > 0 
+                            And Len(Dropdown_Maritalstatus.Selected.cp_name) > 0) 
+                            
+                            Or Radio_Identification_completion_1.Selected.Value = "No",
+                            LookUp(
+                                Contactoffline,
+                                Key = Drpdn_incident_key_2.Selected.Key And LookUp(
+                                    'Sudden death offline',
+                                    Key = Drpdn_incident_key_2.Selected.Key
+                                ).IdentifierContactKey in ContactKey
+                            ).identificationsignature = Blank()
+                        ),
+                        DisplayMode.Edit,
+                        DisplayMode.Disabled
+                    )*/
+                    DisplayMode.Edit
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =57
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =UpdateContext({propertySignatureVisible:true});
+                Size: =24
+                Text: ="Click to Sign"
+                Width: =388
+                X: =112
+                Y: =20
+                ZIndex: =1
+
+        DataCard109 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =376
+            Visible: =And(CountRows(Filter(PropertySignatures,Key = Sudden_Primary_key And PropertyKey = Property_Key)) > 0,radPropertyAction.Selected.Value <> "Seized")
+            Width: =640
+            X: =0
+            Y: =9
+            ZIndex: =9
+
+            imgAddPropertySignature As image:
+                Fill: =RGBA(255, 255, 255, 1)
+                Height: =320
+                Image: =LookUp(PropertySignatures,Key = Sudden_Primary_key And PropertyKey = Property_Key).propertySignature
+                Width: =545
+                X: =40
+                Y: =40
+                ZIndex: =1
+
+            Label10_1 As label:
+                Size: =19
+                Text: ="Signature"
+                Width: =560
+                X: =40
+                ZIndex: =2
+
+        DataCard110 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radPropertyAction.Selected.Value = "Seized"
+            Width: =640
+            X: =0
+            Y: =2
+            ZIndex: =10
+
+            txtAddPropertySeizedBy As ValidatingTextBoxNew:
+                Label: ="Seized by"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard111 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radPropertyAction.Selected.Value = "Seized"
+            Width: =640
+            X: =0
+            Y: =3
+            ZIndex: =11
+
+            txtAddPropertyExhibitNumber As ValidatingTextBoxNew:
+                Label: ="Exhibit number"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard112 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radPropertyAction.Selected.Value = "Seized"
+            Width: =640
+            X: =0
+            Y: =4
+            ZIndex: =12
+
+            radAddPropertyAuthorisation As ValidatingYesKnowUnknown:
+                IncludeUnknown: =false
+                Label: ="Authorisation for destruction required ?"
+                Mandatory: =false
+                ZIndex: =1
+
+    lblHeaderDeceased_6 As label:
+        Align: =Align.Center
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =88
+        Size: =27
+        Text: =If (IsBlank(Sudden_Primary_key),"Property","Property No." & Property_Key & Char(10) & "("  &  Sudden_Primary_key & ")")
+        Width: =Parent.Width
+        ZIndex: =4
+
+    Btn_save_36 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =70
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |
+            =UpdateIf(
+                'Property offline',
+                PropertyKey = Property_Key And SuddenDeathKey = Sudden_Primary_key,
+                {
+                    PhotoProperty: imgProperty.NewImage,
+                    PropertyDescription: txtAddPropertyDescription.Text,
+                    IsDisposedOrRetained: radPropertyAction.Selected.Value,
+                    PropertyLocation: txtAddPropertyLocation.Text,
+                    PersonAuthorisingProperty: txtAddPropertyRetainedBy.Text,
+                    PropertyRelationshipToDeceased: txtAddPropertyRelationship.Text,
+                    PropertyDate: dtpAddPropertyDate.SelectedDateTime,
+                    PropertySignature: imgAddPropertySignature.Image,
+                    Subjecttoinvestigation: radAddPropertyAuthorisation.SelectedText,
+                    seizedby: txtAddPropertySeizedBy.Text,
+                    exhibitnumber: txtAddPropertyExhibitNumber.Text,
+                    Propertynumber: Property_Key
+                }
+            );
+            SaveData(
+                'Property offline',
+                "Property offline"
+            );
+            Navigate(Scr_properties);
+        Size: =24
+        Text: ="Save and continue"
+        Width: =545
+        X: =40
+        Y: =1057
+        ZIndex: =5
+
+    Icon3_18 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_properties);
+        X: =31
+        Y: =13
+        ZIndex: =6
+
+    contPropertySignature As groupContainer.manualLayoutContainer:
+        DisplayMode: =DisplayMode.Edit
+        Fill: =RGBA(0, 0, 0, 0.8)
+        Height: =1048
+        LayoutDirection: =LayoutDirection.Horizontal
+        LayoutMode: =LayoutMode.Manual
+        Visible: =propertySignatureVisible
+        Width: =640
+        Y: =88
+        ZIndex: =7
+
+        Group2_1 As group:
+            Height: =5
+            Width: =5
+            X: =60
+            Y: =-360
+            ZIndex: =4
+
+            penPropertySignature As inkControl:
+                Fill: =RGBA(255, 255, 255, 1)
+                Height: =388
+                OnSelect: |-
+                    =UpdateContext({identificationSigned:true});
+                ShowControls: =false
+                Width: =558
+                X: =40
+                Y: =237
+                ZIndex: =1
+
+            btnPropertyAcceptSignature As button:
+                DisplayMode: =If(identificationSigned,DisplayMode.Edit,DisplayMode.Disabled)
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =65
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |
+                    =Reset(penPropertySignature);
+                    UpdateContext({propertySignatureVisible: false});
+                    Collect(
+                        PropertySignatures,
+                        {
+                            Key: Sudden_Primary_key,
+                            PropertyKey: Property_Key,
+                            propertySignature: penPropertySignature.Image,
+                            signatureDate: Now()
+                        }
+                    );
+                Size: =24
+                Text: ="Accept"
+                Width: =314
+                X: =40
+                Y: =637
+                ZIndex: =2
+
+            btnPropertyCancelSignature As button:
+                DisplayMode: =
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =65
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =Reset(penPropertySignature); UpdateContext({propertySignatureVisible:false});
+                Size: =24
+                Text: ="Cancel"
+                Width: =168
+                X: =430
+                Y: =637
+                ZIndex: =3
+

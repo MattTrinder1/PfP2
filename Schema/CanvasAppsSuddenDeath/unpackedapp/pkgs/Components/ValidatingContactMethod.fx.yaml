@@ -1,0 +1,284 @@
+ValidatingContactMethod As CanvasComponent:
+    DefaultEmailAddress: =""
+    DefaultHomePhone: =""
+    DefaultMobilePhone: =""
+    DefaultWorkPhone: =""
+    Editable: =true
+    EmailAddress: =txtEmailAddress.Text
+    Fill: =RGBA(0, 0, 0, 0)
+    Height: =460
+    HomePhone: =txtHomePhone.Text
+    Mandatory: =true
+    MobilePhone: =txtMobilePhone.Text
+    OnReset: =Reset(txtEmailAddress);Reset(txtHomePhone);Reset(txtMobilePhone);Reset(txtWorkPhone);
+    Width: =640
+    WorkPhone: =txtWorkPhone.Text
+    X: =0
+    Y: =0
+    ZIndex: =6
+
+    lblAsterisk_1 As label:
+        Align: =Center
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =37
+        PaddingBottom: =1
+        PaddingLeft: =1
+        PaddingRight: =1
+        PaddingTop: =1
+        Size: =20
+        Text: ="*"
+        Visible: =Parent.Mandatory
+        Width: =25
+        X: =txtHomePhone.Width+txtHomePhone.X-20
+        Y: =5
+        ZIndex: =1
+
+    Rectangle1_3 As rectangle:
+        BorderColor: =RGBA(179, 179, 179, 1)
+        BorderThickness: =1
+        Fill: =If(Parent.Mandatory, If(!IsBlank(txtHomePhone.Text) Or !IsBlank(txtWorkPhone.Text) Or !IsBlank(txtMobilePhone.Text) Or !IsBlank(txtEmailAddress.Text), Transparent,LightGoldenRodYellow),White)
+        Height: =406
+        Width: =545
+        X: =40
+        Y: =42
+        ZIndex: =2
+
+    txtEmailAddress As text:
+        BorderColor: =RGBA(153, 153, 153, 1)  
+        Default: =Parent.DefaultEmailAddress
+        DisplayMode: =If(ValidatingContactMethod.Editable, DisplayMode.Edit,DisplayMode.Disabled)
+        Fill: |-
+            =If(
+                IsBlank(Self.Text),
+                White,
+                If(
+                    IsMatch(
+                        Self.Text,
+                        Email
+                    ),
+                    RGBA(
+                        187,
+                        221,
+                        140,
+                        1
+                    ),
+                    RGBA(
+                        245,
+                        154,
+                        154,
+                        1
+                    )
+                )
+            )
+        Height: |
+            =55
+        HintText: =""
+        MaxLength: =100 
+        RadiusBottomLeft: =0
+        RadiusBottomRight: =0
+        RadiusTopLeft: =0
+        RadiusTopRight: =0
+        Size: =19
+        Width: |
+            =535
+        X: =45
+        Y: =375
+        ZIndex: =3
+
+    lblLabel_6 As label:
+        Height: =45
+        PaddingLeft: =1
+        PaddingRight: =1
+        PaddingTop: =1
+        Size: =19
+        Text: ="Email address"
+        Visible: =Len(lblLabel_6.Text)>0
+        Width: |
+            =535
+        X: =45
+        Y: =335
+        ZIndex: =4
+
+    txtHomePhone As text:
+        BorderColor: =RGBA(153, 153, 153, 1)  
+        Default: =Parent.DefaultHomePhone
+        DisplayMode: =If(ValidatingContactMethod.Editable, DisplayMode.Edit,DisplayMode.Disabled)
+        Fill: |-
+            =If(
+                IsBlank(Self.Text),
+                White,
+                If(
+                    IsMatch(
+                        Self.Text,
+                        "^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$"
+                    ),
+                    RGBA(
+                        187,
+                        221,
+                        140,
+                        1
+                    ),
+                    RGBA(
+                        245,
+                        154,
+                        154,
+                        1
+                    )
+                )
+            )
+        Height: |
+            =55
+        HintText: |-
+            ="###########"
+        MaxLength: =100
+        RadiusBottomLeft: =0
+        RadiusBottomRight: =0
+        RadiusTopLeft: =0
+        RadiusTopRight: =0
+        Size: =19
+        Width: |
+            =535
+        X: =45
+        Y: =90
+        ZIndex: =5
+
+    txtMobilePhone As text:
+        BorderColor: =RGBA(153, 153, 153, 1)  
+        Default: =Parent.DefaultMobilePhone
+        DisplayMode: =If(ValidatingContactMethod.Editable, DisplayMode.Edit,DisplayMode.Disabled)
+        Fill: |-
+            =If(
+                IsBlank(Self.Text),
+                White,
+                If(
+                    IsMatch(
+                        Self.Text,
+                        "^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$"
+                    ),
+                    RGBA(
+                        187,
+                        221,
+                        140,
+                        1
+                    ),
+                    RGBA(
+                        245,
+                        154,
+                        154,
+                        1
+                    )
+                )
+            )
+        Height: |
+            =55
+        HintText: |-
+            ="###########"
+        MaxLength: =100
+        RadiusBottomLeft: =0
+        RadiusBottomRight: =0
+        RadiusTopLeft: =0
+        RadiusTopRight: =0
+        Size: =19
+        Width: |
+            =535
+        X: =45
+        Y: =280
+        ZIndex: =6
+
+    lblMobilePhone As label:
+        Height: =45
+        PaddingLeft: =1
+        PaddingRight: =1
+        PaddingTop: =1
+        Size: =19
+        Text: ="Mobile phone"
+        Visible: =Len(lblMobilePhone.Text)>0
+        Width: |
+            =535
+        X: =45
+        Y: =240
+        ZIndex: =7
+
+    txtWorkPhone As text:
+        BorderColor: =RGBA(153, 153, 153, 1)  
+        Default: =Parent.DefaultWorkPhone
+        DisplayMode: =If(ValidatingContactMethod.Editable, DisplayMode.Edit,DisplayMode.Disabled)
+        Fill: |-
+            =If(
+                IsBlank(Self.Text),
+                White,
+                If(
+                    IsMatch(
+                        Self.Text,
+                        "^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$"
+                    ),
+                    RGBA(
+                        187,
+                        221,
+                        140,
+                        1
+                    ),
+                    RGBA(
+                        245,
+                        154,
+                        154,
+                        1
+                    )
+                )
+            )
+        Height: |
+            =55
+        HintText: |-
+            ="###########"
+        MaxLength: =100
+        RadiusBottomLeft: =0
+        RadiusBottomRight: =0
+        RadiusTopLeft: =0
+        RadiusTopRight: =0
+        Size: =19
+        Width: |
+            =535
+        X: =45
+        Y: =185
+        ZIndex: =8
+
+    lblLabel_4 As label:
+        Height: =45
+        PaddingLeft: =1
+        PaddingRight: =1
+        PaddingTop: =1
+        Size: =19
+        Text: ="Work phone"
+        Visible: =Len(lblLabel_4.Text)>0
+        Width: |
+            =535
+        X: =45
+        Y: =145
+        ZIndex: =9
+
+    lblLabel_3 As label:
+        Height: =45
+        PaddingLeft: =1
+        PaddingRight: =1
+        PaddingTop: =1
+        Size: =19
+        Text: ="Home phone"
+        Visible: =Len(lblLabel_3.Text)>0
+        Width: |
+            =535
+        X: =45
+        Y: =50
+        ZIndex: =10
+
+    lblLabel_5 As label:
+        Height: =45
+        PaddingLeft: =1
+        PaddingRight: =1
+        PaddingTop: =1
+        Size: =19
+        Text: ="Contact method"
+        Visible: =Len(lblLabel_5.Text)>0
+        Width: =476
+        X: =40
+        ZIndex: =11
+

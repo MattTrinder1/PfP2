@@ -1,0 +1,703 @@
+"scrDeceasedNew As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    Fill: =RGBA(245, 245, 245, 1)
+    OnHidden: |-
+        =UpdateContext({canvasVisible:false})
+    OnVisible: |
+        =UpdateContext({canvasVisible: true});
+
+    Canvas2_1 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =958
+        Visible: =canvasVisible
+        Width: =Parent.Width
+        Y: =lblHeaderDeceased.Y + lblHeaderDeceased.Height
+        ZIndex: =3
+
+        DataCard36 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            radDeceasedDetailsKnown As ValidatingYesKnowUnknown:
+                Default: =LookUp(Contactoffline,Key=Sudden_Primary_key And  Contactrolename="Deceased").Deceaseddetailsknown
+                IncludeUnknown: =false
+                Label: ="Are deceased details known ?"
+                ZIndex: =1
+
+        DataCard37 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =2
+            ZIndex: =2
+
+            drpDeceasedTitle As ValidatingDropDown:
+                Default: |-
+                    =LookUp(
+                        Contactoffline,
+                        Key = Sudden_Primary_key And Contactrolename = "Deceased"
+                    ).Titlename
+                Items: =StaffTitleoffline
+                Label: ="Title"
+                Mandatory: =radDeceasedDetailsKnown.SelectedText = "Yes"    
+
+        DataCard38 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =4
+            ZIndex: =3
+
+            txtDeceasedForename As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key=Sudden_Primary_key And  Contactrolename="Deceased").Forename
+                Label: ="Forename"
+                Mandatory: =radDeceasedDetailsKnown.SelectedText = "Yes"
+                ZIndex: =1
+
+        DataCard39 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =5
+            ZIndex: =4
+
+            txtDeceasedSurname As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key=Sudden_Primary_key And  Contactrolename="Deceased").Surname
+                Label: ="Surname"
+                Mandatory: =radDeceasedDetailsKnown.SelectedText = "Yes"
+                ZIndex: =1
+
+        DataCard40 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =6
+            ZIndex: =5
+
+            radDeceasedAdditionalNames As ValidatingYesKnowUnknown:
+                Default: =LookUp(Contactoffline,Key=Sudden_Primary_key And  Contactrolename="Deceased").HasAdditionalNames
+                IncludeUnknown: =false
+                Label: ="Additional names ?"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard41 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radDeceasedAdditionalNames.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =7
+            ZIndex: =6
+
+            txtDeceasedAdditionalNames As ValidatingTextBoxNew:
+                Label: ="Additional names"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard42 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =8
+            ZIndex: =7
+
+            dtpDeceasedDateOfBirth As ValidatingDateTimePicker:
+                DefaultDateValue: =LookUp(Contactoffline,Key=Sudden_Primary_key And  Contactrolename="Deceased").'Date of Birth'
+                InlcudeAge: =true
+                Label: ="Date of birth"
+                Mandatory: =radDeceasedDetailsKnown.SelectedText = "Yes"    
+
+        DataCard43 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =9
+            ZIndex: =8
+
+            txtDeceasedHouseNameOrNumber As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key=Sudden_Primary_key And  Contactrolename="Deceased").Housename
+                Label: ="House name or number"
+                Mandatory: =radDeceasedDetailsKnown.SelectedText = "Yes"
+                ZIndex: =1
+
+        DataCard44 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =10
+            ZIndex: =9
+
+            txtDeceasedAddressAdditionalInfo As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key=Sudden_Primary_key And  Contactrolename="Deceased").Housenumber
+                Label: ="Additional address info"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard45 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =11
+            ZIndex: =10
+
+            txtDeceasedStreet As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key=Sudden_Primary_key And  Contactrolename="Deceased").Address1
+                Label: ="Street"
+                Mandatory: =radDeceasedDetailsKnown.SelectedText = "Yes"
+                ZIndex: =1
+
+        DataCard46 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            WidthFit: =false
+            X: =0
+            Y: =12
+            ZIndex: =11
+
+            txtDeceasedDistrict As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key=Sudden_Primary_key And  Contactrolename="Deceased").District
+                Label: ="District"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard47 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =13
+            ZIndex: =12
+
+            txtDeceasedTown1 As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key=Sudden_Primary_key And  Contactrolename="Deceased").Town
+                Label: ="Town"
+                Mandatory: =radDeceasedDetailsKnown.SelectedText = "Yes"
+                ZIndex: =1
+
+        DataCard48 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =14
+            ZIndex: =13
+
+            txtDeceasedCounty As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key=Sudden_Primary_key And  Contactrolename="Deceased").County
+                Label: ="County"
+                Mandatory: =radDeceasedDetailsKnown.SelectedText = "Yes"
+                ZIndex: =1
+
+        DataCard49 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =15
+            ZIndex: =14
+
+            txtDeceasedPostcode As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key=Sudden_Primary_key And  Contactrolename="Deceased").pcode
+                Label: ="Postcode"
+                Mandatory: =radDeceasedDetailsKnown.SelectedText = "Yes"
+                ZIndex: =1
+
+        DataCard50 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =16
+            ZIndex: =15
+
+            drpDeceasedCountry As ValidatingDropDown:
+                Default: =LookUp(Contactoffline,Key=Sudden_Primary_key And Contactrolename="Deceased").Country
+                Items: =countriesoffline
+                Label: ="Country"
+                Mandatory: =radDeceasedDetailsKnown.SelectedText = "Yes"    
+
+        DataCard51 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =17
+            ZIndex: =16
+
+            drpDeceasedGender As ValidatingDropDown:
+                Default: =LookUp(Contactoffline,Key=Sudden_Primary_key And Contactrolename="Deceased").Gendername
+                Items: =Genderoffline
+                Label: ="Gender"
+                Mandatory: =radDeceasedDetailsKnown.SelectedText = "Yes"
+
+        DataCard52 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =18
+            ZIndex: =17
+
+            drpDeceasedOfficerDefinedEthnicity As ValidatingDropDown:
+                Default: =LookUp(Contactoffline,Key=Sudden_Primary_key And  Contactrolename="Deceased").OfficerDefinedEthnicityname
+                Items: =PerceivedEthnicityoffline
+                Label: ="Officer-defined ethnicity"
+                Mandatory: =radDeceasedDetailsKnown.SelectedText = "Yes"
+
+        DataCard53 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =19
+            ZIndex: =18
+
+            txtDeceasedPlaceOfBirth As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key=Sudden_Primary_key And  Contactrolename="Deceased").placeofbirth
+                Label: ="Place of birth"
+                Mandatory: =false
+                ZIndex: =1
+
+        cardDeceasedRetired As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =20
+            ZIndex: =19
+
+            radDeceasedRetired As ValidatingYesKnowUnknown:
+                Default: =LookUp(Contactoffline,Key=Sudden_Primary_key And  Contactrolename="Deceased").Retired
+                IncludeUnknown: =false
+                Label: ="Retired ?"
+                Mandatory: =radDeceasedDetailsKnown.SelectedText = "Yes"
+                ZIndex: =1
+
+        DataCard55 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =21
+            ZIndex: =20
+
+            txtDeceasedOccupationFormerOccupation As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key=Sudden_Primary_key And  Contactrolename="Deceased").Formeroccupationname  
+                Label: ="Occupation / former occupation"
+                Mandatory: =radDeceasedDetailsKnown.SelectedText = "Yes"
+                ZIndex: =1
+
+        DataCard56 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =22
+            ZIndex: =21
+
+            drpDeceasedMaritalStatus As ValidatingDropDown:
+                Default: =LookUp(Contactoffline,Key=Sudden_Primary_key And  Contactrolename="Deceased").MaritalStatus
+                Items: =Maritaloffline
+                Label: ="Marital Status"
+                Mandatory: =radDeceasedDetailsKnown.SelectedText = "Yes"
+
+        DataCard57 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =23
+            ZIndex: =22
+
+            txtDeceasedBodyLabel As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key=Sudden_Primary_key And  Contactrolename="Deceased").DeceasedBodyLabel
+                Label: ="Body label"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard54 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =177
+            Visible: =radDeceasedDetailsKnown.SelectedText = "No"
+            Width: =640
+            X: =0
+            Y: =1
+            ZIndex: =23
+
+            txtDeceasedStepTaken As ValidatingTextBoxNew:
+                Height: =177
+                Label: ="Steps taken to formally identify"
+                Singleline: =false
+                ZIndex: =1
+
+    lblHeaderDeceased As label:
+        Align: =Align.Center
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =88
+        Size: =27
+        Text: =radDeceasedDetailsKnown.SelectedText//If (IsBlank(Sudden_Primary_key),"Deceased","Deceased"& Char(10) & "("  &  Sudden_Primary_key & ")")
+        Width: =Parent.Width
+        ZIndex: =4
+
+    Btn_save_29 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =70
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |-
+            =If(
+                Len(
+                    LookUp(
+                        Contactoffline,
+                        Contactrolename = "Deceased" And Key = Sudden_Primary_key
+                    ).Contactrolename
+                ) > 0,
+                UpdateIf(
+                    'Sudden death offline',
+                    Key = Sudden_Primary_key,
+                    {'Formal Identification steps': txtDeceasedStepTaken.Text}
+                );
+                UpdateIf(
+                    Contactoffline,
+                    Key = Sudden_Primary_key And Contactrolename = "Deceased",
+                    {
+                        Title: drpDeceasedTitle.SelectedId,
+                        Titlename: drpDeceasedTitle.SelectedDisplayValue,
+                        Forename: txtDeceasedForename.Text,
+                        Surname: txtDeceasedSurname.Text,
+                        Fullname: txtDeceasedSurname.Text & " " & txtDeceasedForename.Text,
+                        AdditionalNames: txtDeceasedAdditionalNames.Text,
+                        HasAdditionalNames: radDeceasedAdditionalNames.SelectedText,
+                        'Date of Birth': dtpDeceasedDateOfBirth.SelectedDateTime,
+                        Housename: txtDeceasedHouseNameOrNumber.Text,
+                        Housenumber: txtDeceasedAddressAdditionalInfo.Text,
+                        Address1: txtDeceasedStreet.Text,
+                        District: txtDeceasedDistrict.Text,
+                        Town: txtDeceasedTown1.Text,
+                        County: txtDeceasedCounty.Text,
+                        pcode: Upper(txtDeceasedPostcode.Text),
+                        Country: drpDeceasedCountry.SelectedDisplayValue,
+                        Retired: radDeceasedRetired.SelectedText,
+                        Formeroccupationname: txtDeceasedOccupationFormerOccupation.Text,
+                        MaritalStatus: drpDeceasedMaritalStatus.SelectedDisplayValue,
+                        DeceasedBodyLabel: txtDeceasedBodyLabel.Text,
+                        Gender: drpDeceasedGender.SelectedId,
+                        Gendername: drpDeceasedGender.SelectedDisplayValue,
+                        Deceaseddetailsknown: radDeceasedDetailsKnown.SelectedText,
+                        OfficerDefinedEthnicityname: drpDeceasedOfficerDefinedEthnicity.SelectedDisplayValue,
+                        OfficerDefinedEthnicity: drpDeceasedOfficerDefinedEthnicity.SelectedId,
+                        identificationsignature: SampleImage,
+                        Contactrole: LookUp(
+                            ContactRoleoffline,
+                            displayValue= "Deceased"
+                        ).id,
+                        Contactrolename: "Deceased",
+                        //age: dtpDeceasedDateOfBirth.Age,
+                        placeofbirth: txtDeceasedPlaceOfBirth.Text
+                    }
+                );
+                ,
+                UpdateContext({newContactKey: GUID()});
+                Collect(
+                    Contactoffline,
+                    {
+                        Key: Sudden_Primary_key,
+                        ContactKey: newContactKey,
+                        Contactrole: LookUp(
+                            ContactRoleoffline,
+                            displayValue = "Deceased"
+                        ).id,
+                        Contactrolename: "Deceased",
+                        Title: drpDeceasedTitle.SelectedId,
+                        Titlename: drpDeceasedTitle.SelectedDisplayValue,
+                        Forename: txtDeceasedForename.Text,
+                        Surname: txtDeceasedSurname.Text,
+                        Fullname: txtDeceasedSurname.Text & " " & txtDeceasedForename.Text,
+                        AdditionalNames: txtDeceasedAdditionalNames.Text,
+                        HasAdditionalNames: radDeceasedAdditionalNames.SelectedText,
+                        'Date of Birth': dtpDeceasedDateOfBirth.SelectedDateTime,
+                        Housename: txtDeceasedHouseNameOrNumber.Text,
+                        Housenumber: txtDeceasedAddressAdditionalInfo.Text,
+                        Address1: txtDeceasedStreet.Text,
+                        District: txtDeceasedDistrict.Text,
+                        Town: txtDeceasedTown1.Text,
+                        County: txtDeceasedCounty.Text,
+                        pcode: Upper(txtDeceasedPostcode.Text),
+                        Country: drpDeceasedCountry.SelectedDisplayValue,
+                        Retired: radDeceasedRetired.SelectedText,
+                        Formeroccupationname: txtDeceasedOccupationFormerOccupation.Text,
+                        MaritalStatus: drpDeceasedMaritalStatus.SelectedDisplayValue,
+                        DeceasedBodyLabel: txtDeceasedBodyLabel.Text,
+                        Deceaseddetailsknown: radDeceasedDetailsKnown.SelectedText,
+                        identificationsignature: SampleImage,
+                        OfficerDefinedEthnicityname: drpDeceasedOfficerDefinedEthnicity.SelectedDisplayValue,
+                        OfficerDefinedEthnicity: drpDeceasedOfficerDefinedEthnicity.SelectedId,
+                        Gender: drpDeceasedGender.SelectedId,
+                        Gendername: drpDeceasedGender.SelectedDisplayValue,
+                        //age: dtpDeceasedDateOfBirth.Age,
+                        placeofbirth: txtDeceasedPlaceOfBirth.Text
+                    }
+                );
+                UpdateIf(
+                    'Sudden death offline',
+                    Key = Sudden_Primary_key,
+                    {'Formal Identification steps': txtDeceasedStepTaken.Text}
+                );
+                Collect(
+                    UsedContactRoles,
+                    {
+                        Key: Sudden_Primary_key,
+                        Role: "Deceased"
+                    }
+                );
+                
+            );
+            UpdateContext(
+                {
+                    rec: LookUp(
+                        Contactoffline,
+                        Key = Sudden_Primary_key And Contactrolename = "Deceased"
+                    )
+                }
+            );
+            UpdateContext(
+                {
+                    suddenDeathRec: LookUp(
+                        'Sudden death offline',
+                        Key = Sudden_Primary_key
+                    )
+                }
+            );
+            UpdateIf(
+                'Sudden death offline',
+                Key = Sudden_Primary_key,
+                {
+                    deceasedValid: Or(
+                        And(
+                            rec.Deceaseddetailsknown = "No",
+                            !IsBlank(suddenDeathRec.'Formal Identification steps')
+                        ),
+                        And(
+                            rec.Deceaseddetailsknown = "Yes",
+                            !IsBlank(rec.Titlename),
+                            !IsBlank(rec.Forename),
+                            !IsBlank(rec.Surname),
+                            !IsBlank(rec.'Date of Birth'),
+                            !IsBlank(rec.Housename),
+                            !IsBlank(rec.Address1),
+                            !IsBlank(rec.Town),
+                            !IsBlank(rec.County),
+                            !IsBlank(rec.pcode),
+                            !IsBlank(rec.Gender),
+                            !IsBlank(rec.OfficerDefinedEthnicity),
+                            !IsBlank(rec.Country),
+                            !IsBlank(rec.Formeroccupationname),
+                            !IsBlank(rec.Country),
+                            !IsBlank(rec.MaritalStatus)
+                        )
+                    )
+                }
+            );
+            If (
+                rec.Deceaseddetailsknown = "No",
+                UpdateIf(
+                    'Sudden death offline',
+                    Key = Sudden_Primary_key,
+                    {identificationValid: true}
+                )
+            );
+            If (
+                rec.Deceaseddetailsknown = "Yes",
+                UpdateIf(
+                    'Sudden death offline',
+                    Key = Sudden_Primary_key,
+                    {identificationValid: false}
+                )
+            );
+            SaveData(
+                Contactoffline,
+                "Contactoffline"
+            );
+            SaveData(
+                'Sudden death offline',
+                "Sudden death offline"
+            );
+            
+            //back rather than home as we may have come from the people list rather than the home screen
+            Back();
+        Size: =24
+        Text: |-
+            =If(
+                Len(
+                    LookUp(
+                        Contactoffline,
+                        Contactrolename = "Deceased" And Key = Sudden_Primary_key
+                    ).Contactrolename
+                ) > 0,
+                "Update Deceased",
+                "Add Deceased"
+            )
+        Width: =545
+        X: =40
+        Y: =1057
+        ZIndex: =5
+
+    Icon3_9 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home);
+        X: =31
+        Y: =13
+        ZIndex: =6
+
+    Button1_2 As button:
+        Height: =70
+        OnSelect: |
+            =UpdateContext({newContactKey: GUID()});
+            Collect(
+                Contactoffline,
+                    //Defaults('Contact offline'),
+                {
+                    Key: Sudden_Primary_key,
+                    ContactKey: newContactKey,
+                    Contactrole: Left(
+                        Concat(
+                            Filter(
+                                ContactRoleoffline,
+                                displayValue = "Deceased"
+                            ).id,
+                        id & ","
+                        ),
+                        Len(
+                            Concat(
+                                Filter(
+                                    ContactRoleoffline,
+                                    displayValue = "Deceased"
+                                ).id,
+                                id & ","
+                            )
+                        ) - 1
+                    ),
+                    Contactrolename: "Deceased",
+                    //Title: "42ef51ab-6f59-eb11-a812-0022489ba6ad",
+                    Titlename: "Mr",
+                    Forename: "Drop Dead",
+                    Surname: "Fred",
+                    Fullname: "Fred Drop Dead",
+                    AdditionalNames: "Alan",
+                    HasAdditionalNames: "No",
+                    'Date of Birth': Date(1971,3,10),
+                    Housename: "House 100",
+                    Housenumber: "100",
+                    Address1: "Wolverton Road",
+                    District: "Stony Stratford",
+                    Town: "Milton Keynes",
+                    County: "Bucks",
+                    pcode: "MK11 1DW",
+                    Country: "United Kingdom",
+                    Retired: "No",
+                    Formeroccupationname: "IT Consultant",
+                    MaritalStatus: "Living in sin",
+                    DeceasedBodyLabel: "Body Label",
+                    Deceaseddetailsknown: "Yes",
+                    identificationsignature: SampleImage,
+                    OfficerDefinedEthnicityname: "White",
+                    OfficerDefinedEthnicity: "e76582fa-a158-eb11-a812-0022489ba6ad",
+                    Gender: "86ad3d5b-ad55-eb11-a812-000d3a654f72",
+                    Gendername: "Male",
+                    age: "50",
+                    placeofbirth: "Wallingford"
+                }
+            );
+            
+            //Select(Btn_save_29)
+        Size: =24
+        Text: ="1"
+        Visible: =glbDebug
+        Width: =121
+        X: =435
+        Y: =6
+        ZIndex: =7
+

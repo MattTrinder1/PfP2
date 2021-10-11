@@ -1,0 +1,465 @@
+"scrEditPersonNew As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    Fill: =RGBA(245, 245, 245, 1)
+    OnHidden: |-
+        =UpdateContext({canvasVisible:false})
+    OnVisible: |
+        =UpdateContext({canvasVisible: true});
+
+    Canvas2_4 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =958
+        Visible: =canvasVisible
+        Width: =Parent.Width
+        Y: =lblHeaderDeceased_3.Y + lblHeaderDeceased_3.Height
+        ZIndex: =3
+
+        DataCard83_1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            drpEditPersonContactRole As ValidatingMultiSelectDropDown:
+                DefaultItems: =Filter(ContactRoleoffline,displayValue in Split(LookUp(Contactoffline,ContactKey = EditContactKey).Contactrolename,","))
+                Items: |-
+                    =Filter(
+                        Filter(
+                            ContactRoleoffline,
+                            !(displayValue in ShowColumns(
+                                Filter(
+                                    UsedContactRoles,
+                                    Key = Sudden_Primary_key
+                                ),
+                                "Role"
+                            ))
+                        ),
+                        displayValue <> "Deceased"
+                    )
+                    //Filter(
+                    //    ContactRoleoffline,
+                    //    displayValue <> "Deceased"
+                    //)
+                Label: ="Role(s)"
+                ZIndex: =1
+
+        DataCard84_1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =1
+            ZIndex: =2
+
+            drpEditPersonTitle As ValidatingDropDown:
+                Default: =    LookUp(Contactoffline,ContactKey=EditContactKey).Titlename
+                Items: =StaffTitleoffline
+                Label: ="Title"
+
+        DataCard85_1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =2
+            ZIndex: =3
+
+            txtEditPersonForename As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,ContactKey=EditContactKey).Forename
+                Label: ="Forename"
+                ZIndex: =1
+
+        DataCard86_1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =3
+            ZIndex: =4
+
+            txtEditPersonSurname As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,ContactKey=EditContactKey).Surname
+                Label: ="Surname"
+                ZIndex: =1
+
+        DataCard87_1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =4
+            ZIndex: =5
+
+            dtpEditPersonDateOfBirth As ValidatingDateTimePicker:
+                DefaultDateValue: =LookUp(Contactoffline,ContactKey=EditContactKey).'Date of Birth'
+                Label: ="Date of birth"
+
+        DataCard88_1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =5
+            ZIndex: =6
+
+            txtEditPersonHouseNameOrNumber As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,ContactKey=EditContactKey).Housename
+                Label: ="House name or number"
+                ZIndex: =1
+
+        DataCard89_1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =6
+            ZIndex: =7
+
+            txtEditPersonAdditionalAddressInfo As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,ContactKey=EditContactKey).Housenumber
+                Label: ="Additional address info"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard90_1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =7
+            ZIndex: =8
+
+            txtEditPersonStreet As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,ContactKey=EditContactKey).Address1
+                Label: ="Street"
+                ZIndex: =1
+
+        DataCard91_1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =8
+            ZIndex: =9
+
+            txtEditPersonDistrict As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,ContactKey=EditContactKey).District
+                Label: ="District"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard92_1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =9
+            ZIndex: =10
+
+            txtEditPersonTown As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,ContactKey=EditContactKey).Town
+                Label: ="Town"
+                ZIndex: =1
+
+        DataCard93_1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =10
+            ZIndex: =11
+
+            txtEditPersonCounty As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,ContactKey=EditContactKey).County
+                Label: ="County"
+                ZIndex: =1
+
+        DataCard94_1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =11
+            ZIndex: =12
+
+            txtEditPersonPostcode As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,ContactKey=EditContactKey).pcode
+                Label: ="Postcode"
+                ZIndex: =1
+
+        DataCard95_1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =12
+            ZIndex: =13
+
+            drpEditPersonCountry As ValidatingDropDown:
+                Default: =    LookUp(Contactoffline,ContactKey=EditContactKey).Country
+                Items: =countriesoffline
+                Label: ="Country"
+
+        cardAddPersonContactMethod_1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =13
+            ZIndex: =14
+
+            ctmEditPersonContactMethod As ValidatingContactMethod:
+                ZIndex: =1
+
+        DataCard97_1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =14
+            ZIndex: =15
+
+            drpEditPersonPreferredContactMethod As ValidatingDropDown:
+                Default: =    LookUp(Contactoffline,ContactKey=EditContactKey).Preferedcontactmethodname
+                Items: =contactmethodoffline
+                Label: ="Preferred contact method"
+
+        DataCard98_1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =15
+            ZIndex: =16
+
+            radEditPersonRetired As ValidatingYesKnowUnknown:
+                Default: =LookUp(Contactoffline,ContactKey=EditContactKey).Retired
+                IncludeUnknown: =false
+                Label: ="Retired ?"
+                ZIndex: =1
+
+        DataCard99_1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =16
+            ZIndex: =17
+
+            txtEditPersonOccupation As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,ContactKey=EditContactKey).Formeroccupation
+                Label: ="Occupation / former occupation"
+                ZIndex: =1
+
+        DataCard100_1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =17
+            ZIndex: =18
+
+            txtEditPersonAdditionalInfo As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,ContactKey=EditContactKey).Additionalinfo
+                Label: ="Additional information"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard101_1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =18
+            ZIndex: =19
+
+            txtEditPersonHowLongKnown As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,ContactKey=EditContactKey).Deceasedrelationshipduration
+                Label: ="How long know deceased"
+                ZIndex: =1
+
+        DataCard102_1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =19
+            ZIndex: =20
+
+            txtEditPersonRelationship As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,ContactKey=EditContactKey).Deceasedrelathionship
+                Label: ="Relationship to deceased"
+                ZIndex: =1
+
+    lblHeaderDeceased_3 As label:
+        Align: =Align.Center
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =88
+        Size: =27
+        Text: = If (IsBlank(Sudden_Primary_key),"Edit Person","Edit Person"& Char(10) & "("  &  Sudden_Primary_key & ")")
+        Width: =Parent.Width
+        ZIndex: =4
+
+    Btn_save_32 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =70
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |
+            =If(
+                CountRows(
+                    Filter(
+                        Contactoffline,
+                        ContactKey = EditContactKey
+                    )
+                ) > 0,
+                UpdateIf(
+                    Contactoffline,
+                    ContactKey = EditContactKey,
+                    {
+                        /*Title: Drpdn_title.Selected.cp_lookupvalueid,
+                        Titlename: Drpdn_title.Selected.cp_name,
+                        Forename: Txt_forename.Text,
+                        Surname: Txt_surname.Text,
+                        Fullname: Txt_surname.Text & " " & Txt_forename.Text,
+                        'Date of Birth': DatePicker_dob.SelectedDate,
+                        Housename: Txt_housename.Text,
+                        Housenumber: Txt_houseno.Text,
+                        Address1: Txt_address.Text,
+                        District: Txt_district.Text,
+                        Town: Txt_town.Text,
+                        County: Txt_county.Text,
+                        pcode: Txt_pobox.Text,
+                        Country: Coombobox_country_1.Selected.cp_name,
+                        Homephone: Txt_homeph_3.Text,
+                        Workphone: Txt_workphone_3.Text,
+                        Mobile: Txt_mobileph_3.Text,
+                        EMail: Txt_mail_3.Text,
+                        Preferedcontactmethod: Drpdn_pref_contact_method.Selected.cp_lookupvalueid,
+                        Retired: Radio_retired.Selected.Value,
+                        Formeroccupationname: Txt_occupation_details.Text,
+                        Additionalinfo: Txt_additional_information.Text,
+                        Deceasedrelationshipduration: Txt_deceased_relathionship_duration.Text,
+                        Deceasedrelathionship: Txt_relationship_deceased.Text,*/
+                        Contactrole: drpEditPersonContactRole.SelectedIds,
+                        Contactrolename: drpEditPersonContactRole.SelectedDisplayValues
+                    }
+                )
+            );
+            Collect(
+                UsedContactRoles,
+                {
+                    Key: Sudden_Primary_key,
+                    Role: ""
+                }
+            );
+            RemoveIf(
+                UsedContactRoles,
+                Key = Sudden_Primary_key
+            );
+            ForAll(
+                Filter(
+                    Contactoffline,
+                    Key = Sudden_Primary_key
+                ),
+                ForAll(
+                    Split(
+                        ThisRecord.Contactrolename,
+                        ","
+                    ).Result As SplitRoles,
+                    Collect(
+                        UsedContactRoles,
+                        {
+                            Key: EditContactKey,
+                            Role: SplitRoles.Result
+                        }
+                    )
+                )
+            );
+            SaveData(
+                Contactoffline,
+                "Contactoffline"
+            );
+            SaveData(
+                'Sudden death offline',
+                "Sudden death offline"
+            );
+            Navigate(
+                Scr_role_colection
+            );
+        Size: =24
+        Text: ="Save and continue"
+        Width: =545
+        X: =40
+        Y: =1057
+        ZIndex: =5
+
+    Icon3_15 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home);
+        X: =31
+        Y: =13
+        ZIndex: =6
+

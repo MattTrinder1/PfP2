@@ -1,0 +1,999 @@
+"scrIdentificationNew As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    Fill: =RGBA(245, 245, 245, 0.5)
+    OnHidden: |-
+        =UpdateContext({canvasVisible:false})
+    OnVisible: |+
+        =UpdateContext({canvasVisible: true});
+        UpdateContext({identificationSignatureVisible: false});
+        UpdateContext({identificationSigned:false});
+        
+
+    Canvas2_5 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =958
+        Visible: =canvasVisible
+        Width: =Parent.Width
+        Y: =lblHeaderDeceased_4.Y + lblHeaderDeceased_4.Height
+        ZIndex: =3
+
+        DataCard83_2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            radIdentificationAbleToComplete As ValidatingYesKnowUnknown:
+                Default: =LookUp('Sudden death offline',Key = Sudden_Primary_key).'Formal identification'
+                Editable: =!cardIdentificationSignature.Visible
+                IncludeUnknown: =false
+                Label: ="Able to complete formal identification ?"
+                ZIndex: =1
+
+        DataCard84_2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radIdentificationAbleToComplete.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =1
+            ZIndex: =2
+
+            drpIdentificationTitle As ValidatingDropDown:
+                Default: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).Titlename 
+                Editable: =!cardIdentificationSignature.Visible
+                Items: =StaffTitleoffline
+                Label: ="Title"
+
+        DataCard85_2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radIdentificationAbleToComplete.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =2
+            ZIndex: =3
+
+            txtIdentificationForename As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).Forename    
+                Editable: =!cardIdentificationSignature.Visible
+                Label: ="Forename"
+                ZIndex: =1
+
+        DataCard86_2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radIdentificationAbleToComplete.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =3
+            ZIndex: =4
+
+            txtIdentificationSurname As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).Surname
+                Editable: =!cardIdentificationSignature.Visible
+                Label: ="Surname"
+                ZIndex: =1
+
+        DataCard87_2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radIdentificationAbleToComplete.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =4
+            ZIndex: =5
+
+            dtpIdentificationDateOfBirth As ValidatingDateTimePicker:
+                DefaultDateValue: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).'Date of Birth'
+                Editable: =!cardIdentificationSignature.Visible
+                InlcudeAge: =true
+                Label: ="Date of birth"
+
+        DataCard88_2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radIdentificationAbleToComplete.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =5
+            ZIndex: =6
+
+            txtIdentificationHouseNameOrNumber As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).Housename
+                Editable: =!cardIdentificationSignature.Visible
+                Label: ="House name or number"
+                ZIndex: =1
+
+        DataCard89_2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radIdentificationAbleToComplete.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =6
+            ZIndex: =7
+
+            txtIdentificationAdditionalAddressInfo As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).Housenumber
+                Editable: =!cardIdentificationSignature.Visible
+                Label: ="Additional address info"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard90_2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radIdentificationAbleToComplete.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =7
+            ZIndex: =8
+
+            txtIdentificationStreet As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).Address1
+                Editable: =!cardIdentificationSignature.Visible
+                Label: ="Street"
+                ZIndex: =1
+
+        DataCard91_2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radIdentificationAbleToComplete.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =8
+            ZIndex: =9
+
+            txtIdentificationDistrict As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).District
+                Editable: =!cardIdentificationSignature.Visible
+                Label: ="District"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard92_2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radIdentificationAbleToComplete.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =9
+            ZIndex: =10
+
+            txtIdentificationTown As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).Town
+                Editable: =!cardIdentificationSignature.Visible
+                Label: ="Town"
+                ZIndex: =1
+
+        DataCard93_2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radIdentificationAbleToComplete.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =10
+            ZIndex: =11
+
+            txtIdentificationCounty As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).County
+                Editable: =!cardIdentificationSignature.Visible
+                Label: ="County"
+                ZIndex: =1
+
+        DataCard94_2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radIdentificationAbleToComplete.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =11
+            ZIndex: =12
+
+            txtIdentificationPostcode As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).pcode
+                Editable: =!cardIdentificationSignature.Visible
+                Label: ="Postcode"
+                ZIndex: =1
+
+        DataCard95_2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radIdentificationAbleToComplete.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =12
+            ZIndex: =13
+
+            drpIdentificationCountry As ValidatingDropDown:
+                Default: =    LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).Country
+                Editable: =!cardIdentificationSignature.Visible
+                Items: =countriesoffline
+                Label: ="Country"
+
+        cardAddPersonContactMethod_2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radIdentificationAbleToComplete.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =13
+            ZIndex: =14
+
+            ctmIdentificationContactMethod As ValidatingContactMethod:
+                DefaultEmailAddress: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).EMail
+                DefaultHomePhone: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).Homephone
+                DefaultMobilePhone: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).Mobile
+                DefaultWorkPhone: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).Workphone
+                Editable: =!cardIdentificationSignature.Visible
+                ZIndex: =1
+
+        DataCard97_2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radIdentificationAbleToComplete.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =14
+            ZIndex: =15
+
+            drpIdentificationPreferredContactMethod As ValidatingDropDown:
+                Default: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).Preferedcontactmethodname
+                Editable: =!cardIdentificationSignature.Visible
+                Items: =contactmethodoffline
+                Label: ="Preferred contact method"
+
+        DataCard98_2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radIdentificationAbleToComplete.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =15
+            ZIndex: =16
+
+            radIdentificationRetired As ValidatingYesKnowUnknown:
+                Default: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).Retired
+                Editable: =!cardIdentificationSignature.Visible
+                IncludeUnknown: =false
+                Label: ="Retired ?"
+                ZIndex: =1
+
+        DataCard99_2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radIdentificationAbleToComplete.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =16
+            ZIndex: =17
+
+            txtIdentificationOccupation As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).Formeroccupation
+                Editable: =!cardIdentificationSignature.Visible
+                Label: ="Occupation / former occupation"
+                ZIndex: =1
+
+        DataCard100_2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radIdentificationAbleToComplete.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =17
+            ZIndex: =18
+
+            txtIdentificationAdditionalInfo As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).Additionalinfo
+                Editable: =!cardIdentificationSignature.Visible
+                Label: ="Additional information"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard101_2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radIdentificationAbleToComplete.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =18
+            ZIndex: =19
+
+            txtIdentificationHowLongKnown As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).Deceasedrelationshipduration
+                Editable: =!cardIdentificationSignature.Visible
+                Label: ="How long know deceased"
+                ZIndex: =1
+
+        DataCard102_2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radIdentificationAbleToComplete.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =19
+            ZIndex: =20
+
+            txtIdentificationRelationship As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).Deceasedrelathionship
+                Editable: =!cardIdentificationSignature.Visible
+                Label: ="Relationship to deceased"
+                ZIndex: =1
+
+        cardIdentificaitonStepsTaken As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =186
+            Visible: =radIdentificationAbleToComplete.SelectedText = "No"
+            Width: =640
+            X: =0
+            Y: =20
+            ZIndex: =21
+
+            txtIdentificationStepsTaken As ValidatingTextBoxNew:
+                Height: =186
+                Label: ="Steps take to formally identify"
+                Singleline: =false
+                ZIndex: =1
+
+        DataCard67 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radIdentificationAbleToComplete.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =21
+            ZIndex: =22
+
+            txtIdentificationLocation As ValidatingTextBoxNew:
+                DefaultText: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).Locationofid
+                Editable: =!cardIdentificationSignature.Visible
+                Label: ="Location of identification"
+                ZIndex: =1
+
+        DataCard20 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: |-
+                =If (
+                    And(
+                        LookUp(
+                            'Sudden death offline',
+                            Key = Sudden_Primary_key
+                        ).deceasedValid,
+                        LookUp(
+                            Contactoffline,
+                            Key = Sudden_Primary_key And Contactrolename = "Deceased"
+                        ).Deceaseddetailsknown = "Yes",
+                        !IsBlank(txtIdentificationForename.Text),
+                        !IsBlank(txtIdentificationSurname.Text),
+                        !IsBlank(dtpIdentificationDateOfBirth.SelectedDateTime),
+                        !IsBlank(txtIdentificationHouseNameOrNumber.Text),
+                        !IsBlank(txtIdentificationStreet.Text),
+                        !IsBlank(txtIdentificationTown.Text),
+                        !IsBlank(txtIdentificationCounty.Text),
+                        !IsBlank(txtIdentificationPostcode.Text),
+                        !IsBlank(drpIdentificationCountry.SelectedDisplayValue),
+                        Or(
+                            !IsBlank(ctmIdentificationContactMethod.HomePhone),
+                            !IsBlank(ctmIdentificationContactMethod.WorkPhone),
+                            !IsBlank(ctmIdentificationContactMethod.MobilePhone),
+                            !IsBlank(ctmIdentificationContactMethod.EmailAddress)
+                        ),
+                        !IsBlank(drpIdentificationPreferredContactMethod.SelectedDisplayValue),
+                        !IsBlank(radIdentificationRetired.SelectedText),
+                        !IsBlank(txtIdentificationOccupation.Text),
+                        !IsBlank(txtIdentificationHowLongKnown.Text),
+                        !IsBlank(txtIdentificationRelationship.Text),
+                        !IsBlank(txtIdentificationLocation.Text)
+                    ),
+                    DisplayMode.Edit,
+                    DisplayMode.Disabled
+                )
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =And(CountRows(Filter(IdentificationSignatures,Key = Sudden_Primary_key))=0,radIdentificationAbleToComplete.SelectedText = "Yes")
+            Width: =640
+            X: =0
+            Y: =22
+            ZIndex: =23
+
+            Btn_save_34 As button:
+                DisplayMode: |-
+                    =/*If(
+                        And(
+                            (Radio_Identification_completion_1.Selected.Value = "Yes" 
+                            And !IsBlank(Drpdn_title_2.Selected.cp_name) 
+                            And !IsBlank(Txt_forename_1.Text) 
+                            And !IsBlank(Txt_surname_1.Text) 
+                            And !IsBlank(Text(DatePicker_dob_1.SelectedDate)) 
+                            And !IsBlank(Txt_housename_1.Text) 
+                            And !IsBlank(Txt_address_1.Text) 
+                            And !IsBlank(Txt_town_2.Text) 
+                            And !IsBlank(Txt_county_2.Text) 
+                            And !IsBlank(Txt_pobox_2.Text) 
+                            And !IsBlank(Coombobox_country_2.Selected.cp_name) 
+                            And (!IsBlank(Txt_homeph_4.Text) 
+                                Or !IsBlank(Txt_workphone_4.Text) 
+                                Or !IsBlank(Txt_mobileph_4.Text) 
+                                Or !IsBlank(Txt_mail_4.Text)) 
+                            And !IsBlank(Drpdn_pref_contact_method_1.Selected.cp_name) 
+                            And !IsBlank(Radio_retired_1.Selected.Value) 
+                            And !IsBlank(Txt_deceased_relathionship_duration_1.Text) 
+                            And !IsBlank(Txt_relationship_deceased_1.Text) 
+                            And Len(Txt_Deceased_detailsforename.Text) > 0 
+                            And Len(Txt_Deceased_details_surname.Text) > 0 
+                            And Len(Text(Datepicker_Deceased_details_dob.SelectedDate)) > 0 
+                            And Len(Txt_Deceased_details_address.Text) > 0 
+                            And Len(Txt_Deceased_details_housename.Text) > 0 
+                            And Len(Txt_Deceased_details_town.Text) > 0 
+                            And Len(Txt_Deceased_details_county.Text) > 0 
+                            And Len(Txt_Deceased_details_pobox.Text) > 0 
+                            And Len(Coombobox_country_3.Selected.cp_name) > 0 
+                            And Len(Dropdown_dec_gender.Selected.cp_name) > 0 
+                            And Len(Dropdown_def_ethnicity.Selected.cp_name) > 0 
+                            And Len(Dropdown_def_ethnicity.Selected.cp_name) > 0 
+                            And Len(txtDeceasedOccupation.Text) > 0 
+                            And Len(Dropdown_Maritalstatus.Selected.cp_name) > 0) 
+                            
+                            Or Radio_Identification_completion_1.Selected.Value = "No",
+                            LookUp(
+                                Contactoffline,
+                                Key = Drpdn_incident_key_2.Selected.Key And LookUp(
+                                    'Sudden death offline',
+                                    Key = Drpdn_incident_key_2.Selected.Key
+                                ).IdentifierContactKey in ContactKey
+                            ).identificationsignature = Blank()
+                        ),
+                        DisplayMode.Edit,
+                        DisplayMode.Disabled
+                    )*/
+                    DisplayMode.Edit
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =70
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =UpdateContext({identificationSignatureVisible:true});
+                Size: =24
+                Text: ="Click to Sign"
+                Width: =388
+                X: =116
+                Y: =12
+                ZIndex: =1
+
+        cardIdentificationSignature As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =CountRows(Filter(IdentificationSignatures,Key = Sudden_Primary_key))>0
+            Width: =640
+            X: =0
+            Y: =23
+            ZIndex: =24
+
+            imgIdentificationSignature As image:
+                Fill: =RGBA(255, 255, 255, 1)
+                Height: =320
+                Image: =LookUp(IdentificationSignatures,Key = Sudden_Primary_key ).identificationSignature
+                Width: =545
+                X: =40
+                Y: =40
+                ZIndex: =1
+
+            Label10 As label:
+                Size: =19
+                Text: ="Signature"
+                Width: =560
+                X: =40
+                ZIndex: =2
+
+        DataCard75 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =CountRows(Filter(IdentificationSignatures,Key = Sudden_Primary_key))>0
+            Width: =640
+            X: =0
+            Y: =24
+            ZIndex: =25
+
+            dtpIdentificationSignatureDate As ValidatingDateTimePicker:
+                DefaultDateValue: =LookUp(IdentificationSignatures,Key = Sudden_Primary_key ).signatureDate
+                Editable: =false
+                Label: ="Signature Date"
+
+    lblHeaderDeceased_4 As label:
+        Align: =Align.Center
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =88
+        Size: =27
+        Text: =If (IsBlank(Sudden_Primary_key),"Identification","Identification"& Char(10) & "("  &  Sudden_Primary_key & ")")
+        Width: =Parent.Width
+        ZIndex: =4
+
+    Btn_save_33 As button:
+        DisplayMode: |
+            =If(IsBlank(LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).identificationsignature) ,DisplayMode.Edit,DisplayMode.Disabled)
+            /*If(
+                And(
+                    (Radio_Identification_completion_1.Selected.Value = "Yes" 
+                    And !IsBlank(Drpdn_title_2.Selected.cp_name) 
+                    And !IsBlank(Txt_forename_1.Text) 
+                    And !IsBlank(Txt_surname_1.Text) 
+                    And !IsBlank(Text(DatePicker_dob_1.SelectedDate)) 
+                    And !IsBlank(Txt_housename_1.Text) 
+                    And !IsBlank(Txt_address_1.Text) 
+                    And !IsBlank(Txt_town_2.Text) 
+                    And !IsBlank(Txt_county_2.Text) 
+                    And !IsBlank(Txt_pobox_2.Text) 
+                    And !IsBlank(Coombobox_country_2.Selected.cp_name) 
+                    And (!IsBlank(Txt_homeph_4.Text) 
+                        Or !IsBlank(Txt_workphone_4.Text) 
+                        Or !IsBlank(Txt_mobileph_4.Text) 
+                        Or !IsBlank(Txt_mail_4.Text)) 
+                    And !IsBlank(Drpdn_pref_contact_method_1.Selected.cp_name) 
+                    And !IsBlank(Radio_retired_1.Selected.Value) 
+                    And !IsBlank(Txt_deceased_relathionship_duration_1.Text) 
+                    And !IsBlank(Txt_relationship_deceased_1.Text) 
+                    And Len(Txt_Deceased_detailsforename.Text) > 0 
+                    And Len(Txt_Deceased_details_surname.Text) > 0 
+                    And Len(Text(Datepicker_Deceased_details_dob.SelectedDate)) > 0 
+                    And Len(Txt_Deceased_details_address.Text) > 0 
+                    And Len(Txt_Deceased_details_housename.Text) > 0 
+                    And Len(Txt_Deceased_details_town.Text) > 0 
+                    And Len(Txt_Deceased_details_county.Text) > 0 
+                    And Len(Txt_Deceased_details_pobox.Text) > 0 
+                    And Len(Coombobox_country_3.Selected.cp_name) > 0 
+                    And Len(Dropdown_dec_gender.Selected.cp_name) > 0 
+                    And Len(Dropdown_def_ethnicity.Selected.cp_name) > 0 
+                    And Len(Dropdown_def_ethnicity.Selected.cp_name) > 0 
+                    And Len(txtDeceasedOccupation.Text) > 0 
+                    And Len(Dropdown_Maritalstatus.Selected.cp_name) > 0) 
+                    
+                    Or Radio_Identification_completion_1.Selected.Value = "No",
+                    LookUp(
+                        Contactoffline,
+                        Key = Drpdn_incident_key_2.Selected.Key And LookUp(
+                            'Sudden death offline',
+                            Key = Drpdn_incident_key_2.Selected.Key
+                        ).IdentifierContactKey in ContactKey
+                    ).identificationsignature = Blank()
+                ),
+                DisplayMode.Edit,
+                DisplayMode.Disabled
+            )*/
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =70
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |-
+            =Set(
+                gblLockBackButton,
+                false
+            );
+            UpdateIf(
+                'Sudden death offline',
+                Key = Sudden_Primary_key,
+                {
+                    'Formal identification': radIdentificationAbleToComplete.SelectedText,
+                    'Formal Identification steps': txtIdentificationStepsTaken.Text
+                }
+            );
+            If(
+                radIdentificationAbleToComplete.SelectedText = "Yes",
+                UpdateIf(
+                    Contactoffline,
+                    Key = Sudden_Primary_key And ContactKey = GUID(
+                        LookUp(
+                            'Sudden death offline',
+                            Key = Sudden_Primary_key
+                        ).IdentifierContactKey
+                    )
+            
+            ,
+                    {
+                        Title: drpIdentificationTitle.SelectedId,
+                        Forename: txtIdentificationForename.Text,
+                        Surname: txtIdentificationSurname.Text,
+                        Fullname: txtIdentificationSurname.Text & " " & txtIdentificationForename.Text,
+                        Housename: txtIdentificationHouseNameOrNumber.Text,
+                        Housenumber: txtIdentificationAdditionalAddressInfo.Text,
+                        Address1: txtIdentificationStreet.Text,
+                        District: txtIdentificationDistrict.Text,
+                        Town: txtIdentificationTown.Text,
+                        County: txtIdentificationCounty.Text,
+                        pcode: txtIdentificationPostcode.Text,
+                        'Date of Birth': dtpIdentificationDateOfBirth.SelectedDateTime,
+                        Country: drpIdentificationCountry.SelectedDisplayValue,
+                        Countryid: drpIdentificationCountry.SelectedId,
+                        Homephone: ctmIdentificationContactMethod.HomePhone,
+                        Workphone: ctmIdentificationContactMethod.WorkPhone,
+                        Mobile: ctmIdentificationContactMethod.MobilePhone,
+                        EMail: ctmIdentificationContactMethod.EmailAddress,
+                        Preferedcontactmethod: drpIdentificationPreferredContactMethod.SelectedId,
+                        Preferedcontactmethodname: drpIdentificationPreferredContactMethod.SelectedDisplayValue,
+                        Retired: radIdentificationRetired.SelectedText,
+                        Formeroccupation: txtIdentificationOccupation.Text,
+                        Additionalinfo: txtIdentificationAdditionalInfo.Text,
+                        Deceasedrelationshipduration: txtIdentificationHowLongKnown.Text,
+                        Deceasedrelathionship: txtIdentificationRelationship.Text,
+                        identificationsignature: imgIdentificationSignature.Image,
+                        signdate: dtpIdentificationSignatureDate.SelectedDateTime,
+                        Locationofid: txtIdentificationLocation.Text
+                    }
+                );
+                //TODO - why do we need a copy of the id signature on the deceased as well as the identifier...?
+                /*UpdateIf(
+                    Contactoffline,
+                    Key = Sudden_Primary_key And Contactrolename = "Deceased",
+                    {
+                        identificationsignature: If(
+                            hasBeenSigned = true,
+                            PenInput3.Image,
+                            Blank()
+                        )
+                    }
+                );*/
+                If(
+                    IsEmpty(
+                        Filter(
+                            Contactoffline,
+                            Key = Sudden_Primary_key And IsMatch(
+                                Contactrolename,
+                                "Identifier",
+                                MatchOptions.Contains
+                            )
+                        )
+                    ) And radIdentificationAbleToComplete.SelectedText = "Yes",
+                    UpdateContext({newContactKey: GUID()});
+                    Collect(
+                        Contactoffline,
+                        {
+                            Key: Sudden_Primary_key,
+                            ContactKey: newContactKey,
+                        Title: drpIdentificationTitle.SelectedId,
+                        Forename: txtIdentificationForename.Text,
+                        Surname: txtIdentificationSurname.Text,
+                        Fullname: txtIdentificationSurname.Text & " " & txtIdentificationForename.Text,
+                        Housename: txtIdentificationHouseNameOrNumber.Text,
+                        Housenumber: txtIdentificationAdditionalAddressInfo.Text,
+                        Address1: txtIdentificationStreet.Text,
+                        District: txtIdentificationDistrict.Text,
+                        Town: txtIdentificationTown.Text,
+                        County: txtIdentificationCounty.Text,
+                        pcode: txtIdentificationPostcode.Text,
+                        'Date of Birth': dtpIdentificationDateOfBirth.SelectedDateTime,
+                        Country: drpIdentificationCountry.SelectedDisplayValue,
+                        Countryid: drpIdentificationCountry.SelectedId,
+                        Homephone: ctmIdentificationContactMethod.HomePhone,
+                        Workphone: ctmIdentificationContactMethod.WorkPhone,
+                        Mobile: ctmIdentificationContactMethod.MobilePhone,
+                        EMail: ctmIdentificationContactMethod.EmailAddress,
+                        Preferedcontactmethod: drpIdentificationPreferredContactMethod.SelectedId,
+                        Preferedcontactmethodname: drpIdentificationPreferredContactMethod.SelectedDisplayValue,
+                        Retired: radIdentificationRetired.SelectedText,
+                        Formeroccupation: txtIdentificationOccupation.Text,
+                        Additionalinfo: txtIdentificationAdditionalInfo.Text,
+                        Deceasedrelationshipduration: txtIdentificationHowLongKnown.Text,
+                        Deceasedrelathionship: txtIdentificationRelationship.Text,
+                        identificationsignature: imgIdentificationSignature.Image,
+                        signdate: dtpIdentificationSignatureDate.SelectedDateTime,
+                            Contactrole: LookUp(
+                                ContactRoleoffline,
+                                displayValue= "Identifier"
+                            ).id,
+                            Contactrolename: "Identifier",
+                            Locationofid: txtIdentificationLocation.Text
+                        }
+                    );
+                    Patch(
+                        'Sudden death offline',
+                        LookUp(
+                            'Sudden death offline',
+                            Key = Sudden_Primary_key
+                        ),
+                        {IdentifierContactKey: Text(newContactKey)}
+                    );
+                );
+                
+            );
+            UpdateContext(
+                {
+                    rec: LookUp(
+                        Contactoffline,
+                        Key = Sudden_Primary_key And ContactKey = GUID(
+                            LookUp(
+                                'Sudden death offline',
+                                Key = Sudden_Primary_key
+                            ).IdentifierContactKey
+                        )
+                    )
+                }
+            );
+            UpdateContext(
+                {
+                    suddenDeathRec: LookUp(
+                        'Sudden death offline',
+                        Key = Sudden_Primary_key
+                    )
+                }
+            );
+            UpdateIf(
+                'Sudden death offline',
+                Key = Sudden_Primary_key,
+                {
+                    identificationValid: Or(
+                        And(
+                            suddenDeathRec.'Formal identification' = "No",
+                            !IsBlank(suddenDeathRec.'Formal Identification steps')
+                        ),
+                        And(
+                            suddenDeathRec.'Formal identification' = "Yes",
+                            !IsBlank(rec.Title),
+                            !IsBlank(rec.Forename),
+                            !IsBlank(rec.Surname),
+                            !IsBlank(rec.'Date of Birth'),
+                            !IsBlank(rec.Housename),
+                            !IsBlank(rec.Address1),
+                            !IsBlank(rec.Town),
+                            !IsBlank(rec.County),
+                            !IsBlank(rec.pcode),
+                            Or(
+                                !IsBlank(rec.Homephone),
+                                !IsBlank(rec.Mobile),
+                                !IsBlank(rec.Workphone),
+                                !IsBlank(rec.EMail)
+                            ),
+                            //!IsBlank(rec.Preferedcontactmethod),
+                            !IsBlank(rec.identificationsignature),
+                            !IsBlank(rec.Deceasedrelathionship),
+                            !IsBlank(rec.Deceasedrelationshipduration),
+                            !IsBlank(rec.Locationofid)
+                        )
+                    )
+                }
+            );
+            Collect(
+                UsedContactRoles,
+                {
+                    Key: Sudden_Primary_key,
+                    Role: "Identifier"
+                }
+            );
+            SaveData(
+                Contactoffline,
+                "Contactoffline"
+            );
+            SaveData(
+                'Sudden death offline',
+                "Sudden death offline"
+            );
+            //may have come from home or List.
+            Back();
+        Size: =24
+        Text: |-
+            =If(
+                Len(
+                    LookUp(
+                        Contactoffline,
+                        IsMatch(Contactrolename ,"Identifier",MatchOptions.Contains) And Key = Sudden_Primary_key
+                    ).Contactrolename
+                ) > 0,
+                "Update Identifier",
+                "Add Identifier"
+            )
+        Width: =545
+        X: =40
+        Y: =1057
+        ZIndex: =5
+
+    Icon3_16 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home);
+        X: =31
+        Y: =13
+        ZIndex: =6
+
+    contIdentificationSignature As groupContainer.manualLayoutContainer:
+        DisplayMode: =DisplayMode.Edit
+        Fill: =RGBA(0, 0, 0, 0.8)
+        Height: =1048
+        LayoutDirection: =LayoutDirection.Horizontal
+        LayoutMode: =LayoutMode.Manual
+        Visible: =identificationSignatureVisible
+        Width: =640
+        Y: =88
+        ZIndex: =10
+
+        Group2 As group:
+            Height: =5
+            Width: =5
+            X: =60
+            Y: =-360
+            ZIndex: =4
+
+            penIdentificationSignature As inkControl:
+                Fill: =RGBA(255, 255, 255, 1)
+                Height: =388
+                OnSelect: |-
+                    =UpdateContext({identificationSigned:true});
+                ShowControls: =false
+                Width: =558
+                X: =40
+                Y: =237
+                ZIndex: =1
+
+            btnIdentificationAcceptSignature As button:
+                DisplayMode: =If(identificationSigned,DisplayMode.Edit,DisplayMode.Disabled)
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =65
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |
+                    =Reset(penIdentificationSignature);
+                    UpdateContext({identificationSignatureVisible: false});
+                    Collect(
+                        IdentificationSignatures,
+                        {
+                            Key: Sudden_Primary_key,
+                            identificationSignature: penIdentificationSignature.Image,
+                            signatureDate: Now()
+                        }
+                    );
+                Size: =24
+                Text: ="Accept"
+                Width: =314
+                X: =40
+                Y: =637
+                ZIndex: =2
+
+            btnIdentificationAcceptSignature_1 As button:
+                DisplayMode: =
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =65
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =Reset(penIdentificationSignature); UpdateContext({identificationSignatureVisible:false});
+                Size: =24
+                Text: ="Cancel"
+                Width: =168
+                X: =430
+                Y: =637
+                ZIndex: =3
+
+    Button2_1 As button:
+        Height: =70
+        OnSelect: |
+            =UpdateIf(
+                'Sudden death offline',
+                Key = Sudden_Primary_key,
+                {'Formal identification': "Yes"}
+            );
+            UpdateContext({newContactKey: GUID()});
+            Collect(
+                Contactoffline,
+                {
+                    Key: Sudden_Primary_key,
+                    ContactKey: newContactKey,
+                    Title: "42ef51ab-6f59-eb11-a812-0022489ba6ad",
+                    Titlename: "Mr",
+                    Forename: "Ignacio",
+                    Surname: "Identifier",
+                    Fullname: "Identifier Ignacio",
+                    Housename: "ID house Name",
+                    Housenumber: "Id house number",
+                    Address1: "Id address 1",
+                    District: "Id district",
+                    Town: "id town",
+                    County: "id county",
+                    pcode: "id postocde",
+                    'Date of Birth': Today(),
+                    Country: "United Kingdom",
+                    Homephone: "01908 654456",
+                    Workphone: "01865654124",
+                    Mobile: "01212454545",
+                    EMail: "id@id.com",
+                    Preferedcontactmethod: "e78cbdb5-7173-eb11-a812-000d3add6f2f",
+                    Preferedcontactmethodname: "Mobile Phone",
+                    Retired: "Yes",
+                    Formeroccupation: "carpenter",
+                    Additionalinfo: "id additioaln info",
+                    Deceasedrelationshipduration: "25 long years",
+                    Deceasedrelathionship: "bezzie mate",
+                    identificationsignature: penIdentificationSignature.Image,
+                    signdate: Now(),
+                    Contactrole: LookUp(
+                        ContactRoleoffline,
+                        displayValue = "Identifier"
+                    ).id,
+                    Contactrolename: "Identifier",
+                    Locationofid: "at home"
+                }
+            );
+            Patch(
+                'Sudden death offline',
+                LookUp(
+                    'Sudden death offline',
+                    Key = Sudden_Primary_key
+                ),
+                {IdentifierContactKey: Text(newContactKey)}
+            );
+        Size: =24
+        Text: ="1"
+        Visible: =glbDebug
+        Width: =108
+        X: =468
+        Y: =23
+        ZIndex: =11
+

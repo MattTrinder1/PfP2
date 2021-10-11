@@ -1,0 +1,62 @@
+ValidatingTextBoxNew As CanvasComponent:
+    DefaultText: =
+    Editable: =true
+    Fill: =RGBA(0, 0, 0, 0)
+    Height: =100
+    Label: ="Label"
+    Mandatory: =true
+    MaxLength: =100
+    OnReset: =Reset(txtTextbox_3);
+    Singleline: =true
+    Text: =txtTextbox_3.Text
+    Width: =640
+    X: =0
+    Y: =0
+    ZIndex: =7
+
+    txtTextbox_3 As text:
+        BorderColor: =RGBA(153, 153, 153, 1)  
+        Default: =Parent.DefaultText   
+        DisplayMode: =If(ValidatingTextBoxNew.Editable, DisplayMode.Edit,DisplayMode.Disabled)
+        Fill: =If(Parent.Mandatory, If(!IsBlank(Self.Text) , White, LightGoldenRodYellow),White)
+        Height: =ValidatingTextBoxNew.Height-45
+        MaxLength: =ValidatingTextBoxNew.MaxLength
+        Mode: =If(ValidatingTextBoxNew.Singleline,SingleLine,MultiLine)
+        RadiusBottomLeft: =0
+        RadiusBottomRight: =0
+        RadiusTopLeft: =0
+        RadiusTopRight: =0
+        Size: =19
+        Width: =Parent.Width-55-40
+        X: =40
+        Y: =40
+        ZIndex: =1
+
+    lblLabel_7 As label:
+        Height: =45
+        PaddingLeft: =1
+        PaddingRight: =1
+        PaddingTop: =1
+        Size: =19
+        Text: =Parent.Label
+        Visible: =Len(lblLabel_7.Text)>0
+        Width: =476
+        X: =40
+        ZIndex: =2
+
+    lblAsterisk_2 As label:
+        Align: =Center
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =37
+        PaddingBottom: =1
+        PaddingLeft: =1
+        PaddingRight: =1
+        PaddingTop: =1
+        Size: =20
+        Text: ="*"
+        Visible: =Parent.Mandatory
+        Width: =25
+        X: =txtTextbox_3.Width+txtTextbox_3.X-20
+        Y: =5
+        ZIndex: =3
+

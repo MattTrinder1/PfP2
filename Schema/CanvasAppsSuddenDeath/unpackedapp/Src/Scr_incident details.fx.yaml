@@ -1,0 +1,399 @@
+"'Scr_incident details' As screen":
+    OnVisible: =
+
+    Lbl_header_incident_det As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =27
+        Text: |-
+            ="Incident details" //& " : " & i
+        Width: =640
+        ZIndex: =1
+
+    Icn_exit_incident_detl As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =576
+        Y: =13
+        ZIndex: =2
+
+    Btn_save_exit As button:
+        DisplayMode: |-
+            =If(
+                lblIncidentNumber.Fill = copsGreen,
+                DisplayMode.Edit,
+                DisplayMode.Disabled
+            )
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Normal
+        Height: =79
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |
+            =Set(
+                flagback,
+                false
+            );
+            Set(
+                newKey,
+                lblIncidentNumber.Text & " No:" & i
+            );
+            If(
+                Len(txtIncidentSuffix.Text) > 0 And Len(radReportingOfficer.SelectedText) > 0 And Len(radSingleOfficerEvent.SelectedText) > 0,
+                If(
+                    CountRows(
+                        Filter(
+                            'Sudden death offline',
+                            Key = newKey
+                        )
+                    ) > 0,
+                    UpdateIf(
+                        'Sudden death offline',
+                        Key = Sudden_Primary_key,
+                        {
+                            Key: Sudden_Primary_key,
+                            Name: txtIncidentSuffix.Text,
+                            'Incident suffix': txtIncidentSuffix.Text,
+                            'Incident number': lblIncidentNumber.Text,
+                            'Incident date': dtpIncidentDate.SelectedDateTime,
+                            Enteredby: User().Email,
+                            PrimaryOfficer: radReportingOfficer.SelectedText,
+                            'Single Officer': radSingleOfficerEvent.SelectedText,
+                            Additionalofficerid: drpOtherOfficer.SelectedIds
+                        }
+                    );
+                    SaveData(
+                        'Sudden death offline',
+                        "Sudden death offline"
+                    );
+                    Navigate(
+                        Scr_home,
+                        ScreenTransition.UnCover
+                    )
+                    //endif
+            ,
+                    //start else
+                    UpdateContext({k: k + 1});
+                    Collect(
+                        'Sudden death offline',
+                        {
+                            Id: GUID(),
+                            Key: newKey
+                            ,
+                            Name: txtIncidentSuffix.Text,
+                            'Incident suffix': txtIncidentSuffix.Text,
+                            'Incident number': lblIncidentNumber.Text,
+                            'Incident date': dtpIncidentDate.SelectedDateTime,
+                            Enteredby: User().Email,
+                            suddenDeathValid: false,
+                            circumstancesValid: false,
+                            deceasedValid: false,
+                            identificationValid: false,
+                            PrimaryOfficer: radReportingOfficer.SelectedText,
+                            'Single Officer': radSingleOfficerEvent.SelectedText,
+                            Additionalofficerid: drpOtherOfficer.SelectedIds,
+                            Circumstances: "",
+                            SecureHouse: "",
+                            SecureHousename: "",
+                            HouseTemperature: "",
+                            HouseTemperaturename: "",
+                            CIDattended: "",
+                            CIDcsiselectname: "",
+                            CIDcsiselectid: "",
+                            CID_Attending: "",
+                            PhotosTakenbyCID: "",
+                            SuicideNoteLeft: "",
+                            SuspectSuicide: "",
+                            Photosuicide: SampleImage,
+                            PhotoSuicideNoteBlobName: "",
+                            PhysicalPosition: "",
+                            MarksBruises: "",
+                            Clothing: "",
+                            LastSeenAliveBy: "",
+                            TelephoneLastSeenAliveBy: "",
+                            WhereLastSeenAlive: "",
+                            DateLastSeenAlive: Date(
+                                Blank(),
+                                Blank(),
+                                Blank()
+                            ),
+                            AdditionalNotes: "",
+                            Dols: "",
+                            DeathInCustody: "",
+                            DeathInHealthCare: "",
+                            DeathInHospital: "",
+                            PoliceContactPriorToDeath: "",
+                            WorkRelatedDeath: "",
+                            DeceasedSmoker: "",
+                            CircumstancesAdditionalInfo: "",
+                            PhotoCircumstances: SampleImage,
+                            PhotoCircumstancesBlobName: "",
+                            'Place of death desc': "",
+                            'Housename sudden death': "",
+                            'Houseno Sudden death': "",
+                            'Address sudden death': "",
+                            'District sudden death': "",
+                            'Town sudden death': "",
+                            'County sudden death': "",
+                            'pcode sudden death': "",
+                            'Country sudden death': "",
+                            'Longtitude Sudden Death': "",
+                            'Latitude Sudden Death': "",
+                            'NPT sudden death': "",
+                            'NPT sudden death name': "",
+                            'Date body found': Date(
+                                Blank(),
+                                Blank(),
+                                Blank()
+                            ),
+                            'Body found By': "",
+                            'Date fact confirmed': Date(
+                                Blank(),
+                                Blank(),
+                                Blank()
+                            ),
+                            TimeLastSeenalive: Time(
+                                Blank(),
+                                Blank(),
+                                Blank()
+                            ),
+                            'Day of Death': "",
+                            'Death diagnosed by': "",
+                            'Removed to': "",
+                            'Undertaker funeral': "",
+                            'Undertaker removing body': "",
+                            'Burial Or Cremation': "",
+                            'Burial Or Cremation name': "",
+                            'Family Liasion officer': "",
+                            'Liasion officer phone': "",
+                            'Next of kin informed': "",
+                            'Next of kin way of info': "",
+                            'Action of next of Kin': "",
+                            'Formal identification': "",
+                            'Formal Identification steps': "",
+                            Pdetailsknown: "",
+                            GPdetailsknown: "",
+                            GPname: "",
+                            GPsurgery: "",
+                            GPaddress: "",
+                            GPstreet: "",
+                            GPDistrict: "",
+                            GPtown: "",
+                            GPcounty: "",
+                            GPpostcode: "",
+                            GPphonenumber: "",
+                            MedicalHistorylastvisitdate: Date(
+                                Blank(),
+                                Blank(),
+                                Blank()
+                            ),
+                            // DatePicker_Medical_History_LastVisitToGP.SelectedDate,
+                            MedicalHistoryReasonForVisit: "",
+                            MedicalHistoryDiagnosisanmedication: "",
+                            MedicalHistoryPastHistory: "",
+                            MedicalHistoryRiskFactors: "",
+                            PNCId: "",
+                            IdentifierContactKey: "",
+                            readyToSync: false,
+                            identificationSignatureInternalBlobId: "",
+                            identificationSignatureBlobName: "",
+                            photoCircumstancesInternalBlobId: "",
+                            photoSuicideNoteInternalBlobId: "",
+                            submitted: false,
+                            deleted: false 
+                        }
+                    );
+                    //UpdateContext({newContactKey: GUID()});
+                   /* Patch(
+                        'Contact offline',
+                        Defaults('Contact offline'),
+                        {
+                            Key: newKey,
+                            ContactKey: newContactKey,
+                            Contactrole: Left(
+                                Concat(
+                                    Filter(ContactRoleoffline,cp_name = "Deceased").cp_contactroletypeid,
+                                    cp_contactroletypeid & ","
+                                ),
+                                Len(
+                                    Concat(
+                                        Filter(ContactRoleoffline,cp_name = "Deceased").cp_contactroletypeid,
+                                        cp_contactroletypeid & ","
+                                    )
+                                ) - 1
+                            ),
+                            Contactrolename: "Deceased" 
+                        }
+                    );*/
+            Set(
+                        Sudden_Primary_key,
+                        newKey
+                    );
+                    SaveData(
+                        'Sudden death offline',
+                        "Sudden death offline"
+                    );
+                    Navigate(Scr_home);
+                    UpdateContext({mandatory_inc_det: false}),
+                    UpdateContext({mandatory_inc_det: false})
+                );
+                ,
+                UpdateContext({mandatory_inc_det: true})
+            );
+            Set(
+                Allreset,
+                true
+            );
+        Size: =24
+        Text: ="Save & Continue"
+        Width: =545
+        X: =40
+        Y: =1023
+        ZIndex: =3
+
+    Icn_back As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: |-
+            =If(
+                flagback = true,
+                Set(
+                    i,
+                    i - 1
+                );
+                Set(
+                    flagback,
+                    false
+                );
+                //Set(
+                //    Sudden_Primary_key,
+                //    Txt_Deceased_details_surname.Text & " " & Txt_Deceased_detailsforename.Text & " " & Txt_incident_no.Text & " No:" & i
+               // )
+            );
+            Navigate(
+                Scr_home
+            )
+        X: =31
+        Y: =11
+        ZIndex: =20
+
+    Label4 As label:
+        BorderColor: =RGBA(255, 0, 0, 1)
+        BorderThickness: =1
+        Color: =RGBA(255, 0, 0, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =191
+        Size: =21
+        Text: ="Please fill in all mandatory fields"
+        Visible: =mandatory_inc_det
+        Width: =211
+        X: =404
+        Y: =643
+        ZIndex: =25
+
+    dtpIncidentDate As ValidatingDateTimePicker:
+        DefaultDateValue: =Today()
+        Label: ="Incident Date"
+        Y: =100
+        ZIndex: =32
+
+    txtIncidentSuffix As ValidatingTextBoxNew:
+        Label: ="Incident Suffix"
+        Y: =206
+        ZIndex: =33
+
+    radReportingOfficer As ValidatingYesKnowUnknown:
+        IncludeUnknown: =false
+        Label: ="Are you the reporting officer ?"
+        Y: =535
+        ZIndex: =34
+
+    Group55 As group:
+        Height: =5
+        Width: =5
+        X: =60
+        Y: =60
+        ZIndex: =34
+
+        Lbl_incident_date_2 As label:
+            Height: =45
+            Size: =19
+            Text: ="Incident number"
+            Width: =273
+            X: =40
+            Y: =312
+            ZIndex: =28
+
+        lblIncidentNumber As label:
+            BorderColor: =RGBA(128, 128, 128, 1)
+            BorderThickness: =1
+            Fill: |-
+                =If(
+                    IsMatch(
+                        Self.Text,
+                        "CP-" &  Digit & Digit & Digit & Digit & Digit & Digit & Digit & Digit & "-" & Digit & Digit & Digit & Digit
+                    ),
+                    copsGreen,
+                    copsRed
+                )
+            Height: =55
+            Size: =19
+            Text: |-
+                ="CP" & "-" & Text(
+                            
+                                dtpIncidentDate.SelectedDateTime,
+                            "[$-en-GB]yyyymmdd"
+                        ) & "-" & txtIncidentSuffix.Text
+            Width: =545
+            X: =40
+            Y: =355
+            ZIndex: =30
+
+    Group56 As group:
+        Height: =5
+        Width: =5
+        X: =60
+        Y: =60
+        ZIndex: =34
+
+        Label_entering_by As label:
+            Height: =60
+            Size: =19
+            Text: ="Entered by"
+            Width: =545
+            X: =40
+            Y: =416
+            ZIndex: =14
+
+        Label13 As label:
+            BorderColor: =RGBA(128, 128, 128, 1)
+            BorderThickness: =1
+            Fill: =RGBA(237, 237, 237, 1)
+            Height: =55
+            Size: =19
+            Text: =First(Userlocal).Collarnumber  & " - " & First(Userlocal).Name
+            Width: =545
+            X: =40
+            Y: =469
+            ZIndex: =29
+
+    radSingleOfficerEvent As ValidatingYesKnowUnknown:
+        IncludeUnknown: =false
+        Label: ="Single officer event ?"
+        Y: =643
+        ZIndex: =35
+
+    drpOtherOfficer As ValidatingMultiSelectDropDown:
+        AllowSearch: =true
+        Items: =Sort(Usersalllocal,displayValue,Ascending)
+        Label: ="Other officer"
+        MultiSelect: =false
+        Visible: =radSingleOfficerEvent.SelectedText = "No"
+        Y: =743
+        ZIndex: =36
+

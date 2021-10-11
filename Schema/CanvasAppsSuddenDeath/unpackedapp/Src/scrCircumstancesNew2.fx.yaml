@@ -1,0 +1,677 @@
+"scrCircumstancesNew2 As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    Fill: =RGBA(245, 245, 245, 1)
+
+    Canvas2 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =958
+        Width: =Parent.Width
+        Y: =lblHeaderCircumstances.Y + lblHeaderCircumstances.Height
+        ZIndex: =3
+
+        DataCard9 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =49
+            Width: =Parent.Width
+            X: =0
+            Y: =1
+            ZIndex: =1
+
+            drpCircumstancesHuoseSecure As ValidatingDropDown:
+                Default: =    LookUp('Sudden death offline',Key=Sudden_Primary_key).SecureHousename
+                Items: =Housesecureoffline
+                Label: ="Was house secure ?"
+
+        DataCard10 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =60
+            Width: =640
+            X: =0
+            Y: =2
+            ZIndex: =2
+
+            drpCircumstancesHouseTemperature As ValidatingDropDown:
+                Default: =    LookUp('Sudden death offline',Key=Sudden_Primary_key).HouseTemperaturename
+                Items: =Housetemperatureoffline
+                Label: ="House temperature"
+
+        DataCard11 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =17
+            Width: =640
+            X: =0
+            Y: =3
+            ZIndex: =3
+
+            radCIDAttended As ValidatingYesKnowUnknown:
+                Default: =LookUp('Sudden death offline',Key=Sudden_Primary_key).CIDattended
+                IncludeUnknown: =false
+                Label: ="CAST/CSI Attended"
+                ZIndex: =1
+
+        DataCard12 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =
+            Width: =640
+            X: =0
+            Y: =6
+            ZIndex: =4
+
+        DataCard13 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =8
+            ZIndex: =5
+
+            radSuspectSuicide As ValidatingYesKnowUnknown:
+                Default: =LookUp('Sudden death offline',Key=Sudden_Primary_key).SuspectSuicide
+                IncludeUnknown: =false
+                Label: ="Do you suspect this to be suicide ?"
+                ZIndex: =1
+
+        DataCard14 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =4
+            ZIndex: =6
+
+            drpStaff As ValidatingMultiSelectDropDown:
+                Items: =Usersalllocal
+                Label: ="CAST/CSI Staff"
+                Mandatory: =false
+                SelectedItems: |-
+                    =Table({SampleStringField: "SampleText", SampleNumberField: 10, SampleBooleanField: true})
+                ZIndex: =1
+
+        DataCard15 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radSuspectSuicide.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =9
+            ZIndex: =7
+
+            radSuicideNote As ValidatingYesKnowUnknown:
+                Default: =LookUp('Sudden death offline',Key=Sudden_Primary_key).SuicideNoteLeft
+                IncludeUnknown: =false
+                Label: ="Suicide note left"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard17 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =317
+            Width: =640
+            X: =0
+            Y: =0
+            ZIndex: =9
+
+            txtCircumstancesCircumstances As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).Circumstances
+                Height: =317
+                Label: ="Circumstances surrounding / leading to"
+                Mandatory: =false
+                Singleline: =false
+                ZIndex: =1
+
+        DataCard16 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =187
+            Width: =640
+            X: =0
+            Y: =5
+            ZIndex: =10
+
+            txtCircumstancesAdditionalStaff As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).CID_Attending
+                Height: =187
+                Label: ="Additional (non-staff) CSI attending"
+                Mandatory: =false
+                Singleline: =false
+                ZIndex: =1
+
+        DataCard18 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =14
+            ZIndex: =11
+
+            txtCircumstancesLastSeenAliveBy As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).LastSeenAliveBy
+                Label: ="Lat seen alive by ?"
+                ZIndex: =1
+
+        DataCard19 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =7
+            ZIndex: =12
+
+            radPhotosTaken As ValidatingYesKnowUnknown:
+                Default: =LookUp('Sudden death offline',Key=Sudden_Primary_key).PhotosTakenbyCID
+                IncludeUnknown: =false
+                Label: ="Photos taken by CSI ?"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard22 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =11
+            ZIndex: =15
+
+            txtCircumstancesPhysicalPosition As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).PhysicalPosition
+                Label: ="Physical position of body"
+                ZIndex: =1
+
+        DataCard23 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =12
+            ZIndex: =16
+
+            txtCircumstancesMarksBruises As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).MarksBruises
+                Label: ="Marks or bruises"
+                ZIndex: =1
+
+        DataCard24 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =13
+            ZIndex: =17
+
+            txtCircumstancesClothing As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).Clothing
+                Label: ="Clothing / general condition"
+                ZIndex: =1
+
+        DataCard25 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =370
+            Visible: =radSuicideNote.SelectedText = "Yes" And radSuspectSuicide.SelectedText="Yes"
+            Width: =640
+            X: =0
+            Y: =10
+            ZIndex: =18
+
+            imgSuicideNote As ImageManager:
+                Image: =LookUp('Sudden death offline',Key=Sudden_Primary_key).Photosuicide
+                ZIndex: =1
+
+        DataCard26 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =68
+            Width: =640
+            X: =0
+            Y: =15
+            ZIndex: =19
+
+            txtCircumstancesTelephone As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).TelephoneLastSeenAliveBy
+                Label: ="Telephone"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard27 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =16
+            ZIndex: =20
+
+            txtCircumstancesWhereLastSeenAlive As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).WhereLastSeenAlive
+                Label: ="Where last seen alive"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard28 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =17
+            ZIndex: =21
+
+            dtpCircumstancesLastSeenAlive As ValidatingDateTimePicker:
+                DefaultDateValue: =LookUp('Sudden death offline',Key=Sudden_Primary_key).DateLastSeenAlive
+                IncludeTime: =true
+                Label: ="Date / time last seen alive"
+                Mandatory: =false
+
+        DataCard29 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =18
+            ZIndex: =22
+
+            txtCircumstancesAdditionalNotes As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).AdditionalNotes
+                Label: ="Additional notes"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard30 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =19
+            ZIndex: =23
+
+            radCircumstancesDOLS As ValidatingYesKnowUnknown:
+                Default: =LookUp('Sudden death offline',Key=Sudden_Primary_key).Dols
+                Label: ="Subject of DOLS ?"
+                ZIndex: =1
+
+        DataCard31 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =21
+            ZIndex: =24
+
+            radCircumstancesDeathInHealthcare As ValidatingYesKnowUnknown:
+                Default: =LookUp('Sudden death offline',Key=Sudden_Primary_key).DeathInHealthCare
+                Label: ="Death in healthcare ?"
+                ZIndex: =1
+
+        DataCard32 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =20
+            ZIndex: =25
+
+            radCircumstancesDeathInCustody As ValidatingYesKnowUnknown:
+                Default: =LookUp('Sudden death offline',Key=Sudden_Primary_key).DeathInCustody
+                Label: ="Death in custody ?"
+                ZIndex: =1
+
+        DataCard33 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =22
+            ZIndex: =26
+
+            radCircumstancesDeathInHospital As ValidatingYesKnowUnknown:
+                Default: =LookUp('Sudden death offline',Key=Sudden_Primary_key).DeathInHospital
+                Label: ="Death in hospital ?"
+                ZIndex: =1
+
+        DataCard34 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =22
+            Width: =640
+            X: =0
+            Y: =23
+            ZIndex: =27
+
+            radCircumstancesPoliceInvolvement As ValidatingYesKnowUnknown:
+                Default: =LookUp('Sudden death offline',Key=Sudden_Primary_key).PoliceContactPriorToDeath
+                Label: ="Police contact prior to death ?"
+                ZIndex: =1
+
+        DataCard35 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =27
+            ZIndex: =28
+
+            imgPhotoCircumstances As ImageManager:
+                Image: =LookUp('Sudden death offline',Key=Sudden_Primary_key).PhotoCircumstances
+                ZIndex: =1
+
+        DataCard2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =24
+            ZIndex: =29
+
+            radCircumstancesWorkRelatedDeath As ValidatingYesKnowUnknown:
+                Default: =LookUp('Sudden death offline',Key=Sudden_Primary_key).WorkRelatedDeath
+                Label: ="Work related death ?"
+                ZIndex: =1
+
+        DataCard21 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =25
+            ZIndex: =30
+
+            radCircumstancesSmoker As ValidatingYesKnowUnknown:
+                Default: =LookUp('Sudden death offline',Key=Sudden_Primary_key).DeceasedSmoker
+                Label: ="Was the deceased a smoker ?"
+                ZIndex: =1
+
+        DataCard58 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =236
+            Width: =640
+            X: =0
+            Y: =26
+            ZIndex: =31
+
+            txtCircumstancesAdditionalInfo As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).CircumstancesAdditionalInfo
+                Height: =236
+                Label: ="Additional information"
+                Mandatory: =false
+                Singleline: =false
+                ZIndex: =1
+
+    lblHeaderCircumstances As label:
+        Align: =Align.Center
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =88
+        Size: =27
+        Text: =If (IsBlank(Sudden_Primary_key),"Circumstances","Circumstances"& Char(10) & "("  &  Sudden_Primary_key & ")")
+        Width: =Parent.Width
+        ZIndex: =4
+
+    Btn_save_28 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =70
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |
+            =If(//Start of Circumstances Photo processing
+                Not IsBlank(imgPhotoCircumstances.NewImage) And imgPhotoCircumstances.NewImage <> SampleImage,
+                With (
+                    {
+                        suddenDeaths: Filter(
+                            'Sudden death offline',
+                            Key = Sudden_Primary_key
+                        )
+                    },
+                    ForAll(
+                        suddenDeaths As suddenDeath,
+                        If(
+                            IsBlank(suddenDeath.photoCircumstancesInternalBlobId),
+                            //New Circumstances Photo for this Incident
+                            Patch(
+                                'Sudden death offline',
+                                suddenDeath,
+                                {photoCircumstancesInternalBlobId: GUID()}
+                            );
+                            Patch(
+                                'Sudden death offline',
+                                suddenDeath,
+                                {PhotoCircumstancesBlobName: suddenDeath.photoCircumstancesInternalBlobId & "-circumstances-1"}
+                            );
+                            Collect(
+                                blobsToSave,
+                                {
+                                    parentRecordId: Sudden_Primary_key,
+                                    caption: "",
+                                    type: "circumstances",
+                                    index: 1,
+                                    id: suddenDeath.photoCircumstancesInternalBlobId,
+                                    blob: imgPhotoCircumstances.NewImage,
+                                    blobId: ""
+                                }
+                            );
+                            ,
+                            //Update Circumstances Photo for this Incident
+                            UpdateIf(
+                                blobsToSave,
+                                id = suddenDeath.photoCircumstancesInternalBlobId,
+                                {blob: imgPhotoCircumstances.NewImage}
+                            );
+                        );
+                    );
+                );
+                
+            );
+            //End of Circumstances Photo processing
+            If(//Start of Suicide Note Photo processing
+                Not IsBlank(imgSuicideNote.NewImage) And imgSuicideNote.NewImage <> SampleImage,
+                With (
+                    {
+                        suddenDeaths: Filter(
+                            'Sudden death offline',
+                            Key = Sudden_Primary_key
+                        )
+                    },
+                    ForAll(
+                        suddenDeaths As suddenDeath,
+                        If(
+                            IsBlank(suddenDeath.photoSuicideNoteInternalBlobId),
+                            //New Suicide Note Photo for this Incident
+                            Patch(
+                                'Sudden death offline',
+                                suddenDeath,
+                                {photoSuicideNoteInternalBlobId: GUID()}
+                            );
+                            Patch(
+                                'Sudden death offline',
+                                suddenDeath,
+                                {PhotoSuicideNoteBlobName: suddenDeath.photoSuicideNoteInternalBlobId & "-suicide-1"}
+                            );
+                            Collect(
+                                blobsToSave,
+                                {
+                                    parentRecordId: Sudden_Primary_key,
+                                    caption: "",
+                                    type: "suicide",
+                                    index: 1,
+                                    id: suddenDeath.photoSuicideNoteInternalBlobId,
+                                    blob: imgSuicideNote.NewImage,
+                                    blobId: ""
+                                }
+                            );
+                            ,
+                            //Update Suicide Note Photo for this Incident
+                            UpdateIf(
+                                blobsToSave,
+                                id = suddenDeath.photoSuicideNoteInternalBlobId,
+                                {blob: imgSuicideNote.NewImage}
+                            );
+                        );
+                    );
+                );
+                
+            );
+            //End of Suicide Note Photo processing
+            UpdateIf(
+                'Sudden death offline',
+                Key = Sudden_Primary_key,
+                {
+                    Circumstances: txtCircumstancesCircumstances.Text,
+                    SecureHouse: drpCircumstancesHuoseSecure.SelectedId,
+                    SecureHousename: drpCircumstancesHuoseSecure.SelectedDisplayValue,
+                    HouseTemperature: drpCircumstancesHouseTemperature.SelectedId,
+                    HouseTemperaturename: drpCircumstancesHouseTemperature.SelectedDisplayValue,
+                    CIDattended: radCIDAttended.SelectedText,
+                    CIDcsiselectname: drpStaff.SelectedDisplayValues,
+                    CIDcsiselectid: drpStaff.SelectedIds,
+                    CID_Attending: txtCircumstancesAdditionalStaff.Text,
+                    PhotosTakenbyCID: radPhotosTaken.SelectedText,
+                    SuicideNoteLeft: radSuicideNote.SelectedText,
+                    SuspectSuicide: radSuspectSuicide.SelectedText,
+                    Photosuicide: imgSuicideNote.NewImage,
+                    PhysicalPosition: txtCircumstancesPhysicalPosition.Text,
+                    MarksBruises: txtCircumstancesMarksBruises.Text,
+                    Clothing: txtCircumstancesClothing.Text,
+                    LastSeenAliveBy: txtCircumstancesLastSeenAliveBy.Text,
+                    TelephoneLastSeenAliveBy: txtCircumstancesTelephone.Text,
+                    WhereLastSeenAlive: txtCircumstancesWhereLastSeenAlive.Text,
+                    DateLastSeenAlive: dtpCircumstancesLastSeenAlive.SelectedDateTime,
+                    //TimeLastSeenalive: dtpLastSeenAlive.SelectedTime,
+                    AdditionalNotes: txtCircumstancesAdditionalNotes.Text,
+                    Dols: radCircumstancesDOLS.SelectedText,
+                    DeathInCustody: radCircumstancesDeathInCustody.SelectedText,
+                    DeathInHealthCare: radCircumstancesDeathInHealthcare.SelectedText,
+                    DeathInHospital: radCircumstancesDeathInHospital.SelectedText,
+                    PoliceContactPriorToDeath: radCircumstancesPoliceInvolvement.SelectedText,
+                    WorkRelatedDeath: radCircumstancesWorkRelatedDeath.SelectedText,
+                    DeceasedSmoker: radCircumstancesSmoker.SelectedText,
+                    CircumstancesAdditionalInfo: txtCircumstancesAdditionalInfo.Text,
+                    PhotoCircumstances: imgPhotoCircumstances.NewImage
+                }
+            );
+            Reset(imgSuicideNote);
+            UpdateContext(
+                {
+                    rec: LookUp(
+                        'Sudden death offline',
+                        Key = Sudden_Primary_key
+                    )
+                }
+            );
+            UpdateIf(
+                'Sudden death offline',
+                Key = Sudden_Primary_key,
+                {
+                    circumstancesValid: And(
+                        !IsBlank(rec.SecureHousename),
+                        !IsBlank(rec.HouseTemperaturename),
+                        !IsBlank(rec.CIDattended),
+                        !IsBlank(rec.SuspectSuicide),
+                        !IsBlank(rec.PhysicalPosition),
+                        !IsBlank(rec.MarksBruises),
+                        !IsBlank(rec.Clothing),
+                        !IsBlank(rec.Dols),
+                        !IsBlank(rec.DeathInCustody),
+                        !IsBlank(rec.DeathInHealthCare),
+                        !IsBlank(rec.DeathInHospital),
+                        !IsBlank(rec.PoliceContactPriorToDeath),
+                        !IsBlank(rec.WorkRelatedDeath),
+                        !IsBlank(rec.DeceasedSmoker)
+                    )
+                }
+            );
+            SaveData(
+                'Sudden death offline',
+                "Sudden death offline"
+            );
+            Navigate(Scr_home);
+        Size: =24
+        Text: ="Save and Continue"
+        Width: =545
+        X: =40
+        Y: =1057
+        ZIndex: =5
+
+    Icon3_8 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home);
+        X: =31
+        Y: =13
+        ZIndex: =6
+

@@ -1,0 +1,570 @@
+"scrSuddenDeathNew As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    Fill: =RGBA(245, 245, 245, 1)
+    OnHidden: |-
+        =UpdateContext({canvasVisible:false})
+    OnVisible: |
+        =UpdateContext({canvasVisible: true});
+
+    Canvas2_2 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =958
+        Visible: =canvasVisible
+        Width: =Parent.Width
+        Y: =lblHeaderDeceased_1.Y + lblHeaderDeceased_1.Height
+        ZIndex: =3
+
+        DataCard59 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =226
+            Width: =640
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            txtSuddenDeathPlaceOfDeath As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'Place of death desc'
+                Height: =226
+                Label: ="Place of death"
+                Singleline: =false
+                ZIndex: =1
+
+        DataCard60 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =1
+            ZIndex: =2
+
+            txtSuddenDeathHouseNameOrNumber As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'Housename sudden death'
+                Label: ="House name or number"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard61 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =2
+            ZIndex: =3
+
+            txtSuddenDeathAdditionalAddressInfo As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'Houseno Sudden death'
+                Label: ="Additional address info"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard62 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =3
+            ZIndex: =4
+
+            txtSuddenDeathStreet As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'Address sudden death'
+                Label: ="Street"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard63 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =4
+            ZIndex: =5
+
+            txtSuddenDeathDistrict As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'District sudden death'
+                Label: ="District"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard64 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =5
+            ZIndex: =6
+
+            txtSuddenDeathTown As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'Town sudden death'
+                Label: ="Town"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard65 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =6
+            ZIndex: =7
+
+            txtSuddenDeathCounty As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'County sudden death'
+                Label: ="County"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard66 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =7
+            ZIndex: =8
+
+            txtSuddenDeathPostcode As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'pcode sudden death'
+                Label: ="Postcode"
+                Mandatory: =false
+                ZIndex: =1
+
+        cardSuddenDeathCountry As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =8
+            ZIndex: =9
+
+            drpSuddenDeathCountry As ValidatingDropDown:
+                Default: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'Country sudden death'
+                Items: =countriesoffline
+                Label: ="Country"
+                Mandatory: =false
+
+        DataCard68 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =9
+            ZIndex: =10
+
+            gpsSuddenDeath As GPSLocation:
+                ZIndex: =1
+
+        DataCard69 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =10
+            ZIndex: =11
+
+            drpSuddenDeathNPT As ValidatingDropDown:
+                Default: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'NPT sudden death name'    
+                Items: =TPA
+                Label: ="NPT"
+
+        DataCard70 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =11
+            ZIndex: =12
+
+            dtpSuddenDeathBodyFound As ValidatingDateTimePicker:
+                DefaultDateValue: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'Date body found'
+                IncludeTime: =true
+                Label: ="Date / time body found"
+
+        DataCard71 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =12
+            ZIndex: =13
+
+            txtSuddenDeathBodyFoundBy As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'Body found By'
+                Label: ="Body found by"
+                ZIndex: =1
+
+        DataCard72 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =13
+            ZIndex: =14
+
+            dtpSuddenDeathDeclaredDeceased As ValidatingDateTimePicker:
+                DefaultDateValue: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'Date fact confirmed'
+                IncludeTime: =true
+                Label: ="Date / time declared deceased"
+
+        DataCard73 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =14
+            ZIndex: =15
+
+            txtSuddenDeathDiagnosedBy As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'Death diagnosed by'
+                Label: ="Death diagnosed by"
+                ZIndex: =1
+
+        DataCard74 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =15
+            ZIndex: =16
+
+            radSuddenDeathUndertakerRemovingBody As ValidatingYesKnowUnknown:
+                Default: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'Undertaker removing body'
+                Label: ="Undertaker removing body ?"
+                Mandatory: =false
+                ZIndex: =1
+
+        cardSuddenDeathRemovedTo As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =16
+            ZIndex: =17
+
+            txtSuddenDeathRemovedTo As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'Removed to'
+                Label: ="Body removed to"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard76 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =17
+            ZIndex: =18
+
+            txtSuddenDeathUndertakerArranging As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'Undertaker funeral'
+                Label: ="Undertaker arranging funeral"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard77 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =18
+            ZIndex: =19
+
+            drpSuddenDeathBurialOrCremation As ValidatingDropDown:
+                Default: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'Burial Or Cremation name'
+                Items: =Burialorcremationoffline
+                Label: ="Burial or cremation"
+                Mandatory: =false
+
+        DataCard78 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =19
+            ZIndex: =20
+
+            txtSuddenDeathFamilyLiaisonOfficer As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'Family Liasion officer'
+                Label: ="Family liaison officer"
+                Mandatory: =false
+                ZIndex: =1
+
+        DataCard79 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =20
+            ZIndex: =21
+
+            txtSuddenDeathFLOTelephone As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'Liasion officer phone'
+                Label: ="FLO telephone"
+                Mandatory: =false
+                ZIndex: =1
+
+        cardSuddenDeathNextOfKinInformed As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =21
+            ZIndex: =22
+
+            radSuddenDeathNextOfKinInformed As ValidatingYesKnowUnknown:
+                Default: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'Next of kin informed'
+                IncludeUnknown: =false
+                Label: ="Next of kin informed ?"
+                ZIndex: =1
+
+        DataCard81 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radSuddenDeathNextOfKinInformed.SelectedText = "Yes"
+            Width: =640
+            X: =0
+            Y: =22
+            ZIndex: =23
+
+            txtSuddenDeathHowNextOfKinInformed As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'Next of kin way of info'
+                Label: ="How informed"
+                ZIndex: =1
+
+        DataCard82 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =radSuddenDeathNextOfKinInformed.SelectedText = "No"
+            Width: =640
+            X: =0
+            Y: =23
+            ZIndex: =24
+
+            txtSuddenDeathActionToInform As ValidatingTextBoxNew:
+                DefaultText: =LookUp('Sudden death offline',Key=Sudden_Primary_key).'Action of next of Kin'
+                Label: ="Action in place"
+                ZIndex: =1
+
+    lblHeaderDeceased_1 As label:
+        Align: =Align.Center
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =88
+        Size: =27
+        Text: =If (IsBlank(Sudden_Primary_key),"Sudden Death","Sudden Death"& Char(10) & "("  &  Sudden_Primary_key & ")")
+        Width: =Parent.Width
+        ZIndex: =4
+
+    Btn_save_30 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =70
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |-
+            =If(
+                !IsBlank(dtpSuddenDeathBodyFound.SelectedDateTime) And !IsBlank(dtpSuddenDeathDeclaredDeceased.SelectedDateTime) And dtpSuddenDeathBodyFound.SelectedDateTime >= dtpSuddenDeathDeclaredDeceased.SelectedDateTime,
+                Notify(
+                    "Date/Time body found must be before Date/Time declared deceased",
+                    NotificationType.Warning
+                ),
+                UpdateIf(
+                    'Sudden death offline',
+                    Key = Sudden_Primary_key,
+                    {
+                        'Place of death desc': txtSuddenDeathPlaceOfDeath.Text,
+                        'Housename sudden death': txtSuddenDeathHouseNameOrNumber.Text,
+                        'Houseno Sudden death': txtSuddenDeathAdditionalAddressInfo.Text,
+                        'Address sudden death': txtSuddenDeathStreet.Text,
+                        'District sudden death': txtSuddenDeathDistrict.Text,
+                        'Town sudden death': txtSuddenDeathTown.Text,
+                        'County sudden death': txtSuddenDeathCounty.Text,
+                        'pcode sudden death': txtSuddenDeathPostcode.Text,
+                        'Country sudden death': drpSuddenDeathCountry.SelectedDisplayValue,
+                        'Longtitude Sudden Death': gpsSuddenDeath.Longitude,
+                        'Latitude Sudden Death': gpsSuddenDeath.Latitude,
+                        'NPT sudden death': drpSuddenDeathNPT.SelectedId,
+                        'NPT sudden death name': drpSuddenDeathNPT.SelectedDisplayValue,
+                        'Date body found': dtpSuddenDeathBodyFound.SelectedDateTime,
+                        'Body found By': txtSuddenDeathBodyFoundBy.Text,
+                        'Date fact confirmed': dtpSuddenDeathDeclaredDeceased.SelectedDateTime,
+                        //        'Day of Death': lblDayOfDeath.Text,
+                        'Death diagnosed by': txtSuddenDeathDiagnosedBy.Text,
+                        'Removed to': txtSuddenDeathRemovedTo.Text,
+                        'Undertaker removing body': radSuddenDeathUndertakerRemovingBody.SelectedText,
+                        'Undertaker funeral': txtSuddenDeathUndertakerArranging.Text,
+                        'Burial Or Cremation name': drpSuddenDeathBurialOrCremation.SelectedDisplayValue,
+                        'Burial Or Cremation': drpSuddenDeathBurialOrCremation.SelectedId,
+                        'Family Liasion officer': txtSuddenDeathFamilyLiaisonOfficer.Text,
+                        'Liasion officer phone': txtSuddenDeathFLOTelephone.Text,
+                        'Next of kin informed': radSuddenDeathNextOfKinInformed.SelectedText,
+                        'Next of kin way of info': txtSuddenDeathHowNextOfKinInformed.Text,
+                        'Action of next of Kin': txtSuddenDeathActionToInform.Text
+                    }
+                );
+                UpdateContext(
+                    {
+                        rec: LookUp(
+                            'Sudden death offline',
+                            Key = Sudden_Primary_key
+                        )
+                    }
+                );
+                UpdateIf(
+                    'Sudden death offline',
+                    Key = Sudden_Primary_key,
+                    {
+                        suddenDeathValid: And(
+                            !IsBlank(rec.'Place of death desc'),
+                            !IsBlank(rec.'NPT sudden death name'),
+                            !IsBlank(rec.'Date body found'),
+                            !IsBlank(rec.'Date fact confirmed'),
+                            !IsBlank(rec.'Death diagnosed by'),
+                            !IsBlank(rec.'Body found By'),
+                            Or(
+                                And(
+                                    rec.'Next of kin informed' = "Yes",
+                                    !IsBlank(rec.'Next of kin way of info')
+                                ),
+                                And(
+                                    rec.'Next of kin informed' = "No",
+                                    !IsBlank(rec.'Action of next of Kin')
+                                )
+                            )
+                        )
+                    }
+                );
+                SaveData(
+                    'Sudden death offline',
+                    "Sudden death offline"
+                );
+                Navigate(Scr_home);
+                
+            )
+        Size: =24
+        Text: ="Save and continue"
+        Width: =545
+        X: =40
+        Y: =1057
+        ZIndex: =5
+
+    Icon3_13 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home);
+        X: =31
+        Y: =13
+        ZIndex: =6
+
+    Button1_3 As button:
+        Height: =70
+        OnSelect: |
+            =UpdateIf(
+                'Sudden death offline',
+                Key = Sudden_Primary_key,
+                {
+                    'Place of death desc': "Place of Death",
+                    'Housename sudden death': "Place housename",
+                    'Houseno Sudden death': "Place house number",
+                    'Address sudden death': "Place address",
+                    'District sudden death': "Place district",
+                    'Town sudden death': "Place town",
+                    'County sudden death': "Place County",
+                    'pcode sudden death': "Place postcode",
+                    'Country sudden death': "United Kingdom",
+                    'NPT sudden death': "83f1595a-245b-eb11-a812-0022489ba6ad",
+                    'NPT sudden death name': "South",
+                    'Date body found': Now(),
+                    
+                    'Body found By': "Deceased's cat",
+                    'Date fact confirmed': DateAdd( Now(),1,Hours),
+                    
+                    'Day of Death': "Monday",
+                    'Death diagnosed by': "doctor",
+                    'Removed to': "chapel of rest",
+                    'Undertaker removing body': "Yes",
+                    'Undertaker funeral': "Wilkins",
+                    'Burial Or Cremation name': "Burial",
+                    'Burial Or Cremation': LookUp(Burialorcremationoffline,displayValue = "Burial").id,
+                    'Family Liasion officer': "jim smith",
+                    'Liasion officer phone': "0787452145",
+                    'Next of kin informed': "Yes",
+                    'Next of kin way of info': "snail mail",
+                    'Action of next of Kin': "next of kin action"
+                }
+            );
+        Size: =24
+        Text: ="1"
+        Visible: =glbDebug
+        Width: =121
+        X: =455
+        Y: =24
+        ZIndex: =7
+

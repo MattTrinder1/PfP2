@@ -1,0 +1,361 @@
+Scr_colection As screen:
+    Fill: =RGBA(245, 245, 245, 1)
+    OnVisible: |-
+        =UpdateContext({validationwarning:false})
+
+    Lbl_header_4 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =27
+        Text: ="Unsubmitted incidents"// & (CountRows('Sudden death offline') = 0) & Sudden_Primary_key
+        Width: =640
+        ZIndex: =1
+
+    Icn_exit_4 As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Navigate(Scr_home,UnCover)
+        X: =576
+        Y: =13
+        ZIndex: =2
+
+    Icon3_3 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home)
+        X: =31
+        Y: =13
+        ZIndex: =8
+
+    Gallery_unsubmitted As gallery.galleryVertical:
+        Height: =547
+        Items: ='Sudden death offline'//Filter('Sudden death offline', submitted = false)
+        Layout: =Layout.Vertical
+        TemplateSize: =275
+        Y: =87
+        ZIndex: =9
+
+        Label6 As label:
+            Height: =76
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.CircumstancesAdditionalInfo
+            Visible: =false
+            Width: =97
+            X: =515
+            Y: =24
+            ZIndex: =1
+
+        Label7 As label:
+            Height: =22
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.'Incident date'
+            Width: =247
+            X: =249
+            Y: =9
+            ZIndex: =2
+
+        Label8 As label:
+            Height: =44
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.Key
+            Width: =374
+            X: =249
+            Y: =98
+            ZIndex: =3
+
+        Label8_1 As label:
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.'Incident number'
+            Width: =255
+            X: =249
+            Y: =50
+            ZIndex: =4
+
+        Label3 As label:
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Date"
+            Underline: =true
+            Width: =165
+            X: =6
+            ZIndex: =5
+
+        Label3_2 As label:
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Incident number"
+            Underline: =true
+            Width: =250
+            X: =6
+            Y: =50
+            ZIndex: =6
+
+        Label3_3 As label:
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Incident Key"
+            Underline: =true
+            Width: =233
+            X: =6
+            Y: =100
+            ZIndex: =7
+
+        Rectangle1 As rectangle:
+            BorderColor: =RGBA(230, 230, 230, 1)
+            Fill: =RGBA(204, 204, 204, 1)
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =619
+            X: =6
+            Y: =264
+            ZIndex: =8
+
+        Icon4 As icon.Edit:
+            BorderColor: |
+                =ColorFade(Self.Fill,-20%)
+            BorderThickness: =2    
+            Color: =RGBA(255, 255, 255, 1)
+            Fill: =RGBA(153, 153, 153, 1)
+            Height: =75
+            HoverFill: =ColorFade(Self.Fill,-20%)
+            Icon: =Icon.Edit
+            OnSelect: |-
+                =Set(
+                    Txt_incident_suffixvar,
+                    ThisItem.'Incident suffix'
+                );
+                Set(
+                    Sudden_Primary_key,
+                    ThisItem.Key
+                );
+                Set(
+                    incidentnumbervar,
+                    ThisItem.'Incident number'
+                );
+                Navigate(
+                    Scr_home
+                    )
+            Tooltip: ="Edit"
+            Visible: =!ThisItem.submitted
+            Width: =75
+            X: =534
+            ZIndex: =10
+
+        Icon2_1 As icon.Check:
+            BorderColor: =ColorFade(Self.Fill,-20%)
+            BorderThickness: =2   
+            Color: =RGBA(99, 139, 44, 1)
+            Fill: =copsGreen
+            Height: =75
+            HoverFill: =ColorFade(Self.Fill,-10%)
+            Icon: =Icon.Send
+            OnSelect: |
+                =If(
+                    ThisItem.deceasedValid And ThisItem.identificationValid And ThisItem.circumstancesValid And ThisItem.suddenDeathValid,
+                    UpdateContext({validationwarning: false});
+                    Patch(
+                        'Sudden death offline',
+                        ThisItem,
+                        {submitted: true}
+                    );
+                    Set(
+                        Sudden_Primary_key,
+                        Blank()
+                    );
+                    ,
+                    UpdateContext({validationwarning: true});
+                    
+                );
+            Tooltip: ="Submit"
+            Visible: =!ThisItem.submitted
+            Width: =75
+            X: =534
+            Y: =176
+            ZIndex: =13
+
+        Icon6 As icon.Cancel:
+            BorderColor: =ColorFade(Self.Fill,-20%)
+            BorderThickness: =2   
+            Color: =RGBA(118, 0, 0, 1)
+            Fill: =copsRed
+            Height: =50
+            HoverFill: =ColorFade(Self.Fill,-20%)
+            Icon: =Icon.Trash
+            OnSelect: =    Set(glbDelete,true);
+            Tooltip: ="Delete"
+            Visible: =!ThisItem.submitted
+            Width: =50
+            X: =6
+            Y: =201
+            ZIndex: =15
+
+        Label12 As label:
+            Height: =35
+            OnSelect: =Select(Parent)
+            Size: =18
+            Text: |-
+                =If (
+                    ThisItem.submitted And ThisItem.deleted,
+                    "Queued (deleted)",
+                    If (
+                        ThisItem.submitted,
+                        "Queued",
+                        "On Phone"
+                    )
+                )
+            Width: =219
+            X: =295
+            Y: =216
+            ZIndex: =16
+
+    Label2_2 As label:
+        Color: =RGBA(255, 0, 0, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =116
+        Size: =21
+        Text: ="Please fill in all the mandatory fields before submitting."
+        Visible: =validationwarning
+        Width: =355
+        X: =49
+        Y: =907
+        ZIndex: =10
+
+    Icon5_1 As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =139
+        Icon: =Icon.Warning
+        Visible: =validationwarning
+        Width: =122
+        X: =440
+        Y: =870
+        ZIndex: =11
+
+    Button3 As button:
+        DisplayMode: =DisplayMode.Disabled
+        Height: =70
+        OnSelect: =Clear(Contactoffline);Clear('Sudden death offline');//Clear('Property offline')
+        Size: =24
+        Text: ="Button"
+        Visible: =false
+        Width: =280
+        X: =360
+        Y: =1066
+        ZIndex: =12
+
+    Gallery_unsubmitted_2 As gallery.galleryVertical:
+        Height: =450
+        Items: =DebugQueue
+        Layout: =Layout.Vertical
+        TemplateSize: =96
+        Visible: =glbDebug
+        Y: =685
+        ZIndex: =13
+
+        Label3_7 As label:
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.SuddenDeathKey & " JSON"
+            Underline: =true
+            Width: =528
+            X: =6
+            ZIndex: =6
+
+        Rectangle1_2 As rectangle:
+            BorderColor: =RGBA(230, 230, 230, 1)
+            Fill: =RGBA(204, 204, 204, 1)
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =619
+            X: =6
+            Y: =264
+            ZIndex: =9
+
+        Label3_10 As label:
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.JSON
+            Width: =619
+            X: =6
+            Y: =40
+            ZIndex: =10
+
+    Group1 As group:
+        Height: =5
+        Width: =5
+        X: =60
+        Y: =60
+        ZIndex: =18
+
+        Rectangle3 As rectangle:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderThickness: =2
+            Fill: =RGBA(237, 237, 237, 0.96)
+            Height: =1108
+            Visible: =glbDelete
+            Width: =622
+            X: =10
+            Y: =13
+            ZIndex: =14
+
+        Label2 As label:
+            Align: =Align.Center
+            FontWeight: =FontWeight.Bold
+            Height: =70
+            Size: =21
+            Text: ="Are you sure you want to delete this Sudden Death record ?"
+            Visible: =glbDelete
+            Width: =560
+            X: =40
+            Y: =245
+            ZIndex: =15
+
+        btnNo As button:
+            Fill: =RGBA(153, 153, 153, 1)
+            Height: =70
+            HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+            OnSelect: =Set(glbDelete,false);
+            Size: =24
+            Text: ="No, Do Not Delete"
+            Visible: =glbDelete
+            Width: =467
+            X: =95
+            Y: =381
+            ZIndex: =16
+
+        btnYes As button:
+            Fill: =RGBA(153, 153, 153, 1)
+            Height: =47
+            HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+            OnSelect: |
+                =Patch(
+                    'Sudden death offline',
+                    Gallery_unsubmitted.Selected,
+                    {
+                        submitted: true,
+                        deleted: true
+                    }
+                );
+                
+                Set(glbDelete,false);
+            Size: =20
+            Text: ="Yes, Delete"
+            Visible: =glbDelete
+            Width: =156
+            X: =242
+            Y: =543
+            ZIndex: =17
+

@@ -1,0 +1,124 @@
+scrDebug As screen:
+
+    "Gallery1 As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+        Height: =217
+        Items: =blobsToSave
+        Layout: =Layout.Vertical
+        TemplatePadding: =0
+        TemplateSize: =191
+        Y: =127
+        ZIndex: =1
+
+        Image3 As image:
+            Height: =128
+            Image: =ThisItem.blob
+            OnSelect: =Select(Parent)
+            Width: =128
+            X: =16
+            Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+            ZIndex: =1
+
+        Title1 As label:
+            Height: =Self.Size * 1.8
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Text: =ThisItem.parentRecordId
+            VerticalAlign: =VerticalAlign.Top
+            Width: =Parent.TemplateWidth - Image3.Width - 104
+            X: =Image3.X + Image3.Width + 24
+            Y: =44
+            ZIndex: =2
+
+        Subtitle1 As label:
+            Height: =32
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Text: =ThisItem.id
+            VerticalAlign: =VerticalAlign.Top
+            Width: =606
+            X: =16
+            Y: =159
+            ZIndex: =3
+
+        NextArrow1 As icon.ChevronRight:
+            AccessibleLabel: =Self.Tooltip
+            Height: =60
+            Icon: =Icon.ChevronRight
+            OnSelect: =Select(Parent)
+            PaddingBottom: =10
+            PaddingLeft: =10
+            PaddingRight: =10
+            PaddingTop: =10
+            TabIndex: =0
+            Tooltip: ="View item details"
+            Width: =60
+            X: =Parent.TemplateWidth - Self.Width - 5
+            Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+            ZIndex: =4
+
+        Separator1 As rectangle:
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =Parent.TemplateWidth
+            Y: =Parent.TemplateHeight - 1
+            ZIndex: =5
+
+        Subtitle1_1 As label:
+            Height: =57
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Text: =ThisItem.blobId
+            VerticalAlign: =VerticalAlign.Top
+            Width: =467
+            X: =168
+            Y: =118
+            ZIndex: =6
+
+        Subtitle1_2 As label:
+            Height: =26
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Text: =ThisItem.type
+            VerticalAlign: =VerticalAlign.Top
+            Width: =467
+            X: =168
+            Y: =118
+            ZIndex: =7
+
+    Button5 As button:
+        OnSelect: =Navigate(Scr_home) & ConnectionChecker.IsOnline;
+        Size: =24
+        Text: ="Home"
+        Width: =388
+        ZIndex: =2
+
+    Button5_1 As button:
+        Height: =47
+        OnSelect: =Clear(UsedContactRoles)
+        Size: =24
+        Text: ="Clear"
+        Width: =126
+        X: =512
+        Y: =63
+        ZIndex: =5
+
+    Image9 As image:
+        Height: =320
+        Image: =imgProperty.NewImage
+        Width: =320
+        X: =236
+        Y: =545
+        ZIndex: =6
+

@@ -1,0 +1,65 @@
+ValidatingYesKnowUnknown As CanvasComponent:
+    Default: =
+    Editable: =true
+    Fill: =RGBA(0, 0, 0, 0)
+    Height: =100
+    IncludeUnknown: =true
+    Label: ="Label"
+    Mandatory: =true
+    OnChange: =true
+    OnReset: =Reset(radYesNoUnknown)
+    SelectedText: =radYesNoUnknown.Selected.Value
+    Width: =640
+    X: =0
+    Y: =0
+    ZIndex: =3
+
+    lblLabelYesNo As label:
+        Height: =45
+        PaddingLeft: =1
+        PaddingRight: =1
+        PaddingTop: =1
+        Size: =19
+        Text: =Parent.Label
+        Visible: =Len(lblLabelYesNo.Text)>0
+        Width: =476
+        X: =40
+        ZIndex: =1
+
+    lblAsteriskYesNo As label:
+        Align: =Center
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =37
+        PaddingBottom: =1
+        PaddingLeft: =1
+        PaddingRight: =1
+        PaddingTop: =1
+        Size: =20
+        Text: ="*"
+        Visible: =Parent.Mandatory
+        Width: =25
+        X: =radYesNoUnknown.Width+radYesNoUnknown.X-20
+        Y: =5
+        ZIndex: =2
+
+    radYesNoUnknown As radio:
+        BorderColor: =RGBA(153, 153, 153, 1)      
+        BorderThickness: =1
+        Default: =If (IsBlank(Parent.Default),"",Parent.Default)
+        DisabledBorderColor: =RGBA(153, 153, 153, 1)   
+        DisplayMode: |-
+            =
+            If(Parent.Editable, DisplayMode.Edit,DisplayMode.Disabled)
+        Fill: =If(Parent.Mandatory, If(!IsBlank(Self.Selected.Value) , White, LightGoldenRodYellow),White)
+        Height: =60
+        Items: =If(Parent.IncludeUnknown, ["Yes","No","Unknown"],["Yes","No"])
+        Layout: =Layout.Horizontal
+        OnChange: =Parent.OnChange()
+        RadioSize: =40
+        Size: =19
+        Width: |
+            =Parent.Width-95
+        X: =40
+        Y: =37
+        ZIndex: =3
+

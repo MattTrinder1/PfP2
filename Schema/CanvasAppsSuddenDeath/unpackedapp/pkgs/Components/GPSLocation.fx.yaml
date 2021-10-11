@@ -1,0 +1,70 @@
+GPSLocation As CanvasComponent:
+    Fill: =RGBA(0, 0, 0, 0)
+    Height: =100
+    Latitude: =Location.Latitude
+    Longitude: =Location.Longitude
+    Width: =640
+    X: =0
+    Y: =0
+    ZIndex: =5
+
+    txtTextbox_1 As text:
+        BorderColor: =RGBA(153, 153, 153, 1)  
+        Default: =Location.Longitude 
+        DisabledColor: =RGBA(0, 0, 0, 1)
+        DisplayMode: =DisplayMode.Disabled
+        Fill: =White
+        Height: =GPSLocation.Height-45
+        MaxLength: =100
+        RadiusBottomLeft: =0
+        RadiusBottomRight: =0
+        RadiusTopLeft: =0
+        RadiusTopRight: =0
+        Size: =19
+        Width: =206
+        X: =40
+        Y: =40
+        ZIndex: =1
+
+    lblLabel_1 As label:
+        Height: =45
+        PaddingLeft: =1
+        PaddingRight: =1
+        PaddingTop: =1
+        Size: =19
+        Text: ="Longitude"
+        Visible: =Len(lblLabel_1.Text)>0
+        Width: =206
+        X: =40
+        ZIndex: =2
+
+    txtTextbox_2 As text:
+        BorderColor: =RGBA(153, 153, 153, 1)  
+        Default: =Location.Latitude
+        DisabledColor: =RGBA(0, 0, 0, 1)
+        DisplayMode: =DisplayMode.Disabled
+        Fill: =White
+        Height: =GPSLocation.Height-45
+        MaxLength: =100
+        RadiusBottomLeft: =0
+        RadiusBottomRight: =0
+        RadiusTopLeft: =0
+        RadiusTopRight: =0
+        Size: =19
+        Width: =206
+        X: =377
+        Y: =40
+        ZIndex: =3
+
+    lblLabel_2 As label:
+        Height: =45
+        PaddingLeft: =1
+        PaddingRight: =1
+        PaddingTop: =1
+        Size: =19
+        Text: ="Latitude"
+        Visible: =Len(lblLabel_2.Text)>0
+        Width: =206
+        X: =377
+        ZIndex: =4
+

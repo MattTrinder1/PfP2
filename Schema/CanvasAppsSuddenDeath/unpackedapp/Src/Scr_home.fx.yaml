@@ -1,0 +1,1072 @@
+Scr_home As screen:
+    Fill: =RGBA(245, 245, 245, 1)
+    OnVisible: |
+        =Set(
+            checkicon,
+            false
+        );
+        UpdateContext({Warnunsubmit: false});
+
+    ConnectionChecker As ConnectionChecker_1:
+        Height: =40
+        Width: =640
+        Y: =1096
+
+    Lbl_header As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =27
+        Text: =If (IsBlank(Sudden_Primary_key),"Sudden Death","Sudden Death"& Char(10) & "("  &  Sudden_Primary_key & ")")
+        Width: =640
+        ZIndex: =1
+
+    Icn_exit As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: |-
+            =SaveData(
+                Contactoffline,
+                "Contactoffline"
+            );
+            Exit();
+        X: =576
+        Y: =13
+        ZIndex: =2
+
+    Btn_mediacal_history As button:
+        DisplayMode: =If(CountRows('Sudden death offline') =0 Or IsBlank(Sudden_Primary_key), DisplayMode.Disabled,DisplayMode.Edit)
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(scrMedicalHistoryNew)
+        Size: =24
+        Text: ="Medical history"
+        Width: =552
+        X: =44
+        Y: =600
+        ZIndex: =3
+
+    Btn_sudden_death As button:
+        DisplayMode: =If(CountRows('Sudden death offline') =0 Or IsBlank(Sudden_Primary_key), DisplayMode.Disabled,DisplayMode.Edit)
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(scrSuddenDeathNew)
+        Size: =24
+        Text: ="Sudden death"
+        Width: =552
+        X: =44
+        Y: =500
+        ZIndex: =4
+
+    Btn_deceased As button:
+        DisplayMode: =If(CountRows('Sudden death offline') =0 Or IsBlank(Sudden_Primary_key), DisplayMode.Disabled,DisplayMode.Edit)
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(scrDeceasedNew)
+        Size: =24
+        Text: ="Deceased"
+        Width: =552
+        X: =44
+        Y: =400
+        ZIndex: =5
+
+    Btn_incident_details As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |-
+            =Set(
+                i,
+                i + 1
+            );
+            //Set(
+            //    Sudden_Primary_key,
+            //    Txt_Deceased_details_surname.Text & " " & Txt_Deceased_detailsforename.Text & " " & Txt_incident_no.Text & " No:" & i
+            //);
+            Set(
+                flagback,
+                true
+            );
+            Navigate(
+                'Scr_incident details'
+            )
+        Size: =24
+        Text: ="Incident details"
+        Width: =552
+        X: =44
+        Y: =200
+        ZIndex: =6
+
+    Btn_circumstances As button:
+        DisplayMode: =If(CountRows('Sudden death offline') =0 Or IsBlank(Sudden_Primary_key), DisplayMode.Disabled,DisplayMode.Edit)
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(scrCircumstancesNew2)
+        Size: =24
+        Text: ="Circumstances"
+        Width: =552
+        X: =44
+        Y: =700
+        ZIndex: =7
+
+    Btn_property As button:
+        DisplayMode: =If(CountRows('Sudden death offline') =0 Or IsBlank(Sudden_Primary_key), DisplayMode.Disabled,DisplayMode.Edit)
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Scr_properties)
+        Size: =24
+        Text: ="Property"
+        Width: =552
+        X: =44
+        Y: =800
+        ZIndex: =8
+
+    Btn_add_into As button:
+        DisplayMode: =If(CountRows('Sudden death offline') =0 Or IsBlank(Sudden_Primary_key), DisplayMode.Disabled,DisplayMode.Edit)
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Scr_role_colection)
+        Size: =24
+        Text: ="Person Summary"
+        Width: =552
+        X: =44
+        Y: =1000
+        ZIndex: =9
+
+    Btn_identification As button:
+        DisplayMode: =If(CountRows('Sudden death offline') =0 Or IsBlank(Sudden_Primary_key), DisplayMode.Disabled,DisplayMode.Edit)
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(scrIdentificationNew)
+        Size: =24
+        Text: ="Identification" //& idetidisable  //& Radio_Identification_completion_1.Selected.Value & " " & Identificationtimerreset & " " & Identificationtimerstart
+        Width: =552
+        X: =44
+        Y: =900
+        ZIndex: =10
+
+    Icn_add_into As icon.Add:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =60
+        Icon: =Icon.Add
+        Width: =60
+        X: =Btn_incident_details_1.X+480    
+        Y: =Btn_add_into.Y+7    
+        ZIndex: =11
+
+    Icn_identification As icon.Newspaper:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =60
+        Icon: =Icon.Newspaper
+        Width: =60
+        X: =Btn_incident_details_1.X+480    
+        Y: |
+            =Btn_identification.Y+7
+        ZIndex: =12
+
+    Icn_property As icon.Home:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =60
+        Icon: =Icon.Home
+        Width: =60
+        X: =Btn_incident_details_1.X+480    
+        Y: =Btn_property.Y+7
+        ZIndex: =13
+
+    Icn_medical_history As icon.DockCheckProperties:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =60
+        Icon: =Icon.DockCheckProperties
+        Width: =60
+        X: =Btn_incident_details_1.X+480    
+        Y: =Btn_mediacal_history.Y+7
+        ZIndex: =14
+
+    Icn_incident_details As icon.DocumentwithContent:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =60
+        Icon: =Icon.DocumentWithContent
+        Width: =60
+        X: =Btn_incident_details_1.X+480    
+        Y: |
+            =Btn_incident_details.Y+7
+        ZIndex: =15
+
+    Icn_deceased As icon.LogJournal:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =60
+        Icon: =Icon.Bookmark
+        Width: =60
+        X: =Btn_incident_details_1.X+480    
+        Y: =Btn_deceased.Y+7
+        ZIndex: =16
+
+    Icn_sudden_death As icon.Information:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =60
+        Icon: =Icon.Information
+        Width: =60
+        X: =Btn_incident_details_1.X+480    
+        Y: =Btn_sudden_death.Y+7
+        ZIndex: =17
+
+    Icn_circum As icon.ColorPicker:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =60
+        Icon: =Icon.ColorPicker
+        Width: =60
+        X: =Btn_incident_details_1.X+480    
+        Y: =Btn_circumstances.Y+7
+        ZIndex: =18
+
+    Icon1 As icon.Check:
+        Color: =RGBA(152, 208, 70, 1)
+        Icon: =Icon.Check
+        Visible: =checkicon
+        X: =85
+        Y: =203
+        ZIndex: =20
+
+    Btn_incident_details_1 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Scr_colection)
+        Size: =24
+        Text: ="Unsubmitted Incidents"
+        Width: =552
+        X: =44
+        Y: =100
+        ZIndex: =21
+
+    Icon2 As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =Warnunsubmit
+        Width: =60
+        X: |
+            =Btn_incident_details_1.X+5
+        Y: |
+            =Btn_incident_details_1.Y+7
+        ZIndex: =23
+
+    Icon5 As icon.Edit:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =60
+        Icon: =Icon.Edit
+        Width: =60
+        X: =Btn_incident_details_1.X+480
+        Y: |
+            =Btn_incident_details_1.Y+7
+        ZIndex: =24
+
+    iconSuddenDeathInvalid As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =lblSuddenDeathValid.Text = "false"
+        Width: =60
+        X: |
+            =Btn_sudden_death.X+5
+        Y: |
+            =Btn_sudden_death.Y+7
+        ZIndex: =29
+
+    iconCircumstancesInvalid As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =lblCircumstancesValid.Text="false"
+        Width: =60
+        X: |
+            =Btn_circumstances.X+5
+        Y: |
+            =Btn_circumstances.Y+7
+        ZIndex: =31
+
+    iconDeceasedInvalid As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =lblDeceasedValid.Text="false"
+        Width: =60
+        X: =Btn_deceased.X+5
+        Y: |
+            =Btn_deceased.Y+7
+        ZIndex: =37
+
+    iconIdentificationWarning As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =lblIdentificationValid.Text="false"
+        Width: =60
+        X: =Btn_identification.X+5
+        Y: |
+            =Btn_identification.Y+7
+        ZIndex: =39
+
+    Btn_deceased_1 As button:
+        DisplayMode: =If(CountRows('Sudden death offline') =0 Or IsBlank(Sudden_Primary_key), DisplayMode.Disabled,DisplayMode.Edit)
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(scrAddPersonNew)
+        Size: =24
+        Text: ="Add Person"
+        Width: =552
+        X: =44
+        Y: =300
+        ZIndex: =40
+
+    Icn_deceased_1 As icon.LogJournal:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =60
+        Icon: =Icon.LogJournal
+        Width: =60
+        X: =Btn_incident_details_1.X+480    
+        Y: =Btn_deceased_1.Y+7
+        ZIndex: =41
+
+    Icon_warning_staff_details_1 As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =false
+        Width: =60
+        X: =52
+        Y: =307
+        ZIndex: =43
+
+    Label5_2 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(179, 179, 179, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        OnSelect: |-
+            =If (
+                IsMatch (
+                    Lower(User().Email),
+                    "tisski.com",
+                    MatchOptions.EndsWith
+                ),
+                Set(
+                    glbDebug,
+                    !glbDebug
+                )
+            )
+        Size: =15
+        Text: |-
+            ="v:" & glbAppVersion 
+        Width: =65
+        ZIndex: =44
+
+    lblSuddenDeathValid As label:
+        Height: =22
+        Size: =21
+        Text: =If (IsEmpty('Sudden death offline') Or IsBlank(Sudden_Primary_key),"", LookUp('Sudden death offline' ,Key=Sudden_Primary_key).suddenDeathValid)
+        Visible: =glbDebug
+        Width: =76
+        X: =436
+        Y: =542
+        ZIndex: =45
+
+    iconSuddenDeathValid As icon.Add:
+        Color: =RGBA(187, 221, 140, 1)
+        Height: =60
+        Icon: =Icon.Check
+        Visible: =lblSuddenDeathValid.Text = "true"
+        Width: =60
+        X: =Btn_sudden_death.X+5
+        Y: =Btn_sudden_death.Y+7
+        ZIndex: =46
+
+    iconCircumstancesValid As icon.Add:
+        Color: =RGBA(187, 221, 140, 1)
+        Height: =60
+        Icon: =Icon.Check
+        Visible: =lblCircumstancesValid.Text = "true"
+        Width: =60
+        X: |
+            =Btn_circumstances.X+5
+        Y: =Btn_circumstances.Y+7
+        ZIndex: =47
+
+    lblCircumstancesValid As label:
+        Height: =21
+        Size: =21
+        Text: =If (IsEmpty('Sudden death offline') Or IsBlank(Sudden_Primary_key),"", LookUp('Sudden death offline' ,Key=Sudden_Primary_key).circumstancesValid)
+        Visible: =glbDebug
+        Width: =85
+        X: =439
+        Y: =742
+        ZIndex: =48
+
+    lblDeceasedValid As label:
+        Height: =24
+        Size: =21
+        Text: =If (IsEmpty('Sudden death offline') Or IsBlank(Sudden_Primary_key),"", LookUp('Sudden death offline' ,Key=Sudden_Primary_key).deceasedValid)
+        Visible: =glbDebug
+        Width: =85
+        X: =439
+        Y: =438
+        ZIndex: =49
+
+    iconDeceasedValid As icon.Add:
+        Color: =RGBA(187, 221, 140, 1)
+        Height: =60
+        Icon: =Icon.Check
+        Visible: =lblDeceasedValid.Text = "true"
+        Width: =60
+        X: =Btn_deceased.X+5
+        Y: =Btn_deceased.Y+7
+        ZIndex: =50
+
+    lblIdentificationValid As label:
+        Height: =35
+        Size: =21
+        Text: =If (IsEmpty('Sudden death offline') Or IsBlank(Sudden_Primary_key),"", LookUp('Sudden death offline' ,Key=Sudden_Primary_key).identificationValid)
+        Visible: =glbDebug
+        Width: =79
+        X: =433
+        Y: =932
+        ZIndex: =51
+
+    iconIdentificationValid As icon.Add:
+        Color: =RGBA(187, 221, 140, 1)
+        Height: =60
+        Icon: =Icon.Check
+        Visible: =lblIdentificationValid.Text="true"
+        Width: =60
+        X: =Btn_identification.X+5
+        Y: |
+            =Btn_identification.Y+7
+        ZIndex: =52
+
+    tmrSave As timer:
+        AutoPause: =false
+        AutoStart: =true
+        Duration: =8000
+        Height: =33
+        OnTimerEnd: |-
+            =If(
+                ConnectionChecker.IsOnline,
+                UpdateContext({tmrSaveStart:true});
+                UpdateContext({tmrSaveStart:false});
+                With (
+                    {
+                        recordsReadyToSave: Filter(
+                            'Sudden death offline',
+                            readyToSync = true
+                        )
+                        //recordsReadyToSave: 'Sudden death offline'
+                    },
+                    ForAll(
+                        recordsReadyToSave As recordReadyToSave,
+                        With(
+                            {
+                                jsonText: JSON(
+                                    First(
+                                        AddColumns(
+                                            Filter(
+                                                'Sudden death offline',
+                                                Key = recordReadyToSave.Key
+                                            ),
+                                            "Properties",
+                                            Filter(
+                                                'Property offline',
+                                                SuddenDeathKey = recordReadyToSave.Key
+                                            ),
+                                            "Contacts",
+                                            Filter(
+                                                Contactoffline,
+                                                Key = recordReadyToSave.Key
+                                            )
+                                        )
+                                    ),
+                                    JSONFormat.IgnoreBinaryData
+                                )
+                            },
+                            //START JSON DEBUG COLLECTION
+                            Collect(
+                                DebugQueue,
+                                {
+                                    JSON: jsonText,
+                                    SuddenDeathKey: recordReadyToSave.Key
+                                }
+                            );
+                            //END JSON DEBUG COLLECTION
+            If(
+                                AzureQueues.PutMessage(
+                                    "suddendeathqueue",
+                                    jsonText
+                                ),
+                                Remove(
+                                    'Sudden death offline',
+                                    LookUp(
+                                        'Sudden death offline',
+                                        Key = recordReadyToSave.Key
+                                    );
+                                );
+                                RemoveIf(
+                                    'Property offline',
+                                    SuddenDeathKey = recordReadyToSave.Key
+                                );
+                                RemoveIf(
+                                    Contactoffline,
+                                    Key = recordReadyToSave.Key
+                                );
+                                RemoveIf(
+                                    UsedContactRoles,
+                                    Key = recordReadyToSave.Key
+                                );
+                                RemoveIf(
+                                    IdentificationSignatures,
+                                    Key = recordReadyToSave.Key
+                                );
+                                RemoveIf(
+                                    PropertySignatures,
+                                    Key = recordReadyToSave.Key
+                                );
+                                SaveData(
+                                    'Sudden death offline',
+                                    "Sudden death offline"
+                                );
+                                SaveData(
+                                    'Property offline',
+                                    "Property offline"
+                                );
+                                SaveData(
+                                    Contactoffline,
+                                    "Contactoffline"
+                                );
+                                SaveData(
+                                    UsedContactRoles,
+                                    "UsedContactRoles"
+                                );
+                            );
+                        )
+                    );
+                );
+                UpdateContext({tmrSaveStart:true});
+                
+                
+            )
+        Repeat: =true
+        Start: =tmrSaveStart
+        Text: |-
+            ="Save " & Text(Time(0, 0, Self.Value/1000), "hh:mm:ss") & "(" & tmrSaveStart & ")"
+        Visible: =glbDebug
+        Width: =255
+        X: =385
+        Y: =1062
+        ZIndex: =56
+
+    Group14_1 As group:
+        Height: =5
+        Width: =5
+        X: =60
+        Y: =60
+        ZIndex: =56
+
+        Rectangle2_2 As rectangle:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Fill: =RGBA(255, 255, 255, 0.89)
+            Height: =1136
+            Visible: =gblLoading1
+            Width: =640
+            ZIndex: =53
+
+        Image1_4 As image:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Height: =109
+            Image: =syncinggif
+            Visible: =gblLoading1
+            Width: =107
+            X: =278
+            Y: =467
+            ZIndex: =54
+
+        Label5_6 As label:
+            Align: =Align.Center
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Height: =71
+            Size: =21
+            Text: ="Syncing ..."
+            Visible: =gblLoading1
+            Width: =560
+            X: =44
+            Y: =372
+            ZIndex: =55
+
+    tmrBlobSave As timer:
+        AutoPause: =false
+        AutoStart: =true
+        Duration: =7000
+        Height: =34
+        OnTimerEnd: |-
+            =If(
+                ConnectionChecker.IsOnline,
+                UpdateContext({tmrBlobSaveStart:true});
+                UpdateContext({tmrBlobSaveStart:false});
+                
+                With (
+                    {
+                        unsavedBlobs: Filter(
+                            blobsToSave,
+                            IsBlank(blobId)
+                        )
+                    },
+                    ForAll(
+                        unsavedBlobs As unsavedBlob,
+                        If(
+                            CountIf(
+                                'Sudden death offline',
+                                Key = unsavedBlob.parentRecordId,
+                                submitted = true
+                            ) > 0,
+                            Patch(
+                                blobsToSave,
+                                unsavedBlob,
+                                {
+                                    blobId: AzureBlobStorage.CreateFile(
+                                        "suddendeath",
+                                        unsavedBlob.id & "-" & unsavedBlob.type & "-" & unsavedBlob.index,
+                                        unsavedBlob.blob
+                                    ).Name
+                                }
+                            );
+                            SaveData(
+                                blobsToSave,
+                                "blobsToSaveCache"
+                            );
+                        );
+                    );
+                );
+                UpdateContext({tmrBlobSaveStart:true});
+                
+                
+            )
+        Repeat: =true
+        Start: =tmrBlobSaveStart
+        Text: |-
+            ="Blob Save " & Text(Time(0, 0, Self.Value/1000), "hh:mm:ss") & "(" & tmrBlobSaveStart & ")"
+        Visible: =glbDebug
+        Width: =215
+        Y: =1062
+        ZIndex: =57
+
+    tmrReadySave As timer:
+        AutoPause: =false
+        AutoStart: =true
+        Duration: =7500
+        Height: =36
+        OnTimerEnd: |-
+            =If(
+                ConnectionChecker.IsOnline,
+                UpdateContext({tmrReadySaveStart: true});
+                UpdateContext({tmrReadySaveStart: false});
+                With (
+                    {
+                        recordsToValidate: Filter(
+                            'Sudden death offline',
+                            And(
+                                submitted = true,
+                                readyToSync = false
+                            )
+                        )
+                    },
+                    ForAll(
+                        recordsToValidate As recordToValidate,
+                        Patch(
+                            'Sudden death offline',
+                            recordToValidate,
+                            {
+                                readyToSync: CountRows(
+                                    Filter(
+                                        blobsToSave,
+                                        parentRecordId = recordToValidate.Key
+                                    )
+                                ) = CountRows(
+                                    Filter(
+                                        blobsToSave,
+                                        parentRecordId = recordToValidate.Key,
+                                        blobId <> ""
+                                    )
+                                )
+                            }
+                        );
+                    );
+                );
+                UpdateContext({tmrReadySaveStart: true});
+                
+            )
+        Repeat: =true
+        Start: =tmrReadySaveStart
+        Text: |-
+            ="Ready Save " & Text(Time(0, 0, Self.Value/1000), "hh:mm:ss") & "(" & tmrReadySaveStart & ")"
+        Visible: =glbDebug
+        Width: =255
+        X: =385
+        Y: =1096
+        ZIndex: =58
+
+    Debug As button:
+        Height: =78
+        OnSelect: =Navigate(scrDebug);
+        Size: =24
+        Text: ="Debug" & glbBrowser
+        Visible: =glbDebug
+        Width: =116
+        X: =524
+        Y: =146
+        ZIndex: =59
+
+    tmrSync As timer:
+        AutoPause: =false
+        AutoStart: =true
+        Duration: =5500
+        Height: =41
+        OnSelect: |
+            =Set(glbfullySynced,false);
+                UpdateContext({tmrSyncStart: false});
+                UpdateContext({tmrSyncStart: true});
+        OnTimerEnd: |-
+            =If(
+                ConnectionChecker.IsOnline And glbfullySynced,
+                UpdateContext({tmrSyncStart: true});
+                UpdateContext({tmrSyncStart: false});
+                
+            );
+            If(
+                ConnectionChecker.IsOnline And !glbfullySynced,
+                UpdateContext({tmrSyncStart: false});
+                Set(
+                    officermail,
+                    User().Email
+                );
+                //--------------------------Users---------------------
+            Clear(Usersalllocal);
+                Collect(
+                    Usersalllocal,
+                    {
+                        displayValue: "",
+                        id: "00000000-0000-0000-0000-000000000000"
+                    }
+                );
+                Collect(
+                    Usersalllocal,
+                    PoliceAPI.GetOfficerUsers(
+                        1,
+                        officermail
+                    )
+                );
+                Collect(
+                    Usersalllocal,
+                    PoliceAPI.GetOfficerUsers(
+                        2,
+                        officermail
+                    )
+                );
+                Collect(
+                    Usersalllocal,
+                    PoliceAPI.GetOfficerUsers(
+                        3,
+                        officermail
+                    )
+                );
+                Collect(
+                    Usersalllocal,
+                    PoliceAPI.GetOfficerUsers(
+                        4,
+                        officermail
+                    )
+                );
+                Collect(
+                    Usersalllocal,
+                    PoliceAPI.GetOfficerUsers(
+                        5,
+                        officermail
+                    )
+                );
+                Collect(
+                    Usersalllocal,
+                    PoliceAPI.GetOfficerUsers(
+                        6,
+                        officermail
+                    )
+                );
+                Collect(
+                    Usersalllocal,
+                    PoliceAPI.GetOfficerUsers(
+                        7,
+                        officermail
+                    )
+                );
+                Collect(
+                    Usersalllocal,
+                    PoliceAPI.GetOfficerUsers(
+                        8,
+                        officermail
+                    )
+                );
+                Collect(
+                    Usersalllocal,
+                    PoliceAPI.GetOfficerUsers(
+                        9,
+                        officermail
+                    )
+                );
+                Collect(
+                    Usersalllocal,
+                    PoliceAPI.GetOfficerUsers(
+                        0,
+                        officermail
+                    )
+                );
+                Collect(
+                    Usersalllocal,
+                    PoliceAPI.GetCivilianUsers(officermail)
+                );
+                
+                SaveData(
+                    Usersalllocal,
+                    "Usersalllocal"
+                );
+                ClearCollect(
+                    Userlocal,
+                    {
+                        Usermaillocal: User().Email,
+                        Collarnumber: LookUp(
+                            Usersalllocal,
+                            emailAddress = officermail
+                        ).badgeNumber,
+                        Name: LookUp(
+                            Usersalllocal,
+                            emailAddress = officermail
+                        ).name
+                    }
+                );
+                SaveData(
+                    Userlocal,
+                    "Userlocal"
+                );
+                //--------------------------Contact Role---------------------
+            ClearCollect(
+                    ContactRoleoffline,
+                    //{
+                    //    displayValue: "",
+                    //    displaySequenceNo: 0,
+                    //    id: "00000000-0000-0000-0000-000000000000"
+                    //},
+                    PoliceAPI.GetContactRoleType(
+                        778230001,
+                        officermail
+                    ).values
+                );
+                SaveData(
+                    ContactRoleoffline,
+                    "ContactRoleoffline"
+                );
+                //--------------------------Gender---------------------
+            ClearCollect(
+                    Genderoffline,
+                    {
+                        displayValue: "",
+                        displaySequenceNo: 0,
+                        id: "00000000-0000-0000-0000-000000000000"
+                    },
+                    PoliceAPI.GetLookupField(
+                        12,
+                        officermail
+                    ).values
+                );
+                SaveData(
+                    Genderoffline,
+                    "Genderoffline"
+                );
+                //--------------------------Percieved Ethnicity---------------------
+            ClearCollect(
+                    PerceivedEthnicityoffline,
+                    {
+                        displayValue: "",
+                        displaySequenceNo: 0,
+                        id: "00000000-0000-0000-0000-000000000000"
+                    },
+                    PoliceAPI.GetLookupField(
+                        22,
+                        officermail
+                    ).values
+                );
+                SaveData(
+                    PerceivedEthnicityoffline,
+                    "PerceivedEthnicityoffline"
+                );
+                //--------------------------Staff Title---------------------
+            ClearCollect(
+                    StaffTitleoffline,
+                    {
+                        displayValue: "",
+                        displaySequenceNo: 0,
+                        id: "00000000-0000-0000-0000-000000000000"
+                    },
+                    PoliceAPI.GetLookupField(
+                        24,
+                        officermail
+                    ).values
+                );
+                SaveData(
+                    StaffTitleoffline,
+                    "StaffTitleoffline"
+                );
+                //--------------------------Burial or Cremation---------------------
+            ClearCollect(
+                    Burialorcremationoffline,
+                    {
+                        displayValue: "",
+                        displaySequenceNo: 0,
+                        id: "00000000-0000-0000-0000-000000000000"
+                    },
+                    PoliceAPI.GetLookupField(
+                        68,
+                        officermail
+                    ).values
+                );
+                SaveData(
+                    Burialorcremationoffline,
+                    "Burialorcremationoffline"
+                );
+                //--------------------------Marital Status---------------------
+            ClearCollect(
+                    Maritaloffline,
+                    {
+                        displayValue: "",
+                        displaySequenceNo: 0,
+                        id: "00000000-0000-0000-0000-000000000000"
+                    },
+                    PoliceAPI.GetLookupField(
+                        73,
+                        officermail
+                    ).values
+                );
+                SaveData(
+                    Maritaloffline,
+                    "Maritaloffline"
+                );
+                //--------------------------House Temp---------------------
+            ClearCollect(
+                    Housetemperatureoffline,
+                    {
+                        displayValue: "",
+                        displaySequenceNo: 0,
+                        id: "00000000-0000-0000-0000-000000000000"
+                    },
+                    PoliceAPI.GetLookupField(
+                        69,
+                        officermail
+                    ).values
+                );
+                SaveData(
+                    Housetemperatureoffline,
+                    "Housetemperatureoffline"
+                );
+                //--------------------------House Secure---------------------
+            ClearCollect(
+                    Housesecureoffline,
+                    {
+                        displayValue: "",
+                        displaySequenceNo: 0,
+                        id: "00000000-0000-0000-0000-000000000000"
+                    },
+                    PoliceAPI.GetLookupField(
+                        74,
+                        officermail
+                    ).values
+                );
+                SaveData(
+                    Housesecureoffline,
+                    "Housesecureoffline"
+                );
+                //--------------------------TPA---------------------
+            ClearCollect(
+                    TPA,
+                    {
+                        displayValue: "",
+                        displaySequenceNo: 0,
+                        id: "00000000-0000-0000-0000-000000000000"
+                    },
+                    PoliceAPI.GetTerritorialPolicingArea(officermail).values
+                );
+                SaveData(
+                    TPA,
+                    "TPA"
+                );
+                //--------------------------Contact Method---------------------
+            ClearCollect(
+                    contactmethodoffline,
+                    {
+                        displayValue: "",
+                        displaySequenceNo: 0,
+                        id: "00000000-0000-0000-0000-000000000000"
+                    },
+                    PoliceAPI.GetLookupField(
+                        83,
+                        officermail
+                    ).values
+                );
+                SaveData(
+                    contactmethodoffline,
+                    "contactmethodoffline"
+                );
+                //--------------------------Countries---------------------
+            ClearCollect(
+                    countriesoffline,
+                    {
+                        displayValue: "",
+                        displaySequenceNo: 0,
+                        id: "00000000-0000-0000-0000-000000000000"
+                    },
+                    SortByColumns (
+                        PoliceAPI.GetLookupField(
+                            30,
+                            officermail
+                        ).values,
+                        "displaySequenceNo",
+                        Ascending,
+                        "displayValue",
+                        Descending
+                    )
+                );
+                SaveData(
+                    countriesoffline,
+                    "countriesoffline"
+                );
+                //--------------------------End of Sync - set flag 
+            Set (
+                    glbfullySynced,
+                    true
+                );
+                
+            )
+        Repeat: =true
+        Start: =tmrSyncStart
+        Text: |-
+            ="Sync " & Text(Time(0, 0, Self.Value/1000), "hh:mm:ss") & " : Synced (" & glbfullySynced & ")"
+        Visible: =glbDebug
+        Width: =278
+        Y: =1095
+        ZIndex: =60
+

@@ -1,0 +1,85 @@
+ValidatingMultiSelectDropDown_1 As CanvasComponent:
+    Fill: =RGBA(0, 0, 0, 0)
+    Height: =100
+    Items: |-
+        =Table({DisplayValue:"Item1",Id:GUID("6c15a2c2-35be-4f84-9101-3784eab41697")},{DisplayValue:"Item2",Id:GUID("df11dacb-883b-4dfd-bcbd-d82d339ef469")},{DisplayValue:"Item3",Id:GUID("b54cf68e-8a4f-4c9c-a6ec-d3877be3f25a")})
+    Label: ="Label"
+    Mandatory: =true
+    OnReset: =Reset(dropMultiSelectDropDown_1)
+    SelectedDisplayValues: |-
+        =Left(
+            Concat(
+                dropMultiSelectDropDown_1.SelectedItems,
+                DisplayValue & ","
+            ),
+            Len(
+                Concat(
+                    dropMultiSelectDropDown_1.SelectedItems,
+                    DisplayValue & ","
+                )
+            ) - 1
+        )
+    SelectedIds: |-
+        =Left(
+            Concat(
+                dropMultiSelectDropDown_1.SelectedItems,
+                Text(Id) & ","
+            ),
+            Len(
+                Concat(
+                    dropMultiSelectDropDown_1.SelectedItems,
+                    Text(Id) & ","
+                )
+            ) - 1
+        )
+    SelectedItems: =dropMultiSelectDropDown_1.SelectedItems
+    Width: =640
+    X: =0
+    Y: =0
+    ZIndex: =2
+
+    lblMultiSelectDropDownLabel_1 As label:
+        Height: =45
+        PaddingLeft: =1
+        PaddingRight: =1
+        PaddingTop: =1
+        Size: =19
+        Text: =ValidatingMultiSelectDropDown_1.Label
+        Visible: =Len(ValidatingMultiSelectDropDown_1.Label) >0
+        Width: =476
+        X: =40
+        ZIndex: =1
+
+    lblMultiSelectDropDownAsterisk_1 As label:
+        Align: =Center
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =37
+        PaddingBottom: =1
+        PaddingLeft: =1
+        PaddingRight: =1
+        PaddingTop: =1
+        Size: =20
+        Text: ="*"
+        Visible: =ValidatingMultiSelectDropDown_1.Mandatory
+        Width: =25
+        X: =dropMultiSelectDropDown_1.Width+dropMultiSelectDropDown_1.X-20     
+        Y: =5   
+        ZIndex: =2
+
+    dropMultiSelectDropDown_1 As combobox:
+        BorderColor: =RGBA(153, 153, 153, 1)          
+        ChevronBackground: =RGBA(128, 128, 128, 1)
+        DefaultSelectedItems: =Parent.DefaultSelectedItems
+        DisplayFields: =["DisplayValue"]
+        Fill: =If(Parent.Mandatory, If( Len(Self.Selected.DisplayValue) > 0 , White, LightGoldenRodYellow),White)
+        Height: =55
+        InputTextPlaceholder: =
+        Items: =Parent.Items
+        SearchFields: =["DisplayValue"]
+        SearchItems: =Search(Parent.Items,dropMultiSelectDropDown_1.SearchText,"DisplayValue")
+        Size: =19
+        Width: =Parent.Width-95
+        X: =40
+        Y: =40
+        ZIndex: =3
+

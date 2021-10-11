@@ -1,0 +1,52 @@
+ImageManager As CanvasComponent:
+    Fill: =RGBA(0, 0, 0, 0)
+    Height: =500
+    Image: =SampleImage
+    NewImage: =If(IsBlank(AddMediaButton1.Media), imgCurrent.Image,AddMediaButton1.Media)
+    OnReset: =Reset(AddMediaButton1);
+    Width: =640
+    X: =0
+    Y: =0
+    ZIndex: =4
+
+    imgCurrent As image:
+        Height: =Parent.Height - Self.Y-20
+        Image: =Parent.Image
+        Visible: =IsBlank(AddMediaButton1.Media)
+        Width: =545
+        X: =40
+        Y: =100
+        ZIndex: =1
+
+    Icon1_1 As icon.Add:
+        BorderColor: =RGBA(179, 179, 179, 1)
+        Color: =RGBA(153, 153, 153, 1)
+        Icon: =Icon.Camera
+        X: =503
+        Y: =12
+        ZIndex: =2
+
+    AddMediaButton1 As addMedia:
+        BorderColor: =RGBA(179, 179, 179, 1)
+        BorderThickness: =2
+        ChangePictureText: ="Take Picture"
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =67
+        PressedColor: =Green//Self.Color
+        Size: =25
+        Text: ="Take Picture"
+        Width: =545
+        X: =40
+        Y: =12
+        ZIndex: =3
+
+    imgNew As image:
+        Height: =imgCurrent.Height
+        Image: =AddMediaButton1.Media
+        Visible: =!IsBlank(AddMediaButton1.Media)
+        Width: =545
+        X: =40
+        Y: =100
+        ZIndex: =4
+
