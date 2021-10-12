@@ -32,6 +32,8 @@ namespace API.Mappers
                 .ForMember(dest => dest.LastName, map => map.MapFrom(src => src.Surname))
                 .ForMember(dest => dest.DeceasedRelationship, map => map.MapFrom(src => src.Deceasedrelathionship))
                 .ForMember(dest => dest.Postcode, map => map.MapFrom(src => src.pcode))
+                .ForMember(dest => dest.Gender, map => map.MapFrom(src => GetGuid(src.Gender)))
+                .ForMember(dest => dest.OfficerDefinedEthnicity, map => map.MapFrom(src => GetGuid(src.OfficerDefinedEthnicity)))
 
                 ;
 
@@ -119,6 +121,13 @@ namespace API.Mappers
 
                     .ForMember(dest => dest.CIDCSISelectedIds, map => map.MapFrom(src => GetGuids(src.CIDcsiselectid)))
                     .ForMember(dest => dest.AdditionalOfficerIds, map => map.MapFrom(src => GetGuids(src.Additionalofficerid)))
+                    
+                    .ForMember(dest => dest.BurialCremation, map => map.MapFrom(src => GetGuid(src.BurialOrCremation)))
+
+                    .ForMember(dest => dest.LatitudeSuddenDeath, map => map.MapFrom(src => GetNullableDouble(src.LatitudeSuddenDeath)))
+                    .ForMember(dest => dest.LongtitudeSuddenDeath, map => map.MapFrom(src => GetNullableDouble(src.LongtitudeSuddenDeath)))
+
+
 
 
                 ;
@@ -164,6 +173,26 @@ namespace API.Mappers
             }
 
             return GuidCSVList.Split(new char[] { ',' }).Select(x => new Guid(x)).ToList();
+        }
+
+        private Guid? GetGuid(string guid)
+        {
+            if (string.IsNullOrEmpty(guid) || Guid.Parse(guid) == Guid.Empty)
+            {
+                return null;
+            }
+
+            return Guid.Parse(guid);
+        }
+
+        private double? GetNullableDouble(string value)
+        {
+            if (string.IsNullOrEmpty(value))
+            {
+                return null;
+            }
+
+            return double.Parse(value);
         }
 
         private string GetBlob(BlobContainerClient client, string blobId)

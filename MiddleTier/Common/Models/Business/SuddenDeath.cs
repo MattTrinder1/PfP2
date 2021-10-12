@@ -41,8 +41,8 @@ namespace Common.Models.Business
         public string TownSuddenDeath { get; set; }
         public string AddressSuddenDeath { get; set; }
         public string DistrictSuddenDeath { get; set; }
-        public double LatitudeSuddenDeath { get; set; }
-        public double LongtitudeSuddenDeath { get; set; }
+        public double? LatitudeSuddenDeath { get; set; }
+        public double? LongtitudeSuddenDeath { get; set; }
         public DateTime? IdentificationSignedOn { get; set; }
         public DateTime? DatetimeDeathConfirmed { get; set; }
         public DateTime? DatetimeBodyFound { get; set; }
