@@ -16,7 +16,7 @@ ValidatingTextBoxNew As CanvasComponent:
 
     txtTextbox_3 As text:
         BorderColor: =RGBA(153, 153, 153, 1)  
-        Default: =Parent.DefaultText   
+        Default: =If(IsBlank(Parent.DefaultText),"",Parent.DefaultText)
         DisplayMode: =If(ValidatingTextBoxNew.Editable, DisplayMode.Edit,DisplayMode.Disabled)
         Fill: =If(Parent.Mandatory, If(!IsBlank(Self.Text) , White, LightGoldenRodYellow),White)
         Height: =ValidatingTextBoxNew.Height-45

@@ -47,7 +47,7 @@
             ZIndex: =2
 
             drpIdentificationTitle As ValidatingDropDown:
-                Default: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).Titlename 
+                Default: =If(CountRows(Filter(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename)) = 0,"", LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).Titlename )
                 Editable: =!cardIdentificationSignature.Visible
                 Items: =StaffTitleoffline
                 Label: ="Title"
@@ -66,7 +66,6 @@
 
             txtIdentificationForename As ValidatingTextBoxNew:
                 DefaultText: =LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).Forename    
-                Editable: =!cardIdentificationSignature.Visible
                 Label: ="Forename"
                 ZIndex: =1
 
@@ -585,7 +584,8 @@
 
     Btn_save_33 As button:
         DisplayMode: |
-            =If(IsBlank(LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).identificationsignature) ,DisplayMode.Edit,DisplayMode.Disabled)
+            =DisplayMode.Edit
+            //If(IsBlank(LookUp(Contactoffline,Key = Sudden_Primary_key And "Identifier" in Contactrolename).identificationsignature) ,DisplayMode.Edit,DisplayMode.Disabled)
             /*If(
                 And(
                     (Radio_Identification_completion_1.Selected.Value = "Yes" 
@@ -664,6 +664,7 @@
             ,
                     {
                         Title: drpIdentificationTitle.SelectedId,
+                        Titlename: drpIdentificationTitle.SelectedDisplayValue,
                         Forename: txtIdentificationForename.Text,
                         Surname: txtIdentificationSurname.Text,
                         Fullname: txtIdentificationSurname.Text & " " & txtIdentificationForename.Text,
@@ -815,7 +816,7 @@
                                 !IsBlank(rec.Workphone),
                                 !IsBlank(rec.EMail)
                             ),
-                            //!IsBlank(rec.Preferedcontactmethod),
+                            !IsBlank(rec.Preferedcontactmethodname),
                             !IsBlank(rec.identificationsignature),
                             !IsBlank(rec.Deceasedrelathionship),
                             !IsBlank(rec.Deceasedrelationshipduration),
@@ -940,6 +941,10 @@
                 Key = Sudden_Primary_key,
                 {'Formal identification': "Yes"}
             );
+            RemoveIf(
+                Contactoffline,
+                Key = Sudden_Primary_key And "Identifier" in Contactrolename
+            );
             UpdateContext({newContactKey: GUID()});
             Collect(
                 Contactoffline,
@@ -996,4 +1001,14 @@
         X: =468
         Y: =23
         ZIndex: =11
+
+    Button1 As button:
+        Height: =53
+        OnSelect: =Reset(radIdentificationAbleToComplete)
+        Size: =24
+        Text: ="Button"
+        Width: =67
+        X: =573
+        Y: =13
+        ZIndex: =12
 
