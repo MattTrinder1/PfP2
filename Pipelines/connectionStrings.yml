@@ -10,7 +10,8 @@ variables:
 - name: pfpsystemtest.url
   value: https://$(pfpsystemtest.instancename).crm11.dynamics.com
 - name: pfpsystemtest.connection.string
-  value: RequireNewInstance=True;AuthType=ClientSecret;ClientId=$(pfp.clientid);ClientSecret=$(pfp.clientsecret);Url=$(pfpsystemtest.url)
+  #value: RequireNewInstance=True;AuthType=ClientSecret;ClientId=$(pfp.clientid);ClientSecret=$(pfp.clientsecret);Url=$(pfpsystemtest.url)
+  value: RequireNewInstance=True;AuthType=OAuth;UserName=matt.trinder@tisski.com;Password=PhantomDinghyRacing!;Url=$(pfpsystemtest.url);AppId=51f81489-12ee-4a9e-aaae-a2591f45987d;RedirectUri=app://51f81489-12ee-4a9e-aaae-a2591f45987d
 
 - name: pfpuat.instancename
   value: policeproductuat
