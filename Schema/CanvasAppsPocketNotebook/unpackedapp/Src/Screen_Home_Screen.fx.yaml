@@ -356,7 +356,7 @@ Screen_Home_Screen As screen:
                             {
                                 blobId: AzureBlobStorage.CreateFile(
                                     "pnb",
-                                    unsavedBlob.id & "-" & unsavedBlob.type & "-" & unsavedBlob.index,
+                                    unsavedBlob.noteId & "-" & unsavedBlob.id & "-" & unsavedBlob.type & "-" & unsavedBlob.index,
                                     unsavedBlob.blob
                                 ).Name
                             }
@@ -558,16 +558,6 @@ Screen_Home_Screen As screen:
                                         Lower(User().Email)
                                     )
                                 },
-                                Patch(
-                                    'Notebook Offline',
-                                    unpopulatedNote,
-                                    {
-                                        IncidentNumber: pnbRec.incidentNumber,
-                                        SignatoryName: pnbRec.signatoryName,
-                                        'Signature Date and Time': pnbRec.signatureDateandTime,
-                                        fullyPopulated: true
-                                    }
-                                );
                                 If(
                                     !IsBlank(pnbRec.sketch),
                                     Collect(
@@ -623,6 +613,16 @@ Screen_Home_Screen As screen:
                                         }
                                     );
                                 );
+                                Patch(
+                                    'Notebook Offline',
+                                    unpopulatedNote,
+                                    {
+                                        IncidentNumber: pnbRec.incidentNumber,
+                                        SignatoryName: pnbRec.signatoryName,
+                                        'Signature Date and Time': pnbRec.signatureDateandTime,
+                                        fullyPopulated: true
+                                    }
+                                );
                             );
                             SaveData(
                                 'Notebook Offline',
@@ -638,7 +638,8 @@ Screen_Home_Screen As screen:
                 Set(
                     tmrNotePopulateStart,
                     true
-                );    
+                );
+                
             )
         Repeat: =true
         Start: =tmrNotePopulateStart

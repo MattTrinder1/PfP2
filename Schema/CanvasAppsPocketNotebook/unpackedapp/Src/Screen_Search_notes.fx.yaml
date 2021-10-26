@@ -76,12 +76,21 @@ Screen_Search_notes As screen:
         NextArrow5_1 As icon.ChevronRight:
             AccessibleLabel: =Self.Tooltip
             Color: =RGBA(116, 116, 116, 1)
-            Fill: =If(ThisItem.queued,RGBA(182,221,140,0.3),RGBA(250,155,112,0.3))
+            Fill: =If(ThisItem.queued And ThisItem.fullyPopulated,RGBA(182,221,140,0.3),RGBA(250,155,112,0.3))
             Height: =53
             Icon: =
             OnSelect: |-
-                =Set(ViewNoteId, galleryNotes.Selected.Id);
-                Navigate(Screen_Notes_viewscr)
+                =If(
+                    galleryNotes.Selected.fullyPopulated,
+                    Set(
+                        ViewNoteId,
+                        galleryNotes.Selected.Id
+                    );
+                    Navigate(Screen_Notes_viewscr);
+                    ,
+                    Notify("Images associated to this note are downloading - please wait...");
+                    
+                )
             PaddingBottom: =10
             PaddingLeft: =10
             PaddingRight: =10
@@ -122,6 +131,7 @@ Screen_Search_notes As screen:
         OnSelect: |-
             =If(
                 ConnectionChecker_2.IsOnline,
+                Set(gblDoneSync, true);
                 ClearCollect(
                     UserPNBs,
                     PNBGet.GetUserPNB(Lower(User().Email))
@@ -145,7 +155,7 @@ Screen_Search_notes As screen:
                                 readyToSync: true,
                                 queued: true,
                                 inDataverse: true,
-                                fullyPopulated:false
+                                fullyPopulated: false
                             }
                         ),
                         Patch(
@@ -155,8 +165,7 @@ Screen_Search_notes As screen:
                                 Id = GUID(userNote.id)
                             ),
                             {
-                                inDataverse: true,
-                                fullyPopulated: true
+                                inDataverse: true
                             }
                         )
                     )

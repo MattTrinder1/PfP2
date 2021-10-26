@@ -2,22 +2,24 @@ variables:
 
 - name: pfp.clientid
   value: 83af4fce-10c3-4409-a43d-d67e300424aa
-- name: pfp.clientsecret
-  value: H.ARok4~mmJl_lfU~nfE9JqE.7pUE26u.t
+
+  #this is the generic value as specified in https://docs.microsoft.com/en-us/powerapps/developer/data-platform/xrm-tooling/use-connection-strings-xrm-tooling-connect
+  #had trouble getting the specific app registration value to work.
+  #value: 51f81489-12ee-4a9e-aaae-a2591f45987d
 
 - name: pfpsystemtest.instancename
   value: policeproductsystemtest
 - name: pfpsystemtest.url
   value: https://$(pfpsystemtest.instancename).crm11.dynamics.com
 - name: pfpsystemtest.connection.string
-  value: RequireNewInstance=True;AuthType=ClientSecret;ClientId=$(pfp.clientid);ClientSecret=$(pfp.clientsecret);Url=$(pfpsystemtest.url)
+  value: RequireNewInstance=True;AuthType=OAuth;UserName=pfp.service@tisski.com;Password=Direct.Drop.Bribe.Earn.2;Url=$(pfpsystemtest.url);AppId=$(pfp.clientid);RedirectUri=app://$(pfp.clientid);LoginPrompt=Never
 
 - name: pfpuat.instancename
   value: policeproductuat
 - name: pfpuat.url
   value: https://$(pfpuat.instancename).crm11.dynamics.com
 - name: pfpuat.connection.string
-  value: RequireNewInstance=True;AuthType=ClientSecret;ClientId=$(pfp.clientid);ClientSecret=$(pfp.clientsecret);Url=$(pfpuat.url)
+  value: RequireNewInstance=True;AuthType=OAuth;UserName=pfp.service@tisski.com;Password=Direct.Drop.Bribe.Earn.2;Url=$(pfpuat.url);AppId=$(pfp.clientid);RedirectUri=app://$(pfp.clientid);LoginPrompt=Never
 
   
 

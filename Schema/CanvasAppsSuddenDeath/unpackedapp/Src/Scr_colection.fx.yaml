@@ -164,15 +164,18 @@ Scr_colection As screen:
             OnSelect: |
                 =If(
                     ThisItem.deceasedValid And ThisItem.identificationValid And ThisItem.circumstancesValid And ThisItem.suddenDeathValid,
+                    If(
+                        ThisItem.Key = Sudden_Primary_key,
+                        Set(
+                            Sudden_Primary_key,
+                            Blank()
+                        )
+                    );
                     UpdateContext({validationwarning: false});
                     Patch(
                         'Sudden death offline',
                         ThisItem,
                         {submitted: true}
-                    );
-                    Set(
-                        Sudden_Primary_key,
-                        Blank()
                     );
                     ,
                     UpdateContext({validationwarning: true});
@@ -182,7 +185,7 @@ Scr_colection As screen:
             Visible: =!ThisItem.submitted
             Width: =75
             X: =534
-            Y: =176
+            Y: =169
             ZIndex: =13
 
         Icon6 As icon.Cancel:
@@ -349,8 +352,17 @@ Scr_colection As screen:
                         deleted: true
                     }
                 );
-                
-                Set(glbDelete,false);
+                If(
+                    Gallery_unsubmitted.Selected.Key = Sudden_Primary_key,
+                    Set(
+                        Sudden_Primary_key,
+                        ""
+                    )
+                );
+                Set(
+                    glbDelete,
+                    false
+                );
             Size: =20
             Text: ="Yes, Delete"
             Visible: =glbDelete

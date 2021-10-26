@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using Microsoft.Xrm.Sdk.Query;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 
 namespace API.Controllers
@@ -38,17 +39,8 @@ namespace API.Controllers
                     {
                         lookupField = mapper.Map(dvLookupField, lookupField);
                         var dvLookupValues = AdminDataAccess.GetAll<DVLookupValue>("cp_lookupfield", dvLookupField.Id, "cp_displaysequenceno");
-                        if (dvLookupValues != null && dvLookupValues.Count > 0)
-                        {
-                            List<LookupValue> lookupValues = new List<LookupValue>(dvLookupValues.Count);
-                            foreach (var dvLookupValue in dvLookupValues)
-                            {
-                                LookupValue lookupValue = mapper.Map<LookupValue>(dvLookupValue);
-                                lookupValues.Add(lookupValue);
-                            }
-                            lookupField.Values = lookupValues;
-                        }
-
+                        lookupField.Values = mapper.Map<List<LookupValue>>(dvLookupValues);
+                        
                         cache.Set(cacheKey, lookupField);
                     }
                 }
@@ -69,22 +61,24 @@ namespace API.Controllers
                 if (!VerifyIntegrationKey("RefData:GET:lookupfield")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
 
                 string cacheKey = $"TerritorialPolicingArea";
+                string customerSettingCacheKey = $"CustomerSetting";
                 LookupField lookupField;
+                DVCustomerSetting customerSetting;
+
+                //get the currently active customer setting
+                if (!cache.TryGetValue(customerSettingCacheKey, out customerSetting))
+                {
+                    var dvCustomerSettings = AdminDataAccess.GetAll<DVCustomerSetting>(field: "cp_active", value: true);
+                    cache.Set(customerSettingCacheKey, dvCustomerSettings.Single());
+                    customerSetting = dvCustomerSettings.Single();
+                }
+
+
                 if (!cache.TryGetValue(cacheKey, out lookupField))
                 {
-                    lookupField = new LookupField();
-                    var dvTerritorialPolicingAreas = AdminDataAccess.GetAll<DVTerritorialPolicingArea>(orderby: "cp_name");
-                    if (dvTerritorialPolicingAreas != null && dvTerritorialPolicingAreas.Count > 0)
-                    {
-                        List<LookupValue> lookupValues = new List<LookupValue>(dvTerritorialPolicingAreas.Count);
-                        foreach (var dvTerritorialPolicingArea in dvTerritorialPolicingAreas)
-                        {
-                            LookupValue lookupValue = mapper.Map<LookupValue>(dvTerritorialPolicingArea);
-                            lookupValues.Add(lookupValue);
-                        }
-                        lookupField.Values = lookupValues;
-                    }
-
+                    
+                    var dvTerritorialPolicingAreas = AdminDataAccess.GetAll<DVTerritorialPolicingArea>(field:"cp_customer",value:customerSetting.cp_customersettingid,  orderby: "cp_name");
+                    lookupField = new LookupField(mapper.Map<List<LookupValue>>(dvTerritorialPolicingAreas)); 
                     cache.Set(cacheKey, lookupField);
                 }
 
@@ -157,18 +151,11 @@ namespace API.Controllers
                     OrderExpression order = new OrderExpression("fullname", OrderType.Ascending);
 
                     var dvUsers = AdminDataAccess.GetAll<DVUser>(criteria, order);
-
-                    if (dvUsers != null && dvUsers.Count > 0)
-                    {
-                        users = new List<User>(dvUsers.Count);
-                        foreach (var dvUser in dvUsers)
-                        {
-                            User user = mapper.Map<User>(dvUser);
-                            users.Add(user);
-                        }
-
-                        cache.Set(cacheKey, users);
-                    }
+                    users = new List<User>();
+                    users.AddRange(mapper.Map<List<User>>(dvUsers));
+                    
+                    cache.Set(cacheKey, users);
+                    
                 }
 
                 return users != null ? users.ToArray() : new User[0];
