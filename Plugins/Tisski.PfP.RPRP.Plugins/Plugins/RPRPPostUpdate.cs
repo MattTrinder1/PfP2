@@ -9,13 +9,13 @@ using Microsoft.Xrm.Sdk.Query;
 
 namespace Tisski.PfP.RPRP.Plugins
 {
-    public class RPRPPostCreate : IPlugin
+    public class RPRPPostUpdate : IPlugin
     {
         public void Execute(IServiceProvider serviceProvider)
         {
-            const string pluginName = "RPRPPostCreate";
+            const string pluginName = "RPRPPostUpdate";
             const string targetEntityName = "cp_rprp";
-            const string messageName = "Create";
+            const string messageName = "Update";
 
             ITracingService tracingService = (ITracingService)serviceProvider.GetService(typeof(ITracingService));
             tracingService.Trace($"{pluginName} Execute");
@@ -34,25 +34,10 @@ namespace Tisski.PfP.RPRP.Plugins
             IOrganizationServiceFactory serviceFactory = (IOrganizationServiceFactory)serviceProvider.GetService(typeof(IOrganizationServiceFactory));
             IOrganizationService serviceAsAdmin = serviceFactory.CreateOrganizationService(null);
 
-            //Share RPRP with Participant with Read access.
-            if (!entity.Attributes.Contains("cp_participant"))
-            {
-                throw new InvalidPluginExecutionException("Participant must be set on create of RPRP.");
-            }
-
-            var participantGrantAccessRequest = new GrantAccessRequest
-            {
-                PrincipalAccess = new PrincipalAccess
-                {
-                    AccessMask = AccessRights.ReadAccess,
-                    Principal = entity.GetAttributeValue<EntityReference>("cp_participant")
-                },
-                Target = entity.ToEntityReference()
-            };
-            serviceAsAdmin.Execute(participantGrantAccessRequest);
-
+            //Handle Reviewer access.
             if (entity.Attributes.Contains("cp_reviewer"))
             {
+                //Reviewer is being updated.
                 EntityReference reviewerRef = entity.GetAttributeValue<EntityReference>("cp_reviewer");
                 if (context.InitiatingUserId != reviewerRef.Id)
                 {

@@ -33,7 +33,7 @@ namespace Tisski.PfP.RPRP.Plugins
             IOrganizationServiceFactory serviceFactory = (IOrganizationServiceFactory)serviceProvider.GetService(typeof(IOrganizationServiceFactory));
             IOrganizationService serviceAsAdmin = serviceFactory.CreateOrganizationService(null);
 
-            Entity retrievedRprp = serviceAsAdmin.Retrieve(entity.LogicalName, entity.Id, new ColumnSet("cp_participant"));
+            Entity retrievedRprp = serviceAsAdmin.Retrieve(entity.LogicalName, entity.Id, new ColumnSet("cp_participant", "cp_reviewer", "cp_type"));
             Guid participantId = retrievedRprp.GetAttributeValue<EntityReference>("cp_participant").Id;
 
             if (context.InitiatingUserId == participantId)
@@ -57,6 +57,36 @@ namespace Tisski.PfP.RPRP.Plugins
                 if (context.ParentContext == null || context.ParentContext.MessageName != "cp_RPRPSetParticipantResponse")
                 {
                     throw new InvalidPluginExecutionException($"{pluginName} - Only the Participant can set Participant's Response.");
+                }
+            }
+
+            if (entity.Attributes.Contains("statecode"))
+            {
+                //Only "PfP RPRP All" role can deactivate (/complete/cancel) an RPRP unless the 
+                //"RPRP Type" has "Reviewer Can Complete" set to true and the deactivate is 
+                //initiated by the Reviewer.
+                //(Participant can never deactivate even if having "PfP RPRP All" role but this 
+                // is already handled in the Participant update validation above.)
+                bool allowed = false;
+                if (Helpers.UserHasRole(serviceAsAdmin, context.InitiatingUserId, "PfP RPRP All", true))
+                {
+                    allowed = true;
+                }
+                else if (retrievedRprp.Attributes.Contains("cp_reviewer") && 
+                    context.InitiatingUserId == retrievedRprp.GetAttributeValue<EntityReference>("cp_reviewer").Id)
+                {
+                    EntityReference typeRef = retrievedRprp.GetAttributeValue<EntityReference>("cp_type");
+                    Entity retrievedType = serviceAsAdmin.Retrieve(typeRef.LogicalName, typeRef.Id, new ColumnSet("cp_reviewercancomplete"));
+                    if (retrievedType.Attributes.Contains("cp_reviewercancomplete") && 
+                        retrievedType.GetAttributeValue<bool>("cp_reviewercancomplete"))
+                    {
+                        allowed = true;
+                    }
+                }
+
+                if (!allowed)
+                {
+                    throw new InvalidPluginExecutionException("You are not allowed to deactivate this RPRP.");
                 }
             }
         }
