@@ -12,7 +12,6 @@ namespace Tisski.PfP.RPRP.Plugins
         public void Execute(IServiceProvider serviceProvider)
         {
             const string pluginName = "RPRPPostRetrieveMultiple";
-            const string targetEntityName = "cp_rprp";
             const string messageName = "RetrieveMultiple";
 
             ITracingService tracingService = (ITracingService)serviceProvider.GetService(typeof(ITracingService));
