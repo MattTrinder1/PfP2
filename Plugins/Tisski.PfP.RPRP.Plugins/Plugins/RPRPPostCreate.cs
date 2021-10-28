@@ -69,6 +69,21 @@ namespace Tisski.PfP.RPRP.Plugins
                     serviceAsAdmin.Execute(reviewerGrantAccessRequest);
                 }
             }
+
+            EntityReference typeRef = entity.GetAttributeValue<EntityReference>("cp_type");
+            tracingService.Trace($"Retrieving RPRP Type");
+            Entity retrievedType = serviceAsAdmin.Retrieve(typeRef.LogicalName, typeRef.Id, new ColumnSet("cp_owningteam"));
+            if (retrievedType.Attributes.Contains("cp_owningteam"))
+            {
+                EntityReference team = retrievedType.GetAttributeValue<EntityReference>("cp_owningteam");
+                AssignRequest assignRequest = new AssignRequest()
+                {
+                    Assignee = team,
+                    Target = entity.ToEntityReference()
+                };
+                tracingService.Trace($"Assigning to Team with id, {team.Id}");
+                serviceAsAdmin.Execute(assignRequest);
+            }
         }
     }
 }
