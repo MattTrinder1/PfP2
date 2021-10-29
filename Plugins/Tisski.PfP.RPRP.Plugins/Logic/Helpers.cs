@@ -89,5 +89,19 @@ namespace Tisski.PfP.RPRP.Plugins
 
             return userHasRole;
         }
+
+        public static Guid GetProcessStageId(IOrganizationService service, Guid processId, string stageName)
+        {
+            QueryExpression processStageQuery = new QueryExpression("processstage");
+            processStageQuery.Criteria.AddCondition("processid", ConditionOperator.Equal, processId);
+            processStageQuery.Criteria.AddCondition("stagename", ConditionOperator.Equal, stageName);
+
+            var processStageQueryResponse = service.RetrieveMultiple(processStageQuery);
+            if (processStageQueryResponse != null && processStageQueryResponse.Entities != null && processStageQueryResponse.Entities.Count > 0)
+            {
+                return processStageQueryResponse.Entities[0].Id;
+            }
+            return Guid.Empty;
+        }
     }
 }

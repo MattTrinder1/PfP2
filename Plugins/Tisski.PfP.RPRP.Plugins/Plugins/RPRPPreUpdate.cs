@@ -67,10 +67,10 @@ namespace Tisski.PfP.RPRP.Plugins
                 //initiated by the Reviewer.
                 //(Participant can never deactivate even if having "PfP RPRP All" role but this 
                 // is already handled in the Participant update validation above.)
-                bool allowed = false;
+                bool allowedStatusChange = false;
                 if (Helpers.UserHasRole(serviceAsAdmin, context.InitiatingUserId, "PfP RPRP All", true))
                 {
-                    allowed = true;
+                    allowedStatusChange = true;
                 }
                 else if (retrievedRprp.Attributes.Contains("cp_reviewer") && 
                     context.InitiatingUserId == retrievedRprp.GetAttributeValue<EntityReference>("cp_reviewer").Id)
@@ -80,14 +80,40 @@ namespace Tisski.PfP.RPRP.Plugins
                     if (retrievedType.Attributes.Contains("cp_reviewercancomplete") && 
                         retrievedType.GetAttributeValue<bool>("cp_reviewercancomplete"))
                     {
-                        allowed = true;
+                        allowedStatusChange = true;
+                    }
+                    else if (entity.GetAttributeValue<OptionSetValue>("statuscode").Value == 778230009 /* Completed */)
+                    {
+                        //Switch the Reviewer's Complete attempt to Awaiting Approval status.
+                        entity["statecode"] = new OptionSetValue(0);
+                        entity["statuscode"] = new OptionSetValue(778230008 /* Awaiting Approval */);
+                        allowedStatusChange = true;
                     }
                 }
 
-                if (!allowed)
+                if (allowedStatusChange)
+                {
+                    if (entity.Attributes.Contains("statuscode") && 
+                            entity.GetAttributeValue<OptionSetValue>("statuscode").Value == 778230009 /* Completed */)
+                    {
+                        //Allowing final complete so add Completion Approved By to update.
+                        entity["cp_completionapprovedby"] = new EntityReference("systemuser", context.InitiatingUserId);
+                    }
+                }
+                else
                 {
                     throw new InvalidPluginExecutionException("You are not allowed to deactivate this RPRP.");
                 }
+            }
+
+            if (retrievedRprp.Attributes.Contains("cp_reviewer") &&
+                    context.InitiatingUserId == retrievedRprp.GetAttributeValue<EntityReference>("cp_reviewer").Id &&
+                    entity.Attributes.Contains("statuscode") &&
+                        (entity.GetAttributeValue<OptionSetValue>("statuscode").Value == 778230009 /* Completed */ ||
+                        entity.GetAttributeValue<OptionSetValue>("statuscode").Value == 778230008 /* Awaiting Approval */))
+            {
+                //Add Reviewer Completed On to update.
+                entity["cp_reviewercompletedon"] = DateTime.Now.ToUniversalTime();
             }
         }
     }
