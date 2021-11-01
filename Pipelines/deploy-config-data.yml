@@ -1,26 +1,11 @@
 trigger: none
 
-name: $(BuildID) - ${{parameters.customer}}
 
 pool:
   name: MOD Pool
 
-parameters:
-- name: customer
-  type: string
-  default: cumbria
-  values:
-  - cumbria
-  - durham
-
 
 variables:
-- name: minor.version
-  value: 0
-- name: release.version
-  value: 0 
-- name: solution.prefix
-  value: CP
 - template: connectionStrings.yml
 
 
@@ -28,8 +13,8 @@ stages:
 
 #----------------------------------Start Stage-------------------------------------------------------------------
 
-  - stage: ReleaseTo${{parameters.customer}}SystemTest
-    displayName: Deploy to ${{parameters.customer}} System Test
+  - stage: DeployConfigDataToSystemTest
+    displayName: Deploy Config Data To System Test
     jobs:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     - job: 
@@ -49,11 +34,11 @@ stages:
 
       - task: MSCRMGetConfigurationRecord@12
         inputs:
-          crmConnectionString: $(${{parameters.customer}}.pretest.connection.string)
+          crmConnectionString: $(pfpsystemtest.connection.string)
           entityName: 'cp_configdatahistory'
           lookupFieldName: 'cp_name'
           valueFieldName: 'cp_value'
-          lookupValue: 'CurrentVersion'
+          lookupValue: 'CurrentVersionRPRP'
           existsVariableName: 'configExists'
           valueVariableName: 'currentConfigVersion'
       
@@ -64,29 +49,20 @@ stages:
       - task: MSCRMImportCMData@12
         displayName: Import Configuration Data
         inputs:
-          crmConnectionString: $(${{parameters.customer}}.pretest.connection.string)
+          crmConnectionString: $(pfpsystemtest.connection.string)
           dataFile: $(pipeline.workspace)/CumbriaBuild-Managed-SystemTest/DataMigration/${{parameters.customer}}.zip
         condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
 
       
       - task: MSCRMUpdateConfigurationRecords@12
         inputs:
-          crmConnectionString: '$(${{parameters.customer}}.pretest.connection.string)'
+          crmConnectionString: '$(pfpsystemtest.connection.string)'
           entityName: 'cp_configdatahistory'
           lookupFieldName: 'cp_name'
           valueFieldName: 'cp_value'
-          configurationRecordsJson: '[[''CurrentVersion'',''$(newConfigVersion)'']]'
+          configurationRecordsJson: '[[''CurrentVersionRPRP'',''$(newConfigVersion)'']]'
         condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
 
-#set the active flag on the customer config record
-      - task: MSCRMUpdateConfigurationRecords@12
-        inputs:
-          crmConnectionString: '$(${{parameters.customer}}.pretest.connection.string)'
-          entityName: 'cp_customersetting'
-          lookupFieldName: 'cp_customername'
-          valueFieldName: 'cp_active'
-          configurationRecordsJson: '[[''${{parameters.customer}}'',true]]'
-        condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #----------------------------------End Stage-------------------------------------------------------------------
