@@ -1,6 +1,8 @@
 trigger: 
 - none
 
+
+
 pool:
   name: MOD Pool
 
@@ -21,6 +23,7 @@ stages:
       displayName: Deploy Config Data
      # workspace:
      #   clean: all 
+      
       variables:
       - name: configExists
       - name: currentConfigVersion  
@@ -31,7 +34,8 @@ stages:
       
 
             steps:
-
+              - checkout: self
+              
               - task: MSCRMToolInstaller@12
                 inputs:
                   nugetFeed: 'official'
