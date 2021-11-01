@@ -33,6 +33,8 @@ namespace Tisski.PfP.RPRP.Plugins
             IOrganizationServiceFactory serviceFactory = (IOrganizationServiceFactory)serviceProvider.GetService(typeof(IOrganizationServiceFactory));
             IOrganizationService serviceAsAdmin = serviceFactory.CreateOrganizationService(null);
 
+            tracingService.Trace($"Attributes in target: {Helpers.GetAttributeNamesCsv(entity)}");
+
             Entity retrievedRprp = serviceAsAdmin.Retrieve(entity.LogicalName, entity.Id, new ColumnSet("cp_participant", "cp_reviewer", "cp_type"));
             Guid participantId = retrievedRprp.GetAttributeValue<EntityReference>("cp_participant").Id;
 
@@ -52,7 +54,7 @@ namespace Tisski.PfP.RPRP.Plugins
                     }
                 }
             }
-            else if (entity.Attributes.Contains("cp_participantresponse"))
+            else if (entity.Attributes.Contains("cp_participantresponse") && entity.GetAttributeValue<OptionSetValue>("cp_participantresponse") != null)
             {
                 if (context.ParentContext == null || context.ParentContext.MessageName != "cp_RPRPSetParticipantResponse")
                 {
@@ -60,17 +62,18 @@ namespace Tisski.PfP.RPRP.Plugins
                 }
             }
 
-            if (entity.Attributes.Contains("statecode"))
+            if (entity.Attributes.Contains("statecode") && 
+                entity.GetAttributeValue<OptionSetValue>("statecode").Value == 1 /* Inactive */)
             {
                 //Only "PfP RPRP All" role can deactivate (/complete/cancel) an RPRP unless the 
                 //"RPRP Type" has "Reviewer Can Complete" set to true and the deactivate is 
                 //initiated by the Reviewer.
                 //(Participant can never deactivate even if having "PfP RPRP All" role but this 
                 // is already handled in the Participant update validation above.)
-                bool allowedStatusChange = false;
+                bool deactivateAllowed = false;
                 if (Helpers.UserHasRole(serviceAsAdmin, context.InitiatingUserId, "PfP RPRP All", true))
                 {
-                    allowedStatusChange = true;
+                    deactivateAllowed = true;
                 }
                 else if (retrievedRprp.Attributes.Contains("cp_reviewer") && 
                     context.InitiatingUserId == retrievedRprp.GetAttributeValue<EntityReference>("cp_reviewer").Id)
@@ -80,22 +83,24 @@ namespace Tisski.PfP.RPRP.Plugins
                     if (retrievedType.Attributes.Contains("cp_reviewercancomplete") && 
                         retrievedType.GetAttributeValue<bool>("cp_reviewercancomplete"))
                     {
-                        allowedStatusChange = true;
+                        deactivateAllowed = true;
                     }
                     else if (entity.GetAttributeValue<OptionSetValue>("statuscode").Value == 778230009 /* Completed */)
                     {
                         //Switch the Reviewer's Complete attempt to Awaiting Approval status.
                         entity["statecode"] = new OptionSetValue(0);
                         entity["statuscode"] = new OptionSetValue(778230008 /* Awaiting Approval */);
-                        allowedStatusChange = true;
+                        deactivateAllowed = true;
                     }
                 }
 
-                if (allowedStatusChange)
+                if (deactivateAllowed)
                 {
+                    tracingService.Trace($"Deactivate allowed.");
                     if (entity.Attributes.Contains("statuscode") && 
                             entity.GetAttributeValue<OptionSetValue>("statuscode").Value == 778230009 /* Completed */)
                     {
+                        tracingService.Trace($"Setting cp_completionapprovedby = {context.InitiatingUserId}.");
                         //Allowing final complete so add Completion Approved By to update.
                         entity["cp_completionapprovedby"] = new EntityReference("systemuser", context.InitiatingUserId);
                     }
@@ -104,7 +109,7 @@ namespace Tisski.PfP.RPRP.Plugins
                 {
                     throw new InvalidPluginExecutionException("You are not allowed to deactivate this RPRP.");
                 }
-            }
+            } else { tracingService.Trace("Not deactivate"); }
 
             if (retrievedRprp.Attributes.Contains("cp_reviewer") &&
                     context.InitiatingUserId == retrievedRprp.GetAttributeValue<EntityReference>("cp_reviewer").Id &&
@@ -112,6 +117,7 @@ namespace Tisski.PfP.RPRP.Plugins
                         (entity.GetAttributeValue<OptionSetValue>("statuscode").Value == 778230009 /* Completed */ ||
                         entity.GetAttributeValue<OptionSetValue>("statuscode").Value == 778230008 /* Awaiting Approval */))
             {
+                tracingService.Trace("Setting cp_reviewercompletedon");
                 //Add Reviewer Completed On to update.
                 entity["cp_reviewercompletedon"] = DateTime.Now.ToUniversalTime();
             }

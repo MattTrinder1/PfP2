@@ -103,5 +103,16 @@ namespace Tisski.PfP.RPRP.Plugins
             }
             return Guid.Empty;
         }
+
+        public static string GetAttributeNamesCsv(Entity target)
+        {
+            string result = "";
+            foreach (string attributeName in target.Attributes.Keys)
+            {
+                result += $"{attributeName},";
+            }
+            result = result.TrimEnd(',');
+            return result;
+        }
     }
 }

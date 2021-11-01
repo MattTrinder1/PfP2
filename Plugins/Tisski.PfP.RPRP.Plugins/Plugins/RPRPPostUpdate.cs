@@ -34,6 +34,8 @@ namespace Tisski.PfP.RPRP.Plugins
             IOrganizationServiceFactory serviceFactory = (IOrganizationServiceFactory)serviceProvider.GetService(typeof(IOrganizationServiceFactory));
             IOrganizationService serviceAsAdmin = serviceFactory.CreateOrganizationService(null);
 
+            tracingService.Trace($"Attributes in target: {Helpers.GetAttributeNamesCsv(entity)}");
+
             //Handle Reviewer access.
             if (entity.Attributes.Contains("cp_reviewer"))
             {
@@ -87,16 +89,16 @@ namespace Tisski.PfP.RPRP.Plugins
                 tracingService.Trace($"activestageid = {activeStageId}");
 
                 Entity retrievedRprp = serviceAsAdmin.Retrieve(
-                    entity.LogicalName, 
-                    entity.Id, 
+                    entity.LogicalName,
+                    entity.Id,
                     new ColumnSet(
-                        "cp_nextstepsfollowup", 
-                        "cp_participantaccepted", 
-                        "cp_participantnotifiedon", 
-                        "cp_participantrespondedon", 
-                        "cp_reflectivereviewendedon", 
-                        "cp_reflectivereviewscheduledstart", 
-                        "cp_reviewer", 
+                        "cp_nextstepsfollowup",
+                        "cp_participantaccepted",
+                        "cp_participantnotifiedon",
+                        "cp_participantrespondedon",
+                        "cp_reflectivereviewendedon",
+                        "cp_reflectivereviewscheduledstart",
+                        "cp_reviewer",
                         "cp_reviewercompletedon",
                         "cp_completionapprovedby")
                     );
@@ -117,7 +119,7 @@ namespace Tisski.PfP.RPRP.Plugins
                         retrievedRprp.Attributes.Contains("cp_participantaccepted") &&
                         retrievedRprp.GetAttributeValue<bool>("cp_participantaccepted"))
                     {
-                        if (retrievedRprp.Attributes.Contains("cp_nextstepsfollowup") && 
+                        if (retrievedRprp.Attributes.Contains("cp_nextstepsfollowup") &&
                             retrievedRprp.GetAttributeValue<bool>("cp_nextstepsfollowup"))
                         {
                             nextStageId = actionStageId;
@@ -135,26 +137,6 @@ namespace Tisski.PfP.RPRP.Plugins
                         nextStageId = completeStageId;
                     }
                 }
-                else if (actionStageId == completeStageId)
-                {
-                    if (retrievedRprp.Attributes.Contains("cp_completionapprovedby"))
-                    {
-                        //Attempt to finish BPF.
-                        try
-                        {
-                            Entity updateRprpBpf = new Entity(rprpBpf.LogicalName, rprpBpf.Id);
-                            updateRprpBpf["statecode"] = new OptionSetValue(1);
-                            updateRprpBpf["statuscode"] = new OptionSetValue(2 /* Finished */);
-                            serviceAsAdmin.Update(updateRprpBpf);
-
-                            tracingService.Trace($"Set BPF Finished.");
-                        }
-                        catch (Exception e)
-                        {
-                            tracingService.Trace($"Failed to move set BPF to Finished: {e.Message}");
-                        }
-                    }
-                }
 
                 if (nextStageId != Guid.Empty)
                 {
@@ -167,9 +149,28 @@ namespace Tisski.PfP.RPRP.Plugins
 
                         tracingService.Trace($"Moved BPF to next stage.");
                     }
-                    catch (Exception e) 
+                    catch (Exception e)
                     {
                         tracingService.Trace($"Failed to move BPF to next stage: {e.Message}");
+                    }
+                }
+
+                if ((activeStageId == completeStageId || nextStageId == completeStageId) &&
+                    retrievedRprp.Attributes.Contains("cp_completionapprovedby"))
+                {
+                    //Attempt to finish BPF.
+                    try
+                    {
+                        Entity updateRprpBpf = new Entity(rprpBpf.LogicalName, rprpBpf.Id);
+                        updateRprpBpf["statecode"] = new OptionSetValue(1);
+                        updateRprpBpf["statuscode"] = new OptionSetValue(2 /* Finished */);
+                        serviceAsAdmin.Update(updateRprpBpf);
+
+                        tracingService.Trace($"Set BPF Finished.");
+                    }
+                    catch (Exception e)
+                    {
+                        tracingService.Trace($"Failed to move set BPF to Finished: {e.Message}");
                     }
                 }
             }
