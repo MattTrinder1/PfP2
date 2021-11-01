@@ -43,14 +43,14 @@ stages:
           valueVariableName: 'currentConfigVersion'
       
       - powershell: |
-                $value = Get-Content  -Path $(pipeline.workspace)/CumbriaBuild-Managed-SystemTest/DataMigration/${{parameters.customer}}VersionDate.txt 
+                $value = Get-Content  -Path $(Build.SourcesDirectory)/ConfigData/CumbriaRPRPVersionDate.txt 
                 Write-Host "##vso[task.setvariable variable=newConfigVersion]$value"
 
       - task: MSCRMImportCMData@12
         displayName: Import Configuration Data
         inputs:
           crmConnectionString: $(pfpsystemtest.connection.string)
-          dataFile: $(pipeline.workspace)/CumbriaBuild-Managed-SystemTest/DataMigration/${{parameters.customer}}.zip
+          dataFile: $(Build.SourcesDirectory)/ConfigData/CumbriaRPRP.zip
         condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
 
       
