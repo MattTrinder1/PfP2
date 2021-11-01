@@ -1,9 +1,7 @@
-#trigger: none
-
+trigger: none
 
 pool:
   name: MOD Pool
-
 
 variables:
 - template: connectionStrings.yml
@@ -20,8 +18,8 @@ stages:
     - deployment: DeployConfigDataToSystemTest
       environment: PfPSystemTest
       displayName: Deploy Config Data
-      workspace:
-        clean: all 
+     # workspace:
+     #   clean: all 
       variables:
       - name: configExists
       - name: currentConfigVersion  
