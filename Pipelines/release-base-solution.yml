@@ -32,7 +32,7 @@ variables:
 - name: release.version
   value: 0 
 - name: solution.prefix
-  value: CP
+  value: ${{parameters.prefix}}
 - template: connectionStrings.yml
 
 name: $(Build.DefinitionName) - $(Build.BuildId) - ${{parameters.solutionName}}
