@@ -7,13 +7,72 @@ trigger:
 - none
 
 pool:
-  vmImage: ubuntu-latest
+  name: MOD Pool
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+variables:
+- template: connectionStrings.yml
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+
+stages: 
+
+#----------------------------------Start Stage-------------------------------------------------------------------
+
+  - stage: DeployConfigDataToSystemTest
+    displayName: Deploy Config Data To System Test
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: DeployConfigDataToSystemTest
+      environment: PfPSystemTest
+      displayName: Deploy Config Data
+     # workspace:
+     #   clean: all 
+      variables:
+      - name: configExists
+      - name: currentConfigVersion  
+      - name: newConfigVersion  
+      strategy:
+        runOnce:
+          deploy:
+      
+
+            steps:
+
+              - task: MSCRMToolInstaller@12
+                inputs:
+                  nugetFeed: 'official'
+                  psFeed: 'official'   
+
+              - task: MSCRMGetConfigurationRecord@12
+                inputs:
+                  crmConnectionString: $(pfpsystemtest.connection.string)
+                  entityName: 'cp_configdatahistory'
+                  lookupFieldName: 'cp_name'
+                  valueFieldName: 'cp_value'
+                  lookupValue: 'CurrentVersionRPRP'
+                  existsVariableName: 'configExists'
+                  valueVariableName: 'currentConfigVersion'
+              
+              - powershell: |
+                        $value = Get-Content  -Path $(Build.SourcesDirectory)/ConfigData/CumbriaRPRPVersionDate.txt 
+                        Write-Host "##vso[task.setvariable variable=newConfigVersion]$value"
+
+              - task: MSCRMImportCMData@12
+                displayName: Import Configuration Data
+                inputs:
+                  crmConnectionString: $(pfpsystemtest.connection.string)
+                  dataFile: $(Build.SourcesDirectory)/ConfigData/CumbriaRPRP.zip
+                condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
+
+              
+              - task: MSCRMUpdateConfigurationRecords@12
+                inputs:
+                  crmConnectionString: '$(pfpsystemtest.connection.string)'
+                  entityName: 'cp_configdatahistory'
+                  lookupFieldName: 'cp_name'
+                  valueFieldName: 'cp_value'
+                  configurationRecordsJson: '[[''CurrentVersionRPRP'',''$(newConfigVersion)'']]'
+                condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
