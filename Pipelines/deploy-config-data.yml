@@ -1,19 +1,103 @@
-# Starter pipeline
-# Start with a minimal pipeline that you can customize to build and deploy your code.
-# Add steps that build, run tests, deploy, and more:
-# https://aka.ms/yaml
+trigger: none
 
-trigger:
-- none
+name: $(BuildID) - ${{parameters.customer}}
 
 pool:
-  vmImage: 'windows-latest'
+  name: MOD Pool
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+parameters:
+- name: customer
+  type: string
+  default: cumbria
+  values:
+  - cumbria
+  - durham
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+
+variables:
+- name: minor.version
+  value: 0
+- name: release.version
+  value: 0 
+- name: solution.prefix
+  value: CP
+- template: connectionStrings.yml
+
+
+stages: 
+
+#----------------------------------Start Stage-------------------------------------------------------------------
+
+  - stage: ReleaseTo${{parameters.customer}}SystemTest
+    displayName: Deploy to ${{parameters.customer}} System Test
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - job: 
+      displayName: Deploy Config Data
+      dependsOn: ReleaseTo${{parameters.customer}}PreTest
+      
+      variables:
+      - name: configExists
+      - name: currentConfigVersion  
+      - name: newConfigVersion  
+
+      steps:
+
+      - checkout: none
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          source: 'current' # Options: current, specific
+
+
+      - task: MSCRMToolInstaller@12
+        inputs:
+          nugetFeed: 'official'
+          psFeed: 'official'   
+
+      - task: MSCRMGetConfigurationRecord@12
+        inputs:
+          crmConnectionString: $(${{parameters.customer}}.pretest.connection.string)
+          entityName: 'cp_configdatahistory'
+          lookupFieldName: 'cp_name'
+          valueFieldName: 'cp_value'
+          lookupValue: 'CurrentVersion'
+          existsVariableName: 'configExists'
+          valueVariableName: 'currentConfigVersion'
+      
+      - powershell: |
+                $value = Get-Content  -Path $(pipeline.workspace)/CumbriaBuild-Managed-SystemTest/DataMigration/${{parameters.customer}}VersionDate.txt 
+                Write-Host "##vso[task.setvariable variable=newConfigVersion]$value"
+
+      - task: MSCRMImportCMData@12
+        displayName: Import Configuration Data
+        inputs:
+          crmConnectionString: $(${{parameters.customer}}.pretest.connection.string)
+          dataFile: $(pipeline.workspace)/CumbriaBuild-Managed-SystemTest/DataMigration/${{parameters.customer}}.zip
+        condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
+
+      
+      - task: MSCRMUpdateConfigurationRecords@12
+        inputs:
+          crmConnectionString: '$(${{parameters.customer}}.pretest.connection.string)'
+          entityName: 'cp_configdatahistory'
+          lookupFieldName: 'cp_name'
+          valueFieldName: 'cp_value'
+          configurationRecordsJson: '[[''CurrentVersion'',''$(newConfigVersion)'']]'
+        condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
+
+#set the active flag on the customer config record
+      - task: MSCRMUpdateConfigurationRecords@12
+        inputs:
+          crmConnectionString: '$(${{parameters.customer}}.pretest.connection.string)'
+          entityName: 'cp_customersetting'
+          lookupFieldName: 'cp_customername'
+          valueFieldName: 'cp_active'
+          configurationRecordsJson: '[[''${{parameters.customer}}'',true]]'
+        condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
+
+
+
+
