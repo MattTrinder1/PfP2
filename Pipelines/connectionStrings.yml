@@ -18,8 +18,21 @@ variables:
   value: policeproductuat
 - name: pfpuat.url
   value: https://$(pfpuat.instancename).crm11.dynamics.com
-- name: pfpuat.connection.string
+- name: Tisskipfpuat.connection.string
   value: RequireNewInstance=True;AuthType=OAuth;UserName=pfp.service@tisski.com;Password=Direct.Drop.Bribe.Earn.2;Url=$(pfpuat.url);AppId=$(pfp.clientid);RedirectUri=app://$(pfp.clientid);LoginPrompt=Never
 
+
+- name: cumbria.username
+  value: powerapps.service@cumbria.police.uk
+- name: cumbria.password
+  value: Shut.shower.dine1 
+
+
+- name: cumbriauat.instancename
+  value: cumbria-build
+- name: cumbriauat.url
+  value: https://$(cumbriauat.instancename).crm11.dynamics.com
+- name: cumbriapfpuat.connection.string
+  value: RequireNewInstance=True;AuthType=Office365;Username=$(cumbria.username);Password=$(cumbria.password);Url=$(cumbriauat.url)
   
 
