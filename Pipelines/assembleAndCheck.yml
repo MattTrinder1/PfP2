@@ -16,7 +16,7 @@ steps:
   - task: MSCRMPackSolution@10
     displayName: 'Pack - ${{parameters.solutionName}}'
     inputs:
-      unpackedFilesFolder: 'Schema/${{parameters.solutionName}}/unpacked'
+      unpackedFilesFolder: 'Schema/${{parameters.solutionName}}${{parameters.solutionprefix}}/unpacked'
       packageType: ${{parameters.managed}}
       includeVersionInSolutionFile: true
 
