@@ -1,0 +1,282 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<RibbonDiffXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <CustomActions>
+    <CustomAction Id="cp.cp_rprp.buttonAccept.CustomAction" Location="Mscrm.Form.cp_rprp.MainTab.Save.Controls._children" Sequence="56">
+      <CommandUIDefinition>
+        <Button Command="cp.cp_rprp.CommandAccept" CommandValueId="" Id="cp.cp_rprp.buttonAccept" LabelText="$LocLabels:cp.cp_rprp.buttonAccept.LabelText" Sequence="56" TemplateAlias="o1" />
+      </CommandUIDefinition>
+    </CustomAction>
+    <CustomAction Id="cp.cp_rprp.buttonComplete.CustomAction" Location="Mscrm.Form.cp_rprp.MainTab.Save.Controls._children" Sequence="59">
+      <CommandUIDefinition>
+        <Button Command="cp.cp_rprp.CommandComplete" CommandValueId="" Id="cp.cp_rprp.buttonComplete" LabelText="$LocLabels:cp.cp_rprp.buttonComplete.LabelText" Sequence="59" TemplateAlias="o1" />
+      </CommandUIDefinition>
+    </CustomAction>
+    <CustomAction Id="cp.cp_rprp.buttonEndMeeting.CustomAction" Location="Mscrm.Form.cp_rprp.MainTab.Save.Controls._children" Sequence="55">
+      <CommandUIDefinition>
+        <Button Command="cp.cp_rprp.CommandEndMeeting" CommandValueId="" Id="cp.cp_rprp.buttonEndMeeting" LabelText="$LocLabels:cp.cp_rprp.buttonEndMeeting.LabelText" Sequence="55" TemplateAlias="o1" />
+      </CommandUIDefinition>
+    </CustomAction>
+    <CustomAction Id="cp.cp_rprp.buttonNotify.CustomAction" Location="Mscrm.Form.cp_rprp.MainTab.Save.Controls._children" Sequence="52">
+      <CommandUIDefinition>
+        <FlyoutAnchor Command="Mscrm.Enabled" Id="cp.cp_rprp.buttonNotify" LabelText="$LocLabels:cp.cp_rprp.buttonNotify.LabelText" Sequence="52" TemplateAlias="o1">
+          <Menu Id="cp.cp_rprp.buttonNotify.Menu">
+            <MenuSection Id="cp.cp_rprp.Section15.Section" Sequence="5" DisplayMode="Menu16">
+              <Controls Id="cp.cp_rprp.Section15.Section.Controls">
+                <Button Command="cp.cp_rprp.CommandNotifyParticipant" CommandValueId="" Id="cp.cp_rprp.buttonNotifyParticipant" LabelText="$LocLabels:cp.cp_rprp.buttonNotifyParticipant.LabelText" Sequence="10" />
+                <Button Command="cp.cp_rprp.CommandNotifyReviewer" CommandValueId="" Id="cp.cp_rprp.buttonNotifyReviewer" LabelText="$LocLabels:cp.cp_rprp.buttonNotifyReviewer.LabelText" Sequence="15" />
+              </Controls>
+            </MenuSection>
+          </Menu>
+        </FlyoutAnchor>
+      </CommandUIDefinition>
+    </CustomAction>
+    <CustomAction Id="cp.cp_rprp.buttonReject.CustomAction" Location="Mscrm.Form.cp_rprp.MainTab.Save.Controls._children" Sequence="57">
+      <CommandUIDefinition>
+        <Button Command="cp.cp_rprp.CommandReject" CommandValueId="" Id="cp.cp_rprp.buttonReject" LabelText="$LocLabels:cp.cp_rprp.buttonReject.LabelText" Sequence="57" TemplateAlias="o1" />
+      </CommandUIDefinition>
+    </CustomAction>
+    <CustomAction Id="cp.cp_rprp.buttonRequestReview.CustomAction" Location="Mscrm.Form.cp_rprp.MainTab.Save.Controls._children" Sequence="58">
+      <CommandUIDefinition>
+        <Button Command="cp.cp_rprp.CommandRequestReview" CommandValueId="" Id="cp.cp_rprp.buttonRequestReview" LabelText="$LocLabels:cp.cp_rprp.buttonRequestReview.LabelText" Sequence="58" TemplateAlias="o1" />
+      </CommandUIDefinition>
+    </CustomAction>
+    <CustomAction Id="cp.cp_rprp.buttonScheduleMeeting.CustomAction" Location="Mscrm.Form.cp_rprp.MainTab.Save.Controls._children" Sequence="53">
+      <CommandUIDefinition>
+        <Button Command="cp.cp_rprp.CommandScheduleMeeting" CommandValueId="" Id="cp.cp_rprp.buttonScheduleMeeting" LabelText="$LocLabels:cp.cp_rprp.buttonScheduleMeeting.LabelText" Sequence="53" TemplateAlias="o1" />
+      </CommandUIDefinition>
+    </CustomAction>
+    <CustomAction Id="cp.cp_rprp.buttonStartMeeting.CustomAction" Location="Mscrm.Form.cp_rprp.MainTab.Save.Controls._children" Sequence="54">
+      <CommandUIDefinition>
+        <Button Command="cp.cp_rprp.CommandStartMeeting" CommandValueId="" Id="cp.cp_rprp.buttonStartMeeting" LabelText="$LocLabels:cp.cp_rprp.buttonStartMeeting.LabelText" Sequence="54" TemplateAlias="o1" />
+      </CommandUIDefinition>
+    </CustomAction>
+  </CustomActions>
+  <Templates>
+    <RibbonTemplates Id="Mscrm.Templates"></RibbonTemplates>
+  </Templates>
+  <CommandDefinitions>
+    <CommandDefinition Id="cp.cp_rprp.CommandAccept">
+      <EnableRules>
+        <EnableRule Id="cp.cp_rprp.EnableAccept" />
+      </EnableRules>
+      <DisplayRules />
+      <Actions>
+        <JavaScriptFunction FunctionName="accept" Library="$webresource:cp_/js/RPRPRibbon">
+          <CrmParameter Value="PrimaryControl" />
+        </JavaScriptFunction>
+      </Actions>
+    </CommandDefinition>
+    <CommandDefinition Id="cp.cp_rprp.CommandComplete">
+      <EnableRules>
+        <EnableRule Id="cp.cp_rprp.EnableComplete" />
+      </EnableRules>
+      <DisplayRules />
+      <Actions>
+        <JavaScriptFunction FunctionName="complete" Library="$webresource:cp_/js/RPRPRibbon">
+          <CrmParameter Value="PrimaryControl" />
+        </JavaScriptFunction>
+      </Actions>
+    </CommandDefinition>
+    <CommandDefinition Id="cp.cp_rprp.CommandEndMeeting">
+      <EnableRules>
+        <EnableRule Id="cp.cp_rprp.EnableEndMeeting" />
+      </EnableRules>
+      <DisplayRules />
+      <Actions>
+        <JavaScriptFunction FunctionName="endMeeting" Library="$webresource:cp_/js/RPRPRibbon">
+          <CrmParameter Value="PrimaryControl" />
+        </JavaScriptFunction>
+      </Actions>
+    </CommandDefinition>
+    <CommandDefinition Id="cp.cp_rprp.CommandNotify">
+      <EnableRules>
+        <EnableRule Id="cp.cp_rprp.EnableNotify" />
+      </EnableRules>
+      <DisplayRules />
+      <Actions />
+    </CommandDefinition>
+    <CommandDefinition Id="cp.cp_rprp.CommandNotifyParticipant">
+      <EnableRules>
+        <EnableRule Id="cp.cp_rprp.EnableNotifyParticipant" />
+      </EnableRules>
+      <DisplayRules />
+      <Actions>
+        <JavaScriptFunction FunctionName="notifyParticipant" Library="$webresource:cp_/js/RPRPRibbon">
+          <CrmParameter Value="PrimaryControl" />
+        </JavaScriptFunction>
+      </Actions>
+    </CommandDefinition>
+    <CommandDefinition Id="cp.cp_rprp.CommandNotifyReviewer">
+      <EnableRules>
+        <EnableRule Id="cp.cp_rprp.EnableNotifyReviewer" />
+      </EnableRules>
+      <DisplayRules />
+      <Actions>
+        <JavaScriptFunction FunctionName="notifyReviewer" Library="$webresource:cp_/js/RPRPRibbon">
+          <CrmParameter Value="PrimaryControl" />
+        </JavaScriptFunction>
+      </Actions>
+    </CommandDefinition>
+    <CommandDefinition Id="cp.cp_rprp.CommandReject">
+      <EnableRules>
+        <EnableRule Id="cp.cp_rprp.EnableReject" />
+      </EnableRules>
+      <DisplayRules />
+      <Actions>
+        <JavaScriptFunction FunctionName="reject" Library="$webresource:cp_/js/RPRPRibbon">
+          <CrmParameter Value="PrimaryControl" />
+        </JavaScriptFunction>
+      </Actions>
+    </CommandDefinition>
+    <CommandDefinition Id="cp.cp_rprp.CommandRequestReview">
+      <EnableRules>
+        <EnableRule Id="cp.cp_rprp.EnableRequestReview" />
+      </EnableRules>
+      <DisplayRules />
+      <Actions>
+        <JavaScriptFunction FunctionName="requestReview" Library="$webresource:cp_/js/RPRPRibbon">
+          <CrmParameter Value="PrimaryControl" />
+        </JavaScriptFunction>
+      </Actions>
+    </CommandDefinition>
+    <CommandDefinition Id="cp.cp_rprp.CommandScheduleMeeting">
+      <EnableRules>
+        <EnableRule Id="cp.cp_rprp.EnableScheduleMeeting" />
+      </EnableRules>
+      <DisplayRules />
+      <Actions>
+        <JavaScriptFunction FunctionName="scheduleMeeting" Library="$webresource:cp_/js/RPRPRibbon">
+          <CrmParameter Value="PrimaryControl" />
+        </JavaScriptFunction>
+      </Actions>
+    </CommandDefinition>
+    <CommandDefinition Id="cp.cp_rprp.CommandStartMeeting">
+      <EnableRules>
+        <EnableRule Id="cp.cp_rprp.EnableStartMeeting" />
+      </EnableRules>
+      <DisplayRules />
+      <Actions>
+        <JavaScriptFunction FunctionName="startMeeting" Library="$webresource:cp_/js/RPRPRibbon">
+          <CrmParameter Value="PrimaryControl" />
+        </JavaScriptFunction>
+      </Actions>
+    </CommandDefinition>
+  </CommandDefinitions>
+  <RuleDefinitions>
+    <TabDisplayRules />
+    <DisplayRules />
+    <EnableRules>
+      <EnableRule Id="cp.cp_rprp.EnableAccept">
+        <CustomRule FunctionName="acceptEnabled" Library="$webresource:cp_/js/RPRPRibbon">
+          <CrmParameter Value="PrimaryControl" />
+        </CustomRule>
+      </EnableRule>
+      <EnableRule Id="cp.cp_rprp.EnableComplete">
+        <CustomRule FunctionName="completeEnabled" Library="$webresource:cp_/js/RPRPRibbon">
+          <CrmParameter Value="PrimaryControl" />
+        </CustomRule>
+      </EnableRule>
+      <EnableRule Id="cp.cp_rprp.EnableEndMeeting">
+        <CustomRule FunctionName="endMeetingEnabled" Library="$webresource:cp_/js/RPRPRibbon">
+          <CrmParameter Value="PrimaryControl" />
+        </CustomRule>
+      </EnableRule>
+      <EnableRule Id="cp.cp_rprp.EnableNotify">
+        <OrRule>
+          <Or>
+            <CustomRule FunctionName="enableNotifyParticipant" Library="$webresource:cp_/js/RPRPRibbon">
+              <CrmParameter Value="PrimaryControl" />
+            </CustomRule>
+          </Or>
+          <Or>
+            <CustomRule FunctionName="enableNotifyReviewer" Library="$webresource:cp_/js/RPRPRibbon">
+              <CrmParameter Value="PrimaryControl" />
+            </CustomRule>
+          </Or>
+        </OrRule>
+      </EnableRule>
+      <EnableRule Id="cp.cp_rprp.EnableNotifyParticipant">
+        <CustomRule FunctionName="notifyParticipantEnabled" Library="$webresource:cp_/js/RPRPRibbon">
+          <CrmParameter Value="PrimaryControl" />
+        </CustomRule>
+      </EnableRule>
+      <EnableRule Id="cp.cp_rprp.EnableNotifyReviewer">
+        <CustomRule FunctionName="notifyReviewerEnabled" Library="$webresource:cp_/js/RPRPRibbon">
+          <CrmParameter Value="PrimaryControl" />
+        </CustomRule>
+      </EnableRule>
+      <EnableRule Id="cp.cp_rprp.EnableReject">
+        <CustomRule FunctionName="rejectEnabled" Library="$webresource:cp_/js/RPRPRibbon">
+          <CrmParameter Value="PrimaryControl" />
+        </CustomRule>
+      </EnableRule>
+      <EnableRule Id="cp.cp_rprp.EnableRequestReview">
+        <CustomRule FunctionName="requestReviewEnabled" Library="$webresource:cp_/js/RPRPRibbon">
+          <CrmParameter Value="PrimaryControl" />
+        </CustomRule>
+      </EnableRule>
+      <EnableRule Id="cp.cp_rprp.EnableScheduleMeeting">
+        <CustomRule FunctionName="scheduleMeetingEnabled" Library="$webresource:cp_/js/RPRPRibbon">
+          <CrmParameter Value="PrimaryControl" />
+        </CustomRule>
+      </EnableRule>
+      <EnableRule Id="cp.cp_rprp.EnableStartMeeting">
+        <CustomRule FunctionName="startMeetingEnabled" Library="$webresource:cp_/js/RPRPRibbon">
+          <CrmParameter Value="PrimaryControl" />
+        </CustomRule>
+      </EnableRule>
+    </EnableRules>
+  </RuleDefinitions>
+  <LocLabels>
+    <LocLabel Id="cp.cp_rprp.buttonAccept.LabelText">
+      <Titles>
+        <Title description="Accept" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="cp.cp_rprp.buttonComplete.LabelText">
+      <Titles>
+        <Title description="Complete" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="cp.cp_rprp.buttonEndMeeting.LabelText">
+      <Titles>
+        <Title description="End Meeting" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="cp.cp_rprp.buttonNotify.LabelText">
+      <Titles>
+        <Title description="Notify" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="cp.cp_rprp.buttonNotifyParticipant.LabelText">
+      <Titles>
+        <Title description="Participant" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="cp.cp_rprp.buttonNotifyReviewer.LabelText">
+      <Titles>
+        <Title description="Reviewer" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="cp.cp_rprp.buttonReject.LabelText">
+      <Titles>
+        <Title description="Reject" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="cp.cp_rprp.buttonRequestReview.LabelText">
+      <Titles>
+        <Title description="Request Review" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="cp.cp_rprp.buttonScheduleMeeting.LabelText">
+      <Titles>
+        <Title description="Schedule Meeting" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="cp.cp_rprp.buttonStartMeeting.LabelText">
+      <Titles>
+        <Title description="Start Meeting" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+  </LocLabels>
+</RibbonDiffXml>

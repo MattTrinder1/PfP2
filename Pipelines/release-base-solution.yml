@@ -1,4 +1,10 @@
 parameters:
+- name: prefix
+  type: string
+  default: 
+  values:
+  - CP
+  - RP
 - name: solutionName
   type: string
   default: 
@@ -7,6 +13,9 @@ parameters:
   - OptionSets
   - Entities
   - SecurityRoles
+  - Processes
+  - Plugins
+  - PluginSteps
   - Dashboards
   - ModelDrivenApps
 - name: customer
@@ -14,6 +23,8 @@ parameters:
   default: Cumbria
   values:
   - Cumbria
+  - Durham
+  - Tisski
   
 trigger: none
 
@@ -26,7 +37,7 @@ variables:
 - name: release.version
   value: 0 
 - name: solution.prefix
-  value: CP
+  value: ${{parameters.prefix}}
 - template: connectionStrings.yml
 
 name: $(Build.DefinitionName) - $(Build.BuildId) - ${{parameters.solutionName}}
@@ -100,7 +111,7 @@ stages:
                 releaseversion : $(release.version)
                 solutionprefix : $(solution.prefix)
                 solutionName: ${{parameters.solutionName}}
-                connectionString: $(pfpuat.connection.string)
+                connectionString: $(${{parameters.customer}}pfpuat.connection.string)
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

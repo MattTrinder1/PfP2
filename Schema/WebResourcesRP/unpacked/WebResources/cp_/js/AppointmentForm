@@ -1,0 +1,112 @@
+function onLoad(executionContext) {
+    var formContext = executionContext.getFormContext();
+
+    formContext.getControl("actualstart").setVisible(formContext.getAttribute("actualstart").getValue() != null);
+    formContext.getControl("actualend").setVisible(formContext.getAttribute("actualend").getValue() != null);
+
+    lockCreateOnlyFields(executionContext);
+
+    onChangeRegarding(executionContext, true);
+    onChangeIsRprpReviewMeeting(executionContext);
+}
+
+function lockCreateOnlyFields(executionContext) {
+    var formContext = executionContext.getFormContext();
+
+    var isCreate = (formContext.ui.getFormType() == 1 /* Create */);
+
+    formContext.getControl("cp_isrprpreviewmeeting").setDisabled(!isCreate);
+}
+
+function isReadOnly(executionContext) {
+    var formContext = executionContext.getFormContext();
+
+    var formType = formContext.ui.getFormType();
+    return (formType == 3 /* Read Only */ || formType == 4 /* Disabled */);
+}
+
+function onChangeRegarding(executionContext, isLoad) {
+    var formContext = executionContext.getFormContext();
+    if (isLoad !== true) isLoad = false;
+
+    var isCreate = (formContext.ui.getFormType() == 1 /* Create */);
+    var isRpRp = false;
+    var regarding = formContext.getAttribute("regardingobjectid").getValue();
+    if (regarding != null) {
+        isRpRp = (regarding[0].entityType == "cp_rprp");
+    }
+
+    formContext.getControl("regardingobjectid").setDisabled((isLoad && isRpRp));
+
+    formContext.getAttribute("location").setRequiredLevel(isRpRp ? "required" : "none");
+
+    formContext.ui.clearFormNotification("rprpReviewInProgress");
+
+    formContext.getControl("cp_isrprpreviewmeeting").setVisible(isRpRp);
+    if (isCreate && isRpRp) {
+        Xrm.WebApi.retrieveRecord(regarding[0].entityType, regarding[0].id,
+            "?$select=cp_name,cp_reviewmeetingstatus&$expand=cp_Participant($select=systemuserid,fullname),cp_Reviewer($select=systemuserid,fullname)").then(
+            function success(result) {
+                var partyListIndex = -1;
+                var partyList = new Array();
+
+                if (result.cp_Participant != null) {
+                    partyListIndex++;
+                    partyList[partyListIndex] = new Object();
+                    partyList[partyListIndex].id = result.cp_Participant.systemuserid;
+                    partyList[partyListIndex].name = result.cp_Participant.fullname;
+                    partyList[partyListIndex].entityType = "systemuser";
+                }
+
+                if (result.cp_Reviewer != null) {
+                    partyListIndex++;
+                    partyList[partyListIndex] = new Object();
+                    partyList[partyListIndex].id = result.cp_Reviewer.systemuserid;
+                    partyList[partyListIndex].name = result.cp_Reviewer.fullname;
+                    partyList[partyListIndex].entityType = "systemuser";
+                }
+
+                if (partyListIndex > -1) {
+                    formContext.getAttribute("requiredattendees").setValue(partyList);
+                }
+
+                if (result.cp_reviewmeetingstatus == 778230001 /* In Progress */) {
+                    formContext.getControl("cp_isrprpreviewmeeting").setDisabled(true);
+                    formContext.getAttribute("cp_isrprpreviewmeeting").setValue(false);
+                    formContext.getAttribute("cp_isrprpreviewmeeting").fireOnChange();
+                    formContext.ui.setFormNotification(
+                        "You cannot book an RPRP Review meeting whilst one is already in progress.",
+                        "WARNING",
+                        "rprpReviewInProgress"
+                    );
+                } else {
+                    formContext.getControl("cp_isrprpreviewmeeting").setDisabled(false);
+                    formContext.getAttribute("cp_isrprpreviewmeeting").setValue(true);
+                    formContext.getAttribute("cp_isrprpreviewmeeting").fireOnChange();
+                }
+            },
+            function (error) {
+                console.log(error.message);
+            }
+        );
+    }
+}
+
+function onChangeIsRprpReviewMeeting(executionContext) {
+    var formContext = executionContext.getFormContext();
+
+    const rprpSubject = "Reflective Practice Review";
+    var isRprpReviewMeeting = formContext.getAttribute("cp_isrprpreviewmeeting").getValue();
+
+    if (!isReadOnly(executionContext)) {
+        if (isRprpReviewMeeting) {
+            formContext.getAttribute("subject").setValue(rprpSubject);
+        } else if (formContext.getAttribute("subject").getValue() == rprpSubject) {
+            formContext.getAttribute("subject").setValue(null);
+        }
+    }
+    formContext.getControl("subject").setDisabled(isRprpReviewMeeting);
+    formContext.getControl("requiredattendees").setDisabled(isRprpReviewMeeting);
+
+    formContext.getControl("description").setVisible(!isRprpReviewMeeting);
+}

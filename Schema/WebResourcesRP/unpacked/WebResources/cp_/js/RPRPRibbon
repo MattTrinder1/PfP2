@@ -1,0 +1,225 @@
+function currentUserIsParticipant(formContext) {
+    var participant = formContext.getAttribute("cp_participant").getValue();
+    return (participant != null && participant[0].id == Xrm.Utility.getGlobalContext().userSettings.userId);
+}
+
+function currentUserIsReviewer(formContext) {
+    var reviewer = formContext.getAttribute("cp_reviewer").getValue();
+    return (reviewer != null && reviewer[0].id == Xrm.Utility.getGlobalContext().userSettings.userId);
+}
+
+function notifyReviewerEnabled(formContext) {
+    return (
+        !currentUserIsParticipant(formContext) && 
+        formContext.ui.getFormType() == 2 /* Update */ &&
+        formContext.getAttribute("cp_reviewer").getValue() != null &&
+        !formContext.getAttribute("cp_reviewer").getIsDirty() &&
+        formContext.getAttribute("cp_notifyreviewer").getValue() == null);
+}
+
+function notifyParticipantEnabled(formContext) {
+    return (
+        !currentUserIsParticipant(formContext) &&
+        formContext.ui.getFormType() == 2 /* Update */ &&
+        formContext.getAttribute("cp_reviewer").getValue() != null && 
+        !formContext.getAttribute("cp_reviewer").getIsDirty() && 
+        formContext.getAttribute("cp_participant").getValue() != null && 
+        !formContext.getAttribute("cp_participant").getIsDirty() && 
+        formContext.getAttribute("cp_notifyparticipant").getValue() == null);
+}
+
+function scheduleMeetingEnabled(formContext) {   
+    return (
+        !currentUserIsParticipant(formContext) &&
+        formContext.ui.getFormType() == 2 /* Update */ &&
+        formContext.getAttribute("cp_reviewer").getValue() != null &&
+        !formContext.getAttribute("cp_reviewer").getIsDirty() && 
+        formContext.getAttribute("cp_participant").getValue() != null &&
+        !formContext.getAttribute("cp_participant").getIsDirty() && 
+        formContext.getAttribute("cp_participantnotifiedon").getValue() != null);
+}
+
+function startMeetingEnabled(formContext) {
+    return (
+        formContext.getAttribute("cp_reviewmeetingstatus").getValue() == 778230000 /* Scheduled */ &&
+        currentUserIsReviewer(formContext));
+}
+
+function endMeetingEnabled(formContext) {
+    return (
+        formContext.getAttribute("cp_reviewmeetingstatus").getValue() == 778230001 /* In Progress */ &&
+        currentUserIsReviewer(formContext));
+}
+
+function acceptEnabled(formContext) {
+    return (
+        formContext.getAttribute("cp_participantrespondedon").getValue() == null &&
+        formContext.getAttribute("cp_reviewmeetingstatus").getValue() == 778230002 /* Completed */ && 
+        currentUserIsParticipant(formContext));
+}
+function rejectEnabled(formContext) {
+    return acceptEnabled(formContext);
+}
+
+function requestReviewEnabled(formContext) {
+    //Disable when inactive. Can't use update form check for this as Participant won't have update privs.
+    return (
+        formContext.getAttribute("statecode").getValue() == 0 /* Active */ &&
+        formContext.getAttribute("cp_reviewmeetingstatus").getValue() == 778230002 /* Completed */ && 
+        formContext.getAttribute("statuscode").getValue() != 778230005 /* Review Required */);
+}
+
+function completeEnabled(formContext) {    
+    return (
+        !currentUserIsParticipant(formContext) &&
+        formContext.ui.getFormType() == 2 /* Update */ &&
+        formContext.getAttribute("cp_reviewmeetingstatus").getValue() == 778230002 /* Completed */ && 
+        formContext.getAttribute("cp_participantresponse").getValue() == 1 /* Accepted */ && 
+        !(formContext.getAttribute("statuscode").getValue() == 778230008 /* Awaiting Approval */ && currentUserIsReviewer(formContext)));
+}
+
+
+function notifyReviewer(formContext) {
+    //Disable button.
+    formContext.getAttribute("cp_notifyreviewer").setValue(1);
+    formContext.ui.refreshRibbon(false);
+
+    //Trigger background process.
+    var rprp = { "cp_notifyreviewer": 1 };
+    Xrm.WebApi.updateRecord("cp_rprp", formContext.data.entity.getId(), rprp).then(
+        function success(result) {
+            //Trigger form to wait for background update that notification is generated.
+            formContext.getAttribute("cp_notifyreviewer").fireOnChange();
+        },
+        function (error) {
+            console.log(error.message);
+        }
+    );
+}
+
+function notifyParticipant(formContext) {
+    //Disable button.
+    formContext.getAttribute("cp_notifyparticipant").setValue(1);
+    formContext.ui.refreshRibbon(false);
+
+    //Trigger background process.
+    var rprp = { "cp_notifyparticipant": 1 };
+    Xrm.WebApi.updateRecord("cp_rprp", formContext.data.entity.getId(), rprp).then(
+        function success(result) {
+            //Trigger form to wait for background update that notification is generated.
+            formContext.getAttribute("cp_notifyparticipant").fireOnChange();
+        },
+        function (error) {
+            console.log(error.message);
+        }
+    );
+}
+
+function scheduleMeeting(formContext) {
+    var entityFormOptions = {};
+    entityFormOptions["entityName"] = "appointment";
+
+    if (formContext.data.getIsDirty()) {
+        entityFormOptions["openInNewWindow"] = true;
+    }
+
+    var existingAppointment = formContext.getAttribute("cp_reflectivereviewappointment").getValue();
+    if (existingAppointment != null &&
+        formContext.getAttribute("cp_reviewmeetingstatus").getValue() == 778230000 /* Scheduled */) {
+
+        entityFormOptions["entityId"] = existingAppointment[0].id;
+        Xrm.Navigation.openForm(entityFormOptions);
+    } else {
+        var formParameters = {};
+        formParameters["regardingobjectid"] = formContext.data.entity.getId();
+        formParameters["regardingobjectidname"] = formContext.data.entity.getPrimaryAttributeValue();
+        formParameters["regardingobjectidtype"] = "cp_rprp";
+
+        Xrm.Navigation.openForm(entityFormOptions, formParameters);
+    }
+}
+
+function startMeeting(formContext) {
+    //Disable button and trigger form meeting in progress behaviour.
+    formContext.getAttribute("cp_reviewmeetingstatus").setValue(778230001 /* In Progress */);
+    formContext.ui.refreshRibbon(false);
+    formContext.getAttribute("cp_reviewmeetingstatus").fireOnChange();
+}
+
+function endMeeting(formContext) {
+    //Disable button and trigger form end meeting behaviour.
+    formContext.getAttribute("cp_reviewmeetingstatus").setValue(778230002 /* Completed */);
+    formContext.ui.refreshRibbon(false);
+    formContext.getAttribute("cp_reviewmeetingstatus").fireOnChange();
+}
+
+function setParticipantResponse(formContext, accept) {
+    var target = {};
+    target.entityType = "cp_rprp";
+    target.id = formContext.data.entity.getId();
+
+    var req = {};
+    req.entity = target;
+    req.Accept = accept;
+    req.getMetadata = function () {
+        return {
+            boundParameter: "entity",
+            parameterTypes: {
+                "entity": {
+                    typeName: "mscrm.cp_rprp",
+                    structuralProperty: 5
+                },
+                "Accept": {
+                    "typeName": "edm.boolean",
+                    "structuralProperty": 1
+                }
+            },
+            operationType: 0,
+            operationName: "cp_RPRPSetParticipantResponse"
+        };
+    };
+
+    Xrm.WebApi.online.execute(req).then(
+        function success(result) {
+            formContext.data.refresh();
+            formContext.ui.refreshRibbon(false);
+        },
+        function (error) {
+            console.log(error.message);
+        }
+    );
+}
+
+function accept(formContext) {
+    setParticipantResponse(formContext, true);
+}
+
+function reject(formContext) {
+    setParticipantResponse(formContext, false);
+}
+
+function requestReview(formContext) {
+    var rprp = { "statecode" : 0, "statuscode": 778230005 /* Review Required */ };
+    Xrm.WebApi.updateRecord("cp_rprp", formContext.data.entity.getId(), rprp).then(
+        function success(result) {
+            formContext.data.refresh();
+            formContext.ui.refreshRibbon(false);
+        },
+        function (error) {
+            console.log(error.message);
+        }
+    );
+}
+
+function complete(formContext) {
+    var rprp = { "statecode": 1, "statuscode": 778230009 /* Completed */};
+    Xrm.WebApi.updateRecord("cp_rprp", formContext.data.entity.getId(), rprp).then(
+        function success(result) {
+            formContext.data.refresh();
+            formContext.ui.refreshRibbon(false);
+        },
+        function (error) {
+            console.log(error.message);
+        }
+    );
+}

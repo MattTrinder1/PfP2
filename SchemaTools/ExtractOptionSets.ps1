@@ -1,1 +1,1 @@
-& $PSScriptRoot\exportandextract.ps1 -folderName "OptionSets"
+& $PSScriptRoot\exportandextract.ps1 -folderName "OptionSets"  -prefix "CP"
