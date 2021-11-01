@@ -18,11 +18,13 @@ parameters:
   - PluginSteps
   - Dashboards
   - ModelDrivenApps
-#- name: customer
-#  type: string
-#  default: Cumbria
-#  values:
-#  - Cumbria
+- name: customer
+  type: string
+  default: Cumbria
+  values:
+  - Cumbria
+  - Durham
+  - Tisski
   
 trigger: none
 
@@ -109,7 +111,7 @@ stages:
                 releaseversion : $(release.version)
                 solutionprefix : $(solution.prefix)
                 solutionName: ${{parameters.solutionName}}
-                connectionString: $(pfpuat.connection.string)
+                connectionString: $(${{parameters.customer}}pfpuat.connection.string)
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
