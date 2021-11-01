@@ -34,7 +34,6 @@ stages:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     - job: 
       displayName: Deploy Config Data
-      dependsOn: ReleaseTo${{parameters.customer}}PreTest
       
       variables:
       - name: configExists
@@ -42,12 +41,6 @@ stages:
       - name: newConfigVersion  
 
       steps:
-
-      - checkout: none
-      - task: DownloadPipelineArtifact@2
-        inputs:
-          source: 'current' # Options: current, specific
-
 
       - task: MSCRMToolInstaller@12
         inputs:
