@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{533f119b-9e3e-4c63-bebc-ca29673bb9e3}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cp_name" select="1" icon="1" preview="1">
+        <row name="result" id="cp_rprpid">
+          <cell name="cp_name" width="300" />
+          <cell name="cp_type" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="cp_participant" width="200" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="cp_reviewer" width="200" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="statuscode" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="cp_reviewmeetingstatus" width="200" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="modifiedon" width="100" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cp_rprp">
+          <attribute name="cp_name" />
+          <order attribute="cp_name" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="cp_type" />
+          <attribute name="statuscode" />
+          <attribute name="cp_reviewer" />
+          <attribute name="cp_reviewmeetingstatus" />
+          <attribute name="cp_participant" />
+          <attribute name="modifiedon" />
+          <attribute name="cp_rprpid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active RPRPs" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

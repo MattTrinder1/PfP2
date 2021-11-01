@@ -4,16 +4,17 @@
 [string]$skipExport,
 [bool] $canvas,
 [string] $appName,
-[bool] $flow
+[bool] $flow,
+[string] $prefix
 
 )
 
 
 $tempFolderName = $PSScriptRoot+"\temp"
 
-$solutionName = "CP" + $folderName
+$solutionName = $prefix + $folderName
 
-$folderName = "../Schema/" + $folderName
+$folderName = "../Schema/" + $folderName + $prefix
 
 $connString = "RequireNewInstance=True;AuthType=ClientSecret;ClientId=83af4fce-10c3-4409-a43d-d67e300424aa;ClientSecret=H.ARok4~mmJl_lfU~nfE9JqE.7pUE26u.t;Url=https://policeproductdev.crm11.dynamics.com"
 

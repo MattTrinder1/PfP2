@@ -1,1 +1,1 @@
-& $PSScriptRoot\exportandextract.ps1 -folderName "Entities"
+& $PSScriptRoot\exportandextract.ps1 -folderName "Entities"  -prefix "CP"
