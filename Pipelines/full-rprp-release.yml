@@ -49,6 +49,7 @@ stages:
           releaseversion : $(release.version)
           solutionprefix : "RP"
           appFolderName : "WebResources"
+          publish : "no"
       - template: assembleReleaseForBaseSolution.yml
         parameters:
           managed: Managed
@@ -56,6 +57,7 @@ stages:
           releaseversion : $(release.version)
           solutionprefix : "RP"
           appFolderName : "OptionSets"
+          publish : "no"
       - template: assembleReleaseForBaseSolution.yml
         parameters:
           managed: Managed
@@ -63,6 +65,7 @@ stages:
           releaseversion : $(release.version)
           solutionprefix : "RP"
           appFolderName : "Entities"
+          publish : "no"
       - template: assembleReleaseForBaseSolution.yml
         parameters:
           managed: Managed
@@ -70,6 +73,7 @@ stages:
           releaseversion : $(release.version)
           solutionprefix : "RP"
           appFolderName : "SecurityRoles"
+          publish : "no"
       - template: assembleReleaseForBaseSolution.yml
         parameters:
           managed: Managed
@@ -77,6 +81,7 @@ stages:
           releaseversion : $(release.version)
           solutionprefix : "RP"
           appFolderName : "Plugins"
+          publish : "no"
       - template: assembleReleaseForBaseSolution.yml
         parameters:
           managed: Managed
@@ -84,6 +89,7 @@ stages:
           releaseversion : $(release.version)
           solutionprefix : "RP"
           appFolderName : "PluginSteps"
+          publish : "no"
       - template: assembleReleaseForBaseSolution.yml
         parameters:
           managed: Managed
@@ -91,6 +97,7 @@ stages:
           releaseversion : $(release.version)
           solutionprefix : "RP"
           appFolderName : "ModelDrivenApps"
+          publish : "no"
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #----------------------------------End Stage-------------------------------------------------------------------
