@@ -110,6 +110,9 @@ stages:
           deploy:
             
             steps:
+            
+            - checkout: none
+            
             - ${{ each parameter in parameters }}:
               - ${{ if contains(parameter.Key, 'SolutionName') }}:
                 - template: deployBaseSolution.yml
