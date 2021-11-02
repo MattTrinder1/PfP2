@@ -83,7 +83,7 @@ stages:
     displayName: Deploy Config Data To UAT
     jobs:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    - deployment: DeployConfigDataToUAT
+    - deployment: DeployConfigDataToTisskiUAT
       environment: PfPUAT
       displayName: Deploy Config Data
      # workspace:
@@ -108,7 +108,7 @@ stages:
 
               - task: MSCRMGetConfigurationRecord@12
                 inputs:
-                  crmConnectionString: $(pfpuat.connection.string)
+                  crmConnectionString: $(Tisskipfpuat.connection.string)
                   entityName: 'cp_configdatahistory'
                   lookupFieldName: 'cp_name'
                   valueFieldName: 'cp_value'
@@ -123,14 +123,70 @@ stages:
               - task: MSCRMImportCMData@12
                 displayName: Import Configuration Data
                 inputs:
-                  crmConnectionString: $(pfpuat.connection.string)
+                  crmConnectionString: $(Tisskipfpuat.connection.string)
                   dataFile: $(Build.SourcesDirectory)/ConfigData/CumbriaRPRP.zip
                 condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
 
               
               - task: MSCRMUpdateConfigurationRecords@12
                 inputs:
-                  crmConnectionString: '$(pfpuat.connection.string)'
+                  crmConnectionString: '$(Tisskipfpuat.connection.string)'
+                  entityName: 'cp_configdatahistory'
+                  lookupFieldName: 'cp_name'
+                  valueFieldName: 'cp_value'
+                  configurationRecordsJson: '[[''CurrentVersionRPRP'',''$(newConfigVersion)'']]'
+                condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: DeployConfigDataToCumbriaUAT
+      environment: PfPUAT
+      displayName: Deploy Config Data
+     # workspace:
+     #   clean: all 
+      
+      variables:
+      - name: configExists
+      - name: currentConfigVersion  
+      - name: newConfigVersion  
+      strategy:
+        runOnce:
+          deploy:
+      
+
+            steps:
+              - checkout: self
+              
+              - task: MSCRMToolInstaller@12
+                inputs:
+                  nugetFeed: 'official'
+                  psFeed: 'official'   
+
+              - task: MSCRMGetConfigurationRecord@12
+                inputs:
+                  crmConnectionString: $(Cumbriapfpuat.connection.string)
+                  entityName: 'cp_configdatahistory'
+                  lookupFieldName: 'cp_name'
+                  valueFieldName: 'cp_value'
+                  lookupValue: 'CurrentVersionRPRP'
+                  existsVariableName: 'configExists'
+                  valueVariableName: 'currentConfigVersion'
+              
+              - powershell: |
+                        $value = Get-Content  -Path $(Build.SourcesDirectory)/ConfigData/CumbriaRPRPVersionDate.txt 
+                        Write-Host "##vso[task.setvariable variable=newConfigVersion]$value"
+
+              - task: MSCRMImportCMData@12
+                displayName: Import Configuration Data
+                inputs:
+                  crmConnectionString: $(Cumbriapfpuat.connection.string)
+                  dataFile: $(Build.SourcesDirectory)/ConfigData/CumbriaRPRP.zip
+                condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
+
+              
+              - task: MSCRMUpdateConfigurationRecords@12
+                inputs:
+                  crmConnectionString: '$(Cumbriapfpuat.connection.string)'
                   entityName: 'cp_configdatahistory'
                   lookupFieldName: 'cp_name'
                   valueFieldName: 'cp_value'
