@@ -92,6 +92,7 @@ stages:
         artifact: CumbriaBuild-Managed-RPRP
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 #----------------------------------End Stage-------------------------------------------------------------------
 #----------------------------------Start Stage-------------------------------------------------------------------
 
@@ -126,6 +127,26 @@ stages:
                     connectionString: $(pfpsystemtest.connection.string)
 
 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: DeployConfigDataToSystemTest
+      environment: PfPSystemTest
+      displayName: Deploy Config Data
+     # workspace:
+     #   clean: all 
+      variables:
+      - name: configExists
+      - name: currentConfigVersion  
+      - name: newConfigVersion  
+
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - template : config-data-template.yml
+                parameters :
+                  connectionString: $(pfpsystemtest.connection.string)
+              
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #----------------------------------End Stage-------------------------------------------------------------------
