@@ -30,10 +30,10 @@ variables:
 - name: release.version
   value: 0 
 - name: solution.prefix
-  value: ${{parameters.prefix}}
+  value: "RP"
 - template: connectionStrings.yml
 
-name: $(Build.DefinitionName) - $(Build.BuildId) - ${{parameters.solutionName}}
+name: $(Build.DefinitionName) - $(Build.BuildId) 
 
 stages: 
 #----------------------------------Start Stage-------------------------------------------------------------------
