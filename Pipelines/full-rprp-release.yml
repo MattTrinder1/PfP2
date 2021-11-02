@@ -101,7 +101,7 @@ stages:
     jobs:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     - deployment: ReleaseToTisskiPfPSystemTest
-      environment: PfPSysTestAzure
+      environment: PfPSystemTest
       displayName: Release To Tisski PfP SystemTest
       workspace:
         clean: all 
@@ -130,3 +130,75 @@ stages:
 
 #----------------------------------End Stage-------------------------------------------------------------------
 
+#----------------------------------Start Stage-------------------------------------------------------------------
+
+  - stage: ReleaseToCumbriaUAT
+    dependsOn: ReleaseToTisskiPfPSystemTest
+    displayName: Release to Cumbria UAT
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: ReleaseToCumbriaUAT
+      environment: CumbriaUAT
+      displayName: Release To Cumbria UAT
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            
+            steps:
+            
+            - checkout: none
+            - task: MSCRMToolInstaller@9
+              displayName: 'MSCRM Tool Installer'
+            
+            - ${{ each parameter in parameters }}:
+              - ${{ if contains(parameter.Key, 'SolutionName') }}:
+                - template: deployBaseSolution.yml
+                  parameters:
+                    minorversion : $(minor.version)
+                    releaseversion : $(release.version)
+                    solutionprefix : $(solution.prefix)
+                    solutionName: ${{parameter.Value}}
+                    connectionString: $(Cumbriapfpuat.connection.string)
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
+#----------------------------------Start Stage-------------------------------------------------------------------
+
+  - stage: ReleaseToTisskiPfPUAT
+    dependsOn: ReleaseToTisskiPfPSystemTest
+    displayName: Release to Tisski PfP UAT
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: ReleaseToTisskiPfPUAT
+      environment: PfPUAT
+      displayName: Release To Tisski PfP UAT
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            
+            steps:
+            
+            - checkout: none
+            - task: MSCRMToolInstaller@9
+              displayName: 'MSCRM Tool Installer'
+            
+            - ${{ each parameter in parameters }}:
+              - ${{ if contains(parameter.Key, 'SolutionName') }}:
+                - template: deployBaseSolution.yml
+                  parameters:
+                    minorversion : $(minor.version)
+                    releaseversion : $(release.version)
+                    solutionprefix : $(solution.prefix)
+                    solutionName: ${{parameter.Value}}
+                    connectionString: $(Tisskipfpuat.connection.string)
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
