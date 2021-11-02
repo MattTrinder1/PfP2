@@ -22,7 +22,39 @@ namespace API.Controllers
             ILogger<PNBController> log) : base(configuration, dataAccessFactory, cache, log)
         {
         }
-         
+
+        [HttpGet("configdataversion")]
+        public ActionResult<string> GetConfigDataVersion()
+        {
+            try
+            {
+                if (!VerifyIntegrationKey("RefData:GET:lookupfield")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
+
+                string cacheKey = $"ConfigDataVersion";
+                string configDataVersion = "";
+                if (!cache.TryGetValue(cacheKey, out configDataVersion))
+                {
+                    var q = new QueryExpression("cp_configdatahistory");
+                    q.Criteria.AddCondition("cp_name", ConditionOperator.Equal, "CurrentVersion");
+                    q.ColumnSet = new ColumnSet(true);
+                    var res = AdminDataAccess.GetMultiple(q).SingleOrDefault();
+
+                    if (res != null)
+                    {
+                        configDataVersion = res.GetAttributeValue<string>("cp_value");
+                    }
+                    cache.Set(cacheKey, configDataVersion);
+                }
+
+                return configDataVersion;
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, new ApiError(e.Message));
+            }
+        }
+
+
         [HttpGet("lookupfield/{filterId}")]
         public ActionResult<LookupField> GetLookupField(string filterId)
         {
@@ -40,7 +72,7 @@ namespace API.Controllers
                         lookupField = mapper.Map(dvLookupField, lookupField);
                         var dvLookupValues = AdminDataAccess.GetAll<DVLookupValue>("cp_lookupfield", dvLookupField.Id, "cp_displaysequenceno");
                         lookupField.Values = mapper.Map<List<LookupValue>>(dvLookupValues);
-                        
+
                         cache.Set(cacheKey, lookupField);
                     }
                 }
@@ -120,7 +152,6 @@ namespace API.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, new ApiError(e.Message));
             }
         }
-
 
         [HttpGet("civilianusers")]
         public ActionResult<User[]> GetCivilianUsers()
