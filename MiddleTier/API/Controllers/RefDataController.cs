@@ -24,7 +24,7 @@ namespace API.Controllers
         }
 
         [HttpGet("configdataversion")]
-        public ActionResult<string> GetConfigDataVersion()
+        public ActionResult<ConfigDataVersion> GetConfigDataVersion()
         {
             try
             {
@@ -46,7 +46,7 @@ namespace API.Controllers
                     cache.Set(cacheKey, configDataVersion);
                 }
 
-                return configDataVersion;
+                return new ConfigDataVersion() { ConfigDataVersionString = configDataVersion};
             }
             catch (Exception e)
             {
