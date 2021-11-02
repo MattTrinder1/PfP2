@@ -20,13 +20,13 @@ steps:
     
 - template: get-solution-filenames.yml
   parameters:
-    pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-${{parameters.solutionName}}
+    pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
     minorversion : ${{parameters.minorversion}}
     releaseversion : ${{parameters.releaseversion}}
     solutionprefix : ${{parameters.solutionprefix}}
 
 - template: install-managed-solution.yml
   parameters:
-    pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-${{parameters.solutionName}}
+    pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
     connectionstring : ${{parameters.connectionString}}
     SolutionFileName : $(${{parameters.solutionName}}SolutionFileName)
