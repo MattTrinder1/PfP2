@@ -6,7 +6,7 @@
       <LocalizedName description="250 - RPRP Processes" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.0.0.10</Version>
+    <Version>1.0.0.11</Version>
     <Managed>1</Managed>
     <Publisher>
       <UniqueName>Tisski</UniqueName>
@@ -255,6 +255,10 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="2" schemaName="cp_completionapprovedby" displayName="Completion Approved By" parentSchemaName="cp_rprp" parentDisplayName="RPRP" solution="Active" />
+        <Dependent type="29" displayName="RPRP - Process Participant Response [EXECUTE AS OWNER]" id="{bc7e7a48-f5dd-4ee5-9dba-be7bd9c1da6c}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="cp_completionapprovedby" displayName="Completion Approved By" parentSchemaName="cp_rprp" parentDisplayName="RPRP" solution="Active" />
         <Dependent type="29" displayName="RPRP" id="{eb1f4a29-a838-ec11-8c64-000d3a871d8b}" />
       </MissingDependency>
       <MissingDependency>
@@ -480,6 +484,10 @@
       <MissingDependency>
         <Required type="2" schemaName="cp_reflectivereviewstartedon" displayName="Reflective Review Started On" parentSchemaName="cp_rprp" parentDisplayName="RPRP" solution="Active" />
         <Dependent type="29" displayName="RPRP - Complete Appointment [EXECUTE AS OWNER]" id="{63abd8c0-4a40-4aa4-9dc6-06e307d1f335}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="cp_reviewer" displayName="Reviewer" parentSchemaName="cp_rprp" parentDisplayName="RPRP" solution="Active" />
+        <Dependent type="29" displayName="RPRP - Process Participant Response [EXECUTE AS OWNER]" id="{bc7e7a48-f5dd-4ee5-9dba-be7bd9c1da6c}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="2" schemaName="cp_reviewer" displayName="Reviewer" parentSchemaName="cp_rprp" parentDisplayName="RPRP" solution="Active" />

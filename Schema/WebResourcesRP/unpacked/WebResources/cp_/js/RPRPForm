@@ -17,6 +17,9 @@ function onLoad(executionContext) {
     formContext.getAttribute("cp_type").addOnChange(onChangeType);
     onChangeType(executionContext);
 
+    formContext.getAttribute("cp_category").addOnChange(onChangeCategory);
+    onChangeCategory(executionContext);
+
     formContext.getAttribute("cp_reviewer").addOnChange(onChangeReviewer);
     onChangeReviewer(executionContext);
 
@@ -64,9 +67,15 @@ function onLoad(executionContext) {
         formContext.ui.process.setVisible(false);
         //Auto-refresh Participant's read-only form view.
         checkForBackgroundChanges(executionContext, onBackgroundChange, 2000, "modifiedon", "participantViewBackgroundChange");
-    } else if (formContext.getAttribute("statuscode").getValue() == 778230002 /* Awaiting Participant Acceptance */) {
-        checkForBackgroundChanges(executionContext, onBackgroundChange, 2000, "modifiedon", "participantResponseBackgroundChange");
     }
+
+    formContext.getControl("cp_category").addPreSearch(categoryPreSearch);
+
+    formContext.getAttribute("cp_complainantengagementdatetime").addOnChange(preventFutureDate);
+    formContext.getAttribute("cp_reviewerconsultationdatetime").addOnChange(preventFutureDate);
+    formContext.getAttribute("cp_reflectivereviewstartedon").addOnChange(preventFutureDate);
+    formContext.getAttribute("cp_reflectivereviewendedon").addOnChange(preventFutureDate);
+    formContext.getAttribute("cp_nextstepsfollowupdate").addOnChange(preventPastDate);
 }
 
 function setFocus(executionContext) {
@@ -162,6 +171,28 @@ function onChangeModifiedOn(executionContext) {
 //    formContext.getAttribute("cp_debuglog").setSubmitMode("never");
 //    formContext.getAttribute("cp_debuglog").setValue(log);
 //}
+
+function preventPastDate(executionContext) {
+    var formContext = executionContext.getFormContext();
+
+    var attribute = executionContext.getEventSource();
+
+    formContext.getControl(attribute.getName()).clearNotification("PastNotAllowed");
+    if (attribute.getValue() < new Date()) {
+        formContext.getControl(attribute.getName()).setNotification("Cannot be in the past.", "PastNotAllowed");
+    }
+}
+
+function preventFutureDate(executionContext) {
+    var formContext = executionContext.getFormContext();
+
+    var attribute = executionContext.getEventSource();
+
+    formContext.getControl(attribute.getName()).clearNotification("FutureNotAllowed");
+    if (attribute.getValue() > new Date()) {
+        formContext.getControl(attribute.getName()).setNotification("Cannot be in the future.", "FutureNotAllowed");
+    }
+}
 
 function hasCurrentUserRole(roleId) {
     var hasRole = false;
@@ -291,8 +322,8 @@ function setAppointReviewerUiState(executionContext, visible, required) {
     if (visible === true || visible === false) appointReviewerVisible = visible;
     if (required === true || required === false) appointReviewerRequired = required;
 
-    formContext.getControl("cp_reviewerconsultationdatetime").setVisible(appointReviewerVisible);
-    formContext.getControl("cp_additionaldetailstoreviewer").setVisible(appointReviewerVisible);
+    formContext.ui.tabs.get("tabAdmin").sections.get("sectionAppoint").setVisible(appointReviewerRequired);
+    formContext.ui.tabs.get("tabAdmin").sections.get("sectionReference").controls.get("cp_reviewer").setVisible(!appointReviewerRequired);
 
     var consultedOnRequired = (appointReviewerVisible && appointReviewerRequired && formContext.getAttribute("cp_reviewer").getValue() != null);
     formContext.getAttribute("cp_reviewerconsultationdatetime").setRequiredLevel(consultedOnRequired ? "required" : "none");
@@ -524,6 +555,25 @@ function typePreSearch(executionContext) {
     }
 }
 
+var categoryFilter = "";
+function filterCategoriesForType(executionContext) {
+    if (isReadOnly(executionContext)) return;
+    var formContext = executionContext.getFormContext();
+
+    var type = formContext.getAttribute("cp_type").getValue();
+    if (type == null) {
+        categoryFilter = "<filter type='and'><condition attribute='cp_type' operator='null'/></filter>";
+    } else {
+        categoryFilter = "<filter type='or'><condition attribute='cp_type' operator='null'/><condition attribute='cp_type' operator='eq' value='" + type[0].id  + "'/></filter>";
+    }
+}
+function categoryPreSearch(executionContext) {
+    if (categoryFilter != "") {
+        var formContext = executionContext.getFormContext();
+        formContext.getControl("cp_category").addCustomFilter(categoryFilter);
+    }
+}
+
 function setUiState(executionContext, controlName, uiElementBehaviourValue) {
     var formContext = executionContext.getFormContext();
 
@@ -565,6 +615,8 @@ function setUiState(executionContext, controlName, uiElementBehaviourValue) {
     }
 }
 
+var isInternalReviewerChange = false;
+var isDefaultReviewer = false;
 function onChangeType(executionContext) {
     var formContext = executionContext.getFormContext();
 
@@ -572,7 +624,7 @@ function onChangeType(executionContext) {
 
     if (type != null) {
         Xrm.WebApi.retrieveRecord(type[0].entityType, type[0].id,
-                "?$select=cp_appointreviewerbehaviour,cp_appropriateauthoritybehaviour,cp_categorybehaviour,cp_referencebehaviour,cp_referencelabel,cp_referencedefault").then(
+                "?$select=cp_appointreviewerbehaviour,cp_appropriateauthoritybehaviour,cp_categorybehaviour,cp_referencebehaviour,cp_referencelabel,cp_referencedefault,cp_defaultreviewerascreatedby").then(
             function success(result) {
                 setAppointReviewerUiState(executionContext,
                     (result.cp_appointreviewerbehaviour > 778230000),
@@ -608,6 +660,28 @@ function onChangeType(executionContext) {
                         }
                     }
                 }
+
+                isInternalReviewerChange = true;
+                if (result.cp_defaultreviewerascreatedby) {
+                    if (formContext.getAttribute("cp_reviewer").getValue() == null) {
+                        var lookupValue = [];
+                        lookupValue[0] = {};
+                        lookupValue[0].id = Xrm.Utility.getGlobalContext().userSettings.userId;
+                        lookupValue[0].name = Xrm.Utility.getGlobalContext().userSettings.userName;
+                        lookupValue[0].entityType = "systemuser";
+
+                        formContext.getAttribute("cp_reviewer").setValue(lookupValue);
+                        formContext.getAttribute("cp_reviewer").fireOnChange();
+
+                        isDefaultReviewer = true;
+                    }
+                } else if (isDefaultReviewer) {
+                    formContext.getAttribute("cp_reviewer").setValue(null);
+                    formContext.getAttribute("cp_reviewer").fireOnChange();
+
+                    isDefaultReviewer = false;
+                }
+                isInternalReviewerChange = false;
             },
             function (error) {
                 console.log(error.message);
@@ -617,6 +691,8 @@ function onChangeType(executionContext) {
         setAppointReviewerUiState(executionContext, false, false);
         setAppropriateAuthorityUiState(executionContext, false, false);
     }
+
+    filterCategoriesForType(executionContext);
 }
 
 var onChangeCallbacksByTemplatedAttribute = {};
@@ -778,8 +854,22 @@ function onChangeMeetingStatus(executionContext, isLoadOrPostSave) {
                         formContext.getAttribute("cp_reflectivereviewstartedon").setValue(startedOn);
                         formContext.getAttribute("cp_reflectivereviewstartedon").fireOnChange();
 
-                        formContext.getAttribute("cp_furtheractionsrequired").setValue(true);
-                        formContext.getAttribute("cp_furtheractionsrequired").fireOnChange();
+                        if (formContext.getAttribute("cp_reflectivereviewendedon").getValue() == null) {
+                            //First Review Meeting
+                            formContext.getAttribute("cp_furtheractionsrequired").setValue(true);
+                            formContext.getAttribute("cp_furtheractionsrequired").fireOnChange();
+                        } else {
+                            //Subsequent Review Meeting so clear fields which need to be. 
+                            //(Leave main review fields the same as last review so can be amended.)
+                            formContext.getAttribute("cp_reflectivereviewendedon").setValue(null);
+                            formContext.getAttribute("cp_reflectivereviewendedon").fireOnChange();
+
+                            formContext.getAttribute("cp_participantresponse").setValue(null);
+                            formContext.getAttribute("cp_participantresponse").fireOnChange();
+
+                            formContext.getAttribute("cp_participantrespondedon").setValue(null);
+                            formContext.getAttribute("cp_participantrespondedon").fireOnChange();
+                        }
                     },
                     function (error) {
                         console.log(error.message);
@@ -865,6 +955,9 @@ function onChangeNextStepsFollowUp(executionContext) {
 
 function onChangeReviewer(executionContext) {
     var formContext = executionContext.getFormContext();
+    if (!isInternalReviewerChange) {
+        isDefaultReviewer = false;
+    }
     setReviewerNotification(executionContext);
     setAppointReviewerUiState(executionContext);
 }
@@ -876,9 +969,26 @@ function onChangeConsultedOn(executionContext) {
 }
 
 function onChangeStatusReason(executionContext) {
+    var formContext = executionContext.getFormContext();
+
+    if (formContext.getAttribute("statuscode").getValue() == 778230002 /* Awaiting Participant Acceptance */) {
+        checkForBackgroundChanges(executionContext, onBackgroundChange, 2000, "modifiedon", "participantResponseBackgroundChange");
+    }
     lockFieldsPostReviewMeeting(executionContext);
 }
 
 function onChangeParticipantResponse(executionContext) {
+    var formContext = executionContext.getFormContext();
+
     lockFieldsPostReviewMeeting(executionContext);
+}
+
+function onChangeCategory(executionContext) {
+    var formContext = executionContext.getFormContext();
+
+    var category = formContext.getAttribute("cp_category").getValue();
+    var isOtherCategory = (category != null && category[0].name.indexOf("Other") == 0);
+
+    formContext.getControl("cp_categoryother").setVisible(isOtherCategory);
+    formContext.getAttribute("cp_categoryother").setRequiredLevel(isOtherCategory ? "required" : "none");
 }

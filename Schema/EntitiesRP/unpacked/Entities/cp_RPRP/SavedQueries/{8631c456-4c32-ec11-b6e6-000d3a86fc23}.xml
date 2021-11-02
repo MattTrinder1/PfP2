@@ -32,6 +32,7 @@
           <attribute name="cp_reviewmeetingstatus" />
           <attribute name="cp_participant" />
           <attribute name="modifiedon" />
+          <attribute name="cp_nextstepsfollowupdate" />
           <order attribute="cp_nextstepsfollowupdate" descending="false" />
           <order attribute="modifiedon" descending="false" />
           <filter type="and">
@@ -50,16 +51,23 @@
                   <condition attribute="cp_nextstepsfollowupdate" operator="today" />
                 </filter>
               </filter>
+              <filter type="and">
+                <condition attribute="statuscode" operator="eq" value="778230001" />
+                <filter type="or">
+                  <condition attribute="cp_reflectivereviewscheduledstart" operator="today" />
+                  <condition attribute="cp_reflectivereviewscheduledstart" operator="olderthan-x-days" value="1" />
+                  <condition attribute="cp_reflectivereviewscheduledstart" operator="yesterday" />
+                </filter>
+              </filter>
             </filter>
           </filter>
-          <attribute name="cp_nextstepsfollowupdate" />
           <attribute name="cp_rprpid" />
         </entity>
       </fetch>
     </fetchxml>
     <IntroducedVersion>1.0.0.137</IntroducedVersion>
     <LocalizedNames>
-      <LocalizedName description="Action Required" languagecode="1033" />
+      <LocalizedName description="(Reviewer) Action Required" languagecode="1033" />
     </LocalizedNames>
   </savedquery>
 </savedqueries>

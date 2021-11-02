@@ -35,6 +35,29 @@
                           </parameters>
                         </control>
                       </cell>
+                      <cell id="{274c925a-8c80-e459-8b34-c51c1e7b1453}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Participant Notified On" languagecode="1033" />
+                        </labels>
+                        <control id="cp_participantnotifiedon" classid="{5B773807-9FB2-42db-97C3-7A91EFF8ADFF}" datafieldname="cp_participantnotifiedon" disabled="true" uniqueid="{205eacd3-78d2-9272-5e5e-a646d9eb5547}" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{a75bbba5-bbaa-4fc4-a136-307422945a30}" locklevel="0" colspan="1" rowspan="1" showlabel="true">
+                        <labels>
+                          <label description="Type" languagecode="1033" />
+                        </labels>
+                        <control id="cp_type" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_type" disabled="false" uniqueid="{50c0533b-6461-674c-61ee-61a24ea0c4aa}">
+                          <parameters>
+                            <AutoResolve>true</AutoResolve>
+                            <DisableMru>true</DisableMru>
+                            <DisableQuickFind>false</DisableQuickFind>
+                            <DisableViewPicker>false</DisableViewPicker>
+                            <DefaultViewId>{3A74D8F4-D07F-4BED-BE88-63046ADE7775}</DefaultViewId>
+                            <AllowFilterOff>false</AllowFilterOff>
+                          </parameters>
+                        </control>
+                      </cell>
                       <cell id="{aaf249c9-cde2-42a9-99e1-373f11afff8c}" locklevel="0" colspan="1" rowspan="1" showlabel="true">
                         <labels>
                           <label description="Reviewer" languagecode="1033" />
@@ -52,17 +75,18 @@
                       </cell>
                     </row>
                     <row>
-                      <cell id="{a75bbba5-bbaa-4fc4-a136-307422945a30}" locklevel="0" colspan="1" rowspan="1" showlabel="true">
+                      <cell id="{16c78083-8b8a-4b0a-8c84-9091617e4213}" locklevel="0" colspan="1" rowspan="1" showlabel="true">
                         <labels>
-                          <label description="Type" languagecode="1033" />
+                          <label description="Category" languagecode="1033" />
                         </labels>
-                        <control id="cp_type" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_type" disabled="false" uniqueid="{50c0533b-6461-674c-61ee-61a24ea0c4aa}">
+                        <control id="cp_category" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_category" disabled="false" uniqueid="{dcd0d0ac-970e-cdd2-4063-42abc302336a}">
                           <parameters>
                             <AutoResolve>true</AutoResolve>
                             <DisableMru>true</DisableMru>
                             <DisableQuickFind>false</DisableQuickFind>
                             <DisableViewPicker>false</DisableViewPicker>
-                            <DefaultViewId>{3A74D8F4-D07F-4BED-BE88-63046ADE7775}</DefaultViewId>
+                            <DefaultViewId>{E273F743-26BD-41B5-AB9B-B5011937F1EA}</DefaultViewId>
+                            <DependentAttributeType>cp_rprptype</DependentAttributeType>
                             <AllowFilterOff>false</AllowFilterOff>
                           </parameters>
                         </control>
@@ -85,27 +109,16 @@
                       </cell>
                     </row>
                     <row>
-                      <cell id="{16c78083-8b8a-4b0a-8c84-9091617e4213}" locklevel="0" colspan="1" rowspan="1" showlabel="true">
+                      <cell id="{ae13a6c5-4554-24b0-be37-017747cee91c}" showlabel="true" locklevel="0" visible="false">
                         <labels>
-                          <label description="Category" languagecode="1033" />
+                          <label description="Other Category" languagecode="1033" />
                         </labels>
-                        <control id="cp_category" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_category" disabled="false" uniqueid="{dcd0d0ac-970e-cdd2-4063-42abc302336a}">
-                          <parameters>
-                            <AutoResolve>true</AutoResolve>
-                            <DisableMru>true</DisableMru>
-                            <DisableQuickFind>false</DisableQuickFind>
-                            <DisableViewPicker>false</DisableViewPicker>
-                            <DefaultViewId>{E273F743-26BD-41B5-AB9B-B5011937F1EA}</DefaultViewId>
-                            <DependentAttributeType>cp_rprptype</DependentAttributeType>
-                            <AllowFilterOff>false</AllowFilterOff>
-                          </parameters>
-                        </control>
+                        <control id="cp_categoryother" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="cp_categoryother" disabled="false" uniqueid="{1ab0a032-a2ab-ee65-d59b-7847c1d2da4b}" />
                       </cell>
-                      <cell id="{274c925a-8c80-e459-8b34-c51c1e7b1453}" showlabel="true" locklevel="0">
+                      <cell id="{4425a80d-5546-7e00-0049-7c881cd14379}" showlabel="false">
                         <labels>
-                          <label description="Participant Notified On" languagecode="1033" />
+                          <label description="" languagecode="1033" />
                         </labels>
-                        <control id="cp_participantnotifiedon" classid="{5B773807-9FB2-42db-97C3-7A91EFF8ADFF}" datafieldname="cp_participantnotifiedon" disabled="true" uniqueid="{205eacd3-78d2-9272-5e5e-a646d9eb5547}" />
                       </cell>
                     </row>
                     <row>
@@ -115,7 +128,7 @@
                         </labels>
                         <control id="cp_name" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="cp_name" uniqueid="{c56b1cc6-53b8-891c-0443-5ca28b5b3870}" disabled="false" />
                       </cell>
-                      <cell id="{e6a8bb6c-9d7c-086a-aeed-49ac16e5a0a9}" showlabel="false">
+                      <cell id="{317bcb13-ba6d-dbda-339a-0c1c1d7d8a73}" showlabel="false">
                         <labels>
                           <label description="" languagecode="1033" />
                         </labels>
@@ -129,7 +142,13 @@
                   </labels>
                   <rows>
                     <row>
-                      <cell id="{8173a4b4-48d3-4443-88ec-b6e243372b25}" locklevel="0" colspan="2" rowspan="1" showlabel="true">
+                      <cell id="{d080ceb8-8c16-7477-1b60-92d609d8de34}" showlabel="true" locklevel="0">
+                        <labels>
+                          <label description="Reviewer" languagecode="1033" />
+                        </labels>
+                        <control id="cp_reviewer" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_reviewer" disabled="false" />
+                      </cell>
+                      <cell id="{8173a4b4-48d3-4443-88ec-b6e243372b25}" locklevel="0" colspan="1" rowspan="1" showlabel="true">
                         <labels>
                           <label description="Consulted On" languagecode="1033" />
                         </labels>
@@ -219,17 +238,22 @@
                   </labels>
                   <rows>
                     <row>
-                      <cell id="{3761b693-2992-4197-9360-41b440109775}">
+                      <cell id="{3761b693-2992-4197-9360-41b440109775}" showlabel="true" locklevel="1">
                         <labels>
-                          <label description="Owner" languagecode="1033" />
+                          <label description="Owner [NEEDED FOR BUSINESS RULES]" languagecode="1033" />
                         </labels>
-                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" uniqueid="{e2b2cbac-3c42-7e33-24e5-732d19d5b403}" disabled="false">
+                          <parameters>
+                            <AutoResolve>true</AutoResolve>
+                            <DisableMru>false</DisableMru>
+                          </parameters>
+                        </control>
                       </cell>
                     </row>
                     <row>
                       <cell id="{c651c094-312e-c499-58c8-d6bb9e7d5e83}" showlabel="true" locklevel="1">
                         <labels>
-                          <label description="Modified On [HIDDEN - NEEDED FOR JAVASCRIPT]" languagecode="1033" />
+                          <label description="Modified On [NEEDED FOR JAVASCRIPT]" languagecode="1033" />
                         </labels>
                         <control id="modifiedon" classid="{5B773807-9FB2-42db-97C3-7A91EFF8ADFF}" datafieldname="modifiedon" disabled="false" uniqueid="{74abaaa3-5505-186e-3ea4-1d5707e68b30}" />
                       </cell>
@@ -251,17 +275,17 @@
                       </cell>
                     </row>
                     <row>
-                      <cell id="{5e33bd25-004d-5607-5ebd-13e395abc0b1}" showlabel="true" locklevel="0">
+                      <cell id="{5e33bd25-004d-5607-5ebd-13e395abc0b1}" showlabel="true" locklevel="1">
                         <labels>
-                          <label description="Status" languagecode="1033" />
+                          <label description="Status  [NEEDED FOR JAVASCRIPT]" languagecode="1033" />
                         </labels>
-                        <control id="statecode" classid="{3EF39988-22BB-4f0b-BBBE-64B5A3748AEE}" datafieldname="statecode" disabled="false" />
+                        <control id="statecode" classid="{3EF39988-22BB-4f0b-BBBE-64B5A3748AEE}" datafieldname="statecode" disabled="false" uniqueid="{d8887b13-39e6-1355-d68a-152ec00da47e}" />
                       </cell>
                     </row>
                     <row>
                       <cell id="{613d5422-a249-0172-68d8-01174973b266}" showlabel="true" locklevel="1">
                         <labels>
-                          <label description="Status Reason" languagecode="1033" />
+                          <label description="Status Reason  [NEEDED FOR JAVASCRIPT]" languagecode="1033" />
                         </labels>
                         <control id="statuscode" classid="{5D68B988-0661-4db2-BC3E-17598AD3BE6C}" datafieldname="statuscode" disabled="false" uniqueid="{7c1ec746-0b64-eac2-1514-a19c7b9d9dd8}" />
                       </cell>
