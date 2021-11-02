@@ -58,6 +58,8 @@ stages:
           Contents: '**'
 
       - ${{ each parameter in parameters }}:
+        - script: echo ${{ parameter.Key }} 
+        - script: echo ${{ parameter.Value }}
         - ${{ if contains(parameter.Value, 'SolutionName') }}:
           - template: assembleAndCheck.yml
             parameters:
