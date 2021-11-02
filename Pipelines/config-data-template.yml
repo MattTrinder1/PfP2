@@ -12,15 +12,38 @@ parameters:
 
 steps:
     
-- template: get-solution-filenames.yml
-  parameters:
-    pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
-    minorversion : ${{parameters.minorversion}}
-    releaseversion : ${{parameters.releaseversion}}
-    solutionprefix : ${{parameters.solutionprefix}}
+    - task: MSCRMToolInstaller@12
+    inputs:
+        nugetFeed: 'official'
+        psFeed: 'official'   
 
-- template: install-managed-solution.yml
-  parameters:
-    pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
-    connectionstring : ${{parameters.connectionString}}
-    SolutionFileName : $(${{parameters.solutionName}}SolutionFileName)
+    - task: MSCRMGetConfigurationRecord@12
+    inputs:
+        crmConnectionString: $(pfpsystemtest.connection.string)
+        entityName: 'cp_configdatahistory'
+        lookupFieldName: 'cp_name'
+        valueFieldName: 'cp_value'
+        lookupValue: 'CurrentVersionRPRP'
+        existsVariableName: 'configExists'
+        valueVariableName: 'currentConfigVersion'
+
+    - powershell: |
+            $value = Get-Content  -Path $(Build.SourcesDirectory)/ConfigData/CumbriaRPRPVersionDate.txt 
+            Write-Host "##vso[task.setvariable variable=newConfigVersion]$value"
+
+    - task: MSCRMImportCMData@12
+    displayName: Import Configuration Data
+    inputs:
+        crmConnectionString: $(pfpsystemtest.connection.string)
+        dataFile: $(Build.SourcesDirectory)/ConfigData/CumbriaRPRP.zip
+    condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
+
+
+    - task: MSCRMUpdateConfigurationRecords@12
+    inputs:
+        crmConnectionString: '$(pfpsystemtest.connection.string)'
+        entityName: 'cp_configdatahistory'
+        lookupFieldName: 'cp_name'
+        valueFieldName: 'cp_value'
+        configurationRecordsJson: '[[''CurrentVersionRPRP'',''$(newConfigVersion)'']]'
+    condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
