@@ -23,11 +23,12 @@ steps:
 - task: MSCRMToolInstaller@9
   displayName: 'MSCRM Tool Installer'
 
-- task: DeleteFiles@1
-  displayName: 'Delete files from $(build.binariesdirectory)'
-  inputs:
-    SourceFolder: '$(build.binariesdirectory)'
-    Contents: '**'
+- ${{ if ne(parameters.publish, 'yes') }}:
+  - task: DeleteFiles@1
+    displayName: 'Delete files from $(build.binariesdirectory)'
+    inputs:
+      SourceFolder: '$(build.binariesdirectory)'
+      Contents: '**'
 
 - template: assembleAndCheck.yml
   parameters:
