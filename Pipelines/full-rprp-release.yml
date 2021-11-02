@@ -1,0 +1,96 @@
+#parameters:
+#- name: prefix
+#  type: string
+#  default: 
+#  values:
+#  - CP
+#  - RP
+#- name: solutionName
+#  type: string
+#  default: 
+#  values:
+#  - WebResources
+#  - OptionSets
+#  - Entities
+#  - SecurityRoles
+#  - Processes
+#  - Plugins
+#  - PluginSteps
+#  - Dashboards
+#  - ModelDrivenApps
+  
+trigger: none
+
+pool:
+  name: MOD Pool
+
+variables:
+- name: minor.version
+  value: 0
+- name: release.version
+  value: 0 
+- name: solution.prefix
+  value: ${{parameters.prefix}}
+- template: connectionStrings.yml
+
+name: $(Build.DefinitionName) - $(Build.BuildId) - ${{parameters.solutionName}}
+
+stages: 
+#----------------------------------Start Stage-------------------------------------------------------------------
+  - stage: AssembleRelease
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - job: Assemble
+      steps:
+      - template: assembleReleaseForBaseSolution.yml
+        parameters:
+          managed: Managed
+          minorversion : $(minor.version)
+          releaseversion : $(release.version)
+          solutionprefix : "RP"
+          appFolderName : "WebResources"
+      - template: assembleReleaseForBaseSolution.yml
+        parameters:
+          managed: Managed
+          minorversion : $(minor.version)
+          releaseversion : $(release.version)
+          solutionprefix : "RP"
+          appFolderName : "OptionSets"
+      - template: assembleReleaseForBaseSolution.yml
+        parameters:
+          managed: Managed
+          minorversion : $(minor.version)
+          releaseversion : $(release.version)
+          solutionprefix : "RP"
+          appFolderName : "Entities"
+      - template: assembleReleaseForBaseSolution.yml
+        parameters:
+          managed: Managed
+          minorversion : $(minor.version)
+          releaseversion : $(release.version)
+          solutionprefix : "RP"
+          appFolderName : "SecurityRoles"
+      - template: assembleReleaseForBaseSolution.yml
+        parameters:
+          managed: Managed
+          minorversion : $(minor.version)
+          releaseversion : $(release.version)
+          solutionprefix : "RP"
+          appFolderName : "Plugins"
+      - template: assembleReleaseForBaseSolution.yml
+        parameters:
+          managed: Managed
+          minorversion : $(minor.version)
+          releaseversion : $(release.version)
+          solutionprefix : "RP"
+          appFolderName : "PluginSteps"
+      - template: assembleReleaseForBaseSolution.yml
+        parameters:
+          managed: Managed
+          minorversion : $(minor.version)
+          releaseversion : $(release.version)
+          solutionprefix : "RP"
+          appFolderName : "ModelDrivenApps"
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#----------------------------------End Stage-------------------------------------------------------------------
