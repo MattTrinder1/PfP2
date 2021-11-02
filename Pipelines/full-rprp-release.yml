@@ -93,3 +93,35 @@ stages:
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #----------------------------------End Stage-------------------------------------------------------------------
+#----------------------------------Start Stage-------------------------------------------------------------------
+
+  - stage: ReleaseToTisskiPfPSystemTest
+    dependsOn: AssembleRelease
+    displayName: Release to Tisski PfP System Test
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: ReleaseToTisskiPfPSystemTest
+      environment: PfPSysTestAzure
+      displayName: Release To Tisski PfP SystemTest
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            
+            steps:
+            - ${{ each parameter in parameters }}:
+              - ${{ if contains(parameter.Key, 'SolutionName') }}:
+                - template: deployBaseSolution.yml
+                  parameters:
+                    minorversion : $(minor.version)
+                    releaseversion : $(release.version)
+                    solutionprefix : $(solution.prefix)
+                    solutionName: ${{parameter.Value}}
+                    connectionString: $(pfpsystemtest.connection.string)
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
+
