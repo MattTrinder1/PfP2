@@ -23,7 +23,11 @@ stages:
       displayName: Deploy Config Data
      # workspace:
      #   clean: all 
-      
+      variables:
+      - name: configExists
+      - name: currentConfigVersion  
+      - name: newConfigVersion  
+
       strategy:
         runOnce:
           deploy:
