@@ -98,6 +98,8 @@ stages:
           solutionprefix : "RP"
           appFolderName : "ModelDrivenApps"
           publish : "no"
+      - publish: '$(build.binariesdirectory)/RPRP'
+        artifact: CumbriaBuild-Managed-RPRP
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #----------------------------------End Stage-------------------------------------------------------------------
