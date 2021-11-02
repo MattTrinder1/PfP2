@@ -1,12 +1,4 @@
 parameters:
-- name: solutionName
-  type: string
-- name: solutionprefix
-  type: string
-- name: minorversion
-  type: string
-- name: releaseversion
-  type: string
 - name: connectionString
   type: string
 
@@ -19,7 +11,7 @@ steps:
 
 - task: MSCRMGetConfigurationRecord@12
   inputs:
-    crmConnectionString: $(pfpsystemtest.connection.string)
+    crmConnectionString: ${{parameters.connectionString}}
     entityName: 'cp_configdatahistory'
     lookupFieldName: 'cp_name'
     valueFieldName: 'cp_value'
@@ -34,14 +26,14 @@ steps:
 - task: MSCRMImportCMData@12
   displayName: Import Configuration Data
   inputs:
-    crmConnectionString: $(pfpsystemtest.connection.string)
+    crmConnectionString: ${{parameters.connectionString}}
     dataFile: $(Build.SourcesDirectory)/ConfigData/CumbriaRPRP.zip
   condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
 
 
 - task: MSCRMUpdateConfigurationRecords@12
   inputs:
-    crmConnectionString: '$(pfpsystemtest.connection.string)'
+    crmConnectionString: ${{parameters.connectionString}}
     entityName: 'cp_configdatahistory'
     lookupFieldName: 'cp_name'
     valueFieldName: 'cp_value'
