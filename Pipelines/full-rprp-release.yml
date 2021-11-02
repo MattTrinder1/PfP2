@@ -185,6 +185,26 @@ stages:
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: DeployConfigDataToCumbriaUAT
+      environment: CumbriaUAT
+      displayName: Deploy Config Data To Cumbria UAT
+     # workspace:
+     #   clean: all 
+      variables:
+      - name: configExists
+      - name: currentConfigVersion  
+      - name: newConfigVersion  
+
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - template : config-data-template.yml
+                parameters :
+                  connectionString: $(Cumbriapfpuat.connection.string)
+              
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #----------------------------------End Stage-------------------------------------------------------------------
 #----------------------------------Start Stage-------------------------------------------------------------------
@@ -221,5 +241,24 @@ stages:
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: DeployConfigDataToTisskiPfPUAT
+      environment: PfPUAT
+      displayName: Deploy Config Data To Tisski PfP UAT
+     # workspace:
+     #   clean: all 
+      variables:
+      - name: configExists
+      - name: currentConfigVersion  
+      - name: newConfigVersion  
 
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - template : config-data-template.yml
+                parameters :
+                  connectionString: $(Tisskipfpuat.connection.string)
+              
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #----------------------------------End Stage-------------------------------------------------------------------
