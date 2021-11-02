@@ -2,6 +2,11 @@ parameters:
 - name: connectionString
   type: string
 
+variables:
+- name: configExists
+- name: currentConfigVersion  
+- name: newConfigVersion  
+
 steps:
     
 - task: MSCRMToolInstaller@12
