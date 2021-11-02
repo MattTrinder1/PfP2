@@ -12,7 +12,9 @@ parameters:
   type: string
 - name: appFolderName
   type: string
-
+- name: publish
+  type: string
+  default: "yes"
 
 steps:
 - task: NuGetToolInstaller@1
@@ -37,6 +39,7 @@ steps:
     releaseversion: ${{parameters.releaseversion}}
 
 
-- publish: '$(build.binariesdirectory)/SystemTest'
-  artifact: CumbriaBuild-${{parameters.managed}}-${{parameters.appFolderName}}
+- ${{ if eq(parameters.publish, 'yes') }}:
+  - publish: '$(build.binariesdirectory)/SystemTest'
+    artifact: CumbriaBuild-${{parameters.managed}}-${{parameters.appFolderName}}
 
