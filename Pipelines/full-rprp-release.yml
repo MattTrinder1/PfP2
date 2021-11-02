@@ -112,6 +112,8 @@ stages:
             steps:
             
             - checkout: none
+            - task: MSCRMToolInstaller@9
+              displayName: 'MSCRM Tool Installer'
             
             - ${{ each parameter in parameters }}:
               - ${{ if contains(parameter.Key, 'SolutionName') }}:
