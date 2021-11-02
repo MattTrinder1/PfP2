@@ -11,12 +11,6 @@ parameters:
   type: string
 
 steps:
-#- checkout: none
-
-- task: MSCRMToolInstaller@12
-  inputs:
-    nugetFeed: 'official'
-    psFeed: 'official'   
     
 - template: get-solution-filenames.yml
   parameters:
