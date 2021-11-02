@@ -58,12 +58,10 @@ stages:
           Contents: '**'
 
       - ${{ each parameter in parameters }}:
-        - script: echo ${{ parameter.Key }} 
-        - script: echo ${{ parameter.Value }}
-        - ${{ if contains(parameter.Value, 'SolutionName') }}:
+        - ${{ if contains(parameter.Key, 'SolutionName') }}:
           - template: assembleAndCheck.yml
             parameters:
-              solutionName: WebResources
+              solutionName: ${{parameter.Value}}
               folderNames: CanvasApps,Other
               managed: Managed
               solutionprefix: $(solution.prefix)
