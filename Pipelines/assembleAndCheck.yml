@@ -26,14 +26,14 @@ steps:
               Write-Host "##vso[task.setvariable variable=GeneratedSolutionFileName]$GeneratedSolutionFileName"
 
 
-  - task: CopyFiles@2
-    displayName: Copy to Live folder
-    inputs:
-      sourceFolder: '$(Build.BinariesDirectory)'
-      contents: '$(GeneratedSolutionFileName)' 
-      targetFolder: '$(Build.BinariesDirectory)\Live'
-      overWrite: true 
-      flattenFolders: true
+ # - task: CopyFiles@2
+ #   displayName: Copy to Live folder
+ #   inputs:
+ #     sourceFolder: '$(Build.BinariesDirectory)'
+ #     contents: '$(GeneratedSolutionFileName)' 
+ #     targetFolder: '$(Build.BinariesDirectory)\Live'
+ #     overWrite: true 
+ #     flattenFolders: true
 
   - task: CopyFiles@2
     inputs:
@@ -44,14 +44,14 @@ steps:
       overWrite: true 
       flattenFolders: true
 
-  - task: CopyFiles@2
-    displayName: Copy to UAT folder
-    inputs:
-      sourceFolder: '$(Build.BinariesDirectory)'
-      contents: '$(GeneratedSolutionFileName)' 
-      targetFolder: '$(Build.BinariesDirectory)\UAT'
-      overWrite: true 
-      flattenFolders: true
+ # - task: CopyFiles@2
+ #   displayName: Copy to UAT folder
+ #   inputs:
+ #     sourceFolder: '$(Build.BinariesDirectory)'
+ #     contents: '$(GeneratedSolutionFileName)' 
+ #     targetFolder: '$(Build.BinariesDirectory)\UAT'
+ #     overWrite: true 
+ #     flattenFolders: true
 
 
   #- task: Dynamics Solution Checker@0
