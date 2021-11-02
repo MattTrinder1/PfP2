@@ -90,14 +90,14 @@ stages:
 
 #----------------------------------Start Stage-------------------------------------------------------------------
 
-  - stage: ReleaseToUAT
+  - stage: ReleaseToTisskiUAT
     dependsOn: ReleaseToPfPSystemTest
-    displayName: Deploy PfP UAT
+    displayName: Release to Tisski UAT
     jobs:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    - deployment: ReleaseToPfPUAT
+    - deployment: ReleaseToTisskiUAT
       environment: PfPUATAzure
-      displayName: Deploy Solutions
+      displayName: Release to Tisski UAT
       workspace:
         clean: all 
       strategy:
@@ -111,11 +111,41 @@ stages:
                 releaseversion : $(release.version)
                 solutionprefix : $(solution.prefix)
                 solutionName: ${{parameters.solutionName}}
-                connectionString: $(${{parameters.customer}}pfpuat.connection.string)
+                connectionString: $(Tisskipfpuat.connection.string)
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #----------------------------------End Stage-------------------------------------------------------------------
 
+
+#----------------------------------Start Stage-------------------------------------------------------------------
+
+  - stage: ReleaseToCumbriaUAT
+    dependsOn: ReleaseToPfPSystemTest
+    displayName: Release to Cumbria UAT
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: ReleaseToCumbriaUAT
+      environment: PfPUATAzure
+      displayName: Release to Cumbria UAT
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            
+            steps:
+            - template: deployBaseSolution.yml
+              parameters:
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
+                solutionName: ${{parameters.solutionName}}
+                connectionString: $(Cumbriapfpuat.connection.string)
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
 
