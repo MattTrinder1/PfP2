@@ -130,6 +130,7 @@ stages:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     - deployment: DeployConfigDataToSystemTest
+      dependsOn: ReleaseToTisskiPfPSystemTest
       environment: PfPSystemTest
       displayName: Deploy Config Data
      # workspace:
@@ -187,6 +188,7 @@ stages:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     - deployment: DeployConfigDataToCumbriaUAT
+      dependsOn: ReleaseToCumbriaUAT
       environment: CumbriaUAT
       displayName: Deploy Config Data To Cumbria UAT
      # workspace:
@@ -243,6 +245,7 @@ stages:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     - deployment: DeployConfigDataToTisskiPfPUAT
+      dependsOn: ReleaseToTisskiPfPUAT
       environment: PfPUAT
       displayName: Deploy Config Data To Tisski PfP UAT
      # workspace:
