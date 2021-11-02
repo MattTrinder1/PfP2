@@ -9,6 +9,8 @@ variables:
 
 steps:
     
+- checkout: self
+
 - task: MSCRMToolInstaller@12
   inputs:
     nugetFeed: 'official'
