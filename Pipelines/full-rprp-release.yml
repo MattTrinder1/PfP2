@@ -1,7 +1,10 @@
 parameters:
-- name: prefix
+- name: WebResourcesSolutionName
   type: string
-  default: Wibble
+  default: WebResources
+- name: OptionSetsSolutionName
+  type: string
+  default: OptionSets
 #  values:
 #  - CP
 #  - RP
@@ -54,77 +57,17 @@ stages:
           SourceFolder: '$(build.binariesdirectory)'
           Contents: '**'
 
-      - template: assembleAndCheck.yml
-        parameters:
-          solutionName: WebResources
-          folderNames: CanvasApps,Other
-          managed: Managed
-          solutionprefix: $(solution.prefix)
-          minorversion: $(minor.version)
-          releaseversion: $(release.version)
+      - ${{ each parameter in parameters }}:
+        - ${{ if contains(parameter.Value, 'SolutionName') }}:
+          - template: assembleAndCheck.yml
+            parameters:
+              solutionName: WebResources
+              folderNames: CanvasApps,Other
+              managed: Managed
+              solutionprefix: $(solution.prefix)
+              minorversion: $(minor.version)
+              releaseversion: $(release.version)
 
-      - template: assembleAndCheck.yml
-        parameters:
-          solutionName: OptionSets
-          folderNames: CanvasApps,Other
-          managed: Managed
-          solutionprefix: $(solution.prefix)
-          minorversion: $(minor.version)
-          releaseversion: $(release.version)
-
-      - template: assembleAndCheck.yml
-        parameters:
-          solutionName: Entities
-          folderNames: CanvasApps,Other
-          managed: Managed
-          solutionprefix: $(solution.prefix)
-          minorversion: $(minor.version)
-          releaseversion: $(release.version)
-
-      - template: assembleAndCheck.yml
-        parameters:
-          solutionName: SecurityRoles
-          folderNames: CanvasApps,Other
-          managed: Managed
-          solutionprefix: $(solution.prefix)
-          minorversion: $(minor.version)
-          releaseversion: $(release.version)
-
-      - template: assembleAndCheck.yml
-        parameters:
-          solutionName: Processes
-          folderNames: CanvasApps,Other
-          managed: Managed
-          solutionprefix: $(solution.prefix)
-          minorversion: $(minor.version)
-          releaseversion: $(release.version)
-
-      - template: assembleAndCheck.yml
-        parameters:
-          solutionName: Plugins
-          folderNames: CanvasApps,Other
-          managed: Managed
-          solutionprefix: $(solution.prefix)
-          minorversion: $(minor.version)
-          releaseversion: $(release.version)
-
-      - template: assembleAndCheck.yml
-        parameters:
-          solutionName: PluginSteps
-          folderNames: CanvasApps,Other
-          managed: Managed
-          solutionprefix: $(solution.prefix)
-          minorversion: $(minor.version)
-          releaseversion: $(release.version)
-
-      - template: assembleAndCheck.yml
-        parameters:
-          solutionName: ModelDrivenApps
-          folderNames: CanvasApps,Other
-          managed: Managed
-          solutionprefix: $(solution.prefix)
-          minorversion: $(minor.version)
-          releaseversion: $(release.version)
 
       - publish: '$(build.binariesdirectory)/SystemTest'
         artifact: CumbriaBuild-Managed-RPRP
