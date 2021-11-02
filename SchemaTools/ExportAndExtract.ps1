@@ -16,7 +16,9 @@ $solutionName = $prefix + $folderName
 
 $folderName = "../Schema/" + $folderName + $prefix
 
-$connString = "RequireNewInstance=True;AuthType=ClientSecret;ClientId=83af4fce-10c3-4409-a43d-d67e300424aa;ClientSecret=H.ARok4~mmJl_lfU~nfE9JqE.7pUE26u.t;Url=https://policeproductdev.crm11.dynamics.com"
+#$connString = "RequireNewInstance=True;AuthType=ClientSecret;ClientId=83af4fce-10c3-4409-a43d-d67e300424aa;ClientSecret=H.ARok4~mmJl_lfU~nfE9JqE.7pUE26u.t;Url=https://policeproductdev.crm11.dynamics.com"
+$connString = "RequireNewInstance=True;AuthType=OAuth;UserName=pfp.service@tisski.com;Password=Direct.Drop.Bribe.Earn.2;Url=https://policeproductdev.crm11.dynamics.com;AppId=83af4fce-10c3-4409-a43d-d67e300424aa;RedirectUri=app://83af4fce-10c3-4409-a43d-d67e300424aa;LoginPrompt=Never"
+
 
 if (!$skipExport)
 {
