@@ -27,16 +27,7 @@ stages:
       strategy:
         runOnce:
           deploy:
-      
-
             steps:
-              - checkout: self
-              
-              - task: MSCRMToolInstaller@12
-                inputs:
-                  nugetFeed: 'official'
-                  psFeed: 'official'   
-
               - template : config-data-template.yml
                 parameters :
                   connectionString: $(pfpsystemtest.connection.string)
