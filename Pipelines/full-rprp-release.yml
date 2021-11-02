@@ -42,62 +42,39 @@ stages:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     - job: Assemble
       steps:
-      - template: assembleReleaseForBaseSolution.yml
+      - task: NuGetToolInstaller@1
+        displayName: 'Use NuGet '
+
+      - task: MSCRMToolInstaller@9
+        displayName: 'MSCRM Tool Installer'
+
+      - template: assembleAndCheck.yml
         parameters:
+          solutionName: WebResources
+          folderNames: CanvasApps,Other
           managed: Managed
-          minorversion : $(minor.version)
-          releaseversion : $(release.version)
-          solutionprefix : "RP"
-          appFolderName : "WebResources"
-          publish : "no"
-      - template: assembleReleaseForBaseSolution.yml
+          solutionprefix: $(solution.prefix)
+          minorversion: $(minor.version)
+          releaseversion: $(release.version)
+
+      - template: assembleAndCheck.yml
         parameters:
+          solutionName: OptionSets
+          folderNames: CanvasApps,Other
           managed: Managed
-          minorversion : $(minor.version)
-          releaseversion : $(release.version)
-          solutionprefix : "RP"
-          appFolderName : "OptionSets"
-          publish : "no"
-      - template: assembleReleaseForBaseSolution.yml
+          solutionprefix: $(solution.prefix)
+          minorversion: $(minor.version)
+          releaseversion: $(release.version)
+
+      - template: assembleAndCheck.yml
         parameters:
+          solutionName: Entities
+          folderNames: CanvasApps,Other
           managed: Managed
-          minorversion : $(minor.version)
-          releaseversion : $(release.version)
-          solutionprefix : "RP"
-          appFolderName : "Entities"
-          publish : "no"
-      - template: assembleReleaseForBaseSolution.yml
-        parameters:
-          managed: Managed
-          minorversion : $(minor.version)
-          releaseversion : $(release.version)
-          solutionprefix : "RP"
-          appFolderName : "SecurityRoles"
-          publish : "no"
-      - template: assembleReleaseForBaseSolution.yml
-        parameters:
-          managed: Managed
-          minorversion : $(minor.version)
-          releaseversion : $(release.version)
-          solutionprefix : "RP"
-          appFolderName : "Plugins"
-          publish : "no"
-      - template: assembleReleaseForBaseSolution.yml
-        parameters:
-          managed: Managed
-          minorversion : $(minor.version)
-          releaseversion : $(release.version)
-          solutionprefix : "RP"
-          appFolderName : "PluginSteps"
-          publish : "no"
-      - template: assembleReleaseForBaseSolution.yml
-        parameters:
-          managed: Managed
-          minorversion : $(minor.version)
-          releaseversion : $(release.version)
-          solutionprefix : "RP"
-          appFolderName : "ModelDrivenApps"
-          publish : "no"
+          solutionprefix: $(solution.prefix)
+          minorversion: $(minor.version)
+          releaseversion: $(release.version)
+
       - publish: '$(build.binariesdirectory)/SystemTest'
         artifact: CumbriaBuild-Managed-RPRP
 
