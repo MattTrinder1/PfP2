@@ -28,6 +28,11 @@ function notifyParticipantEnabled(formContext) {
         formContext.getAttribute("cp_notifyparticipant").getValue() == null);
 }
 
+function notifyEnabled(formContext) {
+    debugger;
+    return (notifyReviewerEnabled(formContext) || notifyParticipantEnabled(formContext));
+}
+
 function scheduleMeetingEnabled(formContext) {   
     return (
         !currentUserIsParticipant(formContext) &&
