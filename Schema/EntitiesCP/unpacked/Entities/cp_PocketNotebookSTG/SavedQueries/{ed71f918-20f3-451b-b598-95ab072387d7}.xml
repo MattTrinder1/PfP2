@@ -1,0 +1,45 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{ed71f918-20f3-451b-b598-95ab072387d7}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cp_incidentnumber" select="1" icon="1" preview="1">
+        <row name="result" id="cp_pocketnotebookstgid">
+          <cell name="cp_incidentnumber" width="161" />
+          <cell name="cp_incidentsuffix" width="127" />
+          <cell name="cp_incidentdate" width="141" />
+          <cell name="cp_enteredby" width="145" />
+          <cell name="cp_stagingentrystatus" width="159" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cp_pocketnotebookstg">
+          <attribute name="cp_pocketnotebookstgid" />
+          <attribute name="cp_incidentnumber" />
+          <attribute name="createdon" />
+          <order attribute="cp_incidentnumber" descending="false" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="cp_enteredby" />
+          <attribute name="cp_incidentdate" />
+          <attribute name="cp_incidentsuffix" />
+          <attribute name="cp_stagingentrystatus" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Pocket Notebook STGS" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

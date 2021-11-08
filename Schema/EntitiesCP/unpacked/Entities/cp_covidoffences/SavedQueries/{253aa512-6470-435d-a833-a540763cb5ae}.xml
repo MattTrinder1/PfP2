@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{253aa512-6470-435d-a833-a540763cb5ae}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cp_offencecode" select="1" icon="1" preview="1">
+        <row name="result" id="cp_covidoffencesid">
+          <cell name="cp_offencecode" width="169" />
+          <cell name="cp_offencedescription" width="300" />
+          <cell name="cp_offenceact" width="300" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cp_covidoffences">
+          <attribute name="cp_covidoffencesid" />
+          <attribute name="cp_offencecode" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="cp_offencedescription" />
+          <attribute name="cp_offenceact" />
+          <order attribute="cp_offenceact" descending="false" />
+          <order attribute="cp_offencecode" descending="false" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Covid Offences" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

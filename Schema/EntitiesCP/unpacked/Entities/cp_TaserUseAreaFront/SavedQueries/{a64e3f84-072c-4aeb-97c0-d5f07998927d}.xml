@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{a64e3f84-072c-4aeb-97c0-d5f07998927d}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cp_areaname" select="1" icon="1" preview="1">
+        <row name="result" id="cp_taseruseareafrontid">
+          <cell name="cp_areaname" width="300" />
+          <cell name="cp_displaysequenceno" width="100" />
+          <cell name="cp_alternativedisplayname" width="100" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cp_taseruseareafront">
+          <attribute name="cp_taseruseareafrontid" />
+          <attribute name="cp_areaname" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="cp_displaysequenceno" />
+          <attribute name="cp_alternativedisplayname" />
+          <order attribute="cp_displaysequenceno" descending="false" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Taser Use Area Fronts" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

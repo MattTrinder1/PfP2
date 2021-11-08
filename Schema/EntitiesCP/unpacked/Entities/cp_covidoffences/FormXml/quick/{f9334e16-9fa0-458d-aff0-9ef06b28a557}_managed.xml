@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{f9334e16-9fa0-458d-aff0-9ef06b28a557}</formid>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form>
+      <tabs>
+        <tab verticallayout="true" id="{7dd43043-40dd-4bac-bb2d-e04f729b8fdc}" IsUserDefined="1">
+          <labels>
+            <label description="" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{ebcde0fd-84da-4771-aa39-c0ee58cbb6fb}">
+                  <labels>
+                    <label description="GENERAL" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{d5017f5f-4d06-4c32-a732-60c00eb4a480}">
+                        <labels>
+                          <label description="Offence Code" languagecode="1033" />
+                        </labels>
+                        <control id="cp_offencecode" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="cp_offencecode" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{97a5b500-6e22-4e61-96c3-758041991375}" locklevel="0">
+                        <labels>
+                          <label description="Offence Act" languagecode="1033" />
+                        </labels>
+                        <control id="cp_offenceact" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_offenceact" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{8618f52d-fef5-43d2-98eb-d4da7f01cbdc}" locklevel="0">
+                        <labels>
+                          <label description="Offence Description" languagecode="1033" />
+                        </labels>
+                        <control id="cp_offencedescription" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_offencedescription" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{9b9556f9-95d2-4a2d-8cff-8b5542e87ced}" visible="false">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <DisplayConditions Order="0" FallbackForm="true">
+        <Everyone />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Information" languagecode="1033" />
+    </LocalizedNames>
+  </systemform>
+</forms>

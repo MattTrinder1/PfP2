@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{7e601177-3224-4a58-b35d-4d57ef853979}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cp_contactrole" select="1" icon="1" preview="1">
+        <row name="result" id="cp_suddendeathinvolvedcontactstgid">
+          <cell name="cp_contactrole" width="300" />
+          <cell name="cp_firstname" width="100" />
+          <cell name="cp_lastname" width="100" />
+          <cell name="cp_contacttitle" width="100" />
+          <cell name="cp_gender" width="100" />
+          <cell name="cp_retired" width="100" />
+          <cell name="cp_bodylabel" width="100" />
+          <cell name="cp_relationshiptodeceased" width="100" />
+          <cell name="cp_relationshiptodeceasedduration" width="100" />
+          <cell name="cp_stagingentrystatus" width="100" />
+          <cell name="cp_maritalstatus" width="100" />
+          <cell name="createdon" width="100" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cp_suddendeathinvolvedcontactstg">
+          <attribute name="cp_contactrole" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="cp_firstname" />
+          <attribute name="cp_lastname" />
+          <attribute name="cp_relationshiptodeceased" />
+          <attribute name="cp_relationshiptodeceasedduration" />
+          <attribute name="cp_stagingentrystatus" />
+          <attribute name="cp_retired" />
+          <attribute name="cp_contacttitle" />
+          <attribute name="cp_bodylabel" />
+          <attribute name="cp_gender" />
+          <attribute name="cp_suddendeathinvolvedcontactstgid" />
+          <attribute name="cp_maritalstatus" />
+          <attribute name="createdon" />
+          <order attribute="createdon" descending="true" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Sudden Death Involved Contacts STG" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

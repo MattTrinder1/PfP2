@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{8768549e-b184-eb11-a812-000d3ab52ab6}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cp_name" select="1" icon="1" preview="1">
+        <row name="result" id="cp_lookupvalueid">
+          <cell name="cp_name" width="200" />
+          <cell name="cp_displaysequenceno" width="100" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical">
+        <entity name="cp_lookupvalue">
+          <attribute name="cp_name" />
+          <attribute name="cp_lookupvalueid" />
+          <attribute name="cp_displaysequenceno" />
+          <filter type="and">
+            <condition attribute="cp_lookupfield" operator="eq" value="{d5c1356c-cc5f-eb11-89f5-000d3a654276}" uiname="Country" uitype="cp_lookupfield" />
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <order attribute="cp_displaysequenceno" descending="false" />
+          <order attribute="cp_name" descending="true" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Countries" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{de7419c8-7e60-eb11-a812-0022489c79d7}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cp_incidentnumber" select="1" icon="1" preview="1">
+        <row name="result" id="cp_incidentid">
+          <cell name="cp_incidentnumber" width="200" />
+          <cell name="cp_incidentsuffix" width="100" />
+          <cell name="cp_incidentdate" width="100" />
+          <cell name="cp_incidenttype" width="100" />
+          <cell name="cp_enteredby" width="100" />
+          <cell name="cp_reportingofficer" width="100" />
+          <cell name="cp_singleofficerevent" width="100" />
+          <cell name="cp_additionalofficer" width="100" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical">
+        <entity name="cp_incident">
+          <attribute name="cp_incidentnumber" />
+          <attribute name="cp_incidentid" />
+          <attribute name="cp_incidentsuffix" />
+          <attribute name="cp_incidentdate" />
+          <attribute name="cp_enteredby" />
+          <attribute name="cp_additionalofficer" />
+          <attribute name="cp_reportingofficer" />
+          <order attribute="cp_incidentdate" descending="false" />
+          <filter type="and">
+            <condition attribute="cp_incidenttype" operator="eq" value="{52d6cd9c-8855-eb11-a812-000d3a654f72}" uiname="Sudden Death" uitype="cp_incidenttype" />
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="cp_singleofficerevent" />
+          <attribute name="cp_incidenttype" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Sudden Death Active Incidents" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

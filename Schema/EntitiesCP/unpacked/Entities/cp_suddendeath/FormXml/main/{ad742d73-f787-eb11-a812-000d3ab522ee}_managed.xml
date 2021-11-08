@@ -1,0 +1,500 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<forms xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <systemform>
+    <formid>{ad742d73-f787-eb11-a812-000d3ab522ee}</formid>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <FormPresentation>1</FormPresentation>
+    <FormActivationState>1</FormActivationState>
+    <form headerdensity="HighWithControls">
+      <tabs>
+        <tab verticallayout="true" id="{dc3fa960-1b90-424c-b1b1-03b65892f2a5}" IsUserDefined="1" name="cnc" labelid="{860e1b0f-45b8-4e5c-9f0c-a411e5e5f8c3}">
+          <labels>
+            <label description="Sudden Death Details" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{d8f87145-a64c-4fb2-840c-346e24f2e829}" columns="11" labelid="{9fab9f90-7750-47d3-a0f7-1dfff440f7eb}" name="main_tab">
+                  <labels>
+                    <label description="General" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{ce5a514e-7daa-4e7b-96c7-863d90f6d015}" locklevel="0" labelid="{b8088ab8-0682-4de4-9f43-d1b69aab16cd}" showlabel="true" visible="false">
+                        <labels>
+                          <label description="Incident" languagecode="1033" />
+                        </labels>
+                        <control id="cp_incident" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_incident" disabled="false">
+                          <parameters>
+                            <DisableViewPicker>true</DisableViewPicker>
+                            <DefaultViewId>{DE7419C8-7E60-EB11-A812-0022489C79D7}</DefaultViewId>
+                            <AvailableViewIds>{FA452B87-EB7A-42DC-961F-DA1A90996A17},{4476BF37-4DA1-4724-BA18-6989C9B6D667},{7088FD97-8FE3-4C6B-905E-09F8B2D98D44},{DE7419C8-7E60-EB11-A812-0022489C79D7},{777A408A-CC58-EB11-A812-000D3A654F72}</AvailableViewIds>
+                            <useMainFormDialogForCreate>true</useMainFormDialogForCreate>
+                          </parameters>
+                        </control>
+                      </cell>
+                      <cell id="{d5cd2ffb-6fdd-47de-9fd7-eb52199d1543}" locklevel="0" labelid="{3dda4930-8e51-4bc4-a00b-203702aea9c8}" visible="false">
+                        <labels>
+                          <label description="Place of Death" languagecode="1033" />
+                        </labels>
+                        <control id="cp_placeofdeath" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_placeofdeath" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{2448af84-4788-4b16-824b-d2111e8ca594}" labelid="{a6510218-7bce-4fd0-be29-d0e6f1142884}">
+                        <labels>
+                          <label description="Name" languagecode="1033" />
+                        </labels>
+                        <control id="cp_name" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="cp_name" disabled="true" />
+                      </cell>
+                      <cell id="{68295bb2-facf-4dd4-9854-04a2864dee24}" locklevel="0" labelid="{51e96bd0-983a-4c24-8403-49a8c8d9c4cb}" visible="false">
+                        <labels>
+                          <label description="Datetime Body Found" languagecode="1033" />
+                        </labels>
+                        <control id="cp_datetimebodyfound" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="cp_datetimebodyfound" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{2e47573f-c3b4-46e8-b82a-c0c65cdc0c67}" locklevel="0" labelid="{cda3dabd-9b40-497c-a932-8ddff1b2c8f9}">
+                        <labels>
+                          <label description="Deceased" languagecode="1033" />
+                        </labels>
+                        <control id="cp_deceased" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_deceased" disabled="false">
+                          <parameters>
+                            <useMainFormDialogForEdit>true</useMainFormDialogForEdit>
+                            <useMainFormDialogForCreate>true</useMainFormDialogForCreate>
+                            <DisableViewPicker>true</DisableViewPicker>
+                          </parameters>
+                        </control>
+                      </cell>
+                      <cell id="{747377be-2924-42ea-9fcc-dffc866c9e4a}" locklevel="0" labelid="{6f21ad35-7858-4ebc-9eca-b806f965b6ba}" visible="false">
+                        <labels>
+                          <label description="Datetime Death Confirmed" languagecode="1033" />
+                        </labels>
+                        <control id="cp_datetimedeathconfirmed" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="cp_datetimedeathconfirmed" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{81feffcb-784e-4d7f-b031-12207eccd834}" locklevel="0" labelid="{2a677602-9d5e-415e-8f31-2955c7b82216}">
+                        <labels>
+                          <label description="Body Label" languagecode="1033" />
+                        </labels>
+                        <control id="cp_bodylabel" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_bodylabel" disabled="false" />
+                      </cell>
+                      <cell id="{44433d77-51cf-455e-90b6-fd346a62406c}" locklevel="0" labelid="{66fb44c4-c17d-434f-9cf9-07b6d9ebf2a8}" visible="false">
+                        <labels>
+                          <label description="Death Diagnosed By" languagecode="1033" />
+                        </labels>
+                        <control id="cp_deathdiagnosedby" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_deathdiagnosedby" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{89ccba4b-5892-48f8-b292-9bd6ae82ff83}" locklevel="0">
+                        <labels>
+                          <label description="Spouce" languagecode="1033" />
+                        </labels>
+                        <control id="cp_spouce" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_spouce" disabled="false">
+                          <parameters>
+                            <useMainFormDialogForCreate>true</useMainFormDialogForCreate>
+                            <useMainFormDialogForEdit>true</useMainFormDialogForEdit>
+                            <DisableViewPicker>true</DisableViewPicker>
+                          </parameters>
+                        </control>
+                      </cell>
+                      <cell id="{a0bf384f-09d0-4633-9d58-33b60b955e1c}" locklevel="0" labelid="{497e4c98-3f9e-4652-9805-d2006eab068d}" visible="false">
+                        <labels>
+                          <label description="Undertaker Removing Body" languagecode="1033" />
+                        </labels>
+                        <control id="cp_undertakerremovebody" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="cp_undertakerremovebody" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{168a65df-4f51-464a-94b5-7ab152f2e0c8}" labelid="{2f3cbd92-d05b-4167-abe3-1414d04b171f}" showlabel="true" visible="false">
+                        <labels>
+                          <label description="Owner" languagecode="1033" />
+                        </labels>
+                        <control id="ownerid" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="ownerid" />
+                      </cell>
+                      <cell id="{1aea9c6c-213c-422b-b3ce-5ce1bc478735}" locklevel="0" labelid="{789e0aec-7e5a-42e9-b9a6-3ee2c0d1d0aa}" visible="false">
+                        <labels>
+                          <label description="Next of Kin Informed" languagecode="1033" />
+                        </labels>
+                        <control id="cp_nextofkininformed" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="cp_nextofkininformed" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{93d85f28-e8d8-48b3-b97f-5182a4f3d271}" locklevel="0" labelid="{480698ac-77af-4677-b758-e309f917dc62}" showlabel="false" visible="false">
+                        <labels>
+                          <label description="Status" languagecode="1033" />
+                        </labels>
+                        <control id="statecode" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="statecode" disabled="false" />
+                      </cell>
+                      <cell id="{89a2ae2e-72ae-49e3-84c2-8ed9e2142c79}" locklevel="0" labelid="{f3512f59-b2e0-4696-86fe-679ded243f3a}" visible="false">
+                        <labels>
+                          <label description="Formal Identification" languagecode="1033" />
+                        </labels>
+                        <control id="cp_formalidentification" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="cp_formalidentification" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{6c3ef6dd-6327-4c6e-b47b-50cbbc37be8e}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                      <cell id="{b2722af4-017f-413f-807d-c576e6fedb2d}" locklevel="0" labelid="{55d3e5b0-f74e-41c8-a75a-cba422840fbc}">
+                        <labels>
+                          <label description="Identified By" languagecode="1033" />
+                        </labels>
+                        <control id="cp_identifiedby" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_identifiedby" disabled="false">
+                          <parameters>
+                            <useMainFormDialogForEdit>true</useMainFormDialogForEdit>
+                            <useMainFormDialogForCreate>true</useMainFormDialogForCreate>
+                            <DisableViewPicker>true</DisableViewPicker>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{d0ee85f0-2d16-4076-9738-171bf3a60ff9}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                      <cell id="{1a42314b-d557-4796-9dec-be15c0bd9306}" locklevel="0" labelid="{d3ca3c9d-bca1-4589-8d8a-a3de459e1316}">
+                        <labels>
+                          <label description="Identification Signature" languagecode="1033" />
+                        </labels>
+                        <control id="cp_identificationsignature" classid="{7E548B0D-209C-477B-9DCD-F0F44472381D}" datafieldname="cp_identificationsignature" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{db51ad01-1f86-407f-a959-c242a153e0f2}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                      <cell id="{ff8acbce-5214-4a9d-a409-e7400e8d1faf}" locklevel="0" labelid="{e9c37a4c-d779-44f8-bdfa-ef0e43e39ce1}">
+                        <labels>
+                          <label description="Identification Signed On" languagecode="1033" />
+                        </labels>
+                        <control id="cp_identificationsignedon" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="cp_identificationsignedon" disabled="false" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="cnc_section_3" id="0272c959-a92c-42a3-9918-f5dfd6bd31ad" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="11" labelwidth="115" labelid="{63c31f0f-41f9-45ee-848a-521b54392c64}" visible="false">
+                  <labels>
+                    <label description="Circumstances" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell id="{9919c397-474c-48f2-9743-49d2e71e74cf}" locklevel="0" rowspan="3" labelid="{8d2d8b83-bf01-4cf3-b0cb-5500cdb41f75}">
+                        <labels>
+                          <label description="Circumstances" languagecode="1033" />
+                        </labels>
+                        <control id="cp_circumstances" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="cp_circumstances" disabled="false" />
+                      </cell>
+                      <cell id="{91a85a7d-dadc-4526-8682-c9641a984400}" locklevel="0" labelid="{d5c5f510-9229-4f33-82bb-bb5b4cd4a0e1}">
+                        <labels>
+                          <label description="Body Physical Position" languagecode="1033" />
+                        </labels>
+                        <control id="cp_bodyphysicalposition" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="cp_bodyphysicalposition" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{5dfa2944-61dd-49dc-a02d-e6418ea1b490}" locklevel="0" labelid="{125438e4-5e7c-4d24-a428-8c055e95dece}">
+                        <labels>
+                          <label description="Body Found By" languagecode="1033" />
+                        </labels>
+                        <control id="cp_bodyfoundby" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_bodyfoundby" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{0dea1456-3aa2-4f7d-8ad1-44de3cd0b0cb}" locklevel="0" labelid="{cf36cb5b-4176-49f3-9121-003a45429687}">
+                        <labels>
+                          <label description="Mark Or Bruises" languagecode="1033" />
+                        </labels>
+                        <control id="cp_markbruises" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="cp_markbruises" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{73a2db17-b022-4e5b-b395-08f26ec86261}" locklevel="0" labelid="{6ca1ca16-6ad8-4dca-9b78-5229259a2096}">
+                        <labels>
+                          <label description="House Secure" languagecode="1033" />
+                        </labels>
+                        <control id="cp_housesecure" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_housesecure" disabled="false">
+                          <parameters>
+                            <DisableViewPicker>true</DisableViewPicker>
+                            <DefaultViewId>{925419FF-5E61-EB11-A812-0022489C79D7}</DefaultViewId>
+                            <AvailableViewIds>{98C9EF77-661B-40BD-96EE-07219F646518},{C593B792-1460-EB11-A812-0022489C7676},{3A9EA607-1360-EB11-A812-0022489C7676},{A3539D66-1460-EB11-A812-0022489C7676},{640F218B-1260-EB11-A812-0022489C79D7},{59E0AE13-E05F-EB11-A812-0022489C7676},{1BD06E48-E15F-EB11-A812-0022489C7676},{31015329-E15F-EB11-A812-0022489C7676},{A89CEB7D-FB38-4553-AC4C-05131A8C1D8E},{59ACB3D7-1260-EB11-A812-0022489C7676},{01D3344E-1460-EB11-A812-0022489C7676},{9117323B-1460-EB11-A812-0022489C7676},{3DCE2442-E2F0-4DB3-B452-AAE4F671E621},{3E00B7AD-1260-EB11-A812-0022489C7676},{DB04508E-DE5F-EB11-A812-0022489C7676},{0F3EFF22-1460-EB11-A812-0022489C7676},{3821C329-1260-EB11-A812-0022489C7676},{19985683-355B-EB11-A812-000D3A654F72},{7E70B7A4-1460-EB11-A812-0022489C7676},{A295F5B8-E45F-EB11-A812-0022489C79D7},{2880CBDA-E65F-EB11-A812-0022489C79D7},{A53BEDD5-1160-EB11-A812-0022489C7676},{0C68BA93-1160-EB11-A812-0022489C7676},{FFCB0C0E-1160-EB11-A812-0022489C7676},{7BFB745B-1160-EB11-A812-0022489C79D7},{E5D8B56F-1160-EB11-A812-0022489C7676},{9822EFB7-1160-EB11-A812-0022489C7676},{3EFB640A-1460-EB11-A812-0022489C7676},{85A6965F-1260-EB11-A812-0022489C7676},{71EFB53B-1260-EB11-A812-0022489C7676},{CD7F9419-1360-EB11-A812-0022489C7676},{CAC23E60-FE5F-EB11-A812-0022489C7676},{9AAB6E30-A560-EB11-A812-0022489C79D7},{925419FF-5E61-EB11-A812-0022489C79D7},{CAADE9C7-DE5F-EB11-A812-0022489C79D7},{022C374E-DE5F-EB11-A812-0022489C79D7},{E710FBF2-9D58-EB11-A812-000D3A654F72},{945822DE-A558-EB11-A812-0022489BA6AD},{C10A993D-9F58-EB11-A812-000D3A654F72},{56AB753D-A658-EB11-A812-000D3A654F72},{8C71CAAC-A058-EB11-A812-000D3A654F72},{784982E5-B055-EB11-A812-0022489BA6AD},{840BC40C-B155-EB11-A812-0022489BA6AD},{1177AAF7-E058-EB11-A812-0022489BA6AD},{9C98B789-A558-EB11-A812-000D3A654F72},{2B1DC9D0-A458-EB11-A812-000D3A654F72},{62316204-A458-EB11-A812-000D3A654F72},{A8F5D347-A558-EB11-A812-000D3A654F72},{7B31CA6E-A458-EB11-A812-000D3A654F72},{BB7D072D-B155-EB11-A812-0022489BA6AD},{1DE85DF7-1160-EB11-A812-0022489C79D7},{A1AE4C61-1360-EB11-A812-0022489C7676},{AE486149-1360-EB11-A812-0022489C7676},{1D9C4273-1360-EB11-A812-0022489C7676},{AB79147D-1460-EB11-A812-0022489C79D7},{F481B0C5-1260-EB11-A812-0022489C7676},{C19B25C9-F454-EB11-A812-000D3A654F72},{5F9FF6F5-AD55-EB11-A812-0022489BA6AD},{D195DC38-AF55-EB11-A812-0022489BA6AD},{382D4CE7-AE55-EB11-A812-0022489BA6AD},{22B57983-AE55-EB11-A812-0022489BA6AD},{8667822B-1360-EB11-A812-0022489C7676}</AvailableViewIds>
+                          </parameters>
+                        </control>
+                      </cell>
+                      <cell id="{303c451f-54d6-461f-843c-255c26d6aa2f}" locklevel="0" labelid="{02e7be57-ab06-4861-9de1-49b1632f0a4e}">
+                        <labels>
+                          <label description="Clothing General Condition" languagecode="1033" />
+                        </labels>
+                        <control id="cp_clothinggeneralcondition" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="cp_clothinggeneralcondition" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{e4c2f8db-d37f-4db0-b481-3beed09c4513}" locklevel="0" labelid="{33a179db-4dd5-40c7-9ec4-bd35db19ae95}">
+                        <labels>
+                          <label description="House Temperature" languagecode="1033" />
+                        </labels>
+                        <control id="cp_housetemperature" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_housetemperature" disabled="false">
+                          <parameters>
+                            <DisableViewPicker>true</DisableViewPicker>
+                            <DefaultViewId>{CAADE9C7-DE5F-EB11-A812-0022489C79D7}</DefaultViewId>
+                            <AvailableViewIds>{98C9EF77-661B-40BD-96EE-07219F646518},{C593B792-1460-EB11-A812-0022489C7676},{3A9EA607-1360-EB11-A812-0022489C7676},{A3539D66-1460-EB11-A812-0022489C7676},{640F218B-1260-EB11-A812-0022489C79D7},{59E0AE13-E05F-EB11-A812-0022489C7676},{1BD06E48-E15F-EB11-A812-0022489C7676},{31015329-E15F-EB11-A812-0022489C7676},{A89CEB7D-FB38-4553-AC4C-05131A8C1D8E},{59ACB3D7-1260-EB11-A812-0022489C7676},{01D3344E-1460-EB11-A812-0022489C7676},{9117323B-1460-EB11-A812-0022489C7676},{3DCE2442-E2F0-4DB3-B452-AAE4F671E621},{3E00B7AD-1260-EB11-A812-0022489C7676},{DB04508E-DE5F-EB11-A812-0022489C7676},{0F3EFF22-1460-EB11-A812-0022489C7676},{3821C329-1260-EB11-A812-0022489C7676},{19985683-355B-EB11-A812-000D3A654F72},{7E70B7A4-1460-EB11-A812-0022489C7676},{A295F5B8-E45F-EB11-A812-0022489C79D7},{2880CBDA-E65F-EB11-A812-0022489C79D7},{A53BEDD5-1160-EB11-A812-0022489C7676},{0C68BA93-1160-EB11-A812-0022489C7676},{FFCB0C0E-1160-EB11-A812-0022489C7676},{7BFB745B-1160-EB11-A812-0022489C79D7},{E5D8B56F-1160-EB11-A812-0022489C7676},{9822EFB7-1160-EB11-A812-0022489C7676},{3EFB640A-1460-EB11-A812-0022489C7676},{85A6965F-1260-EB11-A812-0022489C7676},{71EFB53B-1260-EB11-A812-0022489C7676},{CD7F9419-1360-EB11-A812-0022489C7676},{CAC23E60-FE5F-EB11-A812-0022489C7676},{CAADE9C7-DE5F-EB11-A812-0022489C79D7},{022C374E-DE5F-EB11-A812-0022489C79D7},{E710FBF2-9D58-EB11-A812-000D3A654F72},{945822DE-A558-EB11-A812-0022489BA6AD},{C10A993D-9F58-EB11-A812-000D3A654F72},{56AB753D-A658-EB11-A812-000D3A654F72},{8C71CAAC-A058-EB11-A812-000D3A654F72},{784982E5-B055-EB11-A812-0022489BA6AD},{840BC40C-B155-EB11-A812-0022489BA6AD},{1177AAF7-E058-EB11-A812-0022489BA6AD},{9C98B789-A558-EB11-A812-000D3A654F72},{2B1DC9D0-A458-EB11-A812-000D3A654F72},{62316204-A458-EB11-A812-000D3A654F72},{A8F5D347-A558-EB11-A812-000D3A654F72},{7B31CA6E-A458-EB11-A812-000D3A654F72},{BB7D072D-B155-EB11-A812-0022489BA6AD},{1DE85DF7-1160-EB11-A812-0022489C79D7},{A1AE4C61-1360-EB11-A812-0022489C7676},{AE486149-1360-EB11-A812-0022489C7676},{1D9C4273-1360-EB11-A812-0022489C7676},{AB79147D-1460-EB11-A812-0022489C79D7},{F481B0C5-1260-EB11-A812-0022489C7676},{C19B25C9-F454-EB11-A812-000D3A654F72},{5F9FF6F5-AD55-EB11-A812-0022489BA6AD},{D195DC38-AF55-EB11-A812-0022489BA6AD},{382D4CE7-AE55-EB11-A812-0022489BA6AD},{22B57983-AE55-EB11-A812-0022489BA6AD},{8667822B-1360-EB11-A812-0022489C7676}</AvailableViewIds>
+                          </parameters>
+                        </control>
+                      </cell>
+                      <cell id="{0167b153-502b-4f93-bfb8-55fc18232424}" locklevel="0" labelid="{9d884994-b2ea-48ac-b1b4-52989e053791}">
+                        <labels>
+                          <label description="Last Seen Alive By" languagecode="1033" />
+                        </labels>
+                        <control id="cp_lastseenaliveby" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_lastseenaliveby" disabled="false">
+                          <parameters>
+                            <useMainFormDialogForEdit>true</useMainFormDialogForEdit>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{b448e6b0-4242-452b-89de-c0b87f4163fb}" locklevel="0" labelid="{6e9bf5ee-4fb3-4cb3-b054-3183ee4646dd}">
+                        <labels>
+                          <label description="CID/CSI Attended" languagecode="1033" />
+                        </labels>
+                        <control id="cp_cidcsiattended" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="cp_cidcsiattended" disabled="false" />
+                      </cell>
+                      <cell id="{6c577255-99f9-4693-a760-75d5a1c59fb6}" locklevel="0" labelid="{5da9e91d-8ffc-454e-9a17-5b86f14267f4}">
+                        <labels>
+                          <label description="Area Last Seen Alive" languagecode="1033" />
+                        </labels>
+                        <control id="cp_arealastseenalive" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_arealastseenalive" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{0c6652f3-d662-4791-926e-003ee7345230}" locklevel="0" labelid="{b50bd213-112a-4300-a186-d113169ba53a}">
+                        <labels>
+                          <label description="CID/CSI Photos Taken" languagecode="1033" />
+                        </labels>
+                        <control id="cp_cidcsiphotostaken" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="cp_cidcsiphotostaken" disabled="false" />
+                      </cell>
+                      <cell id="{33495ac3-d3fe-40d2-8695-0e6e89469e8d}" locklevel="0" labelid="{8f7bbb19-f758-4080-8294-3a028255108e}">
+                        <labels>
+                          <label description="Datetime Last Seen Alive" languagecode="1033" />
+                        </labels>
+                        <control id="cp_datetimelastseenalive" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="cp_datetimelastseenalive" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{1cda4075-a864-4b1f-884e-24fd48f3e2d6}" locklevel="0" labelid="{d6a82169-812c-4d96-84d9-cf91683d3ff6}">
+                        <labels>
+                          <label description="Suspect Suicide" languagecode="1033" />
+                        </labels>
+                        <control id="cp_suspectsuicide" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="cp_suspectsuicide" disabled="false" />
+                      </cell>
+                      <cell id="{3891efc9-acc2-4713-b05e-48e72195f918}" locklevel="0" labelid="{4eca1b5b-7d1e-48a9-85ce-defe8c59fca9}">
+                        <labels>
+                          <label description="DOLS" languagecode="1033" />
+                        </labels>
+                        <control id="cp_dols" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="cp_dols" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{8f522e55-a3aa-4e4f-87f6-5de671c24303}" locklevel="0" labelid="{bbda0d1f-19cf-4eb4-bd7a-c217cda868e9}">
+                        <labels>
+                          <label description="Suicide Note Left" languagecode="1033" />
+                        </labels>
+                        <control id="cp_suicidenoteleft" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="cp_suicidenoteleft" disabled="false" />
+                      </cell>
+                      <cell id="{3274ec43-8b8b-431c-919c-42a636e9cec4}" locklevel="0" labelid="{521fc457-b158-4c67-a290-e1fd14c1f6d6}">
+                        <labels>
+                          <label description="Death In Custody" languagecode="1033" />
+                        </labels>
+                        <control id="cp_deathincustody" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="cp_deathincustody" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{23d78848-a4b1-482f-bba6-dea773dc565f}" locklevel="0" labelid="{ca8431ad-9e20-4e4e-89d7-0685b664f2f6}">
+                        <labels>
+                          <label description="Suicide Note Picture" languagecode="1033" />
+                        </labels>
+                        <control id="cp_suicidenotepicture" classid="{7E548B0D-209C-477B-9DCD-F0F44472381D}" datafieldname="cp_suicidenotepicture" disabled="false" />
+                      </cell>
+                      <cell id="{90b3def4-6d2c-4441-b395-1fcd0db6b4f0}" locklevel="0" labelid="{b8e03ee4-f11b-4d1a-8785-785e7c822c47}">
+                        <labels>
+                          <label description="Death In Health Care" languagecode="1033" />
+                        </labels>
+                        <control id="cp_deathinhealthcare" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="cp_deathinhealthcare" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{afe7ccaf-05d5-408c-a011-422ac72b7ec1}" locklevel="0" rowspan="4" labelid="{50626c3b-570b-4b21-96b9-057473944497}">
+                        <labels>
+                          <label description="Additional Details" languagecode="1033" />
+                        </labels>
+                        <control id="cp_additionaldetails" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="cp_additionaldetails" disabled="false" />
+                      </cell>
+                      <cell id="{a6957658-769f-44de-b66a-3fa2d360a5b4}" locklevel="0" labelid="{5bf852cc-38a9-4c4c-963c-81d111bb42ef}">
+                        <labels>
+                          <label description="Death In Hospital" languagecode="1033" />
+                        </labels>
+                        <control id="cp_deathinhospital" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="cp_deathinhospital" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{2c9b2308-b63d-4259-8b03-1fed5be8944f}" locklevel="0" labelid="{f3aff3f2-f59a-4eb6-b3c8-ebf399ab695c}">
+                        <labels>
+                          <label description="Police Involvement Prior Death" languagecode="1033" />
+                        </labels>
+                        <control id="cp_policeinvolvementpriordeath" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="cp_policeinvolvementpriordeath" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{4e1f48c1-83cd-450d-bb60-2ee411170e8b}" locklevel="0" labelid="{37f536e5-adce-435a-badf-13b0c5901988}">
+                        <labels>
+                          <label description="Work Related Death" languagecode="1033" />
+                        </labels>
+                        <control id="cp_workrelateddeath" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="cp_workrelateddeath" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{30cb2bbb-48e9-4624-be4b-f2d55596ca87}" locklevel="0" labelid="{dadd4416-2173-490c-a505-a977c66e6732}">
+                        <labels>
+                          <label description="Smoker" languagecode="1033" />
+                        </labels>
+                        <control id="cp_smoker" classid="{3EF39988-22BB-4F0B-BBBE-64B5A3748AEE}" datafieldname="cp_smoker" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{6221e5fa-284b-4ee9-8941-a0ebd0772d03}" locklevel="0" rowspan="4" labelid="{6fb781c8-d0be-4ae0-90c0-e02c136be161}">
+                        <labels>
+                          <label description="Additional Notes" languagecode="1033" />
+                        </labels>
+                        <control id="cp_additionalnotes" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="cp_additionalnotes" disabled="false" />
+                      </cell>
+                      <cell locklevel="0" id="{49a6f0e2-56a2-428b-997a-46d01a12e0e4}" labelid="{0f73d319-b169-4232-a0de-65be4ff16dfe}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{cc993354-3d1e-4943-bf2c-cb29ed0ae992}" labelid="{7b51b6af-1b2e-49c2-a341-932c146a4a83}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{373fcfd4-9ef9-41f5-892a-d2308e1c251a}" labelid="{701fbc53-00b6-4f84-8229-54b86450ef71}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{8820cc71-c946-45e5-8905-3e23cf713229}" labelid="{ac97a6b7-cb20-4527-80dd-9dba2c369687}">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+              </sections>
+            </column>
+          </columns>
+        </tab>
+      </tabs>
+      <header id="{c4f1edb3-e435-4ede-b412-e680a1bef20e}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{e77d4c71-eb4b-4858-832d-528f7ff85f38}" showlabel="false" labelid="{d87c3d65-89be-450b-a849-1f0f1b921c91}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{1053ba29-49c4-4e4e-ac26-9d2e31b0b7b3}" showlabel="false" labelid="{85c50031-cc7d-4ce1-bc15-3fa54ecc22ee}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{f4e0cede-dd62-4ab7-bf2c-b27647a2b914}" showlabel="false" labelid="{91088b96-608d-40b2-9ae4-48b0e2620b07}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </header>
+      <footer id="{36ec99fa-ec5e-4624-8706-2a59faa37a72}" celllabelposition="Top" columns="111" labelwidth="115" celllabelalignment="Left">
+        <rows>
+          <row>
+            <cell id="{ff33fad3-19c8-4c18-900a-fb75553fdbb4}" showlabel="false" labelid="{ee52aa6c-eba0-4e8e-a976-3c8d27d110c1}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{62a97376-9e14-4b9f-8e1b-d6097e01332d}" showlabel="false" labelid="{981e070d-d4bb-459f-b723-96a48cb39d25}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+            <cell id="{dd3b81f4-3fff-46dd-939c-aabff529c129}" showlabel="false" labelid="{51f35bff-98f2-486f-a751-95ece1b898d8}">
+              <labels>
+                <label description="" languagecode="1033" />
+              </labels>
+            </cell>
+          </row>
+        </rows>
+      </footer>
+      <Navigation>
+        <NavBar />
+        <NavBarAreas>
+          <NavBarArea Id="Info">
+            <Titles>
+              <Title LCID="1033" Text="Common" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Sales">
+            <Titles>
+              <Title LCID="1033" Text="Sales" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Service">
+            <Titles>
+              <Title LCID="1033" Text="Service" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="Marketing">
+            <Titles>
+              <Title LCID="1033" Text="Marketing" />
+            </Titles>
+          </NavBarArea>
+          <NavBarArea Id="ProcessCenter">
+            <Titles>
+              <Title LCID="1033" Text="Process Sessions" />
+            </Titles>
+          </NavBarArea>
+        </NavBarAreas>
+      </Navigation>
+      <DisplayConditions Order="2" FallbackForm="true">
+        <Role Id="{627090ff-40a3-4053-8790-584edc5be201}" />
+        <Role Id="{119f245c-3cc8-4b62-b31c-d1a046ced15d}" />
+      </DisplayConditions>
+    </form>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <LocalizedNames>
+      <LocalizedName description="Sudden Death Identifier Quick Update" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions>
+      <Description description="A form for this entity." languagecode="1033" />
+    </Descriptions>
+  </systemform>
+</forms>

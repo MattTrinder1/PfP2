@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>0</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{faf4834f-dfa9-4f41-9763-fe513af57b37}</savedqueryid>
+    <layoutxml>
+      <grid name="cp_covidoffenceverificationtexts" jump="cp_labeltext" select="1" icon="1" preview="0">
+        <row name="cp_covidoffenceverificationtext" id="cp_covidoffenceverificationtextid">
+          <cell name="cp_labeltext" width="300" />
+          <cell name="createdon" width="125" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>64</querytype>
+    <fetchxml>
+      <fetch version="1.0" mapping="logical">
+        <entity name="cp_covidoffenceverificationtext">
+          <attribute name="cp_covidoffenceverificationtextid" />
+          <attribute name="cp_labeltext" />
+          <attribute name="createdon" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Covid Offence Verification Text Lookup View" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

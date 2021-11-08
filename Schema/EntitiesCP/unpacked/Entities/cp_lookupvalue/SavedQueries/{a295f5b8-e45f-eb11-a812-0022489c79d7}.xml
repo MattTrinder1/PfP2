@@ -1,0 +1,36 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{a295f5b8-e45f-eb11-a812-0022489c79d7}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cp_name" select="1" icon="1" preview="1">
+        <row name="result" id="cp_lookupvalueid">
+          <cell name="cp_name" width="110" />
+          <cell name="cp_displaysequenceno" width="163" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical">
+        <entity name="cp_lookupvalue">
+          <attribute name="cp_name" />
+          <attribute name="cp_lookupvalueid" />
+          <filter type="and">
+            <condition attribute="cp_lookupfield" operator="eq" value="{e5d0b04f-e45f-eb11-a812-0022489c79d7}" uiname="Designated Station" uitype="cp_lookupfield" />
+          </filter>
+          <attribute name="cp_displaysequenceno" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Vehicle - S165 - Designated Station" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>
