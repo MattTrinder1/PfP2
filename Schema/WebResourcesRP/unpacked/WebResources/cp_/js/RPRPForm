@@ -194,11 +194,13 @@ function preventFutureDate(executionContext) {
     }
 }
 
-function hasCurrentUserRole(roleId) {
+function hasCurrentUserRole(roleName) {
     var hasRole = false;
     var roles = Xrm.Utility.getGlobalContext().userSettings.roles;
     roles.forEach(x => {
-        if (x.id === roleId) {
+        //Compare by name, not id because roles are dynamically created for each Business Unit on target Orgs 
+        //(so we only know the id of the role deployed in a solution but not the copies applied dynamically at BU level).
+        if (x.name === roleName) {
             hasRole = true;
             return;
         }
@@ -522,12 +524,12 @@ var typeFilter = "";
 function filterTypesForUser(executionContext) {
     if (isReadOnly(executionContext)) return;
 
-    Xrm.WebApi.retrieveMultipleRecords("cp_rprptype", "?$select=cp_rprptypeid&$expand=cp_RoleRequiredToCreate($select=roleid)").then(
+    Xrm.WebApi.retrieveMultipleRecords("cp_rprptype", "?$select=cp_rprptypeid&$expand=cp_RoleRequiredToCreate($select=name)").then(
         function success(result) {
             var allowedTypeIds = [];
             var filterRequired = false;
             for (var i = 0; i < result.entities.length; i++) {
-                if (result.entities[i].cp_RoleRequiredToCreate == null || hasCurrentUserRole(result.entities[i].cp_RoleRequiredToCreate.roleid)) {
+                if (result.entities[i].cp_RoleRequiredToCreate == null || hasCurrentUserRole(result.entities[i].cp_RoleRequiredToCreate.name)) {
                     allowedTypeIds.push(result.entities[i].cp_rprptypeid);
                 } else {
                     filterRequired = true;
