@@ -1,0 +1,415 @@
+"Scr_PNC_Possibles As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    OnVisible: |-
+        =If(
+            PNCselection = false,
+            UpdateContext({defaultSel: Gallery3_3.Selected});
+            UpdateContext({defaultSel: {}})
+        )
+
+    Label1_13 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="PNC Search Possibles"
+        Width: =640
+        ZIndex: =1
+
+    Gallery3_3 As gallery.variableTemplateHeightGallery:
+        BorderColor: =RGBA(153, 153, 153, 1)
+        Default: =defaultSel
+        Height: =894
+        Items: =NEResultPossibles
+        Layout: =Layout.Vertical
+        ShowScrollbar: =false
+        TemplateSize: =235
+        Y: =153
+        ZIndex: =5
+
+        Label9_8 As label:
+            Align: =Align.Justify
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.name
+            Width: =630
+            Wrap: =false
+            Y: =40
+            ZIndex: =1
+
+        Label2_1 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Name"
+            Width: =560
+            ZIndex: =2
+
+        Label3 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.dateOfBirth
+            Width: =249
+            Y: =120
+            ZIndex: =3
+
+        Label4_4 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Date of Birth"
+            Width: =560
+            Y: =80
+            ZIndex: =4
+
+        Label3_2 As label:
+            Align: =Align.Right
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.gender
+            Width: =606
+            X: =24
+            Y: =40
+            ZIndex: =5
+
+        Label4_3 As label:
+            Align: =Align.Right
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Gender"
+            Width: =240
+            X: =390
+            ZIndex: =6
+
+        Label3_9 As label:
+            Align: =Align.Right
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =If(IsBlank(ThisItem.placeOfBirth), "No data", ThisItem.placeOfBirth)
+            Width: =462
+            X: =167
+            Y: =120
+            ZIndex: =7
+
+        Label4_5 As label:
+            Align: =Align.Right
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="BirthPlace"
+            Width: =288
+            X: =342
+            Y: =80
+            ZIndex: =8
+
+        Rectangle2 As rectangle:
+            Fill: =RGBA(153, 153, 153, 1)
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =630
+            Y: =228
+            ZIndex: =10
+
+        Button3_1 As button:
+            BorderColor: =RGBA(153, 153, 153, 1)
+            BorderThickness: =0
+            Color: =RGBA(153, 153, 153, 1)
+            DisabledBorderColor: =RGBA(0, 0, 0, 0)
+            DisabledColor: =RGBA(0, 0, 0, 0)
+            DisabledFill: =RGBA(255, 255, 255, 0.48)
+            Fill: =RGBA(0, 0, 0, 0)
+            FocusedBorderThickness: =0
+            HoverFill: =
+            OnSelect: |
+                =/*If(
+                    " " in Trim(txt_person_forename.Text),
+                    Set(
+                        gblSplitForename,
+                        Split(
+                            txt_person_forename.Text,
+                            " "
+                        )
+                    );
+                    Set(
+                        NEResults2,
+                        HashNEResult.Run(
+                            Upper(
+                                Trim(
+                                    Concatenate(
+                                        Txt_person_surname.Text,
+                                        "/",
+                                        Upper(
+                                            Left(
+                                                Concat(
+                                                    gblSplitForename,
+                                                    Result & "/"
+                                                ),
+                                                Len(
+                                                    Concat(
+                                                        gblSplitForename,
+                                                        Result & "/"
+                                                    )
+                                                ) - 1
+                                            )
+                                        )
+                                    )
+                                )
+                            ),
+                            ThisItem.Record
+                        )
+                    );
+                    Navigate(
+                        Screen_PNC_SecondarySearch,
+                        Fade
+                    ),
+                    Set(
+                        NEResults2,
+                        HashNEResult.Run(
+                            Upper(
+                                Trim(
+                                    Concatenate(
+                                        Txt_person_surname.Text,
+                                        "/",
+                                        txt_person_forename.Text
+                                    )
+                                )
+                            ),
+                            ThisItem.Record
+                        )
+                    );
+                    Navigate(
+                        Screen_PNC_SecondarySearch,
+                        Fade
+                    )
+                )*/
+                Set(PNCselection,true)
+            PressedBorderColor: =
+            PressedColor: =
+            PressedFill: =RGBA(255, 255, 255, 0.42)
+            Size: =24
+            Text: =""
+            Width: =390
+            ZIndex: =12
+
+        Checkbox4 As checkbox:
+            CheckboxBorderColor: =RGBA(153, 153, 153, 1)
+            CheckboxSize: =55
+            Default: |-
+                =If (
+                    ThisItem.resultFrom = "PNC",
+                    If(
+                        ThisItem.pncId = VARCheckedItem,
+                        true,
+                        false
+                    ),
+                    If(
+                        ThisItem.driverNumber = VARCheckedItem,
+                        true,
+                        false
+                    )
+                )
+            FocusedBorderThickness: |
+                =0
+            Height: =58
+            OnCheck: |-
+                =If(
+                    Or(ThisItem.resultFrom = "PNC",ThisItem.resultFrom = "PNC/DL"),
+                    Set(
+                        VARCheckedItem,
+                        ThisItem.pncId
+                    )
+                    ,
+                    Set(
+                        VARCheckedItem,
+                        ThisItem.driverNumber
+                    )
+                );
+                Set(gblResultFrom, ThisItem.resultFrom);
+                Reset(Checkbox4)
+            OnSelect: =
+            OnUncheck: =Set(VARCheckedItem,"")
+            Size: =16
+            Text: ="Select Nominal Record"
+            Width: =442
+            Y: =176
+            ZIndex: =14
+
+        Label3_1 As label:
+            BorderThickness: =1
+            Fill: =RGBA(237, 237, 237, 1)
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.resultFrom
+            Width: =101
+            X: =528
+            Y: =188
+            ZIndex: =15
+
+        Label4_6 As label:
+            FontWeight: =Semibold
+            Height: =33
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =If(ThisItem.resultFrom = "PNC", "PNC Id","Driver No.")
+            Width: =356
+            X: =241
+            Y: =87
+            ZIndex: =16
+
+        Label3_3 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: |
+                =ThisItem.pncId
+            Width: =249
+            X: =241
+            Y: =120
+            ZIndex: =17
+
+    Label14_6 As label:
+        FontWeight: =Semibold
+        Height: =63
+        Size: =21
+        Text: =Concatenate("Possible Results", " (", Text(CountRows(NEREsult.records)), ")")
+        Width: =301
+        Y: =87
+        ZIndex: =6
+
+    Button14_1 As button:
+        DisplayMode: =If(!IsBlank(VARCheckedItem), DisplayMode.Edit,DisplayMode.Disabled)
+        Fill: =RGBA(153, 153, 153, 1)
+        FocusedBorderThickness: =0
+        Height: =89
+        HoverFill: =ColorFade(RGBA(153, 153, 153, 1), -20%)
+        OnSelect: |-
+            =UpdateContext({defaultSel: Gallery3_3.Selected});
+            UpdateContext({defaultSel: {}});
+            Set(
+                PNCselection,
+                false
+            );
+            Set(
+                LoadingSplash,
+                true
+            );
+            If(
+                Or(gblResultFrom = "PNC",gblResultFrom = "PNC/DL"),
+                Set(
+                    PNCPersonDetails,
+                    'NDIWrapper-PesonDetails'.Run(
+                        Substitute(
+                            VARCheckedItem,
+                            "/",
+                            "-"
+                        )
+                    )
+                ),
+                Set(
+                    PNCPersonDetails,
+                    'NDIWrapper-DriverNumber'.Run(
+                        Text(drpdwn_PNCSearchReason.Selected.ReasonCode),
+                        VARCheckedItem
+                    )
+                )
+            );
+            If(
+                !IsBlank(PNCPersonDetails),
+                Navigate(
+                    Scr_PNC_Details,
+                    Fade
+                );
+                Set(
+                    LoadingSplash,
+                    false
+                ),
+                Notify(
+                    "Failed to obtain details",
+                    NotificationType.Error
+                );
+                Set(
+                    LoadingSplash,
+                    false
+                )
+            )
+        RadiusBottomLeft: =0
+        RadiusBottomRight: =0
+        RadiusTopLeft: =0
+        RadiusTopRight: =0
+        Size: =16
+        Text: ="Details"
+        Width: =320
+        X: =320
+        Y: =1047
+        ZIndex: =7
+
+    Button14_3 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        FocusedBorderThickness: =0
+        Height: =89
+        HoverFill: =ColorFade(RGBA(153, 153, 153, 1), -20%)
+        OnSelect: =Navigate(Scr_Person, Fade);
+        RadiusBottomLeft: =0
+        RadiusBottomRight: =0
+        RadiusTopLeft: =0
+        RadiusTopRight: =0
+        Size: =16
+        Text: =If(!IsBlank(VARCheckedItem), "Use Selected Nominal","Back")
+        Width: =320
+        Y: =1047
+        ZIndex: =8
+
+    Group18_1 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =1
+        ZIndex: =18
+
+        Rectangle9_3 As rectangle:
+            Fill: =RGBA(255, 255, 255, 0.95)
+            Height: =1135
+            Visible: =LoadingSplash
+            Width: =640
+            Y: =1
+            ZIndex: =14
+
+        Label18_3 As label:
+            Align: =Align.Center
+            FontWeight: =Semibold
+            Height: =124
+            Italic: =true
+            OnSelect: =Set(LoadingSplash,false)
+            Size: =21
+            Text: ="Searching..."
+            Visible: =LoadingSplash
+            Width: =640
+            Y: =231
+            ZIndex: =15
+
+        Image2_3 As image:
+            Height: =151
+            Image: ='loading-buffering'
+            Visible: =LoadingSplash
+            Width: =116
+            X: =259
+            Y: =368
+            ZIndex: =16
+
+        Icon9_3 As icon.Cancel:
+            Color: =RGBA(0, 0, 0, 1)
+            Height: =87
+            Icon: =Icon.Cancel
+            OnSelect: =Set(LoadingSplash,false)
+            PaddingBottom: =20
+            PaddingLeft: =20
+            PaddingRight: =20
+            PaddingTop: =20
+            Visible: =LoadingSplash
+            Width: =101
+            X: =539
+            Y: =1
+            ZIndex: =17
+

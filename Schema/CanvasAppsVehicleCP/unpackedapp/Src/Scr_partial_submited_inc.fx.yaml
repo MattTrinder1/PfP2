@@ -1,0 +1,491 @@
+Scr_partial_submited_inc As screen:
+    OnVisible: |+
+        =Set(
+            y7,
+            0
+        );
+        Set(
+            y8,
+            0
+        );
+        Set(
+            y9,
+            0
+        );
+        Set(
+            checkicon2,
+            false
+        );
+        Set(
+            checkicon,
+            false
+        );
+         //Unsubmitted Tickets warning
+        UpdateContext({Warnunsubmitunsub: false});
+        UpdateContext({timerstartunsub: false});
+        UpdateContext({timerresetunsub: true});
+        If(
+            CountRows(Gallery_unsubmitted.AllItems) > 0,
+            UpdateContext({timerstartunsub: true})
+        );
+        //Vehicle Ticket Part 1 warning
+        UpdateContext({vtp1timerstart: false});
+        UpdateContext({vtp1timerreset: true});
+        UpdateContext({vtp1Warndetails: false});
+        If(
+            CountRows(Gallery_unsubmitted.AllItems) > 0 And !IsBlank(DatePicker_vehicleticket_pt1.SelectedDate) And !IsBlank(dropdown_issued_to.Selected.cp_name),
+            UpdateContext({vtp1timerstart: false}),
+            UpdateContext({vtp1timerstart: true})
+        );
+        //Person warning
+        UpdateContext({persontimerstart: false});
+        UpdateContext({persontimerreset: true});
+        UpdateContext({personWarndetails: false});
+        If(
+            CountRows(Gallery_unsubmitted.AllItems) > 0 And Len(Dropdown_person_title.Selected.cp_name) > 0 And Len(txt_person_forename.Text) > 0,
+            UpdateContext({persontimerstart: false}),
+            UpdateContext({persontimerstart: true})
+        );
+        //Vehicle warning
+        UpdateContext({vehicletimerstart: false});
+        UpdateContext({vehicletimerreset: true});
+        UpdateContext({vehicleWarndetails: false});
+        If(
+            CountRows(Gallery_unsubmitted.AllItems) > 0 And Len(TextInput_VRM.Text) > 0 And !IsBlank(Dropdown_VehicleMake.Selected.cp_name),
+            UpdateContext({vehicletimerstart: false}),
+            UpdateContext({vehicletimerstart: true})
+        );
+            //Location warning
+        UpdateContext({Locationtimerstart: false});
+        UpdateContext({Locationtimerreset: true});
+        UpdateContext({LocationWarndetails: false});
+        If(
+            CountRows(Gallery_unsubmitted.AllItems) > 0 And Len(TextInput_Location_Description.Text) > 0 And Len(TextInput_Location_Street.Text) > 0 And Len(TextInput_Location_Town.Text) > 0 And !IsBlank(Dropdown_TPA.Selected.cp_name),
+            UpdateContext({Locationtimerstart: false}),
+            UpdateContext({Locationtimerstart: true})
+        );If(
+                CountRows(
+                    Filter(
+                        TrOffOffline,
+                        TicketTypename="S163 (Vehicle Stop)"
+                    )
+                ) = 0 ,Set(
+                displays163vs,
+                DisplayMode.Disabled
+            ));If(
+                CountRows(
+                    Filter(
+                        TrOffOffline,
+                        TicketTypename="HORT1"
+                    )
+                ) = 0 ,Set(
+               displayhort1,
+                DisplayMode.Disabled
+            ));If(
+                CountRows(
+                    Filter(
+                        TrOffOffline,
+                        TicketTypename="VDRS"
+                    )
+                ) = 0 ,Set(
+                  displayvdrs,
+                DisplayMode.Disabled
+            ));
+        If(
+                CountRows(
+                    Filter(
+                        TrOffOffline,
+                        TicketTypename="Section 59"
+                    )
+                ) = 0 ,Set(
+                 displaysection59,
+                DisplayMode.Disabled
+            ));
+        If(
+                CountRows(
+                    Filter(
+                        TrOffOffline,
+                        TicketTypename="Traffic Offence"
+                    )
+                ) = 0 ,Set(
+                displaytrafficoffence,
+                DisplayMode.Disabled
+            ));If(
+                CountRows(
+                    Filter(
+                        TrOffOffline,
+                        TicketTypename="S165 (No Ins/DL)"
+                    )
+                ) = 0 ,Set(
+                displays165noinsdl,
+                DisplayMode.Disabled
+            ));
+        
+        
+        
+        
+
+    Label_Home_1 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Vehicle Tickets"
+        VerticalAlign: =VerticalAlign.Top
+        Width: =640
+        ZIndex: =1
+
+    Canvas_Home_1 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1049
+        Width: =Parent.Width
+        Y: =87
+        ZIndex: =23
+
+        DataCard_Home_1 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =1414
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            TextInput_searchnote_incnum As text:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                BorderThickness: =4
+                Default: =
+                FocusedBorderColor: =TextInput_searchnote_incnum.BorderColor
+                Height: =70
+                HintText: ="Search by Incident Number"
+                OnChange: =
+                PressedBorderColor: =TextInput_searchnote_incnum.HoverBorderColor
+                PressedColor: =TextInput_searchnote_incnum.Color
+                PressedFill: =TextInput_searchnote_incnum.Fill
+                Size: =21
+                Width: =519
+                X: =39
+                Y: =187
+                ZIndex: =1
+
+            start_date As datepicker:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                DefaultDate: =Today()-30
+                FocusedBorderColor: =start_date.BorderColor
+                Format: =
+                Height: =99
+                HoverBorderColor: =start_date.BorderColor
+                HoverFill: =start_date.Fill
+                IconBackground: =DimGrey
+                InputTextPlaceholder: =Text(Date(2001,12,31), start_date.Format, start_date.Language)
+                OnChange: |-
+                    =If(start_date.SelectedDate < Today()-30,UpdateContext({lbl:true}),UpdateContext({lbl:false}))
+                OnSelect: |-
+                    =If(start_date.SelectedDate < Today()-30,UpdateContext({lbl:true}),UpdateContext({lbl:false}))
+                PressedBorderColor: =start_date.BorderColor
+                PressedFill: =start_date.Fill
+                Size: =20
+                Width: =248
+                X: =39
+                Y: =45
+                ZIndex: =2
+
+            end_date As datepicker:
+                BorderColor: =RGBA(149, 149, 149, 1)
+                FocusedBorderColor: =end_date.BorderColor
+                Height: =99
+                HoverBorderColor: =end_date.BorderColor
+                HoverFill: =end_date.Fill
+                IconBackground: =DimGrey
+                InputTextPlaceholder: =Text(Date(2001,12,31), end_date.Format, end_date.Language)
+                OnChange: |-
+                    =If(start_date.SelectedDate > Today(),UpdateContext({lbl:true}),UpdateContext({lbl:false}))
+                OnSelect: |-
+                    =If(start_date.SelectedDate > Today(),UpdateContext({lbl:true}),UpdateContext({lbl:false}))
+                PressedBorderColor: =end_date.BorderColor
+                PressedFill: =end_date.Fill
+                Size: =20
+                Width: =248
+                X: =356
+                Y: =45
+                ZIndex: =3
+
+            "Gallery_Search_notes As gallery.'BrowseLayout_Vertical_TwoTextVariant_ver4.0'":
+                BorderColor: =RGBA(116, 116, 116, 1)
+                BorderThickness: =3
+                Fill: =RGBA(255, 255, 255, 1)
+                Height: =720
+                Items: |
+                    =SortByColumns(Search(Filter(
+                        
+                            VehicleStagingOffline,cp_stagingentrystatus in "Pending Submission",
+                            DateValue(Text(createdon)) >= start_date.SelectedDate && DateValue(Text(createdon)) <= end_date.SelectedDate
+                    ),
+                        TextInput_searchnote_incnum.Text,
+                        "cp_incidentnumber"),"createdon",If(SortDescending1, Descending, Ascending))
+                Layout: =Layout.Vertical
+                ShowScrollbar: =false
+                TemplatePadding: =0
+                TemplateSize: =199
+                Y: =326
+                ZIndex: =4
+
+                Title5 As label:
+                    Height: =51
+                    OnSelect: =Select(Parent)
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Size: =18
+                    Text: =ThisItem.cp_incidentnumber
+                    VerticalAlign: =VerticalAlign.Top
+                    Width: =295
+                    X: =241
+                    ZIndex: =1
+
+                Subtitle_sig_dte_time As label:
+                    Height: =60
+                    OnSelect: =Select(Parent)
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: |-
+                        ="Incident Created in (Police Manager) :"
+                    Underline: =true
+                    VerticalAlign: =VerticalAlign.Top
+                    Width: =247
+                    X: =16
+                    Y: =120
+                    ZIndex: =2
+
+                NextArrow5 As icon.ChevronRight:
+                    AccessibleLabel: =Self.Tooltip
+                    Color: =RGBA(116, 116, 116, 1)
+                    Height: =78
+                    Icon: =Icon.ChevronRight
+                    OnSelect: |
+                        =Collect(
+                            'Vehicle Offline',
+                            {
+                                Key: LookUp(
+                                    VehicleStagingOffline,
+                                    cp_vehicleticketstgid = ThisItem.cp_vehicleticketstgid
+                                ).cp_incidentnumber,
+                                'Incident suffix': LookUp(
+                                    VehicleStagingOffline,
+                                    cp_vehicleticketstgid = ThisItem.cp_vehicleticketstgid
+                                ).cp_incidentsuffix,
+                                'Incident number': LookUp(
+                                    VehicleStagingOffline,
+                                    cp_vehicleticketstgid = ThisItem.cp_vehicleticketstgid
+                                ).cp_incidentnumber,
+                                'Incident date': LookUp(
+                                    VehicleStagingOffline,
+                                    cp_vehicleticketstgid = ThisItem.cp_vehicleticketstgid
+                                ).cp_incidentdate,
+                                'Person Forename': LookUp(
+                                    VehicleStagingOffline,
+                                    cp_vehicleticketstgid = ThisItem.cp_vehicleticketstgid
+                                ).cp_forname,
+                                'Person Surname': LookUp(
+                                    VehicleStagingOffline,
+                                    cp_vehicleticketstgid = ThisItem.cp_vehicleticketstgid
+                                ).cp_surname
+                            }
+                        );
+                    PaddingBottom: =10
+                    PaddingLeft: =10
+                    PaddingRight: =10
+                    PaddingTop: =10
+                    TabIndex: =0
+                    Tooltip: ="View item details"
+                    Width: =99
+                    X: =536
+                    Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+                    ZIndex: =3
+
+                Separator6 As rectangle:
+                    Height: =1
+                    OnSelect: =Select(Parent)
+                    Width: =Parent.TemplateWidth
+                    Y: =Parent.TemplateHeight - 1
+                    ZIndex: =4
+
+                Subtitle_entered_by As label:
+                    Height: =32
+                    OnSelect: =Select(Parent)
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: |-
+                        ="Entered By :"
+                    Underline: =true
+                    VerticalAlign: =VerticalAlign.Top
+                    Width: =197
+                    X: =16
+                    Y: =83
+                    ZIndex: =5
+
+                Subtitle_entered_by_1 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Height: =32
+                    OnSelect: =Select(Parent)
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =LookUp(Usersalllocal,systemuserid in VehicleStagingOffline.cp_enteredby).fullname
+                    VerticalAlign: =VerticalAlign.Top
+                    Width: =357
+                    X: =160
+                    Y: =83
+                    ZIndex: =6
+
+                Subtitle_sig_dte_time_1 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Height: =24
+                    OnSelect: =Select(Parent)
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =ThisItem.createdon
+                    VerticalAlign: =VerticalAlign.Top
+                    Width: =262
+                    X: =233
+                    Y: =149
+                    ZIndex: =7
+
+                Subtitle_sig_dte_time_2 As label:
+                    Height: =24
+                    OnSelect: =Select(Parent)
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =
+                    VerticalAlign: =VerticalAlign.Top
+                    Visible: =false
+                    Width: =262
+                    X: =25
+                    Y: =120
+                    ZIndex: =8
+
+                Subtitle_entered_by_2 As label:
+                    Height: =32
+                    OnSelect: =Select(Parent)
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: |-
+                        ="Incident Date :"
+                    Underline: =true
+                    VerticalAlign: =VerticalAlign.Top
+                    Width: =197
+                    X: =16
+                    Y: =41
+                    ZIndex: =9
+
+                Subtitle_entered_by_3 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Height: =32
+                    OnSelect: =Select(Parent)
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: =ThisItem.cp_incidentdate
+                    VerticalAlign: =VerticalAlign.Top
+                    Width: =251
+                    X: =213
+                    Y: =41
+                    ZIndex: =10
+
+                Subtitle_entered_by_4 As label:
+                    Height: =32
+                    OnSelect: =Select(Parent)
+                    PaddingBottom: =0
+                    PaddingLeft: =0
+                    PaddingRight: =0
+                    PaddingTop: =0
+                    Text: |-
+                        ="Incident Number :"
+                    Underline: =true
+                    VerticalAlign: =VerticalAlign.Top
+                    Width: =217
+                    X: =17
+                    Y: =2
+                    ZIndex: =11
+
+            Label_from As label:
+                Height: =43
+                Size: =21
+                Text: ="From "
+                Width: =123
+                X: =39
+                ZIndex: =5
+
+            Label_to As label:
+                Height: =28
+                Size: =21
+                Text: ="To"
+                Width: =123
+                X: =356
+                Y: =8
+                ZIndex: =6
+
+            Icon8 As icon.ArrowsUpDown:
+                Color: =RGBA(116, 116, 116, 1)
+                Icon: =Icon.Sort
+                OnSelect: |-
+                    =UpdateContext({SortDescending1: !SortDescending1})
+                X: =576
+                Y: =190
+                ZIndex: =7
+
+    "'Timer_Unfinished Tickets_1' As timer":
+        BorderColor: =ColorFade('Timer_Unfinished Tickets_1'.Fill, -15%)
+        DisabledBorderColor: =ColorFade('Timer_Unfinished Tickets_1'.BorderColor, 70%)
+        DisabledColor: =ColorFade('Timer_Unfinished Tickets_1'.Fill, 90%)
+        DisabledFill: =ColorFade('Timer_Unfinished Tickets_1'.Fill, 70%)
+        Duration: =1000
+        FocusedBorderColor: ='Timer_Unfinished Tickets_1'.BorderColor
+        Height: =67
+        HoverBorderColor: =ColorFade('Timer_Unfinished Tickets_1'.BorderColor, 20%)
+        OnTimerEnd: =
+        OnTimerStart: |-
+            =UpdateContext({Warnunsubmitunsub:!Warnunsubmitunsub})
+        PressedBorderColor: ='Timer_Unfinished Tickets_1'.Fill
+        PressedColor: ='Timer_Unfinished Tickets_1'.Fill
+        PressedFill: ='Timer_Unfinished Tickets_1'.Color
+        Repeat: =true
+        Reset: =timerresetunsub
+        Start: =timerstartunsub
+        Text: |-
+            =Text(Time(0, 0, 'Timer_Unfinished Tickets_1'.Value/1000), "hh:mm:ss")
+        Visible: =false
+        Width: =175
+        ZIndex: =24
+
+    Label1_16 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =42
+        Size: =21
+        Text: =Vehicle_Primary_key
+        Width: =440
+        X: =100
+        Y: =45
+        ZIndex: =25
+

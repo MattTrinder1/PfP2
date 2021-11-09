@@ -1,0 +1,134 @@
+Scr_PNC_Reports As screen:
+
+    Label_header_vehicle_2 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="PNC Vehicle Reports"
+        Width: =640
+        ZIndex: =2
+
+    Icon4_back_2 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =87
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_PNC,UnCoverRight)
+        PaddingBottom: =10
+        PaddingLeft: =10
+        PaddingRight: =10
+        PaddingTop: =10
+        Width: =87
+        ZIndex: =4
+
+    Gallery6 As gallery.variableTemplateHeightGallery:
+        Height: =1049
+        Items: =VEResult1.reports
+        Layout: =Layout.Vertical
+        ShowScrollbar: =false
+        TemplateSize: =609
+        Y: =87
+        ZIndex: =5
+
+        Label8 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Report Created Date"
+            Width: =630
+            Y: =155
+            ZIndex: =1
+
+        Label9_1 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Report Number"
+            Width: =560
+            Y: =80
+            ZIndex: =4
+
+        Label9_9 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Report Created Time"
+            Width: =560
+            Y: =235
+            ZIndex: =5
+
+        Label5 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Report Type"
+            Width: =630
+            ZIndex: =6
+
+        TextInput2 As text:
+            Default: =Concatenate(ThisItem.text1," ", ThisItem.text2, " ",ThisItem.text3)
+            DisplayMode: =DisplayMode.View
+            Height: =239
+            Mode: =TextMode.MultiLine
+            OnSelect: =Select(Parent)
+            Size: =16
+            Width: =630
+            Y: =370
+            ZIndex: =7
+
+        Label9_10 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Report Details"
+            Width: =560
+            Y: =330
+            ZIndex: =8
+
+        Label5_1 As label:
+            FontWeight: =Normal
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.reportType
+            Width: =630
+            Y: =40
+            ZIndex: =9
+
+        Label5_2 As label:
+            FontWeight: =Normal
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.reportNum
+            Width: =630
+            Y: =115
+            ZIndex: =10
+
+        Label5_3 As label:
+            FontWeight: =Normal
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.reportCreatedDate
+            Width: =630
+            Y: =195
+            ZIndex: =11
+
+        Label5_4 As label:
+            FontWeight: =Normal
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.reportCreatedTime
+            Width: =630
+            Y: =275
+            ZIndex: =12
+
+        Rectangle3 As rectangle:
+            Fill: =RGBA(153, 153, 153, 1)
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =630
+            Y: =609
+            ZIndex: =13
+

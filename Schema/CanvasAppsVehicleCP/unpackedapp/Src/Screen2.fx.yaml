@@ -1,0 +1,31 @@
+Screen2 As screen:
+
+    Label14 As label:
+        Height: =70
+        Size: =21
+        Text: |-
+            =If(
+                IsMatch(
+                   TextInput1.Text,
+                    Match.Digit&Match.Digit&"/"&Match.Letter&
+                    Match.Letter&"/"&Match.Digit&Match.Digit&Match.Digit&Match.Digit&Match.Digit&Match.Digit&Match.Digit&"/"&
+                    Match.Digit&Match.Digit
+                ),
+                "True",
+                "False"
+            )
+        Width: =560
+        X: =40
+        Y: =85
+        ZIndex: =1
+
+    TextInput1 As text:
+        Default: =
+        Height: =70
+        HintText: ="NN/LL/NNNNNNN/NN"
+        Size: =21
+        Width: =560
+        X: =55
+        Y: =265
+        ZIndex: =2
+

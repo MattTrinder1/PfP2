@@ -1,0 +1,520 @@
+Scr_PNC As screen:
+    OnVisible: |-
+        =Set(UseDetails,false);
+         Set(MenuBar,false);
+        UpdateContext({VE: true});
+        UpdateContext({KD: false});
+        UpdateContext({RE: false});
+        UpdateContext({HZ: false});
+        UpdateContext({ID: false});
+
+    PNCVehicleDetailsComponent_1 As PNCVehicleDetailsComponent:
+        tableValue: =Table(VEResult1)
+        Visible: =VE
+        Y: =151
+
+    PNCVehicleInsuranceComponent_1 As PNCVehicleInsuranceComponent:
+        namedDrivers: =First(VEResult1.insurance).namedDrivers
+        tableValue: =VEResult1.insurance
+        Visible: =ID
+        Y: =151
+
+    Label7 As label:
+        Align: =Center
+        FontWeight: =Semibold
+        Height: =61
+        Size: =16
+        Text: ="Vehicle"
+        Visible: =VE
+        Width: =640
+        Y: =90
+        ZIndex: =1
+
+    Label_header_vehicle_1 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="PNC Vehicle Search"
+        Width: =640
+        ZIndex: =2
+
+    gal_PNCSearch_1 As gallery.variableTemplateHeightGallery:
+        Height: =980
+        Items: =VEResult1.keepers
+        Layout: =Layout.Vertical
+        ShowScrollbar: =false
+        TemplatePadding: =0
+        TemplateSize: =390
+        Visible: =KD
+        Y: =156
+        ZIndex: =6
+
+        lbl_model_1 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =ThisItem.ad2
+            Width: =630
+            Y: =160
+            ZIndex: =2
+
+        lbl_make_2 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =ThisItem.regKeeper
+            Width: =630
+            Y: =40
+            ZIndex: =4
+
+        lbl_txtmake_2 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Name"
+            Width: =576
+            ZIndex: =5
+
+        lbl_colour_1 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =ThisItem.ad3
+            Width: =630
+            Y: =200
+            ZIndex: =6
+
+        lbl_txtcc_1 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Keeper Since"
+            Width: =630
+            Y: =319
+            ZIndex: =7
+
+        lbl_registered_1 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =ThisItem.ad5
+            Width: =630
+            Y: =280
+            ZIndex: =8
+
+        lbl_style_1 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =ThisItem.ad4
+            Width: =630
+            Y: =240
+            ZIndex: =10
+
+        lbl_cc_1 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =ThisItem.keeperSince
+            Width: =630
+            Y: =360
+            ZIndex: =12
+
+        lbl_make_3 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =ThisItem.ad1
+            Width: =630
+            Y: =120
+            ZIndex: =28
+
+        lbl_txtmodel_2 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Address"
+            Width: =630
+            Y: =80
+            ZIndex: =29
+
+    Label7_1 As label:
+        Align: =Center
+        FontWeight: =Semibold
+        Height: =61
+        Size: =16
+        Text: ="Keeper Details"
+        Visible: =KD
+        Width: =640
+        Y: =90
+        ZIndex: =7
+
+    gal_PNCSearch_2 As gallery.variableTemplateHeightGallery:
+        Height: =980
+        Items: =VEResult1.reports
+        Layout: =Layout.Vertical
+        ShowScrollbar: =false
+        TemplatePadding: =0
+        TemplateSize: =458
+        Visible: =RE
+        Y: =156
+        ZIndex: =8
+
+        lbl_make_4 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =ThisItem.reportType
+            Width: =630
+            Y: =40
+            ZIndex: =4
+
+        lbl_txtmake_3 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Report Type"
+            Width: =576
+            ZIndex: =5
+
+        lbl_make_5 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =ThisItem.reportFSOwner
+            Width: =630
+            Y: =120
+            ZIndex: =28
+
+        lbl_txtmodel_3 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Report Owner"
+            Width: =630
+            Y: =80
+            ZIndex: =29
+
+        lbl_make_6 As label:
+            Height: =60
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =ThisItem.text1
+            Width: =630
+            Y: =280
+            ZIndex: =30
+
+        lbl_txtmodel_4 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Text 1 "
+            Width: =630
+            Y: =240
+            ZIndex: =31
+
+        lbl_make_7 As label:
+            Height: =60
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =ThisItem.text2
+            Width: =630
+            Y: =380
+            ZIndex: =32
+
+        lbl_txtmodel_5 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Text 2"
+            Width: =630
+            Y: =340
+            ZIndex: =33
+
+        lbl_make_8 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =Concatenate(ThisItem.reportCreatedDate, " " , ThisItem.reportCreatedTime)
+            Width: =630
+            Y: =200
+            ZIndex: =34
+
+        lbl_txtmodel_6 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Report Created Date/Time"
+            Width: =630
+            Y: =160
+            ZIndex: =35
+
+        Rectangle6 As rectangle:
+            Fill: =RGBA(153, 153, 153, 1)
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =640
+            Y: =454
+            ZIndex: =36
+
+    Label7_2 As label:
+        Align: =Center
+        FontWeight: =Semibold
+        Height: =61
+        Size: =16
+        Text: ="Reports"
+        Visible: =RE
+        Width: =640
+        Y: =90
+        ZIndex: =9
+
+    Label7_3 As label:
+        Align: =Center
+        FontWeight: =Semibold
+        Height: =61
+        Size: =16
+        Text: ="Insurance Details"
+        Visible: =ID
+        Width: =640
+        Y: =90
+        ZIndex: =10
+
+    Button14_2 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        FocusedBorderThickness: =0
+        Height: =89
+        HoverFill: =ColorFade(RGBA(153, 153, 153, 1), -20%)
+        OnSelect: =If(UseDetails = false,Set(UseDetails,true),Set(UseDetails,false))
+        RadiusBottomLeft: =0
+        RadiusBottomRight: =0
+        RadiusTopLeft: =0
+        RadiusTopRight: =0
+        Size: =16
+        Text: =If(UseDetails = true, "Don't Use Details", "Use Details")
+        Width: =320
+        X: =320
+        Y: =1047
+        ZIndex: =20
+
+    Button14_4 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        FocusedBorderThickness: =0
+        Height: =89
+        HoverFill: =ColorFade(RGBA(153, 153, 153, 1), -20%)
+        OnSelect: =Navigate(Scr_vehicle, Fade)
+        RadiusBottomLeft: =0
+        RadiusBottomRight: =0
+        RadiusTopLeft: =0
+        RadiusTopRight: =0
+        Size: =16
+        Text: ="Back"
+        Width: =320
+        Y: =1047
+        ZIndex: =21
+
+    Label16 As label:
+        Height: =70
+        Size: =21
+        Text: =
+        Width: =560
+        X: =10
+        ZIndex: =22
+
+    Group1_2 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =23
+
+        Rectangle4_4 As rectangle:
+            Fill: =RGBA(255, 255, 255, 0.44)
+            Height: =976
+            Visible: =MenuBar
+            Width: =640
+            Y: =160
+            ZIndex: =12
+
+        Rectangle4_3 As rectangle:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderThickness: =1
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =976
+            Visible: =MenuBar
+            Width: =329
+            Y: =160
+            ZIndex: =13
+
+        Button5_21 As button:
+            Align: =Align.Left
+            Color: |-
+                =If(
+                    Or(
+                        DateTimeValue(VEResult1.motExpiry) < Today(),
+                        VEResult1.velDate <> "Y",
+                        First(VEResult1.insurance).insuranceHeld <> "INS: HELD"
+                    ),
+                    Red,
+                    If(
+                        VE = false,
+                        RGBA(
+                            0,
+                            0,
+                            0,
+                            1
+                        ),
+                        White
+                    )
+                )
+            Fill: =If(VE = false,RGBA(0, 0, 0, 0), Self.PressedFill)
+            Height: =64
+            HoverFill: =ColorFade(RGBA(153, 153, 153, 1), -20%)
+            OnSelect: |-
+                =UpdateContext({VE: true});
+                UpdateContext({KD: false});
+                UpdateContext({RE: false});
+                UpdateContext({HZ: false});
+                UpdateContext({ID: false});
+                If(MenuBar = true, Set(MenuBar,false),Set(MenuBar,true))
+            PaddingLeft: =10
+            PressedColor: =White
+            PressedFill: =ColorFade(Self.HoverFill, 30%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =16
+            Text: ="Vehicle"
+            Visible: =MenuBar
+            Width: =329
+            Y: =160
+            ZIndex: =14
+
+        Button5_20 As button:
+            Align: =Align.Left
+            Color: =If(KD = false,RGBA(0, 0, 0, 1), White)
+            DisplayMode: =If(IsEmpty(VEResult1.keepers),DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =If(KD = false,RGBA(0, 0, 0, 0), Self.PressedFill)
+            Height: =64
+            HoverFill: =ColorFade(RGBA(153, 153, 153, 1), -20%)
+            OnSelect: |-
+                =UpdateContext({VE: false});
+                UpdateContext({KD: true});
+                UpdateContext({RE: false});
+                UpdateContext({HZ: false});
+                UpdateContext({ID: false});
+                If(MenuBar = true, Set(MenuBar,false),Set(MenuBar,true))
+            PaddingLeft: =10
+            PressedColor: =White
+            PressedFill: =ColorFade(Self.HoverFill, 30%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =16
+            Text: ="Keeper Details"
+            Visible: =MenuBar
+            Width: =329
+            Y: =224
+            ZIndex: =15
+
+        Button5_19 As button:
+            Align: =Align.Left
+            Color: =If(RE = false,RGBA(0, 0, 0, 1), White)
+            DisplayMode: =If(IsEmpty(VEResult1.reports),DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =If(RE = false,RGBA(0, 0, 0, 0), Self.PressedFill)
+            Height: =64
+            HoverFill: =ColorFade(RGBA(153, 153, 153, 1), -20%)
+            OnSelect: |-
+                =UpdateContext({VE: false});
+                UpdateContext({KD: false});
+                UpdateContext({RE: true});
+                UpdateContext({HZ: false});
+                UpdateContext({ID: false});
+                If(MenuBar = true, Set(MenuBar,false),Set(MenuBar,true))
+            PaddingLeft: =10
+            PressedColor: =White
+            PressedFill: =ColorFade(Self.HoverFill, 30%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =16
+            Text: ="Reports" 
+            Visible: =MenuBar
+            Width: =329
+            Y: =288
+            ZIndex: =16
+
+        Button5_18 As button:
+            Align: =Align.Left
+            Color: =If(HZ = false,RGBA(0, 0, 0, 1), White)
+            DisplayMode: =DisplayMode.Disabled
+            Fill: =If(HZ = false,RGBA(0, 0, 0, 0), Self.PressedFill)
+            Height: =64
+            HoverFill: =ColorFade(RGBA(153, 153, 153, 1), -20%)
+            OnSelect: |-
+                =UpdateContext({VE: false});
+                UpdateContext({KD: false});
+                UpdateContext({RE: false});
+                UpdateContext({HZ: true});
+                UpdateContext({ID: false});
+                If(MenuBar = true, Set(MenuBar,false),Set(MenuBar,true))
+            PaddingLeft: =10
+            PressedColor: =White
+            PressedFill: =ColorFade(Self.HoverFill, 30%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =16
+            Text: ="Hazards"
+            Visible: =MenuBar
+            Width: =329
+            Y: =352
+            ZIndex: =17
+
+        Button5_16 As button:
+            Align: =Align.Left
+            Color: |-
+                =If(First(VEResult1.insurance).insuranceHeld <> "INS: HELD", Red, If(ID = false,RGBA(0, 0, 0, 1), White))
+            DisplayMode: =If(IsEmpty(VEResult1.insurance),DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =If(ID = false,RGBA(0, 0, 0, 0), Self.PressedFill)
+            Height: =64
+            HoverFill: =ColorFade(RGBA(153, 153, 153, 1), -20%)
+            OnSelect: |-
+                =UpdateContext({VE: false});
+                UpdateContext({KD: false});
+                UpdateContext({RE: false});
+                UpdateContext({HZ: false});
+                UpdateContext({ID: true});
+                If(MenuBar = true, Set(MenuBar,false),Set(MenuBar,true))
+            PaddingLeft: =10
+            PressedColor: =White
+            PressedFill: =ColorFade(Self.HoverFill, 30%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =16
+            Text: ="Insurance Details"
+            Visible: =MenuBar
+            Width: =329
+            Y: =416
+            ZIndex: =18
+
+        ico_Menu_1 As icon.Hamburger:
+            Color: =RGBA(153, 153, 153, 1)
+            Icon: =Icon.Hamburger
+            OnSelect: |
+                =If(MenuBar = true, Set(MenuBar,false),Set(MenuBar,true))
+            X: =10
+            Y: =87
+            ZIndex: =19
+

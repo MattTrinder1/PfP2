@@ -1,0 +1,357 @@
+PNCDetailsComponent As CanvasComponent:
+    DLCheckVariable: =true
+    Fill: =RGBA(0, 0, 0, 0)
+    Height: =985
+    tableValue: |-
+        =Table(
+            {
+                firstName: "",
+                lastName: "",
+                dateOfBirth: "",
+                gender: "",
+                birthplace: "",
+                address1: "",
+                address2: "",
+                address3: "",
+                postCode: "",
+                driverNumber: "",
+                licenceStatus: "",
+                disqualification: "",
+                licenceType: "",
+                addressDate: "",
+                licenceIssue: "",
+                counterPartIssue: "",
+                commencementDate: "",
+                expiryDate: "",
+                title: "MR",
+                croNumber: "",
+                warningSignalsText: "",
+                ethnicity: ""
+            }
+        )
+    Width: =640
+    X: =0
+    Y: =0
+    ZIndex: =1
+
+    Canvas3 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =985
+        Width: =Parent.Width
+        Y: =
+        ZIndex: =1
+
+        DataCard7 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =1394
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Label9_33 As label:
+                Align: =Align.Justify
+                OnSelect: =
+                Size: =16
+                Text: =Switch(PNCDetailsComponent.DLCheckVariable, true, First(PNCDetailsComponent.tableValue).lastName, Concatenate(First(PNCDetailsComponent.tableValue).lastName,", ",First(PNCDetailsComponent.tableValue).firstName))
+                Width: =630
+                Wrap: =false
+                Y: =140
+                ZIndex: =1
+
+            Label2_6 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Name"
+                Width: =560
+                Y: =100
+                ZIndex: =2
+
+            Label3_89 As label:
+                OnSelect: =
+                Size: =16
+                Text: =First(PNCDetailsComponent.tableValue).croNumber
+                Width: =606
+                Y: =220
+                ZIndex: =3
+
+            Label4_82 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="CRO Number"
+                Width: =560
+                Y: =180
+                ZIndex: =4
+
+            Label3_90 As label:
+                OnSelect: =
+                Size: =16
+                Text: =Proper(First(PNCDetailsComponent.tableValue).gender)
+                Width: =606
+                Y: =300
+                ZIndex: =5
+
+            Label4_83 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Gender"
+                Width: =560
+                Y: =260
+                ZIndex: =6
+
+            Label3_91 As label:
+                OnSelect: =
+                Size: =16
+                Text: =First(PNCDetailsComponent.tableValue).ethnicity
+                Width: =606
+                Y: =380
+                ZIndex: =7
+
+            Label4_84 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Ethnicity"
+                Width: =560
+                Y: =340
+                ZIndex: =8
+
+            Label3_92 As label:
+                OnSelect: =
+                Size: =16
+                Text: =First(PNCDetailsComponent.tableValue).address1
+                Width: =606
+                Y: =460
+                ZIndex: =9
+
+            Label4_85 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Address1"
+                Width: =560
+                Y: =420
+                ZIndex: =10
+
+            Label3_93 As label:
+                OnSelect: =
+                Size: =16
+                Text: =First(PNCDetailsComponent.tableValue).address2
+                Width: =606
+                Y: =540
+                ZIndex: =11
+
+            Label4_86 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Address2"
+                Width: =560
+                Y: =500
+                ZIndex: =12
+
+            Label3_94 As label:
+                OnSelect: =
+                Size: =16
+                Text: =First(PNCDetailsComponent.tableValue).address3
+                Width: =606
+                Y: =620
+                ZIndex: =13
+
+            Label4_87 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Address3"
+                Width: =560
+                Y: =580
+                ZIndex: =14
+
+            Label4_88 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Address Date"
+                Width: =560
+                Y: =660
+                ZIndex: =16
+
+            Label3_96 As label:
+                OnSelect: =
+                Size: =16
+                Text: =First(PNCDetailsComponent.tableValue).driverNumber
+                Width: =606
+                Y: =780
+                ZIndex: =17
+
+            Label4_89 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Driver No"
+                Width: =560
+                Y: =740
+                ZIndex: =18
+
+            Label3_97 As label:
+                Fill: =RGBA(255, 0, 0, 1)
+                FontWeight: =Semibold
+                Height: =60
+                OnSelect: =
+                Size: =16
+                Text: =First(PNCDetailsComponent.tableValue).warningSignalsText
+                Width: =640
+                Y: =40
+                ZIndex: =19
+
+            Label4_90 As label:
+                Fill: =RGBA(255, 0, 0, 1)
+                FontWeight: =Bold
+                OnSelect: =
+                Size: =16
+                Text: ="Warning Signals"
+                Width: =640
+                ZIndex: =20
+
+            Label4_91 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Licence Status"
+                Width: =560
+                Y: =820
+                ZIndex: =21
+
+            Label3_98 As label:
+                OnSelect: =
+                Size: =16
+                Text: =First(PNCDetailsComponent.tableValue).licenceStatus
+                Width: =606
+                Y: =860
+                ZIndex: =22
+
+            Label3_99 As label:
+                OnSelect: =
+                Size: =16
+                Text: =First(PNCDetailsComponent.tableValue).disqualification
+                Width: =606
+                Y: =1016
+                ZIndex: =23
+
+            Label3_100 As label:
+                OnSelect: =
+                Size: =16
+                Text: =First(PNCDetailsComponent.tableValue).addressDate
+                Width: =606
+                Y: =698
+                ZIndex: =24
+
+            Label4_92 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Disqualification"
+                Width: =560
+                Y: =900
+                ZIndex: =25
+
+            Label3_101 As label:
+                OnSelect: =
+                Size: =16
+                Text: =First(PNCDetailsComponent.tableValue).disqualification
+                Width: =606
+                Y: =940
+                ZIndex: =26
+
+            Label4_93 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Licence Type"
+                Width: =560
+                Y: =976
+                ZIndex: =27
+
+            Label3_102 As label:
+                OnSelect: =
+                Size: =16
+                Text: =First(PNCDetailsComponent.tableValue).licenceType
+                Width: =606
+                Y: =1016
+                ZIndex: =28
+
+            Label4_94 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Licence Issue"
+                Width: =560
+                Y: =1056
+                ZIndex: =29
+
+            Label3_103 As label:
+                OnSelect: =
+                Size: =16
+                Text: =First(PNCDetailsComponent.tableValue).licenceIssue
+                Width: =606
+                Y: =1096
+                ZIndex: =30
+
+            Label4_95 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Counter Part Issue"
+                Width: =560
+                Y: =1136
+                ZIndex: =31
+
+            Label3_104 As label:
+                OnSelect: =
+                Size: =16
+                Text: =First(PNCDetailsComponent.tableValue).counterPartIssue
+                Width: =606
+                Y: =1176
+                ZIndex: =32
+
+            Label4_96 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Commencement Date"
+                Width: =560
+                Y: =1216
+                ZIndex: =33
+
+            Label3_105 As label:
+                OnSelect: =
+                Size: =16
+                Text: =First(PNCDetailsComponent.tableValue).commencementDate
+                Width: =606
+                Y: =1256
+                ZIndex: =34
+
+            Label4_97 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Expiry Date"
+                Width: =560
+                Y: =1296
+                ZIndex: =35
+
+            Label3_106 As label:
+                OnSelect: =
+                Size: =16
+                Text: =First(PNCDetailsComponent.tableValue).expiryDate
+                Width: =606
+                Y: =1336
+                ZIndex: =36
+

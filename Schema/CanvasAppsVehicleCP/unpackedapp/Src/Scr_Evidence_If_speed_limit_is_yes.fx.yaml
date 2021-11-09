@@ -1,0 +1,2075 @@
+Scr_Evidence_If_speed_limit_is_yes As screen:
+    OnHidden: =Reset(PenInput_EvidenceYes_OfficerSignature)
+    OnVisible: |
+        =If(
+            Len(Dropdown_EvidenceYes_SpeedDetectionMethod.Selected.cp_name) > 0,
+            UpdateContext({madcolEC: White}),
+            UpdateContext({madcolEC: LightGoldenRodYellow})
+        );
+        
+        If(Or(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value="Police Pilot",Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value="VASCAR", Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value="Puma Speed Meter",Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value="Following Check"),Set(e1,400), Set(e1,0));
+        
+        If(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value="Handheld Radar", Set(handheld,true),Set(handheld,false));
+        If(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value="Following Check", Set(followingcheck,true),Set(followingcheck,false));
+        If(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value="Following Check", Set(evi4,true),Set(evi4,false));
+        If(Dropdown_EvidenceYes_SpeedDetectionMethod.Selected.cp_name ="Following Check" , Set(ev1,800),Set(ev1,0));
+        If(Dropdown_EvidenceYes_SpeedDetectionMethod.Selected.cp_name ="Handheld Radar" Or "Laser" , Set(ev2,801),Set(ev2,0));
+        If(Dropdown_EvidenceYes_SpeedDetectionMethod.Selected.cp_name ="Police Pilot" Or "Puma Speed Meter" Or "VASCAR" , Set(ev3,200),Set(ev3,0));
+        
+        UpdateContext({hasBeenSigned: true});
+        If(LookUp('Vehicle Offline',
+            Key = Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Officer Signature' = Blank() ,UpdateContext({hasBeenSigned: false}));
+        
+        /*If(LookUp('Vehicle Offline',
+            Key = Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Officer Signature' <> Blank() ,Set(signreadonlyso,DisplayMode.Disabled));*/
+
+    Label_header_Evidence_IfSpeedLimitisYes As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Evidence for Speed offence"
+        VerticalAlign: =VerticalAlign.Top
+        Width: =640
+        ZIndex: =1
+
+    Icon_back11 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home,ScreenTransition.UnCoverRight)
+        X: =27
+        Y: =17
+        ZIndex: =15
+
+    Canvas_Evidence_IfSpeedLimitisYes As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1049
+        Width: =640
+        Y: =87
+        ZIndex: =16
+
+        DataCard_Evidence_IfSpeedLimitIsYes As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =4465
+            Width: =640
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Dropdown_Evidence_IfSpeedLimitIsYes As dropdown:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                Default: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).Key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                Items: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =22
+                ZIndex: =19
+
+            Label_EvidenceYes_WitnessStatementText As label:
+                Fill: =RGBA(232, 244, 217, 1)
+                Height: =136
+                OnSelect: =
+                Size: =21
+                Text: ="Witness Statement Criminal Procedure Rules, r27.2; Criminal Justice Act 1967, s.9; Magistrates' Courts Act 1980,s.5b"
+                Width: =545
+                X: =40
+                Y: =142
+                ZIndex: =28
+
+            Label_EvidenceYes_StatementOf As label:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="Statement of"
+                Width: =545
+                X: =40
+                Y: =305
+                ZIndex: =29
+
+            Group_EvidenceYes As group:
+                Height: =5
+                Width: =5
+                X: =-2
+                Y: =29
+                ZIndex: =57
+
+                Dropdown_EvidenceYes_OfficerTraining As dropdown:
+                    AllowEmptySelection: =true
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 1), -20%)
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Officer Training Name'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =madcolEA
+                    Height: =70
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Items: =OfficerTrainingoffline
+                    OnChange: |-
+                        =If(Len(Dropdown_EvidenceYes_OfficerTraining.Selected.cp_name)>0,UpdateContext({madcolEA:White}),UpdateContext({madcolEA:LightGoldenRodYellow}))
+                    OnSelect: |-
+                        =If(Len(Dropdown_EvidenceYes_OfficerTraining.Selected.cp_name)>0,UpdateContext({madcolEA:White}),UpdateContext({madcolEA:LightGoldenRodYellow}))
+                    PressedFill: =RGBA(128, 128, 128, 1)
+                    Reset: |
+                        =resetall
+                    SelectionFill: =RGBA(230, 230, 230, 1)
+                    Size: =21
+                    Width: =545
+                    X: =40
+                    Y: =505
+                    ZIndex: =30
+
+                Label_EvidenceYes_OfficerTraining As label:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =69
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Officer training"
+                    Width: =545
+                    X: =40
+                    Y: =442
+                    ZIndex: =31
+
+                Dropdown_EvidenceYes_Speedlimit As dropdown:
+                    AllowEmptySelection: =true
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 1), -20%)
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Speed Limit name'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =madcolEA
+                    Height: =65
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Items: =SpeedLimitoffline
+                    OnChange: |-
+                        =If(Len(Dropdown_EvidenceYes_Speedlimit.Selected.cp_name)>0,UpdateContext({madcolEB:White}),UpdateContext({madcolEB:LightGoldenRodYellow}))
+                    OnSelect: |-
+                        =If(Len(Dropdown_EvidenceYes_Speedlimit.Selected.cp_name)>0,UpdateContext({madcolEB:White}),UpdateContext({madcolEB:LightGoldenRodYellow}))
+                    PressedFill: =RGBA(128, 128, 128, 1)
+                    Reset: |
+                        =resetall
+                    SelectionFill: =RGBA(230, 230, 230, 1)
+                    Size: =21
+                    Width: =545
+                    X: =40
+                    Y: =641
+                    ZIndex: =32
+
+                Label_EvidenceYes_SpeedLimit As label:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =62
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Speed limit"
+                    Width: =545
+                    X: =40
+                    Y: =584
+                    ZIndex: =33
+
+                Dropdown_EvidenceYes_SpeedDetectionMethod As dropdown:
+                    AllowEmptySelection: =true
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 1), -20%)
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Speed Detection method name'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =madcolEC
+                    Height: =56
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Items: =Filter(Speeddetectionmethodoffline,cp_name<>"Police Pilot")
+                    OnChange: |-
+                        =If(
+                            Len(Dropdown_EvidenceYes_SpeedDetectionMethod.Selected.cp_name) > 0,
+                            UpdateContext({madcolEC: White}),
+                            UpdateContext({madcolEC: LightGoldenRodYellow})
+                        );
+                        If(Or(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value="Police Pilot",Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value="VASCAR", Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value="Puma Speed Meter",Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value="Following Check"),Set(e1,400), Set(e1,0));
+                        
+                        If(Or(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value="Handheld Radar" ,Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value= "Laser"), Set(handheld,true); Set(ev2,801),Set(handheld,false);Set(ev2,0));
+                        If(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value="Following Check", Set(followingcheck,true),Set(followingcheck,false));
+                        If(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value="Following Check", Set(evi4,true),Set(evi4,false));
+                        If(Dropdown_EvidenceYes_SpeedDetectionMethod.Selected.cp_name ="Following Check" , Set(ev1,800),Set(ev1,0));
+                        
+                        If(Or(Dropdown_EvidenceYes_SpeedDetectionMethod.Selected.cp_name ="Police Pilot",Dropdown_EvidenceYes_SpeedDetectionMethod.Selected.cp_name = "Puma Speed Meter" ,Dropdown_EvidenceYes_SpeedDetectionMethod.Selected.cp_name ="VASCAR") , Set(ev3,950),Set(ev3,0));
+                        
+                        Set(ev4,0)
+                    OnSelect: |+
+                        =
+                        
+                    PressedFill: =RGBA(128, 128, 128, 1)
+                    Reset: |
+                        =resetall
+                    SelectionFill: =RGBA(230, 230, 230, 1)
+                    Size: =21
+                    Width: =545
+                    X: =40
+                    Y: =782
+                    ZIndex: =34
+
+                Label_EvidenceYes_SpeedDetectionMethod As label:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =62
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Speed Detection Method"
+                    Width: =545
+                    X: =40
+                    Y: =726
+                    ZIndex: =35
+
+                Label_asterik_OfficerTraining As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =27
+                    Size: =21
+                    Text: ="*"
+                    Width: =26
+                    X: =559
+                    Y: =475
+                    ZIndex: =36
+
+                Label_asterik_SpeedLimit As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =33
+                    Size: =21
+                    Text: ="*"
+                    Width: =26
+                    X: =559
+                    Y: =749
+                    ZIndex: =37
+
+                Label_asterik_SpeedDetectionMethod As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =28
+                    Size: =21
+                    Text: ="*"
+                    Width: =26
+                    X: =559
+                    Y: =616
+                    ZIndex: =38
+
+            Image1_2 As image:
+                Fill: =RGBA(255, 255, 255, 1)
+                Height: =241
+                Image: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Officer Signature'
+                ImagePosition: =ImagePosition.Stretch
+                Visible: =If(LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Officer Signature'=Blank(),false,true)
+                Width: =559
+                X: =30
+                Y: =4083
+                ZIndex: =65
+
+            Group_sign As group:
+                Height: =5
+                Width: =5
+                X: =60
+                Y: =60
+                ZIndex: =73
+
+                Button_save_continue_EvidenceYes As button:
+                    DisplayMode: |-
+                        =If(LookUp('Vehicle Offline',
+                            Key = Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Officer Signature' = Blank() , DisplayMode.Edit,DisplayMode.Disabled)
+                    Fill: =RGBA(153, 153, 153, 1)
+                    Height: =72
+                    HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                    OnSelect: |-
+                        =UpdateIf(
+                            'Vehicle Offline',
+                            Key = Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key,
+                            {
+                                'Statement of name': First(Userlocal).Name,
+                                'Statement of': First(Userlocal).UserId,
+                                'Officer Training Name': Dropdown_EvidenceYes_OfficerTraining.Selected.cp_name,
+                                'Officer Training': Dropdown_EvidenceYes_OfficerTraining.Selected.cp_lookupvalueid,
+                                'Speed Limit name': Dropdown_EvidenceYes_Speedlimit.Selected.cp_name,
+                                'Speed Limit': Dropdown_EvidenceYes_Speedlimit.Selected.cp_lookupvalueid,
+                                'Speed Detection method name': Dropdown_EvidenceYes_SpeedDetectionMethod.Selected.cp_name,
+                                'Speed Detection method': Dropdown_EvidenceYes_SpeedDetectionMethod.Selected.cp_lookupvalueid,
+                                'Information from name': Dropdown_EvidenceYes_InformationFrom.Selected.cp_name,
+                                'Information from': Dropdown_EvidenceYes_InformationFrom.Selected.cp_lookupvalueid,
+                                'Officer Name': TextInput_EvidenceYes_OfficerName.Text,
+                                'Vehicle Stopped ?': Radio_EvidenceYes_VehicleStopped.Selected.Value,
+                                'Driver Shown Reading ?': Radio_EvidenceYes_DriverViewedDevice.Selected.Value,
+                                'Daylight Name': Dropdown_EvidenceYes_Daylight.Selected.cp_name,
+                                Daylight: Dropdown_EvidenceYes_Daylight.Selected.cp_lookupvalueid,
+                                'Street Lighting name': Dropdown_EvidenceYes_StreetLighting.Selected.cp_name,
+                                'Street Lighting ': Dropdown_EvidenceYes_StreetLighting.Selected.cp_lookupvalueid,
+                                'Weather name': Dropdown_EvidenceYes_Weather.Selected.cp_name,
+                                Weather: Dropdown_EvidenceYes_Weather.Selected.cp_lookupvalueid,
+                                'Visibility name': Dropdown_EvidenceYes_visibility.Selected.cp_name,
+                                Visibility: Dropdown_EvidenceYes_visibility.Selected.cp_lookupvalueid,
+                                'Speed Limit signs present & clear': Radio_EvidenceYes_SpeedLimitSigns.Selected.Value,
+                                //Following Check
+                                  //driver observer needs populating and creating
+                                  //below two are commented out because they are deleted from the app
+                                 //'Driver/Observer name': Dropdown_EvidenceYes_DriverObserver.Selected.cp_name,
+                                 //'Driver/Observer': Dropdown_EvidenceYes_DriverObserver.Selected.cp_lookupvalueid,
+                                 //'Mark/Unmarked car name': Dropdown_EvidenceYes_MarkedUnmarked.Selected.cp_name,
+                                 //'Mark/Unmarked car': Dropdown_EvidenceYes_MarkedUnmarked.Selected.cp_lookupvalueid,
+                        'Police vehicle number': TextInput_EvidenceYes_PoliceVehicleNumber.Text,
+                                'Distance followed (Miles)': TextInput_EvidenceYes_DistanceFollowed.Text,
+                                'From reference point': TextInput_EvidenceYes_FromReferencePoint.Text,
+                                'To reference point': TextInput_EvidenceYes_ToReference.Text,
+                                'Recorded speed (mph)': TextInput_EvidenceYes_Following_Check_RecordedSpeed.Text,
+                                'Distance behind (metres)': TextInput_EvidenceYes_DistanceBehind.Text,
+                                'Speedometer check date/time': DatePicker_EvidenceYes_SpeedometerCheckDateTime.SelectedDate + Time(
+                                    Value(Dropdown_hours_5.Selected.Value),
+                                    Value(Dropdown_minuites_5.Selected.Value),
+                                    0
+                                ),
+                                //End Following check
+                                 //Hanheld radar
+                        'Device serial number': TextInput_EvidenceYes_DeviceSerialNumber.Text,
+                                'Recorded Speed': TextInput_EvidenceYes_HanheldRadarorlaser_RecordedSpeed.Text,
+                                ' 1st device check date/time': DatePicker_EvidenceYes_FirstCheckDateTime_Handheldradar_Laser.SelectedDate + Time(
+                                    Value(Dropdown_hours_4.Selected.Value),
+                                    Value(Dropdown_minuites_4.Selected.Value),
+                                    0
+                                ),
+                                '1st device check location': TextInput_EvidenceYes_FirstCheckLocation.Text,
+                                '2nd device check date.time': DatePicker_EvidenceYes_SecondCheckDateTime_Handheldradar_Laser.SelectedDate + Time(
+                                    Value(Dropdown_hours_3.Selected.Value),
+                                    Value(Dropdown_minuites_3.Selected.Value),
+                                    0
+                                ),
+                                '2nd device check location': TextInput_EvidenceYes_SecondCheckLocation.Text,
+                                //End Handheldradar
+                                  //Police pilot, PUMA, VASCAR (Fields that start with // are duplicates of previous fields used)
+                                  //'Driver/Observer name': Dropdown_DriverObserver_1.Selected.Value
+                                  //'Mark/Unmarked car name': Dropdown_MarkedUnmarked_1.Selected.Value
+                                  //'Police vehicle number': TextInput_PoliceVehicleNumber_1.Text
+                                  //below two are commented out because they are deleted from the app
+                                  //'Vehicle was seen name': 'Dropdown__EvidenceYes_VehicleSeen_PP/VASCAR/PSM'.Selected.cp_name,
+                                  //'Vehicle was seen': 'Dropdown__EvidenceYes_VehicleSeen_PP/VASCAR/PSM'.Selected.cp_lookupvalueid,
+                        'Police pilot reference point A ': 'TextInput_EvidenceYes_ReferencePointA_PP/VASCAR/PSM'.Text,
+                                'Police pilot reference point B': 'TextInput_EvidenceYes_ReferencePointB_PP/VASCAR/PSM'.Text,
+                                'Police pilot recording distance': 'TextInput_EvidenceYes_RecordingDistance_PP/VASCAR/PSM'.Text,
+                                'Police pilot recorded speed': 'TextInput_EvidenceYes_RecordedSpeed_PP/VASCAR/PSM'.Text,
+                                'Police Pilot 1st device check/date time': 'DatePicker_EvidenceYes_1stdeviceDate/Time_PP/VASCAR/PSM'.SelectedDate + Time(
+                                    Value(Dropdown_hours_2.Selected.Value),
+                                    Value(Dropdown_minuites_2.Selected.Value),
+                                    0
+                                ),
+                                'Police Pilot 2nd device check/date time': 'DatePicker_EvidenceYes_2nddeviceDate/Time_PP/VASCAR/PSM'.SelectedDate + Time(
+                                    Value(Dropdown_hours_1.Selected.Value),
+                                    Value(Dropdown_minuites_1.Selected.Value),
+                                    0
+                                ),
+                                // end Police pilot, PUMA, VASCAR(Fields that start with // are duplicates of previous fields used)
+                                'Officer Statement': TextInput_EvidenceYes_Officer_statement_Notes.Text,
+                                'Officer Signature': If(hasBeenSigned = true, PenInput_EvidenceYes_OfficerSignature.Image, Blank()),
+                                'Date/time of signature': Now()
+                            }
+                        );
+                        
+                        If(hasBeenSigned,Reset(PenInput_EvidenceYes_OfficerSignature));
+                        
+                        
+                        UpdateContext(
+                            {
+                                rec: LookUp(
+                                    'Vehicle Offline',
+                                    Key = Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key
+                                )
+                            }
+                        );
+                        UpdateIf(
+                            'Vehicle Offline',
+                            Key = Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key,
+                            {
+                                EvidenceYESvalid: And(
+                                    !IsBlank(rec.'Officer Training Name'),
+                                    !IsBlank(rec.'Speed Limit name'),
+                                    !IsBlank(rec.'Speed Detection method name'),
+                                    !IsBlank(rec.'Information from name'),
+                                    !IsBlank(rec.'Officer Name'),
+                                    !IsBlank(rec.'Vehicle Stopped ?'),
+                                    !IsBlank(rec.'Driver Shown Reading ?'),
+                                    !IsBlank(rec.'Daylight Name'),
+                                    !IsBlank(rec.'Street Lighting name'),
+                                    !IsBlank(rec.'Weather name'),
+                                    !IsBlank(rec.Visibility),
+                                    !IsBlank(rec.'Speed Limit signs present & clear'),
+                                    !IsBlank(rec.'Officer Statement'),
+                                    !IsBlank(rec.'Officer Signature'),
+                                    !IsBlank(rec.'Date/time of signature'),
+                                    Or(
+                                        If(
+                                            rec.'Speed Detection method name' = "Following Check",
+                                            And(
+                                                !IsBlank(rec.'Police vehicle number'),
+                                                !IsBlank(rec.'Distance followed (Miles)'),
+                                                !IsBlank(rec.'From reference point'),
+                                                !IsBlank(rec.'To reference point'),
+                                                !IsBlank(rec.'Recorded speed (mph)'),
+                                                !IsBlank(rec.'Distance behind (metres)'),
+                                                !IsBlank(rec.'Speedometer check date/time')
+                                            )
+                                        ),
+                                       /* If(
+                                            rec.'Speed Detection method name' = "Handheld Radar",
+                                            And(
+                                                !IsBlank(rec.'Device serial number'),
+                                                !IsBlank(rec.'Recorded speed (mph)'),
+                                                !IsBlank(rec.' 1st device check date/time'),
+                                                !IsBlank(rec.'1st device check location'),
+                                                !IsBlank(rec.'2nd device check date.time'),
+                                                !IsBlank(rec.'2nd device check location'),
+                                                !IsBlank(rec.'Information from name'),
+                                                !IsBlank(rec.'Officer Name')
+                                            )
+                                        ),*/
+                                        If(
+                                            rec.'Speed Detection method name' = "Laser",
+                                            And(
+                                                !IsBlank(rec.'Device serial number'),
+                                                !IsBlank(rec.'Recorded Speed'),
+                                                !IsBlank(rec.' 1st device check date/time'),
+                                                !IsBlank(rec.'1st device check location'),
+                                                !IsBlank(rec.'2nd device check date.time'),
+                                                !IsBlank(rec.'2nd device check location'),
+                                                !IsBlank(rec.'Information from name'),
+                                                !IsBlank(rec.'Officer Name')
+                                            )
+                                        ),
+                                        If(
+                                            rec.'Speed Detection method name' = "Handheld Radar",
+                                            And(
+                                                !IsBlank(rec.'Police vehicle number'),
+                                                !IsBlank(rec.'Device serial number'),
+                                                !IsBlank(rec.'Recorded Speed'),
+                                                !IsBlank(rec.' 1st device check date/time'),
+                                                !IsBlank(rec.'1st device check location'),
+                                                !IsBlank(rec.'2nd device check date.time'),
+                                                !IsBlank(rec.'2nd device check location'),
+                                                !IsBlank(rec.'Information from name'),
+                                                !IsBlank(rec.'Officer Name')
+                                            )
+                                        ),
+                                        If(
+                                            rec.'Speed Detection method name' = "Puma Speed Meter",
+                                            And(
+                                                 !IsBlank(rec.'Police vehicle number'),
+                                                !IsBlank(rec.'Police pilot reference point A '),
+                                                !IsBlank(rec.'Police pilot reference point B'),
+                                                !IsBlank(rec.'Police pilot recorded speed'),
+                                                !IsBlank(rec.'Police pilot recording distance'),
+                                                !IsBlank(rec.'Police Pilot 2nd device check/date time'),
+                                                !IsBlank(rec.'Police Pilot 1st device check/date time')
+                                            )
+                                        ),
+                                        If(
+                                            rec.'Speed Detection method name' = "VASCAR",
+                                            And(
+                                               !IsBlank(rec.'Police vehicle number'),
+                                                !IsBlank(rec.'Police pilot reference point A '),
+                                                !IsBlank(rec.'Police pilot reference point B'),
+                                                !IsBlank(rec.'Police pilot recorded speed'),
+                                                !IsBlank(rec.'Police pilot recording distance'),
+                                                !IsBlank(rec.'Police Pilot 2nd device check/date time'),
+                                                !IsBlank(rec.'Police Pilot 1st device check/date time')
+                                            )
+                                        )
+                                    )
+                                )
+                            }
+                        );
+                        SaveData(
+                            'Vehicle Offline',
+                            "Vehicle Offline"
+                        );
+                        Navigate(
+                            Scr_home,
+                            ScreenTransition.Cover
+                        )
+                    Size: =24
+                    Text: ="Save & Continue"
+                    Width: =560
+                    X: =30
+                    Y: =4441
+                    ZIndex: =20
+
+                TextInput_EvidenceYes_Officer_statement_Notes As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Officer Statement'
+                    DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,Edit)
+                    EnableSpellCheck: =true
+                    Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                    Height: =215
+                    HoverBorderColor: =RGBA(128, 128, 128, 1)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Mode: =TextMode.MultiLine
+                    OnSelect: =
+                    Size: =21
+                    Width: =545
+                    X: =40
+                    Y: =3556
+                    ZIndex: =21
+
+                Label_EvidenceYes_statement As label:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =
+                    Height: =55
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Officer statement"
+                    Width: =545
+                    X: =40
+                    Y: =3501
+                    ZIndex: =22
+
+                Label_EvidenceYes_VehicleDescribed_statement As label:
+                    DisplayMode: =
+                    Fill: =RGBA(232, 244, 217, 1)
+                    Height: =137
+                    Italic: =true
+                    OnSelect: =
+                    Size: =20
+                    Text: ="The vehicle described in this ticket was seen by me at the time, date and location indicated. The alleged offender was the driver of the vehicle and was reported."
+                    Width: =545
+                    X: =40
+                    Y: =3359
+                    ZIndex: =23
+
+                Label_EvidenceYes_StatementSigned_statement As label:
+                    DisplayMode: =
+                    Fill: =RGBA(232, 244, 217, 1)
+                    Height: =209
+                    Italic: =true
+                    OnSelect: =
+                    Size: =20
+                    Text: ="This statement signed by me, is true to the best of my knowledge and belief and I make it knowing that, if it is tendered in evidence, I shall be liable to prosecution if I have wilfully stated in it anything which I know to be false or do not believe to be true"
+                    Width: =545
+                    X: =40
+                    Y: =3801
+                    ZIndex: =24
+
+                TextInput_EvidenceYes_SignatureDateTime As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Date/time of signature'
+                    DisplayMode: =
+                    Height: =55
+                    HintText: ="Date/time of signature"
+                    OnSelect: =
+                    Size: =21
+                    Width: =545
+                    X: =40
+                    Y: =4349
+                    ZIndex: =25
+
+                PenInput_EvidenceYes_OfficerSignature As inkControl:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: |-
+                        =If(
+                            And(
+                                !IsBlank(Dropdown_EvidenceYes_OfficerTraining.Selected.cp_name),
+                                !IsBlank(Dropdown_EvidenceYes_Speedlimit.Selected.cp_name),
+                                !IsBlank(Dropdown_EvidenceYes_SpeedDetectionMethod.Selected.cp_name),
+                                !IsBlank(Dropdown_EvidenceYes_InformationFrom.Selected.cp_name),
+                                !IsBlank(TextInput_EvidenceYes_OfficerName.Text),
+                                !IsBlank(Radio_EvidenceYes_VehicleStopped.Selected.Value),
+                                !IsBlank(Radio_EvidenceYes_DriverViewedDevice.Selected.Value),
+                                !IsBlank(Dropdown_EvidenceYes_Daylight.Selected.cp_name),
+                                !IsBlank(Dropdown_EvidenceYes_StreetLighting.Selected.cp_name),
+                                !IsBlank(Dropdown_EvidenceYes_Weather.Selected.cp_name),
+                                !IsBlank(Dropdown_EvidenceYes_visibility.Selected.cp_lookupvalueid),
+                                !IsBlank(Radio_EvidenceYes_SpeedLimitSigns.Selected.Value),
+                                !IsBlank(TextInput_EvidenceYes_Officer_statement_Notes.Text),
+                                Or(
+                                    If(
+                                        Dropdown_EvidenceYes_SpeedDetectionMethod.Selected.cp_name = "Following Check",
+                                        And(
+                                            !IsBlank(TextInput_EvidenceYes_PoliceVehicleNumber.Text),
+                                            !IsBlank(TextInput_EvidenceYes_DistanceFollowed.Text),
+                                            !IsBlank(TextInput_EvidenceYes_FromReferencePoint.Text),
+                                            !IsBlank(TextInput_EvidenceYes_ToReference.Text),
+                                            !IsBlank(TextInput_EvidenceYes_Following_Check_RecordedSpeed.Text),
+                                            !IsBlank(TextInput_EvidenceYes_DistanceBehind.Text),
+                                            !IsBlank(
+                                                DatePicker_EvidenceYes_SpeedometerCheckDateTime.SelectedDate + Time(
+                                                    Value(Dropdown_hours_5.Selected.Value),
+                                                    Value(Dropdown_minuites_5.Selected.Value),
+                                                    0
+                                                )
+                                            )
+                                        )
+                                    ),
+                                    If(
+                                        Dropdown_EvidenceYes_SpeedDetectionMethod.Selected.cp_name = "Laser",
+                                        And(
+                                            !IsBlank(TextInput_EvidenceYes_DeviceSerialNumber.Text),
+                                            !IsBlank(TextInput_EvidenceYes_HanheldRadarorlaser_RecordedSpeed.Text),
+                                            !IsBlank(
+                                                DatePicker_EvidenceYes_FirstCheckDateTime_Handheldradar_Laser.SelectedDate + Time(
+                                                    Value(Dropdown_hours_4.Selected.Value),
+                                                    Value(Dropdown_minuites_4.Selected.Value),
+                                                    0
+                                                )
+                                            ),
+                                            !IsBlank(TextInput_EvidenceYes_FirstCheckLocation.Text),
+                                            !IsBlank(
+                                                DatePicker_EvidenceYes_SecondCheckDateTime_Handheldradar_Laser.SelectedDate + Time(
+                                                    Value(Dropdown_hours_3.Selected.Value),
+                                                    Value(Dropdown_minuites_3.Selected.Value),
+                                                    0
+                                                )
+                                            ),
+                                            !IsBlank(TextInput_EvidenceYes_SecondCheckLocation.Text),
+                                            !IsBlank(Dropdown_EvidenceYes_InformationFrom.Selected.cp_name),
+                                            !IsBlank(TextInput_EvidenceYes_OfficerName.Text)
+                                        )
+                                    ),
+                                    If(
+                                        Dropdown_EvidenceYes_SpeedDetectionMethod.Selected.cp_name = "Handheld Radar",
+                                        And(
+                                            !IsBlank(TextInput_EvidenceYes_DeviceSerialNumber.Text),
+                                            !IsBlank(TextInput_EvidenceYes_HanheldRadarorlaser_RecordedSpeed.Text),
+                                            !IsBlank(
+                                                DatePicker_EvidenceYes_FirstCheckDateTime_Handheldradar_Laser.SelectedDate + Time(
+                                                    Value(Dropdown_hours_4.Selected.Value),
+                                                    Value(Dropdown_minuites_4.Selected.Value),
+                                                    0
+                                                )
+                                            ),
+                                            !IsBlank(TextInput_EvidenceYes_FirstCheckLocation.Text),
+                                            !IsBlank(
+                                                DatePicker_EvidenceYes_SecondCheckDateTime_Handheldradar_Laser.SelectedDate + Time(
+                                                    Value(Dropdown_hours_3.Selected.Value),
+                                                    Value(Dropdown_minuites_3.Selected.Value),
+                                                    0
+                                                )
+                                            ),
+                                            !IsBlank(TextInput_EvidenceYes_SecondCheckLocation.Text),
+                                            !IsBlank(Dropdown_EvidenceYes_InformationFrom.Selected.cp_name),
+                                            !IsBlank(TextInput_EvidenceYes_OfficerName.Text)
+                                        )
+                                    ),
+                                    If(
+                                        Dropdown_EvidenceYes_SpeedDetectionMethod.Selected.cp_name = "Puma Speed Meter",
+                                        And(
+                                            !IsBlank(TextInput_EvidenceYes_PoliceVehicleNumber.Text),
+                                            !IsBlank('TextInput_EvidenceYes_ReferencePointA_PP/VASCAR/PSM'.Text),
+                                            !IsBlank('TextInput_EvidenceYes_ReferencePointB_PP/VASCAR/PSM'.Text),
+                                            !IsBlank('TextInput_EvidenceYes_RecordedSpeed_PP/VASCAR/PSM'.Text),
+                                            !IsBlank('TextInput_EvidenceYes_RecordingDistance_PP/VASCAR/PSM'.Text),
+                                            !IsBlank(
+                                                'DatePicker_EvidenceYes_2nddeviceDate/Time_PP/VASCAR/PSM'.SelectedDate + Time(
+                                                    Value(Dropdown_hours_1.Selected.Value),
+                                                    Value(Dropdown_minuites_1.Selected.Value),
+                                                    0
+                                                )
+                                            ),
+                                            !IsBlank(
+                                                'DatePicker_EvidenceYes_1stdeviceDate/Time_PP/VASCAR/PSM'.SelectedDate + Time(
+                                                    Value(Dropdown_hours_2.Selected.Value),
+                                                    Value(Dropdown_minuites_2.Selected.Value),
+                                                    0
+                                                )
+                                            )
+                                        )
+                                    ),
+                                    If(
+                                        Dropdown_EvidenceYes_SpeedDetectionMethod.Selected.cp_name = "VASCAR",
+                                        And(
+                                            !IsBlank(TextInput_EvidenceYes_PoliceVehicleNumber.Text),
+                                            !IsBlank('TextInput_EvidenceYes_ReferencePointA_PP/VASCAR/PSM'.Text),
+                                            !IsBlank('TextInput_EvidenceYes_ReferencePointB_PP/VASCAR/PSM'.Text),
+                                            !IsBlank('TextInput_EvidenceYes_RecordedSpeed_PP/VASCAR/PSM'.Text),
+                                            !IsBlank('TextInput_EvidenceYes_RecordingDistance_PP/VASCAR/PSM'.Text),
+                                            !IsBlank(
+                                                'DatePicker_EvidenceYes_2nddeviceDate/Time_PP/VASCAR/PSM'.SelectedDate + Time(
+                                                    Value(Dropdown_hours_1.Selected.Value),
+                                                    Value(Dropdown_minuites_1.Selected.Value),
+                                                    0
+                                                )
+                                            ),
+                                            !IsBlank(
+                                                'DatePicker_EvidenceYes_1stdeviceDate/Time_PP/VASCAR/PSM'.SelectedDate + Time(
+                                                    Value(Dropdown_hours_2.Selected.Value),
+                                                    Value(Dropdown_minuites_2.Selected.Value),
+                                                    0
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            ),
+                            DisplayMode.Edit,
+                            DisplayMode.Disabled
+                        )
+                    Height: =241
+                    OnSelect: |-
+                        =//Filter('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Officer Signature'
+                        UpdateContext({hasBeenSigned:true})
+                    Reset: =true
+                    Width: =545
+                    X: =40
+                    Y: =4083
+                    ZIndex: =26
+
+                Labe_EvidenceYes_OfficerSignature As label:
+                    DisplayMode: =
+                    Height: =68
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Officer Signature"
+                    Width: =545
+                    X: =40
+                    Y: =4024
+                    ZIndex: =27
+
+            Group_officer_evidence As group:
+                Height: =5
+                Width: =5
+                X: =60
+                Y: =60
+                ZIndex: =73
+
+                Dropdown_EvidenceYes_StreetLighting As dropdown:
+                    AllowEmptySelection: =true
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 1), -20%)
+                    Default: =LookUp('Vehicle Offline',Vehicle_Primary_key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key ).'Street Lighting name'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Selected.cp_name),LightGoldenRodYellow,White)
+                    Height: =70
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Items: =StreetLightingoffline
+                    OnSelect: =
+                    PressedFill: =RGBA(128, 128, 128, 1)
+                    Reset: =resetall
+                    SelectionFill: =RGBA(230, 230, 230, 1)
+                    Size: =21
+                    Width: =545
+                    X: =40
+                    Y: =2913
+                    ZIndex: =1
+
+                Label_EvidenceYes_StreetLighting As label:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =50
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Street Lighting"
+                    Width: =545
+                    X: =40
+                    Y: =2873
+                    ZIndex: =2
+
+                Dropdown_EvidenceYes_Daylight As dropdown:
+                    AllowEmptySelection: =true
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 1), -20%)
+                    Default: =LookUp('Vehicle Offline',Vehicle_Primary_key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Daylight Name'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Selected.cp_name),LightGoldenRodYellow,White)
+                    Height: =70
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Items: =Daylightoffline
+                    OnSelect: =
+                    PressedFill: =RGBA(128, 128, 128, 1)
+                    Reset: =resetall
+                    SelectionFill: =RGBA(230, 230, 230, 1)
+                    Size: =21
+                    Width: =545
+                    X: =40
+                    Y: =2808
+                    ZIndex: =3
+
+                Label_EvidenceYes_Daylight As label:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =55
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Daylight"
+                    Width: =545
+                    X: =40
+                    Y: =2754
+                    ZIndex: =4
+
+                Radio_EvidenceYes_VehicleStopped As radio:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    BorderStyle: =BorderStyle.None
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Vehicle Stopped ?'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Selected.Value),LightGoldenRodYellow,White)
+                    Height: =90
+                    Items: =["Yes","No"]
+                    Layout: =Layout.Horizontal
+                    OnSelect: =
+                    RadioBorderColor: =RGBA(153, 153, 153, 1)
+                    Size: =21
+                    Width: =545
+                    X: =40
+                    Y: =2545
+                    ZIndex: =5
+
+                Label_EvidenceYes_VehicleStopped As label:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =51
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Vehicle Stopped?"
+                    Width: =545
+                    X: =40
+                    Y: =2500
+                    ZIndex: =6
+
+                Radio_EvidenceYes_DriverViewedDevice As radio:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    BorderStyle: =BorderStyle.None
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Driver Shown Reading ?'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Selected.Value),LightGoldenRodYellow,White)
+                    Height: =90
+                    Items: =["Yes","No"]
+                    Layout: =Layout.Horizontal
+                    OnSelect: =
+                    RadioBorderColor: =RGBA(153, 153, 153, 1)
+                    Size: =21
+                    Width: =545
+                    X: =40
+                    Y: =2675
+                    ZIndex: =7
+
+                Label_EvidenceYes_DriverViewedDevice As label:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =52
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Driver shown reading?"
+                    Width: =545
+                    X: =40
+                    Y: =2629
+                    ZIndex: =8
+
+                Dropdown_EvidenceYes_Weather As dropdown:
+                    AllowEmptySelection: =true
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 1), -20%)
+                    Default: =LookUp('Vehicle Offline',Vehicle_Primary_key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Weather name'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Selected.cp_name),LightGoldenRodYellow,White)
+                    Height: =70
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Items: =weatheroffline
+                    OnSelect: =
+                    Reset: =resetall
+                    SelectionFill: =RGBA(230, 230, 230, 1)
+                    Size: =21
+                    Width: =545
+                    X: =40
+                    Y: =3029
+                    ZIndex: =9
+
+                Label_EvidenceYes_weather As label:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =46
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Weather"
+                    Width: =545
+                    X: =40
+                    Y: =2986
+                    ZIndex: =10
+
+                Dropdown_EvidenceYes_visibility As dropdown:
+                    AllowEmptySelection: =true
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 1), -20%)
+                    Default: =LookUp('Vehicle Offline',Vehicle_Primary_key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Visibility name'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Selected.cp_name),LightGoldenRodYellow,White)
+                    Height: =70
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Items: =Visibilityoffline
+                    OnSelect: =
+                    Reset: =resetall
+                    SelectionFill: =RGBA(230, 230, 230, 1)
+                    Size: =21
+                    Width: =545
+                    X: =40
+                    Y: =3147
+                    ZIndex: =11
+
+                Label_EvidenceYes_visibility As label:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =41
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Visibility"
+                    Width: =545
+                    X: =40
+                    Y: =3106
+                    ZIndex: =12
+
+                Radio_EvidenceYes_SpeedLimitSigns As radio:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    BorderStyle: =BorderStyle.None
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Speed Limit signs present & clear'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Selected.Value),LightGoldenRodYellow,White)
+                    Items: =["Yes","No"]
+                    Layout: =Layout.Horizontal
+                    OnSelect: =
+                    RadioBorderColor: =RGBA(153, 153, 153, 1)
+                    Size: =21
+                    Width: =545
+                    X: =40
+                    Y: =3256
+                    ZIndex: =13
+
+                Label_EvidenceYes_SpeedLimitSigns As label:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =43
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Speed limit signs present & clear"
+                    Width: =545
+                    X: =40
+                    Y: =3220
+                    ZIndex: =14
+
+                Label_EvidenceYes_InformationFrom As label:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =41
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Information from"
+                    Visible: |-
+                        =/*If(Radio_TrafficOffence_Contains_speed_limit_offence.Selected.Value="Yes",true,false)*/
+                        true
+                    Width: =545
+                    X: =40
+                    Y: =2233
+                    ZIndex: =15
+
+                TextInput_EvidenceYes_OfficerName As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Officer Name'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =70
+                    HintText: =""
+                    HoverBorderColor: =RGBA(128, 128, 128, 1)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    OnSelect: =
+                    Size: =21
+                    Visible: |-
+                        =/*If(Radio_TrafficOffence_Contains_speed_limit_offence.Selected.Value="Yes",true,false)*/
+                        true
+                    Width: =545
+                    X: =40
+                    Y: =2412
+                    ZIndex: =16
+
+                Label_EvidenceYes_OfficerName As label:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =55
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Officer name"
+                    Visible: |-
+                        =/*If(Radio_TrafficOffence_Contains_speed_limit_offence.Selected.Value="Yes",true,false)*/
+                        true
+                    Width: =545
+                    X: =40
+                    Y: =2365
+                    ZIndex: =17
+
+                Dropdown_EvidenceYes_InformationFrom As dropdown:
+                    AllowEmptySelection: =true
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 1), -20%)
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Information from name'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Selected.cp_name),LightGoldenRodYellow,White)
+                    Height: =70
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Items: =informationfromoffline
+                    PressedFill: =RGBA(128, 128, 128, 1)
+                    SelectionFill: =RGBA(230, 230, 230, 1)
+                    Size: =21
+                    Visible: |-
+                        =/*If(Radio_TrafficOffence_Contains_speed_limit_offence.Selected.Value="Yes",true,false)*/
+                        true
+                    Width: =545
+                    X: =40
+                    Y: =2275
+                    ZIndex: =18
+
+            TextInput_entered_by_1 As text:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                Default: =First(Userlocal).Collarnumber  & " - " & First(Userlocal).Name
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisplayMode: =DisplayMode.Disabled
+                Height: =60
+                HintText: =""
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =361
+                ZIndex: =79
+
+            Group11 As group:
+                Height: =5
+                Width: =5
+                X: =100
+                Y: =100
+                ZIndex: =90
+
+                "'TextInput_EvidenceYes_ReferencePointA_PP/VASCAR/PSM' As text":
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Police pilot reference point A '
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                    Height: =70
+                    HintText: ="Reference point A"
+                    OnSelect: =
+                    Size: =21
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"VASCAR", true, "Puma Speed Meter", true, false)
+                    Width: =545
+                    X: =40
+                    Y: =1059
+                    ZIndex: =66
+
+                "'TextInput_EvidenceYes_ReferencePointB_PP/VASCAR/PSM' As text":
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Police pilot reference point B'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                    Height: =70
+                    HintText: ="Reference point B"
+                    OnSelect: =
+                    Size: =21
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"VASCAR", true, "Puma Speed Meter", true, false)
+                    Width: =545
+                    X: =40
+                    Y: =1210
+                    ZIndex: =67
+
+                "'TextInput_EvidenceYes_RecordingDistance_PP/VASCAR/PSM' As text":
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Police pilot recording distance'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                    Height: =70
+                    HintText: =""
+                    OnSelect: =
+                    Size: =21
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"VASCAR", true, "Puma Speed Meter", true, false)
+                    Width: =545
+                    X: =40
+                    Y: =1348
+                    ZIndex: =68
+
+                "'TextInput_EvidenceYes_RecordedSpeed_PP/VASCAR/PSM' As text":
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Police pilot recorded speed'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                    Height: =70
+                    HintText: =""
+                    OnSelect: =
+                    Size: =21
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"VASCAR", true, "Puma Speed Meter", true, false)
+                    Width: =545
+                    X: =40
+                    Y: =1473
+                    ZIndex: =69
+
+                "'Label_EvidenceYes_RecordingDistance_PP/VASCAR/PSM' As label":
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Recording distance (miles)"
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"VASCAR", true, "Puma Speed Meter", true, false)
+                    Width: =545
+                    X: =40
+                    Y: =1289
+                    ZIndex: =70
+
+                "'Label_EvidenceYes_RecordedSpeed_PP/VASCAR/PSM' As label":
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Recorded speed (mph)"
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"VASCAR", true, "Puma Speed Meter", true, false)
+                    Width: =545
+                    X: =40
+                    Y: =1418
+                    ZIndex: =71
+
+                "'Label__EvidenceYes_1stdeviceDate/Time_PP/VASCAR/PSM' As label":
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="1st device check date"
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"VASCAR", true, "Puma Speed Meter", true, false)
+                    Width: =545
+                    X: =40
+                    Y: =1552
+                    ZIndex: =72
+
+                "'DatePicker_EvidenceYes_1stdeviceDate/Time_PP/VASCAR/PSM' As datepicker":
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DefaultDate: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Police Pilot 1st device check/date time'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.SelectedDate),LightGoldenRodYellow,White)
+                    Format: =
+                    Height: =70
+                    IconBackground: =RGBA(116, 116, 116, 1)
+                    OnSelect: =
+                    Size: =24
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"VASCAR", true, "Puma Speed Meter", true, false)
+                    Width: =545
+                    X: =40
+                    Y: =1610
+                    ZIndex: =73
+
+                "'Label_EvidenceYes_2nddeviceDate/Time_PP/VASCAR/PSM' As label":
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="2nd device check date"
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"VASCAR", true, "Puma Speed Meter", true, false)
+                    Width: =545
+                    X: =40
+                    Y: =1892
+                    ZIndex: =74
+
+                "'DatePicker_EvidenceYes_2nddeviceDate/Time_PP/VASCAR/PSM' As datepicker":
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DefaultDate: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Police Pilot 2nd device check/date time'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.SelectedDate),LightGoldenRodYellow,White)
+                    Format: =
+                    Height: =70
+                    IconBackground: =RGBA(116, 116, 116, 1)
+                    OnSelect: =
+                    Size: =24
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"VASCAR", true, "Puma Speed Meter", true, false)
+                    Width: =545
+                    X: =40
+                    Y: =1952
+                    ZIndex: =75
+
+                "'Label_Evidenceyes_ToReferencePoint_PP/VASCAR/PSM' As label":
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =56
+                    OnSelect: =
+                    Size: =21
+                    Text: ="From reference point"
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"VASCAR", true, "Puma Speed Meter", true, false)
+                    Width: =545
+                    X: =40
+                    Y: =1002
+                    ZIndex: =76
+
+                "'Label_Evidenceyes_FromReferencePoint_PP/VASCAR/PSM' As label":
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="To reference point"
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"VASCAR", true, "Puma Speed Meter", true, false)
+                    Width: =545
+                    X: =40
+                    Y: =1140
+                    ZIndex: =77
+
+                Dropdown_hours_1 As dropdown:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(166, 166, 266, 100), -20%)
+                    Default: =
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Selected.Value),LightGoldenRodYellow,White)
+                    FocusedBorderColor: =Dropdown_hours_1.BorderColor
+                    Height: =70
+                    HoverBorderColor: =ColorFade(Dropdown_hours_1.BorderColor, 15%)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Items: =["","00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"]
+                    OnChange: =
+                    OnSelect: =
+                    PressedBorderColor: =Dropdown_hours_1.HoverBorderColor
+                    PressedFill: =RGBA(153, 153, 153, 1)
+                    Reset: =resetall
+                    SelectionFill: =RGBA(230, 230, 230, 1)
+                    Size: =21
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"VASCAR", true, "Puma Speed Meter", true, false)
+                    Width: =135
+                    X: =40
+                    Y: =2129
+                    ZIndex: =80
+
+                Dropdown_minuites_1 As dropdown:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                    Default: =
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Selected.Value),LightGoldenRodYellow,White)
+                    FocusedBorderColor: =Dropdown_minuites_1.BorderColor
+                    Height: =70
+                    HoverBorderColor: =ColorFade(Dropdown_minuites_1.BorderColor, 15%)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Items: |
+                        =["","00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59"]
+                    OnChange: =
+                    OnSelect: =
+                    PressedBorderColor: =Dropdown_minuites_1.HoverBorderColor
+                    PressedFill: =RGBA(153, 153, 153, 1)
+                    Reset: =resetall
+                    SelectionFill: =RGBA(204, 204, 204, 1)
+                    Size: =21
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"VASCAR", true, "Puma Speed Meter", true, false)
+                    Width: =135
+                    X: =355
+                    Y: =2129
+                    ZIndex: =81
+
+                Label_hour_1 As label:
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Hrs"
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"VASCAR", true, "Puma Speed Meter", true, false)
+                    Width: =77
+                    X: =175
+                    Y: =2129
+                    ZIndex: =82
+
+                Label_min_1 As label:
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Min"
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"VASCAR", true, "Puma Speed Meter", true, false)
+                    Width: =77
+                    X: =498
+                    Y: =2129
+                    ZIndex: =83
+
+                Dropdown_hours_2 As dropdown:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(166, 166, 266, 100), -20%)
+                    Default: =
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Selected.Value),LightGoldenRodYellow,White)
+                    FocusedBorderColor: =Dropdown_hours_2.BorderColor
+                    Height: =70
+                    HoverBorderColor: =ColorFade(Dropdown_hours_2.BorderColor, 15%)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Items: =["","00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"]
+                    OnChange: =
+                    OnSelect: =
+                    PressedBorderColor: =Dropdown_hours_2.HoverBorderColor
+                    PressedFill: =RGBA(153, 153, 153, 1)
+                    Reset: =resetall
+                    SelectionFill: =RGBA(230, 230, 230, 1)
+                    Size: =21
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"VASCAR", true, "Puma Speed Meter", true, false)
+                    Width: =135
+                    X: =40
+                    Y: =1780
+                    ZIndex: =84
+
+                Dropdown_minuites_2 As dropdown:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                    Default: =
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Selected.Value),LightGoldenRodYellow,White)
+                    FocusedBorderColor: =Dropdown_minuites_2.BorderColor
+                    Height: =70
+                    HoverBorderColor: =ColorFade(Dropdown_minuites_2.BorderColor, 15%)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Items: |
+                        =["","00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59"]
+                    OnChange: =
+                    OnSelect: =
+                    PressedBorderColor: =Dropdown_minuites_2.HoverBorderColor
+                    PressedFill: =RGBA(153, 153, 153, 1)
+                    Reset: =resetall
+                    SelectionFill: =RGBA(204, 204, 204, 1)
+                    Size: =21
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"VASCAR", true, "Puma Speed Meter", true, false)
+                    Width: =135
+                    X: =351
+                    Y: =1780
+                    ZIndex: =85
+
+                Label_hour_2 As label:
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Hrs"
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"VASCAR", true, "Puma Speed Meter", true, false)
+                    Width: =77
+                    X: =175
+                    Y: =1780
+                    ZIndex: =86
+
+                Label_min_2 As label:
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Min"
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"VASCAR", true, "Puma Speed Meter", true, false)
+                    Width: =77
+                    X: =490
+                    Y: =1780
+                    ZIndex: =87
+
+                "'Label__EvidenceYes_1stdeviceDate/Time_PP/VASCAR/PSM_1' As label":
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="1st device check time"
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"VASCAR", true, "Puma Speed Meter", true, false)
+                    Width: =545
+                    X: =40
+                    Y: =1708
+                    ZIndex: =88
+
+                "'Label__EvidenceYes_1stdeviceDate/Time_PP/VASCAR/PSM_2' As label":
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="1st device check time"
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"VASCAR", true, "Puma Speed Meter", true, false)
+                    Width: =545
+                    X: =40
+                    Y: =2060
+                    ZIndex: =89
+
+            Group5 As group:
+                Height: =5
+                Width: =5
+                X: =60
+                Y: =60
+                ZIndex: =99
+
+                TextInput_EvidenceYes_PoliceVehicleNumber As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Vehicle Offline',Vehicle_Primary_key=Dropdown_Evidence_no.Selected.Key).'Police vehicle number'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                    Height: =70
+                    HintText: =""
+                    HoverBorderColor: =RGBA(128, 128, 128, 1)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    OnSelect: =
+                    Size: =21
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"Police Pilot",true, "VASCAR", true, "Puma Speed Meter", true,"Following Check", true, false)
+                    Width: =545
+                    X: =40
+                    Y: =910
+                    ZIndex: =39
+
+                "'Label_Evidenceyes_ToReferencePoint_PP/VASCAR/PSM_1' As label":
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =56
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Police Vehice Number"
+                    Visible: =Switch(Dropdown_EvidenceYes_SpeedDetectionMethod.SelectedText.Value,"Police Pilot",true, "VASCAR", true, "Puma Speed Meter", true,"Following Check", true, false)
+                    Width: =545
+                    X: =42
+                    Y: =854
+                    ZIndex: =78
+
+            Dropdown_hours_5 As dropdown:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                Default: =
+                DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =If(IsBlank(Self.Selected.Value),LightGoldenRodYellow,White)
+                FocusedBorderColor: =Dropdown_hours_5.BorderColor
+                Height: =70
+                HoverBorderColor: =ColorFade(Dropdown_hours_5.BorderColor, 15%)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =["","00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"]
+                OnChange: =
+                OnSelect: =
+                PressedBorderColor: =Dropdown_hours_5.HoverBorderColor
+                PressedFill: =RGBA(153, 153, 153, 1)
+                Reset: =resetall
+                SelectionFill: =RGBA(230, 230, 230, 1)
+                Size: =21
+                Visible: =followingcheck
+                Width: =135
+                X: =49
+                Y: =1872
+                ZIndex: =100
+
+            Group3 As group:
+                Height: =5
+                Width: =5
+                X: =80
+                Y: =80
+                ZIndex: =100
+
+                TextInput_EvidenceYes_DeviceSerialNumber As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Device serial number'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                    Height: =65
+                    HintText: ="Device serial number"
+                    OnSelect: =
+                    Reset: |
+                        =resetall
+                    Size: =21
+                    Visible: =handheld
+                    Width: =545
+                    X: =40
+                    Y: =929+e1
+                    ZIndex: =40
+
+                TextInput_EvidenceYes_HanheldRadarorlaser_RecordedSpeed As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Recorded Speed'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                    Height: =62
+                    HintText: =""
+                    OnSelect: =
+                    Reset: |
+                        =resetall
+                    Size: =21
+                    Visible: =handheld
+                    Width: =545
+                    X: =40
+                    Y: =1065+e1
+                    ZIndex: =41
+
+                TextInput_EvidenceYes_FirstCheckLocation As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'1st device check location'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                    Height: =64
+                    HintText: =""
+                    HoverBorderColor: =RGBA(128, 128, 128, 1)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    OnSelect: =
+                    Reset: |
+                        =resetall
+                    Size: =21
+                    Visible: =handheld
+                    Width: =545
+                    X: =40
+                    Y: =1526+e1
+                    ZIndex: =42
+
+                Label_EvidenceYes_FirstCheckLocation As label:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =57
+                    OnSelect: =
+                    Size: =21
+                    Text: ="1st device check location"
+                    Visible: =handheld
+                    Width: =545
+                    X: =40
+                    Y: =1468+e1
+                    ZIndex: =43
+
+                Label_EvidenceYes_FirstCheckDateTime As label:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =51
+                    OnSelect: =
+                    Size: =21
+                    Text: ="1st device check date"
+                    Visible: =handheld
+                    Width: =545
+                    X: =40
+                    Y: =1140+e1
+                    ZIndex: =44
+
+                DatePicker_EvidenceYes_FirstCheckDateTime_Handheldradar_Laser As datepicker:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DefaultDate: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).' 1st device check date/time'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.SelectedDate),LightGoldenRodYellow,White)
+                    Format: =
+                    Height: =59
+                    IconBackground: =RGBA(166, 166, 166, 1)
+                    OnSelect: =
+                    Reset: |
+                        =resetall
+                    Size: =24
+                    Visible: =handheld
+                    Width: =545
+                    X: =40
+                    Y: =1190+e1
+                    ZIndex: =45
+
+                Label_EvidenceYes_SecondCheckDateTime As label:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =53
+                    OnSelect: =
+                    Size: =21
+                    Text: ="2nd device check date"
+                    Visible: =handheld
+                    Width: =545
+                    X: =40
+                    Y: =1607+e1
+                    ZIndex: =46
+
+                DatePicker_EvidenceYes_SecondCheckDateTime_Handheldradar_Laser As datepicker:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DefaultDate: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'2nd device check date.time'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.SelectedDate),LightGoldenRodYellow,White)
+                    Format: =
+                    Height: =70
+                    IconBackground: =RGBA(116, 116, 116, 1)
+                    OnSelect: =
+                    Size: =24
+                    Visible: =handheld
+                    Width: =545
+                    X: =40
+                    Y: =1660+e1
+                    ZIndex: =47
+
+                TextInput_EvidenceYes_SecondCheckLocation As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'2nd device check location'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                    Height: =65
+                    HintText: =""
+                    HoverBorderColor: =RGBA(128, 128, 128, 1)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    OnSelect: =
+                    Size: =21
+                    Visible: =handheld
+                    Width: =545
+                    X: =40
+                    Y: =2000+e1
+                    ZIndex: =48
+
+                Label_EvidenceYes_SecondCheckLocation As label:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =55
+                    OnSelect: =
+                    Size: =21
+                    Text: ="2nd device check location"
+                    Visible: =handheld
+                    Width: =545
+                    X: =40
+                    Y: =1949+e1
+                    ZIndex: =49
+
+                Label_EvidenceYes_Recorded_Speed As label:
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =48
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Recorded Speed"
+                    Visible: =handheld
+                    Width: =545
+                    X: =40
+                    Y: =1016+e1
+                    ZIndex: =50
+
+                Label_EvidenceYes_DeviceSerialNumber As label:
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =55
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Device Serial Number"
+                    Visible: =handheld
+                    Width: =545
+                    X: =40
+                    Y: =865+e1
+                    ZIndex: =51
+
+                Dropdown_hours_3 As dropdown:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                    Default: =
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Selected.Value),LightGoldenRodYellow,White)
+                    FocusedBorderColor: =Dropdown_hours_3.BorderColor
+                    Height: =70
+                    HoverBorderColor: =ColorFade(Dropdown_hours_3.BorderColor, 15%)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Items: =["","00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"]
+                    OnChange: =
+                    OnSelect: =
+                    PressedBorderColor: =Dropdown_hours_3.HoverBorderColor
+                    PressedFill: =RGBA(153, 153, 153, 1)
+                    Reset: =resetall
+                    SelectionFill: =RGBA(230, 230, 230, 1)
+                    Size: =21
+                    Visible: =handheld
+                    Width: =135
+                    X: =40
+                    Y: =1850
+                    ZIndex: =90
+
+                Dropdown_minuites_3 As dropdown:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                    Default: =
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Selected.Value),LightGoldenRodYellow,White)
+                    FocusedBorderColor: =Dropdown_minuites_3.BorderColor
+                    Height: =70
+                    HoverBorderColor: =ColorFade(Dropdown_minuites_3.BorderColor, 15%)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Items: |
+                        =["","00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59"]
+                    OnChange: =
+                    OnSelect: =
+                    PressedBorderColor: =Dropdown_minuites_3.HoverBorderColor
+                    PressedFill: =RGBA(153, 153, 153, 1)
+                    Reset: =resetall
+                    SelectionFill: =RGBA(204, 204, 204, 1)
+                    Size: =21
+                    Visible: =handheld
+                    Width: =135
+                    X: =359
+                    Y: =1850
+                    ZIndex: =91
+
+                Label_hour_3 As label:
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Hrs"
+                    Visible: =handheld
+                    Width: =77
+                    X: =179
+                    Y: =1850
+                    ZIndex: =92
+
+                Label_min_3 As label:
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Min"
+                    Visible: =handheld
+                    Width: =77
+                    X: =502
+                    Y: =1850
+                    ZIndex: =93
+
+                Dropdown_hours_4 As dropdown:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                    Default: =
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Selected.Value),LightGoldenRodYellow,White)
+                    FocusedBorderColor: =Dropdown_hours_4.BorderColor
+                    Height: =70
+                    HoverBorderColor: =ColorFade(Dropdown_hours_4.BorderColor, 15%)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Items: =["","00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"]
+                    OnChange: =
+                    OnSelect: =
+                    PressedBorderColor: =Dropdown_hours_4.HoverBorderColor
+                    PressedFill: =RGBA(153, 153, 153, 1)
+                    Reset: =resetall
+                    SelectionFill: =RGBA(230, 230, 230, 1)
+                    Size: =21
+                    Visible: =handheld
+                    Width: =135
+                    X: =40
+                    Y: =1367
+                    ZIndex: =94
+
+                Dropdown_minuites_4 As dropdown:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                    Default: =
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Selected.Value),LightGoldenRodYellow,White)
+                    FocusedBorderColor: =Dropdown_minuites_4.BorderColor
+                    Height: =70
+                    HoverBorderColor: =ColorFade(Dropdown_minuites_4.BorderColor, 15%)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Items: |
+                        =["","00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59"]
+                    OnChange: =
+                    OnSelect: =
+                    PressedBorderColor: =Dropdown_minuites_4.HoverBorderColor
+                    PressedFill: =RGBA(153, 153, 153, 1)
+                    Reset: =resetall
+                    SelectionFill: =RGBA(204, 204, 204, 1)
+                    Size: =21
+                    Visible: =handheld
+                    Width: =135
+                    X: =355
+                    Y: =1367
+                    ZIndex: =95
+
+                Label_hour_4 As label:
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Hrs"
+                    Visible: =handheld
+                    Width: =77
+                    X: =179
+                    Y: =1367
+                    ZIndex: =96
+
+                Label_min_4 As label:
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Min"
+                    Visible: =handheld
+                    Width: =77
+                    X: =494
+                    Y: =1367
+                    ZIndex: =97
+
+                "'Label__EvidenceYes_1stdeviceDate/Time_PP/VASCAR/PSM_3' As label":
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="1st device check time"
+                    Visible: =handheld
+                    Width: =545
+                    X: =40
+                    Y: =1295
+                    ZIndex: =98
+
+                "'Label__EvidenceYes_1stdeviceDate/Time_PP/VASCAR/PSM_4' As label":
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="1st device check time"
+                    Visible: =handheld
+                    Width: =545
+                    X: =40
+                    Y: =1781
+                    ZIndex: =99
+
+            Dropdown_minuites_5 As dropdown:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                Default: =
+                DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =If(IsBlank(Self.Selected.Value),LightGoldenRodYellow,White)
+                FocusedBorderColor: =Dropdown_minuites_5.BorderColor
+                Height: =70
+                HoverBorderColor: =ColorFade(Dropdown_minuites_5.BorderColor, 15%)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: |
+                    =["","00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59"]
+                OnChange: =
+                OnSelect: =
+                PressedBorderColor: =Dropdown_minuites_5.HoverBorderColor
+                PressedFill: =RGBA(153, 153, 153, 1)
+                Reset: =resetall
+                SelectionFill: =RGBA(204, 204, 204, 1)
+                Size: =21
+                Visible: =followingcheck
+                Width: =135
+                X: =364
+                Y: =1872
+                ZIndex: =101
+
+            Label_hour_5 As label:
+                DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="Hrs"
+                Visible: =followingcheck
+                Width: =77
+                X: =184
+                Y: =1872
+                ZIndex: =102
+
+            Label_min_5 As label:
+                DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="Min"
+                Visible: =followingcheck
+                Width: =77
+                X: =507
+                Y: =1872
+                ZIndex: =103
+
+            Label13 As label:
+                DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                Height: =70
+                Size: =21
+                Text: =
+                Width: =560
+                X: =80
+                Y: =203
+                ZIndex: =106
+
+            Group_evidence_2 As group:
+                Height: =5
+                Width: =5
+                X: =18
+                Y: =60
+                ZIndex: =109
+
+                TextInput_EvidenceYes_DistanceFollowed As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Distance followed (Miles)'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                    Height: =70
+                    HintText: =""
+                    HoverBorderColor: =RGBA(128, 128, 128, 1)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    OnSelect: =
+                    Size: =21
+                    Visible: =followingcheck
+                    Width: =545
+                    X: =44
+                    Y: =1049
+                    ZIndex: =52
+
+                TextInput_EvidenceYes_Following_Check_RecordedSpeed As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Recorded speed (mph)'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                    Height: =70
+                    HintText: =""
+                    HoverBorderColor: =RGBA(128, 128, 128, 1)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    OnSelect: =
+                    Size: =21
+                    Visible: =followingcheck
+                    Width: =545
+                    X: =44
+                    Y: =1459
+                    ZIndex: =53
+
+                Label_EvidenceYes_DistanceFollowed As label:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =46
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Distance followed (miles)"
+                    Visible: =followingcheck
+                    Width: =545
+                    X: =44
+                    Y: =1003
+                    ZIndex: =54
+
+                Label_EvidenceYes_RecordedSpeed As label:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Recorded speed (mph)"
+                    Visible: =followingcheck
+                    Width: =545
+                    X: =44
+                    Y: =1402
+                    ZIndex: =55
+
+                TextInput_EvidenceYes_FromReferencePoint As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'From reference point'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                    Height: =70
+                    HintText: ="From reference point"
+                    HoverBorderColor: =RGBA(128, 128, 128, 1)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    OnSelect: =
+                    Size: =21
+                    Visible: =followingcheck
+                    Width: =545
+                    X: =44
+                    Y: =1184
+                    ZIndex: =56
+
+                TextInput_EvidenceYes_ToReference As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'To reference point'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                    Height: =70
+                    HintText: ="To reference point"
+                    HoverBorderColor: =RGBA(128, 128, 128, 1)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    OnSelect: =
+                    Size: =21
+                    Visible: =followingcheck
+                    Width: =545
+                    X: =44
+                    Y: =1329
+                    ZIndex: =57
+
+                TextInput_EvidenceYes_DistanceBehind As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Distance behind (metres)'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                    Height: =70
+                    HintText: =""
+                    HoverBorderColor: =RGBA(128, 128, 128, 1)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    OnSelect: =
+                    Size: =21
+                    Visible: =followingcheck
+                    Width: =545
+                    X: =44
+                    Y: =1587
+                    ZIndex: =58
+
+                Label_EvidenceYes_DistanceBehind As label:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Distance behind (metres)"
+                    Visible: =followingcheck
+                    Width: =545
+                    X: =44
+                    Y: =1527
+                    ZIndex: =59
+
+                Label_EvidenceYes_SpeedOmeterCheckDateTime As label:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Speedometer check date/time"
+                    Visible: =followingcheck
+                    Width: =545
+                    X: =44
+                    Y: =1658
+                    ZIndex: =60
+
+                DatePicker_EvidenceYes_SpeedometerCheckDateTime As datepicker:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DefaultDate: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_IfSpeedLimitIsYes.Selected.Key).'Speedometer check date/time'
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =If(IsBlank(Self.SelectedDate),LightGoldenRodYellow,White)
+                    Format: =
+                    Height: =70
+                    IconBackground: =RGBA(116, 116, 116, 1)
+                    OnSelect: =
+                    Size: =24
+                    Visible: =followingcheck
+                    Width: =545
+                    X: =44
+                    Y: =1718
+                    ZIndex: =61
+
+                Label_EvidenceYes_FromReferencePoint As label:
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =58
+                    OnSelect: =
+                    Size: =21
+                    Text: ="From Reference Point"
+                    Visible: =followingcheck
+                    Width: =545
+                    X: =44
+                    Y: =1126
+                    ZIndex: =62
+
+                Label_EvidenceYes_ToReferencePoint As label:
+                    DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="To Reference Point"
+                    Visible: =followingcheck
+                    Width: =545
+                    X: =44
+                    Y: =1266
+                    ZIndex: =63
+
+    Label1_14 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =42
+        Size: =21
+        Text: =Vehicle_Primary_key
+        Width: =440
+        X: =100
+        Y: =45
+        ZIndex: =17
+

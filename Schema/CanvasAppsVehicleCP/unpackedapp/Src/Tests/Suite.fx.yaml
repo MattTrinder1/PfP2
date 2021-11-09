@@ -1,0 +1,374 @@
+"'65ddefa4-84c8-4164-b85c-4251b672b763' As TestSuite":
+    Description: =""
+    DisplayName: ="Suite"
+
+    "'23860b41-f1f2-43ba-bbed-0681f7331935' As TestCase":
+        Description: =""
+        DisplayName: ="Case"
+
+        Step1 As TestStep:
+            Description: ="Select 'Button_sync'"
+            Screen: =Scr_home
+            Value: =Select(Button_sync)
+
+        Step2 As TestStep:
+            Description: ="Select 'Btn_save_43'"
+            Screen: =Scr_home
+            Value: =Select(Btn_save_43)
+
+        Step3 As TestStep:
+            Description: ="Set 'TextInput_incident_suffix'.Text to ""1234"""
+            Screen: =Scr_incident details
+            Value: =SetProperty(TextInput_incident_suffix.Text, "1234")
+
+        Step4 As TestStep:
+            Description: ="Select 'Btn_save_Continue'"
+            Screen: =Scr_incident details
+            Value: =Select(Btn_save_Continue)
+
+        Step5 As TestStep:
+            Description: ="Select 'Btn_save_58'"
+            Screen: =Scr_home
+            Value: =Select(Btn_vehiclept1)
+
+        Step6 As TestStep:
+            Description: ="Select 'DatePicker_vehicleticket_pt1'"
+            Screen: =Scr_Vehicle_Ticket_Pt1
+            Value: =Select(DatePicker_vehicleticket_pt1)
+
+        Step7 As TestStep:
+            Description: ="Select 'DatePicker_vehicleticket_pt1'"
+            Screen: =Scr_Vehicle_Ticket_Pt1
+            Value: =Select(DatePicker_vehicleticket_pt1)
+
+        Step8 As TestStep:
+            Description: |-
+                ="Set 'Dropdown_hours'.Selected to {'Value':""02""}"
+            Screen: =Scr_Vehicle_Ticket_Pt1
+            Value: |-
+                =SetProperty(Dropdown_hours.Selected, {Value:"02"})
+
+        Step9 As TestStep:
+            Description: |-
+                ="Set 'Dropdown_minuites'.Selected to {'Value':""01""}"
+            Screen: =Scr_Vehicle_Ticket_Pt1
+            Value: |-
+                =SetProperty(Dropdown_minuites.Selected, {Value:"01"})
+
+        Step10 As TestStep:
+            Description: |-
+                ="Set 'dropdown_issued_to'.Selected to {'Value':""Driver/rider of motor vehicle""}"
+            Screen: =Scr_Vehicle_Ticket_Pt1
+            Value: |-
+                =SetProperty(dropdown_issued_to.Selected, {Value:"Driver/rider of motor vehicle"})
+
+        Step11 As TestStep:
+            Description: |-
+                ="Set 'dropdown_reason_for_stop'.Selected to {'Value':""Accident""}"
+            Screen: =Scr_Vehicle_Ticket_Pt1
+            Value: |-
+                =SetProperty(dropdown_reason_for_stop.Selected, {Value:"Accident"})
+
+        Step12 As TestStep:
+            Description: ="Set 'Checkbox_ticket_type'.Value to true"
+            Screen: =Scr_Vehicle_Ticket_Pt1
+            Value: =SetProperty(Checkbox_ticket_type.Value, true)
+
+        Step13 As TestStep:
+            Description: ="Select 'Btn_Vehiclept1_save&continue'"
+            Screen: =Scr_Vehicle_Ticket_Pt1
+            Value: =Select('Btn_Vehiclept1_save&continue')
+
+        Step14 As TestStep:
+            Description: ="Select 'Btn_save_56'"
+            Screen: =Scr_home
+            Value: =Select(Btn_person)
+
+        Step15 As TestStep:
+            Description: |-
+                ="Set 'Dropdown_person_title'.Selected to {'Value':""Master""}"
+            Screen: =Scr_Person
+            Value: |-
+                =SetProperty(Dropdown_person_title.Selected, {Value:"Master"})
+
+        Step16 As TestStep:
+            Description: ="Set 'txt_person_forename'.Text to """""
+            Screen: =Scr_Person
+            Value: =SetProperty(txt_person_forename.Text, "")
+
+        Step17 As TestStep:
+            Description: ="Set 'Txt_person_surname'.Text to """""
+            Screen: =Scr_Person
+            Value: =SetProperty(Txt_person_surname.Text, "")
+
+        Step18 As TestStep:
+            Description: ="Set 'TextInput_housename'.Text to """""
+            Screen: =Scr_Person
+            Value: =SetProperty(TextInput_housename.Text, "")
+
+        Step19 As TestStep:
+            Description: ="Select 'Txt_person_surname'"
+            Screen: =Scr_Person
+            Value: =Select(Txt_person_surname)
+
+        Step20 As TestStep:
+            Description: ="Set 'Radio_person_Additional_name'.Selected to ""No"""
+            Screen: =Scr_Person
+            Value: =SetProperty(Radio_person_Additional_name.Selected, "No")
+
+        Step21 As TestStep:
+            Description: ="Set 'Radio_birth_known'.Selected to ""Yes"""
+            Screen: =Scr_Person
+            Value: =SetProperty(Radio_birth_known.Selected, "Yes")
+
+        Step22 As TestStep:
+            Description: ="Select 'DatePicker_witness_details_dob'"
+            Screen: =Scr_Person
+            Value: =Select(DatePicker_witness_details_dob)
+
+        Step23 As TestStep:
+            Description: ="Select 'Label_witness_details_Date_of_Birth_known_1'"
+            Screen: =Scr_Person
+            Value: =Select(Label_witness_details_Date_of_Birth_known_1)
+
+        Step24 As TestStep:
+            Description: ="Set 'DatePicker_witness_details_dob'.SelectedDate to Date(1971,3,10)"
+            Screen: =Scr_Person
+            Value: =SetProperty(DatePicker_witness_details_dob.SelectedDate, Date(1971,3,10))
+
+        Step25 As TestStep:
+            Description: ="Select 'TextInput_housename'"
+            Screen: =Scr_Person
+            Value: =Select(TextInput_housename)
+
+        Step26 As TestStep:
+            Description: ="Set 'TextInput_street'.Text to ""Stony Stratford"""
+            Screen: =Scr_Person
+            Value: =SetProperty(TextInput_street.Text, "Stony Stratford")
+
+        Step27 As TestStep:
+            Description: ="Set 'TextInput_Postcode'.Text to ""MK11 1DW"""
+            Screen: =Scr_Person
+            Value: =SetProperty(TextInput_Postcode.Text, "MK11 1DW")
+
+        Step28 As TestStep:
+            Description: ="Set 'TextInput_Country'.Text to ""UK"""
+            Screen: =Scr_Person
+            Value: =SetProperty(TextInput_Country.Text, "UK")
+
+        Step29 As TestStep:
+            Description: |-
+                ="Set 'Dropdown_Preffered_mean_of_contact'.Selected to {'Value':""Evening telephone""}"
+            Screen: =Scr_Person
+            Value: |-
+                =SetProperty(Dropdown_Preffered_mean_of_contact.Selected, {Value:"Evening telephone"})
+
+        Step30 As TestStep:
+            Description: ="Set 'Txt_homeph_3'.Text to ""01908262381"""
+            Screen: =Scr_Person
+            Value: =SetProperty(Txt_homeph_3.Text, "01908262381")
+
+        Step31 As TestStep:
+            Description: |-
+                ="Set 'Dropdown_Gender'.Selected to {'Value':""Male""}"
+            Screen: =Scr_Person
+            Value: |-
+                =SetProperty(Dropdown_Gender.Selected, {Value:"Male"})
+
+        Step32 As TestStep:
+            Description: |-
+                ="Set 'Dropdown_Self_defined_ethnicity'.Selected to {'Value':""W2 Irish""}"
+            Screen: =Scr_Person
+            Value: |-
+                =SetProperty(Dropdown_Self_defined_ethnicity.Selected, {Value:"W2 Irish"})
+
+        Step33 As TestStep:
+            Description: |-
+                ="Set 'Dropdown_Officer_defined_ethnicity'.Selected to {'Value':""Asian""}"
+            Screen: =Scr_Person
+            Value: |-
+                =SetProperty(Dropdown_Officer_defined_ethnicity.Selected, {Value:"Asian"})
+
+        Step34 As TestStep:
+            Description: ="Set 'Radio_driving_licence_details'.Selected to ""Yes"""
+            Screen: =Scr_Person
+            Value: =SetProperty(Radio_driving_licence_details.Selected, "Yes")
+
+        Step35 As TestStep:
+            Description: ="Set 'TextInput_licence_number'.Text to ""TRIND703101"""
+            Screen: =Scr_Person
+            Value: =SetProperty(TextInput_licence_number.Text, "TRIND703101")
+
+        Step36 As TestStep:
+            Description: ="Set 'Radio_foreign_details'.Selected to ""No"""
+            Screen: =Scr_Person
+            Value: =SetProperty(Radio_foreign_details.Selected, "No")
+
+        Step37 As TestStep:
+            Description: ="Select 'Btn_person_save_continue'"
+            Screen: =Scr_Person
+            Value: =Select(Btn_person_save_continue)
+
+        Step38 As TestStep:
+            Description: ="Select 'Btn_save_57'"
+            Screen: =Scr_home
+            Value: =Select(Btn_vehicle)
+
+        Step39 As TestStep:
+            Description: ="Set 'TextInput_VRM'.Text to ""MM13YKW"""
+            Screen: =Scr_vehicle
+            Value: =SetProperty(TextInput_VRM.Text, "MM13YKW")
+
+        Step40 As TestStep:
+            Description: |-
+                ="Set 'Dropdown_VehicleMake'.SelectedItems to Table({'cp_name':""ABARTH"",'cp_lookupfield':{'cp_id':""38"",'cp_lookupfieldid':""e5c1356c-cc5f-eb11-89f5-000d3a654276""},'cp_lookupvalueid':""6bd74f47-b790-eb11-b1ac-000d3adb2de0"",'cp_displaysequenceno':10})"
+            Screen: =Scr_vehicle
+            Value: |-
+                =SetProperty(Dropdown_VehicleMake.SelectedItems, Table({cp_name:"ABARTH",cp_lookupfield:{cp_id:"38",cp_lookupfieldid:"e5c1356c-cc5f-eb11-89f5-000d3a654276"},cp_lookupvalueid:"6bd74f47-b790-eb11-b1ac-000d3adb2de0",cp_displaysequenceno:10}))
+
+        Step41 As TestStep:
+            Description: ="Select 'Dropdown_VehicleMake'"
+            Screen: =Scr_vehicle
+            Value: =Select(Dropdown_VehicleMake)
+
+        Step42 As TestStep:
+            Description: ="Set 'TextInput_vehicle_model'.Text to ""Car"""
+            Screen: =Scr_vehicle
+            Value: =SetProperty(TextInput_vehicle_model.Text, "Car")
+
+        Step43 As TestStep:
+            Description: |-
+                ="Set 'ComboBox_Colour'.SelectedItems to Table({'cp_name':""Blue"",'cp_lookupfield':{'cp_id':""40"",'cp_lookupfieldid':""e9c1356c-cc5f-eb11-89f5-000d3a654276""},'cp_lookupvalueid':""caa83c6e-cf5f-eb11-89f5-000d3a654276"",'cp_displaysequenceno':3})"
+            Screen: =Scr_vehicle
+            Value: |-
+                =SetProperty(ComboBox_Colour.SelectedItems, Table({cp_name:"Blue",cp_lookupfield:{cp_id:"40",cp_lookupfieldid:"e9c1356c-cc5f-eb11-89f5-000d3a654276"},cp_lookupvalueid:"caa83c6e-cf5f-eb11-89f5-000d3a654276",cp_displaysequenceno:3}))
+
+        Step44 As TestStep:
+            Description: ="Select 'ComboBox_Colour'"
+            Screen: =Scr_vehicle
+            Value: =Select(ComboBox_Colour)
+
+        Step45 As TestStep:
+            Description: ="Set 'Radio_RestrictedVehicle'.Selected to ""No"""
+            Screen: =Scr_vehicle
+            Value: =SetProperty(Radio_RestrictedVehicle.Selected, "No")
+
+        Step46 As TestStep:
+            Description: ="Set 'Radio_ManualTransmission'.Selected to ""Yes"""
+            Screen: =Scr_vehicle
+            Value: =SetProperty(Radio_ManualTransmission.Selected, "Yes")
+
+        Step47 As TestStep:
+            Description: ="Select 'Btn_vehcile_save_continue'"
+            Screen: =Scr_vehicle
+            Value: =Select(Btn_vehcile_save_continue)
+
+        Step48 As TestStep:
+            Description: ="Select 'Btn_save_59'"
+            Screen: =Scr_home
+            Value: =Select(Btn_location)
+
+        Step49 As TestStep:
+            Description: ="Set 'TextInput_Location_Description'.Text to ""Tesco"""
+            Screen: =Scr_Location
+            Value: =SetProperty(TextInput_Location_Description.Text, "Tesco")
+
+        Step50 As TestStep:
+            Description: ="Set 'TextInput_Location_Street'.Text to ""Malham Drive"""
+            Screen: =Scr_Location
+            Value: =SetProperty(TextInput_Location_Street.Text, "Malham Drive")
+
+        Step51 As TestStep:
+            Description: ="Set 'TextInput_Location_Town'.Text to ""Milton Keynes"""
+            Screen: =Scr_Location
+            Value: =SetProperty(TextInput_Location_Town.Text, "Milton Keynes")
+
+        Step52 As TestStep:
+            Description: |-
+                ="Set 'Dropdown_TPA'.Selected to {'Value':""North""}"
+            Screen: =Scr_Location
+            Value: |-
+                =SetProperty(Dropdown_TPA.Selected, {Value:"North"})
+
+        Step53 As TestStep:
+            Description: ="Select 'Btn_save_continue_Location'"
+            Screen: =Scr_Location
+            Value: =Select(Btn_save_continue_Location)
+
+        Step54 As TestStep:
+            Description: ="Select 'Btn_save_46'"
+            Screen: =Scr_home
+            Value: =Select(Btn_save_46)
+
+        Step56 As TestStep:
+            Description: ="Select 'ComboBox_TrafficOffence_OffenceCategory_3'"
+            Screen: =Scr_traffic_offence
+            Value: =Select(ComboBox_TrafficOffence_OffenceCategory_3)
+
+        Step57 As TestStep:
+            Description: |-
+                ="Set 'ComboBox_TrafficOffence_OffenceCategory_4'.SelectedItems to Table({'cp_offencecategoryid':{'cp_name':""Document offences"",'cp_offencecategoryid':""837aec13-5c39-eb11-bf68-000d3abae060""},'cp_offencedescription':""Drive otherwise that in accordance with licence"",'cp_name':""RT88 334"",'cp_offencecodeid':""47836137-8d64-eb11-b0b0-000d3abae060"",'cp_personnotmandatory':Blank()})"
+            Screen: =Scr_traffic_offence
+            Value: |-
+                =SetProperty(ComboBox_TrafficOffence_OffenceCategory_4.SelectedItems, Table({cp_offencecategoryid:{cp_name:"Document offences",cp_offencecategoryid:"837aec13-5c39-eb11-bf68-000d3abae060"},cp_offencedescription:"Drive otherwise that in accordance with licence",cp_name:"RT88 334",cp_offencecodeid:"47836137-8d64-eb11-b0b0-000d3abae060",cp_personnotmandatory:Blank()}))
+
+        Step58 As TestStep:
+            Description: ="Select 'ComboBox_TrafficOffence_OffenceCategory_4'"
+            Screen: =Scr_traffic_offence
+            Value: =Select(ComboBox_TrafficOffence_OffenceCategory_4)
+
+        Step59 As TestStep:
+            Description: ="Select 'btnAddOffence'"
+            Screen: =Scr_traffic_offence
+            Value: =Select(btnAddOffence)
+
+        Step60 As TestStep:
+            Description: ="Set 'Radio_TrafficOffence_Contains_speed_limit_offence_1'.Selected to ""No"""
+            Screen: =Scr_traffic_offence
+            Value: =SetProperty(Radio_TrafficOffence_Contains_speed_limit_offence_1.Selected, "No")
+
+        Step61 As TestStep:
+            Description: ="Set 'Checkbox_TrafficOffence_acknowledge_statement_1'.Value to true"
+            Screen: =Scr_traffic_offence
+            Value: =SetProperty(Checkbox_TrafficOffence_acknowledge_statement_1.Value, true)
+
+        Step62 As TestStep:
+            Description: ="Set 'Radio_TrafficOffence_NIP_Given_1'.Selected to ""No"""
+            Screen: =Scr_traffic_offence
+            Value: =SetProperty(Radio_TrafficOffence_NIP_Given_1.Selected, "No")
+
+        Step63 As TestStep:
+            Description: ="Set 'Radio_NIP_NotRequired_2'.Selected to ""Yes"""
+            Screen: =Scr_traffic_offence
+            Value: =SetProperty(Radio_NIP_NotRequired_2.Selected, "Yes")
+
+        Step64 As TestStep:
+            Description: ="Set 'TextInput_Offender_after_caution_1'.Text to ""nope"""
+            Screen: =Scr_traffic_offence
+            Value: =SetProperty(TextInput_Offender_after_caution_1.Text, "nope")
+
+        Step65 As TestStep:
+            Description: ="Set 'Radio_Traffic_offence_printed_1'.Selected to ""No"""
+            Screen: =Scr_traffic_offence
+            Value: =SetProperty(Radio_Traffic_offence_printed_1.Selected, "No")
+
+        Step66 As TestStep:
+            Description: ="Select 'PenInput_Traffic_offence'"
+            Screen: =Scr_traffic_offence
+            Value: =Select(PenInput_Traffic_offence)
+
+        Step67 As TestStep:
+            Description: ="Select 'Btn_save_continue_Traffic_Offence_1'"
+            Screen: =Scr_traffic_offence
+            Value: =Select(Btn_save_continue_Traffic_Offence_1)
+
+        Step68 As TestStep:
+            Description: ="Select 'Btn_save_47'"
+            Screen: =Scr_home
+            Value: =Select(Btn_save_47)
+
+        Step55 As TestStep:
+            Description: ="Select 'Icon_Submit' in row 1 in 'Gallery_unsubmitted'"
+            Screen: =Scr_uncompleted_ticket
+            Value: =Select(Gallery_unsubmitted, 1, Icon_Submit)
+

@@ -1,0 +1,553 @@
+Scr_section165 As screen:
+    OnHidden: =Reset(PenInput_Section165_Sign)
+    OnVisible: |
+        =Set(
+            madcolsec165,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolsec165: LightGoldenRodYellow});
+        Set(
+            madcolsec1651,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolsec1651: LightGoldenRodYellow});
+        Set(
+            madcolsec1652,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolsec1652: LightGoldenRodYellow});
+        Set(
+            madcolsec1653,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolsec1653: LightGoldenRodYellow});
+        Set(
+            madcolsec1654,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolsec1654: LightGoldenRodYellow});
+        Set(
+            madcolsec1655,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolsec1655: LightGoldenRodYellow});
+        Set(
+            madcolsec1656,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolsec1656: LightGoldenRodYellow});
+        Set(
+            madcolsec1657,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolsec1657: LightGoldenRodYellow});
+        Set(
+            madcolsec1658,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolsec1658: LightGoldenRodYellow});
+        Set(
+            madcolsec1659,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolsec1659: LightGoldenRodYellow});
+        Set(
+            madcolsec16510,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolsec16510: LightGoldenRodYellow});
+        /*
+        If(LookUp(TrOffOffline,TicketTypename = "S165 (No Ins/DL)" And OffenceKey=Dropdown_section165_key.Selected.Key).Section165sign = SampleImage ,Set(sec165dis,DisplayMode.Edit));
+        
+        If(LookUp(TrOffOffline,TicketTypename = "S165 (No Ins/DL)" And OffenceKey=Dropdown_section165_key.Selected.Key).Section165sign <> SampleImage ,Set(sec165dis,DisplayMode.Disabled));
+        */
+        UpdateContext({hasBeenSigned:true});
+        If(LookUp(TrOffOffline,TicketTypename = "S165 (No Ins/DL)" And OffenceKey=Dropdown_section165_key.Selected.Key).Section165sign <> Blank() ,UpdateContext({hasBeenSigned:true}),UpdateContext({hasBeenSigned:false}));
+        
+        UpdateContext({BlankImage4 : PenInput_Section165_Sign.Image, locSigDateTime4: Now()});
+        
+
+    Label_header_S165 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Section 165"
+        VerticalAlign: =VerticalAlign.Top
+        Width: =640
+        ZIndex: =1
+
+    Label1_10 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =42
+        Size: =21
+        Text: =Vehicle_Primary_key
+        Width: =440
+        X: =100
+        Y: =45
+        ZIndex: =2
+
+    Canvas_S165 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1049
+        Width: =Parent.Width
+        Y: =87
+        ZIndex: =4
+
+        DataCard_S165 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =2007
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Dropdown_section165_key As dropdown:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                Default: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).Key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                Items: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =22
+                ZIndex: =4
+
+            Label_S165_without As label:
+                Fill: =White   
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Without"
+                Width: =545
+                X: =40
+                Y: =334
+                ZIndex: =13
+
+            Label_S165_DesignatedStation As label:
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Designated station"
+                Width: =545
+                X: =40
+                Y: =460
+                ZIndex: =14
+
+            Label_asterik_without As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =561
+                Y: =353
+                ZIndex: =15
+
+            Label_asterik_DesignatedStation As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =554
+                Y: =469
+                ZIndex: =16
+
+            Dropdown_S165_DesignatedStation As dropdown:
+                AllowEmptySelection: |
+                    =true
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_section165_key.Selected.Key And TicketTypename="S165 (No Ins/DL)").'Designated Station name'
+                DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =madcolsec1651
+                Height: =70
+                Items: =ProduceStationoffline
+                OnChange: |-
+                    =If(Len(Dropdown_S165_DesignatedStation.Selected.cp_name)>0,UpdateContext({madcolsec1651:White}),UpdateContext({madcolsec1651:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Dropdown_S165_DesignatedStation.Selected.cp_name)>0,UpdateContext({madcolsec1651:White}),UpdateContext({madcolsec1651:LightGoldenRodYellow}));
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =515
+                ZIndex: =17
+
+            Label_S165_Wording As label:
+                Fill: =LightGoldenRodYellow
+                Height: =145
+                OnSelect: =
+                Size: =21
+                Text: ="The above vehicle was being driven on a road by you and there are reasonable grounds for believing that it was being driven by you"
+                Width: =545
+                X: =40
+                Y: =150
+                ZIndex: =18
+
+            ComboBox_S165_without As combobox:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                DefaultSelectedItems: =LookUp(Withoutoffline,LookUp(TrOffOffline,OffenceKey=Dropdown_section165_key.Selected.Key And TicketTypename="S165 (No Ins/DL)").'Without (Valid certificate or licence) name'=cp_name)
+                DisplayFields: =["cp_name"]
+                DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =madcolsec165
+                Height: =76
+                InputTextPlaceholder: =""
+                IsSearchable: =false
+                Items: =Withoutoffline
+                OnChange: |-
+                    =If(Len(ComboBox_S165_without.Selected.cp_name)>0,UpdateContext({madcolsec165:White}),UpdateContext({madcolsec165:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(ComboBox_S165_without.Selected.cp_name)>0,UpdateContext({madcolsec165:White}),UpdateContext({madcolsec165:LightGoldenRodYellow}));
+                Reset: =resetall
+                SearchFields: =["cp_name"]
+                SearchItems: =[]
+                SelectMultiple: =false
+                Size: =18
+                Width: =545
+                X: =40
+                Y: =384
+                ZIndex: =19
+
+            Label_S165_RecoveryGarage As label:
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Recovery Garage"
+                Width: =545
+                X: =40
+                Y: =580
+                ZIndex: =20
+
+            Dropdown_S165_RecoveryGarage As dropdown:
+                AllowEmptySelection: |
+                    =true
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_section165_key.Selected.Key And TicketTypename="S165 (No Ins/DL)").'Recovery Garage section 165 name'
+                DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =madcolsec1652
+                Height: =70
+                Items: =GaragesOffline
+                OnChange: |-
+                    =If(Len(Dropdown_S165_RecoveryGarage.Selected.name)>0,UpdateContext({madcolsec1652:White}),UpdateContext({madcolsec1652:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Dropdown_S165_RecoveryGarage.Selected.name)>0,UpdateContext({madcolsec1652:White}),UpdateContext({madcolsec1652:LightGoldenRodYellow}));
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =635
+                ZIndex: =21
+
+            Label_asterik_RecoveryGarage_S165 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =28
+                Size: =21
+                Text: ="*"
+                Width: =30
+                X: =549
+                Y: =596
+                ZIndex: =22
+
+            Label_RecoveryGarageCompany_S165 As label:
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Recovery Garage Company"
+                Width: =545
+                X: =40
+                Y: =711
+                ZIndex: =23
+
+            Dropdown_S165_RecoveryGarageCompany As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_section165_key.Selected.Key And TicketTypename="S165 (No Ins/DL)").'Recovery Garage Company name'
+                DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =madcolsec1653
+                Height: =70
+                Items: =LookUp(GaragesOffline,name=Dropdown_S165_RecoveryGarage.Selected.name).parentaccountid
+                OnChange: |-
+                    =If(Len(Dropdown_S165_RecoveryGarageCompany .Selected.name)>0,UpdateContext({madcolsec1653:White}),UpdateContext({madcolsec1653:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Dropdown_S165_RecoveryGarageCompany.Selected.name)>0,UpdateContext({madcolsec1653:White}),UpdateContext({madcolsec1653:LightGoldenRodYellow}));
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =771
+                ZIndex: =24
+
+            Label_asterik_RecoveryGarageCompany As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =28
+                Size: =21
+                Text: ="*"
+                Width: =30
+                X: =549
+                Y: =733
+                ZIndex: =25
+
+            TextInput_S165_RecoveryGarageAddress As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(GaragesOffline,name=Dropdown_S165_RecoveryGarage.Selected.name).address1_composite
+                DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                Height: =147
+                HintText: =""
+                HoverBorderColor: =RGBA(153, 153, 153, 1)
+                Mode: =TextMode.MultiLine
+                OnChange: |-
+                    =If(Len(TextInput_S165_RecoveryGarageAddress.Text)>0,UpdateContext({madcolsec1654:White}),UpdateContext({madcolsec1654:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(TextInput_S165_RecoveryGarageAddress.Text)>0,UpdateContext({madcolsec1654:White}),UpdateContext({madcolsec1654:LightGoldenRodYellow}));
+                Reset: =resetall
+                Size: =18
+                Width: =545
+                X: =40
+                Y: =890
+                ZIndex: =26
+
+            TextInput_S165_RecoveryGarageTelephone As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(GaragesOffline,name=Dropdown_S165_RecoveryGarage.Selected.name).telephone1
+                DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)   
+                Height: =70
+                HintText: =""
+                OnChange: |-
+                    =If(Len(TextInput_S165_RecoveryGarageTelephone.Text)>0,UpdateContext({madcolsec1655:White}),UpdateContext({madcolsec1655:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(TextInput_S165_RecoveryGarageTelephone.Text)>0,UpdateContext({madcolsec1655:White}),UpdateContext({madcolsec1655:LightGoldenRodYellow}));
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1084
+                ZIndex: =27
+
+            Label_asterik_RecoveryGarageAddress_S165 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =32
+                X: =549
+                Y: =849
+                ZIndex: =28
+
+            Label_asterik_RecoveryGarageTelephone_S165 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =28
+                Size: =21
+                Text: ="*"
+                Width: =30
+                X: =549
+                Y: =1059
+                ZIndex: =29
+
+            Label_S165_RecoveryGarageCompanyAddress As label:
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Recovery Garage Address"
+                Width: =545
+                X: =40
+                Y: =841
+                ZIndex: =30
+
+            Label_S165_RecoveryGarageCompanyTelephone As label:
+                Height: =48
+                OnSelect: =
+                Size: =21
+                Text: ="Recovery Garage Telephone"
+                Width: =518
+                X: =40
+                Y: =1037
+                ZIndex: =31
+
+            Radio_S165Printed As radio:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_section165_key.Selected.Key And TicketTypename="S165 (No Ins/DL)").'Section 165 printed'
+                DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =White
+                Height: =98
+                Items: =["Yes", "No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_S165Printed.Selected.Value)>0,UpdateContext({madcolsec1657:White}),UpdateContext({madcolsec1657:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Radio_S165Printed.Selected.Value)>0,UpdateContext({madcolsec1657:White}),UpdateContext({madcolsec1657:LightGoldenRodYellow}));
+                RadioBorderColor: =RGBA(116, 116, 116, 1)
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1264
+                ZIndex: =32
+
+            label_S165Printed As label:
+                Height: =80
+                OnSelect: =
+                Size: =21
+                Text: ="Section 165 Printed"
+                Width: =545
+                X: =40
+                Y: =1190
+                ZIndex: =33
+
+            Btn_save_continue_S165 As button:
+                DisplayMode: =If(LookUp(TrOffOffline,TicketTypename = "S165 (No Ins/DL)" And OffenceKey=Dropdown_section165_key.Selected.Key).Section165sign <> Blank(), DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =72
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =If(
+                        CountRows(
+                            Filter(
+                                TrOffOffline,
+                                TicketTypename = "S165 (No Ins/DL)"
+                            )
+                        ) > 0,
+                        UpdateIf(
+                            TrOffOffline,
+                            TicketTypename = "S165 (No Ins/DL)" And OffenceKey = Dropdown_section165_key.Selected.Key,
+                            {
+                                OffenceKey: Dropdown_section165_key.Selected.Key,
+                                TicketTypeTrafficOffence: LookUp(
+                                    OffencesOffline,
+                                    cp_name = "S165 (No Ins/DL)"
+                                ).cp_tickettypeid,
+                                TicketTypename: "S165 (No Ins/DL)",
+                                'Without (Valid certificate or licence) name': ComboBox_S165_without.Selected.cp_name,
+                                'Without (Valid certificate or licence)': ComboBox_S165_without.Selected.cp_lookupvalueid,
+                                'Designated Station name': Dropdown_S165_DesignatedStation.Selected.cp_name,
+                                'Designated Station': Dropdown_S165_DesignatedStation.Selected.cp_lookupvalueid,
+                                'Recovery Garage section 165 name': Dropdown_S165_RecoveryGarage.Selected.name,
+                                'Recovery Garage section 165': Dropdown_S165_RecoveryGarage.Selected.accountid,
+                                'Recovery Garage Company Section 165 name': Dropdown_S165_RecoveryGarageCompany.Selected.'Account Name',
+                                'Recovery Garage Company Section 165': Dropdown_S165_RecoveryGarageCompany.Selected.Account,
+                                'Recovery Garage Address section 165': TextInput_S165_RecoveryGarageAddress.Text,
+                                'Recovery Garage Telephone': TextInput_S165_RecoveryGarageTelephone.Text,
+                                'Section 165 printed': Radio_S165Printed.Selected.Value,
+                                Section165sign: If(hasBeenSigned = true,PenInput_Section165_Sign.Image, Blank())
+                            }
+                        )
+                    );
+                    UpdateContext(
+                        {
+                            rec: LookUp(
+                                TrOffOffline,
+                                TicketTypename = "S165 (No Ins/DL)" And OffenceKey = Dropdown_section165_key.Selected.Key
+                            )
+                        }
+                    );
+                    UpdateIf(
+                        'Vehicle Offline',
+                        Key = Dropdown_section165_key.Selected.Key,
+                        {
+                            S165valid: And(
+                                !IsBlank(rec.'Without (Valid certificate or licence) name'),
+                                !IsBlank(rec.'Recovery Garage section 165 name'),
+                                !IsBlank(rec.'Recovery Garage Company Section 165 name'),
+                                !IsBlank(rec.'Recovery Garage Address section 165'),
+                                !IsBlank(rec.'Recovery Garage Telephone'),
+                                !IsBlank(rec.Section165sign)
+                            )
+                        }
+                    );
+                    SaveData(
+                        TrOffOffline,
+                        "TrOffOffline"
+                    );
+                    Navigate(
+                        Scr_home,
+                        ScreenTransition.Cover
+                    )
+                Size: =24
+                Text: ="Save & Continue"
+                Width: =541
+                X: =46
+                Y: =1928
+                ZIndex: =35
+
+            TextInput_Sign_and_Submit_SignatureDateTime_4 As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: |-
+                    =Text(locSigDateTime4, "[$-en-GB]dd/mm/yyyy hh:mm:ss")
+                DisplayMode: =DisplayMode.Disabled
+                Height: =67
+                HintText: ="Date/time of signature"
+                OnSelect: =
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =1848
+                ZIndex: =36
+
+            Label_Sign_and_Submit_TFOffenderSignature_4 As label:
+                Height: =68
+                OnSelect: =
+                Size: =21
+                Text: ="Offender Signature"
+                Width: =545
+                X: =42
+                Y: =1489
+                ZIndex: =37
+
+            Image_Section165_Sign As image:
+                Height: =255
+                Image: =LookUp(TrOffOffline,TicketTypename = "S165 (No Ins/DL)" And OffenceKey=Dropdown_section165_key.Selected.Key).Section165sign 
+                Visible: =If(LookUp(TrOffOffline,TicketTypename = "S165 (No Ins/DL)" And OffenceKey=Dropdown_section165_key.Selected.Key).Section165sign = Blank(),false,true)
+                Width: =545
+                X: =42
+                Y: =1545
+                ZIndex: =38
+
+            PenInput_Section165_Sign As inkControl:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                DisplayMode: =If(!IsBlank(ComboBox_S165_without.Selected.cp_name) And !IsBlank(Dropdown_S165_DesignatedStation.Selected.cp_name) And !IsBlank(Dropdown_S165_RecoveryGarage.Selected.name), DisplayMode.Edit,DisplayMode.Disabled)
+                Height: =255
+                OnSelect: |-
+                    =UpdateContext({hasBeenSigned:true})
+                Reset: =true
+                Visible: =If(LookUp(TrOffOffline,TicketTypename = "S165 (No Ins/DL)" And OffenceKey=Dropdown_section165_key.Selected.Key).Section165sign = Blank(),true,false)
+                Width: =545
+                X: =42
+                Y: =1545
+                ZIndex: =39
+
+            Label1 As label:
+                Fill: =LightGoldenRodYellow
+                Height: =127
+                Size: =21
+                Text: ="I acknowledge the above statement is correct and I have understood the caution"
+                Width: =551
+                X: =32
+                Y: =1355
+                ZIndex: =40
+
+    Icon_back13 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home,UnCoverRight)
+        X: =27
+        Y: =17
+        ZIndex: =5
+

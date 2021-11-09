@@ -1,0 +1,1646 @@
+Scr_vehicle As screen:
+    OnVisible: |-
+        =UpdateContext({madcolCC: LightGoldenRodYellow});
+        Set(
+            resetall,
+            true
+        );
+        Set(
+            madcolCD,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolCD: LightGoldenRodYellow});
+        Set(
+            madcolCF,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolCF: LightGoldenRodYellow});
+        Set(
+            madcolCG,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolCG: LightGoldenRodYellow});
+        Set(
+            madcolCH,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolCH: LightGoldenRodYellow});
+        Set(
+            madcolCI,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolCI: LightGoldenRodYellow});
+        Set(
+            madcolCJ,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolCI: LightGoldenRodYellow});
+        Set(
+            madcolCE,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolCJ: LightGoldenRodYellow});
+        Set(
+            y10,
+            0
+        );
+        If(
+            Radio_Insurance_details_available.Selected.Value = "Yes" And y11 = 0,
+            UpdateContext({y11: y11 + 700})
+        );
+        If(
+            Radio_Insurance_details_available.Selected.Value = "No",
+            UpdateContext({y11: 0})
+        );
+        If(
+            Radio_Insurance_details_available.Selected.Value = "",
+            UpdateContext({y11: 0})
+        );
+        If(
+            Dropdown_VehicleMake.Selected.cp_name = "Other",
+            Set(
+                yOtherMake,
+                yOtherMake + 80
+            ),
+            Set(
+                yOtherMake,
+                0
+            )
+        );
+        If(
+            Radio_Insurance_details_available.Selected.Value = "Yes" And y11 = 0,
+            UpdateContext({y11: y11 + 700})
+        );
+        Set(
+            PNCSearchReason,
+            false
+        );
+        Select(Radio_Insurance_details_available)
+
+    Label_header_vehicle As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: |-
+            ="Vehicle Details" // & gal_PNCSearch.Selected.colour & LookUp(
+                //'Vehicle Offline',
+                //Key = Dropdown_Vehicle_key.Selected.Key
+            //).'Vehicle Colour name'
+        VerticalAlign: =VerticalAlign.Top
+        Width: =640
+        ZIndex: =1
+
+    Canvas_vehicle As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1048
+        Width: =Parent.Width
+        Y: =87
+        ZIndex: =3
+
+        DataCard_vehicle As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =2201
+            Update: =
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Dropdown_Vehicle_key As dropdown:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                Default: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).Key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                Items: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =22
+                ZIndex: =4
+
+            Label_DateOfRegistration As label:
+                Height: =70
+                Size: =21
+                Text: ="Date of Registration"
+                Width: =510
+                X: =42
+                Y: =2614-700+y11+yOtherMake
+                ZIndex: =11
+
+            DatePicker_DateofRegistration As datepicker:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                DefaultDate: |-
+                    =If(
+                        IsBlank(
+                            LookUp(
+                                'Vehicle Offline',
+                                Key = Drpdn_person_key.Selected.Key
+                            ).'Date of Registration'
+                        ),
+                        If(
+                            !IsBlank(VEResult1.registered) And UseDetails = true,
+                            Date(
+                                Value(
+                                    If(
+                                        Value(
+                                            Right(
+                                                VEResult1.registered,
+                                                2
+                                            )
+                                        ) < 29,
+                                        Concatenate(
+                                            "20",
+                                            Right(
+                                                VEResult1.registered,
+                                                2
+                                            )
+                                        ),
+                                        Value(
+                                            Right(
+                                                VEResult1.registered,
+                                                2
+                                            )
+                                        ) > 30,
+                                        Concatenate(
+                                            "19",
+                                            Right(
+                                                VEResult1.registered,
+                                                2
+                                            )
+                                        ),
+                                        Value(
+                                            Right(
+                                               VEResult1.registered,
+                                                2
+                                            )
+                                        )
+                                    )
+                                ),
+                                LookUp(
+                                    MonthsConversion,
+                                    Month = Left(
+                                        VEResult1.registered,
+                                        Len(VEResult1.registered) - 2
+                                    ),
+                                    Value
+                                ),
+                                02
+                            ),
+                            LookUp(
+                                'Vehicle Offline',
+                                Key = Drpdn_person_key.Selected.Key
+                            ).'Date of Registration'
+                        ),
+                        LookUp(
+                            'Vehicle Offline',
+                            Key = Drpdn_person_key.Selected.Key
+                        ).'Date of Registration'
+                    )
+                Fill: =White
+                Height: =70
+                IconBackground: =RGBA(153, 153, 153 , 1)
+                IconFill: =RGBA(255, 255, 255 , 1)
+                InputTextPlaceholder: =
+                OnChange: |-
+                    =If(IsBlank(DatePicker_DateofRegistration),
+                    UpdateContext({madcolCH: LightGoldenRodYellow}),UpdateContext({madcolCH: Transparent }));
+                OnSelect: |
+                    =If(IsBlank(DatePicker_DateofRegistration),UpdateContext({madcolCH:LightGoldenRodYellow}),UpdateContext({madcolCH: Transparent }));
+                Reset: =resetall
+                Size: =24
+                Width: =545
+                X: =42
+                Y: =2672-700+y11+yOtherMake
+                ZIndex: =12
+
+            label_ExciseDutyCurrent As label:
+                Height: =51
+                OnSelect: =
+                Size: =21
+                Text: ="Up-to-date excise duty?"
+                Width: =545
+                X: =42
+                Y: =2746-700+y11+yOtherMake
+                ZIndex: =13
+
+            Radio_ManualTransmission As radio:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Vehicle Offline',Key=Dropdown_Vehicle_key.Selected.Key).'Manual transmission'
+                Fill: =If(IsBlank(Self.SelectedText.Value),LightGoldenRodYellow,White)
+                Height: =94
+                Items: =["Yes", "No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_ManualTransmission.Selected.Value)>0,UpdateContext({madcolCG:Transparent}),UpdateContext({madcolCG:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Radio_ManualTransmission.Selected.Value)>0,UpdateContext({madcolCG:Transparent}),UpdateContext({madcolCG:LightGoldenRodYellow}));
+                RadioBorderColor: =RGBA(116, 116, 116, 1)
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =2515-700+y11+yOtherMake
+                ZIndex: =15
+
+            label_ManualTransmission As label:
+                Height: =51
+                OnSelect: =
+                Size: =21
+                Text: ="Manual Transmission?"
+                Width: =545
+                X: =42
+                Y: =2474-700+y11+yOtherMake
+                ZIndex: =16
+
+            Label_asterik_ManualTransmission As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =555
+                Y: =2483-700+y11+yOtherMake
+                ZIndex: =17
+
+            Radio_UptoDateExciseDuty As radio:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Vehicle Offline',Key=Dropdown_Vehicle_key.Selected.Key).'Up to date excise duty'
+                Fill: =If(IsBlank(Self.SelectedText),LightGoldenRodYellow,White)
+                Height: =94
+                Items: =["Yes", "No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_UptoDateExciseDuty.Selected.Value)>0,UpdateContext({madcolCI:Transparent}),UpdateContext({madcolCI:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Radio_UptoDateExciseDuty.Selected.Value)>0,UpdateContext({madcolCI:Transparent}),UpdateContext({madcolCI:LightGoldenRodYellow}));
+                RadioBorderColor: =RGBA(116, 116, 116, 1)
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =2797-700+y11+yOtherMake
+                ZIndex: =18
+
+            Dropdown_VehicleRoles As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
+                Default: =LookUp('Vehicle Offline',Key=Dropdown_Vehicle_key.Selected.Key).'Vehicle Roles Name'
+                Height: =70
+                Items: =VehicleRoleoffline
+                OnSelect: =
+                PressedFill: =RGBA(116, 116, 116, 1)
+                Reset: =resetall
+                SelectionFill: =RGBA(116, 116, 116, 1)
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =2235-700+y11+yOtherMake
+                ZIndex: =20
+
+            Label_VehicleRoles As label:
+                Height: =64
+                OnSelect: =
+                Size: =21
+                Text: ="Vehicle Roles"
+                Width: =545
+                X: =42
+                Y: =2180-700+y11+yOtherMake
+                ZIndex: =21
+
+            Radio_RestrictedVehicle As radio:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Vehicle Offline',Key=Dropdown_Vehicle_key.Selected.Key).'Restricted Vehicle'
+                Fill: =If(IsBlank(Self.SelectedText.Value),LightGoldenRodYellow,White)
+                Height: =93
+                Items: =["Yes", "No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_RestrictedVehicle.Selected.Value)>0, UpdateContext({madcolCF:Transparent}), UpdateContext({madcolCF:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Radio_RestrictedVehicle.Selected.Value)>0, UpdateContext({madcolCF:Transparent}), UpdateContext({madcolCF:LightGoldenRodYellow}));
+                RadioBorderColor: =RGBA(116, 116, 116, 1)
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =2370-700+y11+yOtherMake
+                ZIndex: =22
+
+            label_RestrictedVehicle As label:
+                Height: =51
+                OnSelect: =
+                Size: =21
+                Text: ="Restricted Vehicle"
+                Width: =545
+                X: =42
+                Y: =2324-700+y11+yOtherMake
+                ZIndex: =23
+
+            Label_asterik_RestrictedVehicle As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =555
+                Y: =2338-700+y11+yOtherMake
+                ZIndex: =24
+
+            Radio_Insurance_details_available As radio:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderStyle: =BorderStyle.None
+                Default: |-
+                    =If(
+                        IsBlank(
+                            LookUp(
+                                'Vehicle Offline',
+                                Key = Dropdown_Vehicle_key.Selected.Key
+                            ).'Insurance Details available ?'
+                        ),
+                        If(
+                            !IsBlank(First(VEResult1.insurance).insuranceHeld) And UseDetails = true,
+                            "Yes",
+                            ""),
+                        LookUp(
+                            'Vehicle Offline',
+                            Key = Dropdown_Vehicle_key.Selected.Key
+                        ).'Insurance Details available ?'
+                    )
+                Height: =98
+                Items: =["Yes", "No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Radio_Insurance_details_available.Selected.Value ="Yes" And y11=0,UpdateContext({y11: y11+700}));
+                    
+                    If(Radio_Insurance_details_available.Selected.Value ="No",UpdateContext({y11:0}));
+                    
+                    If(Radio_Insurance_details_available.Selected.Value ="",UpdateContext({y11:0}));
+                OnSelect: |-
+                    =UpdateContext({y11:0});
+                    If(Radio_Insurance_details_available.Selected.Value ="Yes" And y11=0,UpdateContext({y11: y11+700}));
+                    
+                    If(Radio_Insurance_details_available.Selected.Value ="No",UpdateContext({y11:0}));
+                    
+                    If(Radio_Insurance_details_available.Selected.Value ="",UpdateContext({y11:0}));
+                RadioBorderColor: =RGBA(116, 116, 116, 1)
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1360+yOtherMake
+                ZIndex: =33
+
+            lbl_Insurance_details_available As label:
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Insurance details available?"
+                Width: =545
+                X: =41
+                Y: =1310+yOtherMake
+                ZIndex: =34
+
+            TextInput_EngineCC As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: |-
+                    =If(
+                        IsBlank(
+                            LookUp(
+                                'Vehicle Offline',
+                                Key = Drpdn_person_key.Selected.Key
+                            ).'Vehicle Engine CC'
+                        ),
+                        If(
+                            Len(VEResult1.cc) > 0 And UseDetails = true,
+                            VEResult1.cc,
+                            LookUp(
+                                'Vehicle Offline',
+                                Key = Drpdn_person_key.Selected.Key
+                            ).'Vehicle Engine CC'
+                        ),
+                        LookUp(
+                            'Vehicle Offline',
+                            Key = Drpdn_person_key.Selected.Key
+                        ).'Vehicle Engine CC'
+                    )
+                Fill: =RGBA(0, 0, 0, 0)
+                Format: =TextFormat.Number
+                Height: =70
+                HintText: =""
+                OnSelect: =
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1187+yOtherMake
+                ZIndex: =35
+
+            label_EngineCC As label:
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Engine CC"
+                Width: =545
+                X: =40
+                Y: =1137+yOtherMake
+                ZIndex: =36
+
+            Datepicker_MOTExpiry As datepicker:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                DefaultDate: |-
+                    =If(
+                        IsBlank(
+                            LookUp(
+                                'Vehicle Offline',
+                                Key = Drpdn_person_key.Selected.Key
+                            ).'Vehicle MOT expiry'
+                        ),
+                        If(
+                            Len(VEResult1.motExpiry) > 0 And UseDetails = true,
+                            VEResult1.motExpiry,
+                            LookUp(
+                                'Vehicle Offline',
+                                Key = Drpdn_person_key.Selected.Key
+                            ).'Vehicle MOT expiry'
+                        ),
+                        LookUp(
+                            'Vehicle Offline',
+                            Key = Drpdn_person_key.Selected.Key
+                        ).'Vehicle MOT expiry'
+                    )
+                DisabledBorderColor: =RGBA(128, 128, 128, 1)
+                Height: =70
+                IconBackground: =RGBA(116, 116, 116, 1)
+                InputTextPlaceholder: =
+                OnSelect: =
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1028+yOtherMake
+                ZIndex: =37
+
+            label_MOT_Expiry As label:
+                Height: =54
+                OnSelect: =
+                Size: =21
+                Text: ="MOT Expiry"
+                Width: =545
+                X: =40
+                Y: =976+yOtherMake
+                ZIndex: =38
+
+            TextInput_VRM As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: |-
+                    =If(
+                        IsBlank(
+                            LookUp(
+                                'Vehicle Offline',
+                                Key = Drpdn_person_key.Selected.Key
+                            ).VRM
+                        ),
+                        If(
+                            Len(VEResult1.vrnReg) > 0 And UseDetails = true,
+                            VEResult1.vrnReg,
+                            LookUp(
+                                'Vehicle Offline',
+                                Key = Drpdn_person_key.Selected.Key
+                            ).VRM
+                        ),
+                        LookUp(
+                            'Vehicle Offline',
+                            Key = Drpdn_person_key.Selected.Key
+                        ).VRM
+                    )
+                    //LookUp('Vehicle Offline',Key=Drpdn_person_key.Selected.Key).VRM
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)   
+                Height: =64
+                HintText: =""
+                OnChange: |-
+                    =If(Len(TextInput_VRM.Text)>0,UpdateContext({madcolCC:Transparent}),UpdateContext({madcolCC:LightGoldenRodYellow}));
+                    
+                    Text(Upper(TextInput_VRM.Text))
+                OnSelect: |-
+                    =If(Len(TextInput_VRM.Text)>0,UpdateContext({madcolCC:Transparent}),UpdateContext({madcolCC:LightGoldenRodYellow}));
+                    Text(Upper(TextInput_VRM.Text))
+                Size: =21
+                Width: =492
+                X: =42
+                Y: =186
+                ZIndex: =40
+
+            Group2 As group:
+                Height: =5
+                Width: =5
+                X: =-1
+                Y: =40
+                ZIndex: =40
+
+                DatePicker_Insurance_ValidTo As datepicker:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DefaultDate: |-
+                        =If(
+                            IsBlank(
+                               LookUp('Vehicle Offline',Key=Drpdn_person_key.Selected.Key).'Valid To'
+                            ),
+                            If(
+                                Len(First(VEResult1.insurance).expDate) > 0 And UseDetails = true,
+                                First(VEResult1.insurance).expDate,
+                               LookUp('Vehicle Offline',Key=Drpdn_person_key.Selected.Key).'Valid To'),
+                        LookUp('Vehicle Offline',Key=Drpdn_person_key.Selected.Key).'Valid To'
+                        )
+                    Height: =70
+                    IconBackground: =RGBA(116, 116, 116, 1)
+                    InputTextPlaceholder: =
+                    OnSelect: =
+                    Size: =24
+                    Visible: =If(Radio_Insurance_details_available.Selected.Value ="Yes",true,false)
+                    Width: =545
+                    X: =41
+                    Y: =1878
+                    ZIndex: =25
+
+                DatePicker_Indusarnce_Validfrom As datepicker:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DefaultDate: |-
+                        =If(
+                            IsBlank(
+                                LookUp(
+                                    'Vehicle Offline',
+                                    Key = Drpdn_person_key.Selected.Key
+                                ).'Valid from'
+                            ),
+                            If(
+                                Len(First(VEResult1.insurance).startDate) > 0 And UseDetails = true,
+                                First(VEResult1.insurance).startDate,
+                                LookUp(
+                                    'Vehicle Offline',
+                                    Key = Drpdn_person_key.Selected.Key
+                                ).'Valid from'
+                            ),
+                            LookUp(
+                                'Vehicle Offline',
+                                Key = Drpdn_person_key.Selected.Key
+                            ).'Valid from'
+                        )
+                    Height: =70
+                    IconBackground: =RGBA(116, 116, 116, 1)
+                    InputTextPlaceholder: =
+                    OnSelect: =
+                    Size: =24
+                    Visible: =If(Radio_Insurance_details_available.Selected.Value ="Yes",true,false)
+                    Width: =545
+                    X: =41
+                    Y: =1755
+                    ZIndex: =26
+
+                Label_InsuredBy As label:
+                    Height: =43
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Insured By"
+                    Visible: =If(Radio_Insurance_details_available.Selected.Value ="Yes",true,false)
+                    Width: =545
+                    X: =41
+                    Y: =1573
+                    ZIndex: =27
+
+                Label_ValidFrom As label:
+                    Height: =38
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Valid From"
+                    Visible: =If(Radio_Insurance_details_available.Selected.Value ="Yes",true,false)
+                    Width: =545
+                    X: =40
+                    Y: =1717
+                    ZIndex: =28
+
+                Label_ValidTo As label:
+                    Height: =39
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Valid To"
+                    Visible: =If(Radio_Insurance_details_available.Selected.Value ="Yes",true,false)
+                    Width: =545
+                    X: =41
+                    Y: =1839
+                    ZIndex: =29
+
+                TextInput_Insurance_Notes As text:
+                    BorderColor: =RGBA(153,153,153, 1)
+                    Default: =LookUp('Vehicle Offline',Key=Drpdn_person_key.Selected.Key).Notes
+                    EnableSpellCheck: =true
+                    Height: =216
+                    HintText: ="Notes"
+                    Mode: =TextMode.MultiLine
+                    OnChange: =
+                    OnSelect: =
+                    Size: =21
+                    Visible: =If(Radio_Insurance_details_available.Selected.Value ="Yes",true,false)
+                    Width: =545
+                    X: =40
+                    Y: =1964
+                    ZIndex: =30
+
+                TextInput_Insurance_Number As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: |-
+                        =If(
+                            IsBlank(
+                                LookUp(
+                                    'Vehicle Offline',
+                                    Key = Drpdn_person_key.Selected.Key
+                                ).'Insurance number'
+                            ),
+                            If(
+                                Len(First(VEResult1.insurance).policyNumber) > 0 And UseDetails = true,
+                                First(VEResult1.insurance).policyNumber,
+                                LookUp(
+                                    'Vehicle Offline',
+                                    Key = Drpdn_person_key.Selected.Key
+                                ).'Insurance number'
+                            ),
+                            LookUp(
+                                'Vehicle Offline',
+                                Key = Drpdn_person_key.Selected.Key
+                            ).'Insurance number'
+                        )
+                    Fill: =RGBA(0, 0, 0, 0)
+                    Height: =70
+                    HintText: =""
+                    OnSelect: =
+                    Size: =21
+                    Visible: =If(Radio_Insurance_details_available.Selected.Value ="Yes",true,false)
+                    Width: =545
+                    X: =41
+                    Y: =1484
+                    ZIndex: =31
+
+                Label_InsuranceNumber As label:
+                    Height: =54
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Insurance Number"
+                    Visible: =If(Radio_Insurance_details_available.Selected.Value ="Yes",true,false)
+                    Width: =545
+                    X: =41
+                    Y: =1428
+                    ZIndex: =32
+
+                TextInput_Insured_by As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: |-
+                        =If(
+                            IsBlank(
+                                LookUp(
+                                    'Vehicle Offline',
+                                    Key = Drpdn_person_key.Selected.Key
+                                ).'Insured by'
+                            ),
+                            If(
+                                Len(First(VEResult1.insurance).insurer) > 0 And UseDetails = true,
+                                First(VEResult1.insurance).insurer,
+                                LookUp(
+                                    'Vehicle Offline',
+                                    Key = Drpdn_person_key.Selected.Key
+                                ).'Insured by'
+                            ),
+                            LookUp(
+                                'Vehicle Offline',
+                                Key = Drpdn_person_key.Selected.Key
+                            ).'Insured by'
+                        )
+                    Fill: =RGBA(0, 0, 0, 0)
+                    Height: =70
+                    HintText: =""
+                    OnSelect: =
+                    Size: =21
+                    Visible: =If(Radio_Insurance_details_available.Selected.Value ="Yes",true,false)
+                    Width: =545
+                    X: =41
+                    Y: =1619
+                    ZIndex: =39
+
+            label_VehicleMake As label:
+                Height: =36
+                OnSelect: =
+                Size: =21
+                Text: ="Make"
+                Width: =545
+                X: =42
+                Y: =279
+                ZIndex: =42
+
+            Label_asterik_vrm As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =26
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =561
+                Y: =160
+                ZIndex: =43
+
+            Label_asterik_make As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =563
+                Y: =279
+                ZIndex: =44
+
+            label_VehicleModel As label:
+                Height: =46
+                OnSelect: =
+                Size: =21
+                Text: ="Model"
+                Width: =545
+                X: =42
+                Y: =384+yOtherMake
+                ZIndex: =45
+
+            Label_asterik_model As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =26
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =410+yOtherMake
+                ZIndex: =46
+
+            label_VehicleColour As label:
+                Height: =55
+                OnSelect: =
+                Size: =21
+                Text: ="Colour"
+                Width: =545
+                X: =42
+                Y: =519+yOtherMake
+                ZIndex: =47
+
+            Label_asterik_colour As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =557
+                Y: =532+yOtherMake
+                ZIndex: =48
+
+            TextInput_ChassisNumber As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: |-
+                    =If(
+                        IsBlank(
+                            LookUp(
+                                'Vehicle Offline',
+                                Key = Drpdn_person_key.Selected.Key
+                            ).'Vehicle Chasis Number'
+                        ),
+                        If(
+                            Len(VEResult1.chassisNo) > 0 And UseDetails = true,
+                            VEResult1.chassisNo,
+                            LookUp(
+                                'Vehicle Offline',
+                                Key = Drpdn_person_key.Selected.Key
+                            ).'Vehicle Chasis Number'
+                        ),
+                        LookUp(
+                            'Vehicle Offline',
+                            Key = Drpdn_person_key.Selected.Key
+                        ).'Vehicle Chasis Number'
+                    )
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =70
+                HintText: =""
+                OnSelect: =
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =725+yOtherMake
+                ZIndex: =49
+
+            TextInput_EngineNumber As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: |-
+                    =If(
+                        IsBlank(
+                            LookUp(
+                                'Vehicle Offline',
+                                Key = Drpdn_person_key.Selected.Key
+                            ).'Vehicle Engine Number'
+                        ),
+                        If(
+                            Len(VEResult1.engineNo) > 0 And UseDetails = true,
+                            VEResult1.engineNo,
+                            LookUp(
+                                'Vehicle Offline',
+                                Key = Drpdn_person_key.Selected.Key
+                            ).'Vehicle Engine Number'
+                        ),
+                        LookUp(
+                            'Vehicle Offline',
+                            Key = Drpdn_person_key.Selected.Key
+                        ).'Vehicle Engine Number'
+                    )
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =70
+                HintText: =""
+                OnSelect: =
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =855+yOtherMake
+                ZIndex: =50
+
+            ComboBox_Colour As combobox:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                ChevronBackground: =RGBA(116, 116, 116, 1)
+                ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
+                DefaultSelectedItems: |-
+                    =/*If(
+                        IsBlank(
+                            LookUp(
+                                Vehiclecolouroffline,
+                                LookUp(
+                                    'Vehicle Offline',
+                                    Key = Dropdown_Vehicle_key.Selected.Key
+                                ).'Vehicle Colour name' = cp_name
+                            )
+                        ),
+                        If(
+                            Len(gal_PNCSearch.Selected.colour) > 0 And UseDetails = true,
+                            LookUp(
+                                Vehiclecolouroffline,
+                                Lower(cp_name) = Lower(gal_PNCSearch.Selected.lbl_colour.Text)
+                            ),
+                            LookUp(
+                                Vehiclecolouroffline,
+                                LookUp(
+                                    'Vehicle Offline',
+                                    Key = Dropdown_Vehicle_key.Selected.Key
+                                ).'Vehicle Colour name' = cp_name
+                            )
+                        ),
+                        LookUp(
+                            Vehiclecolouroffline,
+                            LookUp(
+                                'Vehicle Offline',
+                                Key = Dropdown_Vehicle_key.Selected.Key
+                            ).'Vehicle Colour name' = cp_name
+                        )
+                    )*/
+                    
+                    If(
+                        IsBlank(
+                            First(
+                                Filter(
+                                    Vehiclecolouroffline,
+                                    cp_name = LookUp(
+                                        'Vehicle Offline',
+                                        Key = Dropdown_Vehicle_key.Selected.Key
+                                    ).'Vehicle Colour name', cp_displaysequenceno <> 0
+                                )
+                            )
+                        ),
+                        If(
+                            Len(VEResult1.colour) > 0 And UseDetails = true,
+                            First(
+                                Filter(
+                                    Vehiclecolouroffline,
+                                    Lower(cp_name) = Lower(VEResult1.colour)
+                                )
+                            ),
+                            First(
+                                Filter(
+                                    Vehiclecolouroffline,
+                                    cp_name = LookUp(
+                                        'Vehicle Offline',
+                                        Key = Dropdown_Vehicle_key.Selected.Key
+                                    ).'Vehicle Colour name'
+                                )
+                            )
+                        ),
+                        First(
+                            Filter(
+                                Vehiclecolouroffline,
+                                cp_name = LookUp(
+                                    'Vehicle Offline',
+                                    Key = Dropdown_Vehicle_key.Selected.Key
+                                ).'Vehicle Colour name'
+                            )
+                        )
+                    )
+                DisplayFields: =["cp_name"]
+                Fill: =If(IsBlank(Self.Selected) Or IsBlank(Self.Selected.cp_name) ,LightGoldenRodYellow,White)
+                Height: =70
+                HoverFill: =RGBA(166, 166, 166, 1)
+                InputTextPlaceholder: =
+                Items: =Vehiclecolouroffline
+                OnChange: |-
+                    =If(Len(ComboBox_Colour.Selected.cp_name)>0,UpdateContext({madcolCJ:White}),UpdateContext({madcolCJ:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(ComboBox_Colour.Selected.cp_name)>0,UpdateContext({madcolCJ:White}),UpdateContext({madcolCJ:LightGoldenRodYellow}))
+                PressedFill: =RGBA(116, 116, 116, 1)
+                Reset: =resetall
+                SearchFields: =["cp_name"]
+                SearchItems: =Search(Vehiclecolouroffline,ComboBox_Colour.SearchText,"cp_name")
+                SelectionFill: =RGBA(116, 116, 116, 1)
+                SelectMultiple: =false
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =564+yOtherMake
+                ZIndex: =51
+
+            label_EngineNumber As label:
+                Height: =39
+                OnSelect: =
+                Size: =21
+                Text: ="Engine Number"
+                Width: =545
+                X: =42
+                Y: =816+yOtherMake
+                ZIndex: =52
+
+            label_ChassisNumber As label:
+                Height: =49
+                OnSelect: =
+                Size: =21
+                Text: ="Chassis Number"
+                Width: =545
+                X: =42
+                Y: =676+yOtherMake
+                ZIndex: =53
+
+            TextInput_OtherMake As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =If(Dropdown_VehicleMake.Selected.cp_name="Other" And Len(VEResult1.make)>0,VEResult1.make)
+                Height: =70
+                HintText: ="Please specify other make"
+                Reset: =resetall
+                Size: =21
+                Visible: =If(Dropdown_VehicleMake.Selected.cp_name="Other",true,false)
+                Width: =545
+                X: =42
+                Y: =405
+                ZIndex: =54
+
+            label_VRM As label:
+                Height: =46
+                OnSelect: =
+                Size: =21
+                Text: ="VRM"
+                Width: =508
+                X: =42
+                Y: =140
+                ZIndex: =55
+
+            TextInput_vehicle_model As text:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                Default: |-
+                    =If(
+                        IsBlank(
+                            LookUp(
+                                'Vehicle Offline',
+                                Key = Drpdn_person_key.Selected.Key
+                            ).'Vehicle Model'
+                        ),
+                        If(
+                            Len(VEResult1.model) > 0 And UseDetails = true,
+                            VEResult1.model,
+                            LookUp(
+                                'Vehicle Offline',
+                                Key = Drpdn_person_key.Selected.Key
+                            ).'Vehicle Model'
+                        ),
+                        LookUp(
+                            'Vehicle Offline',
+                            Key = Drpdn_person_key.Selected.Key
+                        ).'Vehicle Model'
+                    )
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                Height: =72
+                HintText: =""
+                HoverBorderColor: =RGBA(116, 116, 116, 1)
+                OnChange: |-
+                    =If(Len(TextInput_vehicle_model.Text)>0,UpdateContext({madcolCE:White}),UpdateContext({madcolCE:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(TextInput_vehicle_model.Text)>0,UpdateContext({madcolCE:White}),UpdateContext({madcolCE:LightGoldenRodYellow}));
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =429+yOtherMake
+                ZIndex: =56
+
+            Icon1 As icon.Search:
+                Color: =RGBA(153, 153, 153, 1)
+                Icon: =Icon.Search
+                OnSelect: =Set(PNCSearchReason,true)
+                X: =534
+                Y: =186
+                ZIndex: =57
+
+            Dropdown_VehicleMake As combobox:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                ChevronBackground: =RGBA(116, 116, 116, 1)
+                ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
+                DefaultSelectedItems: |-
+                    =If(
+                        IsBlank(
+                            First(
+                                Filter(
+                                    VehicleMakeoffline,
+                                    cp_name = LookUp(
+                                        'Vehicle Offline',
+                                        Key = Dropdown_Vehicle_key.Selected.Key
+                                    ).'Vehicle Make name', cp_displaysequenceno <> 0
+                                )
+                            )
+                        ),
+                        If(
+                            Len(VEResult1.make) > 0 And UseDetails = true,
+                            First(
+                                Filter(
+                                    VehicleMakeoffline,
+                                    cp_name = VEResult1.make
+                                )
+                            ),
+                            First(
+                                Filter(
+                                    VehicleMakeoffline,
+                                    cp_name = LookUp(
+                                        'Vehicle Offline',
+                                        Key = Dropdown_Vehicle_key.Selected.Key
+                                    ).'Vehicle Make name'
+                                )
+                            )
+                        ),
+                        First(
+                            Filter(
+                                VehicleMakeoffline,
+                                cp_name = LookUp(
+                                    'Vehicle Offline',
+                                    Key = Dropdown_Vehicle_key.Selected.Key
+                                ).'Vehicle Make name'
+                            )
+                        )
+                    )
+                DisplayFields: =["cp_name"]
+                Fill: =If(IsBlank(Self.Selected) Or IsBlank(Self.Selected.cp_name) ,LightGoldenRodYellow,White)    
+                Height: =70
+                HoverFill: =RGBA(166, 166, 166, 1)
+                InputTextPlaceholder: =
+                Items: =VehicleMakeoffline
+                OnChange: |-
+                    =If(Len(Dropdown_VehicleMake.Selected.cp_name)>0,UpdateContext({madcolCJ:White}),UpdateContext({madcolCJ:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Dropdown_VehicleMake.Selected.cp_name)>0,UpdateContext({madcolCJ:White}),UpdateContext({madcolCJ:LightGoldenRodYellow}))
+                PressedFill: =RGBA(116, 116, 116, 1)
+                Reset: =resetall
+                SearchFields: =["cp_name"]
+                SearchItems: =Search(VehicleMakeoffline,Dropdown_VehicleMake.SearchText,"cp_name")
+                SelectionFill: =RGBA(116, 116, 116, 1)
+                SelectMultiple: =false
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =315
+                ZIndex: =58
+
+            Label_asterik_ManualTransmission_1 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =555
+                Y: =2056+y11+yOtherMake
+                ZIndex: =59
+
+        DataCard5 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =1
+            ZIndex: =2
+
+            Btn_vehcile_save_continue As button:
+                DisplayMode: =signreadonly
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =72
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =UpdateIf('Vehicle Offline',Key=Dropdown_Vehicle_key.Selected.Key,{
+                        VRM: TextInput_VRM.Text,
+                        'Vehicle Make name': Dropdown_VehicleMake.Selected.cp_name,
+                        'Vehicle Make': Dropdown_VehicleMake.Selected.cp_lookupvalueid,
+                        'Vehicle Make other': TextInput_OtherMake.Text,
+                        'Vehicle Model': TextInput_vehicle_model.Text,
+                        'Vehicle Colour name': ComboBox_Colour.Selected.cp_name,
+                        'Vehicle Colour': ComboBox_Colour.Selected.cp_lookupvalueid,
+                        'Vehicle Chasis Number': TextInput_ChassisNumber.Text,
+                        'Vehicle Engine Number': TextInput_EngineNumber.Text,
+                        'Vehicle Engine CC': TextInput_EngineCC.Text,
+                        'Vehicle MOT expiry': Datepicker_MOTExpiry.SelectedDate,
+                        'Insurance Details available ?': Radio_Insurance_details_available.Selected.Value,
+                        'Insurance number': TextInput_Insurance_Number.Text,
+                        'Insured by': TextInput_Insured_by.Text,
+                        'Valid from': DatePicker_Indusarnce_Validfrom.SelectedDate,
+                        'Valid To': DatePicker_Insurance_ValidTo.SelectedDate,
+                        Notes:TextInput_Insurance_Notes.Text,
+                        'Vehicle Roles Name': Dropdown_VehicleRoles.Selected.cp_name,
+                        'Vehicle Roles': Dropdown_VehicleRoles.Selected.cp_lookupvalueid,
+                        'Restricted Vehicle': Radio_RestrictedVehicle.Selected.Value,
+                        'Manual transmission':Radio_ManualTransmission.Selected.Value,
+                        'Date of Registration': DatePicker_DateofRegistration.SelectedDate,
+                        'Up to date excise duty':Radio_UptoDateExciseDuty.Selected.Value
+                    
+                    
+                    
+                        }
+                    );
+                    UpdateContext(
+                        {
+                            rec: LookUp(
+                                'Vehicle Offline',
+                                Key=Dropdown_Vehicle_key.Selected.Key
+                            )
+                        }
+                    );
+                    UpdateIf(
+                        'Vehicle Offline',
+                       Key=Drpdn_person_key.Selected.Key,
+                        {
+                            VehicleValidation:And(
+                            !IsBlank(rec.VRM),
+                            !IsBlank(rec.'Vehicle Make name'),
+                            !IsBlank(rec.'Vehicle Model'),
+                            !IsBlank(rec.'Vehicle Colour name'),
+                            !IsBlank(rec.'Up to date excise duty'),
+                            !IsBlank(rec.'Restricted Vehicle'),
+                            !IsBlank(rec.'Manual transmission')
+                            )
+                            });
+                    SaveData('Vehicle Offline',"Vehicle Offline");Navigate(Scr_home,ScreenTransition.Cover)
+                Size: =24
+                Text: ="Save & Continue"
+                Width: =545
+                X: =48
+                Y: =12
+                ZIndex: =1
+
+    Label1_4 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =42
+        Size: =21
+        Text: =Vehicle_Primary_key
+        Width: =440
+        X: =100
+        Y: =45
+        ZIndex: =4
+
+    Icon4_back As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home,UnCoverRight)
+        X: =27
+        Y: =17
+        ZIndex: =5
+
+    Loading As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =9
+
+        Rectangle9 As rectangle:
+            Fill: =RGBA(255, 255, 255, 0.83)
+            Height: =1136
+            Visible: =LoadingSplash
+            Width: =640
+            ZIndex: =22
+
+        Image2 As image:
+            Height: =116
+            Image: ='loading-buffering'
+            Visible: =LoadingSplash
+            Width: =116
+            X: =262
+            Y: =553
+            ZIndex: =23
+
+        Label18 As label:
+            Align: =Align.Center
+            FontWeight: =Semibold
+            Height: =72
+            Italic: =true
+            Size: =21
+            Text: ="Searching..."
+            Visible: =LoadingSplash
+            Width: =640
+            Y: =462
+            ZIndex: =24
+
+    Button7 As button:
+        Height: =67
+        OnSelect: |-
+            =UpdateIf('Vehicle Offline',Key=Dropdown_Vehicle_key.Selected.Key,{
+                VRM: "MM13YKW",
+                'Vehicle Make name':"FORD(UK)",
+                'Vehicle Model':"Mondeo",
+                'Vehicle Colour name':"Silver",
+                'Restricted Vehicle':"No",
+                'Manual transmission':"No",
+                'Up to date excise duty':"Yes"
+                
+                
+            });
+            Select(Btn_vehcile_save_continue);
+        Size: =24
+        Text: ="!"
+        Visible: =glbDebug
+        Width: =83
+        X: =492
+        Y: =13
+        ZIndex: =25
+
+    Group6 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =25
+
+        Rectangle3_2 As rectangle:
+            Fill: =RGBA(255, 255, 255, 0.84)
+            Height: =1136
+            Visible: =PNCSearchReason
+            Width: =640
+            ZIndex: =6
+
+        Button1_2 As button:
+            BorderColor: =ColorFade(RGBA(153, 153, 153, 1),30%)
+            BorderThickness: =1
+            DisplayMode: =DisplayMode.Disabled
+            Fill: =White
+            Height: =585
+            Size: =24
+            Text: =""
+            Visible: =PNCSearchReason
+            Width: =598
+            X: =21
+            Y: =250
+            ZIndex: =7
+
+        Button2_2 As button:
+            BorderThickness: =0
+            Color: =RGBA(0, 0, 0, 1)
+            Fill: =RGBA(244, 244, 244, 1)
+            FocusedBorderThickness: =0
+            Height: =50
+            HoverColor: =ColorFade(Self.Color, 30%)
+            HoverFill: =RGBA(244, 244, 244, 1)
+            OnSelect: |-
+                =/*Validation for search STARTS here*/
+                Set(
+                    Errors,
+                    false
+                );
+                Set(
+                    LoadingSplash,
+                    true
+                );
+                If(
+                    IsBlank(textInputVRM_1.Text),
+                    Set(
+                        Errors,
+                        true
+                    );
+                    Notify(
+                        "VRM is a mandatory field",
+                        NotificationType.Error
+                    )
+                );
+                If(
+                    IsBlank(drpdwn_PNCSearchReason_1.Selected.Reason),
+                    Set(
+                        Errors,
+                        true
+                    );
+                    Notify(
+                        "PNC Search Reason is a mandatory field",
+                        NotificationType.Error
+                    )
+                );
+                If(
+                    IsBlank(PNCSearchLocation_1.Text),
+                    Set(
+                        Errors,
+                        true
+                    );
+                    Notify(
+                        "Location is a mandatory field",
+                        NotificationType.Error
+                    )
+                );
+                /*Validation for search ENDS here*/
+                /*Check for validation errors first*/
+                Set(
+                    LoadingSplash,
+                    true
+                );
+                If(
+                    Errors = false,
+                    Set(
+                        VEResult1,
+                        'NDIWrapper-Vehicle'.Run(
+                            textInputVRM_1.Text,
+                            drpdwn_PNCSearchReason_1.Selected.ReasonCode,
+                            If(
+                                Checkbox1.Value = true,
+                                "true",
+                                "false"
+                            )
+                        )
+                    )
+                );
+                Set(
+                    LoadingSplash,
+                    false
+                );
+                If(
+                    Errors = false,
+                    If(
+                        And(
+                            IsBlank(VEResult1.make),
+                            IsBlank(VEResult1.model)
+                        ),
+                        Notify(
+                            "No results found",
+                            NotificationType.Error
+                        );
+                        Set(
+                            LoadingSplash,
+                            false
+                        ),
+                        Navigate(
+                            Scr_PNC,
+                            Fade
+                        );
+                        Set(
+                            LoadingSplash,
+                            false
+                        );
+                        Patch(
+                            'PNC Searches',
+                            Defaults('PNC Searches'),
+                            {
+                                'Initiated By': LookUp(
+                                    Users,
+                                    'Primary Email' = User().Email
+                                ),
+                                'Initiated DateTime': DateTimeValue(
+                                    Text(
+                                        Now(),
+                                        DateTimeFormat.UTC
+                                    )
+                                ),
+                                Location: PNCSearchLocation.Text,
+                                'Search Data': textInputVRM_1.Text,
+                                Reason: Concatenate(
+                                    "0",
+                                    Text((drpdwn_PNCSearchReason_1.Selected.ReasonCode))
+                                ),
+                                'Search Type': 'Search Type'.Vehicle
+                            }
+                        );
+                    )
+                )
+            PressedColor: =ColorFade(Self.Color, 30%)
+            PressedFill: =RGBA(244, 244, 244, 1)
+            Size: =16
+            Text: ="Search"
+            Visible: =PNCSearchReason
+            Width: =152
+            X: =462
+            Y: =768
+            ZIndex: =8
+
+        drpdwn_PNCSearchReason_1 As dropdown:
+            BorderColor: =RGBA(153, 153, 153, 1)
+            ChevronBackground: =RGBA(128, 128, 128, 1)
+            Default: =
+            Fill: =If(IsBlank(drpdwn_PNCSearchReason_1.Selected), LightGoldenRodYellow, White)
+            Height: =70
+            Items: =PNCSearchReasonCode
+            OnChange: =
+            SelectionFill: =RGBA(128, 128, 128, 1)
+            Size: =14
+            Visible: =PNCSearchReason
+            Width: =550
+            X: =45
+            Y: =500
+            ZIndex: =9
+
+        Label9_2 As label:
+            FontWeight: =Semibold
+            Height: =70
+            Size: =16
+            Text: ="PNC Search Reason"
+            Visible: =PNCSearchReason
+            Width: =560
+            X: =41
+            Y: =442
+            ZIndex: =10
+
+        Label_Forename_2 As label:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Size: =16
+            Text: ="VRM"
+            Visible: =PNCSearchReason
+            Width: =500
+            X: =45
+            Y: =312
+            ZIndex: =11
+
+        Label11_1 As label:
+            Align: =Center
+            FontWeight: =Semibold
+            Height: =67
+            Italic: =true
+            Size: =16
+            Text: ="PNC Search By"
+            Visible: =PNCSearchReason
+            Width: =579
+            X: =22
+            Y: =250
+            ZIndex: =12
+
+        Icon9_1 As icon.Cancel:
+            Color: =RGBA(0, 0, 0, 1)
+            Icon: =Icon.Cancel
+            OnSelect: =Set(PNCSearchReason,false)
+            PaddingBottom: =20
+            PaddingLeft: =20
+            PaddingRight: =20
+            PaddingTop: =20
+            Visible: =PNCSearchReason
+            X: =537
+            Y: =253
+            ZIndex: =13
+
+        Label14_11 As label:
+            Color: =RGBA(255, 0, 0, 1)
+            Height: =65
+            PaddingLeft: =10
+            Size: =16
+            Text: ="*"
+            Visible: =PNCSearchReason
+            Width: =356
+            X: =245
+            Y: =442
+            ZIndex: =14
+
+        chkbox_Forename_1 As checkbox:
+            CheckboxSize: =45
+            Default: =true
+            FocusedBorderThickness: =0
+            Height: =70
+            OnUncheck: =Reset(textInputVRM_1)
+            PaddingLeft: =5
+            Reset: =If(PNCSearchReason = false,true)
+            Size: =21
+            Text: =""
+            Visible: =PNCSearchReason
+            Width: =62
+            X: =31
+            Y: =355
+            ZIndex: =15
+
+        textInputVRM_1 As text:
+            BorderColor: =RGBA(153, 153, 153, 1)
+            Default: =TextInput_VRM
+            DisplayMode: =If(chkbox_Forename_1.Value = true, DisplayMode.Edit, DisplayMode.Disabled)
+            Fill: =If(IsBlank(textInputVRM_1.Text), LightGoldenRodYellow, White)
+            Height: =70
+            HintText: ="Vehicle Registration"
+            OnChange: |-
+                =If(
+                    Len(textInputVRM_1.Text) > 0,
+                    UpdateContext({persona: White}),
+                    UpdateContext({persona: LightGoldenRodYellow})
+                );
+                Set(
+                    PNCselection,
+                    false
+                )
+            OnSelect: |-
+                =If(Len(textInputVRM_1.Text)>0,UpdateContext({persona:White}),UpdateContext({persona:LightGoldenRodYellow}))
+            Reset: =
+            Size: =16
+            Visible: =PNCSearchReason
+            Width: =548
+            X: =45
+            Y: =355
+            ZIndex: =16
+
+        Label14_10 As label:
+            Color: =RGBA(255, 0, 0, 1)
+            PaddingLeft: =10
+            Size: =16
+            Text: ="*"
+            Visible: =PNCSearchReason
+            Width: =368
+            X: =94
+            Y: =307
+            ZIndex: =17
+
+        PNCSearchLocation_1 As text:
+            BorderColor: =RGBA(153, 153, 153, 1)
+            Default: =
+            DisplayMode: =If(chkbox_Surname.Value = true, DisplayMode.Edit, DisplayMode.Disabled)
+            Fill: =If(IsBlank(PNCSearchLocation_1.Text), LightGoldenRodYellow, White)
+            FocusedBorderThickness: =2
+            Height: =70
+            HintText: ="Location"
+            HoverBorderColor: =RGBA(153, 153, 153, 1)
+            OnChange: |
+                =If(
+                    Len(PNCSearchLocation_1.Text) > 0,
+                    UpdateContext({personb: White}),
+                    UpdateContext({personb: LightGoldenRodYellow})
+                );
+            OnSelect: |-
+                =If(Len(PNCSearchLocation_1.Text)>0,UpdateContext({personb:White}),UpdateContext({personb:LightGoldenRodYellow}))
+            Reset: =
+            Size: =16
+            Visible: =PNCSearchReason
+            Width: =550
+            X: =48
+            Y: =624
+            ZIndex: =18
+
+        Label9_21 As label:
+            FontWeight: =Semibold
+            Height: =70
+            Size: =16
+            Text: ="Location"
+            Visible: =PNCSearchReason
+            Width: =560
+            X: =41
+            Y: =570
+            ZIndex: =19
+
+        Label20_1 As label:
+            Color: =RGBA(255, 0, 0, 1)
+            Height: =70
+            Size: =16
+            Text: ="*"
+            Visible: =PNCSearchReason
+            Width: =203
+            X: =138
+            Y: =570
+            ZIndex: =20
+
+        Checkbox1 As checkbox:
+            CheckboxBorderColor: =RGBA(153, 153, 153, 1)
+            CheckboxSize: =50
+            FocusedBorderThickness: =0
+            Height: =85
+            Size: =16
+            Text: ="Include Insurance"
+            Visible: =PNCSearchReason
+            Width: =280
+            X: =45
+            Y: =716
+            ZIndex: =21
+

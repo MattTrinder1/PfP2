@@ -1,0 +1,101 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_licencecategories",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_licencecategory",
+    "MaxGetRowsCount": 2000,
+    "Name": "Licence Categories",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "cp_displaysequenceno": "Display Sequence No",
+      "cp_licencecategory_AsyncOperations": "System Jobs",
+      "cp_licencecategory_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_LicenceCategory_Contact": "Contacts",
+      "cp_licencecategory_DuplicateBaseRecord": "Duplicate Records (cp_licencecategory_DuplicateBaseRecord)",
+      "cp_licencecategory_DuplicateMatchingRecord": "Duplicate Records (cp_licencecategory_DuplicateMatchingRecord)",
+      "cp_licencecategory_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_licencecategory_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_licencecategory_ProcessSession": "Process Sessions",
+      "cp_licencecategory_SyncErrors": "Sync Errors",
+      "cp_licencecategoryid": "Licence Category",
+      "cp_licencecategoryname": "Licence Category Name",
+      "cp_VehicleTicketSTG_LicenceCategory": "Vehicle Ticket STGS",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Licence Categories",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Licence Categories (Views)",
+    "Name": "_cp_licencecategory_views",
+    "RelatedEntityName": "Licence Categories",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "4de5d81d-9718-4501-85a1-3d6cd2be134a": "Licence Category Associated View",
+      "508db0e8-8682-eb11-a812-000d3ade2967": "Licence Categories",
+      "65faaf66-2c18-40b0-acd7-7b8c4823d573": "Licence Category Lookup View",
+      "93a93c22-8410-47c3-bc43-b9309b06a8f4": "Inactive Licence Categories",
+      "b39f8b8e-50ee-4166-871e-a2adcf46c58d": "Licence Category Advanced Find View",
+      "cb7c8b4d-f3d9-4734-bf59-3e95190c4bfc": "Active Licence Categories"
+    }
+  },
+  {
+    "DisplayName": "Status (Licence Categories)",
+    "Name": "cp_licencecategory_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Licence Categories"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Licence Categories",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Licence Categories)",
+    "Name": "cp_licencecategory_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Licence Categories"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Licence Categories",
+    "Type": "OptionSetInfo"
+  }
+]

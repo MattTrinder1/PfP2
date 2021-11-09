@@ -1,0 +1,517 @@
+App As appinfo:
+    BackEnabled: =false
+    OnStart: |
+        =Set(
+            glbAppVersion,
+            1
+        );
+        Set(
+            glbDebug,
+            true
+        );
+        
+        //this value is a placeholder which is updated by the build pipeline, don't edit it manually
+        //its commented it out to avoid it being formatted, which prevents the pipeline from finding it
+        //Basically - leave it alone !
+        //Set(glbAppVersion,1);
+        //Set(glbDebug,false);
+        
+        
+        Set(gblLoading1,false);
+        Set(LoadingSplash,false);
+        Set(PNCSearchReason,false);
+        Set(
+            signreadonly,
+            DisplayMode.Edit
+        );
+        Set(
+            flagback,
+            true
+        );
+        Set(
+            resetall,
+            true
+        );
+        Set(
+            Disabled,
+            false
+        );
+        Set(
+            i,
+            0
+        );
+        Set(
+            ev1,
+            0
+        );
+        Set(
+            ev2,
+            0
+        );
+        Set(
+            ev3,
+            0
+        );
+        Set(
+            i,
+            0
+        );
+        Set(
+            yOtherMake,
+            0
+        );
+        Set(
+            yOtherModel,
+            0
+        );
+        Set(
+            y1,
+            0
+        );
+        Set(
+            ycontactmethod,
+            0
+        );
+        Set(
+            ypnc,
+            0
+        );
+        Set(
+            s59,
+            0
+        );
+        Set(
+            s591,
+            0
+        );
+        Set(
+            s592,
+            0
+        );
+        Set(
+            s593,
+            0
+        );
+        Set(
+            s594,
+            0
+        );
+        Set(
+            s595,
+            0
+        );
+        Set(
+            s596,
+            0
+        );
+        Set(
+            e1,
+            0
+        );
+        Reset(TextInput_incident_suffix);
+        Reset(TextInput_incident_no);
+        Set(
+            incidentnumbervar,
+            "CP" & "-" & Text(
+                DateAdd(
+                    DatePicker_incident.SelectedDate,
+                    0
+                ),
+                "[$-en-GB]yyyymmdd"
+            ) & "-" & TextInput_incident_suffix
+        );
+        Set(
+            officermail,
+            User().Email
+        );
+        LoadData(
+            Daylightoffline,
+            "Daylightoffline",
+            true
+        );
+        LoadData(
+            'Vehicle Offline',
+            "Vehicle Offline",
+            true
+        );
+        LoadData(
+            TrOffOffline,
+            "TrOffOffline",
+            true
+        );
+        LoadData(
+            Photos,
+            "PhotosCache",
+            true
+        );
+        If(
+            CountRows('Vehicle Offline') > 0,
+            Set(
+                Vehicle_Primary_key,
+                Last('Vehicle Offline').Key
+            )
+        );
+        Set(
+            i,
+            Value(
+                Right(
+                    Vehicle_Primary_key,
+                    1
+                )
+            )
+        );
+        LoadData(
+            VehicleRoleoffline,
+            "VehicleRoleoffline",
+            true
+        );
+        LoadData(
+            'Offence Cat and Code',
+            "Offence Cat and Code",
+            true
+        );
+        LoadData(
+            VehicleUseoffline,
+            "VehicleUseoffline",
+            true
+        );
+        LoadData(
+            Reasonforusingpoweroffline,
+            "Reasonforusingpoweroffline",
+            true
+        );
+        LoadData(
+            Outcomeofstopoffline,
+            "Outcomeofstopoffline",
+            true
+        );
+        LoadData(
+            Visibilityoffline,
+            "Visibilityoffline",
+            true
+        );
+        LoadData(
+            weatheroffline,
+            "weatheroffline",
+            true
+        );
+        LoadData(
+            Markedorunmarkedoffline,
+            "Markedorunmarkedoffline",
+            true
+        );
+        LoadData(
+            Vehiclewasseenoffline,
+            "Vehiclewasseenoffline",
+            true
+        );
+        LoadData(
+            StreetLightingoffline,
+            "StreetLightingoffline",
+            true
+        );
+        LoadData(
+            GaragescompanyOffline,
+            "GaragescompanyOffline",
+            true
+        );
+        LoadData(
+            informationfromoffline,
+            "informationfromoffline",
+            true
+        );
+        LoadData(
+            Speeddetectionmethodoffline,
+            "Speeddetectionmethodoffline",
+            true
+        );
+        LoadData(
+            SpeedLimitoffline,
+            "SpeedLimitoffline",
+            true
+        );
+        LoadData(
+            OfficerTrainingoffline,
+            "OfficerTrainingoffline",
+            true
+        );
+        LoadData(
+            Statementofoffline,
+            "Statementofoffline",
+            true
+        );
+        LoadData(
+            DesignatedStationoffline,
+            "DesignatedStationoffline",
+            true
+        );
+        LoadData(
+            Withoutoffline,
+            "Withoutoffline",
+            true
+        );
+        LoadData(
+            TPA,
+            "TPA",
+            true
+        );
+        LoadData(
+            DrivingManneroffline,
+            "DrivingManneroffline",
+            true
+        );
+        LoadData(
+            DrivingVehicleInoffline,
+            "DrivingVehicleInoffline",
+            true
+        );
+        LoadData(
+            Youwording3offline,
+            "Youwording3offline",
+            true
+        );
+        LoadData(
+            Youwording1offline,
+            "Youwording1offline",
+            true
+        );
+        LoadData(
+            Warningorseizureoffline,
+            "Warningorseizureoffline",
+            true
+        );
+        LoadData(
+            Sectionoffline,
+            "Sectionoffline",
+            true
+        );
+        LoadData(
+            CheckorRecordoffline,
+            "CheckorRecordoffline",
+            true
+        );
+        LoadData(
+            ProduceStationoffline,
+            "ProduceStationoffline",
+            true
+        );
+        LoadData(
+            Documenttypeoffline,
+            "Documenttypeoffline",
+            true
+        );
+        LoadData(
+            Vehiclecolouroffline,
+            "Vehiclecolouroffline",
+            true
+        );
+        LoadData(
+            VehicleMakeoffline,
+            "VehicleMakeoffline",
+            true
+        );
+        LoadData(
+            LicenceCategoryoffline,
+            "LicenceCategoryoffline",
+            true
+        );
+        LoadData(
+            Countryoffline,
+            "Countryoffline",
+            true
+        );
+        LoadData(
+            Genderoffline,
+            "Genderoffline",
+            true
+        );
+        LoadData(
+            LicenceTypeoffline,
+            "LicenceTypeoffline",
+            true
+        );
+        LoadData(
+            Officerdefinedethnicityoffline,
+            "Officerdefinedethnicityoffline",
+            true
+        );
+        LoadData(
+            Selfdefinedethnicityoffline,
+            "Selfdefinedethnicityoffline",
+            true
+        );
+        LoadData(
+            methodofcontactoffline,
+            "methodofcontactoffline",
+            true
+        );
+        LoadData(
+            Occupationoffline,
+            "Occupationoffline",
+            true
+        );
+        LoadData(
+            Prefferedmeanofcontactoffline,
+            "Prefferedmeanofcontactoffline",
+            true
+        );
+        LoadData(
+            Titleoffline,
+            "Titleoffline",
+            true
+        );
+        LoadData(
+            Additionalnameoffline,
+            "Additionalnameoffline",
+            true
+        );
+        LoadData(
+            Reasonforstopoffline,
+            "Reasonforstopoffline",
+            true
+        );
+        LoadData(
+            IssueTooffline,
+            "IssueTooffline",
+            true
+        );
+        LoadData(
+            OffenceCatOffline,
+            "OffenceCatOffline",
+            true
+        );
+        LoadData(
+            OffenceCodeOffline,
+            "OffenceCodeOffline",
+            true
+        );
+        LoadData(
+            OffencesOffline,
+            "OffencesOffline",
+            true
+        );
+        LoadData(
+            GaragesOffline,
+            "GaragesOffline",
+            true
+        );
+        LoadData(
+            Userlocal,
+            "Userlocal",
+            true
+        );
+        LoadData(
+            Usersalllocal,
+            "Usersalllocal",
+            true
+        );
+        LoadData(
+            'Traffic Offence codes',
+            "Traffic Offence codes",
+            true
+        );
+        LoadData(
+            'Vdrs codes',
+            "Vdrs codes",
+            true
+        );
+        ClearCollect(
+            MonthsConversion,
+            {
+                Month: "JAN",
+                Value: 1
+            },
+            {
+                Month: "FEB",
+                Value: 2
+            },
+            {
+                Month: "MAR",
+                Value: 3
+            },
+            {
+                Month: "APR",
+                Value: 4
+            },
+            {
+                Month: "MAY",
+                Value: 5
+            },
+            {
+                Month: "JUN",
+                Value: 6
+            },
+            {
+                Month: "JUL",
+                Value: 7
+            },
+            {
+                Month: "AUG",
+                Value: 8
+            },
+            {
+                Month: "SEP",
+                Value: 9
+            },
+            {
+                Month: "OCT",
+                Value: 10
+            },
+            {
+                Month: "NOV",
+                Value: 11
+            },
+            {
+                Month: "DEC",
+                Value: 12
+            }
+        );
+        ClearCollect(
+            PNCSearchReasonCode,
+            {
+                Reason: "Vehicle and/or person stopped",
+                ReasonCode: 01
+            },
+            {
+                Reason: "Moving vehicle",
+                ReasonCode: 02
+            },
+            {
+                Reason: "Abandoned or parked and unattended vehicle",
+                ReasonCode: 03
+            },
+            {
+                Reason: "Vehicle involved in a road accident",
+                ReasonCode: 04
+            },
+            {
+                Reason: "Subject of process or investigation",
+                ReasonCode: 5
+            },
+            {
+                Reason: "Administration",
+                ReasonCode: 06
+            },
+            {
+                Reason: "Enquiries relating to family protection issues",
+                ReasonCode: 07
+            },
+            {
+                Reason: "On behalf of an authorised agency",
+                ReasonCode: 08
+            },
+            {
+                Reason: "Record creation, updates, confirmation, broadcasts, etc",
+                ReasonCode: 09
+            },
+            {
+                Reason: "Transaction log and other audit checks",
+                ReasonCode: 00
+            }
+        );
+        Set(
+            PNCselection,
+            false
+        );
+        Set(gblDLCheck, false);
+

@@ -1,0 +1,402 @@
+PNCVehicleInsuranceComponent As CanvasComponent:
+    DLCheckVariable: =true
+    Fill: =RGBA(0, 0, 0, 0)
+    Height: =896
+    namedDrivers: |-
+        =Table(
+            {
+                number: 1,
+                name: "Fiona Trinder",
+                dob: "17/05/1973"
+            },
+            {
+                number: 2,
+                name: "Matt Trinder",
+                dob: "10/03/1971"
+            }
+        )
+    tableValue: |-
+        =Table(
+            {
+                insuranceHeld: "INS: HELD",
+                vrm: "MM13YKW",
+                makeModel: "FORD MONDEO",
+                holder: "Matt Trinder",
+                address1: "100 Wolverton Road Stony Stratford Milton Keynes MK11 1DW",
+                address2: "",
+                insurer: "ADMIRAL CUSTOMER SERVICES 0333 220 2001",
+                classLine1: "S,D&P EXCLUDING COMMUTING",
+                classLine2: "",
+                policyNumber: "P56241474-1",
+                allowedOthers: "Y",
+                startDate: "31/10/2020",
+                startTime: "0918",
+                expDate: "16/10/2021",
+                expTime: "0000",
+                permittedDrivers1: "PERMITTED DRIVER:INSURED AND PARTNER",
+                permittedDrivers2: "",
+                namedDrivers: [
+                    {
+                        number: 1,
+                        name: "Fiona Trinder",
+                        dob: "17/05/1973"
+                    },
+                    {
+                        number: 2,
+                        name: "Matt Trinder",
+                        dob: "10/03/1971"
+                    }
+                ]
+            }
+        )
+    Width: =640
+    X: =0
+    Y: =0
+    ZIndex: =1
+
+    Canvas3_2 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =896
+        Width: =Parent.Width
+        Y: =
+        ZIndex: =1
+
+        DataCard7_2 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: |
+                =1100 + Gallery3.Height
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            lbl_txtcolour_4 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Holder"
+                Width: =630
+                Y: =240
+                ZIndex: =1
+
+            lbl_model_5 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =First(PNCVehicleInsuranceComponent.tableValue).makeModel
+                Width: =630
+                Y: =200
+                ZIndex: =2
+
+            lbl_txtmodel_9 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Make/Model"
+                Width: =630
+                Y: =160
+                ZIndex: =3
+
+            lbl_make_15 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =First(PNCVehicleInsuranceComponent.tableValue).insuranceHeld
+                Width: =630
+                Y: =40
+                ZIndex: =4
+
+            lbl_txtmake_10 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Insurance Held"
+                Width: =576
+                ZIndex: =5
+
+            lbl_colour_5 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =First(PNCVehicleInsuranceComponent.tableValue).holder
+                Width: =630
+                Y: =280
+                ZIndex: =6
+
+            lbl_txtcc_5 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Insurer"
+                Width: =630
+                Y: =480
+                ZIndex: =7
+
+            lbl_registered_5 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =First(PNCVehicleInsuranceComponent.tableValue).address2
+                Width: =630
+                Y: =440
+                ZIndex: =8
+
+            lbl_txtregistered_4 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Address 2"
+                Width: =630
+                Y: =400
+                ZIndex: =9
+
+            lbl_style_5 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =First(PNCVehicleInsuranceComponent.tableValue).address1
+                Width: =630
+                Y: =360
+                ZIndex: =10
+
+            lbl_txtstyle_4 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Address 1"
+                Width: =630
+                Y: =320
+                ZIndex: =11
+
+            lbl_cc_5 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =First(PNCVehicleInsuranceComponent.tableValue).insurer
+                Width: =630
+                Y: =520
+                ZIndex: =12
+
+            lbl_txtregkeeper_4 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Allowed To Drive Other Vehicles"
+                Width: =630
+                Y: =720
+                ZIndex: =13
+
+            lbl_txtengineno_4 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Policy Number"
+                Width: =630
+                Y: =640
+                ZIndex: =14
+
+            lbl_chassisno_4 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =First(PNCVehicleInsuranceComponent.tableValue).classLine1
+                Width: =630
+                Y: =598
+                ZIndex: =15
+
+            lbl_txt_chassisno_4 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Insurance Class"
+                Width: =630
+                Y: =560
+                ZIndex: =16
+
+            lbl_regkeeper_4 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =First(PNCVehicleInsuranceComponent.tableValue).allowedOthers
+                Width: =630
+                Y: =760
+                ZIndex: =17
+
+            lbl_engineno_4 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =First(PNCVehicleInsuranceComponent.tableValue).policyNumber
+                Width: =630
+                X: =1
+                Y: =680
+                ZIndex: =18
+
+            lbl_txtkeepersince_13 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Start Date/Time"
+                Width: =630
+                Y: =800
+                ZIndex: =19
+
+            lbl_keepersince_13 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: |-
+                    =Concatenate(
+                        First(PNCVehicleInsuranceComponent.tableValue).startDate,
+                        " ",
+                        First(PNCVehicleInsuranceComponent.tableValue).startTime
+                    )
+                Width: =630
+                Y: =840
+                ZIndex: =20
+
+            lbl_txtkeepersince_14 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Policy Permits"
+                Width: =630
+                X: =10
+                Y: =960
+                ZIndex: =21
+
+            lbl_keepersince_14 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: |-
+                    =Concatenate(First(PNCVehicleInsuranceComponent.tableValue).permittedDrivers1, "
+                    ", First(PNCVehicleInsuranceComponent.tableValue).permittedDrivers2)
+                Width: =630
+                X: =5
+                Y: =1000
+                ZIndex: =22
+
+            lbl_txtkeepersince_15 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Expiry Date/Time"
+                Width: =630
+                Y: =880
+                ZIndex: =23
+
+            lbl_keepersince_15 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =Concatenate(First(PNCVehicleInsuranceComponent.tableValue).expDate, " ", First(PNCVehicleInsuranceComponent.tableValue).expTime)
+                Width: =630
+                Y: =920
+                ZIndex: =24
+
+            Rectangle4_8 As rectangle:
+                Fill: =RGBA(153, 153, 153, 0.51)
+                Height: =6
+                Visible: =false
+                Width: =640
+                Y: =938
+                ZIndex: =25
+
+            Button2_4 As button:
+                Fill: =RGBA(0, 0, 0, 0)
+                Height: =0
+                HoverFill: =
+                OnSelect: =
+                PressedFill: =
+                Size: =16
+                Text: =""
+                Width: =640
+                Y: =944
+                ZIndex: =26
+
+            lbl_make_16 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =First(PNCVehicleInsuranceComponent.tableValue).vrm
+                Width: =630
+                Y: =120
+                ZIndex: =27
+
+            lbl_txtmake_11 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="VRM"
+                Width: =576
+                Y: =80
+                ZIndex: =28
+
+            "Gallery3 As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+                DisplayMode: =DisplayMode.View
+                Height: =CountRows(First(PNCVehicleInsuranceComponent.tableValue).namedDrivers.Value) * 169
+                Items: =PNCVehicleInsuranceComponent.namedDrivers
+                Layout: =Layout.Vertical
+                TemplatePadding: =0
+                TemplateSize: =169
+                Y: =1092
+                ZIndex: =29
+
+                Separator3 As rectangle:
+                    Height: =1
+                    OnSelect: =Select(Parent)
+                    Width: =Parent.TemplateWidth
+                    Y: =Parent.TemplateHeight - 1
+                    ZIndex: =5
+
+                lbl_txtkeepersince_16 As label:
+                    FontWeight: =Semibold
+                    OnSelect: =
+                    Size: =16
+                    Text: ="Name"
+                    Width: =630
+                    ZIndex: =6
+
+                lbl_keepersince_16 As label:
+                    OnSelect: =
+                    PaddingLeft: =20
+                    Size: =16
+                    Text: =ThisItem.name
+                    Width: =630
+                    X: =5
+                    Y: =40
+                    ZIndex: =7
+
+                lbl_txtkeepersince_17 As label:
+                    FontWeight: =Semibold
+                    OnSelect: =
+                    Size: =16
+                    Text: ="Date of Birth"
+                    Width: =630
+                    Y: =80
+                    ZIndex: =8
+
+                lbl_keepersince_17 As label:
+                    OnSelect: =
+                    PaddingLeft: =20
+                    Size: =16
+                    Text: =ThisItem.dob
+                    Width: =630
+                    X: =5
+                    Y: =120
+                    ZIndex: =9
+
+            lbl_txtkeepersince_18 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Named Drivers"
+                Width: =630
+                Y: =1046
+                ZIndex: =30
+

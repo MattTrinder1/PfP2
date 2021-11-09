@@ -1,0 +1,101 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_vehicledocuments",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_vehicledocument",
+    "MaxGetRowsCount": 2000,
+    "Name": "Vehicle Documents",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "cp_displaysequenceno": "Display Sequence No",
+      "cp_name": "Name",
+      "cp_tickettypehort1_VehicleDocument": "Ticket Type - HORT1",
+      "cp_vehicledocument_AsyncOperations": "System Jobs",
+      "cp_vehicledocument_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_vehicledocument_DuplicateBaseRecord": "Duplicate Records (cp_vehicledocument_DuplicateBaseRecord)",
+      "cp_vehicledocument_DuplicateMatchingRecord": "Duplicate Records (cp_vehicledocument_DuplicateMatchingRecord)",
+      "cp_vehicledocument_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_vehicledocument_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_vehicledocument_ProcessSession": "Process Sessions",
+      "cp_vehicledocument_SyncErrors": "Sync Errors",
+      "cp_vehicledocumentid": "Vehicle Document",
+      "cp_VehicleTicketOffencesSTG_VehicleDoc": "Vehicle Ticket Offences STGS",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Vehicle Documents",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Vehicle Documents (Views)",
+    "Name": "_cp_vehicledocument_views",
+    "RelatedEntityName": "Vehicle Documents",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "4a9fee41-4929-4946-977e-5ce43f9cd92d": "Vehicle Document Lookup View",
+      "534eb7d5-d9ee-402d-b9b1-5f56af230fa8": "Vehicle Document Advanced Find View",
+      "611a92a6-fe9c-4341-abd0-a19538b78d0d": "Active Vehicle Documents",
+      "93639d85-d9c0-4e5d-8507-ff699e08c651": "Vehicle Document Associated View",
+      "d2401c64-5391-eb11-b1ac-000d3adb2fd2": "Documents",
+      "f1fbdb6f-5a16-4fe6-8f20-ec2352846c5f": "Inactive Vehicle Documents"
+    }
+  },
+  {
+    "DisplayName": "Status (Vehicle Documents)",
+    "Name": "cp_vehicledocument_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Vehicle Documents"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Vehicle Documents",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Vehicle Documents)",
+    "Name": "cp_vehicledocument_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Vehicle Documents"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Vehicle Documents",
+    "Type": "OptionSetInfo"
+  }
+]

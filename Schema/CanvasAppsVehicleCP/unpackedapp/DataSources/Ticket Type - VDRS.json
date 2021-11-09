@@ -1,0 +1,106 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_tickettypevdrses",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_tickettypevdrs",
+    "MaxGetRowsCount": 2000,
+    "Name": "Ticket Type - VDRS",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "cp_details": "Details",
+      "cp_OffenceCode": "(DNU) Offence Code",
+      "cp_offendersignature": "Offender Signature",
+      "cp_offendersignatureid": "cp_OffenderSignatureId",
+      "cp_TicketType": "Ticket Type",
+      "cp_tickettypevdrs_AsyncOperations": "System Jobs",
+      "cp_tickettypevdrs_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_tickettypevdrs_cp_offencecode_cp_offen": "Offence Codes",
+      "cp_tickettypevdrs_DuplicateBaseRecord": "Duplicate Records (cp_tickettypevdrs_DuplicateBaseRecord)",
+      "cp_tickettypevdrs_DuplicateMatchingRecord": "Duplicate Records (cp_tickettypevdrs_DuplicateMatchingRecord)",
+      "cp_tickettypevdrs_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_tickettypevdrs_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_tickettypevdrs_ProcessSession": "Process Sessions",
+      "cp_tickettypevdrs_SyncErrors": "Sync Errors",
+      "cp_tickettypevdrsid": "Ticket Type - VDRS ",
+      "cp_vdrsid": "VDRS",
+      "cp_vdrsprinted": "VDRS Printed",
+      "cp_vdrsserialnumber": "VDRS Serial Number",
+      "cp_VehicleTicket": "Vehicle Ticket",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Ticket Type - VDRS",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Ticket Type - VDRS (Views)",
+    "Name": "_cp_tickettypevdrs_views",
+    "RelatedEntityName": "Ticket Type - VDRS",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "24aa69ae-cd65-4c73-9409-0c6625590be0": "Ticket Type - VDRS  Lookup View",
+      "750818c0-5fb7-4a48-adc7-7e3fa20c157c": "Ticket Type - VDRS  Advanced Find View",
+      "a454563f-9233-4899-ac1c-95ce558ed76f": "Active Ticket Type - VDRS",
+      "a699d098-ae98-40fe-b86e-13b35b2567fe": "Ticket Type - VDRS  Associated View",
+      "e509dd91-58d5-4b2b-9393-0de252b1d36a": "Inactive Ticket Type - VDRS"
+    }
+  },
+  {
+    "DisplayName": "Status (Ticket Type - VDRS)",
+    "Name": "cp_tickettypevdrs_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Ticket Type - VDRS"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Ticket Type - VDRS",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Ticket Type - VDRS)",
+    "Name": "cp_tickettypevdrs_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Ticket Type - VDRS"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Ticket Type - VDRS",
+    "Type": "OptionSetInfo"
+  }
+]

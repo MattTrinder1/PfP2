@@ -1,0 +1,101 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_tickettypes",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_tickettype",
+    "MaxGetRowsCount": 2000,
+    "Name": "Ticket Types",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "cp_displaysequenceno": "Display Sequence No",
+      "cp_name": "Name",
+      "cp_offencecategory_tickettypeid_tickettype": "Offence Categories",
+      "cp_tickettype_AsyncOperations": "System Jobs",
+      "cp_tickettype_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_tickettype_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_tickettype_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_tickettype_ProcessSession": "Process Sessions",
+      "cp_tickettype_SyncErrors": "Sync Errors",
+      "cp_tickettypehort1_TicketType_cp_ticketty": "Ticket Type - HORT1",
+      "cp_tickettypeid": "Ticket Type",
+      "cp_tickettypesection163_tickettype_cp_tic": "Ticket Type - Section 163S",
+      "cp_tickettypesection165_TicketType_cp_tic": "Ticket Type - Section 165S",
+      "cp_tickettypesection59_tickettype_cp_tick": "Ticket Type - Section59S",
+      "cp_tickettypetrafficoffence_TicketType_cp": "Ticket Type - Traffic Offences",
+      "cp_tickettypevdrs_TicketType_cp_tickettyp": "Ticket Type - VDRS",
+      "cp_VehicleTicketOffencesSTG_TicketTypeVal": "Vehicle Ticket Offences STGS",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "organizationid": "Organization Id",
+      "overriddencreatedon": "Record Created On",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Ticket Types",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Ticket Types (Views)",
+    "Name": "_cp_tickettype_views",
+    "RelatedEntityName": "Ticket Types",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "1c70e193-0cfb-417f-9b01-45b93a8b3f11": "Inactive Ticket Types",
+      "467a89ac-9271-4532-a0a4-58876b869d49": "Active Ticket Types",
+      "488fed69-2d15-4064-ae53-2fab8ec1dc67": "Ticket Type Advanced Find View",
+      "e7f94d26-b91c-472e-9773-21eaee5df03f": "Ticket Type Associated View",
+      "ec3195c6-50c8-4196-8f2c-f237a7cd7d6b": "Ticket Type Lookup View"
+    }
+  },
+  {
+    "DisplayName": "Status (Ticket Types)",
+    "Name": "cp_tickettype_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Ticket Types"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Ticket Types",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Ticket Types)",
+    "Name": "cp_tickettype_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Ticket Types"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Ticket Types",
+    "Type": "OptionSetInfo"
+  }
+]
