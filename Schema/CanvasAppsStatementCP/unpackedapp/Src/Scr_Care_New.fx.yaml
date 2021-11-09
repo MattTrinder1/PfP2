@@ -1,0 +1,683 @@
+Scr_Care_New As screen:
+    LoadingSpinnerColor: =RGBA(100, 118, 132, 1)
+    OnHidden: |-
+        =UpdateContext({resetCan:false})
+    OnVisible: |-
+        =UpdateContext({resetCan:true});
+        Set(madcolAE,LightGoldenRodYellow);UpdateContext({madcolAE:LightGoldenRodYellow});
+        Set(madcolAF,LightGoldenRodYellow);UpdateContext({madcolAF:LightGoldenRodYellow});
+        Set(madcolAG,LightGoldenRodYellow);UpdateContext({madcolAG:LightGoldenRodYellow});
+        Set(madcolAG,LightGoldenRodYellow);UpdateContext({madcolAG:LightGoldenRodYellow});
+        Set(madcolZZ,LightGoldenRodYellow);UpdateContext({madcolZZ:LightGoldenRodYellow});
+        Set(madcolZA,LightGoldenRodYellow);UpdateContext({madcolZA:LightGoldenRodYellow});
+        If(
+            Checkbox_need.Value = true,Set(Madcolcheck,White),Set(Madcolcheck,LightGoldenRodYellow));
+        
+        
+        
+            If(Len(Radio_attend_court.Selected.Value)>0,UpdateContext({madcolAE:Transparent}),UpdateContext({madcolAE:LightGoldenRodYellow}));
+        If(Len(Txt_insure_attendance.Text)>0,UpdateContext({madcolAF:Transparent}),UpdateContext({madcolAF:LightGoldenRodYellow}));
+        If(Len(Radio_special_measures.Selected.Value)>0,UpdateContext({madcolAG:Transparent}),UpdateContext({madcolAG:LightGoldenRodYellow}));
+        If(Len(Txt_reasons_special_measures.Text)>0,UpdateContext({madcolZZ:Transparent}),UpdateContext({madcolZZ:LightGoldenRodYellow}));
+        If(Len(Radio_other_needs.Selected.Value)>0,UpdateContext({madcolZA:Transparent}),UpdateContext({madcolZA:LightGoldenRodYellow}));
+        
+        
+        If(IsBlank(LookUp('Statement offline',Key=Dropdown_Care_key.Selected.Key).'WitnessConsent signature'),Set(WitnessConsentRO,DisplayMode.Edit),Set(WitnessConsentRO,DisplayMode.Disabled));
+        
+        
+        If(
+            Radio_special_measures.Selected.Value = "Yes" And y4=0,
+            Set(witnessneeds,true);UpdateContext({witnessneeds: true});Set(y4,250);UpdateContext({y4:250}));
+            If(
+            Radio_special_measures.Selected.Value = "No",
+            Set(witnessneeds,false);UpdateContext({witnessneeds: false});Set(y4,0);UpdateContext({y4:0}));
+          If(Len(Radio_special_measures.Selected.Value) = 0 , 
+                Set(witnessneeds,false);UpdateContext({witnessneeds: false});Set(y4,0);UpdateContext({y4:0}));
+        
+        
+        
+        
+        If(
+        Radio_other_needs.Selected.Value = "Yes" ,
+        Set(otherneed,true);UpdateContext({otherneed: true});Set(c1,250);UpdateContext({c1:250}));
+            If(
+           Radio_other_needs.Selected.Value = "No",
+            Set(otherneed,false);UpdateContext({otherneed: false});Set(c1,0);UpdateContext({c1:0}));
+        
+            If(Len(Radio_other_needs.Selected.Value) = 0 , 
+                Set(otherneed,false);UpdateContext({otherneed: false});Set(c1,0);UpdateContext({c1:0}));
+
+    Label1_15 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Care"
+        Width: =640
+        ZIndex: =1
+
+    "'exit icon 3_16' As icon.Cancel":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =576
+        Y: =11
+        ZIndex: =2
+
+    "'Back Icon 2_16' As icon.ArrowLeft":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_Statements_Home_screen,ScreenTransition.UnCover)
+        X: =22
+        Y: =11
+        ZIndex: =3
+
+    Canvas_Care_1 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1049
+        Width: =Parent.Width
+        Y: =87
+        ZIndex: =24
+
+        DataCard_Care_1 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =
+            Visible: =resetCan
+            Width: =Parent.Width
+            X: =0+y4+c1
+            Y: =0
+            ZIndex: =1
+
+            Dropdown_Care_key As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+                ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                Default: =Statement_Primary_key /*LookUp('Statement offline',Key=Statement_Primary_key).Key*/
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                Items: ='Statement offline'.Key
+                OnChange: |-
+                    =
+                    /*If(LookUp('Statement offline',Key=Dropdown_Care_key.Selected.Key).WitnessSignature =SampleImage,Set(signreadonly,DisplayMode.Edit),Set(signreadonly,DisplayMode.Disabled));*/
+                    
+                    /*If(IsBlank(LookUp('Statement offline',Key=Dropdown_Care_key.Selected.Key).'WitnessConsent signature'),Set(WitnessConsentRO,DisplayMode.Edit),Set(WitnessConsentRO,DisplayMode.Disabled));*/
+                PressedColor: =RGBA(255, 255, 255, 1)
+                PressedFill: =RGBA(0, 18, 107, 1)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =21
+                ZIndex: =29
+
+            Gallery_Name_witness_needs As gallery.galleryVertical:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                DisplayMode: =WitnessConsentRO
+                Height: =798
+                Items: =[""]
+                Layout: =Layout.Vertical
+                ShowScrollbar: =false
+                TemplateSize: =792
+                Width: =617
+                Y: =595+y4
+                ZIndex: =30
+
+                Label_Witness_needs_1 As label:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(0, 0, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =70
+                    Size: =21
+                    Text: ="Does the witness have any particular needs?"
+                    Width: =545
+                    X: =40
+                    Y: =44
+                    ZIndex: =1
+
+                Gallery_needs As gallery.galleryVertical:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Height: =662
+                    Items: =witnessneedsoffline
+                    Layout: =Layout.Vertical
+                    ShowScrollbar: =false
+                    TemplateSize: =73
+                    Width: =545
+                    X: =40
+                    Y: =130
+                    ZIndex: =11
+
+                    Checkbox_need As checkbox:
+                        BorderColor: =RGBA(32, 54, 71, 1)
+                        CheckboxBorderColor: =RGBA(32, 54, 71, 1)
+                        Color: =RGBA(0, 0, 0, 1)
+                        Default: |-
+                            =If(
+                                Checkbox_need.Text in Split(
+                                    First(
+                                        Filter(
+                                            'Statement offline',
+                                            Key = Dropdown_Care_key.Selected.Key
+                                        )
+                                    ).Witenessneeds,
+                                    ", "
+                                ),
+                                true,
+                                false
+                            )
+                        Fill: =White
+                        FocusedBorderThickness: =0
+                        Height: =88
+                        HoverColor: =RGBA(32, 54, 71, 1)
+                        OnCheck: |-
+                            =
+                            
+                            //Collect(carestatementtype,{specialneeds:ThisItem.cp_name})
+                            /*If(
+                                Checkbox_need.Value = true,
+                                Collect(CheckboxTextValues,{name:Gallery_needs.Selected.cp_name,  Checkboxid:Gallery_needs.Selected.cp_statementwitnessneedid}),
+                                Remove(CheckboxTextValues, LookUp(CheckboxTextValues, name = Checkbox_need.Text))
+                            )*/
+                            If(
+                                IsBlank(
+                                    LookUp(
+                                        CheckboxTextValues,
+                                        And(
+                                            Checkboxid = Gallery_needs.Selected.cp_statementwitnessneedid,
+                                            name = Checkbox_need.Text
+                                        ),
+                                        Checkboxid
+                                    )
+                                ),
+                                Collect(
+                                    CheckboxTextValues,
+                                    {
+                                        name: Gallery_needs.Selected.cp_name,
+                                        Checkboxid: Gallery_needs.Selected.cp_statementwitnessneedid,
+                                        Wneedskey: Statement_Primary_key
+                                    }
+                                ),
+                                UpdateIf(
+                                    CheckboxTextValues,
+                                    And(
+                                        Checkboxid = Gallery_needs.Selected.cp_statementwitnessneedid,
+                                        name = Checkbox_need.Text
+                                    ),
+                                    {name: Gallery_needs.Selected.cp_name,
+                                    Wneedskey: Statement_Primary_key}
+                                )
+                            )
+                        OnSelect: |
+                            =/*If(
+                                Checkbox_need.Value = true,
+                                Collect(CheckboxTextValues,
+                                {
+                            Wneedskey: Statement_Primary_key,    name:Gallery_needs.Selected.cp_name,  Checkboxid:Gallery_needs.Selected.cp_statementwitnessneedid}),
+                                Remove(CheckboxTextValues, LookUp(CheckboxTextValues, name = Checkbox_need.Text))
+                            )*/
+                        OnUncheck: |
+                            =If(
+                                Checkbox_need.Value = true,
+                                Collect(CheckboxTextValues,{name:Gallery_needs.Selected.cp_name,  Checkboxid:Gallery_needs.Selected.cp_statementwitnessneedid}),
+                                Remove(CheckboxTextValues, LookUp(CheckboxTextValues, name = Checkbox_need.Text))
+                            );
+                        Reset: =Allreset
+                        Size: =21
+                        Text: =ThisItem.cp_name
+                        Width: =493
+                        X: =16
+                        Y: =10
+                        ZIndex: =1
+
+            Label_Care_Is_witness_willing_to_attend_court As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =57
+                Size: =21
+                Text: ="Is the witness willing to attend court?"
+                Width: =545
+                X: =40
+                Y: =91
+                ZIndex: =31
+
+            Radio_attend_court As radio:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                BorderStyle: =BorderStyle.None
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Care_key.Selected.Key).WitnessCareattendingCourt
+                DisplayMode: =WitnessConsentRO
+                Fill: =madcolAE
+                Height: =93
+                HoverColor: =RGBA(0, 18, 107, 1)
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_attend_court.Selected.Value)>0,UpdateContext({madcolAE:Transparent}),UpdateContext({madcolAE:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Radio_attend_court.Selected.Value)>0,UpdateContext({madcolAE:Transparent}),UpdateContext({madcolAE:LightGoldenRodYellow}))
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =139
+                ZIndex: =32
+
+            Label_Does_the_witss As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =96
+                Size: =21
+                Text: ="Does the witness require a Special Measures Assessment as a vulnerable or intimidated witness?"
+                Width: =545
+                X: =40
+                Y: =422
+                ZIndex: =33
+
+            Radio_special_measures As radio:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                BorderStyle: =BorderStyle.None
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Care_key.Selected.Key).WitnessCareSpecialRequired
+                DisplayMode: =WitnessConsentRO
+                Fill: =madcolAG
+                Height: =98
+                HoverColor: =RGBA(0, 18, 107, 1)
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_special_measures.Selected.Value)>0,UpdateContext({madcolAG:Transparent}),UpdateContext({madcolAG:LightGoldenRodYellow}));
+                    If(
+                        Radio_special_measures.Selected.Value = "Yes" And y4=0,
+                        Set(witnessneeds,true);UpdateContext({witnessneeds: true});Set(y4,250);UpdateContext({y4:250}));
+                        If(
+                        Radio_special_measures.Selected.Value = "No",
+                        Set(witnessneeds,false);UpdateContext({witnessneeds: false});Set(y4,0);UpdateContext({y4:0}));
+                      If(Len(Radio_special_measures.Selected.Value) = 0 , 
+                            Set(witnessneeds,false);UpdateContext({witnessneeds: false});Set(y4,0);UpdateContext({y4:0}));
+                OnSelect: |-
+                    =
+                    If(
+                        Radio_special_measures.Selected.Value = "Yes" And y4=0,
+                        Set(witnessneeds,true);UpdateContext({witnessneeds: true});Set(y4,250);UpdateContext({y4:250}));
+                        If(
+                        Radio_special_measures.Selected.Value = "No",
+                        Set(witnessneeds,false);UpdateContext({witnessneeds: false});Set(y4,0);UpdateContext({y4:0}));
+                      If(Len(Radio_special_measures.Selected.Value) = 0 , 
+                            Set(witnessneeds,false);UpdateContext({witnessneeds: false});Set(y4,0);UpdateContext({y4:0}));
+                    
+                    
+                    If(Len(Radio_special_measures.Selected.Value)>0,UpdateContext({madcolAG:Transparent}),UpdateContext({madcolAG:LightGoldenRodYellow}))
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =528
+                ZIndex: =34
+
+            Label_What_can_be_done_to_ensure_attendance_1 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =60
+                Size: =21
+                Text: ="What can be done to ensure attendance?"
+                Width: =545
+                X: =40
+                Y: =232
+                ZIndex: =35
+
+            Txt_insure_attendance As text:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Care_key.Selected.Key).WitnessCareEnsuringAttendance
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =WitnessConsentRO
+                Fill: =madcolAF
+                FocusedBorderThickness: =4
+                Height: =109
+                HintText: ="Ensure Attendance"
+                HoverBorderColor: =RGBA(9, 33, 98, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(205, 209, 213, 1)
+                Mode: =TextMode.MultiLine
+                OnChange: |-
+                    =If(Len(Txt_insure_attendance.Text)>0,UpdateContext({madcolAF:Transparent}),UpdateContext({madcolAF:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Txt_insure_attendance.Text)>0,UpdateContext({madcolAF:Transparent}),UpdateContext({madcolAF:LightGoldenRodYellow}))
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =294
+                ZIndex: =36
+
+            Txt_reasons_special_measures As text:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Care_key.Selected.Key).WitnessCareReasonforSpecial
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =WitnessConsentRO
+                Fill: =madcolZZ
+                FocusedBorderThickness: =4
+                Height: =132
+                HintText: =""
+                HoverBorderColor: =RGBA(9, 33, 98, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(205, 209, 213, 1)
+                Mode: =TextMode.MultiLine
+                OnChange: |-
+                    =If(Len(Txt_reasons_special_measures.Text)>0,UpdateContext({madcolZZ:Transparent}),UpdateContext({madcolZZ:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Txt_reasons_special_measures.Text)>0,UpdateContext({madcolZZ:Transparent}),UpdateContext({madcolZZ:LightGoldenRodYellow}))
+                Reset: =Allreset
+                Size: =21
+                Visible: =If(Radio_special_measures.Selected.Value="Yes",true,false)
+                Width: =545
+                X: =40
+                Y: =695
+                ZIndex: =37
+
+            Label_Special_Measures As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =71
+                Size: =21
+                Text: ="Reason(s) for Special Measures Assessment?"
+                Visible: =If(Radio_special_measures.Selected.Value="Yes",true,false)
+                Width: =545
+                X: =40
+                Y: =616
+                ZIndex: =38
+
+            Lbl_asteriks_60 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =570
+                Y: =230
+                ZIndex: =39
+
+            Lbl_asteriks_61 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =313
+                Y: =485
+                ZIndex: =40
+
+            Lbl_asteriks_59 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =528
+                Y: =91
+                ZIndex: =41
+
+            Lbl_asteriks_62 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =33
+                Size: =21
+                Text: ="*"
+                Visible: =If(Radio_special_measures.Selected.Value="Yes",true,false)
+                Width: =22
+                X: =220
+                Y: =656
+                ZIndex: =42
+
+            Label_Care_Is_witness_willing_to_attend_court_1 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =57
+                Size: =21
+                Text: ="Other witness needs ? "
+                Width: =545
+                X: =35
+                Y: =1393+y4
+                ZIndex: =44
+
+            Radio_other_needs As radio:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                BorderStyle: =BorderStyle.None
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Care_key.Selected.Key).Whaveotherneed
+                DisplayMode: =WitnessConsentRO
+                Fill: =madcolZA
+                Height: =93
+                HoverColor: =RGBA(0, 18, 107, 1)
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_other_needs.Selected.Value)>0,UpdateContext({madcolZA:Transparent}),UpdateContext({madcolZA:LightGoldenRodYellow}));
+                    
+                    If(
+                    Radio_other_needs.Selected.Value = "Yes" ,
+                    Set(otherneed,true);UpdateContext({otherneed: true});Set(c1,250);UpdateContext({c1:250}));
+                        If(
+                       Radio_other_needs.Selected.Value = "No",
+                        Set(otherneed,false);UpdateContext({otherneed: false});Set(c1,0);UpdateContext({c1:0}));
+                    
+                        If(Len(Radio_other_needs.Selected.Value) = 0 , 
+                            Set(otherneed,false);UpdateContext({otherneed: false});Set(c1,0);UpdateContext({c1:0}));
+                OnSelect: |-
+                    =If(Len(Radio_other_needs.Selected.Value)>0,UpdateContext({madcolZA:Transparent}),UpdateContext({madcolZA:LightGoldenRodYellow}));
+                    
+                    
+                    If(
+                    Radio_other_needs.Selected.Value = "Yes" ,
+                    Set(otherneed,true);UpdateContext({otherneed: true});Set(c1,250);UpdateContext({c1:250}));
+                        If(
+                       Radio_other_needs.Selected.Value = "No",
+                        Set(otherneed,false);UpdateContext({otherneed: false});Set(c1,0);UpdateContext({c1:0}));
+                    
+                        If(Len(Radio_other_needs.Selected.Value) = 0 , 
+                            Set(otherneed,false);UpdateContext({otherneed: false});Set(c1,0);UpdateContext({c1:0}));
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =35
+                Y: =1464+y4
+                ZIndex: =45
+
+            Lbl_asteriks_73 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =548
+                Y: =1405+y4
+                ZIndex: =46
+
+            TextInput_other_needs As text:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Care_key.Selected.Key).Wotherneed
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =WitnessConsentRO
+                FocusedBorderThickness: =4
+                Height: =194
+                HintText: ="Other witness needs ?"
+                HoverBorderColor: =RGBA(32, 54, 71, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(205, 209, 213, 1)
+                Mode: =TextMode.MultiLine
+                Size: =21
+                Visible: =otherneed
+                Width: =545
+                X: =35
+                Y: =1557+y4
+                ZIndex: =47
+
+        DataCard1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =resetCan
+            Width: =640
+            X: =0
+            Y: =1
+            ZIndex: =2
+
+            Btn_save_18 As button:
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =WitnessConsentRO
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Semibold
+                Height: =65
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |
+                    =UpdateIf(
+                        'Statement offline',
+                        Key = Dropdown_Care_key.Selected.Key,
+                        {
+                            WitnessCareattendingCourt: Radio_attend_court.Selected.Value,
+                            WitnessCareEnsuringAttendance: Txt_insure_attendance.Text,
+                            WitnessCareSpecialRequired: Radio_special_measures.Selected.Value,
+                            WitnessCareReasonforSpecial: Txt_reasons_special_measures.Text,
+                            Witenessneeds: Left(
+                                Concat(
+                                    CheckboxTextValues,
+                                    name & ", "
+                                ),
+                                Len(
+                                    Concat(
+                                        CheckboxTextValues,
+                                        name & ", "
+                                    )
+                                ) - 2
+                            ),
+                            Witnessneedsid: Left(
+                                Concat(
+                                    CheckboxTextValues,
+                                    Checkboxid & ","
+                                ),
+                                Len(
+                                    Concat(
+                                        CheckboxTextValues,
+                                        Checkboxid & ","
+                                    )
+                                ) - 1
+                            ),
+                            Whaveotherneed: Radio_other_needs.Selected.Value,
+                            Wotherneed: TextInput_other_needs.Text
+                        }
+                    );
+                    UpdateIf(
+                        'Statement offline',
+                        Key = Dropdown_Care_key.Selected.Key,
+                        {
+                            careValid: And(
+                                !IsBlank(
+                                    LookUp(
+                                        'Statement offline',
+                                        Key = Dropdown_Witness_Statement_key.Selected.Key
+                                    ).WitnessCareattendingCourt
+                                ),
+                                !IsBlank(
+                                    LookUp(
+                                        'Statement offline',
+                                        Key = Dropdown_Witness_Statement_key.Selected.Key
+                                    ).WitnessCareEnsuringAttendance
+                                ),
+                                !IsBlank(
+                                    LookUp(
+                                        'Statement offline',
+                                        Key = Dropdown_Witness_Statement_key.Selected.Key
+                                    ).Whaveotherneed
+                                ),
+                                //speicla care required = no OR (special care requried = yes AND special care reason populated)
+                                Or(
+                                    LookUp(
+                                        'Statement offline',
+                                        Key = Dropdown_Witness_Statement_key.Selected.Key
+                                    ).WitnessCareSpecialRequired = "No",
+                                    And(
+                                        LookUp(
+                                            'Statement offline',
+                                            Key = Dropdown_Witness_Statement_key.Selected.Key
+                                        ).WitnessCareSpecialRequired = "Yes",
+                                        !IsBlank(
+                                            LookUp(
+                                                'Statement offline',
+                                                Key = Dropdown_Witness_Statement_key.Selected.Key
+                                            ).WitnessCareReasonforSpecial
+                                        )
+                                    )
+                                )
+                            )
+                        }
+                    );
+                    SaveData(
+                        'Statement offline',
+                        "Statement offline"
+                    );
+                    /*Reset(Gallery_Name_witness_needs);*/
+                    Navigate(
+                        Scr_Statements_Home_screen,
+                        ScreenTransition.UnCover
+                    );
+                Size: =24
+                Text: ="Save & Continue"
+                Width: =545
+                X: =40
+                Y: =20
+                ZIndex: =1
+

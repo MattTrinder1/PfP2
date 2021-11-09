@@ -1,0 +1,982 @@
+Scr_Witness_Statement_New As screen:
+    LoadingSpinnerColor: =RGBA(100, 118, 132, 1)
+    OnHidden: |-
+        =UpdateContext({resetCan:false})
+    OnVisible: |-
+        =
+        UpdateContext({resetCan:true});
+        Set(madcoldd,LightGoldenRodYellow);UpdateContext({madcoldd:LightGoldenRodYellow});
+        If(Len(TextInput_Witness_Statement.Text)>0,UpdateContext({madcoldd:Transparent}),UpdateContext({madcoldd:LightGoldenRodYellow}));
+        
+        If(Len(TextInput_Witness_Statement.Text)>0,UpdateContext({madcoldd:Transparent}),UpdateContext({madcoldd:LightGoldenRodYellow}));
+        
+        If(IsBlank(LookUp('Statement offline',Key=Dropdown_Witness_Statement_key.Selected.Key).WitnessSignature),Set(signreadonly,DisplayMode.Edit),Set(signreadonly,DisplayMode.Disabled));
+        Set(overLayVisible4,false);
+
+    Label1_13 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Witness Statement"
+        Width: =640
+        ZIndex: =1
+
+    "'exit icon 3_14' As icon.Cancel":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =563
+        Y: =11
+        ZIndex: =2
+
+    "'Back Icon 2_14' As icon.ArrowLeft":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_Statements_Home_screen,ScreenTransition.UnCover); Set(overLayVisible4,false);
+        X: =32
+        Y: =11
+        ZIndex: =3
+
+    "'Canvas_Witness Details_1' As fluidGrid.fluidGridWithBlankCard":
+        BorderThickness: =0
+        Height: =1048
+        Width: =Parent.Width
+        Y: =RectQuickActionBar2_8.Y + RectQuickActionBar2_8.Height
+        ZIndex: =4
+
+        "'DataCard_Witness Details_2' As dataCard":
+            BorderColor: =RGBA(255, 255, 255, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =1477
+            Visible: =resetCan
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Dropdown_Witness_Statement_key As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+                ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                Default: =Statement_Primary_key /*LookUp('Statement offline',Key=Statement_Primary_key).Key*/
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                Items: ='Statement offline'.Key
+                OnChange: |-
+                    =/*If(LookUp('Statement offline',Key=Dropdown_Witness_Statement_key.Selected.Key).WitnessSignature =SampleImage,Set(signreadonly,DisplayMode.Edit),Set(signreadonly,DisplayMode.Disabled));*/
+                    
+                    /*If(IsBlank(LookUp('Statement offline',Key=Dropdown_Witness_Statement_key.Selected.Key).WitnessSignature),Set(signreadonly,DisplayMode.Edit),Set(signreadonly,DisplayMode.Disabled));*/
+                PressedColor: =RGBA(255, 255, 255, 1)
+                PressedFill: =RGBA(0, 18, 107, 1)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =26
+                ZIndex: =1
+
+            Label_Witness_Statement_proforma_1 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =70
+                OnSelect: =Set(overLayVisible4,false);Set(overLayVisible5,false);
+                Size: =21
+                Text: |-
+                    ="If applicable, please select a proforma template:"
+                Width: =545
+                X: =40
+                Y: =96
+                ZIndex: =4
+
+            Dropdown_Proforma_templates As dropdown:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                BorderThickness: =4
+                ChevronBackground: =RGBA(100, 118, 132, 1)
+                ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+                ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Witness_Statement_key.Selected.Key).WSProformaTmp
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Height: =70
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(205, 209, 213, 1)
+                Items: =["Blank","MG-11 Shoplifting Template"]
+                OnSelect: =Set(overLayVisible4,false);Set(overLayVisible5,false);
+                PressedColor: =RGBA(255, 255, 255, 1)
+                PressedFill: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                SelectionFill: =RGBA(100, 118, 132, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =175
+                ZIndex: =5
+
+            Label_Witness_Statement_label As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =70
+                Size: =21
+                Text: |-
+                    ="Witness Statement:"
+                Width: =560
+                X: =61
+                Y: =422
+                ZIndex: =6
+
+            Lbl_asteriks_54 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =555
+                Y: =450
+                ZIndex: =7
+
+            Label3_1 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =48
+                Size: =18
+                Text: |-
+                    ="Characters: " & Text(Len(TextInput_Witness_Statement.Text))
+                Width: =331
+                X: =40
+                Y: =1254
+                ZIndex: =8
+
+            TextInput_Witness_Statement As text:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: |-
+                    =If(Dropdown_Proforma_templates.Selected.Value ="Blank",LookUp('Statement offline',Key=Dropdown_Witness_Statement_key.Selected.Key).WStatement )& If(Dropdown_Proforma_templates.Selected.Value ="MG-11 Shoplifting Template","   
+                    I am an employee of *  *
+                    On *  *.(day/date/time) I was at work.
+                    
+                    Part of my duties involve the management of all CCTV recordings and/or*, the monitoring of CCTV screens. I have caused a copy of CCTV footage from our premises to be burned/downloaded to Evidence.com/USB drive/media card (delete as applicable) at the request of Cumbria Police. This footage relates to an incident that occurred on*   *
+                    (day/date/time), involving*     *(nature of incident, ie theft, violence, fraud).
+                    
+                    I now produce this as item(s)*  *. bearing my signature.
+                    
+                    A photo has been produce from the still footage which I now produce in evidence as item(s)*  *
+                    
+                    I understand that the original coverage will need to be stored for possible court proceedings.
+                    
+                    At (time)*  * On (day)*  *.date*  * I handed the tape(s)/disc(s)* to*  *of Cumbria Constabulary.
+                    
+                    At the present time I can confirm that the time/date* code showing on the tapes is accurate/not accurate*.
+                    
+                    The time showing on the tapes is in fact*  * Minutes faster/slower* than the correct time.
+                    Signature *  *             Witnessed by * *
+                    
+                    This statement (consisting of page(s) each signed by me) is true to the best of my knowledge and belief and I make it knowing that, if it is tendered in evidence, I shall be liable to prosecution if I have wilfully stated in it, anything which I know to be false, or do not believe to be true.
+                    
+                    Signature:*   *                    Date:  / /              
+                    
+                    Tick if the evidence is visually recorded (Y) Supply witness details on the rear.
+                    
+                    I am an employee of
+                    On            .(day/date/time) I was at work.
+                    
+                    Part of my duties involve the management of all CCTV recordings and/or*, the monitoring of CCTV screens. I have caused a copy of CCTV footage from our premises to be burned/downloaded to Evidence.com/USB drive/media card (delete as applicable) at the request of Cumbria Police. This footage relates to an incident that occurred on *  *
+                    (day/date/time), involving *   * (nature of incident, ie theft, violence, fraud)
+                    
+                    I now produce this as item(s)*  *bearing my signature.
+                    
+                    A photo has been produce from the still footage which I now produce in evidence as item(s)*   *
+                    
+                    I understand that the original coverage will need to be stored for possible court proceedings.
+                    
+                    At (time) *   * On (day) *   * date *   * I handed the tape(s)/disc(s)* to *   * of Cumbria Constabulary.
+                    
+                    At the present time I can confirm that the time/date* code showing on the tapes is accurate/not accurate*.
+                    
+                    The time showing on the tapes is in fact *   * Minutes faster/slower* than the correct time.
+                    
+                    Signature *  *                Witnessed by *  *
+                    
+                    ")/*&stmttime*/
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                EnableSpellCheck: =true
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,Transparent)
+                FocusedBorderThickness: =4
+                Height: =767
+                HoverBorderColor: =RGBA(32, 54, 71, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(205, 209, 213, 1)
+                Mode: =TextMode.MultiLine
+                OnChange: =
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Visible: =/*If(Dropdown_Proforma_templates.Selected.Value = "Blank",true,false)*/ true
+                Width: =509
+                X: =65
+                Y: =484
+                ZIndex: =10
+
+            Btn_save_15 As button:
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Semibold
+                Height: =72
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |
+                    =UpdateIf(
+                        'Statement offline',
+                        Key = Dropdown_Witness_Statement_key.Selected.Key,
+                        {
+                            WSProformaTmp: Dropdown_Proforma_templates.Selected.Value,
+                            WStatement: TextInput_Witness_Statement.Text,
+                            WstatementPatch: Concatenate(
+                                Text(
+                                    LookUp(
+                                        BreakStart,
+                                        breakstartkey = Statement_Primary_key
+                                    ).BreakStart
+                                ),
+                                "  ",
+                                Text(
+                                    LookUp(
+                                        BreakStart,
+                                        breakstartkey = Statement_Primary_key
+                                    ).Breakfinish
+                                ),
+                                "    
+                                    
+                    ",
+                                TextInput_Witness_Statement.Text,
+                                ""
+                            )
+                        }
+                    );
+                    UpdateIf(
+                        'Statement offline',
+                        Key = Dropdown_Witness_Statement_key.Selected.Key,
+                        {
+                            witnessStatementValid: !IsBlank(
+                                LookUp(
+                                    'Statement offline',
+                                    Key = Dropdown_Witness_Statement_key.Selected.Key
+                                ).WStatement
+                            )
+                        }
+                    );
+                    SaveData(
+                        'Statement offline',
+                        "Statement offline"
+                    );
+                    Navigate(
+                        Scr_Statements_Home_screen,
+                        ScreenTransition.UnCover
+                    );
+                    Set(
+                        stmttime,
+                        " 
+                     [Statement Paused at " & Now() & "]    "
+                    );
+                Size: =24
+                Text: ="Save & Continue"
+                Width: =533
+                X: =46
+                Y: =1302
+                ZIndex: =12
+
+            Btn_save_16 As button:
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Semibold
+                Height: =72
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =Set(overLayVisible4,!overLayVisible4);
+                    Reset(DatePicker_break_start_date);
+                    Reset(Dropdown_min_start);
+                    Reset(Dropdown_hour_start);
+                Size: =22
+                Text: ="Record a break"
+                Width: =263
+                X: =46
+                Y: =1389
+                ZIndex: =14
+
+            Btn_save_19 As button:
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Semibold
+                Height: =72
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =Set(overLayVisible5,!overLayVisible5);
+                    Reset(DatePicker_break_start_date_1);
+                    Reset(Dropdown_min_start_1);
+                    Reset(Dropdown_hour_start_1);
+                Size: =22
+                Text: ="Recommence statement"
+                Width: =269
+                X: =321
+                Y: =1389
+                ZIndex: =15
+
+            "'Label_Has_the_statement_been_read_to_the _witness?_7' As label":
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(255, 255, 255, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =61
+                Size: =27
+                Text: ="Record a Break"
+                Visible: =overLayVisible4
+                Width: =546
+                X: =28
+                Y: =522
+                ZIndex: =28
+
+            Gallery_dates_na_1 As gallery.galleryVertical:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                BorderThickness: =4
+                Default: =LookUp(BreakStart, breakstartkey=Dropdown_Witness_Statement_key.Selected.Key)
+                DisplayMode: =signreadonly
+                Height: =174
+                Items: |
+                    =Filter(BreakStart,breakstartkey=Statement_Primary_key)
+                Layout: =Layout.Vertical
+                OnSelect: =Set(overLayVisible4,false);Set(overLayVisible5,false);
+                TemplateSize: =163
+                Width: =545
+                X: =40
+                Y: =253
+                ZIndex: =29
+
+                Label2_4 As label:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(0, 0, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =68
+                    OnSelect: =Select(Parent)
+                    Size: =15
+                    Text: =ThisItem.BreakStart 
+                    VerticalAlign: =VerticalAlign.Top
+                    Width: =527
+                    Y: =22
+                    ZIndex: =1
+
+                Label2_6 As label:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(0, 0, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =79
+                    OnSelect: =Select(Parent)
+                    Size: =15
+                    Text: =ThisItem.Breakfinish
+                    VerticalAlign: =VerticalAlign.Top
+                    Width: =527
+                    Y: =90
+                    ZIndex: =2
+
+                Label2_5 As label:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(0, 0, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    FontWeight: =FontWeight.Semibold
+                    Height: =36
+                    OnSelect: =Select(Parent)
+                    Size: =12
+                    Text: ="Break Start on"
+                    Underline: =true
+                    VerticalAlign: =VerticalAlign.Top
+                    Width: =230
+                    ZIndex: =3
+
+                Label2_7 As label:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(0, 0, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    FontWeight: =FontWeight.Semibold
+                    Height: =36
+                    OnSelect: =Select(Parent)
+                    Size: =12
+                    Text: ="Break Recommenced "
+                    Underline: =true
+                    VerticalAlign: =VerticalAlign.Top
+                    Width: =195
+                    Y: =70
+                    ZIndex: =4
+
+            Group5 As group:
+                Height: =5
+                Width: =5
+                X: =60
+                Y: =60
+                ZIndex: =29
+
+                rectOverlay_4 As rectangle:
+                    BorderColor: =RGBA(0, 18, 107, 1     )
+                    Fill: =RGBA(0,0,0,92%)
+                    Height: =1034
+                    Visible: =overLayVisible4
+                    Width: =640
+                    Y: =443
+                    ZIndex: =16
+
+                btnCancelSignature_4 As button:
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =
+                    Fill: =RGBA(153, 153, 153, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =104
+                    HoverColor: =RGBA(255, 255, 255, 1)
+                    HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                    OnSelect: |-
+                        =Reset(DatePicker_break_start_date);
+                        Reset(Dropdown_min_start);
+                        Reset(Dropdown_hour_start);
+                        Set(overLayVisible4,false);
+                    Size: =24
+                    Text: ="Cancel"
+                    Visible: =overLayVisible4
+                    Width: =253
+                    X: =32
+                    Y: =1316
+                    ZIndex: =17
+
+                DatePicker_break_start_date As datepicker:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    CalendarHeaderFill: =RGBA(56, 96, 178, 1)
+                    Color: =RGBA(0, 0, 0, 1)
+                    DefaultDate: =
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    Fill: = White
+                    Height: =148
+                    HoverDateFill: =RGBA(186, 202, 226, 1)
+                    IconBackground: =RGBA(153, 153, 153, 1)
+                    InputTextPlaceholder: ="DD/MM/YYYY"
+                    IsEditable: =true
+                    OnChange: =
+                    OnSelect: =
+                    SelectedDateFill: =RGBA(56, 96, 178, 1)
+                    Size: =24
+                    Visible: =overLayVisible4
+                    Width: =534
+                    X: =40
+                    Y: =693
+                    ZIndex: =19
+
+                Dropdown_hour_start As dropdown:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+                    ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                    ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                    Default: ="00"
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    FocusedBorderColor: =Dropdown_hour_start.BorderColor
+                    Height: =138
+                    HoverBorderColor: =ColorFade(Dropdown_hour_start.BorderColor, 15%)
+                    HoverColor: =RGBA(0, 0, 0, 1)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Items: =["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"]
+                    OnChange: =
+                    PressedBorderColor: =Dropdown_hour_start.HoverBorderColor
+                    PressedColor: =RGBA(255, 255, 255, 1)
+                    PressedFill: =RGBA(153, 153, 153, 1)
+                    Reset: =true
+                    SelectionFill: =RGBA(230, 230, 230, 1)
+                    Size: =21
+                    Visible: =overLayVisible4
+                    Width: =197
+                    X: =40
+                    Y: =1053
+                    ZIndex: =20
+
+                Dropdown_min_start As dropdown:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+                    ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                    ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                    Default: ="00"
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    FocusedBorderColor: =Dropdown_min_start.BorderColor
+                    Height: =138
+                    HoverBorderColor: =ColorFade(Dropdown_min_start.BorderColor, 15%)
+                    HoverColor: =RGBA(0, 0, 0, 1)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Items: |
+                        =["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59"]
+                    OnChange: =
+                    PressedBorderColor: =Dropdown_min_start.HoverBorderColor
+                    PressedColor: =RGBA(255, 255, 255, 1)
+                    PressedFill: =RGBA(153, 153, 153, 1)
+                    Reset: =true
+                    SelectionFill: =RGBA(204, 204, 204, 1)
+                    Size: =21
+                    Visible: =overLayVisible4
+                    Width: =198
+                    X: =337
+                    Y: =1053
+                    ZIndex: =21
+
+                "'Label_Has_the_statement_been_read_to_the _witness?_2' As label":
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =89
+                    Size: =27
+                    Text: |-
+                        ="Break commenced at:"
+                    Visible: =overLayVisible4
+                    Width: =546
+                    X: =28
+                    Y: =443
+                    ZIndex: =22
+
+                "'Label_Has_the_statement_been_read_to_the _witness?_3' As label":
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =89
+                    Size: =27
+                    Text: |-
+                        ="Date:"
+                    Underline: =true
+                    Visible: =overLayVisible4
+                    Width: =546
+                    X: =36
+                    Y: =582
+                    ZIndex: =23
+
+                "'Label_Has_the_statement_been_read_to_the _witness?_4' As label":
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =89
+                    Size: =27
+                    Text: |-
+                        ="Time:"
+                    Underline: =true
+                    Visible: =overLayVisible4
+                    Width: =546
+                    X: =36
+                    Y: =890
+                    ZIndex: =24
+
+                "'Label_Has_the_statement_been_read_to_the _witness?_5' As label":
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =89
+                    Size: =25
+                    Text: ="Hour"
+                    Visible: =overLayVisible4
+                    Width: =218
+                    X: =34
+                    Y: =970
+                    ZIndex: =25
+
+                "'Label_Has_the_statement_been_read_to_the _witness?_6' As label":
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =89
+                    Size: =25
+                    Text: ="Min"
+                    Visible: =overLayVisible4
+                    Width: =218
+                    X: =327
+                    Y: =970
+                    ZIndex: =26
+
+                btnCancelSignature_5 As button:
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =
+                    Fill: =RGBA(153, 153, 153, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =104
+                    HoverColor: =RGBA(255, 255, 255, 1)
+                    HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                    OnSelect: |-
+                        = Set(
+                             NewDateTimeVariable,"Break Commenced at : " &
+                             Text(DateTimeValue(
+                                DatePicker_break_start_date 
+                                  & " " &  
+                                 Time(
+                                    Value(Dropdown_hour_start.Selected.Value),
+                                    Value(Dropdown_min_start.Selected.Value),
+                                    0
+                                )
+                             ) & " Statement Paused by: "& First(Userlocal).Collarnumber 
+                        ));
+                        
+                        Collect(BreakStart,
+                        
+                        {
+                        breakstartkeystmtkey: Dropdown_Witness_Statement_key.Selected.Key,
+                        breakstartkey: Statement_Primary_key,
+                        Breakfinish:"",
+                        BreakStart:NewDateTimeVariable,Daterow:CountRows(BreakStart) + 1});
+                        
+                        
+                        Set(overLayVisible4,false);
+                    Size: =24
+                    Text: ="Submit"
+                    Visible: =overLayVisible4
+                    Width: =253
+                    X: =321
+                    Y: =1316
+                    ZIndex: =27
+
+            "'Label_Has_the_statement_been_read_to_the _witness?_13' As label":
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(255, 255, 255, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                FontWeight: =FontWeight.Bold
+                Height: =86
+                Size: =27
+                Text: |-
+                    ="Reason:"
+                Underline: =true
+                Visible: =overLayVisible5
+                Width: =546
+                X: =36
+                Y: =1008
+                ZIndex: =41
+
+            Group5_1 As group:
+                Height: =5
+                Width: =5
+                X: =60
+                Y: =-383
+                ZIndex: =41
+
+                rectOverlay_5 As rectangle:
+                    BorderColor: =RGBA(0, 18, 107, 1     )
+                    Fill: =RGBA(0,0,0,92%)
+                    Height: =1034
+                    Visible: =overLayVisible5
+                    Width: =640
+                    Y: =443
+                    ZIndex: =30
+
+                btnCancelSignature_7 As button:
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =
+                    Fill: =RGBA(153, 153, 153, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =105
+                    HoverColor: =RGBA(255, 255, 255, 1)
+                    HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                    OnSelect: |-
+                        =Reset(DatePicker_break_start_date_1);
+                        Reset(Dropdown_min_start_1);
+                        Reset(Dropdown_hour_start_1);
+                        Reset(TextInput_break_finish);
+                        Set(overLayVisible5,false);
+                    Size: =24
+                    Text: ="Cancel"
+                    Visible: =overLayVisible5
+                    Width: =253
+                    X: =32
+                    Y: =1320
+                    ZIndex: =31
+
+                DatePicker_break_start_date_1 As datepicker:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    CalendarHeaderFill: =RGBA(56, 96, 178, 1)
+                    Color: =RGBA(0, 0, 0, 1)
+                    DefaultDate: =
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    Fill: = White
+                    Height: =148
+                    HoverDateFill: =RGBA(186, 202, 226, 1)
+                    IconBackground: =RGBA(153, 153, 153, 1)
+                    InputTextPlaceholder: ="DD/MM/YYYY"
+                    IsEditable: =true
+                    OnChange: =
+                    OnSelect: =
+                    SelectedDateFill: =RGBA(56, 96, 178, 1)
+                    Size: =24
+                    Visible: =overLayVisible5
+                    Width: =517
+                    X: =28
+                    Y: =586
+                    ZIndex: =32
+
+                Dropdown_hour_start_1 As dropdown:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+                    ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                    ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                    Default: ="00"
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    FocusedBorderColor: =Dropdown_hour_start_1.BorderColor
+                    Height: =119
+                    HoverBorderColor: =ColorFade(Dropdown_hour_start_1.BorderColor, 15%)
+                    HoverColor: =RGBA(0, 0, 0, 1)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Items: =["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"]
+                    OnChange: =
+                    PressedBorderColor: =Dropdown_hour_start_1.HoverBorderColor
+                    PressedColor: =RGBA(255, 255, 255, 1)
+                    PressedFill: =RGBA(153, 153, 153, 1)
+                    Reset: =true
+                    SelectionFill: =RGBA(230, 230, 230, 1)
+                    Size: =21
+                    Visible: =overLayVisible5
+                    Width: =197
+                    X: =40
+                    Y: =915
+                    ZIndex: =33
+
+                Dropdown_min_start_1 As dropdown:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+                    ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                    ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                    Default: ="00"
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    FocusedBorderColor: =Dropdown_min_start_1.BorderColor
+                    Height: =119
+                    HoverBorderColor: =ColorFade(Dropdown_min_start_1.BorderColor, 15%)
+                    HoverColor: =RGBA(0, 0, 0, 1)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Items: |
+                        =["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59"]
+                    OnChange: =
+                    PressedBorderColor: =Dropdown_min_start_1.HoverBorderColor
+                    PressedColor: =RGBA(255, 255, 255, 1)
+                    PressedFill: =RGBA(153, 153, 153, 1)
+                    Reset: =true
+                    SelectionFill: =RGBA(204, 204, 204, 1)
+                    Size: =21
+                    Visible: =overLayVisible5
+                    Width: =198
+                    X: =340
+                    Y: =915
+                    ZIndex: =34
+
+                "'Label_Has_the_statement_been_read_to_the _witness?_12' As label":
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =89
+                    Size: =27
+                    Text: |-
+                        ="Break Recommenced at:"
+                    Visible: =overLayVisible5
+                    Width: =546
+                    X: =28
+                    Y: =443
+                    ZIndex: =35
+
+                "'Label_Has_the_statement_been_read_to_the _witness?_11' As label":
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =89
+                    Size: =27
+                    Text: |-
+                        ="Date:"
+                    Underline: =true
+                    Visible: =overLayVisible5
+                    Width: =546
+                    X: =28
+                    Y: =507
+                    ZIndex: =36
+
+                "'Label_Has_the_statement_been_read_to_the _witness?_9' As label":
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =89
+                    Size: =27
+                    Text: |-
+                        ="Time:"
+                    Underline: =true
+                    Visible: =overLayVisible5
+                    Width: =546
+                    X: =36
+                    Y: =749
+                    ZIndex: =37
+
+                "'Label_Has_the_statement_been_read_to_the _witness?_8' As label":
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =89
+                    Size: =25
+                    Text: ="Hour"
+                    Visible: =overLayVisible5
+                    Width: =218
+                    X: =36
+                    Y: =833
+                    ZIndex: =38
+
+                "'Label_Has_the_statement_been_read_to_the _witness?_10' As label":
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =89
+                    Size: =25
+                    Text: ="Min"
+                    Visible: =overLayVisible5
+                    Width: =218
+                    X: =330
+                    Y: =826
+                    ZIndex: =39
+
+                btnCancelSignature_6 As button:
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =
+                    Fill: =RGBA(153, 153, 153, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =105
+                    HoverColor: =RGBA(255, 255, 255, 1)
+                    HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                    OnSelect: |-
+                        = Set(
+                             NewDateTimeVariable1,"Break Ended at : " &
+                             Text(DateTimeValue(
+                                DatePicker_break_start_date_1 
+                                  & " " &  
+                                 Time(
+                                    Value(Dropdown_hour_start_1.Selected.Value),
+                                    Value(Dropdown_min_start_1.Selected.Value),
+                                    0
+                                )
+                             ) & " Reason: "& TextInput_break_finish.Text &"  Statement Paused by: "& LookUp(Usersalllocal,Lower(internalemailaddress)=Lower(officermail),firstname&lastname)
+                        ));
+                        
+                        UpdateIf(BreakStart,breakstartkey= Statement_Primary_key,
+                        
+                        {
+                        
+                        Breakfinish:NewDateTimeVariable1 });
+                        
+                        Set(overLayVisible5,false);
+                    Size: =24
+                    Text: ="Submit"
+                    Visible: =overLayVisible5
+                    Width: =253
+                    X: =321
+                    Y: =1320
+                    ZIndex: =40
+
+            TextInput_break_finish As text:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =""
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                FocusedBorderThickness: =4
+                Height: =169
+                HintText: =""
+                HoverBorderColor: =RGBA(32, 54, 71, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(205, 209, 213, 1)
+                Mode: =TextMode.MultiLine
+                Size: =21
+                Visible: =overLayVisible5
+                Width: =509
+                X: =39
+                Y: =1082
+                ZIndex: =42
+
+            rectOverlay_6 As rectangle:
+                BorderColor: =RGBA(0, 18, 107, 1     )
+                Fill: =RGBA(0,0,0,92%)
+                Height: =443
+                Visible: =overLayVisible4
+                Width: =640
+                ZIndex: =43
+
+            rectOverlay_7 As rectangle:
+                BorderColor: =RGBA(0, 18, 107, 1     )
+                Fill: =RGBA(0,0,0,92%)
+                Height: =443
+                Visible: =overLayVisible5
+                Width: =640
+                ZIndex: =44
+

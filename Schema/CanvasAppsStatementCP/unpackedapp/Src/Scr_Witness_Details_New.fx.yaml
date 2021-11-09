@@ -1,0 +1,2048 @@
+Scr_Witness_Details_New As screen:
+    LoadingSpinnerColor: =RGBA(100, 118, 132, 1)
+    OnHidden: |-
+        =UpdateContext({resetCan:false})
+    OnVisible: |-
+        =UpdateContext({resetCan: true});
+        If(
+            Len(Dropdown_Witness_details_title.Selected.cp_name) > 0,
+            UpdateContext({madcolD: White}),
+            UpdateContext({madcolD: LightGoldenRodYellow})
+        );
+        If(
+            Len(Txt_witness_details_forename.Text) > 0,
+            UpdateContext({madcolA: Transparent}),
+            UpdateContext({madcolA: LightGoldenRodYellow})
+        );
+        If(
+            Len(Txt_witness_details_surname.Text) > 0,
+            UpdateContext({madcolB: Transparent}),
+            UpdateContext({madcolB: LightGoldenRodYellow})
+        );
+        If(
+            IsBlank(DatePicker_witness_details_dob),
+            UpdateContext({madcolC: LightGoldenRodYellow}),
+            UpdateContext({madcolC: Transparent})
+        );
+        If(
+            IsBlank(
+                LookUp(
+                    'Statement offline',
+                    Key = Dropdown_Witness_details_key.Selected.Key
+                ).WitnessSignature
+            ),
+            Set(
+                signreadonly,
+                DisplayMode.Edit
+            ),
+            Set(
+                signreadonly,
+                DisplayMode.Disabled
+            )
+        );
+        If(
+            Len(Txt_Witness_Occupation.Text) > 0,
+            UpdateContext({madcolG: White}),
+            UpdateContext({madcolG: LightGoldenRodYellow})
+        );
+        If(
+            Len(Txt_Witness_Details_Place_of_birth.Text) > 0,
+            UpdateContext({madcolF: White}),
+            UpdateContext({madcolF: LightGoldenRodYellow})
+        );
+        /*If(Len(Txt_Witness_Details_housename.Text)>0,UpdateContext({madcolH:White}),UpdateContext({madcolH:LightGoldenRodYellow}));
+        If(Len(Txt_Witness_Details_houseno.Text)>0,UpdateContext({madcolJ:White}),UpdateContext({madcolJ:LightGoldenRodYellow}));*/
+        If(
+            Len(Dropdown_Gender.Selected.cp_name) > 0,
+            UpdateContext({madcolRR: White}),
+            UpdateContext({madcolRR: LightGoldenRodYellow})
+        );
+        If(
+            Len(Txt_Witness_Details_housename.Text) = 0 And Len(Txt_Witness_Details_houseno.Text) = 0,
+            UpdateContext({madcolH: LightGoldenRodYellow});
+            UpdateContext({madcolJ: LightGoldenRodYellow});
+            ,
+            UpdateContext({madcolJ: White});
+            UpdateContext({madcolH: White})
+        );
+        If(
+            Len(Txt_Witness_Details_address.Text) > 0,
+            UpdateContext({madcolK: White}),
+            UpdateContext({madcolK: LightGoldenRodYellow})
+        );
+        If(
+            Len(TextInput_Witness_Details_Postcode.Text) > 0,
+            UpdateContext({madcolM: White}),
+            UpdateContext({madcolM: LightGoldenRodYellow})
+        );
+        If(
+            Len(Dropdown_Witness_country.Selected.cp_name) > 0,
+            UpdateContext({madcolN: White}),
+            UpdateContext({madcolN: LightGoldenRodYellow})
+        );
+        If(
+            Len(TextInput_Witness_Details_Phone_Number_1.Text) > 0,
+            UpdateContext({madcolO: Transparent}),
+            UpdateContext({madcolO: LightGoldenRodYellow})
+        );
+        If(
+            Len(TextInput_Witness_Details_Work_Telelphone.Text) > 0,
+            UpdateContext({madcolO: Transparent}),
+            UpdateContext({madcolO: LightGoldenRodYellow})
+        );
+        If(
+            Len(TextInput_Witness_Details_Evening_Telephone.Text) > 0,
+            UpdateContext({madcolO: Transparent}),
+            UpdateContext({madcolO: LightGoldenRodYellow})
+        );
+        If(
+            Len(TextInput_Witness_Details_Email.Text) > 0,
+            UpdateContext({madcolP: Transparent}),
+            UpdateContext({madcolP: LightGoldenRodYellow})
+        );
+        If(
+            Len(Dropdown_Witness_Preffered_contact.Selected.cp_name) > 0,
+            UpdateContext({madcolQ: White}),
+            UpdateContext({madcolQ: LightGoldenRodYellow})
+        );
+        If(
+            Len(Dropdown_Witness_EthnicityCode.Selected.cp_name) > 0,
+            UpdateContext({madcolR: White}),
+            UpdateContext({madcolR: LightGoldenRodYellow})
+        );
+        If(
+            Len(Txt_Witness_Preffered_Time.Text) > 0,
+            UpdateContext({madcolS: Transparent}),
+            UpdateContext({madcolS: LightGoldenRodYellow})
+        );
+        If(
+            CountRows(Datesnotavail) < 4,
+            UpdateContext({warningdisplay: false}),
+            UpdateContext({warningdisplay: true})
+        );
+        Set(
+            y2,
+            0
+        );
+        UpdateContext({yage: 100});
+        UpdateContext({WitnessAge: true})
+
+    "'exit icon 3_12' As icon.Cancel":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =563
+        Y: =11
+        ZIndex: =2
+
+    "'Back Icon 2_12' As icon.ArrowLeft":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_Statements_Home_screen,ScreenTransition.UnCover)
+        X: =32
+        Y: =11
+        ZIndex: =3
+
+    "'Canvas_Witness Details' As fluidGrid.fluidGridWithBlankCard":
+        BorderThickness: =0
+        Height: =1048
+        Width: =Parent.Width
+        Y: =RectQuickActionBar2_8.Y + RectQuickActionBar2_8.Height
+        ZIndex: =4
+
+        "'DataCard_Witness Details_1' As dataCard":
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =3710
+            Update: =
+            Visible: =resetCan
+            Width: =Parent.Width
+            X: =0
+            Y: =0+y1+y2+yage
+            ZIndex: =1
+
+            Dropdown_Witness_details_key As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+                ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                Default: =Statement_Primary_key
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                Items: ='Statement offline'.Key
+                OnChange: |
+                    =/*If(IsBlank(LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WitnessSignature),Set(signreadonly,DisplayMode.Edit),Set(signreadonly,DisplayMode.Disabled));*/
+                    If(
+                        Len(Txt_Witness_Occupation.Text) > 0,
+                        UpdateContext({madcolG: White}),
+                        UpdateContext({madcolG: LightGoldenRodYellow})
+                    );
+                    If(
+                        Len(Txt_Witness_Details_Place_of_birth.Text) > 0,
+                        UpdateContext({madcolF: Transparent}),
+                        UpdateContext({madcolF: LightGoldenRodYellow})
+                    );
+                    If(
+                        Len(Txt_Witness_Details_housename.Text) > 0,
+                        UpdateContext({madcolH: Transparent}),
+                        UpdateContext({madcolH: LightGoldenRodYellow})
+                    );
+                    If(
+                        Len(Txt_Witness_Details_houseno.Text) > 0,
+                        UpdateContext({madcolJ: Transparent}),
+                        UpdateContext({madcolJ: LightGoldenRodYellow})
+                    );
+                    If(
+                        Len(Txt_Witness_Details_address.Text) > 0,
+                        UpdateContext({madcolK: Transparent}),
+                        UpdateContext({madcolK: LightGoldenRodYellow})
+                    );
+                    If(
+                        Len(TextInput_Witness_Details_Postcode.Text) > 0,
+                        UpdateContext({madcolM: Transparent}),
+                        UpdateContext({madcolM: LightGoldenRodYellow})
+                    );
+                    If(
+                        Len(Dropdown_Witness_country.Selected.cp_name) > 0,
+                        UpdateContext({madcolN: Transparent}),
+                        UpdateContext({madcolN: LightGoldenRodYellow})
+                    );
+                    If(
+                        Len(TextInput_Witness_Details_Phone_Number_1.Text) > 0,
+                        UpdateContext({madcolO: Transparent}),
+                        UpdateContext({madcolO: LightGoldenRodYellow})
+                    );
+                    If(
+                        Len(TextInput_Witness_Details_Work_Telelphone.Text) > 0,
+                        UpdateContext({madcolO: Transparent}),
+                        UpdateContext({madcolO: LightGoldenRodYellow})
+                    );
+                    If(
+                        Len(TextInput_Witness_Details_Evening_Telephone.Text) > 0,
+                        UpdateContext({madcolO: Transparent}),
+                        UpdateContext({madcolO: LightGoldenRodYellow})
+                    );
+                    If(
+                        Len(TextInput_Witness_Details_Email.Text) > 0,
+                        UpdateContext({madcolP: Transparent}),
+                        UpdateContext({madcolP: LightGoldenRodYellow})
+                    );
+                    If(
+                        Len(Dropdown_Witness_Preffered_contact.Selected.cp_name) > 0,
+                        UpdateContext({madcolQ: White}),
+                        UpdateContext({madcolQ: LightGoldenRodYellow})
+                    );
+                    If(
+                        Len(Dropdown_Witness_EthnicityCode.Selected.cp_name) > 0,
+                        UpdateContext({madcolR: White}),
+                        UpdateContext({madcolR: LightGoldenRodYellow})
+                    );
+                    If(
+                        Len(Txt_Witness_Preffered_Time.Text) > 0,
+                        UpdateContext({madcolS: Transparent}),
+                        UpdateContext({madcolS: LightGoldenRodYellow})
+                    );
+                    If(
+                        CountRows(Datesnotavail) < 4,
+                        UpdateContext({warningdisplay: false}),
+                        UpdateContext({warningdisplay: true})
+                    );
+                    If(
+                        Radio_Witness_Details_Additional_name.Selected.Value = "Yes",
+                        UpdateContext({AdditionalNames: true});
+                        Set(
+                            y1,
+                            250
+                        );
+                        UpdateContext({y1: 250})
+                    );
+                    If(
+                        Radio_Witness_Details_Additional_name.Selected.Value = "No",
+                        UpdateContext({AdditionalNames: false});
+                        Set(
+                            y1,
+                            0
+                        );
+                        UpdateContext({y1: 0})
+                    );
+                    If(
+                        Len(Radio_Witness_Details_Additional_name.Selected.Value) = 0,
+                        UpdateContext({AdditionalNames: false});
+                        Set(
+                            y1,
+                            0
+                        );
+                        UpdateContext({y1: 0})
+                    );
+                    Set(
+                        y2,
+                        0
+                    );
+                    UpdateContext({yage: 100});
+                    UpdateContext({WitnessAge: true});
+                OnSelect: |
+                    =/*If(!IsBlank(LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WitnessSignature),Set(signreadonly, DisplayMode.Disabled),Set(signreadonly,DisplayMode.Edit));*/
+                    
+                PressedColor: =RGBA(255, 255, 255, 1)
+                PressedFill: =RGBA(0, 18, 107, 1)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =45
+                Y: =19
+                ZIndex: =1
+
+            Dropdown_Witness_details_title As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+                ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WTitlename
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Fill: =madcolD
+                Height: =70
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                Items: =Titleoffline
+                OnChange: |-
+                    =If(Len(Dropdown_Witness_details_title.Selected.cp_name)>0,UpdateContext({madcolD:White}),UpdateContext({madcolD:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Dropdown_Witness_details_title.Selected.cp_name)>0,UpdateContext({madcolD:White}),UpdateContext({madcolD:LightGoldenRodYellow}))
+                PressedColor: =RGBA(255, 255, 255, 1)
+                PressedFill: =RGBA(0, 18, 107, 1)
+                Reset: =Allreset
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =140
+                ZIndex: =2
+
+            Txt_witness_details_forename As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WForename
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Fill: =madcolA
+                FocusedBorderThickness: =4
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                OnChange: |
+                    =If(Len(Txt_witness_details_forename.Text)>0,UpdateContext({madcolA:Transparent}),UpdateContext({madcolA:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Txt_witness_details_forename.Text)>0,UpdateContext({madcolA:Transparent}),UpdateContext({madcolA:LightGoldenRodYellow}))
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =256
+                ZIndex: =3
+
+            Txt_witness_details_surname As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WSurname
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Fill: =madcolB
+                FocusedBorderThickness: =4
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                OnChange: |
+                    =If(Len(Txt_witness_details_surname.Text)>0,UpdateContext({madcolB:Transparent}),UpdateContext({madcolB:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Txt_witness_details_surname.Text)>0,UpdateContext({madcolB:Transparent}),UpdateContext({madcolB:LightGoldenRodYellow}))
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =373
+                ZIndex: =4
+
+            Label_asterik_title As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =113
+                ZIndex: =5
+
+            Label_asterik_forename As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =226
+                ZIndex: =6
+
+            Label_asterik_surname As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =335
+                ZIndex: =7
+
+            Radio_Witness_Details_Additional_name As radio:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                BorderStyle: =BorderStyle.None
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WHaveAdditionalNames
+                DisplayMode: =signreadonly
+                Height: =97
+                HoverColor: =RGBA(32, 54, 71, 1)
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |
+                    =If(
+                    Radio_Witness_Details_Additional_name.Selected.Value = "Yes" And y1=0,
+                    UpdateContext({AdditionalNames: true});UpdateContext({y1:y1+250}));
+                        If(
+                        Radio_Witness_Details_Additional_name.Selected.Value = "No",
+                        UpdateContext({AdditionalNames: false});UpdateContext({y1:0}));
+                OnSelect: |-
+                    =
+                        If(
+                        Radio_Witness_Details_Additional_name.Selected.Value = "No",
+                        UpdateContext({AdditionalNames: false});UpdateContext({y1:0}));
+                    
+                        If(
+                    Radio_Witness_Details_Additional_name.Selected.Value = "Yes" And y1=0,
+                    UpdateContext({AdditionalNames: true});UpdateContext({y1:y1+250}));
+                       
+                RadioBorderColor: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                Size: =21
+                Width: =546
+                X: =40
+                Y: =527
+                ZIndex: =8
+
+            Label_Witness_details_additonal_names As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =70
+                Size: =21
+                Text: ="Does the witness have additional names?"
+                Width: =546
+                X: =40
+                Y: =468
+                ZIndex: =9
+
+            Label_witness_details_additonal_name_type_2 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =36
+                Size: =21
+                Text: ="Title"
+                Width: =522
+                X: =40
+                Y: =104
+                ZIndex: =13
+
+            Label_witness_details_Date_of_Birth_known_2 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =70
+                Size: =21
+                Text: ="Forename"
+                Width: =514
+                X: =40
+                Y: =202
+                ZIndex: =14
+
+            Label_witness_details_Date_of_Birth_known_3 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =70
+                Size: =21
+                Text: ="Surname"
+                Width: =525
+                X: =40
+                Y: =316
+                ZIndex: =15
+
+            Label_Witness_Details_Occupation As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =41
+                Size: =21
+                Text: ="Occupation"
+                Width: =522
+                X: =39
+                Y: =753+y1+y2+yage
+                ZIndex: =22
+
+            Txt_Witness_Details_Place_of_birth As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WPlaceofBirth
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Fill: =madcolF
+                FocusedBorderThickness: =4
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                OnChange: |
+                    =If(Len(Txt_Witness_Details_Place_of_birth.Text)>0,UpdateContext({madcolF:Transparent}),UpdateContext({madcolF:LightGoldenRodYellow}););
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =39
+                Y: =921+y1+y2+yage
+                ZIndex: =23
+
+            Label_asterik_title_1 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =28
+                Size: =21
+                Text: ="*"
+                Width: =33
+                X: =565
+                Y: =620+y1
+                ZIndex: =24
+
+            Label_asterik_title_3 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =28
+                Size: =21
+                Text: ="*"
+                Width: =33
+                X: =564
+                Y: =766+y1+y2+yage
+                ZIndex: =28
+
+            lbl_housename As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =52
+                Size: =21
+                Text: ="House Name"
+                Width: =514
+                X: =39
+                Y: =990+y1+y2+yage
+                ZIndex: =29
+
+            Label_asterik_title_4 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =28
+                Size: =21
+                Text: ="*"
+                Width: =33
+                X: =564
+                Y: =883+y1+y2+yage
+                ZIndex: =30
+
+            Txt_Witness_Details_housename As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WHousename
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Fill: =madcolH
+                FocusedBorderThickness: =4
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                OnChange: |-
+                    =
+                    /*If(Len(Txt_Witness_Details_housename.Text)>0 And Len(Txt_Witness_Details_houseno.Text)=0 ,UpdateContext({madcolJ:White});UpdateContext({madcolH:White}),UpdateContext({madcolH:LightGoldenRodYellow});UpdateContext({madcolJ:LightGoldenRodYellow}););
+                    If(Len(Txt_Witness_Details_housename.Text)>0 And Len(Txt_Witness_Details_houseno.Text)>0 ,UpdateContext({madcolJ:White});UpdateContext({madcolH:White}););*/
+                    
+                    If(Len(Txt_Witness_Details_housename.Text)=0 And Len(Txt_Witness_Details_houseno.Text)=0 ,UpdateContext({madcolH:LightGoldenRodYellow});UpdateContext({madcolJ:LightGoldenRodYellow});,UpdateContext({madcolJ:White});UpdateContext({madcolH:White}));
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =39
+                Y: =1038+y1+y2+yage
+                ZIndex: =31
+
+            Txt_Witness_Details_houseno As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WHouseNumber
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Fill: =madcolJ
+                FocusedBorderThickness: =4
+                Format: =TextFormat.Number
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                OnChange: |-
+                    =/*If(Len(Txt_Witness_Details_houseno.Text)>0 And Len(Txt_Witness_Details_housename.Text)=0,UpdateContext({madcolJ:White});UpdateContext({madcolH:White});,UpdateContext({madcolJ:LightGoldenRodYellow});UpdateContext({madcolH:LightGoldenRodYellow}););*/
+                    If(Len(Txt_Witness_Details_houseno.Text)=0 And Len(Txt_Witness_Details_housename.Text)=0 ,UpdateContext({madcolH:LightGoldenRodYellow});UpdateContext({madcolJ:LightGoldenRodYellow});,UpdateContext({madcolJ:White});UpdateContext({madcolH:White}));
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                VirtualKeyboardMode: =VirtualKeyboardMode.Numeric
+                Width: =545
+                X: =39
+                Y: =1160+y1+y2+yage
+                ZIndex: =32
+
+            Txt_Witness_Details_address As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WStreet
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Fill: =madcolK
+                FocusedBorderThickness: =4
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                OnChange: |
+                    =If(Len(Txt_Witness_Details_address.Text)>0,UpdateContext({madcolK:Transparent}),UpdateContext({madcolK:LightGoldenRodYellow}));
+                    
+                    
+                OnSelect: |-
+                    =If(Len(Txt_Witness_Details_address.Text)>0,UpdateContext({madcolK:Transparent}),UpdateContext({madcolK:LightGoldenRodYellow}));
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1282+y1+y2+yage
+                ZIndex: =33
+
+            TextInput_Witness_Details_District As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WDistrict
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                FocusedBorderThickness: =4
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                OnChange: =
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =39
+                Y: =1400+y1+y2+yage
+                ZIndex: =34
+
+            Group3 As group:
+                Height: =5
+                Width: =5
+                X: =20
+                Y: =27
+                ZIndex: =34
+
+                DatePicker_witness_details_dob As datepicker:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    CalendarHeaderFill: =RGBA(56, 96, 178, 1)
+                    Color: =RGBA(0, 0, 0, 1)
+                    DefaultDate: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WDateofBirth
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =signreadonly
+                    Fill: =madcolC
+                    Format: =
+                    Height: =70
+                    HoverDateFill: =RGBA(186, 202, 226, 1)
+                    IconBackground: =RGBA(153, 153, 153, 1)
+                    InputTextPlaceholder: ="DD/MM/YYYY"
+                    IsEditable: =true
+                    OnChange: |-
+                        =If(
+                            IsBlank(DatePicker_witness_details_dob),
+                            UpdateContext({madcolC: LightGoldenRodYellow}),
+                            UpdateContext({madcolC: Transparent})
+                        );
+                        UpdateContext(
+                            {
+                                agecalc: If(
+                                    Month(Now()) < Month(DatePicker_witness_details_dob.SelectedDate) Or ((Month(Now()) = Month(DatePicker_witness_details_dob.SelectedDate) && Day(Now()) < Day(DatePicker_witness_details_dob.SelectedDate))),
+                                    Year(Now()) - Year(DatePicker_witness_details_dob.SelectedDate) - 1,
+                                    Year(Now()) - Year(DatePicker_witness_details_dob.SelectedDate)
+                                )
+                            }
+                        );
+                        //If(
+                        //    IsBlank(DatePicker_witness_details_dob.SelectedDate),
+                        //    Reset(DatePicker_witness_details_dob)
+                        //)
+                    OnSelect: |-
+                        =If(
+                            IsBlank(DatePicker_witness_details_dob),
+                            UpdateContext({madcolC: LightGoldenRodYellow}),
+                            UpdateContext({madcolC: Transparent})
+                        );
+                        UpdateContext(
+                            {
+                                agecalc:     If(Month(Now()) < Month(DatePicker_witness_details_dob.SelectedDate) Or ((Month(Now()) = Month(DatePicker_witness_details_dob.SelectedDate) && Day(Now()) < Day(DatePicker_witness_details_dob.SelectedDate))),
+                                Year(Now()) - Year(DatePicker_witness_details_dob.SelectedDate) -1 , 
+                                Year(Now()) - Year(DatePicker_witness_details_dob.SelectedDate) 
+                            )
+                            }
+                        );
+                        //If(IsBlank(DatePicker_witness_details_dob),Reset(DatePicker_witness_details_dob))
+                    Reset: =true
+                    SelectedDateFill: =RGBA(56, 96, 178, 1)
+                    Size: =24
+                    StartYear: =1920
+                    Visible: =WitnessAge
+                    Width: =546
+                    X: =37
+                    Y: =660+y1
+                    ZIndex: =16
+
+                Txt_Witness_details_Age As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    BorderThickness: =6
+                    Color: =RGBA(0, 0, 0, 1)
+                    Default: =If(IsBlank(DatePicker_witness_details_dob.SelectedDate),"",agecalc)
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =DisplayMode.View
+                    Fill: =RGBA(166, 166, 166, 1)
+                    FocusedBorderThickness: =4
+                    Height: =70
+                    HintText: ="Age"
+                    HoverBorderColor: =RGBA(0, 18, 107, 1)
+                    HoverColor: =RGBA(0, 0, 0, 1)
+                    HoverFill: =RGBA(186, 202, 226, 1)
+                    OnChange: =
+                    Reset: =Allreset
+                    Size: =21
+                    Visible: =WitnessAge
+                    Width: =546
+                    X: =37
+                    Y: =775+y1
+                    ZIndex: =17
+
+                Label_Witness_details_Age As label:
+                    BorderColor: =RGBA(0, 18, 107, 1)
+                    Color: =RGBA(0, 0, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =70
+                    Size: =21
+                    Text: ="Age"
+                    Visible: =WitnessAge
+                    Width: =546
+                    X: =31
+                    Y: =714+y1
+                    ZIndex: =18
+
+                Lbl_asteriks_30 As label:
+                    BorderColor: =RGBA(0, 18, 107, 1)
+                    Color: =RGBA(255, 0, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =38
+                    Size: =21
+                    Text: ="*"
+                    Visible: =WitnessAge
+                    Width: =22
+                    X: =551
+                    Y: =895+y1
+                    ZIndex: =21
+
+                Label_witness_details_Date_of_Birth_known_1 As label:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(0, 0, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =70
+                    Size: =21
+                    Text: ="Date of Birth"
+                    Visible: =WitnessAge
+                    Width: =511
+                    X: =39
+                    Y: =596+y1
+                    ZIndex: =26
+
+            TextInput_Witness_Details_Town As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WTown
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                FocusedBorderThickness: =4
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                OnChange: =
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =39
+                Y: =1510+y1+y2+yage
+                ZIndex: =35
+
+            Group1 As group:
+                Height: =5
+                Width: =5
+                X: =60
+                Y: =60
+                ZIndex: =35
+
+                "'Txt_witness_detials_additional name' As text":
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    BorderThickness: =2
+                    Color: =RGBA(0, 0, 0, 1)
+                    Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WitnessAdditionalName
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(0, 0, 0, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =signreadonly
+                    FocusedBorderThickness: =4
+                    Height: =70
+                    HintText: ="Additional Name"
+                    HoverBorderColor: =RGBA(0, 18, 107, 1)
+                    HoverColor: =RGBA(0, 0, 0, 1)
+                    HoverFill: =RGBA(186, 202, 226, 1)
+                    OnChange: |-
+                        =If(
+                         IsMatch(
+                        'Txt_witness_detials_additional name'.Text,
+                         "[a-zA-Z\s]+"
+                         ),
+                         Green,
+                         Reset(
+                        'Txt_witness_detials_additional name')
+                         
+                        );
+                    Reset: =Allreset
+                    Size: =21
+                    Visible: =AdditionalNames
+                    Width: =545
+                    X: =38
+                    Y: =794
+                    ZIndex: =10
+
+                Dropdown_Witness_Details_additional_name_type As dropdown:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    ChevronBackground: =RGBA(116, 116, 116, 1)
+                    ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+                    ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                    ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                    Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WAdditionalNameTypename
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(0, 0, 0, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =signreadonly
+                    Height: =80
+                    HoverColor: =RGBA(0, 0, 0, 1)
+                    HoverFill: =RGBA(205, 209, 213, 1)
+                    Items: =Additionalnameoffline
+                    PressedColor: =RGBA(255, 255, 255, 1)
+                    PressedFill: =RGBA(32, 54, 71, 1)
+                    Reset: =Allreset
+                    SelectionFill: =RGBA(100, 118, 132, 1)
+                    Size: =21
+                    Visible: =AdditionalNames
+                    Width: =546
+                    X: =38
+                    Y: =666
+                    ZIndex: =11
+
+                Label_witness_details_additonal_name_type As label:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(0, 0, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =70
+                    Size: =21
+                    Text: ="Additonal name type"
+                    Visible: =AdditionalNames
+                    Width: =546
+                    X: =38
+                    Y: =596
+                    ZIndex: =12
+
+                Label_Witness_Details_Occupation_2 As label:
+                    BorderColor: =RGBA(0, 18, 107, 1)
+                    Color: =RGBA(0, 0, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Size: =21
+                    Text: ="Additional Name"
+                    Visible: =AdditionalNames
+                    Width: =546
+                    X: =35
+                    Y: =753
+                    ZIndex: =27
+
+            TextInput_Witness_Details_County As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WCounty
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                FocusedBorderThickness: =4
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                OnChange: =
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =39
+                Y: =1620+y1+y2+yage
+                ZIndex: =36
+
+            TextInput_Witness_Details_Postcode As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WPostCode
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Fill: =madcolM
+                FocusedBorderThickness: =4
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                OnChange: |-
+                    =If(Len(TextInput_Witness_Details_Postcode.Text)>0,UpdateContext({madcolM:Transparent}),UpdateContext({madcolM:LightGoldenRodYellow}));
+                    Upper(TextInput_Witness_Details_Postcode.Text);
+                OnSelect: |-
+                    =If(Len(TextInput_Witness_Details_Postcode.Text)>0,UpdateContext({madcolM:Transparent}),UpdateContext({madcolM:LightGoldenRodYellow}));
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =39
+                Y: =1737+y1+y2+yage
+                ZIndex: =37
+
+            Lbl_asteriks_47 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =564
+                Y: =1000+y1+y2+yage
+                ZIndex: =38
+
+            Label_asterik_surname_3 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =564
+                Y: =1242+y1+y2+yage
+                ZIndex: =39
+
+            Label_asterik_surname_5 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =564
+                Y: =1823+y1+y2+yage
+                ZIndex: =40
+
+            Label_asterik_surname_23 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =564
+                Y: =1701+y1+y2+yage
+                ZIndex: =41
+
+            Label_Witness_Details_Occupation_1 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =47
+                Size: =21
+                Text: ="Place of Birth"
+                Width: =525
+                X: =39
+                Y: =864+y1+y2+yage
+                ZIndex: =42
+
+            lbl_housename_1 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =52
+                Size: =21
+                Text: ="House Number"
+                Width: =517
+                X: =39
+                Y: =1113+y1+y2+yage
+                ZIndex: =43
+
+            lbl_housename_2 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =52
+                Size: =21
+                Text: ="Street"
+                Width: =522
+                X: =39
+                Y: =1230+y1+y2+yage
+                ZIndex: =44
+
+            lbl_housename_3 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =52
+                Size: =21
+                Text: ="District"
+                Width: =522
+                X: =39
+                Y: =1347+y1+y2+yage
+                ZIndex: =45
+
+            lbl_housename_4 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =52
+                Size: =21
+                Text: ="Town"
+                Width: =522
+                X: =39
+                Y: =1463+y1+y2+yage
+                ZIndex: =46
+
+            lbl_housename_5 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =52
+                Size: =21
+                Text: ="County"
+                Width: =522
+                X: =39
+                Y: =1572+y1+y2+yage
+                ZIndex: =47
+
+            lbl_housename_6 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =52
+                Size: =21
+                Text: ="Post Code (CAPITALS ONLY)"
+                Width: =522
+                X: =39
+                Y: =1685+y1+y2+yage
+                ZIndex: =48
+
+            lbl_housename_7 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =52
+                Size: =21
+                Text: ="Country"
+                Width: =522
+                X: =39
+                Y: =1805+y1+y2+yage
+                ZIndex: =49
+
+            TextInput_Witness_Details_Email As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WEmail
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Fill: =White
+                FocusedBorderThickness: =4
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                OnChange: |-
+                    =If(Len(TextInput_Witness_Details_Email.Text)>0,UpdateContext({madcolP:Transparent}),UpdateContext({madcolP:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(TextInput_Witness_Details_Email.Text)>0,UpdateContext({madcolP:Transparent}),UpdateContext({madcolP:LightGoldenRodYellow}));
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =46
+                Y: =2461+y1+y2+yage
+                ZIndex: =51
+
+            Label_Witness_Details_Preffered_mean_of_Contact As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =39
+                OnSelect: =
+                Size: =21
+                Text: ="Preferred means of contact"
+                Width: =525
+                X: =46
+                Y: =2535+y1+y2+yage
+                ZIndex: =54
+
+            Dropdown_Witness_Preffered_contact As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(32, 54, 71, 1)
+                ChevronBackground: =RGBA(116, 116, 116, 1)
+                ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+                ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WMeansofContactname
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Fill: =madcolQ
+                Height: =70
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(205, 209, 213, 1)
+                Items: =Prefferedmeanofcontactoffline
+                OnChange: |-
+                    =If(Len(Dropdown_Witness_Preffered_contact.Selected.cp_name)>0,UpdateContext({madcolQ:White}),UpdateContext({madcolQ:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Dropdown_Witness_Preffered_contact.Selected.cp_name)>0,UpdateContext({madcolQ:White}),UpdateContext({madcolQ:LightGoldenRodYellow}));
+                PressedColor: =RGBA(255, 255, 255, 1)
+                PressedFill: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                SelectionFill: =RGBA(100, 118, 132, 1)
+                Size: =21
+                Width: =545
+                X: =46
+                Y: =2574+y1+y2+yage
+                ZIndex: =55
+
+            Label_asterik_surname_10 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =571
+                Y: =2534+y1+y2+yage
+                ZIndex: =56
+
+            Label_Witness_Details_Ethincity_Code As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =41
+                OnSelect: =
+                Size: =21
+                Text: ="Ethnicity code"
+                Width: =545
+                X: =46
+                Y: =2643+y1+y2+yage
+                ZIndex: =57
+
+            Label_asterik_surname_11 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =571
+                Y: =2653+y1+y2+yage
+                ZIndex: =58
+
+            Dropdown_Witness_EthnicityCode As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(32, 54, 71, 1)
+                ChevronBackground: =RGBA(116, 116, 116, 1)
+                ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+                ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WEthnicityname
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Fill: =madcolR
+                Height: =70
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(205, 209, 213, 1)
+                Items: =ethnicityoffline
+                OnChange: |-
+                    =If(Len(Dropdown_Witness_EthnicityCode.Selected.cp_name)>0,UpdateContext({madcolR:White}),UpdateContext({madcolR:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Dropdown_Witness_EthnicityCode.Selected.cp_name)>0,UpdateContext({madcolR:White}),UpdateContext({madcolR:LightGoldenRodYellow}));
+                PressedColor: =RGBA(255, 255, 255, 1)
+                PressedFill: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                SelectionFill: =RGBA(100, 118, 132, 1)
+                Size: =21
+                Width: =545
+                X: =46
+                Y: =2685+y1+y2+yage
+                ZIndex: =59
+
+            Txt_Witness_Preffered_Time As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WPreferredContactTime
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Fill: =madcolS
+                FocusedBorderThickness: =4
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                OnChange: |-
+                    =If(Len(Txt_Witness_Preffered_Time.Text)>0,UpdateContext({madcolS:Transparent}),UpdateContext({madcolS:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Txt_Witness_Preffered_Time.Text)>0,UpdateContext({madcolS:Transparent}),UpdateContext({madcolS:LightGoldenRodYellow}));
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =46
+                Y: =2801+y1+y2+yage
+                ZIndex: =60
+
+            Label_asterik_surname_12 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =571
+                Y: =2771+y1+y2+yage
+                ZIndex: =61
+
+            lbl_housename_11 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =52
+                Size: =21
+                Text: ="Email"
+                Width: =522
+                X: =46
+                Y: =2409+y1+y2+yage
+                ZIndex: =63
+
+            lbl_housename_12 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =52
+                Size: =21
+                Text: ="Preferred contact time"
+                Width: =522
+                X: =46
+                Y: =2755+y1+y2+yage
+                ZIndex: =64
+
+            Label_Witness_Details_Dates_not_available As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =57
+                OnSelect: =
+                Size: =21
+                Text: |-
+                    ="Dates not available (From):"
+                Width: =531
+                X: =46
+                Y: =2990+y1+y2+yage
+                ZIndex: =65
+
+            DatePicker_Witness_Dates_not_available As datepicker:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                CalendarHeaderFill: =RGBA(100, 118, 132, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DefaultDate: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WDatesNotAvailable1from
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Height: =70
+                HoverDateFill: =RGBA(205, 209, 213, 1)
+                IconBackground: =RGBA(100, 118, 132, 1)
+                InputTextPlaceholder: ="DD/MM/YYYY"
+                IsEditable: =true
+                OnChange: =
+                OnSelect: =
+                Reset: =Allreset
+                SelectedDateFill: =RGBA(100, 118, 132, 1)
+                Size: =24
+                Width: =545
+                X: =46
+                Y: =3045+y1+y2+yage
+                ZIndex: =66
+
+            Button_Witness_Details_ As button:
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Semibold
+                Height: =70
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =If(CountRows(Datesnotavail)<4,Collect(Datesnotavail,
+                    
+                    {
+                    Datenotkey: Statement_Primary_key,
+                    Datefrom:Concatenate(Text(DatePicker_Witness_Dates_not_available.SelectedDate)," - ",Text(DatePicker_Witness_Dates_not_available_1.SelectedDate)),Daterow: CountRows(Datesnotavail) + 1});UpdateContext({warningdisplay:false}),UpdateContext({warningdisplay:true}))
+                    /*If(CountRows(DateRange)<4,
+                    ClearCollect(
+                        DateRange,
+                        AddColumns(
+                            FirstN(
+                                [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29],
+                                DateDiff(DatePicker_Witness_Dates_not_available.SelectedDate, DatePicker_Witness_Dates_not_available_1.SelectedDate, Days) + 1),
+                            "Day",
+                                "Day " & (Value + 1),
+                            "Date",
+                                DateAdd(DatePicker_Witness_Dates_not_available.SelectedDate, Value, Days)
+                        ));
+                        UpdateContext({warningdisplay:false}),UpdateContext({warningdisplay:true}));*/
+                Size: =24
+                Text: ="Add Date"
+                Width: =183
+                X: =420
+                Y: =3269+y1+y2+yage
+                ZIndex: =67
+
+            Btn_Witness_Details_saveandexit As button:
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Semibold
+                Height: =72
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |
+                    =UpdateIf(
+                        'Statement offline',
+                        Key = Dropdown_Witness_details_key.Selected.Key,
+                        {
+                            //Title lookup
+                            WTitlename: Dropdown_Witness_details_title.Selected.cp_name,
+                            WitnessTitle: Dropdown_Witness_details_title.Selected.cp_lookupvalueid,
+                            WForename: Txt_witness_details_forename.Text,
+                            WSurname: Txt_witness_details_surname.Text,
+                            WHaveAdditionalNames: Radio_Witness_Details_Additional_name.Selected.Value,
+                            WAdditionalNameTypename: Dropdown_Witness_Details_additional_name_type.Selected.cp_name,
+                            WAdditionalNameType: Dropdown_Witness_Details_additional_name_type.Selected.cp_lookupvalueid,
+                            WitnessAdditionalName: 'Txt_witness_detials_additional name'.Text,
+                            WDateofBirth: DatePicker_witness_details_dob.SelectedDate,
+                            WAge: Txt_Witness_details_Age.Text,
+                            WGendername: Dropdown_Gender.Selected.cp_name,
+                            WGender: Dropdown_Gender.Selected.cp_lookupvalueid,
+                            WPlaceofBirth: Txt_Witness_Details_Place_of_birth.Text,
+                            /*WOccupationname: ComboBox_Witness_Details_Occupation.Selected.cp_name,
+                                    WOccupation: ComboBox_Witness_Details_Occupation.Selected.cp_lookupvalueid,*/
+                            WOccupation: Txt_Witness_Occupation.Text,
+                            WHousename: Txt_Witness_Details_housename.Text,
+                            WHouseNumber: Txt_Witness_Details_houseno.Text,
+                            WStreet: Txt_Witness_Details_address.Text,
+                            WDistrict: TextInput_Witness_Details_District.Text,
+                            WTown: TextInput_Witness_Details_Town.Text,
+                            WCounty: TextInput_Witness_Details_County.Text,
+                            WPostCode: TextInput_Witness_Details_Postcode.Text,
+                            WCountryname: Dropdown_Witness_country.Selected.cp_name,
+                            WCountry: Dropdown_Witness_country.Selected.cp_lookupvalueid,
+                            WPhoneNumber: TextInput_Witness_Details_Phone_Number_1.Text,
+                            WWorkNumber: TextInput_Witness_Details_Work_Telelphone.Text,
+                            WEveningNumber: TextInput_Witness_Details_Evening_Telephone.Text,
+                            WEmail: TextInput_Witness_Details_Email.Text,
+                            WMeansofContactname: Dropdown_Witness_Preffered_contact.Selected.cp_name,
+                            WMeansofContact: Dropdown_Witness_Preffered_contact.Selected.cp_lookupvalueid,
+                            WEthnicityname: Dropdown_Witness_EthnicityCode.Selected.cp_name,
+                            WEthnicity: Dropdown_Witness_EthnicityCode.Selected.cp_lookupvalueid,
+                            WPreferredContactTime: Txt_Witness_Preffered_Time.Text,
+                            WDatesNotAvailablefrom: LookUp(
+                                Datesnotavail,
+                                Daterow = 1
+                            ).Datefrom,
+                            WDatesNotAvailable1from: LookUp(
+                                Datesnotavail,
+                                Daterow = 2
+                            ).Datefrom,
+                            WDatesNotAvailable2from: LookUp(
+                                Datesnotavail,
+                                Daterow = 3
+                            ).Datefrom,
+                            WDatesNotAvailable3from: LookUp(
+                                Datesnotavail,
+                                Daterow = 4
+                            ).Datefrom
+                        }
+                    );
+                    UpdateContext(
+                        {
+                            rec: LookUp(
+                                'Statement offline',
+                                Key = Dropdown_Witness_details_key.Selected.Key
+                            )
+                        }
+                    );
+                    UpdateIf(
+                        'Statement offline',
+                        Key = Dropdown_Witness_details_key.Selected.Key,
+                        {
+                            witnessDetailsValid: And(
+                                !IsBlank(rec.WTitlename),
+                                !IsBlank(rec.WForename),
+                                !IsBlank(rec.WSurname),
+                                !IsBlank(rec.WOccupation),
+                                !IsBlank(rec.WPlaceofBirth),
+                                !IsBlank(rec.WStreet),
+                                !IsBlank(rec.WPostCode),
+                                !IsBlank(rec.WCountry),
+                                !IsBlank(rec.WMeansofContact),
+                                !IsBlank(rec.WEthnicity),
+                                !IsBlank(rec.WPreferredContactTime),
+                                !IsBlank(rec.WGender),
+                                !IsBlank(rec.WDateofBirth),
+                                //house name or number
+                                Or(
+                                    !IsBlank(rec.WHouseNumber),
+                                    !IsBlank(rec.WHousename)
+                                ),
+                                //one of the three phone numbers
+                                Or(
+                                    !IsBlank(rec.WPhoneNumber),
+                                    !IsBlank(rec.WWorkNumber),
+                                    !IsBlank(rec.WEveningNumber)
+                                )
+                            )
+                        }
+                    );
+                    SaveData(
+                        'Statement offline',
+                        "Statement offline"
+                    );
+                    Navigate(
+                        Scr_Statements_Home_screen,
+                        ScreenTransition.UnCover
+                    );
+                Size: =24
+                Text: ="Save and Continue"
+                Width: =560
+                X: =43
+                Y: =3612+y1+y2+yage
+                ZIndex: =68
+
+            Gallery_dates_na As gallery.galleryVertical:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                DisplayMode: =signreadonly
+                Height: =357
+                Items: |
+                    =Filter(Datesnotavail,Datenotkey=Statement_Primary_key)
+                    
+                    
+                Layout: =Layout.Vertical
+                TemplateSize: =82
+                Width: =378
+                X: =42
+                Y: =3255+y1+y2+yage
+                ZIndex: =69
+
+                Label2 As label:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(0, 0, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =82
+                    OnSelect: =Select(Parent)
+                    Size: =21
+                    Text: =ThisItem.Datefrom
+                    Width: =194
+                    X: =98
+                    ZIndex: =1
+
+                Icon8 As icon.Cancel:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(32, 54, 71, 1)
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(244, 244, 244, 1)
+                    Height: =59
+                    Icon: =Icon.Cancel
+                    OnSelect: =Remove(Datesnotavail,ThisItem)
+                    X: =304
+                    Y: =11
+                    ZIndex: =2
+
+                Label2_1 As label:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(0, 0, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    FontWeight: =FontWeight.Semibold
+                    Height: =29
+                    OnSelect: =Select(Parent)
+                    Size: =19
+                    Text: |-
+                        ="From :"
+                    Width: =98
+                    X: =7
+                    Y: =7
+                    ZIndex: =3
+
+                Label2_2 As label:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(0, 0, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    FontWeight: =FontWeight.Semibold
+                    Height: =29
+                    OnSelect: =Select(Parent)
+                    Size: =19
+                    Text: |-
+                        ="To :"
+                    Width: =98
+                    X: =37
+                    Y: =40
+                    ZIndex: =4
+
+            Button_Witness_Details__1 As button:
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Semibold
+                Height: =70
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: =Clear(Datesnotavail)
+                Size: =24
+                Text: ="Clear all"
+                Width: =183
+                X: =420
+                Y: =3407+y1+y2+yage
+                ZIndex: =70
+
+            Label_warning As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =85
+                OnSelect: =
+                Size: =18
+                Text: ="Only 4 entries allowed"
+                Visible: =warningdisplay
+                Width: =183
+                X: =425
+                Y: =3352
+                ZIndex: =71
+
+            Dropdown_Gender As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(116, 116, 116, 1)
+                ChevronBackground: =RGBA(116, 116, 116, 1)
+                ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+                ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+                ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
+                ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WGendername
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Fill: =madcolRR
+                Height: =70
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                Items: |
+                    =Genderoffline
+                OnChange: |-
+                    =If(Len(Dropdown_Gender.Selected.cp_name)>0,UpdateContext({madcolRR:White}),UpdateContext({madcolRR:LightGoldenRodYellow}));
+                OnSelect: =
+                PressedColor: =RGBA(255, 255, 255, 1)
+                PressedFill: =RGBA(116, 116, 116, 1)
+                Reset: =Allreset
+                SelectionFill: =RGBA(116, 116, 116, 1)
+                Size: =21
+                Width: =545
+                X: =46
+                Y: =2920+y1+y2+yage
+                ZIndex: =72
+
+            Label_person_Gender As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =51
+                OnSelect: =
+                Size: =21
+                Text: ="Gender"
+                Width: =545
+                X: =43
+                Y: =2871+y1+y2+yage
+                ZIndex: =73
+
+            DatePicker_Witness_Dates_not_available_1 As datepicker:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                CalendarHeaderFill: =RGBA(100, 118, 132, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DefaultDate: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WDatesNotAvailablefrom
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Height: =70
+                HoverDateFill: =RGBA(205, 209, 213, 1)
+                IconBackground: =RGBA(100, 118, 132, 1)
+                InputTextPlaceholder: ="DD/MM/YYYY"
+                IsEditable: =true
+                OnChange: =
+                OnSelect: =
+                Reset: =Allreset
+                SelectedDateFill: =RGBA(100, 118, 132, 1)
+                Size: =24
+                Width: =545
+                X: =46
+                Y: =3171+y1+y2+yage
+                ZIndex: =74
+
+            Label_Witness_Details_Dates_not_available_1 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =57
+                OnSelect: =
+                Size: =21
+                Text: |-
+                    ="Dates not available (To):"
+                Width: =531
+                X: =46
+                Y: =3115+y1+y2+yage
+                ZIndex: =75
+
+            Dropdown_Witness_country As combobox:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+                ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+                ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
+                ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                Default: =LookUp(countriesoffline,LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WCountryname=cp_name)
+                DefaultSelectedItems: =LookUp(countriesoffline,LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WCountryname=cp_name)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayFields: =["cp_name"]
+                DisplayMode: =signreadonly
+                Fill: =madcolN
+                Height: =70
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                InputTextPlaceholder: ="Find Country"
+                Items: =SortByColumns(countriesoffline,"cp_displaysequenceno",Ascending,"cp_name",Descending)
+                OnChange: |-
+                    =If(Len(Text(Dropdown_Witness_country.Selected.cp_name))>0,UpdateContext({madcolN:White}),UpdateContext({madcolN:LightGoldenRodYellow}));
+                PressedColor: =RGBA(255, 255, 255, 1)
+                PressedFill: =RGBA(230, 230, 230, 1)
+                Reset: =Allreset
+                SearchFields: =["cp_name"]
+                SearchItems: =Search(SortByColumns(countriesoffline,"cp_displaysequenceno",Ascending,"cp_name",Descending),Dropdown_Witness_country.SearchText,"cp_name")
+                SelectionFill: =RGBA(153, 153, 153, 1)
+                SelectMultiple: =false
+                Size: =21
+                Width: =545
+                X: =39
+                Y: =1855+y1+y2+yage
+                ZIndex: =76
+
+            Txt_Witness_Occupation As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WOccupation
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Fill: =madcolG
+                FocusedBorderThickness: =4
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                OnChange: |
+                    =If(Len(Txt_Witness_Occupation.Text)>0,UpdateContext({madcolG:White}),UpdateContext({madcolG:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =
+                    If(Len(Txt_Witness_Occupation.Text)>0,UpdateContext({madcolG:White}),UpdateContext({madcolG:LightGoldenRodYellow}));
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =35
+                Y: =792+y1+y2+yage
+                ZIndex: =77
+
+            Lbl_asteriks_48 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =563
+                Y: =1124+y1+y2+yage
+                ZIndex: =78
+
+            Group4 As group:
+                Height: =5
+                Width: =5
+                X: =60
+                Y: =60
+                ZIndex: =94
+
+                rectContactMethods As rectangle:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    BorderThickness: =2
+                    DisplayMode: =signreadonly
+                    Fill: |
+                        =If(IsBlank(TextInput_Witness_Details_Phone_Number_1.Text) And IsBlank(TextInput_Witness_Details_Work_Telelphone.Text) And IsBlank(TextInput_Witness_Details_Evening_Telephone.Text), LightGoldenRodYellow,Transparent)
+                        
+                    Height: =466
+                    Width: =545
+                    X: =42
+                    Y: =1943+y1+y2+yage
+                    ZIndex: =82
+
+                TextInput_Witness_Details_Phone_Number_1 As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)  
+                    BorderThickness: =2
+                    Color: =RGBA(0, 0, 0, 1)
+                    Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WPhoneNumber
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(0, 0, 0, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =signreadonly
+                    Fill: =If(IsBlank(Self.Text),White,If(IsMatch(Self.Text,"^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$"),LightGreen,RGBA(238,204,204,1)))
+                    FocusedBorderThickness: =4
+                    Height: =74
+                    HintText: |-
+                        ="###########"
+                    HoverBorderColor: =RGBA(0, 18, 107, 1)
+                    HoverColor: =RGBA(0, 0, 0, 1)
+                    HoverFill: =RGBA(186, 202, 226, 1)
+                    MaxLength: =13
+                    OnChange: =
+                    OnSelect: =Set(validstart1,true)
+                    Reset: =Allreset
+                    Size: =21
+                    VirtualKeyboardMode: =VirtualKeyboardMode.Numeric
+                    Width: =490
+                    X: =67
+                    Y: =2019+y1+y2+yage
+                    ZIndex: =83
+
+                TextInput_Witness_Details_Evening_Telephone As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)  
+                    BorderThickness: =2
+                    Color: =RGBA(0, 0, 0, 1)
+                    Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WEveningNumber
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(0, 0, 0, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =signreadonly
+                    Fill: =If(IsBlank(Self.Text),White,If(IsMatch(Self.Text,"^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$"),LightGreen,RGBA(238,204,204,1)))
+                    FocusedBorderThickness: =4
+                    Height: =74
+                    HintText: |-
+                        ="###########"
+                    HoverBorderColor: =RGBA(0, 18, 107, 1)
+                    HoverColor: =RGBA(0, 0, 0, 1)
+                    HoverFill: =RGBA(186, 202, 226, 1)
+                    MaxLength: =13
+                    OnChange: =
+                    Reset: =Allreset
+                    Size: =21
+                    VirtualKeyboardMode: =VirtualKeyboardMode.Numeric
+                    Visible: =true    
+                    Width: =488
+                    X: =67
+                    Y: =2301+y1+y2+yage
+                    ZIndex: =84
+
+                TextInput_Witness_Details_Work_Telelphone As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)  
+                    BorderThickness: =2
+                    Color: =RGBA(0, 0, 0, 1)
+                    Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WWorkNumber
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(0, 0, 0, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =signreadonly
+                    Fill: =If(IsBlank(Self.Text),White,If(IsMatch(Self.Text,"^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$"),LightGreen,RGBA(238,204,204,1)))
+                    FocusedBorderThickness: =4
+                    Height: =74
+                    HintText: |-
+                        ="###########"
+                    HoverBorderColor: =RGBA(0, 18, 107, 1)
+                    HoverColor: =RGBA(0, 0, 0, 1)
+                    HoverFill: =RGBA(186, 202, 226, 1)
+                    MaxLength: =13
+                    OnChange: =
+                    Reset: =Allreset
+                    Size: =21
+                    VirtualKeyboardMode: =VirtualKeyboardMode.Numeric
+                    Width: =488
+                    X: =67
+                    Y: =2159+y1+y2+yage
+                    ZIndex: =85
+
+                Lbl_addcontactmethod_4 As label:
+                    BorderColor: =RGBA(0, 18, 107, 1)
+                    Color: =RGBA(0, 0, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =74
+                    Size: =21
+                    Text: ="Home Phone"
+                    Width: =187
+                    X: =67
+                    Y: =1955+y1+y2+yage
+                    ZIndex: =86
+
+                Lbl_addcontactmethod_5 As label:
+                    BorderColor: =RGBA(0, 18, 107, 1)
+                    Color: =RGBA(0, 0, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =74
+                    Size: =21
+                    Text: ="Work Phone"
+                    Width: =187
+                    X: =67
+                    Y: =2098+y1+y2+yage
+                    ZIndex: =87
+
+                Lbl_addcontactmethod_6 As label:
+                    BorderColor: =RGBA(0, 18, 107, 1)
+                    Color: =RGBA(0, 0, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =74
+                    Size: =21
+                    Text: ="Evening Phone"
+                    Width: =481
+                    X: =67
+                    Y: =2238+y1+y2+yage
+                    ZIndex: =88
+
+                lblHomePhoneValid As label:
+                    BorderColor: =RGBA(0, 18, 107, 1)
+                    Color: =RGBA(0, 0, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =74
+                    Text: ="Number may not be valid but will still submit"
+                    Visible: =If(IsBlank(TextInput_Witness_Details_Phone_Number_1.Text),false,If(IsMatch(TextInput_Witness_Details_Phone_Number_1.Text,"^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$"),false,true))
+                    Width: =239
+                    X: =318
+                    Y: =1943+y1+y2+yage
+                    ZIndex: =89
+
+            Label_asterik_surname_17 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =569
+                Y: =2888+y1+y2+yage
+                ZIndex: =95
+
+            lblHomePhoneValid_1 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =74
+                Text: ="Number may not be valid but will still submit"
+                Visible: =If(IsBlank(TextInput_Witness_Details_Work_Telelphone.Text),false,If(IsMatch(TextInput_Witness_Details_Work_Telelphone.Text,"^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$"),false,true))
+                Width: =239
+                X: =322
+                Y: =2088+y1+y2+yage
+                ZIndex: =96
+
+            lblHomePhoneValid_2 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =74
+                Text: ="Number may not be valid but will still submit"
+                Visible: =If(IsBlank(TextInput_Witness_Details_Evening_Telephone.Text),false,If(IsMatch(TextInput_Witness_Details_Evening_Telephone.Text,"^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$"),false,true))
+                Width: =239
+                X: =317
+                Y: =2224+y1+y2+yage
+                ZIndex: =97
+
+    RectQuickActionBar2_8 As rectangle:
+        BorderColor: =RGBA(0, 18, 107, 1)
+        Fill: =RGBA(56, 96, 178, 1)
+        Height: =88
+        Width: =Parent.Width
+        ZIndex: =5
+
+    Lbl_Person_1 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =88
+        Size: =21
+        Text: |-
+            ="Witness Details" & LookUp(
+                                        'Statement offline',
+                                        Key = Dropdown_Witness_details_key.Selected.Key
+                                    ).WPercievedAge
+        Width: =Parent.Width
+        ZIndex: =6
+
+    "'exit icon 3_13' As icon.Cancel":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =563
+        Y: =11
+        ZIndex: =7
+
+    "'Back Icon 2_13' As icon.ArrowLeft":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_Statements_Home_screen,ScreenTransition.Cover)
+        X: =19
+        Y: =12
+        ZIndex: =8
+

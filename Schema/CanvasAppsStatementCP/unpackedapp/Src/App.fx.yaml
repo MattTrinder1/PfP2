@@ -1,0 +1,225 @@
+App As appinfo:
+    BackEnabled: =false
+    OnStart: |
+        =Set(glbAppVersion,1);
+        //this value is a placeholder which is updated by the build pipeline, don't edit it manually
+        //its commented it out to avoid it being formatted, which prevents the pipeline from finding it
+        //Basically - leave it alone !
+        //Set(glbAppVersion,1);
+        Set(gblLoading1,false);
+        Set(browserSynced,false);
+        
+        //Variable for Incident Suffix
+        Set(
+            connectionstatus,
+            ""
+        );
+        Set(
+            Green,
+            ""
+        );
+        Set(
+            flagback,
+            true
+        );
+        Set(
+            agecalc,
+            If(
+                Month(Now()) < Month(DatePicker_witness_details_dob.SelectedDate) Or ((Month(Now()) = Month(DatePicker_witness_details_dob.SelectedDate) && Day(Now()) < Day(DatePicker_witness_details_dob.SelectedDate))),
+                Year(Now()) - Year(DatePicker_witness_details_dob.SelectedDate) - 1,
+                Year(Now()) - Year(DatePicker_witness_details_dob.SelectedDate)
+            )
+        );
+        Set(
+            Green,
+            ""
+        );
+        Set(
+            signreadonly,
+            DisplayMode.Edit
+        );
+        Set(
+            witnessneeds,
+            false
+        );
+        Set(
+            Pocketnotebookguid,
+            "a098fae4-4a77-eb11-a812-000d3add6f2f"
+        );
+        Set(
+            appname,
+            "Pocket Notebook"
+        );
+        Set(
+            y4,
+            0
+        );
+        /*Set(signreadonly,DisplayMode.);*/
+        Set(
+            i,
+            1
+        );
+        Set(
+            SS,
+            0
+        );
+        Set(
+            VarP,
+            ""
+        );
+        Set(
+            Txt_incident_suffixvar,
+            ""
+        );
+        
+        Set(
+            AdditionalNames,
+            false
+        );
+        Set(
+            WitnessAge,
+            false
+        );
+        Set(
+            y,
+            0
+        );
+        Set(
+            y1,
+            0
+        );
+        Set(
+            y2,
+            0
+        );
+        Set(
+            AdditionalNames,
+            false
+        );
+        Set(
+            WitnessAge,
+            false
+        );
+        
+        Reset(Txt_incident_suffix);
+        Reset(Txt_incident_no);
+        Set(
+            incidentnumbervar,
+            "CP" & "-" & Text(
+                DateAdd(
+                    DatePicker_incident.SelectedDate,
+                    0
+                ),
+                "[$-en-GB]yyyymmdd"
+            ) & "-" & Txt_incident_suffix
+        );
+        
+        
+        
+        
+        
+        //Load
+        
+        
+        LoadData('Statement offline',"Statement offline",true);
+        
+        LoadData(
+            countriesoffline,
+            "countriesoffline",true
+        );
+        
+        LoadData(
+            Titleoffline,
+            "Titleoffline",true
+        );
+        
+            
+        LoadData(
+            Additionalnameoffline,
+            "Additionalnameoffline",true
+        );
+        
+        LoadData(
+            Genderoffline,
+            "Genderoffline",true
+        );
+        
+        
+        LoadData(
+            Occupationoffline,
+            "Occupationoffline",true
+        );
+        
+        
+        LoadData(
+            ethnicityoffline,
+            "ethnicityoffline",true
+        );
+              
+        
+        LoadData(
+            Prefferedmeanofcontactoffline,
+            "Prefferedmeanofcontactoffline",true
+        );
+        
+        
+        LoadData(
+            Relationshiptowitnessoffline,
+            "Relationshiptowitnessoffline",true
+        );
+        
+        LoadData(
+            statementtemplateoffline,
+            "statementtemplateoffline",true);
+        
+        LoadData(
+            witnessneedsoffline,
+            "witnessneedsoffline",true);
+        
+        LoadData(
+            StatementType,
+            " StatementType",true
+        );
+         
+        LoadData(
+            Userlocal,
+            " Userlocal",true
+        );
+        
+        LoadData(
+            Usersalllocal,
+            "Usersalllocal",true
+        );
+        
+        
+        Set(
+            
+                rec, LookUp(
+                    'Statement offline',
+                    Key = Dropdown_Witness_Signature_key.Selected.Key
+                )
+            
+        );
+        Set(overLayVisible,false);Set(overLayVisible2,false);Set(overLayVisible3,false);
+        
+        UpdateIf(
+            'Statement offline',
+            Key = Dropdown_Witness_Signature_key.Selected.Key,
+            {
+                //if countersigner needed, then check that all 4 sigs as not Blank, otherwise just 2 (sign and consent))
+                signaturesValid: If(
+                    rec.Countersingerneeded = "Yes",
+                    And(
+                        !IsBlank(rec.WitnessSignature),
+                        !IsBlank(rec.'WitnessConsent signature'),
+                        !IsBlank(rec.WitnessSignatureCounter),
+                        !IsBlank(rec.WitnessSigCounterConsent)
+                    ),
+                    And(
+                        !IsBlank(rec.WitnessSignature),
+                        !IsBlank(rec.'WitnessConsent signature')
+                    )
+                )
+            }
+        );
+

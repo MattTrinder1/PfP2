@@ -1,0 +1,742 @@
+Scr_Unfinished_Statements As screen:
+    LoadingSpinnerColor: =RGBA(100, 118, 132, 1)
+    OnVisible: |-
+        =Set(madcol,LightGoldenRodYellow);UpdateContext({madcol:LightGoldenRodYellow});Set(madcolre,LightGoldenRodYellow);UpdateContext({madcolre:LightGoldenRodYellow});Set(madcolse,LightGoldenRodYellow);UpdateContext({madcolse:LightGoldenRodYellow});
+
+    Label1_18 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Unfinished Statements"
+        Width: =640
+        ZIndex: =1
+
+    "'exit icon 3_23' As icon.Cancel":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =563
+        Y: =11
+        ZIndex: =2
+
+    "'Back Icon 2_23' As icon.ArrowLeft":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_Statements_Home_screen,ScreenTransition.UnCover)
+        X: =14
+        Y: =11
+        ZIndex: =3
+
+    Gallery_unsubmitted As gallery.galleryVertical:
+        BorderColor: =RGBA(0, 18, 107, 1)
+        Height: =852
+        Items: ='Statement offline'
+        Layout: =Layout.Vertical
+        ShowScrollbar: =false
+        TemplateSize: =263
+        Y: =87
+        ZIndex: =5
+
+        Label7 As label:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =RGBA(0, 0, 0, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.'Incident date'
+            Width: =165
+            X: =116
+            ZIndex: =2
+
+        Label8 As label:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =RGBA(0, 0, 0, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            Height: =53
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.Key
+            Width: =411
+            X: =182
+            Y: =169
+            ZIndex: =3
+
+        Label8_1 As label:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =RGBA(0, 0, 0, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.'Incident number'
+            Width: =293
+            X: =241
+            Y: =108
+            ZIndex: =4
+
+        Icon4_1 As icon.Edit:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =RGBA(153, 153, 153, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            DisabledColor: =RGBA(244, 244, 244, 1)
+            Icon: =Icon.Edit
+            OnSelect: |
+                =Set(
+                    Txt_incident_suffixvar,
+                    ThisItem.'Incident suffix'
+                );
+                Set(
+                    Txt_incident_suffixvar,
+                    ThisItem.'Incident suffix'
+                );
+                Set(
+                    Statement_Primary_key,
+                    ThisItem.Key
+                );
+                Navigate(
+                    Scr_Statements_Home_screen,
+                    ScreenTransition.UnCover
+                );
+                Set(
+                    
+                        rec, LookUp(
+                            'Statement offline',
+                            Key = Dropdown_Witness_Signature_key.Selected.Key
+                        )
+                    
+                );
+                
+                
+                
+                Set(overLayVisible,false);Set(overLayVisible2,false);Set(overLayVisible3,false);
+                
+                UpdateIf(
+                    'Statement offline',
+                    Key = Dropdown_Witness_Signature_key.Selected.Key,
+                    {
+                        //if countersigner needed, then check that all 4 sigs as not Blank, otherwise just 2 (sign and consent))
+                        signaturesValid: If(
+                            rec.Countersingerneeded = "Yes",
+                            And(
+                                !IsBlank(rec.WitnessSignature),
+                                !IsBlank(rec.'WitnessConsent signature'),
+                                !IsBlank(rec.WitnessSignatureCounter),
+                                !IsBlank(rec.WitnessSigCounterConsent)
+                            ),
+                            And(
+                                !IsBlank(rec.WitnessSignature),
+                                !IsBlank(rec.'WitnessConsent signature')
+                            )
+                        )
+                    }
+                );
+            Width: =69
+            X: =561
+            ZIndex: =5
+
+        Label3_2 As label:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =RGBA(0, 0, 0, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Date"
+            Underline: =true
+            Width: =165
+            ZIndex: =6
+
+        Label3_3 As label:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =RGBA(0, 0, 0, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Incident number"
+            Underline: =true
+            Width: =250
+            Y: =104
+            ZIndex: =7
+
+        Label3_4 As label:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =RGBA(0, 0, 0, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Incident Key"
+            Underline: =true
+            Width: =233
+            Y: =177
+            ZIndex: =8
+
+        Rectangle1 As rectangle:
+            BorderColor: =RGBA(230, 230, 230, 1)
+            Fill: =RGBA(204, 204, 204, 1)
+            Height: =2
+            OnSelect: =Select(Parent)
+            Width: =619
+            X: =6
+            Y: =249
+            ZIndex: =9
+
+        Label8_2 As label:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =RGBA(0, 0, 0, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.WForename & " "& ThisItem.WSurname
+            Width: =327
+            X: =220
+            Y: =43
+            ZIndex: =10
+
+        Label3_5 As label:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =RGBA(0, 0, 0, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Witness Name"
+            Underline: =true
+            Width: =250
+            Y: =52
+            ZIndex: =11
+
+        Icon6_1 As icon.Cancel:
+            BorderColor: =RGBA(153, 153, 153, 1)
+            Color: =RGBA(128, 128, 128, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            DisabledColor: =RGBA(244, 244, 244, 1)
+            Icon: =Icon.Cancel
+            OnSelect: |
+                =/*Remove('Statement offline',LookUp('Statement offline',Key=ThisItem.Key));
+                RemoveIf(BreakStart,breakstartkey=ThisItem.Key);
+                SaveData('Statement offline',"Statement offline");*/
+                
+                 UpdateContext(
+                        {
+                            Statementpk: Patch(
+                                'Statement STGS',
+                                Defaults('Statement STGS'),
+                                {
+                                    'Entered By': ThisItem.enteredby,
+                                    'Incident Suffix': ThisItem.'Incident suffix',
+                                    'Incident Number': ThisItem.'Incident number',
+                                    'Incident Date': DateTimeValue(ThisItem.'Incident date'&" "&ThisItem.Incidenttime),
+                                    'Statement STG (cp_statementstg)': ThisItem.Name,
+                                    'Witness Title': ThisItem.WitnessTitle,
+                                    'Witness Forename': ThisItem.WForename,
+                                    'Witness Surname': ThisItem.WSurname,
+                                    'Witness Additional Name': ThisItem.WitnessAdditionalName,
+                                    'Witness Additional Name Type': ThisItem.WAdditionalNameType,
+                                    'Witness Gender':ThisItem.WGender,
+                                    'Witness Perceived Age': Value(ThisItem.WPercievedAge),
+                                    /*'Witness Additional Name Type Value': LookUp(
+                                        'Lookup Values',
+                                        cp_lookupvalueid = ThisItem.WitnessAdditionalNameType
+                                    ),*/
+                                    'Witness Date of Birth': ThisItem.WDateofBirth,
+                                    'Witness Place of Birth':ThisItem.WPlaceofBirth,
+                                    'Witness Other Occupation': ThisItem.WOccupation,
+                                    'Witness House Name': ThisItem.WHousename,
+                                    'Witness House Number': ThisItem.WHouseNumber,
+                                    'Witness Street': ThisItem.WStreet,
+                                    'Witness District': ThisItem.WDistrict,
+                                    'Witness Town': ThisItem.WTown,
+                                    'Witness County': ThisItem.WCounty,
+                                    'Witness Postcode': ThisItem.WPostCode,
+                                    'Witness Country': ThisItem.WCountry,
+                                    'Witness Phone Number': ThisItem.WPhoneNumber,
+                                    'Witness Work Telephone': ThisItem.WWorkNumber,
+                                    'Witness Evening Telephone': ThisItem.WEveningNumber,
+                                    'Witness Email': ThisItem.WEmail,
+                                    'Witness Preferred Contact Method': ThisItem.WMeansofContact,
+                                    'Witness Ethnicity Code': ThisItem.WEthnicity,
+                                    'Witness Preferred Contact Time': ThisItem.WPreferredContactTime,
+                                    'Witness Not Available Date 1': ThisItem.WDatesNotAvailablefrom,
+                                    'Witness Not Available Date 2': ThisItem.WDatesNotAvailable1from,
+                                    'Witness Not Available Date 3': ThisItem.WDatesNotAvailable2from,
+                                    'Witness Not Available Date 4': ThisItem.WDatesNotAvailable3from,
+                                    'Witness Willing Attend Court': If(
+                                        ThisItem.WitnessCareattendingCourt = "Yes",
+                                        'Witness Willing Attend Court (Statement STGS)'.Yes,
+                                        ThisItem.WitnessCareattendingCourt = "No",
+                                        'Witness Willing Attend Court (Statement STGS)'.No
+                                    ),
+                                    'Ensure Attendance': ThisItem.WitnessCareEnsuringAttendance,
+                                    'Witness Require Special Measures': If(
+                                        ThisItem.WitnessCareSpecialRequired = "Yes",
+                                        'Witness Require Special Measures (Statement STGS)'.Yes,
+                                        ThisItem.WitnessCareSpecialRequired = "No",
+                                        'Witness Require Special Measures (Statement STGS)'.No
+                                    ),
+                                    'Consent Signature':ThisItem.'WitnessConsent signature',
+                                    'Reasons Special Measures': ThisItem.WitnessCareReasonforSpecial,
+                                    ' Witness Needs': ThisItem. Witnessneedsid,
+                                    'Witness Statement': Text(ThisItem.WstatementPatch
+                                    ),
+                                    'Consent Victim Leaflet': If(
+                                        ThisItem.ConsentVictimLeaflet = "Yes",
+                                        'Consent Victim Leaflet (Statement STGS)'.Yes,
+                                        ThisItem.ConsentVictimLeaflet = "No",
+                                        'Consent Victim Leaflet (Statement STGS)'.No
+                                    ),
+                                    'Consent Victim Provided': If(
+                                        ThisItem.ConsentVictimProvided = "Yes",
+                                        'Consent Victim Provided (Statement STGS)'.Yes,
+                                        ThisItem.ConsentVictimProvided = "No",
+                                        'Consent Victim Provided (Statement STGS)'.No
+                                    ),
+                                    'Consent Witness Leaflet': If(
+                                        ThisItem.ConsentWitnessLeaflet = "Yes",
+                                        'Consent Witness Leaflet (Statement STGS)'.Yes,
+                                        ThisItem.ConsentWitnessLeaflet = "No",
+                                        'Consent Witness Leaflet (Statement STGS)'.No
+                                    ),
+                                    'Consent Police Access Medical Records': ThisItem.ConsentPoliceAccess,
+                                    'Consent Medical Record Disclosed': ThisItem.ConsentMedicalRecordDisclosed ,
+                                    'Consent Statement Disclosure': ThisItem.ConsentStatementDisclosure,
+                                    'Consent Child Witness': ThisItem.ConsentChildWitness,
+                                    'Consent CPS': ThisItem.ConsentCPS,
+                                    'Consent Able Read': ThisItem.ConsentAbleRead,
+                
+                                    
+                                    'Statement Read to Witness': If(
+                                        ThisItem.WitnessStatementReadtoWitness = "Yes",
+                                        'Statement Read to Witness (Statement STGS)'.Yes,
+                                        ThisItem.WitnessStatementReadtoWitness = "No",
+                                        'Statement Read to Witness (Statement STGS)'.No
+                                    ),
+                                    'Witness Other Needs': ThisItem.Wotherneed,
+                                    'Witness Signature': ThisItem.WitnessSignature,
+                                    'Counter Signature': ThisItem.WitnessSignatureCounter,
+                                    '(DNU) Witness Signer Name': ThisItem.WitnessSignatureSignerName,
+                                    'Counter Title': ThisItem.CSignerTitle,
+                                    'Counter Consent Signature':ThisItem.WitnessSigCounterConsent,
+                                    'Counter Forename': ThisItem.CSignerForename,
+                                    'Counter Surname': ThisItem.CSignerSurname,
+                                    'Counter Additional Name Type': ThisItem.CSAdditionalNameType,
+                                    'Counter Additional Names': ThisItem.CSAdditionalName,
+                                    /*CounterSignerSameAddress:Radio_Counter_same_address.Selected.Value,*/
+                                    'Counter House Name': ThisItem.CSHousename,
+                                    'Counter House Number': ThisItem.CSPhoneNumber,
+                                    'Counter Street': ThisItem.CSStreet,
+                                    'Counter District': ThisItem.CSDistrict,
+                                    'Counter Town': ThisItem.CSTown,
+                                    'Counter County': ThisItem.CSCounty,
+                                    'Counter Postcode': ThisItem.CSPostCode,
+                                    'Counter Country': ThisItem.CSCountry,
+                                    'Counter Phone Number': ThisItem.CSPhoneNumber,
+                                    'Counter Work Phone': ThisItem.CSWorkNumber,
+                                    'Counter Evening Telephone': ThisItem.CSEveningNumber,
+                                    'Counter Email': ThisItem.CSEmail,
+                                    'Counter Witness Relationship': ThisItem.CSRelationship,
+                                    'Statement Type': ThisItem.StatementType,
+                                    Template: ThisItem.StatementTemplate,
+                                    'Signature Datetime': DateTimeValue(ThisItem.Timesignature)
+                                }
+                            ).'Statement STG (cp_statementstgid)'
+                        }
+                    );
+                    UpdateContext(
+                        {
+                            Test: LookUp(
+                                Choices('Staging Entry Status'),
+                                Value = 'Staging Entry Status'.Invalid
+                            ).Value
+                        }
+                    );
+                    UpdateIf(
+                        'Statement STGS',
+                        Statementpk = 'Statement STG (cp_statementstgid)',
+                        {'Staging Entry Status': Test}
+                    );
+                
+                    RemoveIf(Datesnotavail,Datenotkey=ThisItem.Key);
+                    RemoveIf(
+                            'Statement offline',
+                            Key = ThisItem.Key
+                    );
+                RemoveIf(CheckboxTextValues, Wneedskey=ThisItem.Key 
+                
+                );
+                    RemoveIf(Datesnotavail, Datenotkey=ThisItem.Key);
+                    RemoveIf(BreakStart, breakstartkey=ThisItem.Key);
+                    SaveData(
+                        'Statement offline',
+                        "Statement offline"
+                    );
+                    Set(
+                        Txt_incident_suffixvar,
+                        ""
+                    );
+                    Set(
+                        incidentnumbervar,
+                        "CP" & "-" & Text(
+                            DateAdd(
+                                DatePicker_incident.SelectedDate,
+                                0
+                            ),
+                            "[$-en-GB]yyyymmdd"
+                        ) & "-" & Txt_incident_suffix
+                    );
+                    Reset(Checkbox_need);
+                    Reset(Txt_incident_suffix);
+                    Reset(Txt_incident_no);
+                
+                    Reset(PenInput_Witness_Signature_Consent_Signature);
+                    Reset(PenInput_Witness_Signature_Statement_Signature);
+                    Reset(PenInput_CounterSigner_Signatuer_Evidence);
+                    Reset(PenInput_CounterSigner_Signature_Consent);
+                    Reset(PenInput_Witness_Signature_Consent_Signature);
+                    Set(
+                        Allreset,
+                        true
+                    );
+                    UpdateContext({Allreset: true});
+                    UpdateContext({validationwarning: false});
+                    Set(
+                        pk,
+                        0
+                    );
+            X: =561
+            Y: =177
+            ZIndex: =12
+
+        Icon2_7 As icon.Check:
+            BorderColor: =RGBA(0, 18, 107, 1)
+            Color: =RGBA(128, 128, 128, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            DisabledColor: =RGBA(244, 244, 244, 1)
+            Height: =68
+            Icon: =Icon.Check
+            OnSelect: |-
+                =/*If(
+                 Len(ThisItem.'Incident number') >0 And Len(ThisItem.'Incident suffix') >0 And Len(Text(ThisItem.'Incident date')) > 0 
+                   And Len(ThisItem.WForename) > 0 
+                    And Len(ThisItem.WSurname) >0 
+                    And Len(ThisItem.WStatement)>0 
+                    And Len(ThisItem.WitnessCareattendingCourt)>0 
+                    And Len(ThisItem.ConsentWitnessLeaflet) >0 
+                    And Len(ThisItem.ConsentVictimProvided)>0 
+                And Len() >0 And 
+                    And Len(ThisItem.WitnessStatementReadtoWitness)>0  
+                    And Len(ThisItem.WitnessSignatureSectionComplete) > 0*/
+                    Set(gblLoading,true);
+                If(
+                    And(
+                        ThisItem.witnessDetailsValid,
+                        ThisItem.careValid,
+                        ThisItem.consentValid,
+                        ThisItem.counterSignerValid,
+                        ThisItem.witnessStatementValid,
+                        ThisItem.signaturesValid
+                        
+                    ),
+                    Clear(AllErrors);
+                    UpdateContext(
+                        {
+                            Statementpk: Patch(
+                                'Statement STGS',
+                                Defaults('Statement STGS'),
+                                {
+                                    'Entered By': "dummy",
+                                    //this will be overwritten by the flow, but needs an entry as the field is required
+                                    'Incident Suffix': ThisItem.'Incident suffix',
+                                    'Incident Number': ThisItem.'Incident number',
+                                    'Incident Date': DateTimeValue(ThisItem.'Incident date' & " " & ThisItem.Incidenttime),
+                                    'Statement STG (cp_statementstg)': ThisItem.Name,
+                                    'Witness Title': ThisItem.WitnessTitle,
+                                    'Witness Forename': ThisItem.WForename,
+                                    'Witness Surname': ThisItem.WSurname,
+                                    'Witness Additional Name': ThisItem.WitnessAdditionalName,
+                                    'Witness Additional Name Type': ThisItem.WAdditionalNameType,
+                                    'Witness Gender': ThisItem.WGender,
+                                    'Witness Perceived Age': Value(ThisItem.WPercievedAge),
+                                    /*'Witness Additional Name Type Value': LookUp(
+                                        'Lookup Values',
+                                        cp_lookupvalueid = ThisItem.WitnessAdditionalNameType
+                                    ),*/
+                                    'Witness Date of Birth': Date(Year(ThisItem.WDateofBirth),Month(ThisItem.WDateofBirth),Day(ThisItem.WDateofBirth)),
+                                    'Witness Place of Birth': ThisItem.WPlaceofBirth,
+                                    'Witness Other Occupation': ThisItem.WOccupation,
+                                    'Witness House Name': ThisItem.WHousename,
+                                    'Witness House Number': ThisItem.WHouseNumber,
+                                    'Witness Street': ThisItem.WStreet,
+                                    'Witness District': ThisItem.WDistrict,
+                                    'Witness Town': ThisItem.WTown,
+                                    'Witness County': ThisItem.WCounty,
+                                    'Witness Postcode': ThisItem.WPostCode,
+                                    'Witness Country': ThisItem.WCountry,
+                                    'Witness Phone Number': ThisItem.WPhoneNumber,
+                                    'Witness Work Telephone': ThisItem.WWorkNumber,
+                                    'Witness Evening Telephone': ThisItem.WEveningNumber,
+                                    'Witness Email': ThisItem.WEmail,
+                                    'Witness Preferred Contact Method': ThisItem.WMeansofContact,
+                                    'Witness Ethnicity Code': ThisItem.WEthnicity,
+                                    'Witness Preferred Contact Time': ThisItem.WPreferredContactTime,
+                                    'Witness Not Available Date 1': ThisItem.WDatesNotAvailablefrom,
+                                    'Witness Not Available Date 2': ThisItem.WDatesNotAvailable1from,
+                                    'Witness Not Available Date 3': ThisItem.WDatesNotAvailable2from,
+                                    'Witness Not Available Date 4': ThisItem.WDatesNotAvailable3from,
+                                    'Witness Willing Attend Court': If(
+                                        ThisItem.WitnessCareattendingCourt = "Yes",
+                                        'Witness Willing Attend Court (Statement STGS)'.Yes,
+                                        ThisItem.WitnessCareattendingCourt = "No",
+                                        'Witness Willing Attend Court (Statement STGS)'.No
+                                    ),
+                                    'Ensure Attendance': ThisItem.WitnessCareEnsuringAttendance,
+                                    'Witness Require Special Measures': If(
+                                        ThisItem.WitnessCareSpecialRequired = "Yes",
+                                        'Witness Require Special Measures (Statement STGS)'.Yes,
+                                        ThisItem.WitnessCareSpecialRequired = "No",
+                                        'Witness Require Special Measures (Statement STGS)'.No
+                                    ),
+                                    'Reasons Special Measures': ThisItem.WitnessCareReasonforSpecial,
+                                    ' Witness Needs': ThisItem. Witnessneedsid,
+                                    'Witness Statement': Text(ThisItem.WstatementPatch),
+                                    'Consent Victim Leaflet': If(
+                                        ThisItem.ConsentVictimLeaflet = "Yes",
+                                        'Consent Victim Leaflet (Statement STGS)'.Yes,
+                                        ThisItem.ConsentVictimLeaflet = "No",
+                                        'Consent Victim Leaflet (Statement STGS)'.No
+                                    ),
+                                    'Consent Victim Provided': If(
+                                        ThisItem.ConsentVictimProvided = "Yes",
+                                        'Consent Victim Provided (Statement STGS)'.Yes,
+                                        ThisItem.ConsentVictimProvided = "No",
+                                        'Consent Victim Provided (Statement STGS)'.No
+                                    ),
+                                    'Consent Witness Leaflet': If(
+                                        ThisItem.ConsentWitnessLeaflet = "Yes",
+                                        'Consent Witness Leaflet (Statement STGS)'.Yes,
+                                        ThisItem.ConsentWitnessLeaflet = "No",
+                                        'Consent Witness Leaflet (Statement STGS)'.No
+                                    ),
+                                    'Consent Police Access Medical Records': ThisItem.ConsentPoliceAccess,
+                                    'Consent Medical Record Disclosed': ThisItem.ConsentMedicalRecordDisclosed,
+                                    'Consent Statement Disclosure': ThisItem.ConsentStatementDisclosure,
+                                    'Consent Child Witness': ThisItem.ConsentChildWitness,
+                                    'Consent CPS': ThisItem.ConsentCPS,
+                                    'Consent Able Read': ThisItem.ConsentAbleRead,
+                                    'Statement Read to Witness': If(
+                                        ThisItem.WitnessStatementReadtoWitness = "Yes",
+                                        'Statement Read to Witness (Statement STGS)'.Yes,
+                                        ThisItem.WitnessStatementReadtoWitness = "No",
+                                        'Statement Read to Witness (Statement STGS)'.No
+                                    ),
+                                    'Witness Other Needs': ThisItem.Wotherneed,
+                                    //signatures
+                                    'Witness Signature': ThisItem.WitnessSignature,
+                                    'Counter Signature': ThisItem.WitnessSignatureCounter,
+                                    'Consent Signature': ThisItem.'WitnessConsent signature',
+                                    'Counter Consent Signature': ThisItem.WitnessSigCounterConsent,
+                                    
+                                    '(DNU) Witness Signer Name': ThisItem.WitnessSignatureSignerName,
+                                    'Counter Title': ThisItem.CSignerTitle,
+                                    'Counter Forename': ThisItem.CSignerForename,
+                                    'Counter Surname': ThisItem.CSignerSurname,
+                                    'Counter Additional Name Type': ThisItem.CSAdditionalNameType,
+                                    'Counter Additional Names': ThisItem.CSAdditionalName,
+                                    /*CounterSignerSameAddress:Radio_Counter_same_address.Selected.Value,*/
+                                    'Counter House Name': ThisItem.CSHousename,
+                                    'Counter House Number': ThisItem.CSPhoneNumber,
+                                    'Counter Street': ThisItem.CSStreet,
+                                    'Counter District': ThisItem.CSDistrict,
+                                    'Counter Town': ThisItem.CSTown,
+                                    'Counter County': ThisItem.CSCounty,
+                                    'Counter Postcode': ThisItem.CSPostCode,
+                                    'Counter Country': ThisItem.CSCountry,
+                                    'Counter Phone Number': ThisItem.CSPhoneNumber,
+                                    'Counter Work Phone': ThisItem.CSWorkNumber,
+                                    'Counter Evening Telephone': ThisItem.CSEveningNumber,
+                                    'Counter Email': ThisItem.CSEmail,
+                                    'Counter Witness Relationship': ThisItem.CSRelationship,
+                                    'Statement Type': ThisItem.StatementType,
+                                    Template: ThisItem.StatementTemplate,
+                                    'Signature Datetime': DateTimeValue(ThisItem.Timesignature)
+                                }
+                            ).'Statement STG (cp_statementstgid)'
+                        }
+                    );
+                    If(
+                        !IsEmpty(Errors('Statement STGS')),
+                        Collect(
+                            AllErrors,
+                            Errors('Statement STGS')
+                        )
+                    );
+                    If (
+                        !IsEmpty(AllErrors),
+                        //then--------------------------------------------
+                        ForAll(
+                            AllErrors,
+                            Notify(
+                                "There was an error submitting your request: " & ThisRecord.Message & "  (" & ThisRecord.Column & ")",
+                                NotificationType.Error
+                            )
+                        ),
+                        //else--------------------------------------------
+                        UpdateContext(
+                            {
+                                Test: LookUp(
+                                    Choices('Staging Entry Status'),
+                                    Value = 'Staging Entry Status'.'Ready for Submission'
+                                ).Value
+                            }
+                        );
+                        UpdateIf(
+                            'Statement STGS',
+                            Statementpk = 'Statement STG (cp_statementstgid)',
+                            {'Staging Entry Status': Test}
+                        );
+                        RemoveIf(
+                            Datesnotavail,
+                            Datenotkey = ThisItem.Key
+                        );
+                        RemoveIf(
+                            'Statement offline',
+                            Key = ThisItem.Key
+                        );
+                        RemoveIf(
+                            CheckboxTextValues,
+                            Wneedskey = ThisItem.Key
+                        );
+                        RemoveIf(
+                            Datesnotavail,
+                            Datenotkey = ThisItem.Key
+                        );
+                        RemoveIf(
+                            BreakStart,
+                            breakstartkey = ThisItem.Key
+                        );
+                        SaveData(
+                            'Statement offline',
+                            "Statement offline"
+                        );
+                        Set(
+                            Txt_incident_suffixvar,
+                            ""
+                        );
+                        Set(
+                            incidentnumbervar,
+                            "CP" & "-" & Text(
+                                DateAdd(
+                                    DatePicker_incident.SelectedDate,
+                                    0
+                                ),
+                                "[$-en-GB]yyyymmdd"
+                            ) & "-" & Txt_incident_suffix
+                        );
+                        Reset(Checkbox_need);
+                        Reset(Txt_incident_suffix);
+                        Reset(Txt_incident_no);
+                        Reset(PenInput_Witness_Signature_Consent_Signature);
+                        Reset(PenInput_Witness_Signature_Statement_Signature);
+                        Reset(PenInput_CounterSigner_Signatuer_Evidence);
+                        Reset(PenInput_CounterSigner_Signature_Consent);
+                        Reset(PenInput_Witness_Signature_Consent_Signature);
+                        Set(
+                            Allreset,
+                            true
+                        );
+                        UpdateContext({Allreset: true});
+                        UpdateContext({validationwarning: false});
+                        Set(
+                            pk,
+                            0
+                        );
+                    );
+                    // else validation failed
+                ,
+                    UpdateContext({validationwarning: true});
+                    
+                );Set(gblLoading,false);
+            Width: =69
+            X: =556
+            Y: =90
+            ZIndex: =13
+
+    Label2_3 As label:
+        BorderColor: =RGBA(0, 18, 107, 1)
+        Color: =RGBA(255, 0, 0, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =116
+        Size: =21
+        Text: ="Please fill in all the mandatory fields before submitting."
+        Visible: =validationwarning
+        Width: =355
+        X: =50
+        Y: =1020
+        ZIndex: =6
+
+    Icon5_1 As icon.Warning:
+        BorderColor: =RGBA(0, 18, 107, 1)
+        Color: =RGBA(255, 0, 0, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Height: =139
+        Icon: =Icon.Warning
+        Visible: =validationwarning
+        Width: =122
+        X: =441
+        Y: =983
+        ZIndex: =7
+
+    Group14 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =11
+
+        Rectangle2 As rectangle:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Fill: =RGBA(255, 255, 255, 0.89)
+            Height: =1136
+            Visible: =gblLoading
+            Width: =640
+            ZIndex: =8
+
+        Image1 As image:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            Height: =107
+            Image: ='loading-buffering'
+            Visible: =gblLoading
+            Width: =107
+            X: =266
+            Y: =419
+            ZIndex: =9
+
+        Label5 As label:
+            Align: =Align.Center
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Color: =RGBA(0, 0, 0, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            Height: =70
+            Size: =21
+            Text: ="submitting..."
+            Visible: =gblLoading
+            Width: =560
+            X: =39
+            Y: =326
+            ZIndex: =10
+
