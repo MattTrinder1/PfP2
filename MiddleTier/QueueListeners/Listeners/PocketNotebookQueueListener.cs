@@ -2,6 +2,7 @@ using API.Mappers;
 using AutoMapper;
 using Azure.Storage.Blobs;
 using Common.Models.Business;
+using Common.Models.Queue;
 using FunctionApps;
 using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
@@ -14,9 +15,9 @@ using System.Text.Json;
 
 namespace QueueListeners
 {
-    public class PNBQueueListener : QueueListenerBase
+    public class PocketNotebookQueueListener : QueueListenerBase
     {
-        public PNBQueueListener(QueueMapperConfig mapperconfig, RestClient restClient,QueueClientFactory queueClientFactory) : base(mapperconfig, restClient, queueClientFactory)
+        public PocketNotebookQueueListener(QueueMapperConfig mapperconfig, RestClient restClient,QueueClientFactory queueClientFactory) : base(mapperconfig, restClient, queueClientFactory)
         {
         }
 
@@ -33,8 +34,10 @@ namespace QueueListeners
             ArchiveQueueMessage(myQueueItem);
 
             LogInfo($"\tmapping to business entities");
-            PocketNotebook pocketNotebook = _mapper.Map<PocketNotebook>(docRoot);
-            pocketNotebook.Photos = _mapper.Map<List<Photo>>(docRoot.GetProperty("photos").EnumerateArray());
+            var queuePNB = JsonSerializer.Deserialize<QueuePocketNotebook>(docRoot.ToString());
+            PocketNotebook pocketNotebook = _mapper.Map<PocketNotebook>(queuePNB);
+
+            //pocketNotebook.Photos = _mapper.Map<List<Photo>>(docRoot.GetProperty("photos").EnumerateArray());
 
 
             LogInfo($"\tcalling API");

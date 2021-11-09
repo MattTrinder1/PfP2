@@ -14,9 +14,9 @@ namespace Common.Models.Queue
         public List<QueueContact> Contacts { get; set; }
         public List<QueueSuddenDeathProperty> Properties { get; set; }
 
-        public string Id{ get; set; }
+        public string Id { get; set; }
 
-        
+
         public string EnteredBy { get; set; }
 
         [JsonPropertyName("Action of next of Kin")]
@@ -215,14 +215,7 @@ namespace Common.Models.Queue
 
         public string TelephoneLastSeenAliveBy { get; set; }
 
-        [JsonPropertyName("Time Body Found")]
-        public string TimeBodyFound { get; set; }
-
-        [JsonPropertyName("Time fact confirmed")]
-        public string TimeFactConfirmed { get; set; }
-
-        public string TimeLastSeenalive { get; set; }
-
+        
         [JsonPropertyName("Town sudden death")]
         public string TownSuddenDeath { get; set; }
 
@@ -242,6 +235,8 @@ namespace Common.Models.Queue
         public string photoCircumstancesInternalBlobId { get; set; }
 
         public string photoSuicideNoteInternalBlobId { get; set; }
-       
+
+        public bool submitted { get; set; }
+
     }
 }

@@ -1,14 +1,47 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RibbonDiffXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <CustomActions />
+  <CustomActions>
+    <CustomAction Id="cp.cp_itsyourchoice.Button2.CreateLetter.CustomAction" Location="Mscrm.Form.cp_itsyourchoice.MainTab.Collaborate.Controls._children" Sequence="75">
+      <CommandUIDefinition>
+        <Button Command="cp.cp_itsyourchoice.Command0.CreateLetter" Id="cp.cp_itsyourchoice.Button2.CreateLetter" LabelText="$LocLabels:cp.cp_itsyourchoice.Button2.CreateLetter.LabelText" Sequence="75" TemplateAlias="isv" ToolTipTitle="$LocLabels:cp.cp_itsyourchoice.Button2.CreateLetter.ToolTipTitle" ToolTipDescription="$LocLabels:cp.cp_itsyourchoice.Button2.CreateLetter.ToolTipDescription" ModernImage="$webresource:SharePointIcon_wordFile_c.svg" />
+      </CommandUIDefinition>
+    </CustomAction>
+  </CustomActions>
   <Templates>
     <RibbonTemplates Id="Mscrm.Templates"></RibbonTemplates>
   </Templates>
-  <CommandDefinitions />
+  <CommandDefinitions>
+    <CommandDefinition Id="cp.cp_itsyourchoice.Command0.CreateLetter">
+      <EnableRules />
+      <DisplayRules />
+      <Actions>
+        <JavaScriptFunction FunctionName="GeneratePDFDocument" Library="$webresource:cp_GeneratePDF.js">
+          <CrmParameter Value="PrimaryControl" />
+          <StringParameter Value="IYC PDF Url" />
+        </JavaScriptFunction>
+      </Actions>
+    </CommandDefinition>
+  </CommandDefinitions>
   <RuleDefinitions>
     <TabDisplayRules />
     <DisplayRules />
     <EnableRules />
   </RuleDefinitions>
-  <LocLabels />
+  <LocLabels>
+    <LocLabel Id="cp.cp_itsyourchoice.Button2.CreateLetter.LabelText">
+      <Titles>
+        <Title description="Create IYC Letter" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="cp.cp_itsyourchoice.Button2.CreateLetter.ToolTipDescription">
+      <Titles>
+        <Title description="Create the IYC 1st Warning Letter" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="cp.cp_itsyourchoice.Button2.CreateLetter.ToolTipTitle">
+      <Titles>
+        <Title description="Create IYC Letter" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+  </LocLabels>
 </RibbonDiffXml>

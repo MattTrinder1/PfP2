@@ -1,0 +1,83 @@
+scrPhotoArchive As screen:
+
+    btnHome_2 As button:
+        Height: =70
+        OnSelect: =Navigate(Screen_Home_Screen);
+        Size: =24
+        Text: ="Home"
+        Width: =177
+        ZIndex: =1
+
+    btnHome_3 As button:
+        Height: =70
+        OnSelect: =Clear(PhotoArchive);SaveData(PhotoArchive,"PhotoArchiveCache");
+        Size: =24
+        Text: ="Clear All"
+        Width: =177
+        X: =351
+        ZIndex: =5
+
+    "Gallery3 As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+        Height: =1036
+        Items: =PhotoArchive
+        Layout: =Layout.Vertical
+        TemplatePadding: =0
+        TemplateSize: =Min(160, Self.Height - 60)
+        Y: =81
+        ZIndex: =6
+
+        Image6 As image:
+            Height: =128
+            Image: =ThisItem.blob
+            OnSelect: =Select(Parent)
+            Width: =128
+            X: =16
+            Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+            ZIndex: =1
+
+        Subtitle2 As label:
+            Height: =49
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Text: =ThisItem.id
+            VerticalAlign: =VerticalAlign.Top
+            Width: =455
+            X: =180
+            Y: =110
+            ZIndex: =3
+
+        NextArrow2 As icon.ChevronRight:
+            AccessibleLabel: =Self.Tooltip
+            Height: =60
+            Icon: =Icon.ChevronRight
+            OnSelect: =Select(Parent)
+            PaddingBottom: =10
+            PaddingLeft: =10
+            PaddingRight: =10
+            PaddingTop: =10
+            TabIndex: =0
+            Tooltip: ="View item details"
+            Width: =60
+            X: =Parent.TemplateWidth - Self.Width - 5
+            Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+            ZIndex: =4
+
+        Separator4 As rectangle:
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =Parent.TemplateWidth
+            Y: =Parent.TemplateHeight - 1
+            ZIndex: =5
+
+    Button1 As button:
+        Height: =70
+        OnSelect: =LoadData(PhotoArchive,"PhotoArchiveCache");
+        Size: =24
+        Text: ="Load"
+        Width: =157
+        X: =180
+        ZIndex: =7
+

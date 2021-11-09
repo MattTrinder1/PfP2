@@ -15,6 +15,39 @@ App As appinfo:
         //Set(glbAppVersion,1);
         //Set(glbDebug,false);
         
+        
+        Set (
+            glbOnline,
+            IfError(
+                AzureQueues.PutMessage(
+                    "onlinecheckqueue",
+                    User().Email
+                ),
+                false,
+                true
+            )
+        );
+        
+        Collect(
+            notePhotos,
+            {
+                noteId: GUID(),
+                id: "",
+                caption: "",
+                index: 0,
+                blob: SampleImage,
+                downloaded:false
+            }
+        );
+        Clear(notePhotos);
+        LoadData(notePhotos,"notePhotosCache",true);
+        
+        Set (glbInTimerLoop,false);
+        
+        Set (
+            nullDate,
+            DateTimeValue("1900-01-01 00:00:00")
+        );
         Set(tmrBlobSaveStart,false);
         Set(tmrBlobSaveStart,true);
         Set(tmrNoteValidateStart,false);

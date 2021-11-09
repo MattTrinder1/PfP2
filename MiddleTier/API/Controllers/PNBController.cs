@@ -3,6 +3,7 @@ using Common.Models.Business;
 using Common.Models.Dataverse;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Microsoft.Xrm.Sdk;
 using System;
 using System.Collections.Generic;
 using System.Net;
@@ -90,6 +91,81 @@ namespace API.Controllers
             }
         }
 
+        [HttpPatch("{pocketNotebookId}/{photoId}/{imageType}/{deleted}/{caption}")]
+        [HttpPatch("{pocketNotebookId}/{photoId}/{imageType}/{deleted}")]
+        public ActionResult UpdateImage(Guid pocketNotebookId, Guid photoId, string imageType,string caption,bool deleted, [FromBody] string newImage)
+        {
+
+            try
+            {
+
+                var trans = new DVTransaction();
+
+                if (deleted)
+                {
+                    trans.AddDeleteRequest(new EntityReference("cp_photo", photoId));
+                }
+                else
+                {
+
+                    if (imageType == "sketch")
+                    {
+                        var sd = new DVPocketNotebookImages();
+                        sd.Id = pocketNotebookId;
+                        sd.cp_sketch = Convert.FromBase64String(newImage);
+
+                        trans.AddCreateEntityImage(sd, "cp_sketch");
+
+                    }
+
+                    if (imageType == "signature")
+                    {
+                        var sd = new DVPocketNotebookImages();
+                        sd.Id = pocketNotebookId;
+                        sd.cp_signature = Convert.FromBase64String(newImage);
+
+                        trans.AddCreateEntityImage(sd, "cp_signature");
+
+                    }
+
+                    if (imageType == "photo")
+                    {
+
+                        var photo = new Photo();
+                        photo.Id = photoId;
+                        photo.PocketNotebookId = pocketNotebookId;
+                        photo.Caption = caption;
+                        photo.Blob = newImage;
+
+                        var existingPhoto = AdminDataAccess.GetEntityByField<DVPhoto>("cp_photoid", photoId);
+                        if (existingPhoto != null)
+                        {
+                            var dvPhoto = GetDataverseEntity<DVPhoto>(photo, UserId, existingPhoto.Id);
+                            trans.AddUpsertEntity(dvPhoto);
+                        }
+                        else
+                        {
+                            var dvPhoto = GetDataverseEntity<DVPhoto>(photo, UserId);
+                            trans.AddUpsertEntity(dvPhoto);
+                        }
+
+
+                    }
+                }
+
+                AdminDataAccess.ExecuteTransaction(trans);
+
+
+                return new OkResult();
+            }
+            catch (Exception ex)
+            {
+
+                return new NotFoundResult();
+            }
+        }
+
+
         [HttpPost()]
         public ActionResult<Guid> Post([FromBody] PocketNotebook pnb)
         {
@@ -115,7 +191,7 @@ namespace API.Controllers
                     
                     if (dvIncident == null)
                     {
-                        dvIncident = CreateIncident(pnb, "Pocket Noteboook");
+                        dvIncident = CreateIncident(pnb, "Pocket Notebook");
                         transaction.AddCreateEntity(dvIncident);
                     }
 
@@ -126,22 +202,29 @@ namespace API.Controllers
                     dvPb.cp_pocketnotebookid = Guid.NewGuid();
                 }
                 
-                transaction.AddCreateEntity(dvPb);
+                transaction.AddUpsertEntity(dvPb);
 
                 logger.LogDebug("Create images");
-                var dvPbImages = mapper.Map<PocketNotebook, DVPocketNotebookImages>(pnb);
-                transaction.AddCreateEntityImage(dvPbImages, "cp_sketch");
-                transaction.AddCreateEntityImage(dvPbImages, "cp_signature");
+                //var dvPbImages = mapper.Map<PocketNotebook, DVPocketNotebookImages>(pnb);
+                //transaction.AddCreateEntityImage(dvPbImages, "cp_sketch");
+                //transaction.AddCreateEntityImage(dvPbImages, "cp_signature");
 
                 logger.LogDebug("Create photos");
-                foreach (var photo in pnb.Photos)
-                {
-                    photo.PocketNotebookId = dvPb.cp_pocketnotebookid.Value;
-                    var dvPhoto = GetDataverseEntity<DVPhoto>(photo, UserId); 
-                    transaction.AddCreateEntity(dvPhoto);
-                }
+                //foreach (var photo in pnb.Photos)
+               // {
+               //     photo.PocketNotebookId = dvPb.cp_pocketnotebookid.Value;
+               //     var dvPhoto = GetDataverseEntity<DVPhoto>(photo, UserId); 
+               //     transaction.AddCreateEntity(dvPhoto);
+                //}
 
                 logger.LogDebug("Save");
+
+                if (pnb.Complete)
+                {
+                    //set the sudden death record to active
+                    transaction.AddSetStateRequest(dvPb.ToEntityReference(), 0, 1);
+                }
+
                 AdminDataAccess.ExecuteTransaction(transaction);
 
 

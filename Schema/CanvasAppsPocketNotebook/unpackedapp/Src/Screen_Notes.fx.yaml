@@ -53,7 +53,9 @@ Screen_Notes As screen:
                         index: 1,
                         id: sketchId,
                         blob: PenInput_sketch.Image,
-                        blobId: ""
+                        blobId: "",
+                        queued: false,
+                        deleted: false
                     }
                 );
                 
@@ -70,25 +72,42 @@ Screen_Notes As screen:
                         index: 1,
                         id: signatureId,
                         blob: PenInput_signature.Image,
-                        blobId: ""
+                        blobId: "",
+                        queued: false,
+                        deleted: false
                     }
                 );
                 
             );
             Collect(
                 notePhotos,
-                {
-                    blobId: "",
-                    caption: ""
-                }
+                ShowColumns(
+                    Filter(
+                        blobsToSave,
+                        type = "photo",
+                        noteId = newNoteId
+                    ),
+                    "noteId",
+                    "id",
+                    "caption",
+                    "index"
+                )
             );
-            Clear(notePhotos);
-            UpdateContext({noteDate:Now()});
-            Collect(
+            SaveData(
+                notePhotos,
+                "notePhotosCache"
+            );
+            UpdateIf(
+                notePhotos,
+                noteId = newNoteId,
+                {downloaded: false}
+            );
+            UpdateContext({noteDate: Now()});
+            UpdateIf(
                 'Notebook Offline',
+                Id = newNoteId,
                 {
-                    Id: newNoteId,
-                    Notes:  txtNotes.Text,
+                    Notes: txtNotes.Text,
                     'Signature Date and Time': If(
                         chkSignatureRequired.Value,
                         DateTimeValue(TextInput_Signature_datetime.Text)
@@ -110,24 +129,28 @@ Screen_Notes As screen:
                         chkAddSketch.Value,
                         sketchId & "-sketch-1"
                     ),
-                    
+                    hasSketch: If(
+                        chkAddSketch.Value,
+                        true,
+                        false
+                    ),
                     SignatureId: If(
                         chkSignatureRequired.Value,
                         signatureId & "-signature-1"
                     ),
-                    
-                    photos: notePhotos,
+                    hasSignature: If(
+                        chkSignatureRequired.Value,
+                        true,
+                        false
+                    ),
                     complete: true,
                     readyToSync: false,
-                    queued:false,
-                    inDataverse:false,
-                    fullyPopulated:true,
+                    queued: false,
+                    inDataverse: false,
+                    fullyPopulated: true,
                     enteredBy: User().Email
                 }
             );
-            
-            
-            
             /*Patch(
                 'Notebook Offline',
                 LookUp(
@@ -190,7 +213,10 @@ Screen_Notes As screen:
         Height: =92
         Size: =21
         Text: |-
-            ="Notes" //& txtNotes.Text // & DateTimeValue(Text(DatePicker_incident_1.SelectedDate) & " " & drpHours.SelectedText.Value & ":" & drpMinutes.SelectedText.Value ) 
+            ="Notes" //& LookUp(
+                //'Notebook Offline',
+                //Id = newNoteId
+            //).photoCount //& txtNotes.Text // & DateTimeValue(Text(DatePicker_incident_1.SelectedDate) & " " & drpHours.SelectedText.Value & ":" & drpMinutes.SelectedText.Value )
         Width: =640
         ZIndex: =2
 
@@ -404,26 +430,39 @@ Screen_Notes As screen:
                                 Filter(
                                     blobsToSave,
                                     noteId = newNoteId,
-                                    type="photo"
+                                    type = "photo"
                                 )
                             ) < 10,
                             UpdateContext({photoId: GUID()});
+                            
                             Collect(
                                 blobsToSave,
                                 {
-                                    noteId : newNoteId,
-                                    caption : "",
+                                    noteId: newNoteId,
+                                    caption: "",
                                     type: "photo",
                                     index: CountRows(
                                         Filter(
                                             blobsToSave,
                                             noteId = newNoteId,
-                                            type="photo"
+                                            type = "photo"
                                         )
                                     ) + 1,
                                     id: photoId,
                                     blob: UploadedImage1.Image,
-                                    blobId: ""
+                                    blobId: "",
+                                    queued: false,
+                                    deleted: false
+                                }
+                            );
+                            UpdateIf(
+                                'Notebook Offline',
+                                Id = newNoteId,
+                                {
+                                    photoCount: LookUp(
+                                        'Notebook Offline',
+                                        Id = newNoteId
+                                    ).photoCount + 1
                                 }
                             );
                             SaveData(
@@ -437,7 +476,7 @@ Screen_Notes As screen:
                     UseMobileCamera: =true
                     Width: =535
                     X: =40
-                    Y: =UploadedImage1.Y + UploadedImage1.Height
+                    Y: =24
                     ZIndex: =2
 
         DataCard6 As dataCard.blankCard:
@@ -456,7 +495,7 @@ Screen_Notes As screen:
                 BorderColor: =RGBA(116, 116, 116, 1)
                 BorderThickness: =2   
                 Height: =CountRows(Gallery_exhibits.AllItems)*(Gallery_exhibits.TemplateHeight)
-                Items: =Filter(blobsToSave,noteId = newNoteId)
+                Items: =Filter(blobsToSave,noteId = newNoteId,deleted = false)
                 Layout: =Layout.Vertical
                 ShowScrollbar: =false
                 TemplatePadding: =0
@@ -491,7 +530,14 @@ Screen_Notes As screen:
                     Height: =64
                     HintText: ="Exhibit caption"
                     OnChange: |-
-                        =Patch(blobsToSave,ThisItem,{caption:Self.Text})
+                        =Patch(
+                            blobsToSave,
+                            ThisItem,
+                            {
+                                caption: Self.Text,
+                                queued: false
+                            }
+                        )
                     OnSelect: =Select(Parent)
                     Size: =16
                     Visible: =If(IsBlank('Notebook Offline'),false,true)
@@ -504,9 +550,29 @@ Screen_Notes As screen:
                     Color: =RGBA(255, 0, 0, 1)
                     Height: =56
                     Icon: =Icon.Cancel
-                    OnSelect: |-
-                        =Remove(blobsToSave, ThisItem);
-                        Set(galheight,CountRows(Gallery_exhibits.AllItems)*(Gallery_exhibits.TemplateHeight));
+                    OnSelect: |
+                        =Patch(
+                            blobsToSave,
+                            ThisItem,
+                            {
+                                deleted: true,
+                                queued: false
+                            }
+                        );
+                        UpdateIf(
+                            'Notebook Offline',
+                            Id = newNoteId,
+                            {
+                                photoCount: LookUp(
+                                    'Notebook Offline',
+                                    Id = newNoteId
+                                ).photoCount - 1
+                            }
+                        );
+                        Set(
+                            galheight,
+                            CountRows(Gallery_exhibits.AllItems) * (Gallery_exhibits.TemplateHeight)
+                        );
                     Width: =73
                     X: =472
                     Y: =29

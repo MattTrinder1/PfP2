@@ -24,5 +24,10 @@ namespace Common.Models.Business
         public DateTime? SignatureDateandTime { get; set; }
 
         public string SignatoryName { get; set; }
+
+        public bool Complete { get; set; }
+        public int PhotoCount { get; set; }
+        public bool HasSketch { get; set; }
+        public bool HasSignature { get; set; }
     }
 }

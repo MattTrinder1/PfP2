@@ -1,8 +1,10 @@
 ﻿using Microsoft.Xrm.Sdk;
+using Microsoft.Xrm.Sdk.Client;
 using System;
 
 namespace Common.Models.Dataverse
 {
+    [EntityLogicalName ("cp_suddendeath")]
     public class DVSuddenDeath : DVEntityBase
     {
         public DVSuddenDeath()

@@ -52,17 +52,6 @@ Screen_Search_notes As screen:
         Y: =91
         ZIndex: =9
 
-        Label1 As label:
-            Height: =42
-            OnSelect: =Navigate(Screen_Notes_viewscr, ScreenTransition.CoverRight, galleryNotes.Selected)
-            Size: =21
-            Text: =ThisItem.Notes
-            Width: =366
-            Wrap: =false
-            X: =251
-            Y: =6
-            ZIndex: =1
-
         Label3 As label:
             Height: =42
             OnSelect: =
@@ -71,35 +60,7 @@ Screen_Search_notes As screen:
                 =Text(ThisItem.NoteDateAndTime,"dd/mm/yyyy hh:mm")
             Width: =251
             Y: =6
-            ZIndex: =2
-
-        NextArrow5_1 As icon.ChevronRight:
-            AccessibleLabel: =Self.Tooltip
-            Color: =RGBA(116, 116, 116, 1)
-            Fill: =If(ThisItem.queued And ThisItem.fullyPopulated,RGBA(182,221,140,0.3),RGBA(250,155,112,0.3))
-            Height: =53
-            Icon: =
-            OnSelect: |-
-                =If(
-                    galleryNotes.Selected.fullyPopulated,
-                    Set(
-                        ViewNoteId,
-                        galleryNotes.Selected.Id
-                    );
-                    Navigate(Screen_Notes_viewscr);
-                    ,
-                    Notify("Images associated to this note are downloading - please wait...");
-                    
-                )
-            PaddingBottom: =10
-            PaddingLeft: =10
-            PaddingRight: =10
-            PaddingTop: =10
-            TabIndex: =0
-            Tooltip: ="View item details"
-            Width: =628
-            Y: =6
-            ZIndex: =3
+            ZIndex: =1
 
         Icon5 As icon.Add:
             Color: =RGBA(99, 139, 44, 1)
@@ -110,7 +71,7 @@ Screen_Search_notes As screen:
             Width: =41
             X: =576
             Y: =14
-            ZIndex: =4
+            ZIndex: =2
 
         Icon5_1 As icon.Add:
             Color: =RGBA(99, 139, 44, 1)
@@ -121,6 +82,46 @@ Screen_Search_notes As screen:
             Width: =41
             X: =535
             Y: =14
+            ZIndex: =3
+
+        TextInput4 As text:
+            Default: =ThisItem.Notes
+            DisplayMode: =DisplayMode.View
+            Fill: =Transparent
+            Height: =42
+            OnSelect: =Select(Parent)
+            Size: =21
+            Width: =377
+            X: =251
+            Y: =6
+            ZIndex: =4
+
+        NextArrow5_1 As icon.ChevronRight:
+            AccessibleLabel: =Self.Tooltip
+            Color: =RGBA(116, 116, 116, 1)
+            Fill: =If(ThisItem.queued,RGBA(182,221,140,0.3),RGBA(250,155,112,0.3))
+            Height: =53
+            Icon: =
+            OnSelect: |-
+                =//If(
+                //    galleryNotes.Selected.fullyPopulated,
+                    Set(
+                        ViewNoteId,
+                        galleryNotes.Selected.Id
+                    );
+                    Navigate(Screen_Notes_viewscr);
+                //    ,
+                //    Notify("Images associated to this note are downloading - please wait...");
+                    
+                //)
+            PaddingBottom: =10
+            PaddingLeft: =10
+            PaddingRight: =10
+            PaddingTop: =10
+            TabIndex: =0
+            Tooltip: ="View item details"
+            Width: =628
+            Y: =6
             ZIndex: =5
 
     iconReload As icon.Cancel:
@@ -129,8 +130,21 @@ Screen_Search_notes As screen:
         Height: =66
         Icon: =Icon.Reload
         OnSelect: |-
-            =If(
-                ConnectionChecker_2.IsOnline,
+            =Set (
+                glbOnline,
+                IfError(
+                    AzureQueues.PutMessage(
+                        "onlinecheckqueue",
+                        User().Email
+                    ),
+                    false,
+                    true
+                )
+            );
+            
+            
+            If(
+                glbOnline,
                 Set(gblDoneSync, true);
                 ClearCollect(
                     UserPNBs,
@@ -178,17 +192,4 @@ Screen_Search_notes As screen:
         X: =561
         Y: =11
         ZIndex: =10
-
-    tmrNoteRefresh As timer:
-        AutoPause: =false
-        AutoStart: =true
-        Duration: =10000
-        Height: =75
-        OnTimerEnd: =Select(iconReload)
-        Repeat: =true
-        Visible: =glbDebug
-        Width: =112
-        X: =436
-        Y: =11
-        ZIndex: =11
 

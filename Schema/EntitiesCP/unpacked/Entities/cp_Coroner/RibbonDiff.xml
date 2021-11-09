@@ -1,14 +1,47 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RibbonDiffXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <CustomActions />
+  <CustomActions>
+    <CustomAction Id="cp.cp_covid.Button2.CreatePDF.CustomAction" Location="Mscrm.Form.cp_covid.MainTab.Collaborate.Controls._children" Sequence="75">
+      <CommandUIDefinition>
+        <Button Command="cp.cp_covid.Command0.CreatePDF" Id="cp.cp_covid.Button2.CreatePDF" LabelText="$LocLabels:cp.cp_covid.Button2.CreatePDF.LabelText" Sequence="75" TemplateAlias="isv" ToolTipTitle="$LocLabels:cp.cp_covid.Button2.CreatePDF.ToolTipTitle" ToolTipDescription="$LocLabels:cp.cp_covid.Button2.CreatePDF.ToolTipDescription" ModernImage="$webresource:cp_PDFIcon.svg" />
+      </CommandUIDefinition>
+    </CustomAction>
+  </CustomActions>
   <Templates>
     <RibbonTemplates Id="Mscrm.Templates"></RibbonTemplates>
   </Templates>
-  <CommandDefinitions />
+  <CommandDefinitions>
+    <CommandDefinition Id="cp.cp_covid.Command0.CreatePDF">
+      <EnableRules />
+      <DisplayRules />
+      <Actions>
+        <JavaScriptFunction FunctionName="GeneratePDFDocument" Library="$webresource:cp_GeneratePDF.js">
+          <CrmParameter Value="PrimaryControl" />
+          <StringParameter Value="Covid PDF Url" />
+        </JavaScriptFunction>
+      </Actions>
+    </CommandDefinition>
+  </CommandDefinitions>
   <RuleDefinitions>
     <TabDisplayRules />
     <DisplayRules />
     <EnableRules />
   </RuleDefinitions>
-  <LocLabels />
+  <LocLabels>
+    <LocLabel Id="cp.cp_covid.Button2.CreatePDF.LabelText">
+      <Titles>
+        <Title description="Create PDF" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="cp.cp_covid.Button2.CreatePDF.ToolTipDescription">
+      <Titles>
+        <Title description="Create a PDF for this Covid" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+    <LocLabel Id="cp.cp_covid.Button2.CreatePDF.ToolTipTitle">
+      <Titles>
+        <Title description="Create PDF" languagecode="1033" />
+      </Titles>
+    </LocLabel>
+  </LocLabels>
 </RibbonDiffXml>

@@ -24,7 +24,10 @@ namespace Common.Models.Dataverse
 
         public DateTime? cp_signaturedateandtime { get { return this.GetAttributeValue<DateTime?>(nameof(cp_signaturedateandtime)); } set { this.Attributes[nameof(cp_signaturedateandtime)] = value; } }
         public string cp_signatoryname { get { return this.GetAttributeValue<string>(nameof(cp_signatoryname)); } set { this.Attributes[nameof(cp_signatoryname)] = value; } }
-
+        public int cp_photocount { get { return this.GetAttributeValue<int>(nameof(cp_photocount)); } set { this.Attributes[nameof(cp_photocount)] = value; } }
+        public bool cp_hassketch { get { return this.GetAttributeValue<bool>(nameof(cp_hassketch)); } set { this.Attributes[nameof(cp_hassketch)] = value; } }
+        public bool cp_hassignature { get { return this.GetAttributeValue<bool>(nameof(cp_hassignature)); } set { this.Attributes[nameof(cp_hassignature)] = value; } }
+        
 
     }
 }

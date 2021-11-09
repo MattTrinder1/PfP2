@@ -8,10 +8,6 @@ Screen_Home_Screen As screen:
         UpdateContext({timerstart: false});
         UpdateContext({timerreset: true});
 
-    ConnectionChecker_2 As ConnectionChecker:
-        Width: =640
-        Y: =1101
-
     Lbl_header_2 As label:
         Align: =Align.Center
         BorderColor: =RGBA(32, 54, 71, 1)
@@ -20,7 +16,7 @@ Screen_Home_Screen As screen:
         FontWeight: =FontWeight.Bold
         Height: =90
         Size: =21
-        Text: ="Pocket Notebook - Azure"
+        Text: ="Pocket Notebook - Azure"// & glbInTimerLoop
         Width: =640
         ZIndex: =1
 
@@ -38,7 +34,7 @@ Screen_Home_Screen As screen:
         Fill: =RGBA(153, 153, 153, 1)
         Height: =72
         HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
-        OnSelect: |-
+        OnSelect: |
             =//Moved script to ontimerend on element tmrDelayNewNote
             /*Set(gblOverlay,true);
             
@@ -93,12 +89,34 @@ Screen_Home_Screen As screen:
             Set(tmrStart,true);
             */
             UpdateContext({newNoteId: GUID()});
+            Collect(
+                'Notebook Offline',
+                {
+                    Id: newNoteId,
+                    Notes: "",
+                    'Signature Date and Time': nullDate,
+                    IncidentDateTime: nullDate,
+                    SignatoryName: "",
+                    IncidentNumber: "",
+                    NoteDateAndTime: Now(),
+                    SketchId: "",
+                    SignatureId: "",
+                    photos: notePhotos,
+                    complete: false,
+                    readyToSync: true,
+                    queued: false,
+                    inDataverse: false,
+                    fullyPopulated: true,
+                    enteredBy: User().Email,
+                    photoCount:0,
+                    hasSketch:false,
+                    hasSignature:false
+                }
+            );
             Navigate(
                 Screen_Notes,
                 ScreenTransition.None,
-                {
-                    newNoteId: newNoteId
-                }
+                {newNoteId: newNoteId}
             );
         Size: =24
         Text: ="New Note"
@@ -335,39 +353,155 @@ Screen_Home_Screen As screen:
     tmrBlobSave As timer:
         AutoPause: =false
         AutoStart: =true
-        Duration: =7000
+        Duration: =15000
         Height: =70
         OnTimerEnd: |-
             =If(
-                ConnectionChecker_2.IsOnline,
-                Set(tmrBlobSaveStart, false);
-                With (
-                    {
-                        unsavedBlobs: Filter(
-                            blobsToSave,
-                            blobId = ""
-                        )
-                    },
-                    ForAll(
-                        unsavedBlobs As unsavedBlob,
-                        Patch(
-                            blobsToSave,
-                            unsavedBlob,
-                            {
-                                blobId: AzureBlobStorage.CreateFile(
-                                    "pnb",
-                                    unsavedBlob.noteId & "-" & unsavedBlob.id & "-" & unsavedBlob.type & "-" & unsavedBlob.index,
-                                    unsavedBlob.blob
-                                ).Name
-                            }
-                        );
-                        SaveData(
-                            blobsToSave,
-                            "blobsToSaveCache"
-                        );
+            //we are not in the timer loop
+                !glbInTimerLoop,
+            //flag that we are not in the timer loop
+                Set(
+                    glbInTimerLoop,
+                    true
+                );
+                
+            //check if we are online
+            Set (
+                    glbOnline,
+                    IfError(
+                        AzureQueues.PutMessage(
+                            "onlinecheckqueue",
+                            User().Email
+                        ),
+                        false,
+                        true
                     )
                 );
-                Set(tmrBlobSaveStart, true);
+                If(
+                    glbOnline,
+            //post any notes that have not yet been posted to the queue        
+                    With (
+                        {
+                            unsavedNotes: Filter(
+                                'Notebook Offline',
+                                queued = false
+                            )
+                        },
+                        ForAll(
+                            unsavedNotes As unsavedNote,
+                            If(
+                                AzureQueues.PutMessage(
+                                    "pocketnotebookqueue",
+                                    JSON(unsavedNote,JSONFormat.IgnoreBinaryData)
+                                ),
+                                Patch(
+                                    'Notebook Offline',
+                                    unsavedNote,
+                                    {queued: true}
+                                )
+                            );
+                            SaveData(
+                                'Notebook Offline',
+                                "NotebookOfflineCache"
+                            );
+                        )
+                    );
+                    
+            //post any images to the blob store and to the queue
+            With (
+                        {
+                            unsavedBlobs: Filter(
+                                blobsToSave,
+                                blobId = ""
+                            )
+                        },
+                        ForAll(
+                            unsavedBlobs As unsavedBlob,
+                            Patch(
+                                blobsToSave,
+                                unsavedBlob,
+                                {
+                                    blobId: If(
+                                        IsError(
+                                            AzureBlobStorage.CreateFile(
+                                                "pnb",
+                                                unsavedBlob.noteId & "-" & unsavedBlob.id & "-" & unsavedBlob.type & "-" & unsavedBlob.index,
+                                                unsavedBlob.blob
+                                            )
+                                        ),
+                                        "",
+                                        unsavedBlob.noteId & "-" & unsavedBlob.id & "-" & unsavedBlob.type & "-" & unsavedBlob.index
+                                    )
+                                }
+                            );
+                            SaveData(
+                                blobsToSave,
+                                "blobsToSaveCache"
+                            );
+                            If(
+                                !IsBlank(
+                                    LookUp(
+                                        blobsToSave,
+                                        id = unsavedBlob.id
+                                    ).blobId
+                                ),
+                                If(
+                                    AzureQueues.PutMessage(
+                                        "pocketnotebookblobqueue",
+                                        User().Email & ":" & unsavedBlob.noteId & ":" & unsavedBlob.blobId & "*&^%$" & unsavedBlob.caption & "*&^%$" & unsavedBlob.deleted
+                                    ),
+                                    Patch(
+                                        blobsToSave,
+                                        unsavedBlob,
+                                        {queued: true}
+                                    );
+                                    SaveData(
+                                        blobsToSave,
+                                        "blobsToSaveCache"
+                                    );
+                                );
+                            );
+                        )
+                    );
+                    
+            //remove posted photos from the local collections
+            With (
+                        {
+                            completeBlobs: Filter(
+                                blobsToSave,
+                                !IsBlank(blobId),
+                                type = "photo",
+                                queued
+                            )
+                        },
+                        ForAll(
+                            completeBlobs As completeBlob,
+                            RemoveIf(
+                                blobsToSave,
+                                id = completeBlob.id,
+                                LookUp(
+                                    'Notebook Offline',
+                                    Id = completeBlob.noteId
+                                ).queued = true
+                                ,
+                                LookUp(
+                                    'Notebook Offline',
+                                    Id = completeBlob.noteId
+                                ).complete = true
+                            );
+                            SaveData(
+                                blobsToSave,
+                                "blobsToSaveCache"
+                            );
+                        );
+                    );
+                );
+                //flag that we've finished the timer loop
+            Set(
+                    glbInTimerLoop,
+                    false
+                );
+                
             )
         Repeat: =true
         Start: =tmrBlobSaveStart
@@ -376,166 +510,40 @@ Screen_Home_Screen As screen:
         Visible: =glbDebug
         Width: =171
         X: =2
-        Y: =1028
+        Y: =1035
         ZIndex: =31
 
-    tmrNoteValidate As timer:
-        AutoPause: =false
-        AutoStart: =true
-        Duration: =7500
-        Height: =70
-        OnTimerEnd: |-
-            =If(
-                ConnectionChecker_2.IsOnline,
-                Set(tmrNoteValidateStart,  false);
-                With (
-                    {
-                        notesToValidate: Filter(
-                            'Notebook Offline',
-                            readyToSync = false
-                        )
-                    },
-                    ForAll(
-                        notesToValidate As noteToValidate,
-                        Patch(
-                            'Notebook Offline',
-                            noteToValidate,
-                            {
-                                readyToSync: And(
-                                    noteToValidate.Notes <> "",
-                                    If(
-                                        noteToValidate.SketchId <> "",
-                                        LookUp(
-                                            blobsToSave,
-                                            Text(id) = noteToValidate.SketchId
-                                        ).blobId <> "",
-                                        true
-                                    ),
-                                    If(
-                                        noteToValidate.SignatureId <> "",
-                                        LookUp(
-                                            blobsToSave,
-                                            Text(id) = noteToValidate.SignatureId
-                                        ).blobId <> "",
-                                        true
-                                    ),
-                                    CountRows(
-                                        Filter(
-                                            blobsToSave,
-                                            noteId = noteToValidate.Id
-                                        )
-                                    ) = CountRows(
-                                        Filter(
-                                            blobsToSave,
-                                            noteId = noteToValidate.Id,
-                                            blobId <> ""
-                                        )
-                                    )
-                                )
-                            }
-                        );
-                    );
-                );
-                Set(tmrNoteValidateStart, true);
-            )
-        Repeat: =true
-        Start: =tmrNoteValidateStart
-        Text: |-
-            ="NoteValidate " & Text(Time(0, 0, Self.Value/1000), "hh:mm:ss")
-        Visible: =glbDebug
-        Width: =171
-        X: =189
-        Y: =1028
-        ZIndex: =32
-
-    tmrNoteSave As timer:
-        AutoPause: =false
-        AutoStart: =true
-        Duration: =8000
-        Height: =70
-        OnTimerEnd: |-
-            =If(
-                ConnectionChecker_2.IsOnline,
-                Set(tmrNoteSaveStart, false);
-                With (
-                    {
-                        unsavedNotes: Filter(
-                            'Notebook Offline',
-                            And(
-                                complete = true,
-                                readyToSync = true,
-                                queued = false
-                            )
-                        )
-                    },
-            
-                    UpdateContext({jsonText:JSON(First('Notebook Offline'))});
-            
-                    ForAll(
-                        unsavedNotes As unsavedNote,
-                        Patch(
-                            'Notebook Offline',
-                            unsavedNote,
-                            {
-                                photos: ShowColumns(
-                                    Filter(
-                                        blobsToSave,
-                                        noteId = unsavedNote.Id,
-                                        type = "photo"
-                                    ),
-                                    "blobId",
-                                    "caption"
-                                )
-                            }
-                        );
-                        SaveData(
-                            'Notebook Offline',
-                            "NotebookOfflineCache"
-                        );
-                        
-                        
-                        If(
-                            AzureQueues.PutMessage(
-                                "pocketnotebookqueue",
-                                JSON(unsavedNote)
-                            ),
-                            Patch(
-                                'Notebook Offline',
-                                unsavedNote,
-                                {queued: true}
-                            )
-                        );
-                        SaveData(
-                            'Notebook Offline',
-                            "NotebookOfflineCache"
-                        );
-                    )
-                );
-                Set(tmrNoteSaveStart, true);
-            )
-        Repeat: =true
-        Start: =tmrNoteSaveStart
-        Text: |-
-            ="Note Save " & Text(Time(0, 0, Self.Value/1000), "hh:mm:ss")
-        Visible: =glbDebug
-        Width: =128
-        X: =369
-        Y: =1028
-        ZIndex: =33
-
     tmrNotePopulate As timer:
-        AutoPause: =false
-        AutoStart: =true
-        Duration: =8500
         Fill: =If(gblLastNotePopulateDoneWork, Red, RGBA(56, 96, 178, 1))
         Height: =70
         OnTimerEnd: |-
-            =If(
-                ConnectionChecker_2.IsOnline,
+            =    Set(
+                    tmrNotePopulateStart,
+                    true
+                );
                 Set(
                     tmrNotePopulateStart,
                     false
                 );
+            Set (
+                glbOnline,
+                IfError(
+                    AzureQueues.PutMessage(
+                        "onlinecheckqueue",
+                        User().Email
+                    ),
+                    false,
+                    true
+                )
+            );
+            
+            If(
+                !glbOnline,
+                    Set(
+                    tmrNotePopulateStart,
+                    true
+                ),
+                
                 With (
                     {
                         unPopulatedNotes: Filter(
@@ -550,7 +558,7 @@ Screen_Home_Screen As screen:
                     ForAll(
                         unPopulatedNotes As unpopulatedNote,
                         If (
-                            ConnectionChecker_2.IsOnline,
+                            glbOnline,
                             With(
                                 {
                                     pnbRec: PNBGet.GetSinglePNB(
@@ -569,7 +577,8 @@ Screen_Home_Screen As screen:
                                             index: 1,
                                             id: unpopulatedNote.Id & "-sketch-1",
                                             blob: "data:image;application/octet-stream;base64," & pnbRec.sketch,
-                                            blobId: unpopulatedNote.Id & "-sketch-1"
+                                            blobId: unpopulatedNote.Id & "-sketch-1",
+                                            queued:true
                                         }
                                     );
                                     Patch(
@@ -589,7 +598,8 @@ Screen_Home_Screen As screen:
                                             index: 1,
                                             id: unpopulatedNote.Id & "-signature-1",
                                             blob: "data:image;application/octet-stream;base64," & pnbRec.signature,
-                                            blobId: unpopulatedNote.Id & "-signature-1"
+                                            blobId: unpopulatedNote.Id & "-signature-1",
+                                            queued:true
                                         }
                                     );
                                     Patch(
@@ -609,7 +619,8 @@ Screen_Home_Screen As screen:
                                             index: 1,
                                             id: ThisRecord.id,
                                             blob: "data:image;application/octet-stream;base64," & ThisRecord.blob,
-                                            blobId: ThisRecord.id
+                                            blobId: ThisRecord.id,
+                                            queued:true
                                         }
                                     );
                                 );
@@ -641,13 +652,33 @@ Screen_Home_Screen As screen:
                 );
                 
             )
-        Repeat: =true
-        Start: =tmrNotePopulateStart
         Text: |-
             ="Note Populate " & Text(Time(0, 0, Self.Value/1000), "hh:mm:ss")
         Visible: =glbDebug
         Width: =128
         X: =512
-        Y: =1028
+        Y: =1066
         ZIndex: =34
+
+    Label6 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =If(glbOnline,Green,Red)
+        FontWeight: =FontWeight.Bold
+        Size: =15
+        Text: |-
+            ="v:" & glbAppVersion 
+        Width: =65
+        ZIndex: =35
+
+    btnDebug_1 As button:
+        Height: =70
+        OnSelect: =Navigate(scrPhotoArchive);
+        Size: =24
+        Text: ="PhotoArchive"
+        Visible: =glbDebug
+        Width: =280
+        X: =320
+        Y: =446
+        ZIndex: =36
 

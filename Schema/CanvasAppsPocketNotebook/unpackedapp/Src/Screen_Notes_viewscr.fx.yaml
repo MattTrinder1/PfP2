@@ -1,5 +1,5 @@
 Screen_Notes_viewscr As screen:
-    OnVisible: =
+    OnVisible: =Select(Icon3);
 
     Label1_7 As label:
         Align: =Align.Center
@@ -43,7 +43,7 @@ Screen_Notes_viewscr As screen:
             Height: =831
             Width: =Parent.Width
             X: =0
-            Y: =1
+            Y: =2
             ZIndex: =1
 
             TextInput_Notes_3 As text:
@@ -203,15 +203,73 @@ Screen_Notes_viewscr As screen:
                 Size: =21
                 Text: |-
                     =If (
-                        CountRows(
-                            Filter(blobsToSave,noteId = ViewNoteId And type = "photo")
-                        ) = 0,
+                        LookUp(
+                            'Notebook Offline',
+                            Id = ViewNoteId
+                        ).photoCount = 0,
                         "No Exhibits Added",
-                        "Exhibits"
+                        "Exhibits (" & LookUp(
+                            'Notebook Offline',
+                            Id = ViewNoteId
+                        ).photoCount & ")"
                     )
-                Width: =545
+                Width: =504
                 X: =40
+                Y: =3
                 ZIndex: =1
+
+            Icon3 As icon.Add:
+                Color: =RGBA(153, 153, 153, 1)
+                Height: =50
+                Icon: =Icon.Download
+                OnSelect: |-
+                    =//check if we are online
+                    Set (
+                        glbOnline,
+                        IfError(
+                            AzureQueues.PutMessage(
+                                "onlinecheckqueue",
+                                User().Email
+                            ),
+                            false,
+                            true
+                        )
+                    );
+                    If(
+                        glbOnline,
+                        ForAll(
+                            Filter(
+                                notePhotos,
+                                noteId = ViewNoteId
+                            ),
+                            Patch(
+                                notePhotos,
+                                ThisRecord,
+                                {
+                                    blob: "data:image;application/octet-stream;base64," & PhotoGet.GetPhotoThumbnail(
+                                        ThisRecord.id,
+                                        User().Email
+                                    ).blob,
+                                    downloaded: true
+                                }
+                            )
+                        );
+                        SaveData(
+                            notePhotos,
+                            "notePhotosCache"
+                        );
+                        
+                    )
+                Visible: |-
+                    =
+                    LookUp(
+                        'Notebook Offline',
+                        Id = ViewNoteId
+                    ).photoCount > 0
+                Width: =50
+                X: =544
+                Y: =8
+                ZIndex: =2
 
         DataCard12 As dataCard.blankCard:
             BorderColor: =RGBA(0, 0, 0, 1)
@@ -220,9 +278,10 @@ Screen_Notes_viewscr As screen:
             Fill: =RGBA(0, 0, 0, 0)
             Height: =100
             Visible: |-
-                =    CountRows(
-                        Filter(blobsToSave,noteId = ViewNoteId And type = "photo")
-                    ) > 0
+                =LookUp (
+                    'Notebook Offline',
+                    Id = ViewNoteId
+                ).photoCount > 0
             Width: =640
             X: =0
             Y: =6
@@ -232,7 +291,7 @@ Screen_Notes_viewscr As screen:
                 BorderColor: =RGBA(153, 153, 153, 1)
                 BorderThickness: =2
                 Height: =CountRows(Gallery2.AllItems) * Gallery2.TemplateHeight
-                Items: =Filter(blobsToSave,noteId = ViewNoteId And type="photo")
+                Items: =Filter(notePhotos,noteId = ViewNoteId)
                 Layout: =Layout.Vertical
                 TemplatePadding: =0
                 TemplateSize: =370
@@ -246,6 +305,7 @@ Screen_Notes_viewscr As screen:
                     Image: =ThisItem.blob
                     OnSelect: =Select(Parent)
                     Width: =544
+                    Y: =10
                     ZIndex: =1
 
                 Separator2 As rectangle:
@@ -339,7 +399,7 @@ Screen_Notes_viewscr As screen:
                 )
             Width: =640
             X: =0
-            Y: =2
+            Y: =1
             ZIndex: =9
 
             TextInput_Notes_4 As text:

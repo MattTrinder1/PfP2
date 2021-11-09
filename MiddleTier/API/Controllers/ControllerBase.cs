@@ -85,7 +85,7 @@ namespace API.Controllers
             {
                 incident.cp_singleofficerevent = adminDataAccess.GetOptionSetValue("cp_yes_no_na_list", sd.SingleOfficer);
             }
-            if (sd.AdditionalOfficerIds.Any())
+            if (sd.AdditionalOfficerIds != null && sd.AdditionalOfficerIds.Any())
             {
                 //should only be one
                 incident.cp_additionalofficer = new EntityReference("systemuser", sd.AdditionalOfficerIds.Single());
@@ -181,14 +181,20 @@ namespace API.Controllers
             return false;
         }
 
-        protected T GetDataverseEntity<T>(IncidentRelatedEntityBase entity, Guid? ownerId = null) where T:DVEntityBase
+        protected T GetDataverseEntity<T>(IncidentRelatedEntityBase entity, Guid? ownerId = null, Guid? existingEntityId = null) where T : DVEntityBase
         {
             var dvEntity = mapper.Map<T>(entity);
 
-            if (dvEntity.Id == Guid.Empty)
+            if (existingEntityId != null)
+            {
+                dvEntity.Id = existingEntityId.Value;
+            }
+            else if (dvEntity.Id == Guid.Empty)
             {
                 dvEntity.Id = Guid.NewGuid();
             }
+            
+
             if (typeof(T).GetProperty("cp_enteredby") != null && ownerId.HasValue)
             {
                 typeof(T).GetProperty("cp_enteredby").SetValue(dvEntity, new EntityReference("systemuser", ownerId.Value));
