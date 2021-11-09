@@ -1,0 +1,235 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_covidstgs",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_covidstg",
+    "MaxGetRowsCount": 2000,
+    "Name": "Covid STGS",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "cp_bwvused": "BWV Used",
+      "cp_circumstances": "Circumstances",
+      "cp_covidstg_AsyncOperations": "System Jobs",
+      "cp_covidstg_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_covidstg_DuplicateBaseRecord": "Duplicate Records (cp_covidstg_DuplicateBaseRecord)",
+      "cp_covidstg_DuplicateMatchingRecord": "Duplicate Records (cp_covidstg_DuplicateMatchingRecord)",
+      "cp_covidstg_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_covidstg_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_covidstg_ProcessSession": "Process Sessions",
+      "cp_covidstg_SyncErrors": "Sync Errors",
+      "cp_covidstgid": "Covid STG",
+      "cp_cp_covidstg_cp_covidoffenceverificationstg_covidstg": "Covid Verification STG",
+      "cp_dateofbirth": "Date of Birth",
+      "cp_description": "Description",
+      "cp_district": "District",
+      "cp_documentcheck": "Document Check",
+      "cp_documentid": "Document ID",
+      "cp_email": "Email",
+      "cp_enteredby": "Entered By",
+      "cp_forename": "Forename",
+      "cp_gender": "Gender",
+      "cp_hasforcebeenused": "Has Force Been Used",
+      "cp_housename": "House Name",
+      "cp_housenumber": "House Number",
+      "cp_incidentdate": "Incident Date",
+      "cp_incidentnumber": "Incident Number",
+      "cp_incidentsuffix": "Incident Suffix",
+      "cp_lat": "Lat",
+      "cp_locationcounty": "Location County",
+      "cp_locationstreet": "Location Street",
+      "cp_locationtown": "Location Town",
+      "cp_long": "Long",
+      "cp_name": "Name",
+      "cp_newdateofbirth": "Date of Birth (New)",
+      "cp_offencecode": "Offence Code ID",
+      "cp_offencedateandtime": "Offence Date and Time",
+      "cp_officerdefinedethnicity": "Officer-Defined Ethnicity",
+      "cp_photo1": "Photo 1",
+      "cp_photo1caption": "Photo 1 Caption",
+      "cp_photo1id": "cp_photo1Id",
+      "cp_photo2": "Photo 2",
+      "cp_photo2caption": "Photo 2 Caption",
+      "cp_photo2id": "cp_photo2Id",
+      "cp_photo3": "Photo 3",
+      "cp_photo3caption": "Photo 3 Caption",
+      "cp_photo3id": "cp_photo3Id",
+      "cp_photo4": "Photo 4",
+      "cp_photo4caption": "Photo 4 Caption",
+      "cp_photo4id": "cp_photo4Id",
+      "cp_photo5": "Photo 5",
+      "cp_photo5caption": "Photo 5 Caption",
+      "cp_photo5id": "cp_photo5Id",
+      "cp_pnchheck": "PNC Check",
+      "cp_postcode": "Postcode",
+      "cp_replytocaution": "Reply To Caution",
+      "cp_selfdefinedethnicity": "Self-Defined Ethnicity",
+      "cp_stagingentrystatus": "Staging Entry Status",
+      "cp_street": "Street",
+      "cp_submissionerrors": "Submission Errors",
+      "cp_surname": "Surname",
+      "cp_telephonenumber": "Telephone Number",
+      "cp_title": "Title",
+      "cp_town": "Town",
+      "cp_tpa": "TPA",
+      "cp_useofpowerorissuefine": "Use of Power or Issue Fine",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Covid STGS",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Covid STGS (Views)",
+    "Name": "_cp_covidstg_views",
+    "RelatedEntityName": "Covid STGS",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "04a52024-54bd-47ab-9d84-a727a205ebc9": "Covid STG Lookup View",
+      "50e8a0fe-439b-4ab0-b4e1-a7ecbae78144": "Active Covid Submissions STG",
+      "acc1f3a7-6219-49a3-b078-e51f4dbeb8fe": "Covid STG Advanced Find View",
+      "e47db35b-7143-4790-afae-00a6fa924573": "Covid STG Associated View",
+      "fbe8388c-98b7-4d4d-b4ad-61f2e7ec3424": "Inactive Covid Submissions STG"
+    }
+  },
+  {
+    "DisplayName": "Status (Covid STGS)",
+    "Name": "cp_covidstg_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Covid STGS"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Covid STGS",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Covid STGS)",
+    "Name": "cp_covidstg_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Covid STGS"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Covid STGS",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "BWV Used (Covid STGS)",
+    "Name": "cp_cp_covidstg_bwvused",
+    "OptionSetInfoNameMapping": {
+      "0": "No",
+      "1": "Yes"
+    },
+    "OptionSetIsBooleanValued": true,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "cp_bwvused",
+        "OptionSetReferenceEntityName": "Covid STGS"
+      }
+    },
+    "OptionSetTypeKey": "BooleanType",
+    "RelatedColumnInvariantName": "cp_bwvused",
+    "RelatedEntityName": "Covid STGS",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Has Force Been Used (Covid STGS)",
+    "Name": "cp_cp_covidstg_hasforcebeenused",
+    "OptionSetInfoNameMapping": {
+      "0": "No",
+      "1": "Yes"
+    },
+    "OptionSetIsBooleanValued": true,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "cp_hasforcebeenused",
+        "OptionSetReferenceEntityName": "Covid STGS"
+      }
+    },
+    "OptionSetTypeKey": "BooleanType",
+    "RelatedColumnInvariantName": "cp_hasforcebeenused",
+    "RelatedEntityName": "Covid STGS",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "PNC Check (Covid STGS)",
+    "Name": "cp_cp_covidstg_pnchheck",
+    "OptionSetInfoNameMapping": {
+      "0": "No",
+      "1": "Yes"
+    },
+    "OptionSetIsBooleanValued": true,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "cp_pnchheck",
+        "OptionSetReferenceEntityName": "Covid STGS"
+      }
+    },
+    "OptionSetTypeKey": "BooleanType",
+    "RelatedColumnInvariantName": "cp_pnchheck",
+    "RelatedEntityName": "Covid STGS",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Staging Entry Status",
+    "Name": "cp_stagingentrystatus",
+    "OptionSetInfoNameMapping": {
+      "778230000": "Draft",
+      "778230001": "Ready for Submission",
+      "778230002": "Pending Submission",
+      "778230003": "Invalid",
+      "778230004": "Submitted"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": true,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "cp_stagingentrystatus",
+        "OptionSetReferenceEntityName": "Covid STGS"
+      }
+    },
+    "OptionSetTypeKey": "PicklistType",
+    "RelatedColumnInvariantName": "cp_stagingentrystatus",
+    "RelatedEntityName": "Covid STGS",
+    "Type": "OptionSetInfo"
+  }
+]

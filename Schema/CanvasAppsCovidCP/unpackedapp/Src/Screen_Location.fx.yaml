@@ -1,0 +1,420 @@
+Screen_Location As screen:
+    OnVisible: |
+        =Set(AllReset, true);
+               UpdateContext({AllReset: true});
+        
+        Set(locationa,LightGoldenRodYellow);UpdateContext({locationa:LightGoldenRodYellow});
+        Set(locationb,LightGoldenRodYellow);UpdateContext({locationb:LightGoldenRodYellow});
+        Set(locationc,LightGoldenRodYellow);UpdateContext({locationc:LightGoldenRodYellow});
+        Set(locationd,LightGoldenRodYellow);UpdateContext({locationd:LightGoldenRodYellow});
+        Set(locatione,LightGoldenRodYellow);UpdateContext({locatione:LightGoldenRodYellow});
+        Set(locationf,LightGoldenRodYellow);UpdateContext({locationf:LightGoldenRodYellow});
+        Set(locationg,LightGoldenRodYellow);UpdateContext({locationg:LightGoldenRodYellow});
+        Set(locationh,LightGoldenRodYellow);UpdateContext({locationh:LightGoldenRodYellow});
+        Set(locationi,LightGoldenRodYellow);UpdateContext({locationi:LightGoldenRodYellow});
+        
+        If(Len(Txt_longtitude.Text)>0,UpdateContext({locationa:Transparent}),UpdateContext({locationa:LightGoldenRodYellow}));
+        If(Len(Txt_latitude.Text)>0,UpdateContext({locationb:Transparent}),UpdateContext({locationb:LightGoldenRodYellow}));
+        If(Len(Txt_Description.Text)>0,UpdateContext({locationc:Transparent}),UpdateContext({locationc:LightGoldenRodYellow}));
+        If(Len(TextInput_Location_Street.Text)>0,UpdateContext({locationd:Transparent}),UpdateContext({locationd:LightGoldenRodYellow}));
+        If(Len(TextInput_Location_Town.Text)>0,UpdateContext({locatione:Transparent}),UpdateContext({locatione:LightGoldenRodYellow}));
+        If(Len(TextInput_Location_County.Text)>0,UpdateContext({locationf:Transparent}),UpdateContext({locationf:LightGoldenRodYellow}));
+        If(Len(Dropdown_TPA.Selected.cp_name)>0,UpdateContext({locationh:White}),UpdateContext({locationh:LightGoldenRodYellow}))
+        
+        
+        
+        
+        
+        
+
+    Label1_3 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Location"
+        Width: =640
+        ZIndex: =1
+
+    "'exit icon 3_1' As icon.Cancel":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =576
+        Y: =11
+        ZIndex: =2
+
+    "'Back Icon 2_1' As icon.ArrowLeft":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Screen_home_screen,ScreenTransition.UnCover)
+        X: =28
+        Y: =11
+        ZIndex: =3
+
+    Canvas_Location As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1050
+        Width: =Parent.Width
+        Y: =86
+        ZIndex: =4
+
+        DataCard_Location As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =1267
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Drpdn_Location_key As dropdown:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
+                Default: =Covid_Primary_key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                Items: ='Covid Offline'.Key
+                OnChange: |-
+                    =Set(AllReset, true);
+                           UpdateContext({AllReset: true});
+                PressedFill: =RGBA(116, 116, 116, 1)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =22
+                ZIndex: =4
+
+            Txt_longtitude As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Covid Offline',Key=Drpdn_Location_key.Selected.Key).Latitude & lat 
+                Fill: =locationa
+                Height: =70
+                HintText: ="Latitude"
+                OnChange: |-
+                    =If(Len(Txt_longtitude.Text)>0,UpdateContext({locationa:Transparent}),UpdateContext({locationa:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Txt_longtitude.Text)>0,UpdateContext({locationa:Transparent}),UpdateContext({locationa:LightGoldenRodYellow}))
+                Reset: =AllReset
+                Size: =21
+                Width: =196
+                X: =42
+                Y: =146
+                ZIndex: =5
+
+            Txt_latitude As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Covid Offline',Key=Drpdn_Location_key.Selected.Key).Longitude & lng
+                Fill: =locationb
+                Height: =70
+                HintText: ="Longtitude"
+                OnChange: |-
+                    =If(Len(Txt_latitude.Text)>0,UpdateContext({locationb:Transparent}),UpdateContext({locationb:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Txt_latitude.Text)>0,UpdateContext({locationb:Transparent}),UpdateContext({locationb:LightGoldenRodYellow}))
+                Reset: =AllReset
+                Size: =21
+                Width: =196
+                X: =328
+                Y: =146
+                ZIndex: =6
+
+            Lbl_GPS As label:
+                Height: =70
+                Size: =21
+                Text: ="GPS"
+                Width: =545
+                X: =42
+                Y: =92
+                ZIndex: =7
+
+            Lbl_Street As label:
+                Height: =70
+                Size: =21
+                Text: ="Street"
+                Width: =545
+                X: =42
+                Y: =453
+                ZIndex: =8
+
+            Lbl_Town As label:
+                Height: =70
+                Size: =21
+                Text: ="Town"
+                Width: =545
+                X: =42
+                Y: =582
+                ZIndex: =9
+
+            Lbl_TPA As label:
+                Height: =70
+                Size: =21
+                Text: =Proper(First(ActiveCustomerSettingsOffline).cp_policingareatext)
+                Width: =545
+                X: =42
+                Y: =978
+                ZIndex: =10
+
+            Label_asterik_town As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =481
+                ZIndex: =11
+
+            Label_asterik_street As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =601
+                ZIndex: =12
+
+            Label_asterik_description As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =998
+                ZIndex: =13
+
+            TextInput_Location_Street As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Covid Offline',Key=Drpdn_Location_key.Selected.Key).'Location Street'
+                Fill: =locationd
+                Height: =70
+                OnChange: |-
+                    =If(Len(TextInput_Location_Street.Text)>0,UpdateContext({locationd:Transparent}),UpdateContext({locationd:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(TextInput_Location_Street.Text)>0,UpdateContext({locationd:Transparent}),UpdateContext({locationd:LightGoldenRodYellow}));
+                Reset: =AllReset
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =512
+                ZIndex: =14
+
+            TextInput_Location_Town As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Covid Offline',Key=Drpdn_Location_key.Selected.Key).'Location Town'
+                Fill: =locatione
+                Height: =70
+                OnChange: |-
+                    =If(Len(TextInput_Location_Town.Text)>0,UpdateContext({locatione:Transparent}),UpdateContext({locatione:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(TextInput_Location_Town.Text)>0,UpdateContext({locatione:Transparent}),UpdateContext({locatione:LightGoldenRodYellow}))
+                Reset: =AllReset
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =642
+                ZIndex: =15
+
+            Dropdown_TPA As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(116, 116, 116, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
+                Default: =LookUp('Covid Offline',Key=Drpdn_Location_key.Selected.Key).'TPA name'
+                Fill: =locationh
+                Height: =70
+                Items: =TPA
+                OnChange: |-
+                    =If(Len(Dropdown_TPA.Selected.cp_name)>0,UpdateContext({locationh:White}),UpdateContext({locationh:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Dropdown_TPA.Selected.cp_name)>0,UpdateContext({locationh:White}),UpdateContext({locationh:LightGoldenRodYellow}))
+                Reset: =AllReset
+                SelectionFill: =RGBA(153, 153, 153, 1)
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =1037
+                ZIndex: =16
+
+            Btn_save_continue_9 As button:
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =72
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =UpdateIf('Covid Offline',Key=Drpdn_Location_key.Selected.Key,{
+                        GPS: Txt_latitude.Text && Txt_longtitude.Text,
+                        Longitude: Txt_longtitude.Text,
+                        Latitude: Txt_latitude.Text,
+                        Description: Txt_Description.Text,
+                        'Location Street': TextInput_Location_Street.Text,
+                        'Location Town': TextInput_Location_Town.Text,
+                        'Location County': TextInput_Location_County.Text,
+                        Force:"Cumbria",
+                        'TPA name': Dropdown_TPA.Selected.cp_name,
+                        TPAId: Dropdown_TPA.Selected.cp_territorialpolicingareaid
+                    
+                        }
+                    );
+                    SaveData('Covid Offline',"Covid Offline"); Navigate(Screen_home_screen,ScreenTransition.Cover)
+                Size: =24
+                Text: ="Save & Continue"
+                Width: =545
+                X: =42
+                Y: =1153
+                ZIndex: =17
+
+            Icon4 As icon.Waypoint:
+                Color: =RGBA(116, 116, 116, 1)
+                Icon: =Icon.Waypoint
+                OnSelect: |-
+                    =UpdateContext({lat: Location.Latitude, lng: Location.Longitude});
+                    
+                    If(Len(Txt_latitude.Text)>0,UpdateContext({locationb:Transparent}),UpdateContext({locationb:LightGoldenRodYellow}));
+                    
+                    If(Len(Txt_longtitude.Text)>0,UpdateContext({locationa:Transparent}),UpdateContext({locationa:LightGoldenRodYellow}));
+                Tooltip: ="Press here for latest GPS cordinates"
+                X: =544
+                Y: =146
+                ZIndex: =18
+
+            Lbl_Town_3 As label:
+                Height: =70
+                Size: =21
+                Text: ="County"
+                Width: =545
+                X: =42
+                Y: =712
+                ZIndex: =19
+
+            Label_asterik_street_3 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =731
+                ZIndex: =20
+
+            TextInput_Location_County As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Covid Offline',Key=Drpdn_Location_key.Selected.Key).'Location County'
+                Fill: =locationf
+                Height: =70
+                OnChange: |-
+                    =If(Len(TextInput_Location_County.Text)>0,UpdateContext({locationf:Transparent}),UpdateContext({locationf:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(TextInput_Location_County.Text)>0,UpdateContext({locationf:Transparent}),UpdateContext({locationf:LightGoldenRodYellow}))
+                Reset: =AllReset
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =772
+                ZIndex: =21
+
+            Lbl_Town_4 As label:
+                Height: =70
+                Size: =21
+                Text: ="Force"
+                Width: =545
+                X: =42
+                Y: =845
+                ZIndex: =22
+
+            TextInput_Force As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =First(ActiveCustomerSettingsOffline).cp_customername
+                DisplayMode: =DisplayMode.View
+                Fill: =locationg
+                Height: =70
+                OnChange: |-
+                    =If(Len(TextInput_Force.Text)>0,UpdateContext({locationg:Transparent}),UpdateContext({locationg:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(TextInput_Force.Text)>0,UpdateContext({locationg:Transparent}),UpdateContext({locationg:LightGoldenRodYellow}))
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =905
+                ZIndex: =23
+
+            Label_asterik_street_4 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =868
+                ZIndex: =24
+
+            Lbl_Street_3 As label:
+                Height: =70
+                Size: =21
+                Text: ="Description"
+                Width: =545
+                X: =42
+                Y: =216
+                ZIndex: =25
+
+            Txt_Description As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Covid Offline',Key=Drpdn_Location_key.Selected.Key).Description
+                EnableSpellCheck: =true
+                Fill: =locationc
+                Height: =194
+                HintText: ="Please enter description "
+                Mode: =TextMode.MultiLine
+                OnChange: |-
+                    =If(Len(Txt_Description.Text)>0,UpdateContext({locationc:Transparent}),UpdateContext({locationc:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Txt_Description.Text)>0,UpdateContext({locationc:Transparent}),UpdateContext({locationc:LightGoldenRodYellow}))
+                Reset: =AllReset
+                Size: =21
+                Tooltip: =LookUp('Covid Offline',Key=Drpdn_Location_key.Selected.Key).Description
+                Width: =545
+                X: =42
+                Y: =275
+                ZIndex: =26
+
+            Label_asterik_tpa As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =29
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =236
+                ZIndex: =27
+
+            Label_asterik_tpa_1 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =29
+                Size: =21
+                Text: ="*"
+                Width: =28
+                X: =210
+                Y: =117
+                ZIndex: =28
+
+            Label_asterik_tpa_2 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =29
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =502
+                Y: =117
+                ZIndex: =29
+

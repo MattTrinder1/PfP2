@@ -1,0 +1,970 @@
+Screen_home_screen As screen:
+    OnVisible: |-
+        =Set(
+            checkicon,
+            false
+        );
+        //incident warning
+        UpdateContext({Warnunsubmit: false});
+        UpdateContext({timerstart: false});
+        UpdateContext({timerreset: true});
+        If(
+            CountRows(Gallery_unsubmitted.AllItems) > 0,
+            UpdateContext({timerstart: true})
+        );
+        If(
+            CountRows(Gallery_unsubmitted.AllItems) > 0,
+        //location 
+            UpdateContext({stafftimerstart_1: false});
+            UpdateContext({stafftimerreset_1: true});
+            UpdateContext({Warnstaffdetails_1: false});
+            If(
+                CountRows(Gallery_unsubmitted.AllItems) > 0 And Len(Txt_Description.Text) > 0 And Len(Txt_longtitude.Text) > 0 And Len(Txt_latitude.Text) > 0 And Len(TextInput_Location_Street.Text) > 0 And Len(TextInput_Location_County.Text) > 0 And Len(TextInput_Location_Town.Text) > 0 And Len(Dropdown_TPA.Selected.cp_name) > 0,
+                UpdateContext({stafftimerstart_1: false}),
+                UpdateContext({stafftimerstart_1: true})
+            );
+            //person
+        UpdateContext({stafftimerstart: false});
+            UpdateContext({stafftimerreset: true});
+            UpdateContext({Warnstaffdetails: false});
+            If(
+                CountRows(Gallery_unsubmitted.AllItems) > 0 And Len(Dropdown_person_title.Selected.cp_name) > 0 And Len(txt_person_forename.Text) > 0 And Len(Txt_person_surname.Text) > 0 And Len(Text(DatePicker_dob.SelectedDate)) > 0 And Len(Dropdown_Gender.Selected.cp_name) > 0 And Len(Dropdown_Self_defined_ethnicity.Selected.cp_name) > 0 And Len(Dropdown_Officer_defined_ethnicity.Selected.cp_name) > 0 And Len(Radio_PNC_ID.Selected.Value) > 0 And Len(Dropdown_IDchecks_made.Selected.cp_name) > 0 And Len(TextInput_DocumentID.Text) > 0 And (!IsBlank(Txt_housename) Or !IsBlank(Txt_houseno)) And Len(Txt_Street.Text) > 0 And/*Len(Txt_District.Text)>0 And */ Len(Txt_Town.Text) > 0 And Len(TextInput_Postcode.Text) > 0,
+                UpdateContext({stafftimerstart: false}),
+                UpdateContext({stafftimerstart: true})
+            );
+            
+        //offence
+        UpdateContext({Warnincidenttimerstart: false});
+            UpdateContext({Warnincidenttimerreset: true});
+            UpdateContext({Warnincidentchar: false});
+            If(
+                CountRows(Gallery_unsubmitted.AllItems) > 0 /*And Len(Dropdown_Record_use_of_powers.Selected.cp_name)>0 */And Len(Combobox_offence_search.Selected.cp_offencecode) > 0 And Len(TextInput_Caution.Text) > 0 And Len(TextInput_Circumstances.Text) > 0 And Len(Radio_BMV_Used.Selected.Value) > 0 And Len(Radio_Force_been_used.Selected.Value) > 0,
+                UpdateContext({Warnincidenttimerstart: false}),
+                UpdateContext({Warnincidenttimerstart: true})
+            );
+            ,
+            UpdateContext({Warnincidentchar: false});
+            UpdateContext({tactictsInvolved: false});
+            UpdateContext({Warnstaffdetails_1: false});
+            
+        );
+        UpdateContext({WarnincidentVerifystart: false});
+        UpdateContext({WarnincidentVerify: false});
+        If(
+            CountRows(
+                Filter(
+                    'Covid Offline',
+                    Key = Covid_Primary_key && !IsBlank('Offence Code name')
+                )
+            ) > 0 && IsBlank(First(LookUp('Covid Offline', Key = Covid_Primary_key,Verified)).Verified),
+            UpdateContext({WarnincidentVerifytimerreset: true});
+            UpdateContext({WarnincidentVerifystart: false});
+            UpdateContext({WarnincidentVerifystart: true}),
+            UpdateContext({WarnincidentVerify: false})
+        )
+
+    Lbl_header_2 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =90
+        Size: =21
+        Text: =If (IsBlank(Covid_Primary_key),"Covid 19","Covid 19"& Char(10) & "("  &  Covid_Primary_key & ")")
+        Width: =640
+        ZIndex: =1
+
+    Icn_exit_2 As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =66
+        Icon: =Icon.Cancel
+        OnSelect: =Launch("/providers/Microsoft.PowerApps/apps/8eb26210-4ef7-4d42-a6f2-65b31de08704")
+        X: =576
+        Y: =11
+        ZIndex: =2
+
+    Btn_save_43 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |-
+            =Set(i,i+1); 
+            /*Set(
+            Covid_Primary_key, txt_person_forename.Text & " " & Txt_person_surname.Text & " " & Txt_incident_no.Text & " No:" & i
+             );*/
+                    Navigate(Screen_Incident,ScreenTransition.Cover);Set(flagback,true);
+        Size: =24
+        Text: ="Incident"
+        Width: =552
+        X: =44
+        Y: =220
+        ZIndex: =3
+
+    Btn_save_57 As button:
+        DisplayMode: =If(CountRows('Covid Offline') =0, DisplayMode.Disabled,DisplayMode.Edit)
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Screen_Offence,ScreenTransition.Cover)
+        Size: =24
+        Text: ="Offence Details"
+        Width: =552
+        X: =44
+        Y: =520
+        ZIndex: =4
+
+    Btn_save_56 As button:
+        DisplayMode: =If(CountRows('Covid Offline') =0, DisplayMode.Disabled,DisplayMode.Edit)
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Screen_Person)
+        Size: =24
+        Text: ="Person"
+        Width: =552
+        X: =45
+        Y: =320
+        ZIndex: =5
+
+    Btn_save_59 As button:
+        DisplayMode: =If(CountRows('Covid Offline') =0, DisplayMode.Disabled,DisplayMode.Edit)
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |-
+            =Navigate(
+                Screen_Location,
+                ScreenTransition.Cover
+            )
+        Size: =24
+        Text: ="Location"
+        Width: =552
+        X: =44
+        Y: =420
+        ZIndex: =6
+
+    Btn_save_47 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Screen_Unfinished_Forms)
+        Size: =24
+        Text: ="Unfinished Forms"
+        Width: =552
+        X: =44
+        Y: =120
+        ZIndex: =7
+
+    Icon1 As icon.ListWatchlistRemind:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =60
+        Icon: =Icon.ListWatchlistRemind
+        Width: =60
+        X: =532
+        Y: =126
+        ZIndex: =8
+
+    Icon6 As icon.DocumentwithContent:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =60
+        Icon: =Icon.DocumentWithContent
+        Width: =60
+        X: =532
+        Y: =226
+        ZIndex: =9
+
+    Icon5 As icon.Person:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Person
+        X: =532
+        Y: =326
+        ZIndex: =10
+
+    Icon7 As icon.Waypoint:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Waypoint
+        Width: =65
+        X: =532
+        Y: =426
+        ZIndex: =11
+
+    Icon2 As icon.LogJournal:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.LogJournal
+        X: =532
+        Y: =526
+        ZIndex: =12
+
+    Btn_Sync As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =50
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |
+            =Set(
+                gblLoading1,
+                true
+            );
+            Refresh('Lookup Values');
+            Refresh('Lookup Fields');
+            Refresh('Lookup Mappings');
+            Refresh('Territorial Policing Areas');
+            Refresh('Covid STGS');
+            Refresh('Covid Offences');
+            Refresh('Customer Settings');
+            Refresh(Users);
+            Set(
+                Active,
+                "Active"
+            );
+            //Covid Lookups
+            Set(
+                Titleid,
+                LookUp(
+                    'Lookup Fields',
+                    cp_id = "24"
+                ).cp_id
+            );
+            ClearCollect(
+                Titleoffline,
+                {
+                    cp_name: "",
+                    cp_lookupvalueid: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.cp_id = Titleid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                Titleoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                Titleoffline,
+                "Title offline"
+            );
+            Set(
+                Additionalnameid,
+                LookUp(
+                    'Lookup Fields',
+                    cp_id = "20"
+                ).cp_id
+            );
+            ClearCollect(
+                Additionalnameoffline,
+                {
+                    cp_name: "",
+                    cp_lookupvalueid: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.cp_id = Additionalnameid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                Additionalnameoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                Additionalnameoffline,
+                "Additional Name offline"
+            );
+            Set(
+                ethnicitycodeid,
+                LookUp(
+                    'Lookup Fields',
+                    cp_id = "22"
+                ).cp_id
+            );
+            ClearCollect(
+                ethnicityoffline,
+                {
+                    cp_name: "",
+                    cp_lookupvalueid: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.cp_id = ethnicitycodeid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                ethnicityoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                ethnicityoffline,
+                "ethnicity code offline"
+            );
+            Set(
+                Prefferedmeanofcontactid,
+                LookUp(
+                    'Lookup Fields',
+                    cp_id = "34"
+                ).cp_id
+            );
+            ClearCollect(
+                Prefferedmeanofcontactoffline,
+                {
+                    cp_name: "",
+                    cp_lookupvalueid: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.cp_id = Prefferedmeanofcontactid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                Prefferedmeanofcontactoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                Prefferedmeanofcontactoffline,
+                "Preffered mean of contact offline"
+            );
+            Set(
+                Selfdefinedethnicityid,
+                LookUp(
+                    'Lookup Fields',
+                    cp_id = "31"
+                ).cp_id
+            );
+            ClearCollect(
+                Selfdefinedethnicityoffline,
+                {
+                    cp_name: "",
+                    cp_lookupvalueid: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.cp_id = Selfdefinedethnicityid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                Selfdefinedethnicityoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                Selfdefinedethnicityoffline,
+                "Self-defined ethnicity offline"
+            );
+            Set(
+                Occupationid,
+                LookUp(
+                    'Lookup Fields',
+                    cp_id = "35"
+                ).cp_id
+            );
+            ClearCollect(
+                Occupationoffline,
+                {
+                    cp_name: "",
+                    cp_lookupvalueid: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.cp_id = Occupationid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                Occupationoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                Occupationoffline,
+                "Occupation offline"
+            );
+            Set(
+                Officerdefinedethnicityid,
+                LookUp(
+                    'Lookup Fields',
+                    cp_id = "32"
+                ).cp_id
+            );
+            ClearCollect(
+                Officerdefinedethnicityoffline,
+                {
+                    cp_name: "",
+                    cp_lookupvalueid: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.cp_id = Officerdefinedethnicityid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                Officerdefinedethnicityoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                Officerdefinedethnicityoffline,
+                "Officer defined ethnicity offline"
+            );
+            Set(
+                IDchecksMadeid,
+                LookUp(
+                    'Lookup Fields',
+                    cp_id = "77"
+                ).cp_id
+            );
+            ClearCollect(
+                IDchecksMadeoffline,
+                {
+                    cp_name: "",
+                    cp_lookupvalueid: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.cp_id = IDchecksMadeid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                IDchecksMadeoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                IDchecksMadeoffline,
+                "ID checks Made offline"
+            );
+             /*   Set(
+                    Recorduseofpowersid,
+                    LookUp(
+                        'Lookup Fields',
+                        'Filter Id' = "76"
+                    ).'Filter Id'
+                );
+                ClearCollect(
+                    Recorduseofpowersoffline,
+                    {
+                        cp_name: "",
+                        cp_lookupvalueid: "",
+                        cp_displaysequenceno: 0
+                    },
+                    ShowColumns(
+                        Filter(
+                            'Lookup Values',
+                            'Lookup Field'.'Filter Id' = Recorduseofpowersid
+                        ),
+                        "cp_name",
+                        "cp_lookupfield",
+                        "cp_lookupvalueid",
+                        "cp_displaysequenceno"
+                    )
+                );
+                Sort(
+                    Recorduseofpowersoffline,
+                    "cp_displaysequenceno"
+                );
+                SaveData(
+                    Recorduseofpowersoffline,
+                    "Record use of powersoffline"
+                ); */
+            Set(
+                genderid,
+                LookUp(
+                    'Lookup Fields',
+                    cp_id = "12"
+                ).cp_id
+            );
+            ClearCollect(
+                genderoffline,
+                {
+                    cp_name: "",
+                    cp_lookupvalueid: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.cp_id = genderid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                genderoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                genderoffline,
+                "Gender offline"
+            );
+            ClearCollect(
+                Offences,
+                {
+                    cp_offencedescription: "",
+                    cp_covidoffencesid: ""
+                },
+                ShowColumns(
+                    Filter(
+                        'Covid Offences',
+                        statuscode in Active
+                    ),
+                    "cp_offenceact",
+                    "cp_offencecode",
+                    "cp_covidoffencesid",
+                    "cp_offencedescription",
+                    "statuscode",
+                    "statecode"
+                )
+            );
+            SaveData(
+                Offences,
+                "Offences"
+            );
+            ClearCollect(
+                ActiveCustomerSettingsOffline,
+                ShowColumns(
+                    Filter(
+                        'Customer Settings',
+                        Active = 'Active (Customer Settings)'.Yes
+                    ),
+                    "cp_incidentprefix",
+                    "cp_customername",
+                    "cp_policingareatext",
+                    "cp_customersettingid",
+                    "cp_areacode"
+                )
+            );
+            Set (
+                IncidentNumberPrefix,
+                First(ActiveCustomerSettingsOffline).cp_incidentprefix
+            );
+            SaveData(
+                ActiveCustomerSettingsOffline,
+                "ActiveCustomerSettingsOffline"
+            );
+            ClearCollect(
+                TPA,
+                {
+                    cp_name: "",
+                    cp_territorialpolicingareaid: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Territorial Policing Areas',
+                        Customer.'Customer Setting' = First(ActiveCustomerSettingsOffline).cp_customersettingid
+                    ),
+                    "cp_name",
+                    "cp_territorialpolicingareaid"
+                )
+            );
+            SaveData(
+                TPA,
+                "TPA"
+            );
+            Set(
+                gblLoading1,
+                false
+            );
+            ClearCollect(
+                Userlocal,
+                {
+                    Usermaillocal: User().Email,
+                    Collarnumber: LookUp(
+                        Users,
+                        'Primary Email' = officermail
+                    ).'Collar Number',
+                    Name: LookUp(
+                        Users,
+                        'Primary Email' = officermail
+                    ).'Full Name'
+                }
+            );
+            SaveData(
+                Userlocal,
+                "Userlocal"
+            );
+            ClearCollect(
+                colCovidVerificationText,
+                'Covid Offence Verification Text'
+            );
+            SaveData(
+                colCovidVerificationText,
+                "colCovidVerificationText"
+            );
+            Set(
+                gblLoading1,
+                false
+            );
+            /*ClearCollect(
+                Usersalllocal,
+                ShowColumns(
+                    Users,
+                    "cp_StaffTitle",
+                    "cp_badgenumber",
+                    "firstname",
+                    "lastname",
+                    "cp_birthdate",
+                    "internalemailaddress",
+                    "cp_officerrank",
+                    "cp_officeryype",
+                    "cp_detective",
+                    "cp_PSUTraining",
+                    "cp_SafetyTraining",
+                    "cp_ServiceLength",
+                    "cp_Gender",
+                    "systemuserid"
+                )
+            );
+            SaveData(
+                Usersalllocal,
+                "Usersalllocal"
+            );*/
+        RadiusBottomLeft: =0
+        RadiusBottomRight: =0
+        RadiusTopLeft: =0
+        RadiusTopRight: =0
+        Size: =21
+        Text: ="Sync"
+        Width: =216
+        Y: =1086
+        ZIndex: =13
+
+    Label5_2 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(179, 179, 179, 1)
+        BorderThickness: =2
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(179, 179, 179, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =50
+        Size: =21
+        Text: =connectionstatus
+        Width: =207
+        X: =216
+        Y: =1086
+        ZIndex: =14
+
+    Timer_incident_char As timer:
+        BorderColor: =ColorFade(Timer_incident_char.Fill, -15%)
+        DisabledBorderColor: =ColorFade(Timer_incident_char.BorderColor, 70%)
+        DisabledColor: =ColorFade(Timer_incident_char.Fill, 90%)
+        DisabledFill: =ColorFade(Timer_incident_char.Fill, 70%)
+        Duration: =1000
+        FocusedBorderColor: =Timer_incident_char.BorderColor
+        Height: =47
+        HoverBorderColor: =ColorFade(Timer_incident_char.BorderColor, 20%)
+        OnTimerEnd: =
+        OnTimerStart: |
+            =UpdateContext({Warnincidentchar:!Warnincidentchar});
+        PressedBorderColor: =Timer_incident_char.Fill
+        PressedColor: =Timer_incident_char.Fill
+        PressedFill: =Timer_incident_char.Color
+        Repeat: =true
+        Reset: =Warnincidenttimerreset
+        Start: =Warnincidenttimerstart
+        Text: |-
+            =Text(Time(0, 0, Timer_incident_char.Value/1000), "hh:mm:ss")
+        Visible: =false
+        Width: =69
+        X: =119
+        Y: =536
+        ZIndex: =15
+
+    Timer_staff_det As timer:
+        BorderColor: =ColorFade(Timer_staff_det.Fill, -15%)
+        DisabledBorderColor: =ColorFade(Timer_staff_det.BorderColor, 70%)
+        DisabledColor: =ColorFade(Timer_staff_det.Fill, 90%)
+        DisabledFill: =ColorFade(Timer_staff_det.Fill, 70%)
+        Duration: =1000
+        FocusedBorderColor: =Timer_staff_det.BorderColor
+        Height: =47
+        HoverBorderColor: =ColorFade(Timer_staff_det.BorderColor, 20%)
+        OnTimerEnd: =
+        OnTimerStart: |-
+            =UpdateContext({Warnstaffdetails_1:!Warnstaffdetails_1})
+        PressedBorderColor: =Timer_staff_det.Fill
+        PressedColor: =Timer_staff_det.Fill
+        PressedFill: =Timer_staff_det.Color
+        Repeat: =true
+        Reset: =stafftimerreset_1
+        Start: =stafftimerstart_1
+        Text: |-
+            =Text(Time(0, 0, Timer_staff_det.Value/1000), "hh:mm:ss")
+        Visible: =false
+        Width: =69
+        X: =129
+        Y: =434
+        ZIndex: =16
+
+    Icon_warning_incident_charachteristics As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =Warnincidentchar
+        Width: =60
+        X: =66
+        Y: =526
+        ZIndex: =17
+
+    Timer_staff_det_1 As timer:
+        BorderColor: =ColorFade(Timer_staff_det_1.Fill, -15%)
+        DisabledBorderColor: =ColorFade(Timer_staff_det_1.BorderColor, 70%)
+        DisabledColor: =ColorFade(Timer_staff_det_1.Fill, 90%)
+        DisabledFill: =ColorFade(Timer_staff_det_1.Fill, 70%)
+        Duration: =1000
+        FocusedBorderColor: =Timer_staff_det_1.BorderColor
+        Height: =47
+        HoverBorderColor: =ColorFade(Timer_staff_det_1.BorderColor, 20%)
+        OnTimerEnd: =
+        OnTimerStart: |-
+            =UpdateContext({Warnstaffdetails:!Warnstaffdetails})
+        PressedBorderColor: =Timer_staff_det_1.Fill
+        PressedColor: =Timer_staff_det_1.Fill
+        PressedFill: =Timer_staff_det_1.Color
+        Repeat: =true
+        Reset: =stafftimerreset
+        Start: =stafftimerstart
+        Text: |-
+            =Text(Time(0, 0, Timer_staff_det_1.Value/1000), "hh:mm:ss")
+        Visible: =false
+        Width: =69
+        X: =138
+        Y: =334
+        ZIndex: =18
+
+    Icon_warning_staff_details As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =Warnstaffdetails_1
+        Width: =60
+        X: =66
+        Y: =426
+        ZIndex: =19
+
+    Icon2_1 As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =Warnunsubmit
+        Width: =60
+        X: =66
+        Y: =126
+        ZIndex: =20
+
+    Timer1_2 As timer:
+        AutoStart: =true
+        Duration: =1000
+        Height: =50
+        OnTimerEnd: |-
+            =If(Connection.Connected,UpdateContext({connectionstatus:"Online"}),UpdateContext({connectionstatus:"Offline"}))
+        Repeat: =true
+        Reset: =true
+        Start: =true
+        Visible: =false
+        Width: =116
+        X: =522
+        Y: =1086
+        ZIndex: =21
+
+    Icon_warning_staff_details_1 As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =Warnstaffdetails
+        Width: =60
+        X: =66
+        Y: =326
+        ZIndex: =22
+
+    Timer1 As timer:
+        BorderColor: =ColorFade(Timer1.Fill, -15%)
+        DisabledBorderColor: =ColorFade(Timer1.BorderColor, 70%)
+        DisabledColor: =ColorFade(Timer1.Fill, 90%)
+        DisabledFill: =ColorFade(Timer1.Fill, 70%)
+        Duration: =1000
+        FocusedBorderColor: =Timer1.BorderColor
+        Height: =67
+        HoverBorderColor: =ColorFade(Timer1.BorderColor, 20%)
+        OnTimerEnd: =
+        OnTimerStart: |-
+            =UpdateContext({Warnunsubmit:!Warnunsubmit})
+        PressedBorderColor: =Timer1.Fill
+        PressedColor: =Timer1.Fill
+        PressedFill: =Timer1.Color
+        Repeat: =true
+        Reset: =timerreset
+        Start: =timerstart
+        Text: |-
+            =Text(Time(0, 0, Timer1.Value/1000), "hh:mm:ss")
+        Visible: =false
+        Width: =175
+        X: =32
+        Y: =23
+        ZIndex: =23
+
+    Label5_3 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(179, 179, 179, 1)
+        BorderThickness: =2
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(179, 179, 179, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =50
+        Size: =21
+        Text: |-
+            ="App Version: " & glbAppVersion
+        Width: =265
+        X: =375
+        Y: =1086
+        ZIndex: =24
+
+    Btn_save_58 As button:
+        DisplayMode: =If(CountRows(Filter('Covid Offline', Key = Covid_Primary_key && !IsBlank('Offence Code name'))) = 0, DisplayMode.Disabled,DisplayMode.Edit)
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Screen_Verify_Offence,ScreenTransition.Cover)
+        Size: =24
+        Text: ="Verify Offence"
+        Width: =552
+        X: =45
+        Y: =620
+        ZIndex: =25
+
+    Icon5_2 As icon.Person:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Check
+        X: =530
+        Y: =624
+        ZIndex: =26
+
+    Icon_warning_incident_charachteristics_1 As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =WarnincidentVerify
+        Width: =60
+        X: =66
+        Y: =626
+        ZIndex: =27
+
+    Timer_incident_char_1 As timer:
+        BorderColor: =ColorFade(Timer_incident_char_1.Fill, -15%)
+        DisabledBorderColor: =ColorFade(Timer_incident_char_1.BorderColor, 70%)
+        DisabledColor: =ColorFade(Timer_incident_char_1.Fill, 90%)
+        DisabledFill: =ColorFade(Timer_incident_char_1.Fill, 70%)
+        Duration: =1000
+        FocusedBorderColor: =Timer_incident_char_1.BorderColor
+        Height: =47
+        HoverBorderColor: =ColorFade(Timer_incident_char_1.BorderColor, 20%)
+        OnTimerEnd: =
+        OnTimerStart: |-
+            =UpdateContext({WarnincidentVerify:!WarnincidentVerify})
+        PressedBorderColor: =Timer_incident_char_1.Fill
+        PressedColor: =Timer_incident_char_1.Fill
+        PressedFill: =Timer_incident_char_1.Color
+        Repeat: =true
+        Reset: =WarnincidentVerifytimerreset
+        Start: =WarnincidentVerifystart = true
+        Text: |-
+            =Text(Time(0, 0, Timer_incident_char_1.Value/1000), "hh:mm:ss")
+        Visible: =false
+        Width: =69
+        X: =129
+        Y: =632
+        ZIndex: =29
+
+    Group14_1 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =33
+
+        Rectangle2_2 As rectangle:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Fill: =RGBA(255, 255, 255, 0.89)
+            Height: =1136
+            Visible: =gblLoading1
+            Width: =640
+            ZIndex: =30
+
+        Image1_4 As image:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Height: =109
+            Image: =syncinggif
+            Visible: =gblLoading1
+            Width: =107
+            X: =267
+            Y: =448
+            ZIndex: =31
+
+        Label5_6 As label:
+            Align: =Align.Center
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Height: =71
+            Size: =21
+            Text: ="Syncing ..."
+            Visible: =gblLoading1
+            Width: =560
+            X: =40
+            Y: =349
+            ZIndex: =32
+

@@ -1,0 +1,588 @@
+Screen_Offence As screen:
+    OnVisible: |-
+        =Set(scroff,0);
+        Set(offencea,LightGoldenRodYellow);UpdateContext({offencea:LightGoldenRodYellow});
+        Set(offenceb,LightGoldenRodYellow);UpdateContext({offenceb:LightGoldenRodYellow});
+        Set(offencec,LightGoldenRodYellow);UpdateContext({offencec:LightGoldenRodYellow});
+        Set(offenced,LightGoldenRodYellow);UpdateContext({offenced:LightGoldenRodYellow});
+        Set(offencee,LightGoldenRodYellow);UpdateContext({offencee:LightGoldenRodYellow});
+        Set(offencef,LightGoldenRodYellow);UpdateContext({offencef:LightGoldenRodYellow});
+        Set(offenceg,LightGoldenRodYellow);UpdateContext({offenceg:LightGoldenRodYellow});
+        Set(offenceh,LightGoldenRodYellow);UpdateContext({offenceh:LightGoldenRodYellow});
+        Set(offencei,LightGoldenRodYellow);UpdateContext({offencei:LightGoldenRodYellow});
+        Set(offencej,LightGoldenRodYellow);UpdateContext({offencej:LightGoldenRodYellow});
+        Set(offencek,LightGoldenRodYellow);UpdateContext({offencek:LightGoldenRodYellow});
+        If(Len(Combobox_offence_search.Selected.cp_offencecode)>0,UpdateContext({offencec:White}),UpdateContext({offencec:LightGoldenRodYellow}));
+        If(Len(TextInput_Offence_Description.Text)>0,UpdateContext({offencec:White}),UpdateContext({offencec:LightGoldenRodYellow}));
+        If(Len(TextInput_Offence_Act.Text)>0,UpdateContext({offenced:White}),UpdateContext({offenced:LightGoldenRodYellow}));
+        If(Len(TextInput_Caution.Text)>0,UpdateContext({offencee:White}),UpdateContext({offencee:LightGoldenRodYellow}));
+        If(Len(TextInput_Circumstances.Text)>0,UpdateContext({offencef:White}),UpdateContext({offencef:LightGoldenRodYellow}));
+        If(Len(Radio_BMV_Used.Selected.Value)>0,UpdateContext({offenceg:White}),UpdateContext({offenceg:LightGoldenRodYellow}));
+        If(Len(Radio_Force_been_used.Selected.Value)>0,UpdateContext({offenceh:White}),UpdateContext({offenceh:LightGoldenRodYellow}));
+        
+        Set(
+            madcoldte,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcoldte: LightGoldenRodYellow});
+        
+        Set(
+            madcoltimehre,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcoltimehre: LightGoldenRodYellow});
+        
+        Set(
+            madcoltimemin,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcoltimemin: LightGoldenRodYellow});
+        If(IsBlank(DatePicker_offence_det),
+            UpdateContext({madcoldte: LightGoldenRodYellow}),
+            UpdateContext({madcoldte: Transparent })
+        );If(Len(Dropdown_hours.Selected.Value)>0,UpdateContext({madcoltimemin:White}),UpdateContext({madcoltimemin:LightGoldenRodYellow}));
+        If(Len(Dropdown_hours.Selected.Value)>0,UpdateContext({madcoltimehre:White}),UpdateContext({madcoltimehre:LightGoldenRodYellow}));
+
+    Label1_5 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Offence Details"
+        Width: =640
+        ZIndex: =1
+
+    "'exit icon 3_3' As icon.Cancel":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =576
+        Y: =11
+        ZIndex: =2
+
+    "'Back Icon 2_3' As icon.ArrowLeft":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Screen_home_screen,ScreenTransition.UnCover)
+        X: =28
+        Y: =11
+        ZIndex: =3
+
+    Canvas_Offence As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1050
+        Width: =Parent.Width
+        Y: =86
+        ZIndex: =4
+
+        DataCard_offence As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =2678
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Drpdn_Offence_key As dropdown:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                Default: =Covid_Primary_key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                Items: ='Covid Offline'.Key
+                OnChange: |-
+                    =Set(AllReset, true);
+                           UpdateContext({AllReset: true});
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =22
+                ZIndex: =4
+
+            Label_Wording_1 As label:
+                Fill: =LightGoldenRodYellow
+                Height: =194
+                OnSelect: =
+                Size: =21
+                Text: ="This form must be completed to document the issuing of a fine in relation to Covid19 powers. Where force is used, you must record this in a use of force form."
+                Width: =545
+                X: =40
+                Y: =111
+                ZIndex: =7
+
+            Label_asterisk_4 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =32
+                X: =563
+                Y: =112
+                ZIndex: =10
+
+            Label3_1 As label:
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="Offence"
+                Width: =545
+                X: =40
+                Y: =326
+                ZIndex: =12
+
+            Label_asterisk_6 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =46
+                Size: =21
+                Text: ="*"
+                Width: =35
+                X: =563
+                Y: =350
+                ZIndex: =13
+
+            Label_Offence_description As label:
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="Offence Description"
+                Width: =545
+                X: =40
+                Y: =469
+                ZIndex: =14
+
+            Label_asterisk_7 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =32
+                X: =563
+                Y: =497
+                ZIndex: =15
+
+            Label3_3 As label:
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="Offence Act"
+                Width: =545
+                X: =43
+                Y: =720
+                ZIndex: =16
+
+            Label_asterisk_8 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =32
+                X: =563
+                Y: =739
+                ZIndex: =17
+
+            TextInput_Offence_Description As text:
+                Default: |
+                    =LookUp(Offences,cp_offencecode=Combobox_offence_search.Selected.cp_offencecode).cp_offencedescription
+                DisplayMode: =DisplayMode.View
+                Fill: =offencec
+                FontWeight: =FontWeight.Bold
+                Height: =191
+                Mode: =TextMode.MultiLine
+                OnChange: |-
+                    =If(Len(TextInput_Offence_Description.Text)>0,UpdateContext({offencec:White}),UpdateContext({offencec:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(TextInput_Offence_Description.Text)>0,UpdateContext({offencec:White}),UpdateContext({offencec:LightGoldenRodYellow}));
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =529
+                ZIndex: =18
+
+            TextInput_Offence_Act As text:
+                Default: |
+                    =LookUp(Offences,cp_offencecode=Combobox_offence_search.Selected.cp_offencecode).cp_offenceact
+                DisplayMode: =DisplayMode.View
+                Fill: =offenced
+                FontWeight: =FontWeight.Bold
+                Height: =161
+                Mode: =TextMode.MultiLine
+                OnChange: |-
+                    =If(Len(TextInput_Offence_Act.Text)>0,UpdateContext({offenced:White}),UpdateContext({offenced:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(TextInput_Offence_Act.Text)>0,UpdateContext({offenced:White}),UpdateContext({offenced:LightGoldenRodYellow}));
+                Reset: =
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =790
+                ZIndex: =19
+
+            Combobox_offence_search As combobox:
+                ChevronBackground: =RGBA(116, 116, 116, 1)
+                ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
+                Default: =LookUp(Offences,LookUp('Covid Offline',Key=Drpdn_Offence_key.Selected.Key).'Offence Code name'=cp_offencecode)
+                DefaultSelectedItems: =LookUp(Offences,LookUp('Covid Offline',Key=Drpdn_Offence_key.Selected.Key).'Offence Code name'=cp_offencecode)
+                DisabledBorderColor: =RGBA(116, 116, 116, 1)
+                DisplayFields: =["cp_offencecode","cp_offencedescription"]
+                Fill: =offenceb
+                Height: =70
+                InputTextPlaceholder: ="Search by code or name"
+                Items: =Offences
+                OnChange: |-
+                    =If(Len(Combobox_offence_search.Selected.cp_offencecode)>0,UpdateContext({offenceb:White}),UpdateContext({offenceb:LightGoldenRodYellow}))
+                OnSelect: |
+                    =If(Len(Combobox_offence_search.Selected.cp_offencecode)>0,UpdateContext({offenceb:White}),UpdateContext({offenceb:LightGoldenRodYellow}));
+                    UpdateContext({DateNow: Now()});
+                Reset: =AllReset
+                SearchFields: =["cp_offencedescription"]
+                SearchItems: =Search(Offences,Combobox_offence_search.SearchText,"cp_offencedescription")
+                SelectionFill: =RGBA(116, 116, 116, 1)
+                SelectMultiple: =false
+                Size: =15
+                Template: =ListItemTemplate.Double
+                Width: =545
+                X: =40
+                Y: =391
+                ZIndex: =20
+
+            TextInput_Caution As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Covid Offline',Key=Drpdn_Offence_key.Selected.Key).'Reply to caution'
+                EnableSpellCheck: =true
+                Fill: =offencee
+                Height: =70
+                OnChange: |-
+                    =If(Len(TextInput_Caution.Text)>0,UpdateContext({offencee:White}),UpdateContext({offencee:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(TextInput_Caution.Text)>0,UpdateContext({offencee:White}),UpdateContext({offencee:LightGoldenRodYellow}))
+                Reset: =AllReset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1694
+                ZIndex: =23
+
+            Label_asterisk_10 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =32
+                X: =553
+                Y: =1662
+                ZIndex: =24
+
+            Label5 As label:
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="Reply to Caution"
+                Width: =513
+                X: =40
+                Y: =1624
+                ZIndex: =25
+
+            TextInput_Circumstances As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Covid Offline',Key=Drpdn_Offence_key.Selected.Key).Circumstances
+                EnableSpellCheck: =true
+                Fill: =offencef
+                Height: =172
+                Mode: =TextMode.MultiLine
+                OnChange: |-
+                    =If(Len(TextInput_Circumstances.Text)>0,UpdateContext({offencef:White}),UpdateContext({offencef:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(TextInput_Circumstances.Text)>0,UpdateContext({offencef:White}),UpdateContext({offencef:LightGoldenRodYellow}))
+                Reset: =AllReset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1834
+                ZIndex: =26
+
+            Label_asterisk_11 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =32
+                X: =553
+                Y: =1802
+                ZIndex: =27
+
+            Label5_1 As label:
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="Circumstances"
+                Width: =513
+                X: =40
+                Y: =1764
+                ZIndex: =28
+
+            Label_PNC_id_1 As label:
+                Height: =66
+                Size: =21
+                Text: ="BWV Used?"
+                Width: =560
+                X: =40
+                Y: =2006
+                ZIndex: =29
+
+            Radio_BMV_Used As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('Covid Offline',Key=Drpdn_Offence_key.Selected.Key).'BMV Used'
+                Fill: =offenceg
+                Height: =97
+                HoverColor: =RGBA(0, 0, 0, 1)
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_BMV_Used.Selected.Value)>0,UpdateContext({offenceg:White}),UpdateContext({offenceg:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Radio_BMV_Used.Selected.Value)>0,UpdateContext({offenceg:White}),UpdateContext({offenceg:LightGoldenRodYellow}))
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Reset: =AllReset
+                Size: =21
+                Width: =335
+                X: =40
+                Y: =2072
+                ZIndex: =30
+
+            Lbl_asteriks_35 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =196
+                Y: =2006
+                ZIndex: =31
+
+            Label_Has_force_been_used As label:
+                Height: =66
+                Size: =21
+                Text: ="Has force been used ?"
+                Width: =560
+                X: =40
+                Y: =2169
+                ZIndex: =32
+
+            Radio_Force_been_used As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('Covid Offline',Key=Drpdn_Offence_key.Selected.Key).'Has force been used'
+                Fill: =offenceh
+                Height: =97
+                HoverColor: =RGBA(0, 0, 0, 1)
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_Force_been_used.Selected.Value)>0,UpdateContext({offenceh:White}),UpdateContext({offenceh:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Radio_Force_been_used.Selected.Value)>0,UpdateContext({offenceh:White}),UpdateContext({offenceh:LightGoldenRodYellow}));
+                    If(Radio_Force_been_used.Selected.Value="Yes",UpdateContext({scroff:70}),UpdateContext({scroff:0}));
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Reset: =AllReset
+                Size: =21
+                Width: =335
+                X: =40
+                Y: =2235
+                ZIndex: =33
+
+            Lbl_asteriks_36 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =332
+                Y: =2169
+                ZIndex: =34
+
+            Btn_save_3 As button:
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =78
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =UpdateIf('Covid Offline',Key=Drpdn_Offence_key.Selected.Key,{
+                      //  'Record Use of Powers or Issue Fine name':Dropdown_Record_use_of_powers.Selected.cp_name,
+                      //  'Record Use of Powers or Issue Fine':Dropdown_Record_use_of_powers.Selected.cp_lookupvalueid,
+                        'Offence Description':TextInput_Offence_Description.Text,
+                         'Offence Date':
+                     DatePicker_offence_det.SelectedDate ,
+                        'Offence Time': Time(
+                                Value(Dropdown_hours.Selected.Value),
+                                Value(Dropdown_minuites.Selected.Value),
+                                0),
+                         'Offence Act':TextInput_Offence_Act.Text,
+                        'Offence Code name': Combobox_offence_search.Selected.cp_offencecode,
+                        'Offence Code': Combobox_offence_search.Selected.cp_covidoffencesid,
+                        'Reply to caution': TextInput_Caution.Text,
+                        Circumstances: TextInput_Circumstances.Text,
+                        'BMV Used': Radio_BMV_Used.Selected.Value,
+                        'Has force been used': Radio_Force_been_used.Selected.Value }
+                    );
+                    SaveData('Covid Offline',"Covid Offline"); Navigate(Screen_home_screen,ScreenTransition.Cover)
+                Size: =24
+                Text: ="Save & Exit"
+                Width: =560
+                X: =40
+                Y: =2390+scroff
+                ZIndex: =35
+
+            Label6 As label:
+                Align: =Align.Center
+                BorderColor: =RGBA(255, 255, 255, 1)
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =2
+                Color: =RGBA(255, 255, 255, 1)
+                Fill: =RGBA(255, 0, 0, 1)
+                Height: =74
+                Size: =21
+                Text: ="You MUST complete a Use of Force form once you have completed this form"
+                Visible: =If(Radio_Force_been_used.Selected.Value="Yes",true,false)
+                Width: =545
+                X: =40
+                Y: =2332
+                ZIndex: =36
+
+            Label_Wording_2 As label:
+                Fill: =LightGoldenRodYellow
+                Height: =230
+                OnSelect: =
+                Size: =21
+                Text: ="I am reporting you for the offence of.....under.....You do not have to say anything, but it may harm your defence if you do not mention now, something which you later rely on in court. Anything you do say may be given in evidence."
+                Width: =545
+                X: =47
+                Y: =1404
+                ZIndex: =37
+
+            Label_asterisk_9 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =32
+                X: =568
+                Y: =1380
+                ZIndex: =38
+
+            Label_Offence_datetime As label:
+                Height: =70
+                Size: =21
+                Text: ="Offence date/time"
+                Width: =545
+                X: =40
+                Y: =981
+                ZIndex: =41
+
+            Dropdown_hours As dropdown:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(166, 166, 266, 100), -20%)
+                Default: =Text(Hour(LookUp('Covid Offline',Key=Drpdn_Offence_key.Selected.Key).'Offence Time'),"[$-en-US]00")
+                Fill: =madcoltimehre
+                FocusedBorderColor: =Dropdown_hours.BorderColor
+                Height: =70
+                HoverBorderColor: =ColorFade(Dropdown_hours.BorderColor, 15%)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =["","00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"]
+                OnChange: |-
+                    =If(Len(Dropdown_hours.Selected.Value)>0,UpdateContext({madcoltimehre:White}),UpdateContext({madcoltimehre:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Dropdown_hours.Selected.Value)>0,UpdateContext({madcoltimehre:White}),UpdateContext({madcoltimehre:LightGoldenRodYellow}));
+                PressedBorderColor: =Dropdown_hours.HoverBorderColor
+                PressedFill: =RGBA(153, 153, 153, 1)
+                Reset: =AllReset
+                SelectionFill: =RGBA(230, 230, 230, 1)
+                Size: =21
+                Width: =135
+                X: =55
+                Y: =1250
+                ZIndex: =42
+
+            Dropdown_minuites As dropdown:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                Default: =Text(Minute(LookUp('Covid Offline',Key=Drpdn_Offence_key.Selected.Key).'Offence Time'),"[$-en-US]00")
+                Fill: =madcoltimemin
+                FocusedBorderColor: =Dropdown_minuites.BorderColor
+                Height: =70
+                HoverBorderColor: =ColorFade(Dropdown_minuites.BorderColor, 15%)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: |
+                    =["","00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59"]
+                OnChange: |-
+                    =If(Len(Dropdown_hours.Selected.Value)>0,UpdateContext({madcoltimemin:White}),UpdateContext({madcoltimemin:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Dropdown_hours.Selected.Value)>0,UpdateContext({madcoltimemin:White}),UpdateContext({madcoltimemin:LightGoldenRodYellow}));
+                PressedBorderColor: =Dropdown_minuites.HoverBorderColor
+                PressedFill: =RGBA(153, 153, 153, 1)
+                Reset: =AllReset
+                SelectionFill: =RGBA(204, 204, 204, 1)
+                Size: =21
+                Width: =135
+                X: =379
+                Y: =1250
+                ZIndex: =43
+
+            Label_hour As label:
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="Hrs"
+                Width: =77
+                X: =190
+                Y: =1250
+                ZIndex: =44
+
+            Label_min As label:
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="Min"
+                Width: =77
+                X: =518
+                Y: =1250
+                ZIndex: =45
+
+            DatePicker_offence_det As datepicker:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                DateTimeZone: =DateTimeZone.UTC
+                DefaultDate: =If(LookUp('Covid Offline',Key=Drpdn_Offence_key.Selected.Key).'Offence Date'=Date(Blank(),Blank(),Blank()),Now(),LookUp('Covid Offline',Key=Drpdn_Offence_key.Selected.Key).'Offence Date')
+                EndYear: =2100
+                Fill: =madcoldte
+                Format: =
+                Height: =70
+                IconBackground: =RGBA(153, 153, 153, 1)
+                InputTextPlaceholder: =
+                IsEditable: =true
+                OnChange: |
+                    =If(IsBlank(DatePicker_offence_det),
+                        UpdateContext({madcoldte: LightGoldenRodYellow}),
+                        UpdateContext({madcoldte: Transparent })
+                    );
+                OnSelect: |
+                    =If(IsBlank(DatePicker_offence_det),
+                        UpdateContext({madcoldte: LightGoldenRodYellow}),
+                        UpdateContext({madcoldte: Transparent })
+                    );
+                Reset: =AllReset
+                Size: =24
+                StartYear: =1900
+                Width: =545
+                X: =45
+                Y: =1082
+                ZIndex: =46
+

@@ -1,0 +1,180 @@
+"Screen_Verify_Offence As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    OnVisible: =
+
+    Label1_10 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Verify Offence"
+        Width: =640
+        ZIndex: =1
+
+    "'exit icon 3_7' As icon.Cancel":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =576
+        Y: =11
+        ZIndex: =2
+
+    "'Back Icon 2_7' As icon.ArrowLeft":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Screen_home_screen,ScreenTransition.UnCover)
+        X: =28
+        Y: =11
+        ZIndex: =3
+
+    Loading_2 As group:
+        Height: =5
+        Width: =5
+        X: =60
+        Y: =60
+        ZIndex: =13
+
+        Rectangle9_2 As rectangle:
+            Fill: =RGBA(255, 255, 255, 0.83)
+            Height: =1136
+            Visible: =LoadingSplash
+            Width: =640
+            ZIndex: =10
+
+        Image2_2 As image:
+            Height: =116
+            Image: ='loading-buffering'
+            Visible: =LoadingSplash
+            Width: =116
+            X: =262
+            Y: =510
+            ZIndex: =11
+
+        Label18_2 As label:
+            Align: =Align.Center
+            FontWeight: =Semibold
+            Height: =70
+            Italic: =true
+            Size: =21
+            Text: ="Searching..."
+            Visible: =LoadingSplash
+            Width: =560
+            X: =40
+            Y: =425
+            ZIndex: =12
+
+    Button4 As button:
+        Height: =70
+        OnSelect: |-
+            =ClearCollect(
+                colOffenceConditions,
+                {
+                    id: 1,
+                    text: "Is the individual recorded on the Track and Trace database as a positive case or close contact?",
+                    'Condition Met': false
+                },
+                    {
+                    id: 2,
+                    text: "Was there evidence the individual was aware of the notification to self-isolate?",
+                    'Condition Met': false
+                },
+                    {
+                    id: 3,
+                    text: "Was the breach witnessed by police?",
+                    'Condition Met': false
+                },
+                    {
+                    id: 4,
+                    text: "Can the breach be evidenced? Is the witness prepared to provide a statement?",
+                    'Condition Met': false
+                },
+                    {
+                    id: 5,
+                    text: "has the correct offence been identified?",
+                    'Condition Met': false
+                }
+            )
+        Size: =24
+        Text: ="Button"
+        Visible: =false
+        Width: =280
+        X: =194
+        Y: =943
+        ZIndex: =14
+
+    "galVerifyOffence As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+        Height: =678
+        Items: =colCovidVerificationText
+        Layout: =Layout.Vertical
+        TemplatePadding: =0
+        TemplateSize: =135
+        Y: =191
+        ZIndex: =15
+
+        Checkbox2 As checkbox:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            CheckboxBorderColor: =RGBA(153, 153, 153, 1)
+            Default: =LookUp(LookUp('Covid Offline', Key = Covid_Primary_key,Verified), VerifiedItem = ThisItem.'Covid Offence Verification Text', Verified)
+            Fill: =LightGoldenRodYellow
+            FocusedBorderThickness: |
+                =0
+            FontWeight: =Normal
+            Height: =122
+            HoverColor: =RGBA(0, 0, 0, 1)
+            Size: =21
+            Text: =ThisItem.'Label Text'
+            Width: =610
+            X: =18
+            Y: =3
+            ZIndex: =6
+
+        Label10 As label:
+            Height: =55
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =
+            Width: =208
+            X: =420
+            Y: =70
+            ZIndex: =7
+
+    Btn_save_5 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =78
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |-
+            =Clear(colVerify);
+            ForAll(galVerifyOffence.AllItems,Collect(colVerify,{VerifiedItem: ThisRecord.'Covid Offence Verification Text', Verified: If(ThisRecord.Checkbox2.Value, true,false)}));
+            
+            ForAll(colVerify, Patch('Covid Offline', {Key:  Covid_Primary_key}, {Verified: colVerify}));
+            SaveData('Covid Offline',"Covid Offline"); Navigate(Screen_home_screen,ScreenTransition.Cover)
+        Size: =24
+        Text: ="Save & Verify"
+        Width: =560
+        X: =40
+        Y: =1030
+        ZIndex: =16
+
+    Label12 As label:
+        FontWeight: =Semibold
+        Height: =120
+        Size: =21
+        Text: ="Your submission will be rejected by ACRO if all 5 conditions have not been confirmed"
+        Width: =560
+        X: =40
+        Y: =869
+        ZIndex: =17
+
+    Label13 As label:
+        Height: =70
+        Size: =21
+        Text: ="Please confirm that the following conditions have been met;"
+        Width: =560
+        X: =40
+        Y: =101
+        ZIndex: =18
+
