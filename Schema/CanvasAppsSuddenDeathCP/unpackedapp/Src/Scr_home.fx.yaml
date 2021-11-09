@@ -1,0 +1,1303 @@
+Scr_home As screen:
+    OnVisible: |
+        =Set(
+            checkicon,
+            false
+        );
+        UpdateContext({Warnunsubmit: false});
+        UpdateContext({timerstart: false});
+        UpdateContext({timerreset: true});
+        If(
+            CountRows(Gallery_unsubmitted.AllItems) > 0,
+            UpdateContext({timerstart: true})
+        );
+        If(
+            Radio_deceased_details_known.Selected.Value = "No",
+            UpdateContext({stafftimerstart_1: false});
+            UpdateContext({stafftimerreset_1: true});
+            UpdateContext({Warnstaffdetails_1: false});
+            
+        );
+        If(
+            CountRows(Gallery_unsubmitted.AllItems) > 0,
+        
+        UpdateContext({tactictstimerstart: false});
+            UpdateContext({tactictstimerreset: true});
+            UpdateContext({tactictsInvolved: false});
+            If(
+                CountRows(Gallery_unsubmitted.AllItems) > 0,
+                UpdateContext({tactictstimerstart: false}),
+                UpdateContext({tactictstimerstart: false})
+            );
+            
+        
+            ,
+            UpdateContext({Warnstaffdetails_1: false});
+            UpdateContext({Warnstaffdetails: false});
+            UpdateContext({Warnincidentchar: false});
+            UpdateContext({tactictsInvolved: false});
+            UpdateContext({WarningStaffinjuries: false});
+            UpdateContext({WarningSubjectinjuries: false});
+            UpdateContext({WarningIdentification: false});
+            
+        );
+        If(
+            LookUp(
+                Contactoffline,
+                Key = Sudden_Primary_key And (Contactrolename = "Identifier" Or Contactrolename = "Deceased")
+            ).identificationsignature <> SampleImage,
+            Set(
+                idetidisable,
+                DisplayMode.Disabled
+            )
+        );
+        If(
+            LookUp(
+                Contactoffline,
+                Key = Sudden_Primary_key And (Contactrolename = "Identifier" Or Contactrolename = "Deceased")
+            ).identificationsignature = SampleImage And Radio_deceased_details_known.Selected.Value = "Yes",
+            Set(
+                idetidisable,
+                DisplayMode.Edit
+            )
+        );
+        If(
+            LookUp(
+                Contactoffline,
+                Key = Sudden_Primary_key And (Contactrolename = "Identifier" Or Contactrolename = "Deceased")
+            ).identificationsignature = SampleImage And Radio_deceased_details_known.Selected.Value = "No",
+            Set(
+                idetidisable,
+                DisplayMode.Disabled
+            );
+            Set(
+                didetidisable,
+                DisplayMode.Edit
+            );
+            
+        );
+        If(
+            LookUp(
+                Contactoffline,
+                Key = Sudden_Primary_key And (Contactrolename = "Identifier")
+            ).identificationsignature = Image_identification_signature.Image,
+            Set(
+                idetidisable,
+                DisplayMode.Edit
+            )
+        );
+        
+        
+        /*test*/
+
+    Lbl_header As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =27
+        Text: =If (IsBlank(Sudden_Primary_key),"Sudden Death","Sudden Death"& Char(10) & "("  &  Sudden_Primary_key & ")")
+        Width: =640
+        ZIndex: =1
+
+    Icn_exit As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: |-
+            =SaveData(
+                Contactoffline,
+                "Contactoffline"
+            );
+            Exit();
+        X: =576
+        Y: =13
+        ZIndex: =2
+
+    Btn_mediacal_history As button:
+        DisplayMode: =If(CountRows('Sudden death offline') =0 Or IsBlank(Sudden_Primary_key), DisplayMode.Disabled,DisplayMode.Edit)
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Scr_medical_history,ScreenTransition.Cover)
+        Size: =24
+        Text: ="Medical history"
+        Width: =552
+        X: =44
+        Y: =600
+        ZIndex: =3
+
+    Btn_sudden_death As button:
+        DisplayMode: =If(CountRows('Sudden death offline') =0 Or IsBlank(Sudden_Primary_key), DisplayMode.Disabled,DisplayMode.Edit)
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Scr_sudden_death,ScreenTransition.Cover)
+        Size: =24
+        Text: ="Sudden death"
+        Width: =552
+        X: =44
+        Y: =500
+        ZIndex: =4
+
+    Btn_deceased As button:
+        DisplayMode: =If(CountRows('Sudden death offline') =0 Or IsBlank(Sudden_Primary_key), DisplayMode.Disabled,DisplayMode.Edit)
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Scr_details_deceased,ScreenTransition.Cover)
+        Size: =24
+        Text: ="Deceased"
+        Width: =552
+        X: =44
+        Y: =400
+        ZIndex: =5
+
+    Btn_incident_details As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |-
+            =Set(
+                i,
+                i + 1
+            );
+            //Set(
+            //    Sudden_Primary_key,
+            //    Txt_Deceased_details_surname.Text & " " & Txt_Deceased_detailsforename.Text & " " & Txt_incident_no.Text & " No:" & i
+            //);
+            Set(
+                flagback,
+                true
+            );
+            Navigate(
+                'Scr_incident details',
+                ScreenTransition.Cover
+            )
+        Size: =24
+        Text: ="Incident details"
+        Width: =552
+        X: =44
+        Y: =200
+        ZIndex: =6
+
+    Btn_circumstances As button:
+        DisplayMode: =If(CountRows('Sudden death offline') =0 Or IsBlank(Sudden_Primary_key), DisplayMode.Disabled,DisplayMode.Edit)
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Scr_circumstances,ScreenTransition.Cover)
+        Size: =24
+        Text: ="Circumstances"
+        Width: =552
+        X: =44
+        Y: =700
+        ZIndex: =7
+
+    Btn_property As button:
+        DisplayMode: =If(CountRows('Sudden death offline') =0 Or IsBlank(Sudden_Primary_key), DisplayMode.Disabled,DisplayMode.Edit)
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Scr_properties,ScreenTransition.Cover)
+        Size: =24
+        Text: ="Property"
+        Width: =552
+        X: =44
+        Y: =800
+        ZIndex: =8
+
+    Btn_add_into As button:
+        DisplayMode: =If(CountRows('Sudden death offline') =0 Or IsBlank(Sudden_Primary_key), DisplayMode.Disabled,DisplayMode.Edit)
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Scr_role_colection,ScreenTransition.Cover)
+        Size: =24
+        Text: ="Person Summary"
+        Width: =552
+        X: =44
+        Y: =1000
+        ZIndex: =9
+
+    Btn_identification As button:
+        DisplayMode: =If(CountRows('Sudden death offline') =0 Or IsBlank(Sudden_Primary_key), DisplayMode.Disabled,DisplayMode.Edit)
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Scr_identification,ScreenTransition.Cover)
+        Size: =24
+        Text: ="Identification" //& idetidisable  //& Radio_Identification_completion_1.Selected.Value & " " & Identificationtimerreset & " " & Identificationtimerstart
+        Width: =552
+        X: =44
+        Y: =900
+        ZIndex: =10
+
+    Icn_add_into As icon.Add:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Add
+        X: =498
+        Y: =1005
+        ZIndex: =11
+
+    Icn_identification As icon.Newspaper:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Newspaper
+        X: =498
+        Y: =905
+        ZIndex: =12
+
+    Icn_property As icon.Home:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Home
+        X: =498
+        Y: =805
+        ZIndex: =13
+
+    Icn_medical_history As icon.DockCheckProperties:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.DockCheckProperties
+        X: =498
+        Y: =605
+        ZIndex: =14
+
+    Icn_incident_details As icon.DocumentwithContent:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.DocumentWithContent
+        X: =498
+        Y: =205
+        ZIndex: =15
+
+    Icn_deceased As icon.LogJournal:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.LogJournal
+        X: =498
+        Y: =405
+        ZIndex: =16
+
+    Icn_sudden_death As icon.Information:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Information
+        X: =498
+        Y: =505
+        ZIndex: =17
+
+    Icn_circum As icon.ColorPicker:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ColorPicker
+        X: =498
+        Y: =705
+        ZIndex: =18
+
+    Icon1 As icon.Check:
+        Color: =RGBA(152, 208, 70, 1)
+        Icon: =Icon.Check
+        Visible: =checkicon
+        X: =85
+        Y: =203
+        ZIndex: =20
+
+    Btn_incident_details_1 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Scr_colection,UnCover)
+        Size: =24
+        Text: ="Unsubmitted Incidents"
+        Width: =552
+        X: =40
+        Y: =103
+        ZIndex: =21
+
+    Timer1 As timer:
+        BorderColor: =ColorFade(Timer1.Fill, -15%)
+        DisabledBorderColor: =ColorFade(Timer1.BorderColor, 70%)
+        DisabledColor: =ColorFade(Timer1.Fill, 90%)
+        DisabledFill: =ColorFade(Timer1.Fill, 70%)
+        Duration: =1000
+        FocusedBorderColor: =Timer1.BorderColor
+        Height: =67
+        HoverBorderColor: =ColorFade(Timer1.BorderColor, 20%)
+        OnTimerEnd: =
+        OnTimerStart: |-
+            =UpdateContext({Warnunsubmit:!Warnunsubmit})
+        PressedBorderColor: =Timer1.Fill
+        PressedColor: =Timer1.Fill
+        PressedFill: =Timer1.Color
+        Repeat: =true
+        Reset: =timerreset
+        Start: =timerstart
+        Text: |-
+            =Text(Time(0, 0, Timer1.Value/1000), "hh:mm:ss")
+        Visible: =false
+        Width: =175
+        X: =40
+        Y: =40
+        ZIndex: =22
+
+    Icon2 As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =Warnunsubmit
+        Width: =60
+        X: =44
+        Y: =100
+        ZIndex: =23
+
+    Icon5 As icon.Edit:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Edit
+        X: =512
+        Y: =105
+        ZIndex: =24
+
+    Btn_add_into_1 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =50
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |
+            =//Sync Lookup table localy filtered per drop
+            Set(gblLoading1,true);
+            Refresh(Users);
+            Refresh('Sudden Death Involved Contacts STG');
+            Refresh(Contacts);
+            Refresh('Sudden Death STGS');
+            Refresh('Sudden Death Properties STG');
+            Refresh('Contact Role Types');
+            Refresh('Lookup Fields');
+            Refresh('Lookup Values');
+            Refresh('Territorial Policing Areas');
+            Set(
+                officermail,
+                User().Email
+            );
+            ClearCollect(
+                Userlocal,
+                {
+                    Usermaillocal: User().Email,
+                    Collarnumber: LookUp(
+                        Users,
+                        'Primary Email' = officermail
+                    ).'Collar Number',
+                    Name: LookUp(
+                        Users,
+                        'Primary Email' = officermail
+                    ).'Full Name'
+                }
+            );
+            SaveData(
+                Userlocal,
+                "Userlocal"
+            );
+            ClearCollect(
+                Usersalllocal,
+                ShowColumns(
+                    Filter(
+                        Users,
+                        StartsWith (
+                            cp_badgenumber,
+                            "1"
+                        )
+                    ),
+                    "fullname",
+                    "cp_badgenumber",
+                    "firstname",
+                    "systemuserid",
+                    "internalemailaddress"
+                )
+            );
+            Collect(
+                Usersalllocal,
+                ShowColumns(
+                    Filter(
+                        Users,
+                        StartsWith (
+                            cp_badgenumber,
+                            "2"
+                        )
+                    ),
+                    "fullname",
+                    "cp_badgenumber",
+                    "firstname",
+                    "systemuserid",
+                    "internalemailaddress"
+                )
+            );
+            Collect(
+                Usersalllocal,
+                ShowColumns(
+                    Filter(
+                        Users,
+                        StartsWith (
+                            cp_badgenumber,
+                            "3"
+                        )
+                    ),
+                    "fullname",
+                    "cp_badgenumber",
+                    "firstname",
+                    "systemuserid",
+                    "internalemailaddress"
+                )
+            );
+            Collect(
+                Usersalllocal,
+                ShowColumns(
+                    Filter(
+                        Users,
+                        StartsWith (
+                            cp_badgenumber,
+                            "4"
+                        )
+                    ),
+                    "fullname",
+                    "cp_badgenumber",
+                    "firstname",
+                    "systemuserid",
+                    "internalemailaddress"
+                )
+            );
+            Collect(
+                Usersalllocal,
+                ShowColumns(
+                    Filter(
+                        Users,
+                        StartsWith (
+                            cp_badgenumber,
+                            "5"
+                        )
+                    ),
+                    "fullname",
+                    "cp_badgenumber",
+                    "firstname",
+                    "systemuserid",
+                    "internalemailaddress"
+                )
+            );
+            Collect(
+                Usersalllocal,
+                ShowColumns(
+                    Filter(
+                        Users,
+                        StartsWith (
+                            cp_badgenumber,
+                            "6"
+                        )
+                    ),
+                    "fullname",
+                    "cp_badgenumber",
+                    "firstname",
+                    "systemuserid",
+                    "internalemailaddress"
+                )
+            );
+            Collect(
+                Usersalllocal,
+                ShowColumns(
+                    Filter(
+                        Users,
+                        StartsWith (
+                            cp_badgenumber,
+                            "7"
+                        )
+                    ),
+                    "fullname",
+                    "cp_badgenumber",
+                    "firstname",
+                    "systemuserid",
+                    "internalemailaddress"
+                )
+            );
+            Collect(
+                Usersalllocal,
+                ShowColumns(
+                    Filter(
+                        Users,
+                        StartsWith (
+                            cp_badgenumber,
+                            "8"
+                        )
+                    ),
+                    "fullname",
+                    "cp_badgenumber",
+                    "firstname",
+                    "systemuserid",
+                    "internalemailaddress"
+                )
+            );
+            Collect(
+                Usersalllocal,
+                ShowColumns(
+                    Filter(
+                        Users,
+                        StartsWith (
+                            cp_badgenumber,
+                            "9"
+                        )
+                    ),
+                    "fullname",
+                    "cp_badgenumber",
+                    "firstname",
+                    "systemuserid",
+                    "internalemailaddress"
+                )
+            );
+            Collect(
+                Usersalllocal,
+                ShowColumns(
+                    Filter(
+                        Users,
+                        StartsWith (
+                            cp_badgenumber,
+                            "0"
+                        )
+                    ),
+                    "fullname",
+                    "cp_badgenumber",
+                    "firstname",
+                    "systemuserid",
+                    "internalemailaddress"
+                )
+            );
+            Collect(
+                Usersalllocal,
+                ShowColumns(
+                    Filter(
+                        Users,
+                        IsBlank(
+                            cp_badgenumber
+                        )
+                    ),
+                    "fullname",
+                    "cp_badgenumber",
+                    "firstname",
+                    "systemuserid",
+                    "internalemailaddress"
+                )
+            );
+            UpdateIf(
+                Usersalllocal,
+                true,
+                {firstname: cp_badgenumber & " - " & fullname}
+            );
+            Sort(
+                Usersalllocal,
+                "firstname"
+            );
+            SaveData(
+                Usersalllocal,
+                "Usersalllocal"
+            );
+            Set(
+                ContactRoleofflineid,
+                'Application Used'.'Sudden Death'
+            );
+            ClearCollect(
+                ContactRoleoffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Contact Role Types',
+                        'Application Used' = ContactRoleofflineid
+                    ),
+                    "cp_name",
+                    "cp_contactroletypeid"
+                )
+            );
+            SaveData(
+                ContactRoleoffline,
+                "ContactRoleoffline"
+            );
+            Set(
+                Genderid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "12"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                Genderoffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        cp_lookupfield.'Filter Id' = Genderid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                Genderoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                Genderoffline,
+                "Genderoffline"
+            );
+            Set(
+                PerceivedEthnicityid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "22"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                PerceivedEthnicityoffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        cp_lookupfield.'Filter Id' = PerceivedEthnicityid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                PerceivedEthnicityoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                PerceivedEthnicityoffline,
+                "PerceivedEthnicityoffline"
+            );
+            Set(
+                StaffTitleid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "24"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                StaffTitleoffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.'Filter Id' = StaffTitleid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                StaffTitleoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                StaffTitleoffline,
+                "StaffTitleoffline"
+            );
+            Set(
+                Burialorcremationid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "68"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                Burialorcremationoffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.'Filter Id' = Burialorcremationid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                Burialorcremationoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                Burialorcremationoffline,
+                "Burialorcremationoffline"
+            );
+            Set(
+                Maritalofflineid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "73"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                Maritaloffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.'Filter Id' = Maritalofflineid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                Maritaloffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                Maritaloffline,
+                "Maritaloffline"
+            );
+            Set(
+                Housetemperatureid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "69"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                Housetemperatureoffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.'Filter Id' = Housetemperatureid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                Housetemperatureoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                Housetemperatureoffline,
+                "Housetemperatureoffline"
+            );
+            Set(
+                Housesecureid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "74"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                Housesecureoffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.'Filter Id' = Housesecureid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                Housesecureoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                Housesecureoffline,
+                "Housesecureoffline"
+            );
+            ClearCollect(
+                TPA,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    'Territorial Policing Areas',
+                    "cp_name",
+                    "cp_territorialpolicingareaid"
+                )
+            );
+            SaveData(
+                TPA,
+                "TPA"
+            );
+            Set(
+                contactmethodid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "83"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                contactmethodoffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.'Filter Id' = contactmethodid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                contactmethodoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                contactmethodoffline,
+                "contactmethodoffline"
+            );
+            Set(
+                countriesid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "30"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                countriesoffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.'Filter Id' = countriesid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            SortByColumns(
+                countriesoffline,
+                "cp_displaysequenceno",
+                Ascending,
+                "cp_name",
+                Descending
+            );
+            SaveData(
+                countriesoffline,
+                "countriesoffline"
+            );
+            Set(
+                occupationid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "35"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                occupationoffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.'Filter Id' = occupationid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                occupationoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                occupationoffline,
+                "occupationoffline"
+            );
+            Set(gblLoading1,false);
+        RadiusBottomLeft: =0
+        RadiusBottomRight: =0
+        RadiusTopLeft: =0
+        RadiusTopRight: =0
+        Size: =21
+        Text: ="Sync"
+        Width: =215
+        Y: =1086
+        ZIndex: =25
+
+    Label5_1 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(179, 179, 179, 1)
+        BorderThickness: =2
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(179, 179, 179, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =50
+        Size: =21
+        Text: =connectionstatus
+        Width: =160
+        X: =215
+        Y: =1086
+        ZIndex: =26
+
+    Timer1_1 As timer:
+        AutoStart: =true
+        Duration: =1000
+        Height: =50
+        OnTimerEnd: |-
+            =If(Connection.Connected,UpdateContext({connectionstatus:"Online"}),UpdateContext({connectionstatus:"Offline"}))
+        Repeat: =true
+        Reset: =true
+        Start: =true
+        Visible: =false
+        Width: =116
+        X: =464
+        Y: =1086
+        ZIndex: =27
+
+    Timer_incident_char As timer:
+        BorderColor: =ColorFade(Timer_incident_char.Fill, -15%)
+        DisabledBorderColor: =ColorFade(Timer_incident_char.BorderColor, 70%)
+        DisabledColor: =ColorFade(Timer_incident_char.Fill, 90%)
+        DisabledFill: =ColorFade(Timer_incident_char.Fill, 70%)
+        Duration: =1000
+        FocusedBorderColor: =Timer_incident_char.BorderColor
+        Height: =47
+        HoverBorderColor: =ColorFade(Timer_incident_char.BorderColor, 20%)
+        OnTimerEnd: =
+        OnTimerStart: |-
+            =UpdateContext({Warnincidentchar:!Warnincidentchar})
+        PressedBorderColor: =Timer_incident_char.Fill
+        PressedColor: =Timer_incident_char.Fill
+        PressedFill: =Timer_incident_char.Color
+        Repeat: =true
+        Text: |-
+            =Text(Time(0, 0, Timer_incident_char.Value/1000), "hh:mm:ss")
+        Visible: =false
+        Width: =69
+        X: =105
+        Y: =506
+        ZIndex: =28
+
+    iconSuddenDeathInvalid As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =lblSuddenDeathValid.Text = "false"
+        Width: =60
+        X: =44
+        Y: =500
+        ZIndex: =29
+
+    iconCircumstancesInvalid As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =lblCircumstancesValid.Text="false"
+        Width: =60
+        X: =44
+        Y: =700
+        ZIndex: =31
+
+    Icon_warning_subject_injuries As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =WarningSubjectinjuries
+        Width: =60
+        X: =44
+        Y: =800
+        ZIndex: =33
+
+    Timer_incident_involved_1 As timer:
+        BorderColor: =ColorFade(Timer_incident_involved_1.Fill, -15%)
+        DisabledBorderColor: =ColorFade(Timer_incident_involved_1.BorderColor, 70%)
+        DisabledColor: =ColorFade(Timer_incident_involved_1.Fill, 90%)
+        DisabledFill: =ColorFade(Timer_incident_involved_1.Fill, 70%)
+        Duration: =1000
+        FocusedBorderColor: =Timer_incident_involved_1.BorderColor
+        Height: =47
+        HoverBorderColor: =ColorFade(Timer_incident_involved_1.BorderColor, 20%)
+        OnTimerEnd: =
+        OnTimerStart: |-
+            =UpdateContext({tactictsInvolved:!tactictsInvolved})
+        PressedBorderColor: =Timer_incident_involved_1.Fill
+        PressedColor: =Timer_incident_involved_1.Fill
+        PressedFill: =Timer_incident_involved_1.Color
+        Repeat: =true
+        Reset: =tactictstimerreset
+        Start: =tactictstimerstart
+        Text: |-
+            =Text(Time(0, 0, Timer_incident_involved_1.Value/1000), "hh:mm:ss")
+        Visible: =false
+        Width: =69
+        X: =105
+        Y: =594
+        ZIndex: =34
+
+    Icon_warning_incident_involved_1 As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =tactictsInvolved
+        Width: =60
+        X: =44
+        Y: =600
+        ZIndex: =35
+
+    Timer_staff_det As timer:
+        AutoPause: =false
+        BorderColor: =ColorFade(Timer_staff_det.Fill, -15%)
+        DisabledBorderColor: =ColorFade(Timer_staff_det.BorderColor, 70%)
+        DisabledColor: =ColorFade(Timer_staff_det.Fill, 90%)
+        DisabledFill: =ColorFade(Timer_staff_det.Fill, 70%)
+        Duration: =1000
+        FocusedBorderColor: =Timer_staff_det.BorderColor
+        Height: =47
+        HoverBorderColor: =ColorFade(Timer_staff_det.BorderColor, 20%)
+        OnTimerEnd: =
+        OnTimerStart: |-
+            =UpdateContext({Warnstaffdetails_1:!Warnstaffdetails_1})
+        PressedBorderColor: =Timer_staff_det.Fill
+        PressedColor: =Timer_staff_det.Fill
+        PressedFill: =Timer_staff_det.Color
+        Repeat: =true
+        Reset: =stafftimerreset_1
+        Start: =stafftimerstart_1
+        Text: |-
+            =Text(Time(0, 0, Timer_staff_det.Value/1000), "hh:mm:ss")
+        Visible: =false
+        Width: =69
+        X: =112
+        Y: =415
+        ZIndex: =36
+
+    iconDeceasedInvalid As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =lblDeceasedValid.Text="false"
+        Width: =60
+        X: =44
+        Y: =403
+        ZIndex: =37
+
+    iconIdentificationWarning As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =lblIdentificationValid.Text="false"
+        Width: =60
+        X: =44
+        Y: =900
+        ZIndex: =39
+
+    Btn_deceased_1 As button:
+        DisplayMode: =If(CountRows('Sudden death offline') =0 Or IsBlank(Sudden_Primary_key), DisplayMode.Disabled,DisplayMode.Edit)
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Scr_details_1,ScreenTransition.Cover)
+        Size: =24
+        Text: ="Add Person"
+        Width: =552
+        X: =44
+        Y: =300
+        ZIndex: =40
+
+    Icn_deceased_1 As icon.LogJournal:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.LogJournal
+        X: =498
+        Y: =305
+        ZIndex: =41
+
+    Icon_warning_staff_details_1 As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =false
+        Width: =60
+        X: =52
+        Y: =307
+        ZIndex: =43
+
+    Label5_2 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(179, 179, 179, 1)
+        BorderThickness: =2
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =50
+        Size: =21
+        Text: |-
+            ="App Version: " & glbAppVersion
+        Width: =265
+        X: =375
+        Y: =1086
+        ZIndex: =44
+
+    lblSuddenDeathValid As label:
+        Height: =28
+        Size: =21
+        Text: =If (IsEmpty('Sudden death offline'),"", LookUp('Sudden death offline' ,Key=Sudden_Primary_key).suddenDeathValid)
+        Visible: =false   
+        Width: =560
+        X: =40
+        Y: =572
+        ZIndex: =45
+
+    iconSuddenDeathValid As icon.Add:
+        Color: =RGBA(187, 221, 140, 1)
+        Icon: =Icon.Check
+        Visible: =lblSuddenDeathValid.Text = "true"
+        Width: =60
+        X: =44
+        Y: =500
+        ZIndex: =46
+
+    iconCircumstancesValid As icon.Add:
+        Color: =RGBA(187, 221, 140, 1)
+        Icon: =Icon.Check
+        Visible: =lblCircumstancesValid.Text = "true"
+        Width: =60
+        X: =44
+        Y: =700
+        ZIndex: =47
+
+    lblCircumstancesValid As label:
+        Height: =28
+        Size: =21
+        Text: =If (IsEmpty('Sudden death offline'),"", LookUp('Sudden death offline' ,Key=Sudden_Primary_key).circumstancesValid)
+        Visible: =false   
+        Width: =560
+        X: =44
+        Y: =772
+        ZIndex: =48
+
+    lblDeceasedValid As label:
+        Height: =28
+        Size: =21
+        Text: =If (IsEmpty('Sudden death offline'),"", LookUp('Sudden death offline' ,Key=Sudden_Primary_key).deceasedValid)
+        Visible: =false   
+        Width: =560
+        X: =44
+        Y: =470
+        ZIndex: =49
+
+    iconDeceasedValid As icon.Add:
+        Color: =RGBA(187, 221, 140, 1)
+        Icon: =Icon.Check
+        Visible: =lblDeceasedValid.Text = "true"
+        Width: =60
+        X: =44
+        Y: =400
+        ZIndex: =50
+
+    lblIdentificationValid As label:
+        Height: =28
+        Size: =21
+        Text: =If (IsEmpty('Sudden death offline'),"", LookUp('Sudden death offline' ,Key=Sudden_Primary_key).identificationValid)
+        Visible: =false   
+        Width: =560
+        X: =44
+        Y: =973
+        ZIndex: =51
+
+    iconIdentificationValid As icon.Add:
+        Color: =RGBA(187, 221, 140, 1)
+        Icon: =Icon.Check
+        Visible: =lblIdentificationValid.Text="true"
+        Width: =60
+        X: =44
+        Y: =900
+        ZIndex: =52
+
+    Button2 As button:
+        Height: =70
+        OnSelect: =Navigate(scrDebug);
+        Size: =24
+        Text: ="Debug"
+        Visible: =glbDebug
+        Width: =128
+        X: =512
+        Y: =156
+        ZIndex: =56
+
+    Group14_1 As group:
+        Height: =5
+        Width: =5
+        X: =60
+        Y: =60
+        ZIndex: =56
+
+        Rectangle2_2 As rectangle:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Fill: =RGBA(255, 255, 255, 0.89)
+            Height: =1136
+            Visible: =gblLoading1
+            Width: =640
+            ZIndex: =53
+
+        Image1_4 As image:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Height: =109
+            Image: =syncinggif
+            Visible: =gblLoading1
+            Width: =107
+            X: =278
+            Y: =467
+            ZIndex: =54
+
+        Label5_6 As label:
+            Align: =Align.Center
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Height: =71
+            Size: =21
+            Text: ="Syncing ..."
+            Visible: =gblLoading1
+            Width: =560
+            X: =44
+            Y: =372
+            ZIndex: =55
+

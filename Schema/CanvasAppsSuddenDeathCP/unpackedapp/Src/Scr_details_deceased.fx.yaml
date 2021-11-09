@@ -1,0 +1,1529 @@
+"Scr_details_deceased As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    OnHidden: |-
+        =UpdateContext({canvasVisible:false})
+    OnVisible: |
+        =UpdateContext({canvasVisible: true});
+        If(
+            Radio_deceased_details_known.Selected.Value = "No",
+            UpdateContext({madcoldd: White});
+            UpdateContext({madcolredd: Transparent});
+            UpdateContext({madcolsedd: Transparent});
+            UpdateContext({madcolsddd: White});
+            UpdateContext({madcolsodd: Transparent});
+            UpdateContext({madcolsgdd: Transparent});
+            UpdateContext({madcolshdd: Transparent});
+            UpdateContext({madcolsidd: Transparent});
+            UpdateContext({madcolskdd: Transparent});
+            UpdateContext({madcolsldd: White});
+            UpdateContext({madcolsndd: White});
+            UpdateContext({madcolsidd: Transparent});
+            UpdateContext({madcolsndd: White});
+            UpdateContext({madcolspdd: White});
+            UpdateContext({madcolsqdd: White});
+            
+        );
+        If(
+            Len(Radio_deceased_details_known.Selected.Value) = 0,
+            UpdateContext({madcoldd: White});
+            UpdateContext({madcolredd: Transparent});
+            UpdateContext({madcolsedd: Transparent});
+            UpdateContext({madcolsddd: White});
+            UpdateContext({madcolsodd: Transparent});
+            UpdateContext({madcolsgdd: Transparent});
+            UpdateContext({madcolshdd: Transparent});
+            UpdateContext({madcolsidd: Transparent});
+            UpdateContext({madcolskdd: Transparent});
+            UpdateContext({madcolsldd: White});
+            UpdateContext({madcolsndd: White});
+            UpdateContext({madcolsidd: Transparent});
+            UpdateContext({madcolsndd: White});
+            UpdateContext({madcolspdd: White});
+            UpdateContext({madcolsqdd: White});
+            
+        );
+        If(
+            Radio_deceased_details_known.Selected.Value = "Yes",
+            If(
+                Len(Dropdown_Deceased_details_title.Selected.cp_name) > 0,
+                UpdateContext({madcoldd: White}),
+                UpdateContext({madcoldd: LightGoldenRodYellow})
+            );
+            If(
+                Len(Txt_Deceased_detailsforename.Text) > 0,
+                UpdateContext({madcolredd: Transparent}),
+                UpdateContext({madcolredd: LightGoldenRodYellow})
+            );
+            If(
+                Len(Txt_Deceased_details_surname.Text) > 0,
+                UpdateContext({madcolsedd: Transparent}),
+                UpdateContext({madcolsedd: LightGoldenRodYellow})
+            );
+            If(
+                Len(Text(Datepicker_Deceased_details_dob.SelectedDate)) > 0,
+                UpdateContext({madcolsddd: White}),
+                UpdateContext({madcolsddd: LightGoldenRodYellow})
+            );
+            If(
+                Len(Txt_Deceased_details_housename.Text) > 0,
+                UpdateContext({madcolsodd: Transparent}),
+                UpdateContext({madcolsodd: LightGoldenRodYellow})
+            );
+            If(
+                Len(Txt_Deceased_details_address.Text) > 0,
+                UpdateContext({madcolsgdd: Transparent}),
+                UpdateContext({madcolsgdd: LightGoldenRodYellow})
+            );
+            If(
+                Len(Txt_Deceased_details_town.Text) > 0,
+                UpdateContext({madcolshdd: Transparent}),
+                UpdateContext({madcolshdd: LightGoldenRodYellow})
+            );
+            If(
+                Len(Txt_Deceased_details_county.Text) > 0,
+                UpdateContext({madcolsidd: Transparent}),
+                UpdateContext({madcolsidd: LightGoldenRodYellow})
+            );
+            If(
+                Len(Txt_Deceased_details_pobox.Text) > 0,
+                UpdateContext({madcolskdd: Transparent}),
+                UpdateContext({madcolskdd: LightGoldenRodYellow})
+            );
+            If(
+                Len(Text(Coombobox_country_3.Selected.cp_name)) > 0,
+                UpdateContext({madcolsldd: White}),
+                UpdateContext({madcolsldd: LightGoldenRodYellow})
+            );
+            If(
+                Len(Dropdown_dec_gender.Selected.cp_name) > 0,
+                UpdateContext({madcolsndd: White}),
+                UpdateContext({madcolsndd: LightGoldenRodYellow})
+            );
+            If(
+                Len(Dropdown_def_ethnicity.Selected.cp_name) > 0,
+                UpdateContext({madcolspdd: White}),
+                UpdateContext({madcolspdd: LightGoldenRodYellow})
+            );
+            If(
+                Len(txtDeceasedOccupation.Text) > 0,
+                UpdateContext({madcolsidd: Transparent}),
+                UpdateContext({madcolsidd: LightGoldenRodYellow})
+            );
+            If(
+                Len(Dropdown_Maritalstatus.Selected.cp_name) > 0,
+                UpdateContext({madcolsqdd: White}),
+                UpdateContext({madcolsqdd: LightGoldenRodYellow})
+            );
+            If(
+                Len(Radio_deceased_details_known.Selected.Value) > 0,
+                UpdateContext({madcolredddd: Transparent}),
+                UpdateContext({madcolredddd: LightGoldenRodYellow})
+            );
+            
+        );
+        If(
+            Radio_deceased_details_known.Selected.Value = "Yes",
+            Set(
+                idetidisable,
+                DisplayMode.Edit
+            );
+            UpdateContext({ysteps: 0})
+        );
+        If(
+            Radio_deceased_details_known.Selected.Value = "No",
+            Set(
+                idetidisable,
+                DisplayMode.Disabled
+            );
+            UpdateContext({ysteps: 200})
+        );
+        If(
+            Len(Radio_deceased_details_known.Selected.Value) = 0,
+            Set(
+                idetidisable,
+                DisplayMode.Disabled
+            )
+        );
+        If(
+            Len(Radio_deceased_details_known.Selected.Value) > 0,
+            UpdateContext({madcolredddd: Transparent}),
+            UpdateContext({madcolredddd: LightGoldenRodYellow})
+        );
+        If(
+            And(
+                CountRows(
+                    Filter(
+                        Contactoffline,
+                        Key = Drpdn_incident_key_2.Selected.Key
+                    )
+                ) > 0,
+                Not(
+                    Or(
+                        CountRows(
+                            Filter(
+                                Filter(
+                                    Contactoffline,
+                                    Key = Drpdn_incident_key_2.Selected.Key And Contactrolename = "Deceased"
+                                ),
+                                identificationsignature = Blank()
+                            )
+                        ) > 0,
+                        CountRows(
+                            Filter(
+                                Search(
+                                    Filter(
+                                        Contactoffline,
+                                        Key = Drpdn_incident_key_2.Selected.Key
+                                    ),
+                                    "Identifier",
+                                    "Contactrolename"
+                                ),
+                                identificationsignature = Blank()
+                            )
+                        ) > 0
+                    )
+                )
+            ),
+            Set(
+                didetidisable,
+                DisplayMode.Disabled
+            )
+        );
+        If(
+            CountRows(
+                Filter(
+                    Contactoffline,
+                    Key = Drpdn_incident_key_2.Selected.Key
+                )
+            ) > 0,
+            If(
+                Or(
+                    CountRows(
+                        Filter(
+                            Filter(
+                                Contactoffline,
+                                Key = Drpdn_incident_key_2.Selected.Key And Contactrolename = "Deceased"
+                            ),
+                            identificationsignature = Blank()
+                        )
+                    ) > 0,
+                    CountRows(
+                        Filter(
+                            Search(
+                                Filter(
+                                    Contactoffline,
+                                    Key = Drpdn_incident_key_2.Selected.Key
+                                ),
+                                "Identifier",
+                                "Contactrolename"
+                            ),
+                            identificationsignature = Blank()
+                        )
+                    ) > 0
+                ),
+                Set(
+                    didetidisable,
+                    DisplayMode.Edit
+                )
+            ),
+            Set(
+                didetidisable,
+                DisplayMode.Edit
+            )
+        );
+        /*If(
+            IsBlank(
+                LookUp(
+                    Contactoffline,
+                    Key = Sudden_Primary_key And (Contactrolename = "Identifier")
+                ).identificationsignature
+            ),
+            Set(
+                didetidisable,
+                DisplayMode.Edit
+            )
+        );*/
+
+    RectQuickActionBar2_6 As rectangle:
+        Height: =88
+        Width: =Parent.Width
+        ZIndex: =1
+
+    LblAppName2_6 As label:
+        Align: =Align.Center
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =88
+        Size: =27
+        Text: ="Deceased"
+        Width: =Parent.Width
+        ZIndex: =2
+
+    Canvas2_6 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =950
+        Visible: =canvasVisible
+        Width: =Parent.Width
+        Y: =RectQuickActionBar2_6.Y + RectQuickActionBar2_6.Height
+        ZIndex: =3
+
+        DataCard2_6 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =3106
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Dropdown_Deceased_details_key As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(128, 128, 128, 100), -20%)
+                Default: =Sudden_Primary_key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                Items: =Filter('Sudden death offline',Key=Sudden_Primary_key).Key
+                PressedFill: =RGBA(128, 128, 128, 1)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =30
+                Y: =33
+                ZIndex: =2
+
+            Dropdown_Deceased_details_title As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(128, 128, 128, 100), -20%)
+                Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").Titlename
+                DisplayMode: =didetidisable
+                Fill: =madcoldd
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =StaffTitleoffline
+                OnChange: |-
+                    =If(Len(Dropdown_Deceased_details_title.Selected.cp_name)>0 And Radio_deceased_details_known.Selected.Value="Yes",UpdateContext({madcoldd:White}),UpdateContext({madcoldd:LightGoldenRodYellow}));
+                    If(Radio_deceased_details_known.Selected.Value="No",UpdateContext({madcoldd:White}))
+                OnSelect: =
+                PressedFill: =RGBA(128, 128, 128, 1)
+                Reset: =Allreset
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =344
+                ZIndex: =4
+
+            Txt_Deceased_detailsforename As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Color: =Black
+                Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").Forename
+                DisplayMode: =didetidisable
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: =
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =450
+                ZIndex: =5
+
+            Txt_Deceased_details_surname As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").Surname
+                DisplayMode: =didetidisable
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |
+                    =
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =560
+                ZIndex: =6
+
+            Datepicker_Deceased_details_dob As datepicker:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                DefaultDate: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").'Date of Birth'
+                DisplayMode: =didetidisable
+                Fill: =madcolsddd
+                Height: =70
+                IconBackground: =RGBA(153, 153, 153, 1)
+                InputTextPlaceholder: ="DD/MM/YYYY"
+                IsEditable: =true
+                OnChange: |
+                    =If(Len(Text(Datepicker_Deceased_details_dob.SelectedDate))>0,UpdateContext({madcolsddd:White}),UpdateContext({madcolsddd:LightGoldenRodYellow}));
+                OnSelect: =
+                Reset: =Allreset
+                Size: =24
+                StartYear: =1900
+                Width: =545
+                X: =40
+                Y: =854+yname
+                ZIndex: =7
+
+            Label3_15 As label:
+                Height: =70
+                Size: =21
+                Text: ="Date of birth"
+                Width: =545
+                X: =40
+                Y: =800+yname
+                ZIndex: =8
+
+            Label7_59 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Visible: =If(Radio_deceased_details_known.Selected.Value="Yes",true,false)
+                Width: =22
+                X: =565
+                Y: =314
+                ZIndex: =9
+
+            Label7_60 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Visible: =If(Radio_deceased_details_known.Selected.Value="Yes",true,false)
+                Width: =22
+                X: =565
+                Y: =421
+                ZIndex: =10
+
+            Label7_61 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Visible: =If(Radio_deceased_details_known.Selected.Value="Yes",true,false)
+                Width: =22
+                X: =565
+                Y: =521
+                ZIndex: =11
+
+            Label7_62 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Visible: =If(Radio_deceased_details_known.Selected.Value="Yes",true,false)
+                Width: =22
+                X: =565
+                Y: =823+yname
+                ZIndex: =12
+
+            Label9 As label:
+                Height: =37
+                OnSelect: =
+                Size: =21
+                Text: ="Title"
+                Width: =560
+                X: =42
+                Y: =307
+                ZIndex: =15
+
+            Txt_Deceased_details_housename As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").Housename
+                DisplayMode: =didetidisable
+                Fill: =If(IsBlank(Self.Text) And Radio_deceased_details_known.SelectedText.Value = "Yes" ,LightGoldenRodYellow,White)
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |-
+                    =If(Len(Txt_Deceased_details_housename.Text)>0,UpdateContext({madcolsodd:Transparent}),UpdateContext({madcolsodd:LightGoldenRodYellow}))
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1080+yname
+                ZIndex: =17
+
+            Txt_Deceased_details_houseno As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").Housenumber
+                DisplayMode: =didetidisable
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1210+yname
+                ZIndex: =18
+
+            Txt_Deceased_details_address As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").Address1
+                DisplayMode: =didetidisable
+                Fill: =If(IsBlank(Self.Text) And Radio_deceased_details_known.SelectedText.Value = "Yes" ,LightGoldenRodYellow,White)
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |-
+                    =If(Len(Txt_Deceased_details_address.Text)>0,UpdateContext({madcolsgdd:Transparent}),UpdateContext({madcolsgdd:LightGoldenRodYellow}))
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1322+yname
+                ZIndex: =19
+
+            Txt_Deceased_details_district As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").District
+                DisplayMode: =didetidisable
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1441+yname
+                ZIndex: =20
+
+            Txt_Deceased_details_town As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").Town
+                DisplayMode: =didetidisable
+                Fill: =madcolshdd
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |-
+                    =If(Len(Txt_Deceased_details_town.Text)>0,UpdateContext({madcolshdd:Transparent}),UpdateContext({madcolshdd:LightGoldenRodYellow}))
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1556+yname
+                ZIndex: =21
+
+            Txt_Deceased_details_county As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").County
+                DisplayMode: =didetidisable
+                Fill: =madcolsidd
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |-
+                    =If(Len(Txt_Deceased_details_county.Text)>0,UpdateContext({madcolsidd:Transparent}),UpdateContext({madcolsidd:LightGoldenRodYellow}))
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1676+yname
+                ZIndex: =22
+
+            Txt_Deceased_details_pobox As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").pcode
+                DisplayMode: =didetidisable
+                Fill: =madcolskdd
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |-
+                    =If(Len(Txt_Deceased_details_pobox.Text)>0,UpdateContext({madcolskdd:Transparent}),UpdateContext({madcolskdd:LightGoldenRodYellow}));
+                    If(Txt_Deceased_details_pobox.Text=Upper(Txt_Deceased_details_pobox.Text),Green,Reset(Txt_Deceased_details_pobox));
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1792+yname
+                ZIndex: =23
+
+            Lbl_address_4 As label:
+                Height: =61
+                Size: =21
+                Text: ="House Name or Number"
+                Width: =532
+                X: =40
+                Y: =1025+yname
+                ZIndex: =25
+
+            Label7_54 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Visible: =If(Radio_deceased_details_known.Selected.Value="Yes",true,false)
+                Width: =22
+                X: =565
+                Y: =1290+yname
+                ZIndex: =27
+
+            Label7_55 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Visible: =If(Radio_deceased_details_known.Selected.Value="Yes",true,false)
+                Width: =22
+                X: =565
+                Y: =1520+yname
+                ZIndex: =28
+
+            Label7_56 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Visible: =If(Radio_deceased_details_known.Selected.Value="Yes",true,false)
+                Width: =22
+                X: =565
+                Y: =1646+yname
+                ZIndex: =29
+
+            Label7_57 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Visible: =If(Radio_deceased_details_known.Selected.Value="Yes",true,false)
+                Width: =22
+                X: =563
+                Y: =1751+yname
+                ZIndex: =30
+
+            Label7_58 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Visible: =If(Radio_deceased_details_known.Selected.Value="Yes",true,false)
+                Width: =22
+                X: =565
+                Y: =2477+yname
+                ZIndex: =31
+
+            Label_retired_deceased As label:
+                Height: =66
+                Size: =21
+                Text: |-
+                    ="Retired?
+                    "
+                Width: =560
+                X: =40
+                Y: =2314+yname
+                ZIndex: =33
+
+            Radio_Deceased_details_retired As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").Retired
+                DisplayMode: =didetidisable
+                Height: =97
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(
+                        Radio_Deceased_details_retired.Selected.Value = "Yes",
+                        UpdateContext({occupation: true});UpdateContext({occupation1: false}));
+                        If(
+                        Radio_Deceased_details_retired.Selected.Value = "No",
+                        UpdateContext({occupation1: true});UpdateContext({occupation: false}));
+                OnSelect: =
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Reset: =Allreset
+                Size: =21
+                Width: =335
+                X: =40
+                Y: =2380+yname
+                ZIndex: =34
+
+            Txt_place_of_birth As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").placeofbirth
+                DisplayMode: =didetidisable   
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =2240+yname
+                ZIndex: =36
+
+            Label_former_occupation_1 As label:
+                Height: =70
+                Size: =21
+                Text: ="Former Occupation"
+                Visible: =occupation
+                Width: =528
+                X: =42
+                Y: =2462+yname
+                ZIndex: =37
+
+            Txt_Body_label As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").DeceasedBodyLabel
+                DisplayMode: =didetidisable
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |-
+                    =If(Len(Txt_Body_label.Text)>0,UpdateContext({madcolsodd:Transparent}),UpdateContext({madcolsodd:LightGoldenRodYellow}))
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Underline: =false+yname
+                Width: =545
+                X: =40
+                Y: =2820+yname
+                ZIndex: =39
+
+            Label_Marital_status As label:
+                Height: =66
+                Size: =21
+                Text: ="Marital Status" //& Dropdown_Maritalstatus.SelectedText.Value
+                Width: |
+                    =530
+                X: =41
+                Y: =2613+yname
+                ZIndex: =41
+
+            Label_star_deceased_relathionship_duration_5 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =58
+                Size: =21
+                Text: ="*"
+                Visible: =If(Radio_deceased_details_known.Selected.Value="Yes",true,false)
+                Width: =52
+                X: =560
+                Y: =2092+yname
+                ZIndex: =42
+
+            Dropdown_Maritalstatus As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(166, 166, 166, 1)
+                ChevronBackground: =RGBA(166, 166, 166, 1)
+                Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").MaritalStatus
+                DisplayMode: =didetidisable
+                Fill: =If(IsBlank(Self.SelectedText.Value) And Radio_deceased_details_known.SelectedText.Value = "Yes",LightGoldenRodYellow,White)
+                Height: =70
+                Items: =Maritaloffline
+                OnChange: |-
+                    =If(Len(Dropdown_Maritalstatus.Selected.cp_name)>0,UpdateContext({madcolsqdd:White}),UpdateContext({madcolsqdd:LightGoldenRodYellow}))
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =2679+yname
+                ZIndex: =43
+
+            Txt_Deceased_details_surname_1 As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: |-
+                    =/*RoundDown(DateDiff(Datepicker_Deceased_details_dob.SelectedDate, Now(),Days)/360,0)*/
+                    If (
+                        !IsBlank(Datepicker_Deceased_details_dob.SelectedDate),
+                        If(
+                            Month(Now()) < Month(Datepicker_Deceased_details_dob.SelectedDate) Or ((Month(Now()) = Month(Datepicker_Deceased_details_dob.SelectedDate) && Day(Now()) < Day(Datepicker_Deceased_details_dob.SelectedDate))),
+                            Year(Now()) - Year(Datepicker_Deceased_details_dob.SelectedDate) - 1,
+                            Year(Now()) - Year(Datepicker_Deceased_details_dob.SelectedDate)
+                        )
+                    )
+                DisplayMode: =DisplayMode.Disabled
+                Fill: = madcolsedd
+                Height: =70
+                HintText: ="Age"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |-
+                    =If(Len(Txt_Deceased_details_surname_1.Text)>0,UpdateContext({madcolsedd:Transparent}),UpdateContext({madcolsedd:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Txt_Deceased_details_surname_1.Text)>0,UpdateContext({madcolsedd:Transparent}),UpdateContext({madcolsedd:LightGoldenRodYellow}))
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =950+yname
+                ZIndex: =44
+
+            Label_Marital_status_1 As label:
+                Height: =66
+                Size: =21
+                Text: ="Gender"
+                Width: |
+                    =530
+                X: =40
+                Y: =1970+yname
+                ZIndex: =45
+
+            Label_star_deceased_relathionship_duration_6 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =58
+                Size: =21
+                Text: ="*"
+                Visible: =If(Radio_deceased_details_known.Selected.Value="Yes",true,false)
+                Width: =22
+                X: =565
+                Y: =1978+yname
+                ZIndex: =46
+
+            Dropdown_dec_gender As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(166, 166, 166, 1)
+                ChevronBackground: =RGBA(166, 166, 166, 1)
+                Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And Contactrolename="Deceased").Gendername
+                DisplayMode: =didetidisable
+                Fill: =If(IsBlank(Self.SelectedText.Value) And Radio_deceased_details_known.SelectedText.Value = "Yes",LightGoldenRodYellow,White)
+                Height: =70
+                Items: =Genderoffline
+                OnChange: |-
+                    =If(Len(Dropdown_dec_gender.Selected.cp_name)>0,UpdateContext({madcolsndd:White}),UpdateContext({madcolsndd:LightGoldenRodYellow}))
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =2020+yname
+                ZIndex: =47
+
+            Label_Marital_status_2 As label:
+                Height: =66
+                Size: =21
+                Text: ="Officer - defined ethnicity"
+                Width: |
+                    =530
+                X: =40
+                Y: =2080+yname
+                ZIndex: =48
+
+            Dropdown_def_ethnicity As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(166, 166, 166, 1)
+                ChevronBackground: =RGBA(166, 166, 166, 1)
+                Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").OfficerDefinedEthnicityname
+                DisplayMode: =didetidisable
+                Fill: =If(IsBlank(Self.SelectedText.Value) And Radio_deceased_details_known.SelectedText.Value = "Yes",LightGoldenRodYellow,White)
+                Height: =70
+                Items: =PerceivedEthnicityoffline
+                OnChange: |-
+                    =If(Len(Dropdown_def_ethnicity.Selected.cp_name)>0,UpdateContext({madcolspdd:White}),UpdateContext({madcolspdd:LightGoldenRodYellow}))
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =2130+yname
+                ZIndex: =49
+
+            Label_former_occupation_4 As label:
+                Height: =70
+                Size: =21
+                Text: ="Occupation"
+                Visible: =occupation1
+                Width: =545
+                X: =42
+                Y: =2468+yname
+                ZIndex: =50
+
+            Label_PNC_deceased_2 As label:
+                Height: =66
+                Size: =21
+                Text: |-
+                    ="Additional names?
+                    "
+                Width: =560
+                X: =40
+                Y: =650
+                ZIndex: =54
+
+            Radio_addtional_name As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").HasAdditionalNames
+                DisplayMode: =didetidisable
+                Height: =97
+                HoverColor: =RGBA(0, 0, 0, 1)
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |
+                    =If(
+                        Radio_addtional_name.Selected.Value = "Yes" And yname=0,
+                        UpdateContext({namevis: true});
+                        UpdateContext({yname: yname + 100});
+                    );
+                    If(
+                        Radio_addtional_name.Selected.Value = "No",
+                        UpdateContext({namevis: false});
+                        UpdateContext({yname: 0});
+                    );
+                OnSelect: =
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Reset: =Allreset
+                Size: =21
+                Width: =335
+                X: =40
+                Y: =700
+                ZIndex: =55
+
+            TextInput_additional_name As text:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").AdditionalNames
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Reset: =Allreset
+                Size: =21
+                Visible: =namevis
+                Width: =545
+                X: =40
+                Y: =800
+                ZIndex: =56
+
+            Coombobox_country_3 As combobox:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
+                DefaultSelectedItems: =LookUp(countriesoffline,cp_name=LookUp(Contactoffline,Key=Drpdn_incident_key_2.Selected.Key And Contactrolename="Deceased").Country)
+                DisplayFields: =["cp_name"]
+                DisplayMode: =didetidisable
+                Fill: =If(IsBlank(Self.Selected) And Radio_deceased_details_known.SelectedText.Value = "Yes",LightGoldenRodYellow,White)
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                InputTextPlaceholder: ="Find country"
+                Items: =SortByColumns(countriesoffline,"cp_displaysequenceno",Ascending,"cp_name",Descending)
+                OnChange: |-
+                    =If(Len(Text(Coombobox_country_3.Selected.cp_name))>0,UpdateContext({madcolsldd:White}),UpdateContext({madcolsldd:LightGoldenRodYellow}));
+                PressedFill: =RGBA(230, 230, 230, 1)
+                Reset: =Allreset
+                SearchFields: =["cp_name"]
+                SearchItems: =Search(SortByColumns(countriesoffline,"cp_displaysequenceno",Ascending,"cp_name",Descending),Coombobox_country_3.SearchText,"cp_name")
+                SelectionFill: =RGBA(153, 153, 153, 1)
+                SelectMultiple: =false
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1910+yname
+                ZIndex: =57
+
+            txtDeceasedOccupation As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").Formeroccupationname
+                DisplayMode: =didetidisable
+                Fill: =If(IsBlank(Self.Text) And Radio_deceased_details_known.SelectedText.Value = "Yes" ,LightGoldenRodYellow,White)
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |-
+                    =If(Len(txtDeceasedOccupation.Text)>0,UpdateContext({madcolsidd:Transparent}),UpdateContext({madcolsidd:LightGoldenRodYellow}))
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =2527+yname
+                ZIndex: =58
+
+            Label2_23 As label:
+                Height: =66
+                Size: =21
+                Text: ="Are Deceased details known ?"
+                Width: =560
+                X: =40
+                Y: =104
+                ZIndex: =59
+
+            Radio_deceased_details_known As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").Deceaseddetailsknown
+                DisplayMode: =didetidisable
+                Fill: =madcolredddd
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |
+                    =If(
+                        Radio_deceased_details_known.Selected.Value = "No",
+                        UpdateContext({madcoldd: White});
+                        UpdateContext({madcolredd: Transparent});
+                        UpdateContext({madcolsedd: Transparent});
+                        UpdateContext({madcolsddd: White});
+                        UpdateContext({madcolsodd: Transparent});
+                        UpdateContext({madcolsgdd: Transparent});
+                        UpdateContext({madcolshdd: Transparent});
+                        UpdateContext({madcolsidd: Transparent});
+                        UpdateContext({madcolskdd: Transparent});
+                        UpdateContext({madcolsldd: White});
+                        UpdateContext({madcolsndd: White});
+                        UpdateContext({madcolsidd: Transparent});
+                        UpdateContext({madcolsndd: White});
+                        UpdateContext({madcolspdd: White});
+                        UpdateContext({madcolsqdd: White});
+                        
+                    );
+                    If(
+                        Len(Radio_deceased_details_known.Selected.Value) = 0,
+                        UpdateContext({madcoldd: White});
+                        UpdateContext({madcolredd: Transparent});
+                        UpdateContext({madcolsedd: Transparent});
+                        UpdateContext({madcolsddd: White});
+                        UpdateContext({madcolsodd: Transparent});
+                        UpdateContext({madcolsgdd: Transparent});
+                        UpdateContext({madcolshdd: Transparent});
+                        UpdateContext({madcolsidd: Transparent});
+                        UpdateContext({madcolskdd: Transparent});
+                        UpdateContext({madcolsldd: White});
+                        UpdateContext({madcolsndd: White});
+                        UpdateContext({madcolsidd: Transparent});
+                        UpdateContext({madcolspdd: White});
+                        UpdateContext({madcolsqdd: White})
+                    );
+                    If(
+                        Radio_deceased_details_known.Selected.Value = "Yes",
+                        If(
+                            Len(Dropdown_Deceased_details_title.Selected.cp_name) > 0,
+                            UpdateContext({madcoldd: White}),
+                            UpdateContext({madcoldd: LightGoldenRodYellow})
+                        );
+                        If(
+                            Len(Txt_Deceased_detailsforename.Text) > 0,
+                            UpdateContext({madcolredd: Transparent}),
+                            UpdateContext({madcolredd: LightGoldenRodYellow})
+                        );
+                        If(
+                            Len(Txt_Deceased_details_surname.Text) > 0,
+                            UpdateContext({madcolsedd: Transparent}),
+                            UpdateContext({madcolsedd: LightGoldenRodYellow})
+                        );
+                        If(
+                            Len(Text(Datepicker_Deceased_details_dob.SelectedDate)) > 0,
+                            UpdateContext({madcolsddd: White}),
+                            UpdateContext({madcolsddd: LightGoldenRodYellow})
+                        );
+                        If(
+                            Len(Txt_Deceased_details_housename.Text) > 0,
+                            UpdateContext({madcolsodd: Transparent}),
+                            UpdateContext({madcolsodd: LightGoldenRodYellow})
+                        );
+                        If(
+                            Len(Txt_Deceased_details_address.Text) > 0,
+                            UpdateContext({madcolsgdd: Transparent}),
+                            UpdateContext({madcolsgdd: LightGoldenRodYellow})
+                        );
+                        If(
+                            Len(Txt_Deceased_details_town.Text) > 0,
+                            UpdateContext({madcolshdd: Transparent}),
+                            UpdateContext({madcolshdd: LightGoldenRodYellow})
+                        );
+                        If(
+                            Len(Txt_Deceased_details_county.Text) > 0,
+                            UpdateContext({madcolsidd: Transparent}),
+                            UpdateContext({madcolsidd: LightGoldenRodYellow})
+                        );
+                        If(
+                            Len(Txt_Deceased_details_pobox.Text) > 0,
+                            UpdateContext({madcolskdd: Transparent}),
+                            UpdateContext({madcolskdd: LightGoldenRodYellow})
+                        );
+                        If(
+                            Len(Text(Coombobox_country_3.Selected.cp_name)) > 0,
+                            UpdateContext({madcolsldd: White}),
+                            UpdateContext({madcolsldd: LightGoldenRodYellow})
+                        );
+                        If(
+                            Len(Dropdown_dec_gender.Selected.cp_name) > 0,
+                            UpdateContext({madcolsndd: White}),
+                            UpdateContext({madcolsndd: LightGoldenRodYellow})
+                        );
+                        If(
+                            Len(Dropdown_def_ethnicity.Selected.cp_name) > 0,
+                            UpdateContext({madcolsndd: White}),
+                            UpdateContext({madcolsndd: LightGoldenRodYellow})
+                        );
+                        If(
+                            Len(txtDeceasedOccupation.Text) > 0,
+                            UpdateContext({madcolsidd: Transparent}),
+                            UpdateContext({madcolsidd: LightGoldenRodYellow})
+                        );
+                        If(
+                            Len(Dropdown_Maritalstatus.Selected.cp_name) > 0,
+                            UpdateContext({madcolsndd: White}),
+                            UpdateContext({madcolsndd: LightGoldenRodYellow})
+                        );
+                        If(
+                            Len(Radio_deceased_details_known.Selected.Value) > 0,
+                            UpdateContext({madcolredddd: Transparent}),
+                            UpdateContext({madcolredddd: LightGoldenRodYellow})
+                        );
+                        
+                    );
+                    If(
+                        Len(Radio_deceased_details_known.Selected.Value) > 0,
+                        UpdateContext({madcolredddd: Transparent}),
+                        UpdateContext({madcolredddd: LightGoldenRodYellow})
+                    );
+                    If(
+                        Radio_deceased_details_known.Selected.Value = "No",
+                        UpdateContext({stafftimerstart_1: false});
+                        UpdateContext({stafftimerreset_1: true});
+                        UpdateContext({Warnstaffdetails_1: false})
+                    );
+                    If(
+                        Radio_deceased_details_known.Selected.Value = "Yes",
+                        Set(
+                            idetidisable,
+                            DisplayMode.Edit
+                        );
+                        UpdateContext({ysteps: 0})
+                    );
+                    If(
+                        Radio_deceased_details_known.Selected.Value = "No",
+                        Set(
+                            idetidisable,
+                            DisplayMode.Disabled
+                        );
+                        UpdateContext({ysteps: 200})
+                    );
+                OnSelect: =
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =336
+                X: =40
+                Y: =184
+                ZIndex: =60
+
+            Lbl_address_25 As label:
+                Height: =60
+                Size: =21
+                Text: ="Additional Address info"
+                Width: =525
+                X: =40
+                Y: =1150+yname
+                ZIndex: =61
+
+            Lbl_address_26 As label:
+                Height: =70
+                Size: =21
+                Text: ="District"
+                Width: =560
+                X: =40
+                Y: =1382+yname
+                ZIndex: =62
+
+            Lbl_address_27 As label:
+                Height: =60
+                Size: =21
+                Text: ="Street"
+                Width: =530
+                X: =40
+                Y: =1268+yname
+                ZIndex: =63
+
+            Label9_1 As label:
+                Height: =49
+                OnSelect: =
+                Size: =21
+                Text: ="Town"
+                Width: =504
+                X: =42
+                Y: =1513+yname
+                ZIndex: =64
+
+            Label9_2 As label:
+                Height: =36
+                OnSelect: =
+                Size: =21
+                Text: ="Forename"
+                Width: =506
+                X: =40
+                Y: =414
+                ZIndex: =65
+
+            Label9_3 As label:
+                Height: =37
+                OnSelect: =
+                Size: =21
+                Text: ="Surname"
+                Width: =560
+                X: =42
+                Y: =523
+                ZIndex: =66
+
+            Label9_4 As label:
+                Height: =49
+                OnSelect: =
+                Size: =21
+                Text: ="Post Code (Capitals only)"
+                Width: =504
+                X: =40
+                Y: =1740+yname
+                ZIndex: =67
+
+            Label9_5 As label:
+                Height: =49
+                OnSelect: =
+                Size: =21
+                Text: ="Country"
+                Width: =504
+                X: =42
+                Y: =1860+yname
+                ZIndex: =68
+
+            Label9_6 As label:
+                Height: =49
+                OnSelect: =
+                Size: =21
+                Text: ="County"
+                Width: =504
+                X: =42
+                Y: =1626+yname
+                ZIndex: =69
+
+            Label_star_deceased_relathionship_duration_7 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Visible: =If(Radio_deceased_details_known.Selected.Value="Yes",true,false)
+                Width: =32
+                X: =560
+                Y: =1882+yname
+                ZIndex: =70
+
+            Label_Marital_status_3 As label:
+                Height: =66
+                Size: =21
+                Text: ="Place of Birth"
+                Width: |
+                    =530
+                X: =42
+                Y: =2189+yname
+                ZIndex: =71
+
+            Label7_63 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Visible: =If(Radio_deceased_details_known.Selected.Value="Yes",true,false)
+                Width: =22
+                X: =565
+                Y: =1054+yname
+                ZIndex: =72
+
+            Txt_steps_to_identify_2 As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Sudden death offline',Key=Drpdn_incident_key_2.Selected.Key).'Formal Identification steps'
+                Fill: =If(IsBlank(Self.Text) And Radio_deceased_details_known.SelectedText.Value = "No" ,LightGoldenRodYellow,White)
+                Height: =100
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Mode: =TextMode.MultiLine
+                Reset: =Allreset
+                Size: =21
+                Visible: =If(Radio_deceased_details_known.Selected.Value="No",true,false)
+                Width: =545
+                X: =47
+                Y: =2986+yname
+                ZIndex: =74
+
+            Label_Marital_status_4 As label:
+                Height: =66
+                Size: =21
+                Text: ="Steps taken to formally identify the deceased?"
+                Visible: =If(Radio_deceased_details_known.Selected.Value="No",true,false)
+                Width: =514
+                X: =46
+                Y: =2910+yname
+                ZIndex: =75
+
+            Label7_64 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Visible: =If(Radio_deceased_details_known.Selected.Value="Yes",true,false)
+                Width: =22
+                X: =565
+                Y: =Label_Marital_status.Y+20   
+                ZIndex: =76
+
+            Label_Marital_status_5 As label:
+                Height: =66
+                Size: =21
+                Text: ="Body Label"
+                Width: |
+                    =530
+                X: =40
+                Y: =2763+yname
+                ZIndex: =77
+
+            Label7_65 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Visible: =If(Radio_deceased_details_known.Selected.Value="No",true,false)
+                Width: =22
+                X: =560
+                Y: =Label_Marital_status_4.Y
+                ZIndex: =78
+
+    Icon3_10 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Back()
+        X: =31
+        Y: =13
+        ZIndex: =4
+
+    Icn_exit_11 As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =576
+        Y: =13
+        ZIndex: =5
+
+    Btn_add_details_1 As button:
+        DisplayMode: =didetidisable   
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =70
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |-
+            =If(
+                Len(
+                    LookUp(
+                        Contactoffline,
+                        Contactrolename = "Deceased" And Key = Dropdown_Deceased_details_key.Selected.Key
+                    ).Contactrolename
+                ) > 0,
+                UpdateIf(
+                    'Sudden death offline',
+                    Key = Sudden_Primary_key,
+                    {'Formal Identification steps': Txt_steps_to_identify_2.Text}
+                );
+                UpdateIf(
+                    Contactoffline,
+                    Key = Sudden_Primary_key And Contactrolename = "Deceased",
+                    {
+                        Title: Dropdown_Deceased_details_title.Selected.cp_lookupvalueid,
+                        Titlename: Dropdown_Deceased_details_title.Selected.cp_name,
+                        Forename: Txt_Deceased_detailsforename.Text,
+                        Surname: Txt_Deceased_details_surname.Text,
+                        Fullname: Txt_Deceased_details_surname.Text & " " & Txt_Deceased_detailsforename.Text,
+                        AdditionalNames: TextInput_additional_name.Text,
+                        HasAdditionalNames: Radio_addtional_name.SelectedText.Value = "Yes",
+                        'Date of Birth': Datepicker_Deceased_details_dob.SelectedDate,
+                        Housename: Txt_Deceased_details_housename.Text,
+                        Housenumber: Txt_Deceased_details_houseno.Text,
+                        Address1: Txt_Deceased_details_address.Text,
+                        District: Txt_Deceased_details_district.Text,
+                        Town: Txt_Deceased_details_town.Text,
+                        County: Txt_Deceased_details_county.Text,
+                        pcode: Txt_Deceased_details_pobox.Text,
+                        Country: Coombobox_country_3.Selected.cp_name,
+                        Retired: Radio_Deceased_details_retired.Selected.Value,
+                        Formeroccupationname: txtDeceasedOccupation.Text,
+                        MaritalStatus: Dropdown_Maritalstatus.SelectedText.Value,
+                        DeceasedBodyLabel: Txt_Body_label.Text,
+                        Gender: Dropdown_dec_gender.Selected.cp_lookupvalueid,
+                        Gendername: Dropdown_dec_gender.Selected.cp_name,
+                        Deceaseddetailsknown: Radio_deceased_details_known.Selected.Value,
+                        OfficerDefinedEthnicityname: Dropdown_def_ethnicity.Selected.cp_name,
+                        OfficerDefinedEthnicity: Dropdown_def_ethnicity.Selected.cp_lookupvalueid,
+                        identificationsignature: Blank(),
+                        Contactrole: LookUp(
+                            ContactRoleoffline,
+                            cp_name = "Deceased"
+                        ).cp_contactroletypeid,
+                        Contactrolename: LookUp(
+                            ContactRoleoffline,
+                            cp_name = "Deceased"
+                        ).cp_name,
+                        age: Txt_Deceased_details_surname_1.Text
+                    }
+                );
+                ,
+                UpdateContext({newContactKey: GUID()});
+                //Patch(
+            Collect(
+                    Contactoffline,
+                    //Defaults('Contact offline'),
+                    {
+                        Key: Sudden_Primary_key,
+                        ContactKey: newContactKey,
+                        Contactrole: Left(
+                            Concat(
+                                Filter(
+                                    ContactRoleoffline,
+                                    cp_name = "Deceased"
+                                ).cp_contactroletypeid,
+                                cp_contactroletypeid & ","
+                            ),
+                            Len(
+                                Concat(
+                                    Filter(
+                                        ContactRoleoffline,
+                                        cp_name = "Deceased"
+                                    ).cp_contactroletypeid,
+                                    cp_contactroletypeid & ","
+                                )
+                            ) - 1
+                        ),
+                        Contactrolename: "Deceased",
+                        Title: Dropdown_Deceased_details_title.Selected.cp_lookupvalueid,
+                        Titlename: Dropdown_Deceased_details_title.Selected.cp_name,
+                        Forename: Txt_Deceased_detailsforename.Text,
+                        Surname: Txt_Deceased_details_surname.Text,
+                        Fullname: Txt_Deceased_details_surname.Text & " " & Txt_Deceased_detailsforename.Text,
+                        AdditionalNames: TextInput_additional_name.Text,
+                        HasAdditionalNames: Radio_addtional_name.SelectedText.Value = "Yes",
+                        'Date of Birth': Datepicker_Deceased_details_dob.SelectedDate,
+                        Housename: Txt_Deceased_details_housename.Text,
+                        Housenumber: Txt_Deceased_details_houseno.Text,
+                        Address1: Txt_Deceased_details_address.Text,
+                        District: Txt_Deceased_details_district.Text,
+                        Town: Txt_Deceased_details_town.Text,
+                        County: Txt_Deceased_details_county.Text,
+                        pcode: Txt_Deceased_details_pobox.Text,
+                        Country: Coombobox_country_3.Selected.cp_name,
+                        Retired: Radio_Deceased_details_retired.Selected.Value,
+                        Formeroccupationname: txtDeceasedOccupation.Text,
+                        MaritalStatus: Dropdown_Maritalstatus.SelectedText.Value,
+                        DeceasedBodyLabel: Txt_Body_label.Text,
+                        Deceaseddetailsknown: Radio_deceased_details_known.Selected.Value,
+                        identificationsignature: Blank(),
+                        OfficerDefinedEthnicityname: Dropdown_def_ethnicity.Selected.cp_name,
+                        OfficerDefinedEthnicity: Dropdown_def_ethnicity.Selected.cp_lookupvalueid,
+                        Gender: Dropdown_dec_gender.Selected.cp_lookupvalueid,
+                        Gendername: Dropdown_dec_gender.Selected.cp_name,
+                        age: Txt_Deceased_details_surname_1.Text,
+                        placeofbirth: Txt_place_of_birth.Text
+                    }
+                );
+                UpdateIf(
+                    'Sudden death offline',
+                    Key = Drpdn_incident_key_2.Selected.Key,
+                    {'Formal Identification steps': Txt_steps_to_identify_2.Text}
+                );
+                Collect(
+                    UsedContactRoles,
+                    {
+                        Key: Drpdn_incident_key_5.Selected.Key,
+                        Role: "Deceased"
+                    }
+                );
+                
+            );
+            UpdateContext(
+                {
+                    rec: LookUp(
+                        Contactoffline,
+                        Key = Sudden_Primary_key And Contactrolename = "Deceased"
+                    )
+                }
+            );
+            UpdateIf(
+                'Sudden death offline',
+                Key = Dropdown_sydden_death_key.Selected.Key,
+                {
+                    deceasedValid: Or(
+                        And(
+                            rec.Deceaseddetailsknown = "No",
+                            !IsBlank(Txt_steps_to_identify_2.Text)
+                        ),
+                        And(
+                            rec.Deceaseddetailsknown = "Yes",
+                            !IsBlank(rec.Titlename),
+                            !IsBlank(rec.Forename),
+                            !IsBlank(rec.Surname),
+                            !IsBlank(rec.'Date of Birth'),
+                            !IsBlank(rec.Housename),
+                            !IsBlank(rec.Address1),
+                            !IsBlank(rec.Town),
+                            !IsBlank(rec.County),
+                            !IsBlank(rec.pcode),
+                            !IsBlank(rec.Gender),
+                            !IsBlank(rec.OfficerDefinedEthnicity),
+                            !IsBlank(rec.Country),
+                            !IsBlank(rec.Formeroccupationname),
+                            !IsBlank(rec.Country),
+                            !IsBlank(rec.MaritalStatus)
+                        )
+                    )
+                }
+            );
+            If (
+                rec.Deceaseddetailsknown = "No",
+                UpdateIf(
+                    'Sudden death offline',
+                    Key = Dropdown_sydden_death_key.Selected.Key,
+                    {identificationValid: true}
+                )
+            );
+            If (
+                rec.Deceaseddetailsknown = "Yes",
+                UpdateIf(
+                    'Sudden death offline',
+                    Key = Dropdown_sydden_death_key.Selected.Key,
+                    {identificationValid: false}
+                )
+            );
+            SaveData(
+                Contactoffline,
+                "Contactoffline"
+            );
+            SaveData(
+                'Sudden death offline',
+                "Sudden death offline"
+            );
+            Navigate(
+                Scr_home,
+                UnCoverRight
+            )
+        Size: =24
+        Text: |-
+            =If(
+                Len(
+                    LookUp(
+                        Contactoffline,
+                        Contactrolename = "Deceased" And Key = Dropdown_Deceased_details_key.Selected.Key
+                    ).Contactrolename
+                ) > 0,
+                "Update Deceased",
+                "Add Deceased"
+            )
+        Width: =545
+        X: =41
+        Y: =1052
+        ZIndex: =6
+

@@ -1,0 +1,622 @@
+Scr_colection As screen:
+    OnVisible: |-
+        =UpdateContext({validationwarning:false});
+        Set(gblLoading3,false);
+
+    Lbl_header_4 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =27
+        Text: ="Unsubmitted incidents"// & (CountRows('Sudden death offline') = 0) & Sudden_Primary_key
+        Width: =640
+        ZIndex: =1
+
+    Icn_exit_4 As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Navigate(Scr_home,UnCover)
+        X: =576
+        Y: =13
+        ZIndex: =2
+
+    Icon3_3 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home,UnCover)
+        X: =31
+        Y: =13
+        ZIndex: =8
+
+    Gallery_unsubmitted As gallery.galleryVertical:
+        Height: =843
+        Items: ='Sudden death offline'
+        Layout: =Layout.Vertical
+        TemplateSize: =275
+        Y: =87
+        ZIndex: =9
+
+        Label6 As label:
+            Height: =76
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.CircumstancesAdditionalInfo
+            Visible: =false
+            Width: =97
+            X: =515
+            Y: =24
+            ZIndex: =1
+
+        Label7 As label:
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.'Incident date'
+            Width: =165
+            X: =6
+            Y: =40
+            ZIndex: =2
+
+        Label8 As label:
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.Key
+            Width: =551
+            X: =6
+            Y: =140
+            ZIndex: =3
+
+        Label8_1 As label:
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.'Incident number'
+            Width: =255
+            X: =205
+            Y: =40
+            ZIndex: =4
+
+        Icon4 As icon.Edit:
+            Color: =RGBA(153, 153, 153, 1)
+            Icon: =Icon.Edit
+            OnSelect: |-
+                =Set(
+                    Txt_incident_suffixvar,
+                    ThisItem.'Incident suffix'
+                );
+                Set(
+                    Sudden_Primary_key,
+                    ThisItem.Key
+                );
+                Set(
+                    incidentnumbervar,
+                    ThisItem.'Incident number'
+                );
+                Navigate(
+                    Scr_home,
+                    ScreenTransition.UnCover
+                )
+            X: =548
+            ZIndex: =5
+
+        Label3 As label:
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Date"
+            Underline: =true
+            Width: =165
+            X: =6
+            ZIndex: =6
+
+        Label3_2 As label:
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Incident number"
+            Underline: =true
+            Width: =250
+            X: =205
+            ZIndex: =7
+
+        Label3_3 As label:
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Incident Key"
+            Underline: =true
+            Width: =233
+            X: =6
+            Y: =100
+            ZIndex: =8
+
+        Rectangle1 As rectangle:
+            BorderColor: =RGBA(230, 230, 230, 1)
+            Fill: =RGBA(204, 204, 204, 1)
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =619
+            X: =6
+            Y: =264
+            ZIndex: =9
+
+        Icon6 As icon.Cancel:
+            BorderColor: =RGBA(153, 153, 153, 1)
+            Color: =RGBA(128, 128, 128, 1)
+            Icon: =Icon.Cancel
+            OnSelect: |
+                =Set(gblLoading3,true);
+            X: =548
+            Y: =180
+            ZIndex: =10
+
+        Icon2_1 As icon.Check:
+            Color: =RGBA(128, 128, 128, 1)
+            Icon: =Icon.Check
+            OnSelect: |
+                =Clear(SuddenDeathErrors);
+                Clear(PropertyErrors);
+                Clear(ContactErrors);
+                If(
+                    ThisItem.deceasedValid And ThisItem.identificationValid And ThisItem.circumstancesValid And ThisItem.suddenDeathValid,
+                    UpdateContext(
+                        {
+                            Suddendeathpk: Patch(
+                                'Sudden Death STGS',
+                                Defaults('Sudden Death STGS'),
+                                {
+                                    'Incident Number': ThisItem.'Incident number',
+                                    'Incident Suffix': ThisItem.'Incident suffix',
+                                    'Incident Date': ThisItem.'Incident date',
+                                    'Entered By': LookUp(
+                                        Users,
+                                        internalemailaddress = User().Email
+                                    ).systemuserid,
+                                    //this will be overwritten by the flow, but needs an entry as the field is required
+                                    'Additional Details': ThisItem.CircumstancesAdditionalInfo,
+                                    'Additional Officer': ThisItem.Additionalofficerid,
+                                    'Aditional Notes': ThisItem.AdditionalNotes,
+                                    'Area Last Seen Alive': ThisItem.WhereLastSeenAlive,
+                                    'Body Found By': ThisItem.'Body found By',
+                                    'Body Physical Position': ThisItem.PhysicalPosition,
+                                    'Body Removed To': ThisItem.'Removed to',
+                                    'Burial Cremation': ThisItem.'Burial Or Cremation',
+                                    'CIDCSI Attended': If(
+                                        ThisItem.CIDattended = "Yes",
+                                        'CIDCSI Attended (Sudden Death STGS)'.Yes,
+                                        ThisItem.CIDattended = "No",
+                                        'CIDCSI Attended (Sudden Death STGS)'.No
+                                    ),
+                                    'CIDCSI Attending Officers': ThisItem.CIDcsiselectid,
+                                    Circumstances: ThisItem.Circumstances,
+                                    /*cp_city:*/
+                                    'Clothing General Condition': ThisItem.Clothing,
+                                    Country: ThisItem.'Country sudden death',
+                                    County: ThisItem.'County sudden death',
+                                    'CSI Photos Taken': If(
+                                        ThisItem.PhotosTakenbyCID = "Yes",
+                                        'CSI Photos Taken (Sudden Death STGS)'.Yes,
+                                        ThisItem.PhotosTakenbyCID = "No",
+                                        'CSI Photos Taken (Sudden Death STGS)'.No
+                                    ),
+                                    'Datetime Body Found': DateTimeValue(ThisItem.'Date body found' & " " & ThisItem.'Time Body Found'),
+                                    'Datetime Death Confirmed': DateTimeValue(ThisItem.'Date fact confirmed' & " " & ThisItem.'Time fact confirmed'),
+                                    'Date Time Last Seen Alive': DateTimeValue(ThisItem.DateLastSeenAlive & " " & ThisItem.TimeLastSeenalive),
+                                    cp_lastseenaliveby: ThisItem.LastSeenAliveBy,
+                                    'Death In Custody': ThisItem.DeathInCustody,
+                                    'Death In Health Care': ThisItem.DeathInHealthCare,
+                                    'Death In Hospital ': ThisItem.DeathInHospital,
+                                    'Diagnosed By': ThisItem.'Death diagnosed by',
+                                    'Diagnosis Medication Prescribed': ThisItem.MedicalHistoryDiagnosisanmedication,
+                                    District: ThisItem.'District sudden death',
+                                    DOLS: ThisItem.Dols,
+                                    'Family Liaison Officer ': ThisItem.'Family Liasion officer',
+                                    'Formal Identification': If(
+                                        ThisItem.'Formal identification' = "Yes",
+                                        'Formal Identification (Sudden Death STGS)'.Yes,
+                                        ThisItem.'Formal identification' = "No",
+                                        'Formal Identification (Sudden Death STGS)'.No
+                                    ),
+                                    'Formal Identification Steps': ThisItem.'Formal Identification steps',
+                                    'GP Address': ThisItem.GPaddress,
+                                    cp_gpcity: ThisItem. GPtown,
+                                    'GP Country': ThisItem.GPcounty,
+                                    'GP County': ThisItem.GPcounty,
+                                    'GP District': ThisItem.GPDistrict,
+                                    'GP Name': ThisItem.GPname,
+                                    'GP Postoffice Box': ThisItem.GPpostcode,
+                                    'GP Reason For Visit': ThisItem.MedicalHistoryReasonForVisit,
+                                    'GP Surgery': ThisItem.GPsurgery,
+                                    'GP Telephone': ThisItem.GPphonenumber,
+                                    'GP Visit Date': ThisItem.MedicalHistorylastvisitdate,
+                                    'House Name': ThisItem.'Housename sudden death',
+                                    'House Number': ThisItem.'Houseno Sudden death',
+                                    cp_street: ThisItem.'Address sudden death',
+                                    cp_city: ThisItem.'Town sudden death',
+                                    'House Secure': ThisItem.SecureHouse,
+                                    'House Temperature': ThisItem.HouseTemperature,
+                                    'Known Risk Factors': ThisItem.MedicalHistoryRiskFactors,
+                                    Latitude: Value(ThisItem.'Latitude Sudden Death'),
+                                    Longitude: Value(ThisItem.'Longtitude Sudden Death'),
+                                    'Marks Or Bruises': ThisItem.MarksBruises,
+                                    'Next Of Kin Informed': If(
+                                        ThisItem.'Next of kin informed' = "Yes",
+                                        'Next Of Kin Informed (Sudden Death STGS)'.Yes,
+                                        ThisItem.'Next of kin informed' = "No",
+                                        'Next Of Kin Informed (Sudden Death STGS)'.No
+                                    ),
+                                    cp_nextofkinactioninsteadinform: ThisItem.'Action of next of Kin',
+                                    'Next Of Kin Informed Method': ThisItem.'Next of kin way of info',
+                                    'Past Medical History': ThisItem.MedicalHistoryPastHistory,
+                                    'Place Of Death': ThisItem.'Place of death desc',
+                                    'Police Involvement Prior Death': ThisItem.PoliceContactPriorToDeath,
+                                    'Reporting Officer': If(
+                                        ThisItem.PrimaryOfficer = "Yes",
+                                        'Reporting Officer (Sudden Death STGS)'.Yes,
+                                        ThisItem.PrimaryOfficer = "No",
+                                        'Reporting Officer (Sudden Death STGS)'.No
+                                    ),
+                                    'Single Officer Event': If(
+                                        ThisItem.'Single Officer' = "Yes",
+                                        'Single Officer Event (Sudden Death STGS)'.Yes,
+                                        ThisItem.'Single Officer' = "No",
+                                        'Single Officer Event (Sudden Death STGS)'.No
+                                    ),
+                                    Smoker: ThisItem.DeceasedSmoker,
+                                    'Sudden Death Photo1': ThisItem.PhotoCircumstances,
+                                    'Suicide Note Left': If(
+                                        ThisItem.SuicideNoteLeft = "Yes",
+                                        'Suicide Note Left (Sudden Death STGS)'.Yes,
+                                        ThisItem.SuicideNoteLeft = "No",
+                                        'Suicide Note Left (Sudden Death STGS)'.No
+                                    ),
+                                    'Suicide Note Photo': ThisItem.Photosuicide,
+                                    'Suspect Suicide': If(
+                                        ThisItem.SuspectSuicide = "Yes",
+                                        'Suspect Suicide (Sudden Death STGS)'.Yes,
+                                        ThisItem.SuspectSuicide = "No",
+                                        'Suspect Suicide (Sudden Death STGS)'.No
+                                    ),
+                                    TPA: ThisItem.'NPT sudden death',
+                                    'Undertaker Arranging Funeral': ThisItem.'Undertaker funeral',
+                                    'Undertaker Remove Body': If(
+                                        ThisItem.'Undertaker removing body' = "Yes",
+                                        'Undertaker Remove Body (Sudden Death STGS)'.Yes,
+                                        ThisItem.'Undertaker removing body' = "No",
+                                        'Undertaker Remove Body (Sudden Death STGS)'.No
+                                    ),
+                                    'Work Related Death': ThisItem.WorkRelatedDeath
+                                }
+                            ).'Sudden Death STG'
+                        };
+                    );
+                    Collect(
+                        SuddenDeathErrors,
+                        Errors('Sudden Death STGS')
+                    );
+                    ForAll(
+                        Filter(
+                            'Property offline',
+                            SuddenDeathKey = ThisItem.Key
+                        ),
+                        Patch(
+                            'Sudden Death Properties STG',
+                            Defaults('Sudden Death Properties STG'),
+                            {
+                                'Sudden Death STG': LookUp(
+                                    'Sudden Death STGS',
+                                    'Sudden Death STG' = Suddendeathpk
+                                ),
+                                'Action Related With': PersonAuthorisingProperty,
+                                'Action Taken': IsDisposedOrRetained,
+                                'Property Location': PropertyLocation,
+                                'Property Relationship To Deceased': PropertyRelationshipToDeceased,
+                                'Property Signature': PropertySignature,
+                                'Property Signed On': PropertyDate,
+                                'Property Photo': PhotoProperty,
+                                cp_propertyname: PropertyDescription
+                            }
+                        );
+                        Collect(
+                            PropertyErrors,
+                            Errors('Sudden Death Properties STG')
+                        );
+                    );
+                    ForAll(
+                        Filter(
+                            Contactoffline,
+                            Key = ThisItem.Key
+                        ),
+                        Patch(
+                            'Sudden Death Involved Contacts STG',
+                            Defaults('Sudden Death Involved Contacts STG'),
+                            {
+                                'Sudden Death STG': LookUp(
+                                    'Sudden Death STGS',
+                                    'Sudden Death STG' = Suddendeathpk
+                                ),
+                                cp_address: Address1,
+                                Birthday: Date(
+                                    Year('Date of Birth'),
+                                    Month('Date of Birth'),
+                                    Day('Date of Birth')
+                                ),
+                                cp_city: Town,
+                                'Contact Role': Contactrole,
+                                'Contact Title': Title,
+                                Country: Country,
+                                County: County,
+                                District: District,
+                                'First Name': Forename,
+                                cp_housename: Housename,
+                                cp_housenumber: Housenumber,
+                                'Identification Signature': identificationsignature,
+                                'Identification Signed On': signdate,
+                                'Identification sign loc': Locationofid,
+                                'Last Name': Surname,
+                                'Postoffice Box': pcode,
+                                'Preferred Contact Method': Preferedcontactmethod,
+                                'Relationship to Deceased': Deceasedrelathionship,
+                                'Relationship To Deceased Duration': Deceasedrelationshipduration,
+                                Retired: If(
+                                    Retired = "Yes",
+                                    'Retired (Sudden Death Involved Contacts STG)'.Yes,
+                                    Retired = "No",
+                                    'Retired (Sudden Death Involved Contacts STG)'.No
+                                ),
+                                'Body Label': DeceasedBodyLabel,
+                                //commenting out the day before go-live as the flow is still expecting a lookup id
+                                cp_occupation: Formeroccupationname,
+                                'Marital Status': MaritalStatus,
+                                //'PNC Number': PNCId,
+                                Email: EMail,
+                                'Home Phone': Homephone,
+                                cp_workhome: Workphone,
+                                cp_mobilephone: Mobile,
+                                cp_age: If(
+                                    IsBlank(age),
+                                    Blank(),
+                                    Value(age)
+                                ),
+                                cp_additionalname: AdditionalNames,
+                                cp_gender: Gender,
+                                cp_officerdefinedethnicity: OfficerDefinedEthnicity,
+                                cp_placeofbirth: placeofbirth
+                            }
+                        );
+                        Collect(
+                            ContactErrors,
+                            Errors('Sudden Death Involved Contacts STG')
+                        );
+                    );
+                    If (
+                        IsEmpty(ContactErrors) And IsEmpty(PropertyErrors) And IsEmpty(SuddenDeathErrors),
+                        UpdateContext(
+                            {
+                                Test: LookUp(
+                                    Choices('Staging Entry Status'),
+                                    Value = 'Staging Entry Status'.'Ready for Submission'
+                                ).Value
+                            }
+                        );
+                        UpdateIf(
+                            'Sudden Death STGS',
+                            Suddendeathpk = 'Sudden Death STG',
+                            {'Staging Entry Status': Test}
+                        );
+                        Remove(
+                            'Sudden death offline',
+                            LookUp(
+                                'Sudden death offline',
+                                Key = ThisItem.Key
+                            )
+                        );
+                        RemoveIf(
+                            'Property offline',
+                            SuddenDeathKey = ThisItem.Key
+                        );
+                        RemoveIf(
+                            Contactoffline,
+                            Key = ThisItem.Key
+                        );
+                        RemoveIf(
+                            UsedContactRoles,
+                            Key = ThisItem.Key
+                        );
+                        SaveData(
+                            'Sudden death offline',
+                            "Sudden death offline"
+                        );
+                        SaveData(
+                            'Property offline',
+                            "Property offline"
+                        );
+                        SaveData(
+                            Contactoffline,
+                            "Contactoffline"
+                        );
+                        SaveData(
+                            UsedContactRoles,
+                            "UsedContactRoles"
+                        );
+                        UpdateContext({validationwarning: false});
+                        ,
+                        ForAll(
+                            SuddenDeathErrors,
+                            Notify(
+                                "There was an error submitting your request: " & ThisRecord.Message & "  (" & ThisRecord.Column & ")",
+                                NotificationType.Error
+                            )
+                        );
+                        ForAll(
+                            PropertyErrors,
+                            Notify(
+                                "There was an error submitting your request: " & ThisRecord.Message & "  (" & ThisRecord.Column & ")",
+                                NotificationType.Error
+                            )
+                        );
+                        ForAll(
+                            ContactErrors,
+                            Notify(
+                                "There was an error submitting your request: " & ThisRecord.Message & "  (" & ThisRecord.Column & ")",
+                                NotificationType.Error
+                            )
+                        );
+                    );
+                    ,
+                    UpdateContext({validationwarning: true})
+                );
+            Tooltip: ="Submit Incident"
+            X: =548
+            Y: =88
+            ZIndex: =11
+
+    Label2_2 As label:
+        Color: =RGBA(255, 0, 0, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =116
+        Size: =21
+        Text: ="Please fill in all the mandatory fields before submitting."
+        Visible: =validationwarning
+        Width: =355
+        X: =49
+        Y: =907
+        ZIndex: =10
+
+    Icon5_1 As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =139
+        Icon: =Icon.Warning
+        Visible: =validationwarning
+        Width: =122
+        X: =440
+        Y: =870
+        ZIndex: =11
+
+    Button3 As button:
+        DisplayMode: =DisplayMode.Disabled
+        Height: =70
+        OnSelect: =Clear(Contactoffline);Clear('Sudden death offline');//Clear('Property offline')
+        Size: =24
+        Text: ="Button"
+        Visible: =false
+        Width: =280
+        X: =360
+        Y: =1066
+        ZIndex: =12
+
+    Group10 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =18
+
+        Rectangle2_3 As rectangle:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Fill: =RGBA(255, 255, 255, 0.97)
+            Height: =1136
+            Visible: =gblLoading3
+            Width: =640
+            ZIndex: =13
+
+        Label5_7 As label:
+            Align: =Align.Center
+            BorderColor: =RGBA(32, 54, 71, 1)
+            FontWeight: =FontWeight.Semibold
+            Height: =298
+            Size: =30
+            Text: |-
+                =Concatenate("Are you sure you want to delete Incident:"," ",Gallery_unsubmitted.Selected.Key," ?")
+            Visible: =gblLoading3
+            Width: =545
+            X: =31
+            Y: =228
+            ZIndex: =15
+
+        Button1 As button:
+            Fill: =RGBA(116, 116, 116, 1)
+            Height: =139
+            OnSelect: |-
+                =RemoveIf('Sudden death offline', Key= Gallery_unsubmitted.Selected.Key);
+                Remove(
+                    'Sudden death offline',
+                    LookUp(
+                        'Sudden death offline',
+                        Key = Gallery_unsubmitted.Selected.Key
+                    )
+                );
+                RemoveIf(
+                    'Property offline',
+                    SuddenDeathKey = Gallery_unsubmitted.Selected.Key
+                );
+                RemoveIf(
+                    Contactoffline,
+                    Key = Gallery_unsubmitted.Selected.Key
+                );
+                RemoveIf(
+                    UsedContactRoles,
+                    Key = Gallery_unsubmitted.Selected.Key
+                );
+                UpdateContext({validationwarning: false});
+                Clear(excludedroles);
+                //Clear(selectededroles);
+                SaveData(
+                    'Sudden death offline',
+                    "Sudden death offline"
+                );
+                SaveData(
+                    'Property offline',
+                    "Property offline"
+                );
+                SaveData(
+                    Contactoffline,
+                    "Contactoffline"
+                );
+                SaveData(
+                    UsedContactRoles,
+                    "UsedContactRoles"
+                );
+                If(
+                    CountRows ('Sudden death offline') = 0,
+                    Set(
+                        Sudden_Primary_key,
+                        Blank()
+                    ),
+                    If (
+                        CountRows(
+                            Filter(
+                                'Sudden death offline',
+                                Key = Sudden_Primary_key
+                            )
+                        ) = 0,
+                        Set(
+                            Sudden_Primary_key,
+                            First('Sudden death offline').Key
+                        )
+                    )
+                );
+                
+                Set(gblLoading3,false);
+            Size: =24
+            Text: ="Yes"
+            Visible: =gblLoading3
+            Width: =254
+            X: =31
+            Y: =553
+            ZIndex: =16
+
+        Button1_1 As button:
+            Fill: =RGBA(116, 116, 116, 1)
+            Height: =139
+            OnSelect: =Set(gblLoading3,false);
+            Size: =24
+            Text: ="No"
+            Visible: =gblLoading3
+            Width: =236
+            X: =340
+            Y: =553
+            ZIndex: =17
+

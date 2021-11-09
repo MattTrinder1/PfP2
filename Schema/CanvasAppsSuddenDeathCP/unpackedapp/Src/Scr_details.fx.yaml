@@ -1,0 +1,1099 @@
+"Scr_details As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    OnHidden: =Reset(Drpdn_title);
+    OnVisible: |
+        =Set(
+            addcontactmethod,
+            false
+        );
+        UpdateContext({addcontactmethod: false});
+        Set(
+            contactworkphone,
+            false
+        );
+        UpdateContext({contactworkphone: false});
+        Set(
+            contactmail,
+            false
+        );
+        UpdateContext({contactmail: false});
+        Set(
+            contacthomephone,
+            false
+        );
+        UpdateContext({contacthomephone: false});
+        Set(
+            contactmobile,
+            false
+        );
+        UpdateContext({contactmobile: false});
+        Set(
+            occupation,
+            false
+        );
+        UpdateContext({occupation: false});
+        Set(
+            ydetails,
+            0
+        );
+        Set(
+            y1details,
+            0
+        );
+
+    RectQuickActionBar_header As rectangle:
+        Height: =88
+        Width: =Parent.Width
+        ZIndex: =1
+
+    Lbl_header_details As label:
+        Align: =Align.Center
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =88
+        Size: =27
+        Text: ="Details" //& LookUp('Contact offline',ContactKey=Drpdn_incident_key.Selected.ContactKey).Contactrolename
+        Width: =Parent.Width
+        ZIndex: =2
+
+    Canvas_details As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =940
+        Width: =Parent.Width
+        Y: =RectQuickActionBar_header.Y + RectQuickActionBar_header.Height
+        ZIndex: =3
+
+        DataCard_details_scroll As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =2393
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Drpdn_incident_key As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =LookUp(Contactoffline,ContactKey = EditContactKey).Fullname
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =Contactoffline//'Sudden death offline'
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =32
+                ZIndex: =1
+
+            Drpdn_title As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =LookUp(Contactoffline,ContactKey=Drpdn_incident_key.Selected.ContactKey).Titlename
+                Fill: =If(IsBlank(Self.SelectedText.Value),LightGoldenRodYellow,White)
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =StaffTitleoffline
+                OnChange: =
+                OnSelect: =
+                PressedFill: =RGBA(230, 230, 230, 1)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =277
+                ZIndex: =2
+
+            Txt_forename As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Clear: =true
+                Default: =LookUp(Contactoffline,ContactKey=Drpdn_incident_key.Selected.ContactKey).Forename
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: =
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =393
+                ZIndex: =3
+
+            Txt_surname As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Clear: =true
+                Default: =LookUp(Contactoffline,ContactKey=Drpdn_incident_key.Selected.ContactKey).Surname
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)   
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: =
+                OnSelect: =
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =516
+                ZIndex: =4
+
+            DatePicker_dob As datepicker:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                DefaultDate: =LookUp(Contactoffline,ContactKey=Drpdn_incident_key.Selected.ContactKey).'Date of Birth'
+                Fill: =If(!IsBlank(Self.SelectedDate) And Self.SelectedDate > Date(1900,1,1) And Self.SelectedDate < Date(2050,12,31) ,White,LightGoldenRodYellow)
+                Height: =70
+                IconBackground: =RGBA(128, 128, 128, 100)
+                InputTextPlaceholder: ="DD/MM/YYYY"
+                IsEditable: =true
+                OnChange: =        
+                OnSelect: =
+                Size: =24
+                StartYear: =1900
+                Width: =545
+                X: =40
+                Y: =635
+                ZIndex: =5
+
+            Label_dob As label:
+                Height: =70
+                Size: =21
+                Text: ="Date of birth"
+                Width: =545
+                X: =40
+                Y: =581
+                ZIndex: =6
+
+            Txt_housename As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Contactoffline,ContactKey=Drpdn_incident_key.Selected.ContactKey).Housename
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)   
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: =
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =759
+                ZIndex: =7
+
+            Txt_houseno As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Contactoffline,ContactKey=Drpdn_incident_key.Selected.ContactKey).Housenumber
+                Fill: =White
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: =
+                OnSelect: =
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =875
+                ZIndex: =8
+
+            Txt_address As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Contactoffline,ContactKey=Drpdn_incident_key.Selected.ContactKey).Address1
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)   
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: =
+                OnSelect: =
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =990
+                ZIndex: =9
+
+            Txt_district As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Contactoffline,ContactKey=Drpdn_incident_key.Selected.ContactKey).District
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: =
+                OnSelect: =
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1104
+                ZIndex: =10
+
+            Txt_town As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Contactoffline,ContactKey=Drpdn_incident_key.Selected.ContactKey).Town
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)   
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: |
+                    =
+                OnSelect: =
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1214
+                ZIndex: =11
+
+            Txt_county As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Contactoffline,ContactKey=Drpdn_incident_key.Selected.ContactKey).County
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)   
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: =
+                OnSelect: =
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =1322
+                ZIndex: =12
+
+            Txt_pobox As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Contactoffline,ContactKey=Drpdn_incident_key.Selected.ContactKey).pcode
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)   
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: =If(Txt_pobox.Text=Upper(Txt_pobox.Text),Green,Reset(Txt_pobox));
+                OnSelect: =
+                Size: =21
+                Tooltip: ="Only upper case allowed"
+                Width: =545
+                X: =40
+                Y: =1435
+                ZIndex: =13
+
+            Lbl_address As label:
+                Height: =54
+                Size: =21
+                Text: ="House Name and number"
+                Width: =521
+                X: =40
+                Y: =705
+                ZIndex: =15
+
+            Label_star_address As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =730
+                ZIndex: =16
+
+            Label_star_house_number As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =955
+                ZIndex: =17
+
+            Label_star_town As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =1177
+                ZIndex: =18
+
+            Label_star_county As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =567
+                Y: =1285
+                ZIndex: =19
+
+            Label_star_post_code As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =1403
+                ZIndex: =20
+
+            Label_star_city As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =1512
+                ZIndex: =21
+
+            Label_star_preffered_contact_method As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =1642
+                ZIndex: =24
+
+            Drpdn_pref_contact_method As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =LookUp(contactmethodoffline,cp_name = LookUp(Contactoffline,ContactKey=Drpdn_incident_key.Selected.ContactKey).Preferedcontactmethodname).cp_name
+                Fill: =If(IsBlank(Self.SelectedText.Value),LightGoldenRodYellow,White)
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =contactmethodoffline
+                OnChange: =
+                OnSelect: |
+                    =
+                PressedFill: =RGBA(230, 230, 230, 1)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =2311
+                ZIndex: =27
+
+            Lbl_preferedcontactmethod As label:
+                Height: =70
+                Size: =21
+                Text: ="Preferred contact method"
+                Width: =390
+                X: =40
+                Y: =2258
+                ZIndex: =28
+
+            Label_star_deceased_relathionship_duration As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =2273
+                ZIndex: =38
+
+            Lbl_addcontactmethod As label:
+                Height: =70
+                Size: =21
+                Text: ="Add contact method"
+                Width: =535
+                X: =40
+                Y: =1626
+                ZIndex: =39
+
+            Label_dob_1 As label:
+                Height: =70
+                Size: =21
+                Text: ="Role"
+                Width: =545
+                X: =40
+                Y: =94
+                ZIndex: =47
+
+            Label_dob_3 As label:
+                Height: =70
+                Size: =21
+                Text: ="Title"
+                Width: =545
+                X: =40
+                Y: =220
+                ZIndex: =48
+
+            Label_star_address_1 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =236
+                ZIndex: =49
+
+            Label_star_address_3 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =563
+                Y: =601
+                ZIndex: =50
+
+            Label_star_address_5 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =563
+                Y: =472
+                ZIndex: =52
+
+            Label_star_address_6 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =359
+                ZIndex: =53
+
+            Label_dob_4 As label:
+                Height: =70
+                Size: =21
+                Text: ="Forename"
+                Width: =506
+                X: =40
+                Y: =334
+                ZIndex: =54
+
+            Label_dob_5 As label:
+                Height: =70
+                Size: =21
+                Text: ="Surname"
+                Width: =545
+                X: =42
+                Y: =452
+                ZIndex: =55
+
+            Lbl_address_1 As label:
+                Height: =58
+                Size: =21
+                Text: ="Additional address info"
+                Width: =521
+                X: =42
+                Y: =823
+                ZIndex: =56
+
+            Lbl_address_3 As label:
+                Height: =58
+                Size: =21
+                Text: ="Street"
+                Width: =560
+                X: =42
+                Y: =940
+                ZIndex: =57
+
+            Lbl_address_5 As label:
+                Height: =58
+                Size: =21
+                Text: ="County"
+                Width: =560
+                X: =42
+                Y: =1269
+                ZIndex: =58
+
+            Lbl_address_6 As label:
+                Height: =58
+                Size: =21
+                Text: ="Town"
+                Width: =560
+                X: =42
+                Y: =1161
+                ZIndex: =59
+
+            Lbl_address_7 As label:
+                Height: =58
+                Size: =21
+                Text: ="District"
+                Width: =560
+                X: =42
+                Y: =1054
+                ZIndex: =60
+
+            Lbl_address_8 As label:
+                Height: =58
+                Size: =21
+                Text: ="Post Code  (Capitals only)"
+                Width: =504
+                X: =42
+                Y: =1385
+                ZIndex: =61
+
+            Lbl_address_9 As label:
+                Height: =58
+                Size: =21
+                Text: ="Country"
+                Width: =560
+                X: =40
+                Y: =1506
+                ZIndex: =62
+
+            Coombobox_Role As combobox:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
+                DefaultSelectedItems: |-
+                    =ForAll(
+                        Split(
+                            LookUp(
+                                Contactoffline,
+                                ContactKey = Drpdn_incident_key.Selected.ContactKey
+                            ).Contactrolename,
+                            ","
+                        ),
+                        {cp_name: Result}
+                    )
+                    //ForAll(editroles,{cp_name:Result})
+                DisplayFields: =["cp_name"]
+                Fill: |-
+                    =If (
+                        IsBlank(Self.SelectedItems) Or CountRows(
+                            Filter(
+                                Self.SelectedItems,
+                                !IsBlank(cp_name)
+                            )
+                        ) = 0,
+                        LightGoldenRodYellow,
+                        White
+                    )
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                IsSearchable: =false
+                Items: |
+                    =Filter(
+                        Filter(
+                            ContactRoleoffline,
+                            !(cp_name in ShowColumns(
+                                Filter(
+                                    UsedContactRoles,
+                                    Key = Sudden_Primary_key And ContactKey <> EditContactKey
+                                ),
+                                "Role"
+                            ))
+                        ),
+                        cp_name <> "Deceased"
+                    )//ContactRoleoffline
+                MultiValueDelimiter: =","
+                OnChange: =If(CountRows(excludedroles)>0 ,Collect(excludedroles,Coombobox_Role.SelectedItems));If(CountRows(excludedroles)=0,ClearCollect(excludedroles,Coombobox_Role.SelectedItems));
+                OnSelect: =
+                PressedFill: =RGBA(230, 230, 230, 1)
+                SearchFields: =["cp_name"]
+                SearchItems: =[]
+                SelectionFill: =RGBA(153, 153, 153, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =150
+                ZIndex: =65
+
+            Coombobox_country_1 As combobox:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
+                DefaultSelectedItems: =LookUp(countriesoffline,LookUp(Contactoffline,ContactKey=Drpdn_incident_key.Selected.ContactKey).Country=cp_name)
+                DisplayFields: =["cp_name"]
+                Fill: |-
+                    =If (
+                        IsBlank(Self.SelectedItems) Or CountRows(
+                            Filter(
+                                Self.SelectedItems,
+                                !IsBlank(cp_name)
+                            )
+                        ) = 0,
+                        LightGoldenRodYellow,
+                        White
+                    )
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                InputTextPlaceholder: =
+                Items: =SortByColumns( countriesoffline,"cp_displaysequenceno",Ascending,"cp_name",Descending)
+                OnChange: =
+                PressedFill: =RGBA(230, 230, 230, 1)
+                SearchFields: =["cp_name"]
+                SearchItems: =Search(SortByColumns( countriesoffline,"cp_displaysequenceno",Ascending,"cp_name",Descending),Coombobox_country_1.SearchText,"cp_name")
+                SelectionFill: =RGBA(153, 153, 153, 1)
+                SelectMultiple: =false
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1556
+                ZIndex: =66
+
+            Group6_1 As group:
+                Height: =5
+                Width: =5
+                X: =20
+                Y: =-1636
+                ZIndex: =80
+
+                rectContactMethods_1 As rectangle:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    BorderThickness: =2
+                    Fill: =If(!IsBlank(Txt_homeph_3.Text) Or !IsBlank(Txt_workphone_3.Text) Or !IsBlank(Txt_mobileph_3.Text) Or !IsBlank(Txt_mail_3.Text), Transparent,LightGoldenRodYellow)
+                    Height: =552
+                    Width: =545
+                    X: =44
+                    Y: =1693
+                    ZIndex: =71
+
+                Txt_homeph_3 As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)  
+                    Default: =LookUp(Contactoffline,ContactKey=Drpdn_incident_key.Selected.ContactKey).Homephone
+                    Fill: |-
+                        =//fillhomeph1
+                        If(IsBlank(Self.Text),White,If(IsMatch(Self.Text,"^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$"),LightGreen,Red))
+                    Height: =70
+                    HintText: |-
+                        ="###########"
+                    MaxLength: =13
+                    OnChange: =
+                    OnSelect: =Set(validstart1,true)
+                    Size: =21
+                    VirtualKeyboardMode: =VirtualKeyboardMode.Numeric
+                    Width: =490
+                    X: =69
+                    Y: =1765
+                    ZIndex: =72
+
+                Txt_mail_3 As text:
+                    BorderColor: =RGBA(179, 179, 179, 1)
+                    Default: =LookUp(Contactoffline,ContactKey=Drpdn_incident_key.Selected.ContactKey).EMail
+                    Height: =70
+                    HintText: =""
+                    OnChange: =
+                    Size: =21
+                    Width: =488
+                    X: =69
+                    Y: =2163
+                    ZIndex: =73
+
+                Txt_mobileph_3 As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)  
+                    Default: =LookUp(Contactoffline,ContactKey=Drpdn_incident_key.Selected.ContactKey).Mobile
+                    Fill: =If(IsBlank(Self.Text),White,If(IsMatch(Self.Text,"^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$"),LightGreen,Red))
+                    Height: =70
+                    HintText: |-
+                        ="###########"
+                    MaxLength: =13
+                    OnChange: =
+                    Size: =21
+                    Visible: =true    
+                    Width: =488
+                    X: =69
+                    Y: =2033
+                    ZIndex: =74
+
+                Txt_workphone_3 As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)  
+                    Default: =LookUp(Contactoffline,ContactKey=Drpdn_incident_key.Selected.ContactKey).Workphone
+                    Fill: =If(IsBlank(Self.Text),White,If(IsMatch(Self.Text,"^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$"),LightGreen,Red))
+                    Height: =70
+                    HintText: |-
+                        ="###########"
+                    MaxLength: =13
+                    OnChange: =
+                    Size: =21
+                    Width: =488
+                    X: =69
+                    Y: =1898
+                    ZIndex: =75
+
+                Lbl_addcontactmethod_8 As label:
+                    Height: =70
+                    Size: =21
+                    Text: ="Home Phone"
+                    Width: =481
+                    X: =69
+                    Y: =1704
+                    ZIndex: =76
+
+                Lbl_addcontactmethod_9 As label:
+                    Height: =70
+                    Size: =21
+                    Text: ="Work Phone"
+                    Width: =481
+                    X: =69
+                    Y: =1840
+                    ZIndex: =77
+
+                Lbl_addcontactmethod_10 As label:
+                    Height: =70
+                    Size: =21
+                    Text: ="Mobile Phone"
+                    Width: =481
+                    X: =69
+                    Y: =1973
+                    ZIndex: =78
+
+                Lbl_addcontactmethod_11 As label:
+                    Height: =70
+                    Size: =21
+                    Text: ="Email"
+                    Width: =481
+                    X: =69
+                    Y: =2108
+                    ZIndex: =79
+
+        DataCard3 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =664
+            Width: =640
+            X: =0
+            Y: =1
+            ZIndex: =2
+
+            Label_retired As label:
+                Height: =66
+                Size: =21
+                Text: |-
+                    ="Retired?
+                    "
+                Width: =560
+                X: =40
+                Y: =12
+                ZIndex: =1
+
+            Radio_retired As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp(Contactoffline,ContactKey=Drpdn_incident_key.Selected.ContactKey).Retired
+                Height: =97
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =UpdateContext({visibletag:true})
+                OnSelect: |-
+                    =If(
+                        Radio_retired.Selected.Value = "Yes",
+                        UpdateContext({occupation: true});UpdateContext({occupation1: false}));
+                        If(
+                        Radio_retired.Selected.Value = "No",
+                        UpdateContext({occupation: false});UpdateContext({occupation1: true}));
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =335
+                X: =40
+                Y: =66
+                ZIndex: =2
+
+            Txt_additional_information As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Contactoffline,ContactKey=Drpdn_incident_key.Selected.ContactKey).Additionalinfo
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: =
+                OnSelect: =
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =328
+                ZIndex: =3
+
+            Label_deceased_relathionship As label:
+                Height: =66
+                Size: =21
+                Text: |-
+                    ="How long known deceased?
+                    "
+                Width: |
+                    =530
+                X: =40
+                Y: =391
+                ZIndex: =4
+
+            Txt_deceased_relathionship_duration As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Contactoffline,ContactKey=Drpdn_incident_key.Selected.ContactKey).Deceasedrelationshipduration
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)   
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: =
+                OnSelect: =
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =452
+                ZIndex: =5
+
+            Txt_relationship_deceased As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Contactoffline,ContactKey=Drpdn_incident_key.Selected.ContactKey).Deceasedrelathionship
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)   
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: =
+                OnSelect: =
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =577
+                ZIndex: =8
+
+            Label_deceased_relathionship_2 As label:
+                Height: =66
+                Size: =21
+                Text: ="Relationship to deceased"
+                Width: |
+                    =530
+                X: =40
+                Y: =525
+                ZIndex: =9
+
+            Label_deceased_relathionship_3 As label:
+                Height: =66
+                Size: =21
+                Text: ="Additional Information"
+                Width: |
+                    =530
+                X: =40
+                Y: =268
+                ZIndex: =10
+
+            Label_star_deceased_relathionship As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =563
+                Y: =405
+                ZIndex: =12
+
+            Label_former_occupation_2 As label:
+                Height: =70
+                Size: =21
+                Text: =If(Radio_retired.SelectedText.Value = "Yes","Former occupation","Occupation")
+                Width: =544
+                X: =40
+                Y: =142
+                ZIndex: =13
+
+            Label_star_deceased_relathionship_2 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =562
+                Y: =539
+                ZIndex: =14
+
+            Txt_occupation_details As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Contactoffline,ContactKey=Drpdn_incident_key.Selected.ContactKey).Formeroccupation
+                Fill: =White
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: =
+                OnSelect: =
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =212
+                ZIndex: =15
+
+    Icon_back_details_home As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Back()
+        X: =31
+        Y: =13
+        ZIndex: =4
+
+    Icn_exit_Home As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =576
+        Y: =13
+        ZIndex: =5
+
+    Btn_add_details As button:
+        DisplayMode: |-
+            =If(
+                And(
+                    Or(
+                        IsBlank(Coombobox_Role.SelectedItems),
+                        CountRows(
+                            Filter(
+                                Coombobox_Role.SelectedItems,
+                                !IsBlank(cp_name)
+                            )
+                        ) > 0
+                    ),
+                    !IsBlank(Drpdn_title.Selected.cp_name),
+                    !IsBlank(Txt_forename.Text),
+                    !IsBlank(Txt_surname.Text),
+                    And(
+                        !IsBlank(DatePicker_dob.SelectedDate),
+                        DatePicker_dob.SelectedDate > Date(
+                            1900,
+                            1,
+                            1
+                        ),
+                        DatePicker_dob.SelectedDate < Date(
+                            2050,
+                            12,
+                            31
+                        )
+                    ),
+                    !IsBlank(Txt_housename.Text),
+                    !IsBlank(Txt_address.Text),
+                    !IsBlank(Txt_town.Text),
+                    !IsBlank(Txt_county.Text),
+                    !IsBlank(Txt_pobox.Text),
+                    !IsBlank(Coombobox_country_1.Selected.cp_name),
+                    !IsBlank(Txt_deceased_relathionship_duration.Text),
+                    !IsBlank(Drpdn_pref_contact_method.Selected.cp_name),
+                    !IsBlank(Txt_relationship_deceased.Text),
+                    Or(
+                        !IsBlank(Txt_homeph_3.Text),
+                        !IsBlank(Txt_workphone_3.Text),
+                        !IsBlank(Txt_mobileph_3.Text),
+                        !IsBlank(Txt_mail_3.Text)
+                    )
+                ),
+                DisplayMode.Edit,
+                DisplayMode.Disabled
+            )
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =70
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |
+            =If(
+                CountRows(
+                    Filter(
+                        Contactoffline,
+                        ContactKey = Drpdn_incident_key.Selected.ContactKey
+                    )
+                ) > 0,
+                UpdateIf(
+                    Contactoffline,
+                    ContactKey = Drpdn_incident_key.Selected.ContactKey,
+                    {
+                        Key: Drpdn_incident_key.Selected.Key,
+                        Title: Drpdn_title.Selected.cp_lookupvalueid,
+                        Titlename: Drpdn_title.Selected.cp_name,
+                        Forename: Txt_forename.Text,
+                        Surname: Txt_surname.Text,
+                        Fullname: Txt_surname.Text & " " & Txt_forename.Text,
+                        'Date of Birth': DatePicker_dob.SelectedDate,
+                        Housename: Txt_housename.Text,
+                        Housenumber: Txt_houseno.Text,
+                        Address1: Txt_address.Text,
+                        District: Txt_district.Text,
+                        Town: Txt_town.Text,
+                        County: Txt_county.Text,
+                        pcode: Txt_pobox.Text,
+                        Country: Coombobox_country_1.Selected.cp_name,
+                        Homephone: Txt_homeph_3.Text,
+                        Workphone: Txt_workphone_3.Text,
+                        Mobile: Txt_mobileph_3.Text,
+                        EMail: Txt_mail_3.Text,
+                        Preferedcontactmethod: Drpdn_pref_contact_method.Selected.cp_lookupvalueid,
+                        Retired: Radio_retired.Selected.Value,
+                        Formeroccupationname: Txt_occupation_details.Text,
+                        Additionalinfo: Txt_additional_information.Text,
+                        Deceasedrelationshipduration: Txt_deceased_relathionship_duration.Text,
+                        Deceasedrelathionship: Txt_relationship_deceased.Text,
+                        Contactrole: Left(
+                            Concat(
+                                Filter(ContactRoleoffline,cp_name in Coombobox_Role.SelectedItems.cp_name).cp_contactroletypeid,
+                                cp_contactroletypeid & ","
+                            ),
+                            Len(
+                                Concat(
+                                Filter(ContactRoleoffline,cp_name in Coombobox_Role.SelectedItems.cp_name).cp_contactroletypeid,
+                                    cp_contactroletypeid & ","
+                                )
+                            ) - 1
+                        ),
+                        Contactrolename: Left(
+                            Concat(
+                                Coombobox_Role.SelectedItems.cp_name,
+                                cp_name & ","
+                            ),
+                            Len(
+                                Concat(
+                                    Coombobox_Role.SelectedItems.cp_name,
+                                    cp_name & ","
+                                )
+                            ) - 1
+                        )
+                    }
+                )
+            );
+            Collect(
+                UsedContactRoles,
+                {
+                    Key: Drpdn_incident_key_5.Selected.Key,
+                    ContactKey: Drpdn_incident_key.Selected.ContactKey,
+                    Role: ""
+                }
+            );
+            RemoveIf(
+                UsedContactRoles,
+                Key = Drpdn_incident_key_5.Selected.Key
+            );
+            ForAll(
+                Filter(
+                    Contactoffline,
+                    Key = Drpdn_incident_key_5.Selected.Key
+                ),
+                ForAll(
+                    Split(
+                        ThisRecord.Contactrolename,
+                        ","
+                    ).Result As SplitRoles,
+                    Collect(
+                        UsedContactRoles,
+                        {
+                            Key: Drpdn_incident_key_5.Selected.Key,
+                            ContactKey: ThisRecord.ContactKey,
+                            Role: SplitRoles.Result
+                        }
+                    )
+                )
+            );
+            SaveData(
+                Contactoffline,
+                "Contactoffline"
+            );
+            SaveData(
+                'Sudden death offline',
+                "Sudden death offline"
+            );
+            Navigate(
+                Scr_role_colection,
+                UnCoverRight
+            );
+        Size: =24
+        Text: ="Save and continue"
+        Width: =545
+        X: =31
+        Y: =1066
+        ZIndex: =6
+

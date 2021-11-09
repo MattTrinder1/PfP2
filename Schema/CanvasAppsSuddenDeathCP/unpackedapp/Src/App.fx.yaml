@@ -1,0 +1,165 @@
+App As appinfo:
+    BackEnabled: =false
+    OnStart: |
+        =Set(glbAppVersion,1);
+        Set(glbDebug,true);
+        //this value is a placeholder which is updated by the build pipeline, don't edit it manually
+        //it's commented it out to avoid it being formatted, which prevents the pipeline from finding it
+        //Basically - leave it alone !
+        //Set(glbAppVersion,1);
+        //Set(glbDebug,false);
+        
+        
+        Set(gblLoading1,false);
+        Set(
+            ypnc,
+            0
+        );
+        Set(errormessage,false);
+        Set(
+            K,
+            0
+        );
+        Set(
+            y1,
+            0
+        );
+        Set(
+            addcontactmethod,
+            false
+        );
+        Set(
+            contactworkphone,
+            false
+        );
+        Set(
+            contactmail,
+            false
+        );
+        Set(
+            contacthomephone,
+            false
+        );
+        Set(
+            contactmobile,
+            false
+        );
+        Set(
+            ycontactmethod,
+            0
+        );
+        Set(
+            i,
+            0
+        );
+        Set(
+            y,
+            0
+        );
+        LoadData(Contactoffline,"Contactoffline",true);
+        Reset(Txt_incident_suffix);
+        Reset(Txt_incident_no);
+        Reset(Radio_reporting_officer);
+        Reset(Radio_single_officer);
+        Reset(Radio_reporting_officer);
+        Reset(Radio_single_officer);
+        Set(
+            Txt_incident_suffixvar,
+            ""
+        );
+        Set(
+            incidentnumbervar,
+            "CP" & "-" & Text(
+                DateAdd(
+                    DatePicker_incident.SelectedDate,
+                    0
+                ),
+                "[$-en-GB]yyyymmdd"
+            ) & "-" & Txt_incident_suffix
+        );
+        LoadData(
+            Usersalllocal,
+            "Usersalllocal",
+            true
+        );
+        LoadData(
+            Userlocal,
+            "Userlocal",
+            true
+        );
+        LoadData(
+            ContactRoleoffline,
+            "ContactRoleoffline",
+            true
+        );
+        LoadData(
+            'Sudden death offline',
+            "Sudden death offline",
+            true
+        );
+        LoadData(
+            occupationoffline,
+            "occupationoffline",
+            true
+        );
+        LoadData(
+            contactmethodoffline,
+            "contactmethodoffline",
+            true
+        );
+        LoadData(
+            TPA,
+            "TPA",
+            true
+        );
+        LoadData(
+            Housesecureoffline,
+            "Housesecureoffline",
+            true
+        );
+        LoadData(
+            Housetemperatureoffline,
+            "Housetemperatureoffline",
+            true
+        );
+        LoadData(
+            Maritaloffline,
+            "Maritaloffline",
+            true
+        );
+        LoadData(
+            Burialorcremationoffline,
+            "Burialorcremationoffline",
+            true
+        );
+        LoadData(
+            StaffTitleoffline,
+            "StaffTitleoffline",
+            true
+        );
+        LoadData(
+            PerceivedEthnicityoffline,
+            "PerceivedEthnicityoffline",
+            true
+        );
+        LoadData(
+            Genderoffline,
+            "Genderoffline",
+            true
+        );
+        LoadData(
+            countriesoffline,
+            "countriesoffline",
+            true
+        );
+        LoadData(UsedContactRoles,"UsedContactRoles",true);
+        LoadData(
+            'Property offline',
+            "Property offline",
+            true
+        );
+        Set(
+            phoneMatchString,
+            "^[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]$"
+        );
+
