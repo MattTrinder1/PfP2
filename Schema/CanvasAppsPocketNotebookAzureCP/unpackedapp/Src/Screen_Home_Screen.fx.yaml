@@ -1,0 +1,684 @@
+Screen_Home_Screen As screen:
+    OnVisible: |
+        =Set(
+            checkicon,
+            false
+        );//incident warning
+        UpdateContext({Warnunsubmit: false});
+        UpdateContext({timerstart: false});
+        UpdateContext({timerreset: true});
+
+    Lbl_header_2 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =90
+        Size: =21
+        Text: ="Pocket Notebook - Azure"// & glbInTimerLoop
+        Width: =640
+        ZIndex: =1
+
+    Icn_exit_2 As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =66
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =576
+        Y: =11
+        ZIndex: =2
+
+    Btn_save_56 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |
+            =//Moved script to ontimerend on element tmrDelayNewNote
+            /*Set(gblOverlay,true);
+            
+            Collect(
+                'Notebook Offline',
+                {
+                    //Incident 
+                    Key: newNoteKey,
+                    Id: "",
+                    Notes: "",
+                    Sketch: blankPenInput.Image ,
+                    Signature: blankPenInput.Image,
+                    'Signature Date and Time': Date(
+                        Blank(),
+                        Blank(),
+                        Blank()
+                    ),
+                    IncidentDateTime: Today(),
+                    //  'Entered by': userId,
+                    SignatoryName: "",
+                    IncidentSuffix: "",
+                    IncidentNumber: "",
+                    'Incident No': "",
+                    NoteDateAndTime: Now(),
+                    Synced: false
+                }
+            );
+            Set(
+                noteSaved,
+                false
+            );
+            Set(
+                noteSigned,
+                false
+            );
+            Set(
+                incidentnumbervar,
+                ""
+            );
+            
+            //cache the offline notes collection
+            SaveData(
+                'Notebook Offline',
+                "NotebookOfflineCache"
+            );
+            
+            Set(gblOverlay,false);
+            
+            Set(gblOverlay, true);
+            Reset(tmrDelayNewNote);
+            Set(tmrStart,false);
+            Set(tmrStart,true);
+            */
+            UpdateContext({newNoteId: GUID()});
+            Collect(
+                'Notebook Offline',
+                {
+                    Id: newNoteId,
+                    Notes: "",
+                    'Signature Date and Time': nullDate,
+                    IncidentDateTime: nullDate,
+                    SignatoryName: "",
+                    IncidentNumber: "",
+                    NoteDateAndTime: Now(),
+                    SketchId: "",
+                    SignatureId: "",
+                    photos: notePhotos,
+                    complete: false,
+                    readyToSync: true,
+                    queued: false,
+                    inDataverse: false,
+                    fullyPopulated: true,
+                    enteredBy: User().Email,
+                    photoCount:0,
+                    hasSketch:false,
+                    hasSignature:false
+                }
+            );
+            Navigate(
+                Screen_Notes,
+                ScreenTransition.None,
+                {newNoteId: newNoteId}
+            );
+        Size: =24
+        Text: ="New Note"
+        Width: =552
+        X: =44
+        Y: =131
+        ZIndex: =4
+
+    Icon1 As icon.ListWatchlistRemind:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =60
+        Icon: =Icon.ListWatchlistRemind
+        Width: =60
+        X: =531
+        Y: =130
+        ZIndex: =6
+
+    Icon6 As icon.DocumentwithContent:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =60
+        Icon: =Icon.DocumentWithContent
+        Width: =60
+        X: =531
+        Y: =237
+        ZIndex: =7
+
+    Icon2 As icon.LogJournal:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.LogJournal
+        X: =531
+        Y: =537
+        ZIndex: =8
+
+    Icon4 As icon.Draw:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =66
+        Icon: =Icon.Draw
+        Width: =56
+        X: =535
+        Y: =334
+        ZIndex: =12
+
+    Btn_save_57 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Screen_Search_notes)
+        Size: =24
+        Text: ="Previous Notes"
+        Width: =552
+        X: =44
+        Y: =225
+        ZIndex: =13
+
+    Icon4_1 As icon.Search:
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledFill: =Icon4_1.Fill
+        FocusedBorderColor: =Icon4_1.BorderColor
+        Height: =55
+        HoverBorderColor: =ColorFade(Icon4_1.BorderColor, 20%)
+        HoverColor: =ColorFade(Icon4_1.Color, 20%)
+        HoverFill: =Icon4_1.Fill
+        Icon: =Icon.Search
+        PressedBorderColor: =ColorFade(Icon4_1.BorderColor, -20%)
+        PressedColor: =ColorFade(Icon4_1.Color, -20%)
+        PressedFill: =Icon4_1.Fill
+        Width: =56
+        X: =543
+        Y: =438
+        ZIndex: =14
+
+    Icon2_1 As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =Warnunsubmit
+        Width: =60
+        X: =58
+        Y: =143
+        ZIndex: =15
+
+    Icon1_1 As icon.ListWatchlistRemind:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =60
+        Icon: =Icon.ListScrollWatchlist
+        Width: =60
+        X: =531
+        Y: =232
+        ZIndex: =22
+
+    blankImage As image:
+        Height: =320
+        Image: =
+        Visible: =false
+        Width: =320
+        X: =44
+        Y: =334
+        ZIndex: =23
+
+    blankPenInput As inkControl:
+        Visible: =false
+        X: =264
+        Y: =400
+        ZIndex: =24
+
+    Rectangle2 As rectangle:
+        Fill: =RGBA(0, 0, 0, 0)
+        Height: =1136
+        Visible: =gblOverlay
+        Width: =640
+        ZIndex: =25
+
+    tmrDelayNewNote As timer:
+        AutoPause: =false
+        Duration: =500
+        Height: =70
+        OnTimerEnd: |-
+            =/*
+            UpdateContext({newNoteKey: Text(GUID())});
+            Collect(
+                'Notebook Offline',
+                {
+                    //Incident 
+                    Key: newNoteKey,
+                    Id: "",
+                    Notes: "",
+                    Sketch: blankPenInput.Image ,
+                    Signature: blankPenInput.Image,
+                    'Signature Date and Time': Date(
+                        Blank(),
+                        Blank(),
+                        Blank()
+                    ),
+                    IncidentDateTime: Today(),
+                    //  'Entered by': userId,
+                    SignatoryName: "",
+                    IncidentSuffix: "",
+                    IncidentNumber: "",
+                    'Incident No': "",
+                    NoteDateAndTime: Now(),
+                    Synced: false
+                }
+            );
+            Set(
+                noteSaved,
+                false
+            );
+            Set(
+                noteSigned,
+                false
+            );
+            Set(
+                incidentnumbervar,
+                ""
+            );
+            
+            Navigate(
+                Screen_Notes,
+                UnCoverRight,
+                {
+                    RecordKey: newNoteKey,
+                    RecordId: newNoteKey
+                }
+            );
+            
+            //cache the offline notes collection
+            SaveData(
+                'Notebook Offline',
+                "NotebookOfflineCache"
+            );
+            
+            
+            */
+        OnTimerStart: =Set(gblOverlay,true);
+        Start: =tmrStart
+        Visible: =false
+        Width: =280
+        X: =360
+        Y: =839
+        ZIndex: =26
+
+    btnDebug As button:
+        Height: =70
+        OnSelect: =Navigate(scrDebug);
+        Size: =24
+        Text: ="Debug"
+        Visible: =glbDebug
+        Width: =280
+        X: =315
+        Y: =356
+        ZIndex: =30
+
+    Group14_1 As group:
+        Height: =5
+        Width: =5
+        X: =60
+        Y: =60
+        ZIndex: =30
+
+        Rectangle2_2 As rectangle:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Fill: =RGBA(255, 255, 255, 0.89)
+            Height: =1136
+            Visible: =gblLoading2
+            Width: =640
+            ZIndex: =27
+
+        Image1_2 As image:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Height: =107
+            Image: ='loading-buffering'
+            Visible: =gblLoading2
+            Width: =107
+            X: =274
+            Y: =486
+            ZIndex: =28
+
+        Label5_1 As label:
+            Align: =Align.Center
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Height: =70
+            Size: =21
+            Text: |-
+                ="syncing PNB
+                (Please do not close app while syncing )"
+            Visible: =gblLoading2
+            Width: =560
+            X: =40
+            Y: =392
+            ZIndex: =29
+
+    tmrBlobSave As timer:
+        AutoPause: =false
+        AutoStart: =true
+        Duration: =15000
+        Height: =70
+        OnTimerEnd: |-
+            =If(
+            //we are not in the timer loop
+                !glbInTimerLoop,
+            //flag that we are not in the timer loop
+                Set(
+                    glbInTimerLoop,
+                    true
+                );
+                
+            //check if we are online
+            Set (
+                    glbOnline,
+                    IfError(
+                        AzureQueues.PutMessage(
+                            "onlinecheckqueue",
+                            User().Email
+                        ),
+                        false,
+                        true
+                    )
+                );
+                If(
+                    glbOnline,
+            //post any notes that have not yet been posted to the queue        
+                    With (
+                        {
+                            unsavedNotes: Filter(
+                                'Notebook Offline',
+                                queued = false
+                            )
+                        },
+                        ForAll(
+                            unsavedNotes As unsavedNote,
+                            If(
+                                AzureQueues.PutMessage(
+                                    "pocketnotebookqueue",
+                                    JSON(unsavedNote,JSONFormat.IgnoreBinaryData)
+                                ),
+                                Patch(
+                                    'Notebook Offline',
+                                    unsavedNote,
+                                    {queued: true}
+                                )
+                            );
+                            SaveData(
+                                'Notebook Offline',
+                                "NotebookOfflineCache"
+                            );
+                        )
+                    );
+                    
+            //post any images to the blob store and to the queue
+            With (
+                        {
+                            unsavedBlobs: Filter(
+                                blobsToSave,
+                                blobId = ""
+                            )
+                        },
+                        ForAll(
+                            unsavedBlobs As unsavedBlob,
+                            Patch(
+                                blobsToSave,
+                                unsavedBlob,
+                                {
+                                    blobId: If(
+                                        IsError(
+                                            AzureBlobStorage.CreateFile(
+                                                "pnb",
+                                                unsavedBlob.noteId & "-" & unsavedBlob.id & "-" & unsavedBlob.type & "-" & unsavedBlob.index,
+                                                unsavedBlob.blob
+                                            )
+                                        ),
+                                        "",
+                                        unsavedBlob.noteId & "-" & unsavedBlob.id & "-" & unsavedBlob.type & "-" & unsavedBlob.index
+                                    )
+                                }
+                            );
+                            SaveData(
+                                blobsToSave,
+                                "blobsToSaveCache"
+                            );
+                            If(
+                                !IsBlank(
+                                    LookUp(
+                                        blobsToSave,
+                                        id = unsavedBlob.id
+                                    ).blobId
+                                ),
+                                If(
+                                    AzureQueues.PutMessage(
+                                        "pocketnotebookblobqueue",
+                                        User().Email & ":" & unsavedBlob.noteId & ":" & unsavedBlob.blobId & "*&^%$" & unsavedBlob.caption & "*&^%$" & unsavedBlob.deleted
+                                    ),
+                                    Patch(
+                                        blobsToSave,
+                                        unsavedBlob,
+                                        {queued: true}
+                                    );
+                                    SaveData(
+                                        blobsToSave,
+                                        "blobsToSaveCache"
+                                    );
+                                );
+                            );
+                        )
+                    );
+                    
+            //remove posted photos from the local collections
+            With (
+                        {
+                            completeBlobs: Filter(
+                                blobsToSave,
+                                !IsBlank(blobId),
+                                type = "photo",
+                                queued
+                            )
+                        },
+                        ForAll(
+                            completeBlobs As completeBlob,
+                            RemoveIf(
+                                blobsToSave,
+                                id = completeBlob.id,
+                                LookUp(
+                                    'Notebook Offline',
+                                    Id = completeBlob.noteId
+                                ).queued = true
+                                ,
+                                LookUp(
+                                    'Notebook Offline',
+                                    Id = completeBlob.noteId
+                                ).complete = true
+                            );
+                            SaveData(
+                                blobsToSave,
+                                "blobsToSaveCache"
+                            );
+                        );
+                    );
+                );
+                //flag that we've finished the timer loop
+            Set(
+                    glbInTimerLoop,
+                    false
+                );
+                
+            )
+        Repeat: =true
+        Start: =tmrBlobSaveStart
+        Text: |-
+            ="Blob Save " & Text(Time(0, 0, Self.Value/1000), "hh:mm:ss")
+        Visible: =glbDebug
+        Width: =171
+        X: =2
+        Y: =1035
+        ZIndex: =31
+
+    tmrNotePopulate As timer:
+        Fill: =If(gblLastNotePopulateDoneWork, Red, RGBA(56, 96, 178, 1))
+        Height: =70
+        OnTimerEnd: |-
+            =    Set(
+                    tmrNotePopulateStart,
+                    true
+                );
+                Set(
+                    tmrNotePopulateStart,
+                    false
+                );
+            Set (
+                glbOnline,
+                IfError(
+                    AzureQueues.PutMessage(
+                        "onlinecheckqueue",
+                        User().Email
+                    ),
+                    false,
+                    true
+                )
+            );
+            
+            If(
+                !glbOnline,
+                    Set(
+                    tmrNotePopulateStart,
+                    true
+                ),
+                
+                With (
+                    {
+                        unPopulatedNotes: Filter(
+                            'Notebook Offline',
+                            And(
+                                Not IsBlank(fullyPopulated),
+                                fullyPopulated = false
+                            )
+                        )
+                    },
+                    Set(gblLastNotePopulateDoneWork, CountRows(unPopulatedNotes) > 0); //DEBUG
+                    ForAll(
+                        unPopulatedNotes As unpopulatedNote,
+                        If (
+                            glbOnline,
+                            With(
+                                {
+                                    pnbRec: PNBGet.GetSinglePNB(
+                                        unpopulatedNote.Id,
+                                        Lower(User().Email)
+                                    )
+                                },
+                                If(
+                                    !IsBlank(pnbRec.sketch),
+                                    Collect(
+                                        blobsToSave,
+                                        {
+                                            noteId: GUID(unpopulatedNote.Id),
+                                            caption: "",
+                                            type: "sketch",
+                                            index: 1,
+                                            id: unpopulatedNote.Id & "-sketch-1",
+                                            blob: "data:image;application/octet-stream;base64," & pnbRec.sketch,
+                                            blobId: unpopulatedNote.Id & "-sketch-1",
+                                            queued:true
+                                        }
+                                    );
+                                    Patch(
+                                        'Notebook Offline',
+                                        unpopulatedNote,
+                                        {SketchId: unpopulatedNote.Id & "-sketch-1"}
+                                    );
+                                );
+                                If(
+                                    !IsBlank(pnbRec.signature),
+                                    Collect(
+                                        blobsToSave,
+                                        {
+                                            noteId: GUID(unpopulatedNote.Id),
+                                            caption: "",
+                                            type: "signature",
+                                            index: 1,
+                                            id: unpopulatedNote.Id & "-signature-1",
+                                            blob: "data:image;application/octet-stream;base64," & pnbRec.signature,
+                                            blobId: unpopulatedNote.Id & "-signature-1",
+                                            queued:true
+                                        }
+                                    );
+                                    Patch(
+                                        'Notebook Offline',
+                                        unpopulatedNote,
+                                        {SignatureId: unpopulatedNote.Id & "-signature-1"}
+                                    );
+                                );
+                                ForAll(
+                                    pnbRec.photos,
+                                    Collect(
+                                        blobsToSave,
+                                        {
+                                            noteId: GUID(unpopulatedNote.Id),
+                                            caption: ThisRecord.caption,
+                                            type: "photo",
+                                            index: 1,
+                                            id: ThisRecord.id,
+                                            blob: "data:image;application/octet-stream;base64," & ThisRecord.blob,
+                                            blobId: ThisRecord.id,
+                                            queued:true
+                                        }
+                                    );
+                                );
+                                Patch(
+                                    'Notebook Offline',
+                                    unpopulatedNote,
+                                    {
+                                        IncidentNumber: pnbRec.incidentNumber,
+                                        SignatoryName: pnbRec.signatoryName,
+                                        'Signature Date and Time': pnbRec.signatureDateandTime,
+                                        fullyPopulated: true
+                                    }
+                                );
+                            );
+                            SaveData(
+                                'Notebook Offline',
+                                "NotebookOfflineCache"
+                            );
+                            SaveData(
+                                blobsToSave,
+                                "blobsToSaveCache"
+                            );
+                        )
+                    )
+                );
+                Set(
+                    tmrNotePopulateStart,
+                    true
+                );
+                
+            )
+        Text: |-
+            ="Note Populate " & Text(Time(0, 0, Self.Value/1000), "hh:mm:ss")
+        Visible: =glbDebug
+        Width: =128
+        X: =512
+        Y: =1066
+        ZIndex: =34
+
+    Label6 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =If(glbOnline,Green,Red)
+        FontWeight: =FontWeight.Bold
+        Size: =15
+        Text: |-
+            ="v:" & glbAppVersion 
+        Width: =65
+        ZIndex: =35
+
+    btnDebug_1 As button:
+        Height: =70
+        OnSelect: =Navigate(scrPhotoArchive);
+        Size: =24
+        Text: ="PhotoArchive"
+        Visible: =glbDebug
+        Width: =280
+        X: =320
+        Y: =446
+        ZIndex: =36
+

@@ -1,0 +1,474 @@
+Screen_Notes_viewscr As screen:
+    OnVisible: =Select(Icon3);
+
+    Label1_7 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =92
+        Size: =21
+        Text: ="Notes" 
+        Width: =640
+        ZIndex: =1
+
+    "'Back Icon 2_6' As icon.ArrowLeft":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =67
+        Icon: =Icon.ArrowLeft
+        OnSelect: |
+            =Navigate(Screen_Search_notes);
+            
+            
+            
+        X: =16
+        Y: =11
+        ZIndex: =3
+
+    Canvas_Notes_sketch_Exhibits_3 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1046
+        Width: =Parent.Width
+        Y: =90
+        ZIndex: =4
+
+        DataCard_Notes_sketch_Exhibits_3 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =831
+            Width: =Parent.Width
+            X: =0
+            Y: =2
+            ZIndex: =1
+
+            TextInput_Notes_3 As text:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                Default: |-
+                    =//galleryNotes.Selected.cp_notes
+                    //LookUp('Pocket Notebooks','Pocket Notebook' = galleryNotes.Selected.'Pocket Notebook').cp_notes
+                    LookUp('Notebook Offline',Id = ViewNoteId).Notes
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisplayMode: =DisplayMode.Disabled
+                EnableSpellCheck: =true
+                Fill: =notecol
+                Height: =744
+                HoverBorderColor: =RGBA(116, 116, 116, 1)
+                Mode: =TextMode.MultiLine
+                OnChange: |-
+                    =If(Len(TextInput_Notes_3.Text)>0,UpdateContext({notecol:Transparent}),UpdateContext({notecol:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(TextInput_Notes_3.Text)>0,UpdateContext({notecol:Transparent}),UpdateContext({notecol:LightGoldenRodYellow}));
+                Reset: |
+                    =
+                Size: =19
+                Width: =545
+                X: =40
+                Y: =67
+                ZIndex: =4
+
+            Label_want_to_add_a_sketch_6 As label:
+                Height: =67
+                Size: =21
+                Text: ="Notes"
+                Width: =545
+                X: =40
+                ZIndex: =5
+
+        DataCard1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =52
+            Width: =640
+            X: =0
+            Y: =7
+            ZIndex: =2
+
+            Label_want_to_add_a_sketch_10 As label:
+                Height: =67
+                Size: =21
+                Text: |-
+                    =If (
+                        IsBlank(
+                            LookUp('Notebook Offline',Id = ViewNoteId).SignatureId
+                        ),
+                        "No Signature Added",
+                        "Signature"
+                    )
+                Width: =545
+                X: =40
+                ZIndex: =1
+
+        DataCard3 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =57
+            Width: =640
+            X: =0
+            Y: =0
+            ZIndex: =3
+
+            Label_want_to_add_a_sketch_8 As label:
+                Height: =50
+                Size: =21
+                Text: |-
+                    =If (
+                        IsBlank(
+                            LookUp('Notebook Offline',Id = ViewNoteId).IncidentNumber
+                        ),
+                        "No Incident Number Added",
+                        "Incident Number"
+                    )
+                Width: =545
+                X: =40
+                ZIndex: =2
+
+        DataCard10 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =487
+            Visible: |-
+                =If (
+                    IsBlank(
+                        LookUp('Notebook Offline',Id = ViewNoteId).SignatureId
+                    ),
+                    false,
+                    true
+                )
+            Width: =640
+            X: =0
+            Y: =8
+            ZIndex: =4
+
+            Image3 As image:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                BorderThickness: =2
+                Height: =545
+                Image: |-
+                    =
+                    LookUp(blobsToSave, noteId = ViewNoteId And type = "signature").blob
+                RadiusBottomLeft: =2
+                RadiusBottomRight: =2
+                RadiusTopLeft: =2
+                RadiusTopRight: =2
+                Width: =545
+                X: =40
+                Y: =75
+                ZIndex: =1
+
+            TextInput_Notes_5 As text:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                Default: =LookUp('Notebook Offline',Id = ViewNoteId).SignatoryName
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisplayMode: =DisplayMode.Disabled
+                EnableSpellCheck: =true
+                Fill: =notecol
+                Height: =57
+                HoverBorderColor: =RGBA(116, 116, 116, 1)
+                OnChange: |-
+                    =If(Len(TextInput_Notes_5.Text)>0,UpdateContext({notecol:Transparent}),UpdateContext({notecol:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(TextInput_Notes_5.Text)>0,UpdateContext({notecol:Transparent}),UpdateContext({notecol:LightGoldenRodYellow}));
+                Reset: |
+                    =
+                Size: =19
+                Width: =545
+                X: =40
+                Y: =3
+                ZIndex: =2
+
+        DataCard11 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =70
+            Width: =640
+            X: =0
+            Y: =5
+            ZIndex: =5
+
+            Label_want_to_add_a_sketch_11 As label:
+                Height: =67
+                Size: =21
+                Text: |-
+                    =If (
+                        LookUp(
+                            'Notebook Offline',
+                            Id = ViewNoteId
+                        ).photoCount = 0,
+                        "No Exhibits Added",
+                        "Exhibits (" & LookUp(
+                            'Notebook Offline',
+                            Id = ViewNoteId
+                        ).photoCount & ")"
+                    )
+                Width: =504
+                X: =40
+                Y: =3
+                ZIndex: =1
+
+            Icon3 As icon.Add:
+                Color: =RGBA(153, 153, 153, 1)
+                Height: =50
+                Icon: =Icon.Download
+                OnSelect: |-
+                    =//check if we are online
+                    Set (
+                        glbOnline,
+                        IfError(
+                            AzureQueues.PutMessage(
+                                "onlinecheckqueue",
+                                User().Email
+                            ),
+                            false,
+                            true
+                        )
+                    );
+                    If(
+                        glbOnline,
+                        ForAll(
+                            Filter(
+                                notePhotos,
+                                noteId = ViewNoteId
+                            ),
+                            Patch(
+                                notePhotos,
+                                ThisRecord,
+                                {
+                                    blob: "data:image;application/octet-stream;base64," & PhotoGet.GetPhotoThumbnail(
+                                        ThisRecord.id,
+                                        User().Email
+                                    ).blob,
+                                    downloaded: true
+                                }
+                            )
+                        );
+                        SaveData(
+                            notePhotos,
+                            "notePhotosCache"
+                        );
+                        
+                    )
+                Visible: |-
+                    =
+                    LookUp(
+                        'Notebook Offline',
+                        Id = ViewNoteId
+                    ).photoCount > 0
+                Width: =50
+                X: =544
+                Y: =8
+                ZIndex: =2
+
+        DataCard12 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: |-
+                =LookUp (
+                    'Notebook Offline',
+                    Id = ViewNoteId
+                ).photoCount > 0
+            Width: =640
+            X: =0
+            Y: =6
+            ZIndex: =6
+
+            "Gallery2 As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Height: =CountRows(Gallery2.AllItems) * Gallery2.TemplateHeight
+                Items: =Filter(notePhotos,noteId = ViewNoteId)
+                Layout: =Layout.Vertical
+                TemplatePadding: =0
+                TemplateSize: =370
+                Width: =545
+                X: =40
+                Y: =18
+                ZIndex: =1
+
+                Image5 As image:
+                    Height: =289
+                    Image: =ThisItem.blob
+                    OnSelect: =Select(Parent)
+                    Width: =544
+                    Y: =10
+                    ZIndex: =1
+
+                Separator2 As rectangle:
+                    Height: =1
+                    OnSelect: =Select(Parent)
+                    Width: =Parent.TemplateWidth
+                    Y: =Parent.TemplateHeight - 1
+                    ZIndex: =5
+
+                TextInput3 As text:
+                    Default: =ThisItem.caption
+                    DisabledColor: =RGBA(0, 0, 0, 1)
+                    DisplayMode: =DisplayMode.Disabled
+                    Height: =60
+                    OnSelect: =Select(Parent)
+                    Size: =21
+                    Width: =545
+                    Y: =309
+                    ZIndex: =6
+
+        DataCard13 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =53
+            Width: =640
+            X: =0
+            Y: =3
+            ZIndex: =7
+
+            Label_want_to_add_a_sketch_7 As label:
+                Height: =67
+                Size: =21
+                Text: |-
+                    =If (
+                        IsBlank(
+                            LookUp('Notebook Offline',Id = ViewNoteId).SketchId
+                        ),
+                        "No Sketch Added",
+                        "Sketch"  
+                    )
+                Width: =545
+                X: =40
+                ZIndex: =1
+
+        DataCard14 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =468
+            Visible: |-
+                =If (
+                    IsBlank(
+                        LookUp('Notebook Offline',Id = ViewNoteId).SketchId
+                    ),
+                    false,
+                    true
+                )
+            Width: =640
+            X: =0
+            Y: =4
+            ZIndex: =8
+
+            Image4 As image:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                BorderThickness: =2
+                Height: =545
+                Image: |
+                    =LookUp(blobsToSave, noteId = ViewNoteId And type = "sketch").blob
+                    
+                Width: =545
+                X: =40
+                Y: =8
+                ZIndex: =1
+
+        DataCard15 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: |-
+                =If (
+                    IsBlank(
+                        LookUp('Notebook Offline',Id = ViewNoteId).IncidentNumber
+                    ),
+                    false,
+                    true
+                )
+            Width: =640
+            X: =0
+            Y: =1
+            ZIndex: =9
+
+            TextInput_Notes_4 As text:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                Default: =LookUp('Notebook Offline',Id = ViewNoteId).IncidentNumber
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisplayMode: =DisplayMode.Disabled
+                EnableSpellCheck: =true
+                Fill: =notecol
+                Height: =57
+                HoverBorderColor: =RGBA(116, 116, 116, 1)
+                OnChange: |-
+                    =If(Len(TextInput_Notes_4.Text)>0,UpdateContext({notecol:Transparent}),UpdateContext({notecol:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(TextInput_Notes_4.Text)>0,UpdateContext({notecol:Transparent}),UpdateContext({notecol:LightGoldenRodYellow}));
+                Reset: |
+                    =
+                Size: =19
+                Width: =545
+                X: =40
+                Y: =16
+                ZIndex: =1
+
+        DataCard16 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =138
+            Visible: |-
+                =If (
+                    IsBlank(
+                        LookUp('Notebook Offline',Id = ViewNoteId).SignatureId
+                    ),
+                    false,
+                    true
+                )
+            Width: =640
+            X: =0
+            Y: =9
+            ZIndex: =10
+
+            Label_want_to_add_a_sketch_12 As label:
+                Height: =67
+                Size: =21
+                Text: ="Signature Date"
+                Width: =545
+                X: =40
+                ZIndex: =1
+
+            TextInput_Notes_6 As text:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                Default: |
+                    =Text( LookUp('Notebook Offline',Id = ViewNoteId).'Signature Date and Time',"dd/mm/yyyy hh:mm")
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisplayMode: =DisplayMode.Disabled
+                EnableSpellCheck: =true
+                Fill: =notecol
+                Height: =57
+                HoverBorderColor: =RGBA(116, 116, 116, 1)
+                OnChange: |-
+                    =If(Len(TextInput_Notes_6.Text)>0,UpdateContext({notecol:Transparent}),UpdateContext({notecol:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(TextInput_Notes_6.Text)>0,UpdateContext({notecol:Transparent}),UpdateContext({notecol:LightGoldenRodYellow}));
+                Reset: |
+                    =
+                Size: =19
+                Width: =545
+                X: =40
+                Y: =60
+                ZIndex: =2
+

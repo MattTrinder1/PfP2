@@ -1,0 +1,916 @@
+Screen_Notes As screen:
+    OnHidden: |
+        =UpdateContext({clearPenInputs:false});
+        UpdateContext({clearPenInputs:true});
+        Reset(PenInput_signature);
+        Reset(PenInput_sketch);
+        Reset(chkAddExhibits);
+        Reset(chkAddSketch);
+        Reset(chkSignatureRequired);
+        Reset(chkAddIncident);
+        Reset(AddMediaButton1);
+        Reset(Gallery_exhibits);
+        Reset(Txt_incident_suffix_1);
+    OnVisible: |
+        =Reset(txtNotes);
+        Reset(txtSignatoryName);
+        Set(noteSaved,false);
+        Set(noteSigned,false);
+        SetFocus(txtFocus);
+        Set(gblOverlay,false);
+        Set(tmrStart,false);
+
+    Btn_save_Continue As button:
+        DisplayMode: |-
+            =If(
+                IsBlank(txtNotes.Text),
+                DisplayMode.Disabled,
+                DisplayMode.Edit
+            )
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Normal
+        Height: =65
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |
+            =Set(
+                noteSaved,
+                true
+            );
+            Set(
+                overLayVisible,
+                false
+            );
+            //patch the offline record with the notes
+            If(
+                chkAddSketch.Value,
+                UpdateContext({sketchId: GUID()});
+                Collect(
+                    blobsToSave,
+                    {
+                        noteId: newNoteId,
+                        caption: "",
+                        type: "sketch",
+                        index: 1,
+                        id: sketchId,
+                        blob: PenInput_sketch.Image,
+                        blobId: "",
+                        queued: false,
+                        deleted: false
+                    }
+                );
+                
+            );
+            If(
+                chkSignatureRequired.Value,
+                UpdateContext({signatureId: GUID()});
+                Collect(
+                    blobsToSave,
+                    {
+                        noteId: newNoteId,
+                        caption: "",
+                        type: "signature",
+                        index: 1,
+                        id: signatureId,
+                        blob: PenInput_signature.Image,
+                        blobId: "",
+                        queued: false,
+                        deleted: false
+                    }
+                );
+                
+            );
+            Collect(
+                notePhotos,
+                ShowColumns(
+                    Filter(
+                        blobsToSave,
+                        type = "photo",
+                        noteId = newNoteId
+                    ),
+                    "noteId",
+                    "id",
+                    "caption",
+                    "index"
+                )
+            );
+            SaveData(
+                notePhotos,
+                "notePhotosCache"
+            );
+            UpdateIf(
+                notePhotos,
+                noteId = newNoteId,
+                {downloaded: false}
+            );
+            UpdateContext({noteDate: Now()});
+            UpdateIf(
+                'Notebook Offline',
+                Id = newNoteId,
+                {
+                    Notes: txtNotes.Text,
+                    'Signature Date and Time': If(
+                        chkSignatureRequired.Value,
+                        DateTimeValue(TextInput_Signature_datetime.Text)
+                    ),
+                    IncidentDateTime: If(
+                        chkAddIncident.Value,
+                        DatePicker_incident_1.SelectedDate
+                    ),
+                    SignatoryName: If(
+                        chkSignatureRequired.Value,
+                        txtSignatoryName.Text
+                    ),
+                    IncidentNumber: If(
+                        chkAddIncident.Value,
+                        Txt_incident_no_1.Text
+                    ),
+                    NoteDateAndTime: Now(),
+                    SketchId: If(
+                        chkAddSketch.Value,
+                        sketchId & "-sketch-1"
+                    ),
+                    hasSketch: If(
+                        chkAddSketch.Value,
+                        true,
+                        false
+                    ),
+                    SignatureId: If(
+                        chkSignatureRequired.Value,
+                        signatureId & "-signature-1"
+                    ),
+                    hasSignature: If(
+                        chkSignatureRequired.Value,
+                        true,
+                        false
+                    ),
+                    complete: true,
+                    readyToSync: false,
+                    queued: false,
+                    inDataverse: false,
+                    fullyPopulated: true,
+                    enteredBy: User().Email
+                }
+            );
+            /*Patch(
+                'Notebook Offline',
+                LookUp(
+                    'Notebook Offline',
+                    Key = RecordKey
+                ),
+                {
+                    Notes: txtNotes.Text,
+                    SignatoryName: If(
+                        chkSignatureRequired.Value,
+                        txtSignatoryName.Text
+                    ),
+                    SignatureId: If(
+                        chkSignatureRequired.Value,
+                        signatureId & "-signature-1"
+                    ),
+                    'Signature Date and Time': If(
+                        chkSignatureRequired.Value,
+                        DateTimeValue(TextInput_Signature_datetime.Text)
+                    ),
+                    SketchId: If(
+                        chkAddSketch.Value,
+                        sketchId & "-sketch-1"
+                    ),
+                    IncidentNumber: If(
+                        chkAddIncident.Value,
+                        Txt_incident_no_1.Text
+                    ),
+                    IncidentDateTime: If(
+                        chkAddIncident.Value,
+                        DatePicker_incident_1.SelectedDate
+                    ),
+                    readyToSave:false,
+                    Synced:false
+                }
+            ); */
+            SaveData(
+                'Notebook Offline',
+                "NotebookOfflineCache"
+            );
+            SaveData(
+                blobsToSave,
+                "blobsToSaveCache"
+            );
+            Navigate(Screen_Home_Screen);
+        Size: =24
+        Text: ="Save"
+        Visible: =!noteSaved
+        Width: =545
+        X: =47
+        Y: =1058
+        ZIndex: =1
+
+    Label1_3 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =92
+        Size: =21
+        Text: |-
+            ="Notes" //& LookUp(
+                //'Notebook Offline',
+                //Id = newNoteId
+            //).photoCount //& txtNotes.Text // & DateTimeValue(Text(DatePicker_incident_1.SelectedDate) & " " & drpHours.SelectedText.Value & ":" & drpMinutes.SelectedText.Value )
+        Width: =640
+        ZIndex: =2
+
+    "'exit icon 3_1' As icon.Cancel":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =67
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        Visible: =false
+        X: =576
+        Y: =11
+        ZIndex: =3
+
+    "'Back Icon 2_1' As icon.ArrowLeft":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =67
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Screen_Home_Screen,ScreenTransition.UnCover)
+        Visible: =false
+        X: =16
+        Y: =11
+        ZIndex: =4
+
+    Canvas_Notes_sketch_Exhibits As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =954
+        Width: =Parent.Width
+        Y: =90
+        ZIndex: =5
+
+        DataCard_Notes_sketch_Exhibits As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =If(noteSaved,DisplayMode.Disabled, DisplayMode.Edit)
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =55
+            Update: =
+            Width: =Parent.Width
+            X: =0
+            Y: =8
+            ZIndex: =1
+
+            chkSignatureRequired As checkbox:
+                CheckboxBorderColor: =RGBA(128, 128, 128, 1)
+                CheckboxSize: =60
+                FocusedBorderThickness: =
+                Height: =55
+                Size: =18
+                Text: ="Signature required ?"
+                Width: =348
+                X: =40
+                ZIndex: =10
+
+        cardNotes As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =If(noteSaved,DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =702
+            Width: =640
+            X: =0
+            Y: =2
+            ZIndex: =2
+
+            txtNotes As text:
+                BorderColor: =RGBA(202, 202, 202, 1)
+                Default: =""
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                Height: =646
+                MaxLength: =1048576
+                Mode: =TextMode.MultiLine
+                Size: =21
+                Width: =559
+                X: =32
+                Y: =43
+                ZIndex: =1
+
+            Label2 As label:
+                Height: =30
+                Size: =21
+                Text: ="Notes"
+                Width: =511
+                X: =32
+                Y: =6
+                ZIndex: =2
+
+            Label2_1 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =24
+                X: =567
+                Y: =11
+                ZIndex: =3
+
+        DataCard2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =If(noteSaved,DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =58
+            Width: =640
+            X: =0
+            Y: =3
+            ZIndex: =3
+
+            chkAddSketch As checkbox:
+                CheckboxBorderColor: =RGBA(128, 128, 128, 1)
+                CheckboxSize: =60
+                FocusedBorderThickness: =
+                Height: =55
+                Size: =18
+                Text: ="Add Sketch ?"
+                Width: =280
+                X: =40
+                Y: =0   
+                ZIndex: =1
+
+        cardSketch As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =If(noteSaved,DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =573
+            Visible: =chkAddSketch.Value  
+            Width: =640
+            X: =0
+            Y: =4
+            ZIndex: =4
+
+            PenInput_sketch As inkControl:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                BorderThickness: =2   
+                Height: =545
+                OnSelect: =
+                Reset: =clearPenInputs
+                Width: =545
+                X: =45
+                Y: =20
+                ZIndex: =1
+
+        DataCard4 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =If(noteSaved,DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =17
+            Width: =640
+            X: =0
+            Y: =5
+            ZIndex: =5
+
+            chkAddExhibits As checkbox:
+                CheckboxBorderColor: =RGBA(128, 128, 128, 1)
+                CheckboxSize: =60
+                FocusedBorderThickness: =
+                Height: =55
+                Size: =18
+                Text: ="Add Exhibits?"// & RecordKey
+                Width: =522
+                X: =40
+                ZIndex: =1
+
+        DataCard5 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =If(noteSaved,DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =130
+            Visible: =chkAddExhibits.Value
+            Width: =640
+            X: =0
+            Y: =6
+            ZIndex: =6
+
+            AddMediaWithImage1 As group:
+                Height: =5
+                Width: =5
+                X: =3
+                Y: =40
+                ZIndex: =3
+
+                UploadedImage1 As image:
+                    BorderColor: =RGBA(116, 116, 116, 1)
+                    BorderStyle: =BorderStyle.Solid 
+                    BorderThickness: =2   
+                    Height: =22
+                    Image: =If(IsBlank(AddMediaButton1.Media), SampleImage, AddMediaButton1.Media)
+                    OnSelect: =
+                    Visible: =false
+                    Width: =545
+                    X: =45
+                    Y: =16
+                    ZIndex: =1
+
+                AddMediaButton1 As addMedia:
+                    BorderColor: =RGBA(116, 116, 116, 1)
+                    BorderStyle: =BorderStyle.None 
+                    BorderThickness: =2   
+                    ChangePictureText: ="Tap or click to add a picture"
+                    Color: =RGBA(255, 255, 255, 1)
+                    Fill: =RGBA(116, 116, 116, 1)
+                    Height: =63
+                    OnSelect: |
+                        =If(
+                            CountRows(
+                                Filter(
+                                    blobsToSave,
+                                    noteId = newNoteId,
+                                    type = "photo"
+                                )
+                            ) < 10,
+                            UpdateContext({photoId: GUID()});
+                            
+                            Collect(
+                                blobsToSave,
+                                {
+                                    noteId: newNoteId,
+                                    caption: "",
+                                    type: "photo",
+                                    index: CountRows(
+                                        Filter(
+                                            blobsToSave,
+                                            noteId = newNoteId,
+                                            type = "photo"
+                                        )
+                                    ) + 1,
+                                    id: photoId,
+                                    blob: UploadedImage1.Image,
+                                    blobId: "",
+                                    queued: false,
+                                    deleted: false
+                                }
+                            );
+                            UpdateIf(
+                                'Notebook Offline',
+                                Id = newNoteId,
+                                {
+                                    photoCount: LookUp(
+                                        'Notebook Offline',
+                                        Id = newNoteId
+                                    ).photoCount + 1
+                                }
+                            );
+                            SaveData(
+                                blobsToSave,
+                                "blobsToSaveCache"
+                            );
+                            
+                        );
+                    Reset: =    
+                    Size: =27
+                    UseMobileCamera: =true
+                    Width: =535
+                    X: =40
+                    Y: =24
+                    ZIndex: =2
+
+        DataCard6 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =If(noteSaved,DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =299
+            Visible: =chkAddExhibits.Value    
+            Width: =640
+            X: =0
+            Y: =7
+            ZIndex: =7
+
+            "Gallery_exhibits As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+                BorderColor: =RGBA(116, 116, 116, 1)
+                BorderThickness: =2   
+                Height: =CountRows(Gallery_exhibits.AllItems)*(Gallery_exhibits.TemplateHeight)
+                Items: =Filter(blobsToSave,noteId = newNoteId,deleted = false)
+                Layout: =Layout.Vertical
+                ShowScrollbar: =false
+                TemplatePadding: =0
+                TemplateSize: =132
+                Width: =545
+                X: =40
+                Y: =20  
+                ZIndex: =1
+
+                Image1 As image:
+                    Height: =128
+                    Image: =ThisItem.blob
+                    OnSelect: =Select(Parent)
+                    Width: =128
+                    Y: =4
+                    ZIndex: =1
+
+                Separator1 As rectangle:
+                    BorderColor: =RGBA(116, 116, 116, 1)  
+                    Fill: =RGBA(153, 153, 153, 1)
+                    Height: =1
+                    OnSelect: =Select(Parent)
+                    Width: =Parent.TemplateWidth
+                    Y: =Parent.TemplateHeight - 1
+                    ZIndex: =5
+
+                TextInput_picture_Caption As text:
+                    BorderColor: =RGBA(116, 116, 116, 1)
+                    Clear: =true
+                    Default: =ThisItem.caption
+                    EnableSpellCheck: =true
+                    Height: =64
+                    HintText: ="Exhibit caption"
+                    OnChange: |-
+                        =Patch(
+                            blobsToSave,
+                            ThisItem,
+                            {
+                                caption: Self.Text,
+                                queued: false
+                            }
+                        )
+                    OnSelect: =Select(Parent)
+                    Size: =16
+                    Visible: =If(IsBlank('Notebook Offline'),false,true)
+                    Width: =301
+                    X: =157
+                    Y: =29
+                    ZIndex: =6
+
+                Icon10 As icon.Cancel:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =56
+                    Icon: =Icon.Cancel
+                    OnSelect: |
+                        =Patch(
+                            blobsToSave,
+                            ThisItem,
+                            {
+                                deleted: true,
+                                queued: false
+                            }
+                        );
+                        UpdateIf(
+                            'Notebook Offline',
+                            Id = newNoteId,
+                            {
+                                photoCount: LookUp(
+                                    'Notebook Offline',
+                                    Id = newNoteId
+                                ).photoCount - 1
+                            }
+                        );
+                        Set(
+                            galheight,
+                            CountRows(Gallery_exhibits.AllItems) * (Gallery_exhibits.TemplateHeight)
+                        );
+                    Width: =73
+                    X: =472
+                    Y: =29
+                    ZIndex: =7
+
+        DataCard7 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =If(noteSaved,DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =258
+            Visible: =chkSignatureRequired.Value
+            Width: =640
+            X: =0
+            Y: =9
+            ZIndex: =8
+
+            txtSignatoryName As text:
+                BorderColor: =RGBA(149, 149, 149, 1)
+                Default: =
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisplayMode: =If(IsBlank(txtNotes.Text),DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,Transparent)
+                Height: =65
+                HintText: =""
+                Reset: =
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =88
+                ZIndex: =1
+
+            Btn_save_Continue_1 As button:
+                DisplayMode: =If(IsBlank(txtSignatoryName.Text),DisplayMode.Disabled, DisplayMode.Edit)
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Bold
+                Height: =65
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: =Set(overLayVisible,!overLayVisible);
+                Size: =24
+                Text: ="Sign"
+                Width: =545
+                X: =40
+                Y: =180
+                ZIndex: =2
+
+            Lbl_asteriks_35 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =18
+                Text: ="*"
+                Width: =22
+                X: =563
+                Y: =50
+                ZIndex: =3
+
+            Label4 As label:
+                Height: =38
+                Size: =21
+                Text: ="Signatory Name"
+                Width: =450
+                X: =40
+                Y: =35
+                ZIndex: =4
+
+        DataCard8 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =If(noteSaved,DisplayMode.Disabled,DisplayMode.Edit) 
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =66
+            Width: =640
+            X: =0
+            Y: =0
+            ZIndex: =9
+
+            chkAddIncident As checkbox:
+                CheckboxBorderColor: =RGBA(128, 128, 128, 1)
+                CheckboxSize: =60
+                FocusedBorderThickness: =
+                Height: =55
+                Size: =18
+                Text: ="Add Incident ?"
+                Width: =280
+                X: =40
+                ZIndex: =1
+
+            txtFocus As text:
+                Default: ="Text input"
+                Height: =42
+                Size: =21
+                Visible: =false
+                Width: =90
+                X: =484
+                Y: =6
+                ZIndex: =2
+
+        DataCard9 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =If(noteSaved,DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =351
+            Visible: =chkAddIncident.Value
+            Width: =640
+            X: =0
+            Y: =1
+            ZIndex: =10
+
+            DatePicker_incident_1 As datepicker:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                BorderThickness: =2   
+                DefaultDate: =
+                Height: =55
+                IconBackground: =RGBA(128, 128, 128, 1)
+                InputTextPlaceholder: ="DD/MM/YYYY"
+                IsEditable: =true
+                OnChange: =If(DatePicker_incident_1.SelectedDate>Today(), Reset(DatePicker_incident_1));
+                OnSelect: |-
+                    =If(!IsBlank(DatePicker_incident_1.SelectedDate),UpdateContext({incidenta:Transparent}),UpdateContext({incidenta:LightGoldenRodYellow}));
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =46
+                ZIndex: =1
+
+            Txt_incident_suffix_1 As text:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                Default: =
+                Format: =TextFormat.Number
+                Height: =55
+                HintText: =""
+                MaxLength: =4
+                OnChange: |
+                    =//This is to make the field will not accept any value under or equal to zero
+                    If(
+                        Value(Txt_incident_suffix_1.Text) <= 0,
+                        Reset(Txt_incident_suffix_1)
+                    );
+                    //This is to make sure all 4 numbers are digits and no symbols or letters are accepted into the field. If they are it will reset the field
+                    If(
+                        !IsMatch(
+                            Txt_incident_suffix_1.Text,
+                            Digit & Digit & Digit & Digit
+                        ),
+                        Reset(Txt_incident_suffix_1)
+                    );
+                OnSelect: |-
+                    =Set(
+                        incidentnumbervar,
+                        "CP" & "-" & Text(
+                            DateAdd(
+                                DatePicker_incident_1.SelectedDate,
+                                0
+                            ),
+                            "[$-en-GB]yyyymmdd"
+                        ) & "-" & Txt_incident_suffix_1
+                    )
+                Reset: =
+                Size: =21
+                VirtualKeyboardMode: =VirtualKeyboardMode.Numeric
+                Width: =545
+                X: =40
+                Y: =151
+                ZIndex: =2
+
+            Txt_incident_no_1 As text:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                Default: |
+                    ="CP" & "-" & Text(
+                            DateAdd(
+                                DatePicker_incident_1.SelectedDate,
+                                0
+                            ),
+                            "[$-en-GB]yyyymmdd"
+                        ) & "-" & Txt_incident_suffix_1
+                DisplayMode: =DisplayMode.Disabled
+                Height: =55
+                HintText: =""
+                Reset: =
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =256
+                ZIndex: =3
+
+            Label_Incident_Date_1 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Height: =50
+                Size: =21
+                Text: ="Incident Date "
+                Width: =545
+                X: =40
+                ZIndex: =4
+
+            Label_Incident_Number_1 As label:
+                Height: =50
+                Size: =21
+                Text: ="Incident Number"
+                Width: =545
+                X: =40
+                Y: =206
+                ZIndex: =5
+
+            Label_Incident_Suffix_1 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Height: =50
+                Size: =21
+                Text: ="Incident Suffix"
+                Width: =545
+                X: =40
+                Y: =101
+                ZIndex: =6
+
+        DataCard17 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =330
+            Visible: =chkSignatureRequired.Value
+            Width: =640
+            X: =0
+            Y: =10
+            ZIndex: =11
+
+            imgSignature As image:
+                BorderThickness: =2
+                DisplayMode: =DisplayMode.Disabled
+                Height: =293
+                Image: =PenInput_signature.Image 
+                Visible: =And(chkSignatureRequired.Value  ,noteSaved)
+                Width: =545
+                X: =40
+                Y: =12
+                ZIndex: =1
+
+    rectOverlay As rectangle:
+        BorderColor: =RGBA(0, 18, 107, 1     )
+        Fill: =RGBA(0,0,0,80%)
+        Height: =1044
+        Visible: =overLayVisible
+        Width: =640
+        ZIndex: =6
+
+    Group1 As group:
+        Height: =5
+        Width: =5
+        X: =-1
+        Y: =-81
+        ZIndex: =11
+
+        TextInput_Signature_datetime As text:
+            BorderColor: =RGBA(149, 149, 149, 1)
+            Default: |-
+                =Text(DateNow,"[$-en-GB]dd/mm/yyyy hh:mm:ss")
+            DisabledColor: =RGBA(0, 0, 0, 1)
+            DisplayMode: =DisplayMode.Disabled
+            Height: =65
+            HintText: ="Date/Time of Signature"
+            Reset: =
+            Size: =21
+            Visible: =overLayVisible
+            Width: =545
+            X: =40
+            Y: =720
+            ZIndex: =7
+
+        btnCancelSignature As button:
+            DisplayMode: =
+            Fill: =RGBA(153, 153, 153, 1)
+            FontWeight: =FontWeight.Bold
+            Height: =65
+            HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+            OnSelect: |-
+                =Reset(PenInput_signature);
+                Set(noteSigned,false);
+                Set(overLayVisible,false);
+            Size: =24
+            Text: ="Cancel"
+            Visible: =overLayVisible
+            Width: =133
+            X: =40
+            Y: =812
+            ZIndex: =8
+
+        PenInput_signature As inkControl:
+            BorderColor: =RGBA(116, 116, 116, 1)
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =545
+            OnSelect: |-
+                =UpdateContext({DateNow: Now()});
+                UpdateContext({timenow: Now()});
+                Set(noteSigned,true);
+            Reset: =clearPenInputs
+            ShowControls: =false
+            Visible: =overLayVisible
+            Width: =545
+            X: =40
+            Y: =155
+            ZIndex: =9
+
+    Group14 As group:
+        Height: =5
+        Width: =5
+        X: =60
+        Y: =60
+        ZIndex: =14
+
+        Rectangle2_1 As rectangle:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Fill: =RGBA(255, 255, 255, 0.89)
+            Height: =1136
+            Visible: =gblLoading
+            Width: =640
+            ZIndex: =11
+
+        Image1_1 As image:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Height: =107
+            Image: ='loading-buffering'
+            Visible: =gblLoading
+            Width: =107
+            X: =274
+            Y: =486
+            ZIndex: =12
+
+        Label5 As label:
+            Align: =Align.Center
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Height: =70
+            Size: =21
+            Text: |-
+                ="Saving and submitting...
+                  (Please do not close app while syncing )"
+            Visible: =gblLoading
+            Width: =560
+            X: =40
+            Y: =392
+            ZIndex: =13
+
