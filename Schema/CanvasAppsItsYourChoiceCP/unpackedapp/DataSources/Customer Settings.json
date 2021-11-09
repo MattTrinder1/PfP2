@@ -1,0 +1,141 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_customersettings",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_customersetting",
+    "MaxGetRowsCount": 2000,
+    "Name": "Customer Settings",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "cp_active": "Active",
+      "cp_areacode": "Area Code",
+      "cp_cp_customersetting_cp_environment_customer": "Environments",
+      "cp_cp_customersetting_cp_territorialpolicingarea_customer": "Territorial Policing Areas",
+      "cp_customername": "Customer Name",
+      "cp_customersetting_AsyncOperations": "System Jobs",
+      "cp_customersetting_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_customersetting_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_customersetting_optionsetvalue": "Option Set Values",
+      "cp_customersetting_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_customersetting_ProcessSession": "Process Sessions",
+      "cp_customersetting_SyncErrors": "Sync Errors",
+      "cp_customersettingid": "Customer Setting",
+      "cp_incidentprefix": "Incident Prefix",
+      "cp_policingareatext": "Policing Area Text",
+      "cp_station_customer_cp_customersetting": "Stations",
+      "cp_usetpa": "Use TPA",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "organizationid": "Organization Id",
+      "overriddencreatedon": "Record Created On",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Customer Settings",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Customer Settings (Views)",
+    "Name": "_cp_customersetting_views",
+    "RelatedEntityName": "Customer Settings",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "0dbd5460-22a1-4cf7-a2e0-e2f668cedeef": "Customer Setting Advanced Find View",
+      "56379508-43a1-4279-acbf-a6aaa65056ad": "Customer Setting Associated View",
+      "87042e2a-0089-4872-a6da-67b1c295bf30": "Inactive Customer Settings",
+      "e9aa6f1d-961d-439c-9b54-01b7f1f8b1c8": "Active Customer Settings",
+      "f6742d10-f982-4460-9edb-6811ad35cd27": "Customer Setting Lookup View"
+    }
+  },
+  {
+    "DisplayName": "Active (Customer Settings)",
+    "Name": "cp_cp_customersetting_active",
+    "OptionSetInfoNameMapping": {
+      "0": "No",
+      "1": "Yes"
+    },
+    "OptionSetIsBooleanValued": true,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "cp_active",
+        "OptionSetReferenceEntityName": "Customer Settings"
+      }
+    },
+    "OptionSetTypeKey": "BooleanType",
+    "RelatedColumnInvariantName": "cp_active",
+    "RelatedEntityName": "Customer Settings",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Use TPA (Customer Settings)",
+    "Name": "cp_cp_customersetting_usetpa",
+    "OptionSetInfoNameMapping": {
+      "0": "No",
+      "1": "Yes"
+    },
+    "OptionSetIsBooleanValued": true,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "cp_usetpa",
+        "OptionSetReferenceEntityName": "Customer Settings"
+      }
+    },
+    "OptionSetTypeKey": "BooleanType",
+    "RelatedColumnInvariantName": "cp_usetpa",
+    "RelatedEntityName": "Customer Settings",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status (Customer Settings)",
+    "Name": "cp_customersetting_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Customer Settings"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Customer Settings",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Customer Settings)",
+    "Name": "cp_customersetting_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Customer Settings"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Customer Settings",
+    "Type": "OptionSetInfo"
+  }
+]

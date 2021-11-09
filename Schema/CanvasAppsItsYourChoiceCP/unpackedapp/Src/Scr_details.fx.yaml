@@ -1,0 +1,3048 @@
+"Scr_details As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    OnVisible: |-
+        =If(
+            Len(Txt_forename.Text) > 0,
+            UpdateContext({madcol: White}),
+            UpdateContext({madcol: LightGoldenRodYellow})
+        );
+        If(
+            Len(Txt_surname.Text) > 0,
+            UpdateContext({madcolA: White}),
+            UpdateContext({madcolA: LightGoldenRodYellow})
+        );
+        If (
+            DatePicker_dob.SelectedDate > 0,
+            UpdateContext({madcolB: White}),
+            UpdateContext({madcolB: LightGoldenRodYellow})
+        );
+        If(Len(Txt_housename.Text)=0 And Len(Txt_houseno.Text)=0, UpdateContext({madcolC:LightGoldenRodYellow});UpdateContext({madcolCC:LightGoldenRodYellow});,UpdateContext({madcolC:White});UpdateContext({madcolCC:White}));
+        
+        If(
+            Len(Txt_address.Text) > 0,
+            UpdateContext({madcolD: White}),
+            UpdateContext({madcolD: LightGoldenRodYellow})
+        );
+        If(
+            Len(Txt_town.Text) > 0,
+            UpdateContext({madcolE: White}),
+            UpdateContext({madcolE: LightGoldenRodYellow})
+        );
+        If(
+            Len(Txt_county.Text) > 0,
+            UpdateContext({madcolF: White}),
+            UpdateContext({madcolF: LightGoldenRodYellow})
+        );
+        If(
+            Len(Txt_pobox.Text) > 0,
+            UpdateContext({madcolG: White}),
+            UpdateContext({madcolG: LightGoldenRodYellow})
+        );
+        If(
+            Len(Dropdown_gender.Selected.cp_name) > 0,
+            UpdateContext({madcolH: White}),
+            UpdateContext({madcolH: LightGoldenRodYellow})
+        );
+        If(
+            Len(Dropdown_self_ethnicity_code.Selected.cp_name) > 0,
+            UpdateContext({madcolI: White}),
+            UpdateContext({madcolI: LightGoldenRodYellow})
+        );
+        If(
+            Len(Dropdown_officer_ethnicitycode.Selected.cp_name) > 0,
+            UpdateContext({madcolJ: White}),
+            UpdateContext({madcolJ: LightGoldenRodYellow})
+        );
+        If(
+            Len(Txt_school.Text) > 0,
+            UpdateContext({madcolGG: White}),
+            UpdateContext({madcolGG: LightGoldenRodYellow})
+        );
+        If(
+            Len(Dropdown_pg_title.Selected.cp_name) > 0,
+            UpdateContext({madcolK: White}),
+            UpdateContext({madcolK: LightGoldenRodYellow})
+        );
+        If(
+            Len(Txt_pg_forename.Text) > 0,
+            UpdateContext({madcolL: White}),
+            UpdateContext({madcolL: LightGoldenRodYellow})
+        );
+        If(
+            Len(Txt_pg_surname.Text) > 0,
+            UpdateContext({madcolM: White}),
+            UpdateContext({madcolM: LightGoldenRodYellow})
+        );
+        If(
+            Len(Drpdn_relationship_to_youth.Selected.cp_name) > 0,
+            UpdateContext({madcolN: White}),
+            UpdateContext({madcolN: LightGoldenRodYellow})
+        );
+        If(
+            Len(Radio_pg_same_address.Selected.Value) > 0,
+            UpdateContext({madcolO: White}),
+            UpdateContext({madcolO: LightGoldenRodYellow})
+        );
+        If(
+            Len(Txt_pg_housename.Text) > 0,
+            UpdateContext({madcolP: White}),
+            UpdateContext({madcolP: LightGoldenRodYellow})
+        );
+        If(
+            Len(Txt_pg_address.Text) > 0,
+            UpdateContext({madcolQ: White}),
+            UpdateContext({madcolQ: LightGoldenRodYellow})
+        );
+        If(
+            Len(Txt_pg_town.Text) > 0,
+            UpdateContext({madcolR: White}),
+            UpdateContext({madcolR: LightGoldenRodYellow})
+        );
+        If(
+            Len(Txt_pg_county.Text) > 0,
+            UpdateContext({madcolS: White}),
+            UpdateContext({madcolS: LightGoldenRodYellow})
+        );
+        If(
+            Len(Txt_pg_pobox.Text) > 0,
+            UpdateContext({madcolT: White}),
+            UpdateContext({madcolT: LightGoldenRodYellow})
+        );
+        If(
+            Len(Txt_pg_country.Text) > 0,
+            UpdateContext({madcolU: White}),
+            UpdateContext({madcolU: LightGoldenRodYellow})
+        );
+        If(
+            Len(Txt_pg_phone_number.Text) > 0,
+            UpdateContext({madcolV: White}),
+            UpdateContext({madcolV: LightGoldenRodYellow})
+        );
+        If(
+            Len(Radio_officer_alcohol_tobacco.Selected.Value) > 0,
+            UpdateContext({madcolX: White}),
+            UpdateContext({madcolX: LightGoldenRodYellow})
+        );
+        If(
+            Len(Radio_tobacoo_seized.Selected.Value) > 0,
+            UpdateContext({madcolY: White}),
+            UpdateContext({madcolY: LightGoldenRodYellow})
+        );
+        Set(
+            addcontactmethod,
+            false
+        );
+        UpdateContext({addcontactmethod: false});
+        Set(
+            contactworkphone,
+            false
+        );
+        UpdateContext({contactworkphone: false});
+        Set(
+            contactmail,
+            false
+        );
+        UpdateContext({contactmail: false});
+        Set(
+            contacthomephone,
+            false
+        );
+        UpdateContext({contacthomephone: false});
+        Set(
+            contactmobile,
+            false
+        );
+        UpdateContext({contactmobile: false});
+        Set(
+            occupation,
+            false
+        );
+        UpdateContext({occupation: false});
+        Set(
+            ydetails,
+            0
+        );
+        Set(
+            y1details,
+            0
+        );
+        //Set(madcol,LightGoldenRodYellow);UpdateContext({madcol:LightGoldenRodYellow});Set(madcolA,LightGoldenRodYellow);UpdateContext({madcolA:LightGoldenRodYellow});
+        If(
+            Radio_pg_same_address.Selected.Value = "No" And ysamead = 0,
+            Set(
+                sameadr,
+                true
+            );
+            UpdateContext({sameadr: true});
+            Set(
+                ysamead,
+                926
+            );
+            UpdateContext({ysamead: 926})
+        );
+        If(
+            Radio_pg_same_address.Selected.Value = "Yes",
+            Set(
+                sameadr,
+                false
+            );
+            UpdateContext({sameadr: false});
+            Set(
+                ysamead,
+                0
+            );
+            UpdateContext({ysamead: 0})
+        );
+        If(
+            Len(Radio_pg_same_address.Selected.Value) = 0,
+            Set(
+                sameadr,
+                false
+            );
+            UpdateContext({sameadr: false});
+            Set(
+                ysamead,
+                0
+            );
+            UpdateContext({ysamead: 0})
+        );
+        //Color for mandatory fields
+        /*Set(madcolB,LightGoldenRodYellow);UpdateContext({madcolB:LightGoldenRodYellow});
+        Set(madcolC,LightGoldenRodYellow);UpdateContext({madcolC:LightGoldenRodYellow});
+        Set(madcolD,LightGoldenRodYellow);UpdateContext({madcolD:LightGoldenRodYellow});
+        Set(madcolE,LightGoldenRodYellow);UpdateContext({madcolE:LightGoldenRodYellow});
+        Set(madcolF,LightGoldenRodYellow);UpdateContext({madcolF:LightGoldenRodYellow});
+        Set(madcolG,LightGoldenRodYellow);UpdateContext({madcolG:LightGoldenRodYellow});
+        Set(madcolH,LightGoldenRodYellow);UpdateContext({madcolH:LightGoldenRodYellow});
+        Set(madcolI,LightGoldenRodYellow);UpdateContext({madcolI:LightGoldenRodYellow});
+        Set(madcolJ,LightGoldenRodYellow);UpdateContext({madcolJ:LightGoldenRodYellow});
+        Set(madcolK,LightGoldenRodYellow);UpdateContext({madcolK:LightGoldenRodYellow});
+        Set(madcolL,LightGoldenRodYellow);UpdateContext({madcolL:LightGoldenRodYellow});
+        Set(madcolM,LightGoldenRodYellow);UpdateContext({madcolM:LightGoldenRodYellow});
+        Set(madcolN,LightGoldenRodYellow);UpdateContext({madcolN:LightGoldenRodYellow});
+        Set(madcolO,LightGoldenRodYellow);UpdateContext({madcolO:LightGoldenRodYellow});
+        Set(madcolP,LightGoldenRodYellow);UpdateContext({madcolP:LightGoldenRodYellow});
+        Set(madcolQ,LightGoldenRodYellow);UpdateContext({madcolQ:LightGoldenRodYellow});
+        Set(madcolR,LightGoldenRodYellow);UpdateContext({madcolR:LightGoldenRodYellow});
+        Set(madcolS,LightGoldenRodYellow);UpdateContext({madcolS:LightGoldenRodYellow});
+        Set(madcolT,LightGoldenRodYellow);UpdateContext({madcolT:LightGoldenRodYellow});
+        Set(madcolU,LightGoldenRodYellow);UpdateContext({madcolU:LightGoldenRodYellow});
+        Set(madcolV,LightGoldenRodYellow);UpdateContext({madcolV:LightGoldenRodYellow});
+        Set(madcolX,LightGoldenRodYellow);UpdateContext({madcolX:LightGoldenRodYellow});
+        Set(madcolY,LightGoldenRodYellow);UpdateContext({madcolY:LightGoldenRodYellow});
+        Set(madcolZ,LightGoldenRodYellow);UpdateContext({madcolZ:LightGoldenRodYellow});*/
+        If(
+            Radio_officer_alcohol_tobacco.Selected.Value = "Yes" And ytoba = 0,
+            Set(
+                ytobavis,
+                true
+            );
+            UpdateContext({ytobavis: true});
+            Set(
+                ytoba,
+                300
+            );
+            UpdateContext({ytoba: 300})
+        );
+        If(
+            Radio_officer_alcohol_tobacco.Selected.Value = "No",
+            Set(
+                ytobavis,
+                false
+            );
+            UpdateContext({ytobavis: false});
+            Set(
+                ytoba,
+                0
+            );
+            UpdateContext({ytoba: 0})
+        );
+        If(
+            Len(Radio_officer_alcohol_tobacco.Selected.Value) = 0,
+            Set(
+                ytobavis,
+                false
+            );
+            UpdateContext({ytobavis: false});
+            Set(
+                ytoba,
+                0
+            );
+            UpdateContext({ytoba: 0})
+        );
+        If(
+            Radio_pg_same_address.Selected.Value = "No" And ysamead = 0,
+            Set(
+                ygphone2,
+                0
+            );
+            UpdateContext({ygphone2: 0});
+            Set(
+                ypgphone,
+                3577
+            );
+            UpdateContext({ypgphone: 3577});
+            Set(
+                sameadr,
+                true
+            );
+            UpdateContext({sameadr: true});
+            Set(
+                ysamead,
+                926
+            );
+            UpdateContext({ysamead: 926})
+        );
+        If(
+            Radio_pg_same_address.Selected.Value = "Yes",
+            Set(
+                ygphone2,
+                50
+            );
+            UpdateContext({ygphone2: 50});
+            Set(
+                ypgphone,
+                2710
+            );
+            UpdateContext({ypgphone: 2710});
+            Set(
+                sameadr,
+                false
+            );
+            UpdateContext({sameadr: false});
+            Set(
+                ysamead,
+                0
+            );
+            UpdateContext({ysamead: 0})
+        );
+        If(
+            Len(Radio_pg_same_address.Selected.Value) = 0,
+            Set(
+                ypgphone,
+                0
+            );
+            UpdateContext({ypgphone: 0});
+            Set(
+                sameadr,
+                false
+            );
+            UpdateContext({sameadr: false});
+            Set(
+                ysamead,
+                0
+            );
+            UpdateContext({ysamead: 0})
+        );Set(PNCSearchReason,false)
+        /*
+        If(
+            Radio_pg_same_address.Selected.Value = "No" And ysamead=0,
+            Set(sameadr,true);UpdateContext({sameadr: true});Set(ysamead,926);UpdateContext({ysamead:926})
+        );
+        If(
+            Radio_pg_same_address.Selected.Value = "Yes",
+            Set(sameadr,false);UpdateContext({sameadr: false});Set(ysamead,0);UpdateContext({ysamead:0})
+        );
+        If(Len(Radio_pg_same_address.Selected.Value) = 0 , 
+         Set(sameadr,false);UpdateContext({sameadr: false});Set(ysamead,0);UpdateContext({ysamead:0}));*/
+
+    RectQuickActionBar_header As rectangle:
+        Height: =88
+        Width: =Parent.Width
+        ZIndex: =2
+
+    Lbl_header_details As label:
+        Align: =Align.Center
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =88
+        Size: =27
+        Text: = "Details" //& LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Self_defined_ethnicity
+        Width: =Parent.Width
+        ZIndex: =3
+
+    Canvas_details As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1048
+        Width: =Parent.Width
+        Y: =RectQuickActionBar_header.Y + RectQuickActionBar_header.Height
+        ZIndex: =4
+
+        DataCard_details_scroll As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =If(IsBlank(Drpdn_incident_key.Selected.Key),DisplayMode.Disabled, DisplayMode.Edit)
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =2548
+            Width: =Parent.Width
+            X: =0
+            Y: =1
+            ZIndex: =1
+
+            Txt_forename As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: |-
+                    =If(
+                        IsBlank(
+                            LookUp(
+                                'IYC offline',
+                                Key = Drpdn_incident_key.Selected.Key
+                            ).Forename
+                        ),
+                        If(
+                            !IsBlank(First(NEREsult.records)),
+                            Trim(
+                                Last(
+                                    Split(
+                                        LookUp(NEResultPossibles, pncId = VARCheckedItem,name),
+                                        ","
+                                    )
+                                ).Result
+                            ),
+                            LookUp(
+                                'IYC offline',
+                                Key = Drpdn_incident_key.Selected.Key
+                            ).Forename
+                        ),
+                        LookUp(
+                            'IYC offline',
+                            Key = Drpdn_incident_key.Selected.Key
+                        ).Forename
+                    )
+                Fill: =If(Len(Self.Text) = 0,Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |-
+                    =If(
+                        Len(Txt_forename.Text) > 0,
+                        UpdateContext({madcol: Transparent}),
+                        UpdateContext({madcol: LightGoldenRodYellow})
+                    );
+                    
+                    If(
+                     IsMatch(
+                     Txt_forename.Text,
+                     "[a-zA-Z\s]+"
+                     ),
+                     Green,
+                     Reset(
+                     Txt_forename)
+                     
+                    );
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =55
+                ZIndex: =6
+
+            Txt_surname As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: |-
+                    =If(
+                        IsBlank(
+                            LookUp(
+                                'IYC offline',
+                                Key = Drpdn_incident_key.Selected.Key
+                            ).Surname
+                        ),
+                        If(
+                            !IsBlank(First(NEREsult.records)),
+                            First(
+                                Split(
+                                    LookUp(NEResultPossibles, pncId = VARCheckedItem,name),
+                                    ","
+                                )
+                            ).Result,
+                            LookUp(
+                                'IYC offline',
+                                Key = Drpdn_incident_key.Selected.Key
+                            ).Surname
+                        ),
+                        LookUp(
+                            'IYC offline',
+                            Key = Drpdn_incident_key.Selected.Key
+                        ).Surname
+                    )
+                Fill: =If(Len(Self.Text) = 0,Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |-
+                    =If(
+                        Len(Txt_surname.Text) > 0,
+                        UpdateContext({madcolA: Transparent}),
+                        UpdateContext({madcolA: LightGoldenRodYellow})
+                    );
+                    
+                    If(
+                     IsMatch(
+                     Txt_surname.Text,
+                     "[a-zA-Z\s]+"
+                     ),
+                     Green,
+                     Reset(
+                     Txt_surname)
+                     
+                    );
+                OnSelect: |-
+                    =If(
+                        Len(Txt_surname.Text) > 0,
+                        UpdateContext({madcolA: Transparent}),
+                        UpdateContext({madcolA: LightGoldenRodYellow})
+                    );
+                Reset: =Allreset
+                Size: =21
+                Width: =If(And(!IsBlank(Txt_surname.Text), !IsBlank(Txt_forename.Text)), 500,545)
+                X: =40
+                Y: =165
+                ZIndex: =7
+
+            DatePicker_dob As datepicker:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                DefaultDate: |-
+                    =If(
+                        IsBlank(
+                            LookUp(
+                                'IYC offline',
+                                Key = Drpdn_incident_key.Selected.Key
+                            ).'Date of Birth'
+                        ),
+                        If(
+                            !IsBlank(First(NEREsult.records)),
+                            LookUp(NEResultPossibles, pncId = VARCheckedItem,dateOfBirth),
+                            LookUp(
+                                'IYC offline',
+                                Key = Drpdn_incident_key.Selected.Key
+                            ).'Date of Birth'
+                        ),
+                        LookUp(
+                            'IYC offline',
+                            Key = Drpdn_incident_key.Selected.Key
+                        ).'Date of Birth'
+                    )
+                Fill: =madcolB
+                Height: =70
+                IconBackground: =RGBA(128, 128, 128, 100)
+                InputTextPlaceholder: ="DD/MM/YYYY"
+                IsEditable: =true
+                OnChange: |-
+                    =If (DatePicker_dob.SelectedDate >0,UpdateContext({madcolB:White}),UpdateContext({madcolB:LightGoldenRodYellow}));
+                    UpdateContext(
+                        {
+                            agecalc:     If(Month(Now()) < Month(DatePicker_dob.SelectedDate) Or ((Month(Now()) = Month(DatePicker_dob.SelectedDate) && Day(Now()) < Day(DatePicker_dob.SelectedDate))),
+                            Year(Now()) - Year(DatePicker_dob.SelectedDate) -1 , 
+                            Year(Now()) - Year(DatePicker_dob.SelectedDate) 
+                        )
+                        }
+                    );
+                OnSelect: |-
+                    =If(IsBlank(DatePicker_dob),
+                        UpdateContext({madcolB: LightGoldenRodYellow}),
+                        UpdateContext({madcolB: White })
+                    );
+                    UpdateContext(
+                        {
+                            agecalc:     If(Month(Now()) < Month(DatePicker_dob.SelectedDate) Or ((Month(Now()) = Month(DatePicker_dob.SelectedDate) && Day(Now()) < Day(DatePicker_dob.SelectedDate))),
+                            Year(Now()) - Year(DatePicker_dob.SelectedDate) -1 , 
+                            Year(Now()) - Year(DatePicker_dob.SelectedDate) 
+                        )
+                        }
+                    );
+                    //remember to change madcol
+                Reset: =Allreset
+                Size: =24
+                StartYear: =1900
+                Width: =545
+                X: =40
+                Y: =275
+                ZIndex: =8
+
+            Label_dob As label:
+                Height: =70
+                Size: =21
+                Text: ="Date of birth"
+                Width: =545
+                X: =40
+                Y: =222
+                ZIndex: =9
+
+            Txt_age As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =If(IsBlank(DatePicker_dob.SelectedDate),"",agecalc)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(219, 219, 219, 1)
+                DisplayMode: =DisplayMode.Disabled
+                Fill: =RGBA(166, 166, 166, 1)
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: =
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =391
+                ZIndex: =10
+
+            Label_pg_surname As label:
+                Height: =66
+                Size: =21
+                Text: ="Parent/Guardian Surname"
+                Width: |
+                    =530
+                X: =40
+                Y: =2153
+                ZIndex: =25
+
+            Txt_pg_surname As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_Surname
+                Fill: =If(Len(Self.Text) = 0,Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |
+                    =If(
+                        Len(Txt_pg_surname.Text) > 0,
+                        UpdateContext({madcolM: Transparent}),
+                        UpdateContext({madcolM: LightGoldenRodYellow})
+                    );
+                OnSelect: |
+                    =If(
+                        Len(Txt_pg_surname.Text)>0,
+                        UpdateContext({madcolM: Transparent}),
+                        UpdateContext({madcolM: LightGoldenRodYellow})
+                    );
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =2203
+                ZIndex: =26
+
+            Label_former_occupation As label:
+                Height: =70
+                Size: =21
+                Text: ="Former Occupation"
+                Visible: =occupation
+                Width: =545
+                X: =36
+                Y: =2024
+                ZIndex: =27
+
+            Coombobox_former_occupation As combobox:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
+                DisplayFields: =["Value"]
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                IsSearchable: =false
+                Items: =["Brick layer","IT specialist","Joiner","Plumber"]
+                PressedFill: =RGBA(230, 230, 230, 1)
+                SearchFields: =["Value"]
+                SearchItems: =[]
+                SelectionFill: =RGBA(153, 153, 153, 1)
+                Size: =21
+                Visible: =occupation
+                Width: =545
+                X: =36
+                Y: =2074
+                ZIndex: =28
+
+            Label_star_deceased_relathionship_duration As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =566
+                Y: =2174
+                ZIndex: =29
+
+            Label_star_deceased_relathionship As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =562
+                Y: =2310
+                ZIndex: =32
+
+            Drpdn_relationship_to_youth As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).relationshiptoyouthname
+                Fill: =If(IsBlank(Self.SelectedText.Value),LightGoldenRodYellow,White)
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =youthrelationshipoffline
+                OnChange: |-
+                    =If(Len(Drpdn_relationship_to_youth.Selected.cp_name)>0,UpdateContext({madcolN:White}),UpdateContext({madcolN:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Drpdn_relationship_to_youth.Selected.cp_name)>0,UpdateContext({madcolN:White}),UpdateContext({madcolN:LightGoldenRodYellow}))
+                Reset: =Allreset
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =2348
+                ZIndex: =33
+
+            Txt_housename As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Housename
+                Fill: =If(Len(Self.Text) = 0,Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: |-
+                    =If(Len(Txt_housename.Text)=0 And Len(Txt_houseno.Text)=0, UpdateContext({madcolC:LightGoldenRodYellow});UpdateContext({madcolCC:LightGoldenRodYellow});,UpdateContext({madcolCC:White});UpdateContext({madcolC:White}))
+                OnSelect: |-
+                    =If(Len(Txt_housename.Text)=0 And Len(Txt_houseno.Text)=0, UpdateContext({madcolC:LightGoldenRodYellow});UpdateContext({madcolCC:LightGoldenRodYellow});,UpdateContext({madcolCC:White});UpdateContext({madcolC:White}))
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =519
+                ZIndex: =34
+
+            Txt_houseno As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Housenumber
+                Fill: =White
+                Format: =TextFormat.Number
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: |-
+                    =If(Len(Txt_housename.Text)=0 And Len(Txt_houseno.Text)=0, UpdateContext({madcolC:LightGoldenRodYellow});UpdateContext({madcolCC:LightGoldenRodYellow});,UpdateContext({madcolCC:White});UpdateContext({madcolC:White}))
+                OnSelect: |-
+                    =If(Len(Txt_housename.Text)=0 And Len(Txt_houseno.Text)=0, UpdateContext({madcolC:LightGoldenRodYellow});UpdateContext({madcolCC:LightGoldenRodYellow});,UpdateContext({madcolCC:White});UpdateContext({madcolC:White}))
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =636
+                ZIndex: =35
+
+            Txt_address As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: |-
+                    =LookUp(
+                        'IYC offline',
+                        Key = Drpdn_incident_key.Selected.Key
+                    ).Address1
+                Fill: =If(Len(Self.Text) = 0,Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: |-
+                    =If(
+                        Len(Txt_address.Text) > 0,
+                        UpdateContext({madcolD: White}),
+                        UpdateContext({madcolD: LightGoldenRodYellow})
+                    );
+                OnSelect: |-
+                    =If(
+                        Len(Txt_address.Text)>0,
+                        UpdateContext({madcolD: White}),
+                        UpdateContext({madcolD: LightGoldenRodYellow})
+                    ); 
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =746
+                ZIndex: =36
+
+            Txt_district As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: |-
+                    =/*If(
+                        IsBlank(
+                            LookUp(
+                                'IYC offline',
+                                Key = Drpdn_incident_key.Selected.Key
+                            ).Address1
+                        ),
+                        If(
+                            !IsBlank(First(NEREsult.records)),
+                            LookUp(NEResultPossibles, pncId = VARCheckedItem,address2),
+                            LookUp(
+                                'IYC offline',
+                                Key = Drpdn_incident_key.Selected.Key
+                            ).Address1
+                        ),*/
+                        LookUp(
+                            'IYC offline',
+                            Key = Drpdn_incident_key.Selected.Key
+                        ).Address1
+                    //)
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: =
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =877
+                ZIndex: =37
+
+            Txt_town As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Town
+                Fill: =If(Len(Self.Text) = 0,Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: |
+                    =If(
+                        Len(Txt_town.Text) > 0,
+                        UpdateContext({madcolE: White}),
+                        UpdateContext({madcolE: LightGoldenRodYellow})
+                    );
+                OnSelect: |-
+                    =If(Len(Txt_town.Text)>0,UpdateContext({madcolE:White}),
+                    UpdateContext({madcolE:LightGoldenRodYellow}))
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =991
+                ZIndex: =38
+
+            Txt_county As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).County
+                Fill: =If(Len(Self.Text) = 0,Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |
+                    =If(
+                        Len(Txt_county.Text) > 0,
+                        UpdateContext({madcolF: White}),
+                        UpdateContext({madcolF: LightGoldenRodYellow})
+                    );
+                OnSelect: |-
+                    =
+                    
+                    If(Len(Txt_address.Text)>0,UpdateContext({madcolF:White}),
+                    UpdateContext({madcolF:LightGoldenRodYellow}))
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1109
+                ZIndex: =39
+
+            Txt_pobox As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pcode 
+                Fill: =If(Len(Self.Text) = 0,Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |-
+                    =If(
+                        Len(Txt_pobox.Text) > 0,
+                        UpdateContext({madcolG: White}),
+                        UpdateContext({madcolG: LightGoldenRodYellow})
+                    );
+                     If(Len(Txt_pobox.Text)>0,Upper(Txt_pobox.Text));
+                OnSelect: |-
+                    =If(
+                        Len(Txt_pobox.Text) > 0,
+                        UpdateContext({madcolG: White}),
+                        UpdateContext({madcolG: LightGoldenRodYellow})
+                    );
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1222
+                ZIndex: =40
+
+            Lbl_address As label:
+                Height: =70
+                Size: =21
+                Text: ="House Name or Number"
+                Width: =560
+                X: =40
+                Y: =459
+                ZIndex: =42
+
+            Label_star_address As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =481
+                ZIndex: =43
+
+            Label_star_house_number As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =711
+                ZIndex: =44
+
+            Label_star_town As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =952
+                ZIndex: =45
+
+            Label_star_county As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =1080
+                ZIndex: =46
+
+            Label_star_post_code As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =1189
+                ZIndex: =47
+
+            Lbl_asteriks_51 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Visible: =
+                Width: =22
+                X: =563
+                Y: =1438
+                ZIndex: =54
+
+            Label_Witness_Details_Preffered_mean_of_Contact As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="Gender"
+                Width: =545
+                X: =40
+                Y: =1303
+                ZIndex: =56
+
+            Dropdown_gender As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(153, 153, 153, 1)  
+                ChevronBackground: =RGBA(116, 116, 116, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).GenderName
+                Fill: =If(IsBlank(Self.SelectedText.Value),LightGoldenRodYellow,White)
+                Height: =70
+                HoverFill: =RGBA(205, 209, 213, 1)
+                Items: =Genderoffline
+                OnChange: =
+                OnSelect: =
+                PressedFill: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                SelectionFill: =RGBA(100, 118, 132, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1368
+                ZIndex: =57
+
+            Label_asterik_surname_10 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =563
+                Y: =1321
+                ZIndex: =58
+
+            Label_Witness_Details_Ethincity_Code As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="Self defined ethnicity"
+                Width: =545
+                X: =40
+                Y: =1438
+                ZIndex: =59
+
+            Label_asterik_surname_11 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =563
+                Y: =1476
+                ZIndex: =60
+
+            Lbl_asteriks_52 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Visible: =
+                Width: =22
+                X: =563
+                Y: =1585
+                ZIndex: =62
+
+            Label_Witness_Details_Ethincity_Code_1 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="Officer defined ethnicity"
+                Width: =545
+                X: =40
+                Y: =1585
+                ZIndex: =63
+
+            Label_asterik_surname_12 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =563
+                Y: =1623
+                ZIndex: =64
+
+            Dropdown_officer_ethnicitycode As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(153, 153, 153, 1)  
+                ChevronBackground: =RGBA(116, 116, 116, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Officer_defined_ethnicity_name
+                Fill: =If(IsBlank(Self.SelectedText.Value),LightGoldenRodYellow,White)
+                Height: =70
+                HoverFill: =RGBA(205, 209, 213, 1)
+                Items: =PerceivedEthnicityoffline
+                OnChange: =
+                OnSelect: =
+                PressedFill: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                SelectionFill: =RGBA(100, 118, 132, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1661
+                ZIndex: =65
+
+            Label_Witness_Details_Ethincity_Code_2 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="School / college currently attending"
+                Width: =545
+                X: =39
+                Y: =1734
+                ZIndex: =67
+
+            Txt_pg_forename As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_Forename
+                Fill: =If(Len(Self.Text) = 0,Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |-
+                    =If(
+                        Len(Txt_pg_forename.Text) > 0,
+                        UpdateContext({madcolL: White}),
+                        UpdateContext({madcolL: LightGoldenRodYellow})
+                    );
+                OnSelect: |-
+                    =If(
+                        Len(Txt_pg_forename.Text) > 0,
+                        UpdateContext({madcolL: White}),
+                        UpdateContext({madcolL: LightGoldenRodYellow})
+                    );
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =2071
+                ZIndex: =69
+
+            Label_relationship_youth As label:
+                Height: =66
+                Size: =21
+                Text: ="Relationship to youth"
+                Width: =528
+                X: =41
+                Y: =2286
+                ZIndex: =70
+
+            Label_star_house_number_1 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =40
+                Y: =2459
+                ZIndex: =71
+
+            Label_pg_same_address As label:
+                Height: =66
+                Size: =21
+                Text: ="Parent/Guardian lives at same address?"
+                Width: =560
+                X: =40
+                Y: =2404
+                ZIndex: =72
+
+            Radio_pg_same_address As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).sameaddress
+                Fill: =If(IsBlank(Self.SelectedText.Value),LightGoldenRodYellow,White)
+                Height: =96
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |
+                    =If(Len(Radio_pg_same_address.Selected.Value)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}));
+                    
+                    
+                    
+                    If(
+                        Radio_pg_same_address.Selected.Value = "No" And ysamead=0,  Set(ygphone2,0);UpdateContext({ygphone2:0});Set(ypgphone,3577); UpdateContext({ypgphone:3577});
+                        Set(sameadr,true);UpdateContext({sameadr: true});Set(ysamead,926);UpdateContext({ysamead:926})
+                    );
+                    If(
+                        Radio_pg_same_address.Selected.Value = "Yes", Set(ygphone2,50);UpdateContext({ygphone2:50});Set(ypgphone,2710); UpdateContext({ypgphone:2710});
+                        Set(sameadr,false);UpdateContext({sameadr: false});Set(ysamead,0);UpdateContext({ysamead:0})
+                    );
+                    If(Len(Radio_pg_same_address.Selected.Value) = 0 , Set(ypgphone,0 ); UpdateContext({ypgphone:0});
+                     Set(sameadr,false);UpdateContext({sameadr: false});Set(ysamead,0);UpdateContext({ysamead:0}));
+                    
+                    
+                    If(Radio_pg_same_address.Selected.Value = "No", Reset(Txt_pg_housename);Reset(Txt_pg_house_number);Reset(Txt_pg_address);Reset(Txt_pg_district);Reset(Txt_pg_town);Reset(Txt_pg_county);Reset(Txt_pg_address);Reset(Txt_pg_pobox);Reset(Txt_pg_country);)
+                    
+                    
+                    
+                    
+                OnSelect: |
+                    =If(
+                        Radio_pg_same_address.Selected.Value = "No" And ysamead=0,  Set(ygphone2,0);UpdateContext({ygphone2:0});Set(ypgphone,3577); UpdateContext({ypgphone:3577});
+                        Set(sameadr,true);UpdateContext({sameadr: true});Set(ysamead,926);UpdateContext({ysamead:926})
+                    );
+                    If(
+                        Radio_pg_same_address.Selected.Value = "Yes", Set(ygphone2,50);UpdateContext({ygphone2:50});Set(ypgphone,2710); UpdateContext({ypgphone:2710});
+                        Set(sameadr,false);UpdateContext({sameadr: false});Set(ysamead,0);UpdateContext({ysamead:0})
+                    );
+                    If(Len(Radio_pg_same_address.Selected.Value) = 0 , Set(ypgphone,0 ); UpdateContext({ypgphone:0});
+                     Set(sameadr,false);UpdateContext({sameadr: false});Set(ysamead,0);UpdateContext({ysamead:0}));
+                    
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Reset: =Allreset
+                Size: =21
+                Width: =335
+                X: =40
+                Y: =2463
+                ZIndex: =73
+
+            Dropdown_pg_title As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(153, 153, 153, 1)  
+                ChevronBackground: =RGBA(116, 116, 116, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_title
+                Fill: =If(IsBlank(Self.SelectedText.Value),LightGoldenRodYellow,White)
+                Height: =70
+                HoverFill: =RGBA(205, 209, 213, 1)
+                Items: =StaffTitleoffline
+                OnChange: |-
+                    =If(Len(Dropdown_pg_title.Selected.cp_name)>0,UpdateContext({madcolK:White}),UpdateContext({madcolK:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Dropdown_pg_title.Selected.cp_name)>0,UpdateContext({madcolK:White}),UpdateContext({madcolK:LightGoldenRodYellow}))
+                PressedFill: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                SelectionFill: =RGBA(100, 118, 132, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1943
+                ZIndex: =97
+
+            Label_Witness_Details_Ethincity_Code_4 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="Parent/Guardian Title"
+                Width: =545
+                X: =40
+                Y: =1877
+                ZIndex: =98
+
+            Label_pg_forename As label:
+                Height: =66
+                Size: =21
+                Text: ="Parent/Guardian Forename"
+                Width: |
+                    =530
+                X: =40
+                Y: =2017
+                ZIndex: =99
+
+            Label_star_deceased_relathionship_duration_1 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =566
+                Y: =2038
+                ZIndex: =100
+
+            Label_star_city_2 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =569
+                Y: =1893
+                ZIndex: =101
+
+            Txt_school As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).SchoolCollege
+                Fill: =If(Len(Self.Text) = 0,Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |
+                    =If(
+                        Len(Txt_school.Text) > 0,
+                        UpdateContext({madcolGG: White}),
+                        UpdateContext({madcolGG: LightGoldenRodYellow})
+                    );
+                OnSelect: |
+                    =If(
+                        Len(Txt_school.Text) > 0,
+                        UpdateContext({madcolGG: White}),
+                        UpdateContext({madcolGG: LightGoldenRodYellow})
+                    );
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1793
+                ZIndex: =103
+
+            Label_star_address_2 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =563
+                Y: =1768
+                ZIndex: =104
+
+            Label_star_address_3 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =21
+                ZIndex: =106
+
+            Label_star_address_4 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =125
+                ZIndex: =107
+
+            Label_star_address_5 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =236
+                ZIndex: =108
+
+            Label_Witness_Details_Preffered_mean_of_Contact_1 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Height: =60
+                OnSelect: =
+                Size: =21
+                Text: ="Forename"
+                Width: =526
+                X: =40
+                Y: =5
+                ZIndex: =110
+
+            Label_Witness_Details_Preffered_mean_of_Contact_2 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Height: =60
+                OnSelect: =
+                Size: =21
+                Text: ="Surname"
+                Width: =545
+                X: =39
+                Y: =115
+                ZIndex: =111
+
+            Label_Witness_Details_Preffered_mean_of_Contact_3 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Height: =60
+                OnSelect: =
+                Size: =21
+                Text: ="Age"
+                Width: =545
+                X: =41
+                Y: =335
+                ZIndex: =112
+
+            Label_Witness_Details_Preffered_mean_of_Contact_4 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Height: =58
+                OnSelect: =
+                Size: =21
+                Text: ="Additional address info"
+                Width: =520
+                X: =39
+                Y: =589
+                ZIndex: =113
+
+            Label_Witness_Details_Preffered_mean_of_Contact_5 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Height: =60
+                OnSelect: =
+                Size: =21
+                Text: ="Street"
+                Width: =526
+                X: =40
+                Y: =691
+                ZIndex: =114
+
+            Label_Witness_Details_Preffered_mean_of_Contact_6 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Height: =60
+                OnSelect: =
+                Size: =21
+                Text: ="District"
+                Width: =545
+                X: =40
+                Y: =824
+                ZIndex: =115
+
+            Label_Witness_Details_Preffered_mean_of_Contact_7 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Height: =60
+                OnSelect: =
+                Size: =21
+                Text: ="Post Code"
+                Width: =545
+                X: =40
+                Y: =1173
+                ZIndex: =116
+
+            Label_Witness_Details_Preffered_mean_of_Contact_9 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Height: =60
+                OnSelect: =
+                Size: =21
+                Text: ="County"
+                Width: =530
+                X: =40
+                Y: =1052
+                ZIndex: =118
+
+            Label_Witness_Details_Preffered_mean_of_Contact_10 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Height: =60
+                OnSelect: =
+                Size: =21
+                Text: ="Town"
+                Width: =545
+                X: =40
+                Y: =935
+                ZIndex: =119
+
+            Icon8_1 As icon.Search:
+                AccessibleLabel: ="Pnc Lens"
+                Color: =RGBA(153, 153, 153, 1)
+                HoverBorderColor: =RGBA(153, 153, 153, 1)
+                Icon: =Icon.Search
+                OnSelect: =Set(PNCSearchReason,true)
+                Visible: =And(!IsBlank(Txt_surname.Text), !IsBlank(Txt_forename.Text))
+                X: =544
+                Y: =165
+                ZIndex: =120
+
+            Dropdown_self_ethnicity_code As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(153, 153, 153, 1)  
+                ChevronBackground: =RGBA(116, 116, 116, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Self_defined_ethnicity_name
+                Fill: =If(IsBlank(Self.SelectedText.Value),LightGoldenRodYellow,White)
+                Height: =70
+                HoverFill: =RGBA(205, 209, 213, 1)
+                Items: =selfEthnicityoffline
+                OnChange: =
+                OnSelect: =
+                PressedFill: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                SelectionFill: =RGBA(100, 118, 132, 1)
+                Size: =21
+                Width: =545
+                X: =39
+                Y: =1515
+                ZIndex: =122
+
+        DataCard1 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =If(IsBlank(Drpdn_incident_key.Selected.Key),DisplayMode.Disabled, DisplayMode.Edit)
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =180
+            Width: =640
+            X: =0
+            Y: =4
+            ZIndex: =2
+
+            Label_alcohol_tobacco As label:
+                Height: =69
+                Size: =21
+                Text: ="Did you conduct a search for alcohol and tobacco?"
+                Width: =560
+                X: =40
+                Y: =24
+                ZIndex: =1
+
+            Radio_officer_alcohol_tobacco As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).alcohotobacco
+                Fill: =If(IsBlank(Self.SelectedText.Value),LightGoldenRodYellow,White)
+                Height: =97
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_officer_alcohol_tobacco.Selected.Value)>0,UpdateContext({madcolX:White}),UpdateContext({madcolX:LightGoldenRodYellow}));
+                    
+                    If(
+                        Radio_officer_alcohol_tobacco.Selected.Value = "Yes" And ytoba=0,
+                        Set(ytobavis,true);UpdateContext({ytobavis: true});Set(ytoba,300);UpdateContext({ytoba:300})
+                    );
+                    If(
+                        Radio_officer_alcohol_tobacco.Selected.Value = "No",
+                       Set(ytobavis,false); UpdateContext({ytobavis: false});Set(ytoba,0);UpdateContext({ytoba:0})
+                    );
+                    
+                    If(Len(Radio_officer_alcohol_tobacco.Selected.Value) = 0 , 
+                     Set(ytobavis,false);UpdateContext({ytobavis: false});Set(ytoba,0);UpdateContext({ytoba:0}));
+                OnSelect: |-
+                    =If(
+                        Radio_officer_alcohol_tobacco.Selected.Value = "Yes" And ytoba=0,
+                        Set(ytobavis,true);UpdateContext({ytobavis: true});Set(ytoba,300);UpdateContext({ytoba:300})
+                    );
+                    If(
+                        Radio_officer_alcohol_tobacco.Selected.Value = "No",
+                       Set(ytobavis,false); UpdateContext({ytobavis: false});Set(ytoba,0);UpdateContext({ytoba:0})
+                    );
+                    
+                    If(Len(Radio_officer_alcohol_tobacco.Selected.Value) = 0 , 
+                     Set(ytobavis,false);UpdateContext({ytobavis: false});Set(ytoba,0);UpdateContext({ytoba:0}));
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Reset: =Allreset
+                Size: =21
+                Width: =335
+                X: =40
+                Y: =93
+                ZIndex: =2
+
+            Label_star_deceased_relathionship_1 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =353
+                Y: =55
+                ZIndex: =5
+
+        cardPGAddress As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =832
+            Visible: =Radio_pg_same_address.SelectedText.Value = "No"
+            Width: =640
+            X: =0
+            Y: =2
+            ZIndex: =3
+
+            Txt_pg_housename As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_Housename
+                Fill: =If(Len(Self.Text) = 0,Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =70
+                HintText: ="Parent / guardian house name"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: |-
+                    =If(
+                        Len(Txt_pg_housename.Text) > 0,
+                        UpdateContext({madcolP: White}),
+                        UpdateContext({madcolP: LightGoldenRodYellow})
+                    );
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =58
+                ZIndex: =2
+
+            Txt_pg_house_number As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_Housenumber
+                Format: =TextFormat.Number
+                Height: =70
+                HintText: ="Parent / guardian house number"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: =
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =158
+                ZIndex: =3
+
+            Txt_pg_address As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_Address1
+                Fill: =If(Len(Self.Text) = 0,Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =70
+                HintText: ="Parent / guardian street"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: |-
+                    =If(
+                        Len(Txt_pg_address.Text) > 0,
+                        UpdateContext({madcolQ: White}),
+                        UpdateContext({madcolQ: LightGoldenRodYellow})
+                    );
+                OnSelect: |-
+                    =If(
+                        Len(Txt_pg_address.Text)>0,
+                        UpdateContext({madcolQ: White}),
+                        UpdateContext({madcolQ: LightGoldenRodYellow})
+                    );
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =258
+                ZIndex: =4
+
+            Txt_pg_district As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_District
+                Height: =70
+                HintText: ="Parent / guardian district"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: =
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =358
+                ZIndex: =5
+
+            Txt_pg_town As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_Town
+                Fill: =If(Len(Self.Text) = 0,Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =70
+                HintText: ="Parent / guardian town"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: |
+                    =If(
+                        Len(Txt_pg_town.Text) > 0,
+                        UpdateContext({madcolR: White}),
+                        UpdateContext({madcolR: LightGoldenRodYellow})
+                    );
+                OnSelect: |-
+                    =If(Len(Txt_pg_town.Text)>0,UpdateContext({madcolR:White}),
+                    UpdateContext({madcolR:LightGoldenRodYellow}))
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =458
+                ZIndex: =6
+
+            Txt_pg_county As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_County
+                Fill: =If(Len(Self.Text) = 0,Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =70
+                HintText: ="Parent / guardian county"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |
+                    =If(
+                        Len(Txt_pg_county.Text) > 0,
+                        UpdateContext({madcolS: White}),
+                        UpdateContext({madcolS: LightGoldenRodYellow})
+                    );
+                OnSelect: |-
+                    =
+                    
+                    If(Len(Txt_pg_address.Text)>0,UpdateContext({madcolS:White}),
+                    UpdateContext({madcolS:LightGoldenRodYellow}))
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =558
+                ZIndex: =7
+
+            Txt_pg_pobox As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_pcode
+                Fill: =If(Len(Self.Text) = 0,Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =70
+                HintText: ="Parent / guardian post code"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |
+                    =If(
+                        Len(Txt_pg_pobox.Text) > 0,
+                        UpdateContext({madcolT: White}),
+                        UpdateContext({madcolT: LightGoldenRodYellow})
+                    );
+                OnSelect: |-
+                    =If(
+                        Len(Txt_pg_pobox.Text) > 0,
+                        UpdateContext({madcolT: White}),
+                        UpdateContext({madcolT: LightGoldenRodYellow})
+                    );
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =658
+                ZIndex: =8
+
+            Txt_pg_country As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_County
+                Fill: =If(Len(Self.Text) = 0,Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =70
+                HintText: ="Parent / guardian country"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |
+                    =If(
+                        Len(Txt_pg_country.Text) > 0,
+                        UpdateContext({madcolU: White}),
+                        UpdateContext({madcolU: LightGoldenRodYellow})
+                    );
+                OnSelect: |
+                    =If(
+                        Len(Txt_pg_country.Text) > 0,
+                        UpdateContext({madcolU: White}),
+                        UpdateContext({madcolU: LightGoldenRodYellow})
+                    );
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =758
+                ZIndex: =9
+
+            Lbl_address_1 As label:
+                Height: =47
+                Size: =21
+                Text: ="Address"
+                Width: =560
+                X: =40
+                ZIndex: =10
+
+            Label_star_address_1 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =29
+                ZIndex: =11
+
+            Label_star_house_number_4 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =229
+                ZIndex: =12
+
+            Label_star_town_1 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =429
+                ZIndex: =13
+
+            Label_star_county_1 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =529
+                ZIndex: =14
+
+            Label_star_post_code_1 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =629
+                ZIndex: =15
+
+            Label_star_city_1 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =729
+                ZIndex: =16
+
+        cardSearch As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =Radio_officer_alcohol_tobacco.SelectedText.Value = "Yes"
+            Width: =640
+            X: =0
+            Y: =5
+            ZIndex: =4
+
+            Label_star_house_number_3 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Visible: =ytobavis
+                Width: =22
+                X: =562
+                Y: =149
+                ZIndex: =1
+
+            Label_tobaco_seized As label:
+                Height: =66
+                Size: =21
+                Text: ="Tobacco seized?"
+                Visible: =ytobavis
+                Width: =514
+                X: =40
+                Y: =131
+                ZIndex: =2
+
+            Radio_tobacoo_seized As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).tobacooseized
+                Fill: =madcolY
+                Height: =97
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_tobacoo_seized.Selected.Value)>0,UpdateContext({madcolY:White}),UpdateContext({madcolY:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Radio_tobacoo_seized.Selected.Value)>0,UpdateContext({madcolY:White}),UpdateContext({madcolY:LightGoldenRodYellow}));
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Reset: =Allreset
+                Size: =21
+                Visible: =ytobavis
+                Width: =335
+                X: =40
+                Y: =187
+                ZIndex: =3
+
+            ComboBox_power_utilised As combobox:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                ChevronBackground: =RGBA(116, 116, 116, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                Default: =LookUp(powerutilisedoffline,cp_name=LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).powerutilisedname)
+                DisplayFields: =
+                Height: =70
+                InputTextPlaceholder: =
+                IsSearchable: =false
+                Items: =powerutilisedoffline
+                OnSelect: =
+                Reset: =Allreset
+                SearchFields: =["cp_name"]
+                SearchItems: =[]
+                SelectionFill: =RGBA(116, 116, 116, 1)
+                SelectMultiple: =false
+                Size: =21
+                Visible: =ytobavis
+                Width: =545
+                X: =40
+                Y: =74
+                ZIndex: =4
+
+            Label_power_utilised As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="What power was utilised?"
+                Visible: =ytobavis
+                Width: =545
+                X: =40
+                Y: =4
+                ZIndex: =5
+
+        DataCard4 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =If(IsBlank(Drpdn_incident_key.Selected.Key),DisplayMode.Disabled, DisplayMode.Edit)
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =6
+            ZIndex: =5
+
+            Btn_add_details As button:
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =65
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =UpdateIf(
+                        'IYC offline',
+                        Key = Drpdn_incident_key.Selected.Key,
+                        {
+                            Forename: Txt_forename.Text,
+                            Surname: Txt_surname.Text,
+                            Fullname: Txt_surname.Text & " " & Txt_forename.Text,
+                            'Date of Birth': DatePicker_dob.SelectedDate,
+                            Housename: Txt_housename.Text,
+                            Housenumber: Txt_houseno.Text,
+                            Address1: Txt_address.Text,
+                            District: Txt_district.Text,
+                            Town: Txt_town.Text,
+                            County: Txt_county.Text,
+                            pcode: Txt_pobox.Text,
+                            Gender: Dropdown_gender.Selected.cp_lookupvalueid,
+                            GenderName: Dropdown_gender.Selected.cp_name,
+                            Self_defined_ethnicity: Dropdown_self_ethnicity_code.Selected.cp_lookupvalueid,
+                            Self_defined_ethnicity_name: Dropdown_self_ethnicity_code.Selected.cp_name,
+                            Officer_defined_ethnicity: Dropdown_officer_ethnicitycode.Selected.cp_lookupvalueid,
+                            Officer_defined_ethnicity_name: Dropdown_officer_ethnicitycode.Selected.cp_name,
+                            SchoolCollege: Txt_school.Text,
+                            relationshiptoyouth: Drpdn_relationship_to_youth.Selected.cp_lookupvalueid,
+                            relationshiptoyouthname: Drpdn_relationship_to_youth.Selected.cp_name,
+                            sameaddress: Radio_pg_same_address.Selected.Value,
+                            pg_title: Dropdown_pg_title.Selected.cp_name,
+                            pg_titlename: Dropdown_pg_title.Selected.cp_lookupvalueid,
+                            pg_Forename: Txt_pg_forename.Text,
+                            pg_Surname: Txt_pg_surname.Text,
+                            pg_Fullname: Txt_pg_surname.Text & " " & Txt_pg_forename.Text,
+                            pg_Housename: Txt_pg_housename.Text,
+                            pg_Housenumber: Txt_pg_house_number.Text,
+                            pg_Address1: Txt_pg_address.Text,
+                            pg_District: Txt_pg_district.Text,
+                            pg_Town: Txt_pg_town.Text,
+                            pg_County: Txt_pg_county.Text,
+                            pg_pcode: Txt_pg_pobox.Text,
+                            pg_country: Txt_pg_country.Text,
+                            pg_phone: Txt_pg_phone_number.Text,
+                            alcohotobacco: Radio_officer_alcohol_tobacco.Selected.Value,
+                            powerutilised: ComboBox_power_utilised.Selected.cp_lookupvalueid,
+                            powerutilisedname: ComboBox_power_utilised.Selected.cp_name,
+                            tobacooseized: Radio_tobacoo_seized.Selected.Value
+                        }
+                    );
+                    UpdateIf(
+                        'IYC offline',
+                        Key = Drpdn_incident_key.Selected.Key,
+                        {
+                            personValid: And(
+                                !IsBlank(
+                                    LookUp(
+                                        'IYC offline',
+                                        Key = Drpdn_incident_key.Selected.Key
+                                    ).Forename
+                                ),
+                                !IsBlank(
+                                    LookUp(
+                                        'IYC offline',
+                                        Key = Drpdn_incident_key.Selected.Key
+                                    ).Surname
+                                ),
+                                !IsBlank(
+                                    LookUp(
+                                        'IYC offline',
+                                        Key = Drpdn_incident_key.Selected.Key
+                                    ).'Date of Birth'
+                                ),
+                                !IsBlank(
+                                    LookUp(
+                                        'IYC offline',
+                                        Key = Drpdn_incident_key.Selected.Key
+                                    ).Address1
+                                ),
+                                !IsBlank(
+                                    LookUp(
+                                        'IYC offline',
+                                        Key = Drpdn_incident_key.Selected.Key
+                                    ).Housename
+                                ),
+                                !IsBlank(
+                                    LookUp(
+                                        'IYC offline',
+                                        Key = Drpdn_incident_key.Selected.Key
+                                    ).Town
+                                ),
+                                !IsBlank(
+                                    LookUp(
+                                        'IYC offline',
+                                        Key = Drpdn_incident_key.Selected.Key
+                                    ).County
+                                ),
+                                !IsBlank(
+                                    LookUp(
+                                        'IYC offline',
+                                        Key = Drpdn_incident_key.Selected.Key
+                                    ).pcode
+                                ),
+                                !IsBlank(
+                                    LookUp(
+                                        'IYC offline',
+                                        Key = Drpdn_incident_key.Selected.Key
+                                    ).GenderName
+                                ),
+                                !IsBlank(
+                                    LookUp(
+                                        'IYC offline',
+                                        Key = Drpdn_incident_key.Selected.Key
+                                    ).Officer_defined_ethnicity_name
+                                ),
+                                !IsBlank(
+                                    LookUp(
+                                        'IYC offline',
+                                        Key = Drpdn_incident_key.Selected.Key
+                                    ).Self_defined_ethnicity_name
+                                ),
+                                !IsBlank(
+                                    LookUp(
+                                        'IYC offline',
+                                        Key = Drpdn_incident_key.Selected.Key
+                                    ).SchoolCollege
+                                ),
+                                !IsBlank(
+                                    LookUp(
+                                        'IYC offline',
+                                        Key = Drpdn_incident_key.Selected.Key
+                                    ).pg_title
+                                ),
+                                !IsBlank(
+                                    LookUp(
+                                        'IYC offline',
+                                        Key = Drpdn_incident_key.Selected.Key
+                                    ).pg_Forename
+                                ),
+                                !IsBlank(
+                                    LookUp(
+                                        'IYC offline',
+                                        Key = Drpdn_incident_key.Selected.Key
+                                    ).pg_Surname
+                                ),
+                                !IsBlank(
+                                    LookUp(
+                                        'IYC offline',
+                                        Key = Drpdn_incident_key.Selected.Key
+                                    ).relationshiptoyouthname
+                                ),
+                                !IsBlank(
+                                    LookUp(
+                                        'IYC offline',
+                                        Key = Drpdn_incident_key.Selected.Key
+                                    ).pg_phone
+                                ),
+                                Or(
+                                    LookUp(
+                                        'IYC offline',
+                                        Key = Drpdn_incident_key.Selected.Key
+                                    ).alcohotobacco = "No",
+                                    And(
+                                        LookUp(
+                                            'IYC offline',
+                                            Key = Drpdn_incident_key.Selected.Key
+                                        ).alcohotobacco = "Yes",
+                                        !IsBlank(
+                                            LookUp(
+                                                'IYC offline',
+                                                Key = Drpdn_incident_key.Selected.Key
+                                            ).tobacooseized
+                                        )
+                                    )
+                                ),
+                                Or(
+                                    LookUp(
+                                        'IYC offline',
+                                        Key = Drpdn_incident_key.Selected.Key
+                                    ).sameaddress = "Yes",
+                                    And(
+                                        LookUp(
+                                            'IYC offline',
+                                            Key = Drpdn_incident_key.Selected.Key
+                                        ).sameaddress = "No",
+                                        !IsBlank(
+                                            LookUp(
+                                                'IYC offline',
+                                                Key = Drpdn_incident_key.Selected.Key
+                                            ).pg_Housename
+                                        ),
+                                        !IsBlank(
+                                            LookUp(
+                                                'IYC offline',
+                                                Key = Drpdn_incident_key.Selected.Key
+                                            ).pg_Address1
+                                        ),
+                                        !IsBlank(
+                                            LookUp(
+                                                'IYC offline',
+                                                Key = Drpdn_incident_key.Selected.Key
+                                            ).pg_Town
+                                        ),
+                                        !IsBlank(
+                                            LookUp(
+                                                'IYC offline',
+                                                Key = Drpdn_incident_key.Selected.Key
+                                            ).pg_County
+                                        ),
+                                        !IsBlank(
+                                            LookUp(
+                                                'IYC offline',
+                                                Key = Drpdn_incident_key.Selected.Key
+                                            ).pg_pcode
+                                        ),
+                                        !IsBlank(
+                                            LookUp(
+                                                'IYC offline',
+                                                Key = Drpdn_incident_key.Selected.Key
+                                            ).pg_country
+                                        )
+                                    )
+                                )
+                            )
+                        }
+                    );
+                    SaveData(
+                        'IYC offline',
+                        "IYC offline"
+                    );
+                    Navigate(
+                        Scr_home,
+                        UnCoverRight
+                    )
+                Size: =24
+                Text: ="Save and continue"
+                Width: =545
+                X: =40
+                Y: =16
+                ZIndex: =1
+
+        DataCard2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =If(IsBlank(Drpdn_incident_key.Selected.Key),DisplayMode.Disabled, DisplayMode.Edit)
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =117
+            Width: =640
+            X: =0
+            Y: =3
+            ZIndex: =6
+
+            Txt_pg_phone_number As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_phone
+                Fill: =If(Len(Self.Text) = 0,Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =70
+                HintText: ="Parent / guardian phonenumber"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: |
+                    =If(
+                        Len(Txt_pg_phone_number.Text) > 0,
+                        UpdateContext({madcolV: White}),
+                        UpdateContext({madcolV: LightGoldenRodYellow})
+                    );
+                OnSelect: |
+                    =If(
+                        Len(Txt_pg_phone_number.Text) > 0,
+                        UpdateContext({madcolV: White}),
+                        UpdateContext({madcolV: LightGoldenRodYellow})
+                    );
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =28
+                ZIndex: =1
+
+            Label_star_city_3 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =563
+                Y: =2
+                ZIndex: =2
+
+        DataCard3 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =0
+            ZIndex: =7
+
+            Drpdn_incident_key As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =IYC_Primary_key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: ='IYC offline'.Key
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =30
+                ZIndex: =1
+
+    Icon_back_details_home As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home,UnCover)
+        X: =31
+        Y: =13
+        ZIndex: =5
+
+    Icn_exit_Home As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =576
+        Y: =13
+        ZIndex: =6
+
+    Group3_1 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =36
+
+        Rectangle3_1 As rectangle:
+            Fill: =RGBA(255, 255, 255, 0.84)
+            Height: =1136
+            Visible: =PNCSearchReason
+            Width: =640
+            ZIndex: =8
+
+        Button1_1 As button:
+            BorderColor: =ColorFade(RGBA(153, 153, 153, 1),30%)
+            BorderThickness: =1
+            DisplayMode: =DisplayMode.Disabled
+            Fill: =White
+            Height: =937
+            Size: =24
+            Text: =""
+            Visible: =PNCSearchReason
+            Width: =594
+            X: =18
+            Y: =132
+            ZIndex: =9
+
+        Button2_1 As button:
+            BorderThickness: =0
+            Color: =RGBA(0, 0, 0, 1)
+            Fill: =RGBA(244, 244, 244, 1)
+            FocusedBorderThickness: =0
+            Height: =50
+            HoverColor: =ColorFade(Self.Color, 30%)
+            HoverFill: =RGBA(244, 244, 244, 1)
+            OnSelect: |-
+                =/*check to see if a selection has already been made under the same search to prevent user waiting for same results again*/
+                Set(
+                    gblforename,
+                    txt_person_forename_1.Text
+                );
+                Set(
+                    gblsurname,
+                    Txt_person_surname_1.Text
+                );
+                Set(
+                    gbldob,
+                    DatePicker_dob_1.SelectedDate
+                );
+                Set(
+                    gblgender,
+                    Dropdown_Gender_1.Selected.Value
+                );
+                Set(
+                    gblEthnicity,
+                    Dropdown_Self_defined_ethnicity_1.Selected.Value
+                );
+                If(
+                    Or(
+                        gblforename <> txt_person_forename_1.Text,
+                        gblsurname <> Txt_person_surname_1.Text,
+                        gbldob <> DatePicker_dob_1.SelectedDate,
+                        gblgender <> Dropdown_Gender_1.Selected.Value,
+                        gblEthnicity <> Dropdown_Self_defined_ethnicity_1.Selected.Value
+                    ),
+                    Set(
+                        PNCselection,
+                        false
+                    )
+                );
+                /*Validation for search STARTS here*/
+                Set(
+                    Errors,
+                    false
+                );
+                Set(
+                    LoadingSplash,
+                    true
+                );
+                If(
+                    And(
+                        chkbox_Forename.Value = true,
+                        IsBlank(txt_person_forename_1.Text)
+                    ),
+                    Set(
+                        Errors,
+                        true
+                    );
+                    Notify(
+                        "Forename(s) is a mandatory field",
+                        NotificationType.Error
+                    )
+                );
+                If(
+                    And(
+                        chkbox_Surname.Value = true,
+                        IsBlank(Txt_person_surname_1.Text)
+                    ),
+                    Set(
+                        Errors,
+                        true
+                    );
+                    Notify(
+                        "Surname is a mandatory field",
+                        NotificationType.Error
+                    )
+                );
+                If(
+                    IsBlank(PNCSearchLocation.Text),
+                    Set(
+                        Errors,
+                        true
+                    );
+                    Notify(
+                        "Location is a mandatory field",
+                        NotificationType.Error
+                    )
+                );
+                If(
+                    And(
+                        chkbox_DOB.Value = true,
+                        IsBlank(DatePicker_dob_1.SelectedDate)
+                    ),
+                    Set(
+                        Errors,
+                        true
+                    );
+                    Notify(
+                        "Date of Birth has been selected, but no Date of Birth has been input",
+                        NotificationType.Error
+                    )
+                );
+                If(
+                    And(
+                        chkbox_Ethnicity.Value = true,
+                        IsBlank(Dropdown_Self_defined_ethnicity_1.Selected.Value)
+                    ),
+                    Set(
+                        Errors,
+                        true
+                    );
+                    Notify(
+                        "Ethnicity has been selected, but no Ethnicity has been input",
+                        NotificationType.Error
+                    )
+                );
+                If(
+                    And(
+                        chkbox_Gender.Value = true,
+                        IsBlank(Dropdown_Gender_1.Selected.Value)
+                    ),
+                    Set(
+                        Errors,
+                        true
+                    );
+                    Notify(
+                        "Gender has been selected, but no Gender has been input",
+                        NotificationType.Error
+                    )
+                );
+                /*Validation for search ENDS here*/
+                /*Check for validation errors first*/
+                If(
+                    Errors = false,
+                    /*if validation passes continue*/
+                    If(
+                        PNCselection = false,
+                        If(
+                            " " in Trim(txt_person_forename_1.Text),
+                            Set(
+                                gblSplitForename,
+                                Split(
+                                    txt_person_forename_1.Text,
+                                    " "
+                                )
+                            );
+                            Set(
+                                NEREsult,
+                                'NDIWrapper-Name'.Run(
+                                    Upper(
+                                        Trim(
+                                            Concatenate(
+                                                Txt_person_surname_1.Text,
+                                                "/",
+                                                Upper(
+                                                    Left(
+                                                        Concat(
+                                                            gblSplitForename,
+                                                            Result & "/"
+                                                        ),
+                                                        Len(
+                                                            Concat(
+                                                                gblSplitForename,
+                                                                Result & "/"
+                                                            )
+                                                        ) - 1
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    ),
+                                    Concatenate(
+                                        "0",
+                                        Text(drpdwn_PNCSearchReason.Selected.ReasonCode)
+                                    ),
+                                    If(
+                                        IsBlank(DatePicker_dob_1.SelectedDate),
+                                        "",
+                                        Text(
+                                            DatePicker_dob_1.SelectedDate,
+                                            "ddmmyyyy"
+                                        )
+                                    ),
+                                    Switch(
+                                        Dropdown_Gender_1.Selected.Value,
+                                        "Male",
+                                        "M",
+                                        "Female",
+                                        "F",
+                                        "Unknown",
+                                        "U",
+                                        ""
+                                    ),
+                                    Switch(
+                                        Dropdown_Self_defined_ethnicity_1.Selected.Value,
+                                        "White",
+                                        "W",
+                                        "Non-White",
+                                        "NW",
+                                        "Unknown",
+                                        "U",
+                                        ""
+                                    )
+                                )
+                            ),
+                            Set(
+                                NEREsult,
+                                'NDIWrapper-Name'.Run(
+                                    Upper(
+                                        Trim(
+                                            Concatenate(
+                                                Txt_person_surname_1.Text,
+                                                "/",
+                                                txt_person_forename_1.Text
+                                            )
+                                        )
+                                    ),
+                                    Concatenate(
+                                        "0",
+                                        Text(drpdwn_PNCSearchReason.Selected.ReasonCode)
+                                    ),
+                                    If(
+                                        IsBlank(DatePicker_dob_1.SelectedDate),
+                                        "",
+                                        Text(
+                                            DatePicker_dob_1.SelectedDate,
+                                            "ddmmyyyy"
+                                        )
+                                    ),
+                                    Switch(
+                                        Dropdown_Gender_1.Selected.Value,
+                                        "Male",
+                                        "M",
+                                        "Female",
+                                        "F",
+                                        "Unknown",
+                                        "U",
+                                        ""
+                                    ),
+                                    Switch(
+                                        Dropdown_Self_defined_ethnicity_1.Selected.Value,
+                                        "White",
+                                        "W",
+                                        "Non-White",
+                                        "NW",
+                                        "Unknown",
+                                        "U",
+                                        ""
+                                    )
+                                )
+                            )
+                        );
+                        If(
+                            IsEmpty(NEREsult.records),
+                            Notify(
+                                "No Results Found",
+                                NotificationType.Error
+                            );
+                            Set(
+                                LoadingSplash,
+                                false
+                            ),
+                            Navigate(Scr_PNC_Possibles);
+                            Set(
+                                PNCselection,
+                                false
+                            );
+                            /*AuditLog starts*/
+                If(
+                                " " in Trim(txt_person_forename_1.Text),
+                                Set(
+                                    gblSplitForename,
+                                    Split(
+                                        txt_person_forename_1.Text,
+                                        " "
+                                    )
+                                );
+                                Set(
+                                    NameSearchValue,
+                                    Upper(
+                                        Trim(
+                                            Concatenate(
+                                                Txt_person_surname_1.Text,
+                                                "/",
+                                                Upper(
+                                                    Left(
+                                                        Concat(
+                                                            gblSplitForename,
+                                                            Result & "/"
+                                                        ),
+                                                        Len(
+                                                            Concat(
+                                                                gblSplitForename,
+                                                                Result & "/"
+                                                            )
+                                                        ) - 1
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                ),
+                                Set(
+                                    NameSearchValue,
+                                    Upper(
+                                        Trim(
+                                            Concatenate(
+                                                Txt_person_surname_1.Text,
+                                                "/",
+                                                txt_person_forename_1.Text
+                                            )
+                                        )
+                                    )
+                                )
+                            );
+                            Patch(
+                                'PNC Searches',
+                                Defaults('PNC Searches'),
+                                {
+                                    'Initiated By': LookUp(
+                                        Users,
+                                        'Primary Email' = User().Email
+                                    ),
+                                    'Initiated DateTime': DateTimeValue(
+                                        Text(
+                                            Now(),
+                                            DateTimeFormat.UTC
+                                        )
+                                    ),
+                                    Location: PNCSearchLocation.Text,
+                                    'Search Data': NameSearchValue,
+                                    Reason: Concatenate(
+                                        "0",
+                                        Text((drpdwn_PNCSearchReason.Selected.ReasonCode))
+                                    ),
+                                    'Search Type': 'Search Type'.Person
+                                }
+                            );
+                        /*AuditLog ends*/
+                Set(
+                                LoadingSplash,
+                                false
+                            );
+                        ),
+                        Navigate(
+                            Scr_PNC_Possibles,
+                            Fade
+                        );
+                        Set(
+                            LoadingSplash,
+                            false
+                        )
+                    ),
+                    Set(
+                        LoadingSplash,
+                        false
+                    )
+                );
+                
+                ClearCollect(NEResultPossibles, AddColumns(NEREsult.records,"isSelected",0))
+            PressedColor: =ColorFade(Self.Color, 30%)
+            PressedFill: =RGBA(244, 244, 244, 1)
+            Size: =16
+            Text: ="Search"
+            Visible: =PNCSearchReason
+            Width: =152
+            X: =446
+            Y: =1008
+            ZIndex: =10
+
+        drpdwn_PNCSearchReason As dropdown:
+            BorderColor: =RGBA(153, 153, 153, 1)
+            ChevronBackground: =RGBA(128, 128, 128, 1)
+            Default: =
+            Fill: =If(IsBlank(drpdwn_PNCSearchReason.Selected), LightGoldenRodYellow, White)
+            Height: =70
+            Items: =PNCSearchReasonCode
+            OnChange: =
+            SelectionFill: =RGBA(128, 128, 128, 1)
+            Size: =14
+            Visible: =PNCSearchReason
+            Width: =550
+            X: =48
+            Y: =924
+            ZIndex: =11
+
+        Label9 As label:
+            FontWeight: =Semibold
+            Height: =70
+            Size: =16
+            Text: ="PNC Search Reason"
+            Visible: =PNCSearchReason
+            Width: =560
+            X: =38
+            Y: =866
+            ZIndex: =12
+
+        Label_Birth_known_1 As label:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Size: =16
+            Text: ="Date of Birth"
+            Visible: =PNCSearchReason
+            Width: =500
+            X: =97
+            Y: =418
+            ZIndex: =13
+
+        Label_Forename_1 As label:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Size: =16
+            Text: ="Forename(s)"
+            Visible: =PNCSearchReason
+            Width: =500
+            X: =97
+            Y: =197
+            ZIndex: =14
+
+        Label_Surname_1 As label:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Size: =16
+            Text: ="Surname"
+            Visible: =PNCSearchReason
+            Width: =500
+            X: =97
+            Y: =307
+            ZIndex: =15
+
+        DatePicker_dob_1 As datepicker:
+            BorderColor: =RGBA(153, 153, 153, 1)
+            DateTimeZone: =DateTimeZone.UTC
+            DefaultDate: =
+            DisplayMode: =If(chkbox_DOB.Value = true, DisplayMode.Edit, DisplayMode.Disabled)
+            Fill: =If(IsBlank(DatePicker_dob_1.SelectedDate), LightGoldenRodYellow, White)
+            Format: =
+            Height: =70
+            IconBackground: =RGBA(153, 153, 153, 1)
+            InputTextPlaceholder: =
+            IsEditable: =true
+            OnChange: |
+                =If(IsBlank(DatePicker_dob_1),
+                    UpdateContext({personc: LightGoldenRodYellow}),
+                    UpdateContext({personc: White })
+                );
+                UpdateContext({agecalc: 0});
+                UpdateContext(
+                    {
+                        agecalc:     If(Month(Now()) < Month(DatePicker_dob_1.SelectedDate) Or ((Month(Now()) = Month(DatePicker_dob_1.SelectedDate) && Day(Now()) < Day(DatePicker_dob_1.SelectedDate))),
+                        Year(Now()) - Year(DatePicker_dob_1.SelectedDate) -1 , 
+                        Year(Now()) - Year(DatePicker_dob_1.SelectedDate) 
+                    )
+                    }
+                );
+                
+            OnSelect: |
+                =If(IsBlank(DatePicker_dob_1),
+                    UpdateContext({personc: LightGoldenRodYellow}),
+                    UpdateContext({personc: White })
+                );
+                UpdateContext(
+                    {
+                        agecalc:     If(Month(Now()) < Month(DatePicker_dob_1.SelectedDate) Or ((Month(Now()) = Month(DatePicker_dob_1.SelectedDate) && Day(Now()) < Day(DatePicker_dob_1.SelectedDate))),
+                        Year(Now()) - Year(DatePicker_dob_1.SelectedDate) -1 , 
+                        Year(Now()) - Year(DatePicker_dob_1.SelectedDate) 
+                    )
+                    }
+                );
+                
+            Reset: =true
+            Size: =16
+            StartYear: =1900
+            Visible: =PNCSearchReason
+            Width: =500
+            X: =97
+            Y: =459
+            ZIndex: =16
+
+        Label11 As label:
+            Align: =Center
+            FontWeight: =Semibold
+            Height: =67
+            Italic: =true
+            Size: =16
+            Text: ="PNC Search By"
+            Visible: =PNCSearchReason
+            Width: =579
+            X: =19
+            Y: =132
+            ZIndex: =17
+
+        Icon9 As icon.Cancel:
+            Color: =RGBA(0, 0, 0, 1)
+            Icon: =Icon.Cancel
+            OnSelect: =Set(PNCSearchReason,false)
+            PaddingBottom: =20
+            PaddingLeft: =20
+            PaddingRight: =20
+            PaddingTop: =20
+            Visible: =PNCSearchReason
+            X: =534
+            Y: =135
+            ZIndex: =18
+
+        Label14_9 As label:
+            Color: =RGBA(255, 0, 0, 1)
+            Height: =70
+            PaddingLeft: =10
+            Size: =16
+            Text: ="*"
+            Visible: =PNCSearchReason
+            Width: =368
+            X: =230
+            Y: =866
+            ZIndex: =19
+
+        chkbox_Forename As checkbox:
+            CheckboxSize: =45
+            Default: =true
+            FocusedBorderThickness: =0
+            Height: =70
+            OnUncheck: =Reset(txt_person_forename_1)
+            PaddingLeft: =5
+            Reset: =If(PNCSearchReason = false,true)
+            Size: =21
+            Text: =""
+            Visible: =false
+            Width: =62
+            X: =35
+            Y: =237
+            ZIndex: =20
+
+        txt_person_forename_1 As text:
+            BorderColor: =RGBA(153, 153, 153, 1)
+            Default: =Txt_forename
+            DisplayMode: =If(chkbox_Forename.Value = true, DisplayMode.Edit, DisplayMode.Disabled)
+            Fill: =If(IsBlank(txt_person_forename_1.Text), LightGoldenRodYellow, White)
+            Height: =70
+            HintText: ="ForeName(s)"
+            OnChange: |-
+                =If(
+                    Len(txt_person_forename_1.Text) > 0,
+                    UpdateContext({persona: White}),
+                    UpdateContext({persona: LightGoldenRodYellow})
+                );
+                Set(
+                    PNCselection,
+                    false
+                )
+            OnSelect: |-
+                =If(Len(txt_person_forename_1.Text)>0,UpdateContext({persona:White}),UpdateContext({persona:LightGoldenRodYellow}))
+            Reset: =
+            Size: =16
+            Visible: =PNCSearchReason
+            Width: =500
+            X: =97
+            Y: =237
+            ZIndex: =21
+
+        chkbox_Surname As checkbox:
+            CheckboxSize: =45
+            Default: =true
+            FocusedBorderThickness: =0
+            Height: =70
+            OnUncheck: =Reset(Txt_person_surname_1)
+            PaddingLeft: =5
+            Reset: =If(PNCSearchReason = false,true)
+            Size: =21
+            Text: =""
+            Visible: =false
+            Width: =62
+            X: =35
+            Y: =345
+            ZIndex: =22
+
+        Txt_person_surname_1 As text:
+            BorderColor: =RGBA(153, 153, 153, 1)
+            Default: =Txt_surname
+            DisplayMode: =If(chkbox_Surname.Value = true, DisplayMode.Edit, DisplayMode.Disabled)
+            Fill: =If(IsBlank(Txt_person_surname_1.Text), LightGoldenRodYellow, White)
+            Height: =70
+            HintText: ="Surname"
+            OnChange: |-
+                =If(
+                    Len(Txt_person_surname_1.Text) > 0,
+                    UpdateContext({personb: White}),
+                    UpdateContext({personb: LightGoldenRodYellow})
+                );
+                Set(
+                    PNCselection,
+                    false
+                )
+            OnSelect: |-
+                =If(Len(Txt_person_surname_1.Text)>0,UpdateContext({personb:White}),UpdateContext({personb:LightGoldenRodYellow}))
+            Reset: =
+            Size: =16
+            Visible: =PNCSearchReason
+            Width: =500
+            X: =97
+            Y: =347
+            ZIndex: =23
+
+        chkbox_DOB As checkbox:
+            CheckboxSize: =45
+            FocusedBorderThickness: =0
+            Height: =70
+            OnUncheck: =Reset(DatePicker_dob_1)
+            PaddingLeft: =5
+            Reset: =If(PNCSearchReason = false,true)
+            Size: =21
+            Text: =""
+            Visible: =PNCSearchReason
+            Width: =62
+            X: =35
+            Y: =459
+            ZIndex: =24
+
+        Dropdown_Gender_1 As dropdown:
+            AllowEmptySelection: =true
+            BorderColor: =RGBA(153, 153, 153, 1)
+            ChevronBackground: =RGBA(116, 116, 116, 1)
+            ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
+            Default: =
+            DisplayMode: =If(chkbox_Gender.Value = true, DisplayMode.Edit, DisplayMode.Disabled)
+            Fill: =If(IsBlank(Dropdown_Gender_1.Selected.Value), LightGoldenRodYellow, White)
+            Height: =70
+            Items: =["Male","Female","Unknown"]
+            OnChange: |-
+                =If(Len(Dropdown_Gender_1.Selected.Value)>0,UpdateContext({persone:White}),UpdateContext({persone:LightGoldenRodYellow}))
+            OnSelect: |-
+                =If(Len(Dropdown_Gender_1.Selected.Value)>0,UpdateContext({persone:White}),UpdateContext({persone:LightGoldenRodYellow}))
+            Reset: =
+            Size: =16
+            Visible: =PNCSearchReason
+            Width: =500
+            X: =98
+            Y: =569
+            ZIndex: =25
+
+        Label_person_Gender_4 As label:
+            OnSelect: =
+            Size: =16
+            Text: ="Gender"
+            Visible: =PNCSearchReason
+            Width: =500
+            X: =94
+            Y: =529
+            ZIndex: =26
+
+        Label_SelfDefined_1 As label:
+            BorderColor: =RGBA(116, 116, 116, 1)
+            OnSelect: =
+            Size: =16
+            Text: ="Ethnicity"
+            Visible: =PNCSearchReason
+            Width: =500
+            X: =98
+            Y: =639
+            ZIndex: =27
+
+        Dropdown_Self_defined_ethnicity_1 As dropdown:
+            AllowEmptySelection: =true
+            BorderColor: =RGBA(153, 153, 153, 1)
+            ChevronBackground: =RGBA(116, 116, 116, 1)
+            ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
+            Default: =Dropdown_self_ethnicity_code.Selected.cp_name
+            DisplayMode: =If(chkbox_Ethnicity.Value = true, DisplayMode.Edit, DisplayMode.Disabled)
+            Fill: =If(IsBlank(Dropdown_Self_defined_ethnicity_1.Selected.Value), LightGoldenRodYellow, White)
+            Height: =70
+            Items: =["White", "Non-White", "Unknown"]
+            OnChange: |-
+                =If(Len(Dropdown_Self_defined_ethnicity_1.Selected.Value)>0,UpdateContext({personf:White}),UpdateContext({personf:LightGoldenRodYellow}))
+            OnSelect: |-
+                =If(Len(Dropdown_Self_defined_ethnicity_1.Selected.Value)>0,UpdateContext({personf:White}),UpdateContext({personf:LightGoldenRodYellow}))
+            Reset: =
+            Size: =16
+            Visible: =PNCSearchReason
+            Width: =500
+            X: =98
+            Y: =676
+            ZIndex: =28
+
+        chkbox_Gender As checkbox:
+            CheckboxSize: =45
+            FocusedBorderThickness: =0
+            Height: =70
+            OnUncheck: =Reset(Dropdown_Gender_1)
+            PaddingLeft: =5
+            Reset: =If(PNCSearchReason = false,true)
+            Size: =21
+            Text: =""
+            Visible: =PNCSearchReason
+            Width: =62
+            X: =34
+            Y: =569
+            ZIndex: =29
+
+        chkbox_Ethnicity As checkbox:
+            CheckboxSize: =45
+            FocusedBorderThickness: =0
+            Height: =70
+            OnUncheck: =Reset(Dropdown_Self_defined_ethnicity_1)
+            PaddingLeft: =5
+            Reset: =If(PNCSearchReason = false,true)
+            Size: =21
+            Text: =""
+            Visible: =PNCSearchReason
+            Width: =62
+            X: =35
+            Y: =676
+            ZIndex: =30
+
+        Label14_8 As label:
+            Color: =RGBA(255, 0, 0, 1)
+            PaddingLeft: =10
+            Size: =16
+            Text: ="*"
+            Visible: =PNCSearchReason
+            Width: =368
+            X: =222
+            Y: =197
+            ZIndex: =31
+
+        Label14_3 As label:
+            Color: =RGBA(255, 0, 0, 1)
+            PaddingLeft: =10
+            Size: =16
+            Text: ="*"
+            Visible: =PNCSearchReason
+            Width: =368
+            X: =184
+            Y: =305
+            ZIndex: =32
+
+        PNCSearchLocation As text:
+            BorderColor: =RGBA(153, 153, 153, 1)
+            Default: =
+            DisplayMode: =If(chkbox_Surname.Value = true, DisplayMode.Edit, DisplayMode.Disabled)
+            Fill: =If(IsBlank(PNCSearchLocation.Text), LightGoldenRodYellow, White)
+            FocusedBorderThickness: =2
+            Height: =70
+            HintText: ="Location"
+            HoverBorderColor: =RGBA(153, 153, 153, 1)
+            OnChange: |
+                =If(
+                    Len(PNCSearchLocation.Text) > 0,
+                    UpdateContext({personb: White}),
+                    UpdateContext({personb: LightGoldenRodYellow})
+                );
+            OnSelect: |-
+                =If(Len(PNCSearchLocation.Text)>0,UpdateContext({personb:White}),UpdateContext({personb:LightGoldenRodYellow}))
+            Reset: =
+            Size: =16
+            Visible: =PNCSearchReason
+            Width: =550
+            X: =48
+            Y: =800
+            ZIndex: =33
+
+        Label9_11 As label:
+            FontWeight: =Semibold
+            Height: =70
+            Size: =16
+            Text: ="Location"
+            Visible: =PNCSearchReason
+            Width: =560
+            X: =38
+            Y: =746
+            ZIndex: =34
+
+        Label20 As label:
+            Color: =RGBA(255, 0, 0, 1)
+            Height: =70
+            Size: =16
+            Text: ="*"
+            Visible: =PNCSearchReason
+            Width: =203
+            X: =142
+            Y: =746
+            ZIndex: =35
+
+    Loading_2 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =38
+
+        Rectangle9_2 As rectangle:
+            Fill: =RGBA(255, 255, 255, 0.83)
+            Height: =1136
+            Visible: =LoadingSplash
+            Width: =640
+            ZIndex: =37
+
+        Image2_2 As image:
+            Height: =116
+            Image: ='loading-buffering'
+            Visible: =LoadingSplash
+            Width: =116
+            X: =262
+            Y: =583
+            ZIndex: =39
+
+        Label18_2 As label:
+            Align: =Align.Center
+            FontWeight: =Semibold
+            Height: =95
+            Italic: =true
+            Size: =21
+            Text: ="Searching..."
+            Visible: =LoadingSplash
+            Width: =640
+            Y: =480
+            ZIndex: =40
+

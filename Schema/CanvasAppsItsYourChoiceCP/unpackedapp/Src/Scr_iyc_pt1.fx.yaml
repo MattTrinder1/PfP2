@@ -1,0 +1,541 @@
+"Scr_iyc_pt1 As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    OnVisible: |-
+        =UpdateContext(
+            {
+                currentLat: LookUp(
+                    'IYC offline',
+                    Key = Dropdown_Care_key.Selected.Key,
+                    IYC_latitude
+                )
+            }
+        );
+        UpdateContext(
+            {
+                currentLong: LookUp(
+                    'IYC offline',
+                    Key = Dropdown_Care_key.Selected.Key,
+                    IYC_logitidute
+                )
+            }
+        );
+        If(
+            IsBlank(currentLat),
+            Set(
+                eastingnorthing,
+                ConvertLatLongToEastingNorthing.Run(
+                    "http://www.test.com",
+                    "http://www.test.com",
+                    "http://www.test.com",
+                    Location.Latitude,
+                    Location.Longitude
+                )
+            )
+        );
+        
+        Set(
+            addcontactmethod,
+            false
+        );
+        UpdateContext({addcontactmethod: false});
+        Set(
+            contactworkphone,
+            false
+        );
+        UpdateContext({contactworkphone: false});
+        Set(
+            contactmail,
+            false
+        );
+        UpdateContext({contactmail: false});
+        Set(
+            contacthomephone,
+            false
+        );
+        UpdateContext({contacthomephone: false});
+        Set(
+            contactmobile,
+            false
+        );
+        UpdateContext({contactmobile: false});
+        Set(
+            occupation,
+            false
+        );
+        UpdateContext({occupation: false});
+        Set(
+            ydetails,
+            0
+        );
+        Set(
+            y1details,
+            0
+        );
+        
+        
+        If(Len(Drpdn_TPA_IYC.Selected.cp_name)<>1,UpdateContext({ madcolPT1:White}),UpdateContext({ madcolPT1:LightGoldenRodYellow}));
+        If(Len(Txt_incident_location.Text)>0,UpdateContext({ madcolPT1A:White}),UpdateContext({ madcolPT1A:LightGoldenRodYellow}));
+        If(Len(Txt_brief_description.Text)>0,UpdateContext({madcolPT1B:White}),UpdateContext({ madcolPT1B:LightGoldenRodYellow}));
+        If(Len(Txt_full_details.Text)>0,UpdateContext({madcolPT1C:White}),UpdateContext({madcolPT1C:LightGoldenRodYellow}));
+        If(Len(Txt_Action_Taken.Text)>0,UpdateContext({madcolPT1D:White}),UpdateContext({madcolPT1D:LightGoldenRodYellow}));
+
+    Label1_15 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Its Your Choice Pt.1"// & Drpdn_TPA_IYC.SelectedText.Value
+        Width: =640
+        Y: =1
+        ZIndex: =1
+
+    "'exit icon 3_16' As icon.Cancel":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =576
+        Y: =12
+        ZIndex: =2
+
+    "'Back Icon 2_16' As icon.ArrowLeft":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home,ScreenTransition.UnCover)
+        X: =24
+        Y: =12
+        ZIndex: =3
+
+    Canvas_Care_1 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1046
+        Width: =Parent.Width
+        Y: =88
+        ZIndex: =4
+
+        DataCard_Care_1 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =If(IsBlank(Dropdown_Care_key.Selected.Key),DisplayMode.Disabled, DisplayMode.Edit)
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =910
+            Width: =Parent.Width
+            WidthFit: =false
+            X: =0
+            Y: =1
+            ZIndex: =1
+
+            Txt_longtitude_IYC As text:
+                Align: =Align.Center
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =If(IsBlank(currentLat),Location.Latitude,currentLat)
+                DisplayMode: =DisplayMode.Disabled
+                HintText: ="Grid reference"
+                Size: =18
+                Width: =160
+                X: =40
+                Y: =158
+                ZIndex: =31
+
+            Drpdn_TPA_IYC As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                Default: =If(IsBlank(LookUp('IYC offline',Key=Dropdown_Care_key.Selected.Key).IYC_TPA)," ",LookUp('IYC offline',Key=Dropdown_Care_key.Selected.Key).IYC_TPA)
+                Fill: = If(Len(Drpdn_TPA_IYC.Selected.cp_name) = 0 ,Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =60
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =TPA
+                OnChange: |-
+                    =If(Len(Drpdn_TPA_IYC.Selected.cp_name
+                     )<>1,UpdateContext({ madcolPT1:White}),UpdateContext({ madcolPT1:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Drpdn_TPA_IYC.Selected.cp_name)<>1,UpdateContext({ madcolPT1:White}),UpdateContext({ madcolPT1:LightGoldenRodYellow}))
+                Reset: =Allreset
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =18
+                Width: =545 
+                X: |
+                    =40
+                Y: =52
+                ZIndex: =32
+
+            Label3_6 As label:
+                Height: =70
+                Size: =18
+                Text: |
+                    =Proper( First(ActiveCustomerSettingsOffline).cp_policingareatext)
+                    
+                Width: =537
+                X: =47
+                ZIndex: =35
+
+            Lbl_asteriks_14 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =30
+                Size: =18
+                Text: ="*"
+                Width: =30
+                X: =Drpdn_TPA_IYC.X + Drpdn_TPA_IYC.Width-Lbl_asteriks_14.Width+5
+                Y: =22
+                ZIndex: =38
+
+            Txt_brief_description As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Dropdown_Care_key.Selected.Key).Incidentbriefdesc
+                Fill: =If(Len(Self.Text) = 0,Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =66
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                MaxLength: =850
+                OnChange: |-
+                    =If(Len(Txt_brief_description.Text)>0,UpdateContext({madcolPT1B:White}),UpdateContext({ madcolPT1B:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Txt_brief_description.Text)>0,UpdateContext({madcolPT1B:White}),UpdateContext({ madcolPT1B:LightGoldenRodYellow}))
+                Reset: =Allreset
+                Size: =18
+                Width: =545 
+                X: |
+                    =40
+                Y: =385
+                ZIndex: =39
+
+            Lbl_asteriks_16 As label:
+                Align: =Align.Center
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =30
+                Size: =18
+                Text: ="*"
+                Width: =30
+                X: =Txt_brief_description.X + Txt_brief_description.Width-Lbl_asteriks_17.Width +5
+                Y: =362
+                ZIndex: =41
+
+            Txt_latitude_IYC As text:
+                Align: =Align.Center
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =If(IsBlank(currentLong),Location.Longitude,currentLong)
+                DisplayMode: =DisplayMode.Disabled
+                HintText: ="Grid reference"
+                Size: =18
+                Width: =160
+                X: =356
+                Y: =157
+                ZIndex: =42
+
+            Txt_full_details As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Dropdown_Care_key.Selected.Key).Incidentfulldetails
+                EnableSpellCheck: =true
+                Fill: =If(Len(Self.Text) = 0,Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =171
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                MaxLength: =1500
+                Mode: =TextMode.MultiLine
+                OnChange: |-
+                    =If(Len(Txt_full_details.Text)>0,UpdateContext({madcolPT1C:White}),UpdateContext({madcolPT1C:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Txt_full_details.Text)>0,UpdateContext({ madcolPT1C:White}),UpdateContext({madcolPT1C:LightGoldenRodYellow}))
+                Reset: =Allreset
+                Size: =18
+                Width: =545 
+                X: |
+                    =40
+                Y: =535
+                ZIndex: =45
+
+            Lbl_asteriks_13 As label:
+                Align: =Align.Center
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =30
+                Size: =18
+                Text: ="*"
+                Width: =30
+                X: =Txt_full_details.X + Txt_full_details.Width-Lbl_asteriks_17.Width +5
+                Y: =505
+                ZIndex: =47
+
+            Txt_incident_location As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Dropdown_Care_key.Selected.Key).IncidentLocaton
+                Fill: =  If(Len(Self.Text) = 0,Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =66
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |-
+                    =If(Len(Txt_incident_location.Text)>0,UpdateContext({ madcolPT1A:White}),UpdateContext({ madcolPT1A:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Txt_incident_location.Text)>0,UpdateContext({ madcolPT1A:White}),UpdateContext({ madcolPT1A:LightGoldenRodYellow}))
+                Reset: =Allreset
+                Size: =18
+                Width: =545 
+                X: |
+                    =40
+                Y: =247
+                ZIndex: =49
+
+            Lbl_asteriks_17 As label:
+                Align: =Align.Center
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =30
+                Size: =18
+                Text: ="*"
+                Width: =30
+                X: =Txt_incident_location.X + Txt_incident_location.Width-Lbl_asteriks_17.Width +5
+                Y: =217
+                ZIndex: =50
+
+            Txt_Action_Taken As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Dropdown_Care_key.Selected.Key).Incident_action
+                Fill: =If(Len(Self.Text) = 0,Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =68
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |-
+                    =If(Len(Txt_Action_Taken.Text)>0,UpdateContext({madcolPT1D:White}),UpdateContext({madcolPT1D:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Txt_Action_Taken.Text)>0,UpdateContext({madcolPT1D:White}),UpdateContext({ adcolPT1D:LightGoldenRodYellow}))
+                Reset: =Allreset
+                Size: =18
+                Width: =545 
+                X: |
+                    =40
+                Y: =739
+                ZIndex: =52
+
+            Lbl_asteriks_18 As label:
+                Align: =Align.Center
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =30
+                Size: =18
+                Text: ="*"
+                Width: =30
+                X: =Txt_Action_Taken.X + Txt_Action_Taken.Width-Lbl_asteriks_17.Width +5
+                Y: =709
+                ZIndex: =53
+
+            Label4_9 As label:
+                Height: =70
+                Size: =18
+                Text: ="Latitude"
+                Width: =144
+                X: =40
+                Y: =109
+                ZIndex: =59
+
+            Label4_10 As label:
+                Height: =70
+                Size: =18
+                Text: ="Longitude"
+                Visible: =false
+                Width: =155
+                X: =213
+                Y: =152
+                ZIndex: =60
+
+            Btn_save_exit_3 As button:
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Bold
+                Height: =65
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =UpdateIf(
+                        'IYC offline',
+                        Key = Dropdown_Care_key.Selected.Key,
+                        {
+                            IYC_TPA: Drpdn_TPA_IYC.Selected.cp_name,
+                            IYC_TPA_Id: Drpdn_TPA_IYC.Selected.cp_territorialpolicingareaid,
+                            IYC_logitidute: Txt_longtitude_IYC.Text,
+                            IYC_latitude: Txt_latitude_IYC.Text,
+                            IncidentLocaton: Txt_incident_location.Text,
+                            Incidentbriefdesc: Txt_brief_description.Text,
+                            Incidentfulldetails: Txt_full_details.Text,
+                            Incident_action: Txt_Action_Taken.Text
+                        }
+                    );
+                    UpdateIf(
+                        'IYC offline',
+                        Key = Dropdown_Care_key.Selected.Key,
+                        {
+                            iycPt1Valid: 
+                                And(
+                                    Len(LookUp(
+                                        'IYC offline',
+                                        Key = Dropdown_Care_key.Selected.Key
+                                    ).IYC_TPA) <> 1,
+                                    !IsBlank(
+                                        LookUp(
+                                            'IYC offline',
+                                            Key = Dropdown_Care_key.Selected.Key
+                                        ).IncidentLocaton
+                                    ),
+                                    !IsBlank(
+                                        LookUp(
+                                            'IYC offline',
+                                            Key = Dropdown_Care_key.Selected.Key
+                                        ).Incidentbriefdesc
+                                    ),
+                                    !IsBlank(
+                                        LookUp(
+                                            'IYC offline',
+                                            Key = Dropdown_Care_key.Selected.Key
+                                        ).Incidentfulldetails
+                                    ),
+                                    !IsBlank(
+                                        LookUp(
+                                            'IYC offline',
+                                            Key = Dropdown_Care_key.Selected.Key
+                                        ).Incident_action
+                                    )
+                                )
+                        }
+                    );
+                    SaveData(
+                        'IYC offline',
+                        "IYC offline"
+                    );
+                    Navigate(
+                        Scr_home,
+                        ScreenTransition.UnCover
+                    );
+                    /* If(
+                        Len(Drpdn_TPA_IYC.Selected.cp_name) <> 1,
+                        Navigate(
+                            Scr_home,
+                            ScreenTransition.UnCover
+                        ),
+                        Notify(
+                            "TPA can not be blank",
+                            NotificationType.Error,
+                            10000
+                        )
+                    ); */
+                Size: =24
+                Text: ="Save & Continue"
+                Width: =545
+                X: =40
+                Y: =827
+                ZIndex: =61
+
+            Label3_7 As label:
+                Height: =62
+                Size: =18
+                Text: ="Location of incident"
+                Width: =537
+                X: =40
+                Y: =199
+                ZIndex: =62
+
+            Label3_8 As label:
+                Height: =70
+                Size: =18
+                Text: ="Brief description"
+                Width: =537
+                X: =40
+                Y: =331
+                ZIndex: =63
+
+            Label3_9 As label:
+                Height: =70
+                Size: =18
+                Text: ="Full details"
+                Width: =537
+                X: =40
+                Y: =480
+                ZIndex: =64
+
+            Label3_10 As label:
+                Height: =70
+                Size: =18
+                Text: ="Action taken"
+                Width: =537
+                X: =40
+                Y: =683
+                ZIndex: =65
+
+            Label2 As label:
+                FontWeight: =FontWeight.Lighter
+                Height: =70
+                Size: =17
+                Text: ="Text entered here WILL appear in the IYC letters."
+                Width: =520
+                X: =40
+                Y: =297
+                ZIndex: =66
+
+            Label2_1 As label:
+                FontWeight: =FontWeight.Lighter
+                Height: =70
+                Size: =17
+                Text: ="Text entered here will NOT appear in the IYC letters."
+                Width: =497
+                X: =40
+                Y: =444
+                ZIndex: =67
+
+            Label4_11 As label:
+                Height: =70
+                Size: =18
+                Text: ="Longitude"
+                Width: =144
+                X: =356
+                Y: =108
+                ZIndex: =68
+
+        DataCard12 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =90
+            Width: =640
+            X: =0
+            Y: =0
+            ZIndex: =2
+
+            Dropdown_Care_key As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                Default: =IYC_Primary_key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =60
+                Items: ='IYC offline'.Key
+                OnChange: =
+                OnSelect: =
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =18
+                Width: =545 
+                X: =40
+                Y: =16
+                ZIndex: =1
+
+    Icon3 As icon.Waypoint:
+        Color: =RGBA(149, 149, 149, 1)
+        DisabledColor: =RGBA(130, 141, 158, 1)
+        Height: =52
+        Icon: =Icon.Waypoint
+        OnSelect: |-
+            =Set(
+                    eastingnorthing,
+                    ConvertLatLongToEastingNorthing.Run(
+                        "http://www.test.com",
+                        "http://www.test.com",
+                        "http://www.test.com",
+                        Location.Latitude,
+                        Location.Longitude
+                    )
+            );
+        X: =536
+        Y: =320
+        ZIndex: =5
+

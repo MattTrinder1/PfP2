@@ -1,0 +1,129 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_pncsearchs",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_pncsearch",
+    "MaxGetRowsCount": 2000,
+    "Name": "PNC Searches",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "cp_completeddatetime": "Completed DateTime",
+      "cp_completedtimestamp": "CompletedTimestamp",
+      "cp_firstname": "First Name",
+      "cp_initiatedby": "Initiated By",
+      "cp_initiateddatetime": "Initiated DateTime",
+      "cp_initiatedtimestamp": "InitiatedTimestamp",
+      "cp_lastname": "Last Name",
+      "cp_location": "Location",
+      "cp_name": "Name",
+      "cp_pncsearch_AsyncOperations": "System Jobs",
+      "cp_pncsearch_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_pncsearch_DuplicateBaseRecord": "Duplicate Records (cp_pncsearch_DuplicateBaseRecord)",
+      "cp_pncsearch_DuplicateMatchingRecord": "Duplicate Records (cp_pncsearch_DuplicateMatchingRecord)",
+      "cp_pncsearch_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_pncsearch_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_pncsearch_ProcessSession": "Process Sessions",
+      "cp_pncsearch_SyncErrors": "Sync Errors",
+      "cp_pncsearchid": "PNC Search Id",
+      "cp_pncsearchperson_pncsearch_cp_pncsearch": "PNC Search Persons",
+      "cp_reason": "Reason",
+      "cp_searchdata": "Search Data",
+      "cp_searchtype": "Search Type",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "PNC Searches",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "PNC Searches (Views)",
+    "Name": "_cp_pncsearch_views",
+    "RelatedEntityName": "PNC Searches",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "0b641d49-bd4e-49e6-af73-07ec0f2d9439": "PNC Search Lookup View",
+      "23d77a19-c7ec-4ebf-a18c-c4c3b669a62b": "PNC Search Advanced Find View",
+      "45a85ead-7786-4e6c-934c-c49e385505f8": "Inactive PNC Searches",
+      "6d5a9722-e3bd-4b3a-b796-d23227e8bae6": "Active PNC Searches",
+      "bd8a77d0-8f9e-4eb0-ab56-d516203061a0": "PNC Search Associated View"
+    }
+  },
+  {
+    "DisplayName": "Status (PNC Searches)",
+    "Name": "cp_pncsearch_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "PNC Searches"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "PNC Searches",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (PNC Searches)",
+    "Name": "cp_pncsearch_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "PNC Searches"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "PNC Searches",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Search Type",
+    "Name": "cp_searchtype",
+    "OptionSetInfoNameMapping": {
+      "778230000": "Person",
+      "778230001": "Vehicle"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": true,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "cp_searchtype",
+        "OptionSetReferenceEntityName": "PNC Searches"
+      }
+    },
+    "OptionSetTypeKey": "PicklistType",
+    "RelatedColumnInvariantName": "cp_searchtype",
+    "RelatedEntityName": "PNC Searches",
+    "Type": "OptionSetInfo"
+  }
+]
