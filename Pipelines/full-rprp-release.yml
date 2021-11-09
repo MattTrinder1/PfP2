@@ -24,9 +24,10 @@ parameters:
   type: string
   default: ModelDrivenApps
 
-#  values:
-#  - CP
-#  - RP
+- name: Release
+  values:
+  - CP
+  - RP
 #- name: solutionName
 #  type: string
 #  default: 
@@ -52,7 +53,7 @@ variables:
 - name: release.version
   value: 0 
 - name: solution.prefix
-  value: "RP"
+  value: ${{parameters.release}}
 - template: connectionStrings.yml
 
 name: $(Build.DefinitionName) - $(Build.BuildId) 

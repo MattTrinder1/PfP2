@@ -1,0 +1,47 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <IsCustomizable>1</IsCustomizable>
+    <CanBeDeleted>1</CanBeDeleted>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>0</isdefault>
+    <savedqueryid>{7bc82b90-973d-ec11-8c62-000d3a86ff7a}</savedqueryid>
+    <layoutxml>
+      <grid name="resultset" jump="cp_incidentnumber" select="1" icon="1" preview="1">
+        <row name="result" id="cp_pocketnotebookid">
+          <cell name="cp_notedateandtime" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
+          <cell name="cp_incidentno" width="120" />
+          <cell name="cp_enteredby" width="126" />
+          <cell name="cp_notes" width="300" />
+          <cell name="cp_photocount" width="100" />
+          <cell name="cp_hassignature" width="100" />
+          <cell name="cp_hassketch" width="100" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+        <entity name="cp_pocketnotebook">
+          <attribute name="cp_incidentno" />
+          <attribute name="cp_enteredby" />
+          <attribute name="cp_notes" />
+          <attribute name="cp_notedateandtime" />
+          <order attribute="cp_notedateandtime" descending="true" />
+          <filter type="and">
+            <condition attribute="statuscode" operator="eq" value="778230000" />
+          </filter>
+          <attribute name="cp_photocount" />
+          <attribute name="cp_hassketch" />
+          <attribute name="cp_hassignature" />
+          <attribute name="cp_pocketnotebookid" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>1.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Draft Pocket Notebooks" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>

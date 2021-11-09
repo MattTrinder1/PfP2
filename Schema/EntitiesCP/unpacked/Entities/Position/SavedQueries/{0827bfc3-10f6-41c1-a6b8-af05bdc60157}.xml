@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<savedqueries xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <savedquery>
+    <isquickfindquery>0</isquickfindquery>
+    <isprivate>0</isprivate>
+    <isdefault>1</isdefault>
+    <savedqueryid>{0827bfc3-10f6-41c1-a6b8-af05bdc60157}</savedqueryid>
+    <queryapi></queryapi>
+    <layoutxml>
+      <grid name="positions" jump="name" select="1" icon="1" preview="1">
+        <row name="position" id="positionid">
+          <cell name="name" width="300" />
+          <cell name="cp_displaysequenceno" width="100" />
+          <cell name="parentpositionid" width="300" />
+        </row>
+      </grid>
+    </layoutxml>
+    <querytype>0</querytype>
+    <fetchxml>
+      <fetch version="1.0" output-format="xml-platform" mapping="logical">
+        <entity name="position">
+          <attribute name="name" />
+          <attribute name="parentpositionid" />
+          <filter type="or">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <attribute name="positionid" />
+          <attribute name="cp_displaysequenceno" />
+          <order attribute="cp_displaysequenceno" descending="false" />
+        </entity>
+      </fetch>
+    </fetchxml>
+    <IntroducedVersion>7.0.0.0</IntroducedVersion>
+    <LocalizedNames>
+      <LocalizedName description="Active Positions" languagecode="1033" />
+    </LocalizedNames>
+  </savedquery>
+</savedqueries>
