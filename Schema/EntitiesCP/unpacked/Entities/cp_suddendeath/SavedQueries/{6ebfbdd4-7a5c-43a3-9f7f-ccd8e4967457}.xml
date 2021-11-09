@@ -10,14 +10,14 @@
     <layoutxml>
       <grid name="resultset" jump="cp_name" select="1" icon="1" preview="1">
         <row name="result" id="cp_suddendeathid">
-          <cell name="cp_incident" width="150" imageproviderfunctionname="" imageproviderwebresource="$webresource:" />
-          <cell name="ownerid" width="100" />
+          <cell name="cp_incident" width="100" />
           <cell name="cp_deceased" width="100" />
           <cell name="cp_datetimedeathconfirmed" width="100" />
           <cell name="cp_formalidentification" width="100" />
           <cell name="cp_suspectsuicide" width="100" />
           <cell name="statecode" width="100" />
           <cell name="cp_tpa" width="100" />
+          <cell name="a_23da21a38660eb11a8120022489c79d7.cp_enteredby" width="100" disableSorting="1" />
           <cell name="createdon" width="125" />
           <cell name="cp_approvalstatus" width="100" />
         </row>
@@ -25,23 +25,24 @@
     </layoutxml>
     <querytype>0</querytype>
     <fetchxml>
-      <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
+      <fetch version="1.0" output-format="xml-platform" mapping="logical">
         <entity name="cp_suddendeath">
           <attribute name="createdon" />
+          <filter type="and">
+            <condition attribute="statecode" operator="eq" value="0" />
+          </filter>
+          <order attribute="createdon" descending="true" />
           <attribute name="cp_incident" />
           <attribute name="cp_deceased" />
           <attribute name="cp_datetimedeathconfirmed" />
           <attribute name="cp_formalidentification" />
           <attribute name="cp_tpa" />
           <attribute name="cp_suspectsuicide" />
+          <link-entity alias="a_23da21a38660eb11a8120022489c79d7" name="cp_incident" from="cp_incidentid" to="cp_incident" link-type="outer" visible="false">
+            <attribute name="cp_enteredby" />
+          </link-entity>
           <attribute name="statecode" />
           <attribute name="cp_approvalstatus" />
-          <order attribute="createdon" descending="true" />
-          <filter type="and">
-            <condition attribute="statecode" operator="eq" value="0" />
-            <condition attribute="statuscode" operator="eq" value="1" />
-          </filter>
-          <attribute name="ownerid" />
           <attribute name="cp_suddendeathid" />
         </entity>
       </fetch>

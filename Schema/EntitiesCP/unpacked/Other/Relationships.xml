@@ -16,6 +16,7 @@
   <EntityRelationship Name="business_unit_cp_insurancedetail" />
   <EntityRelationship Name="business_unit_cp_integrationkey" />
   <EntityRelationship Name="business_unit_cp_itsyourchoice" />
+  <EntityRelationship Name="business_unit_cp_itsyourchoiceletterhistory" />
   <EntityRelationship Name="business_unit_cp_itsyourchoicesetup" />
   <EntityRelationship Name="business_unit_cp_itsyourchoicestg" />
   <EntityRelationship Name="business_unit_cp_licencecategory" />
@@ -39,6 +40,7 @@
   <EntityRelationship Name="business_unit_cp_statementstg" />
   <EntityRelationship Name="business_unit_cp_statementtype" />
   <EntityRelationship Name="business_unit_cp_statementwitnessneed" />
+  <EntityRelationship Name="business_unit_cp_station" />
   <EntityRelationship Name="business_unit_cp_suddendeath" />
   <EntityRelationship Name="business_unit_cp_suddendeathidentification" />
   <EntityRelationship Name="business_unit_cp_suddendeathidentificationtype" />
@@ -112,6 +114,7 @@
   <EntityRelationship Name="cp_incident_EnteredBy_SystemUser" />
   <EntityRelationship Name="cp_incident_IncidentLocation_cp_location" />
   <EntityRelationship Name="cp_incident_IncidentType_cp_IncidentType" />
+  <EntityRelationship Name="cp_ItsYourChoice_cp_itsyourchoicehistory_" />
   <EntityRelationship Name="cp_ItsYourChoice_cp_YouthInvolved_Contact" />
   <EntityRelationship Name="cp_ItsYourChoice_Incident_cp_incident" />
   <EntityRelationship Name="cp_ItsYourChoice_ParentGuardian_Contact" />
@@ -155,6 +158,7 @@
   <EntityRelationship Name="cp_statementstg_WitnessOccupationValue_cp" />
   <EntityRelationship Name="cp_statementstg_WitnessPreferredContactMe" />
   <EntityRelationship Name="cp_statementstg_WitnessTitleValue_cp_look" />
+  <EntityRelationship Name="cp_station_customer_cp_customersetting" />
   <EntityRelationship Name="cp_suddendeath_BurialCremation_cp_lookupv" />
   <EntityRelationship Name="cp_suddendeath_CertifiedRole_cp_lookupval" />
   <EntityRelationship Name="cp_suddendeath_cp_incident_cp_incident" />
@@ -373,6 +377,8 @@
   <EntityRelationship Name="lk_cp_investigationstatus_modifiedby" />
   <EntityRelationship Name="lk_cp_itsyourchoice_createdby" />
   <EntityRelationship Name="lk_cp_itsyourchoice_modifiedby" />
+  <EntityRelationship Name="lk_cp_itsyourchoiceletterhistory_createdby" />
+  <EntityRelationship Name="lk_cp_itsyourchoiceletterhistory_modifiedby" />
   <EntityRelationship Name="lk_cp_itsyourchoicesetup_createdby" />
   <EntityRelationship Name="lk_cp_itsyourchoicesetup_modifiedby" />
   <EntityRelationship Name="lk_cp_itsyourchoicestg_createdby" />
@@ -425,6 +431,8 @@
   <EntityRelationship Name="lk_cp_statementtype_modifiedby" />
   <EntityRelationship Name="lk_cp_statementwitnessneed_createdby" />
   <EntityRelationship Name="lk_cp_statementwitnessneed_modifiedby" />
+  <EntityRelationship Name="lk_cp_station_createdby" />
+  <EntityRelationship Name="lk_cp_station_modifiedby" />
   <EntityRelationship Name="lk_cp_suddendeath_createdby" />
   <EntityRelationship Name="lk_cp_suddendeath_modifiedby" />
   <EntityRelationship Name="lk_cp_suddendeathidentification_createdby" />
@@ -522,6 +530,7 @@
   <EntityRelationship Name="owner_cp_insurancedetail" />
   <EntityRelationship Name="owner_cp_integrationkey" />
   <EntityRelationship Name="owner_cp_itsyourchoice" />
+  <EntityRelationship Name="owner_cp_itsyourchoiceletterhistory" />
   <EntityRelationship Name="owner_cp_itsyourchoicesetup" />
   <EntityRelationship Name="owner_cp_itsyourchoicestg" />
   <EntityRelationship Name="owner_cp_licencecategory" />
@@ -545,6 +554,7 @@
   <EntityRelationship Name="owner_cp_statementstg" />
   <EntityRelationship Name="owner_cp_statementtype" />
   <EntityRelationship Name="owner_cp_statementwitnessneed" />
+  <EntityRelationship Name="owner_cp_station" />
   <EntityRelationship Name="owner_cp_suddendeath" />
   <EntityRelationship Name="owner_cp_suddendeathidentification" />
   <EntityRelationship Name="owner_cp_suddendeathidentificationtype" />
@@ -593,6 +603,7 @@
   <EntityRelationship Name="team_cp_insurancedetail" />
   <EntityRelationship Name="team_cp_integrationkey" />
   <EntityRelationship Name="team_cp_itsyourchoice" />
+  <EntityRelationship Name="team_cp_itsyourchoiceletterhistory" />
   <EntityRelationship Name="team_cp_itsyourchoicesetup" />
   <EntityRelationship Name="team_cp_itsyourchoicestg" />
   <EntityRelationship Name="team_cp_licencecategory" />
@@ -616,6 +627,7 @@
   <EntityRelationship Name="team_cp_statementstg" />
   <EntityRelationship Name="team_cp_statementtype" />
   <EntityRelationship Name="team_cp_statementwitnessneed" />
+  <EntityRelationship Name="team_cp_station" />
   <EntityRelationship Name="team_cp_suddendeath" />
   <EntityRelationship Name="team_cp_suddendeathidentification" />
   <EntityRelationship Name="team_cp_suddendeathidentificationtype" />
@@ -664,6 +676,7 @@
   <EntityRelationship Name="user_cp_insurancedetail" />
   <EntityRelationship Name="user_cp_integrationkey" />
   <EntityRelationship Name="user_cp_itsyourchoice" />
+  <EntityRelationship Name="user_cp_itsyourchoiceletterhistory" />
   <EntityRelationship Name="user_cp_itsyourchoicesetup" />
   <EntityRelationship Name="user_cp_itsyourchoicestg" />
   <EntityRelationship Name="user_cp_licencecategory" />
@@ -687,6 +700,7 @@
   <EntityRelationship Name="user_cp_statementstg" />
   <EntityRelationship Name="user_cp_statementtype" />
   <EntityRelationship Name="user_cp_statementwitnessneed" />
+  <EntityRelationship Name="user_cp_station" />
   <EntityRelationship Name="user_cp_suddendeath" />
   <EntityRelationship Name="user_cp_suddendeathidentification" />
   <EntityRelationship Name="user_cp_suddendeathidentificationtype" />

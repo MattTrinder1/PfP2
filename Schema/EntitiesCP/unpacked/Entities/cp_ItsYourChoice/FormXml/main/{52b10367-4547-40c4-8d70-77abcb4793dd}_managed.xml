@@ -430,7 +430,7 @@
                 </section>
                 <section name="tab_2_section_4" id="f1739366-b93f-4c86-ba53-8b5d7ebbc8b7" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
                   <labels>
-                    <label description="1st Warning Letter" languagecode="1033" />
+                    <label description="Warning Letters Issued" languagecode="1033" />
                   </labels>
                   <rows>
                     <row>
@@ -449,7 +449,77 @@
                         <control id="cp_stwarningletterissues" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="cp_stwarningletterissues" disabled="true" />
                       </cell>
                     </row>
-                    <row></row>
+                    <row />
+                    <row />
+                    <row />
+                    <row>
+                      <cell id="{41bda25d-4d40-41e5-a94e-9e776b2e0644}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="2nd Warning Letter Created On" languagecode="1033" />
+                        </labels>
+                        <control id="cp_secondwarninglettercreatedon" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="cp_secondwarninglettercreatedon" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{d275f37c-2a4d-45e7-8cc0-879341e0d763}" locklevel="0" colspan="1" rowspan="1" visible="false">
+                        <labels>
+                          <label description="2nd Warning Letter Issues" languagecode="1033" />
+                        </labels>
+                        <control id="cp_ndwarningletterissues" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="cp_ndwarningletterissues" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{5d8c7fa4-85cb-41b9-bf89-837d96024880}" locklevel="0" colspan="1" rowspan="1" visible="true">
+                        <labels>
+                          <label description="3rd Warning Letter Created On" languagecode="1033" />
+                        </labels>
+                        <control id="cp_thirdwarninglettercreatedon" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="cp_thirdwarninglettercreatedon" disabled="true" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{93820e81-2d8f-4bcd-a711-532b6cd9dada}" locklevel="0" colspan="1" rowspan="1" visible="false">
+                        <labels>
+                          <label description="3rd Warning Letter Issues" languagecode="1033" />
+                        </labels>
+                        <control id="cp_thirdwarningletterissues" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="cp_thirdwarningletterissues" disabled="true" />
+                      </cell>
+                    </row>
+                  </rows>
+                </section>
+                <section name="tab_2_section_5" id="e2f80755-21fb-47ab-9024-1300200a62ff" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+                  <labels>
+                    <label description="Warning Letter History" languagecode="1033" />
+                  </labels>
+                  <rows>
+                    <row>
+                      <cell locklevel="0" id="{9877a078-496e-4d43-82e9-b04df9e45d64}" rowspan="6" colspan="1" auto="false" showlabel="false">
+                        <labels>
+                          <label description="Letter History" languagecode="1033" />
+                        </labels>
+                        <control id="Subgrid_1" classid="{E7A81278-8635-4d9e-8D4D-59480B391C5B}" indicationOfSubgrid="true" uniqueid="{0b21e6c3-c4b9-a10c-43ed-53bab943162e}">
+                          <parameters>
+                            <TargetEntityType>cp_itsyourchoiceletterhistory</TargetEntityType>
+                            <ViewId>{FA4F26E2-8F1F-4C91-BFF7-5653EB44D526}</ViewId>
+                            <ViewIds>{FA4F26E2-8F1F-4C91-BFF7-5653EB44D526}</ViewIds>
+                            <EnableViewPicker>false</EnableViewPicker>
+                            <RelationshipName>cp_ItsYourChoice_cp_itsyourchoicehistory_</RelationshipName>
+                            <RecordsPerPage>4</RecordsPerPage>
+                            <HeaderColorCode>#F3F3F3</HeaderColorCode>
+                            <IsUserView>false</IsUserView>
+                            <EnableQuickFind>false</EnableQuickFind>
+                            <EnableJumpBar>false</EnableJumpBar>
+                            <AutoExpand>Fixed</AutoExpand>
+                            <ChartGridMode>Grid</ChartGridMode>
+                            <VisualizationId />
+                            <IsUserChart>false</IsUserChart>
+                            <EnableChartPicker>false</EnableChartPicker>
+                          </parameters>
+                        </control>
+                      </cell>
+                    </row>
+                    <row />
+                    <row />
+                    <row />
                     <row />
                     <row />
                   </rows>
@@ -521,9 +591,9 @@
           </row>
         </rows>
       </footer>
-      <controlDescriptions></controlDescriptions>
+      <controlDescriptions />
       <Navigation>
-        <NavBar></NavBar>
+        <NavBar />
         <NavBarAreas>
           <NavBarArea Id="Info">
             <Titles>

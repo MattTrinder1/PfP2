@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ImportExportXml version="9.2.21102.130" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ImportExportXml version="9.2.21103.129" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SolutionManifest>
     <UniqueName>CPEntities</UniqueName>
     <LocalizedNames>
       <LocalizedName description="040 - Entities" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.0.0.140</Version>
+    <Version>1.0.0.144</Version>
     <Managed>1</Managed>
     <Publisher>
       <UniqueName>cumbriapolicepublisher</UniqueName>
@@ -102,6 +102,7 @@
       <RootComponent type="1" schemaName="cp_integrationkey" behavior="0" />
       <RootComponent type="1" schemaName="cp_investigationstatus" behavior="0" />
       <RootComponent type="1" schemaName="cp_itsyourchoice" behavior="0" />
+      <RootComponent type="1" schemaName="cp_itsyourchoiceletterhistory" behavior="0" />
       <RootComponent type="1" schemaName="cp_itsyourchoicesetup" behavior="0" />
       <RootComponent type="1" schemaName="cp_itsyourchoicestg" behavior="0" />
       <RootComponent type="1" schemaName="cp_licencecategory" behavior="0" />
@@ -128,6 +129,7 @@
       <RootComponent type="1" schemaName="cp_statementstg" behavior="0" />
       <RootComponent type="1" schemaName="cp_statementtype" behavior="0" />
       <RootComponent type="1" schemaName="cp_statementwitnessneed" behavior="0" />
+      <RootComponent type="1" schemaName="cp_station" behavior="0" />
       <RootComponent type="1" schemaName="cp_suddendeath" behavior="0" />
       <RootComponent type="1" schemaName="cp_suddendeathidentification" behavior="0" />
       <RootComponent type="1" schemaName="cp_suddendeathidentificationtype" behavior="0" />
@@ -170,13 +172,17 @@
       <RootComponent type="9" schemaName="cp_searchtype" behavior="0" />
       <RootComponent type="29" id="{112ecfed-3e62-eb11-a812-0022489c79d7}" behavior="0" />
       <RootComponent type="29" id="{2b9247c3-053e-eb11-a813-000d3a654f72}" behavior="0" />
+      <RootComponent type="29" id="{6116ab41-7676-eb11-a812-000d3adc97fc}" behavior="0" />
       <RootComponent type="29" id="{76384366-f986-eb11-a812-000d3ab52ab6}" behavior="0" />
       <RootComponent type="29" id="{7acb703e-a188-eb11-a812-000d3ab52ab6}" behavior="0" />
       <RootComponent type="29" id="{7dc2c985-6c32-ec11-b6e6-000d3a86da8e}" behavior="0" />
+      <RootComponent type="29" id="{9212dff1-7911-ec11-b6e6-0022489a3e43}" behavior="0" />
+      <RootComponent type="29" id="{a1dd4e29-7911-ec11-b6e6-0022489a3e43}" behavior="0" />
+      <RootComponent type="29" id="{f2afb74b-d616-ec11-b6e6-000d3ad9c048}" behavior="0" />
     </RootComponents>
     <MissingDependencies>
       <MissingDependency>
-        <Required type="1" schemaName="appusersetting" displayName="Model-Driven App User Setting" solution="AppModule (9.1.21102.211012002)" />
+        <Required type="1" schemaName="appusersetting" displayName="Model-Driven App User Setting" solution="AppModule (9.1.21103.211012001)" />
         <Dependent type="1" schemaName="systemuser" displayName="User" />
       </MissingDependency>
       <MissingDependency>
@@ -184,6 +190,10 @@
           <package>msdynce_CustomerCareIntelligenceBots_Anchor (2.0.0.87)</package>
         </Required>
         <Dependent type="1" schemaName="systemuser" displayName="User" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_optionsetvalue" displayName="Option Set Value (Tisski)" solution="Active" />
+        <Dependent type="1" schemaName="cp_customersetting" displayName="Customer Setting" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_rprp" displayName="RPRP" solution="Active" />
@@ -301,7 +311,7 @@
         <Required type="61" schemaName="AppCommon/Contact/Contact_main_system_library.js" displayName="AppCommon/Contact/Contact_main_system_library.js" solution="msdynce_AppCommon (9.0.4.0066)">
           <package>msdynce_AppCommonAnchor (9.0.21103.10001)</package>
         </Required>
-        <Dependent type="60" displayName="Information" parentDisplayName="Contact" id="{894cc46a-b0cb-4ab0-8bf6-200544e46a2d}" />
+        <Dependent type="60" displayName="Contact" parentDisplayName="Contact" id="{1fed44d1-ae68-4a41-bd2b-f13acac4acfa}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="61" schemaName="cp_/HTML/RecordId" displayName="cp_/HTML/RecordId" solution="Active" />
@@ -360,19 +370,19 @@
         <Dependent type="60" displayName="Information" parentDisplayName="Use of Force" id="{ba6ab74f-dc66-4fda-a281-76f4cdbd9b69}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="66" schemaName="MscrmControls.CardFeedContainer.CardFeedContainer" displayName="MscrmControls.CardFeedContainer.CardFeedContainer" solution="BaseCustomControlsCore (9.0.2110.2003)" />
+        <Required type="66" schemaName="MscrmControls.CardFeedContainer.CardFeedContainer" displayName="MscrmControls.CardFeedContainer.CardFeedContainer" solution="BaseCustomControlsCore (9.0.2110.3013)" />
         <Dependent type="60" displayName="Contact" parentDisplayName="Contact" id="{1fed44d1-ae68-4a41-bd2b-f13acac4acfa}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="66" schemaName="MscrmControls.CardFeedContainer.CardFeedContainer" displayName="MscrmControls.CardFeedContainer.CardFeedContainer" solution="BaseCustomControlsCore (9.0.2110.2003)" />
+        <Required type="66" schemaName="MscrmControls.CardFeedContainer.CardFeedContainer" displayName="MscrmControls.CardFeedContainer.CardFeedContainer" solution="BaseCustomControlsCore (9.0.2110.3013)" />
         <Dependent type="60" displayName="Account" parentDisplayName="Account" id="{8448b78f-8f42-454e-8e2a-f8196b0419af}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="66" schemaName="MscrmControls.FieldControls.ToggleControl" displayName="MscrmControls.FieldControls.ToggleControl" solution="BaseCustomControlsCore (9.0.2110.2003)" />
+        <Required type="66" schemaName="MscrmControls.FieldControls.ToggleControl" displayName="MscrmControls.FieldControls.ToggleControl" solution="BaseCustomControlsCore (9.0.2110.3013)" />
         <Dependent type="60" displayName="Information" parentDisplayName="Statement" id="{3c09d9e1-4dfc-49ef-9240-f5a848f777d4}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="66" schemaName="MscrmControls.ModelForm.ModelFormControl" displayName="MscrmControls.ModelForm.ModelFormControl" solution="BaseCustomControlsCore (9.0.2110.2003)" />
+        <Required type="66" schemaName="MscrmControls.ModelForm.ModelFormControl" displayName="MscrmControls.ModelForm.ModelFormControl" solution="BaseCustomControlsCore (9.0.2110.3013)" />
         <Dependent type="60" displayName="Information" parentDisplayName="Sudden Death Identification" id="{1f74b8a7-cbea-4861-825b-8b2fc4dc3b98}" />
       </MissingDependency>
       <MissingDependency>

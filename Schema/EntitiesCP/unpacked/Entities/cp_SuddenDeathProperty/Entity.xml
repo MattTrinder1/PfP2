@@ -298,7 +298,7 @@
           <Name>cp_signature</Name>
           <LogicalName>cp_signature</LogicalName>
           <RequiredLevel>none</RequiredLevel>
-          <DisplayMask>DenormalizedChild|PrimaryImage|ValidForForm|ValidForGrid</DisplayMask>
+          <DisplayMask>DenormalizedChild|ValidForForm|ValidForGrid</DisplayMask>
           <ImeMode>disabled</ImeMode>
           <ValidForUpdateApi>1</ValidForUpdateApi>
           <ValidForReadApi>1</ValidForReadApi>
@@ -934,7 +934,7 @@
           <ImeMode>auto</ImeMode>
           <ValidForUpdateApi>1</ValidForUpdateApi>
           <ValidForReadApi>1</ValidForReadApi>
-          <ValidForCreateApi>1</ValidForCreateApi>
+          <ValidForCreateApi>0</ValidForCreateApi>
           <IsCustomField>0</IsCustomField>
           <IsAuditEnabled>1</IsAuditEnabled>
           <IsSecured>0</IsSecured>
@@ -971,7 +971,7 @@
                   <label description="Active" languagecode="1033" />
                 </labels>
               </state>
-              <state value="1" defaultstatus="100000000" invariantname="Inactive">
+              <state value="1" defaultstatus="2" invariantname="Inactive">
                 <labels>
                   <label description="Inactive" languagecode="1033" />
                 </labels>
@@ -1026,6 +1026,11 @@
               <Description description="Reason for the status of the Sudden Death Property" languagecode="1033" />
             </Descriptions>
             <statuses>
+              <status value="100000000" state="1" TransitionData="" Color="#0000ff">
+                <labels>
+                  <label description="Deleted From App" languagecode="1033" />
+                </labels>
+              </status>
               <status value="1" state="0" TransitionData="" Color="#0000ff">
                 <labels>
                   <label description="Active" languagecode="1033" />
@@ -1034,11 +1039,6 @@
               <status value="2" state="1" TransitionData="" Color="#0000ff">
                 <labels>
                   <label description="Inactive" languagecode="1033" />
-                </labels>
-              </status>
-              <status value="100000000" state="1" TransitionData="" Color="#0000ff">
-                <labels>
-                  <label description="Deleted From App" languagecode="1033" />
                 </labels>
               </status>
             </statuses>

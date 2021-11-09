@@ -1,47 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <RibbonDiffXml xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <CustomActions>
-    <CustomAction Id="cp.cp_pocketnotebook.Button3.Button.CustomAction" Location="Mscrm.Form.cp_pocketnotebook.MainTab.Collaborate.Controls._children" Sequence="75">
-      <CommandUIDefinition>
-        <Button Command="cp.cp_pocketnotebook.Command0.GeneratePDF" Id="cp.cp_pocketnotebook.Button3.Button" LabelText="$LocLabels:cp.cp_pocketnotebook.Button3.Button.LabelText" Sequence="75" TemplateAlias="isv" ToolTipTitle="$LocLabels:cp.cp_pocketnotebook.Button3.Button.ToolTipTitle" ToolTipDescription="$LocLabels:cp.cp_pocketnotebook.Button3.Button.ToolTipDescription" ModernImage="$webresource:cp_PDFIcon.svg" />
-      </CommandUIDefinition>
-    </CustomAction>
-  </CustomActions>
+  <CustomActions />
   <Templates>
     <RibbonTemplates Id="Mscrm.Templates"></RibbonTemplates>
   </Templates>
-  <CommandDefinitions>
-    <CommandDefinition Id="cp.cp_pocketnotebook.Command0.GeneratePDF">
-      <EnableRules />
-      <DisplayRules />
-      <Actions>
-        <JavaScriptFunction FunctionName="GeneratePDFDocument" Library="$webresource:cp_GeneratePDF.js">
-          <CrmParameter Value="PrimaryControl" />
-          <StringParameter Value="PNB PDF Url" />
-        </JavaScriptFunction>
-      </Actions>
-    </CommandDefinition>
-  </CommandDefinitions>
+  <CommandDefinitions />
   <RuleDefinitions>
     <TabDisplayRules />
     <DisplayRules />
     <EnableRules />
   </RuleDefinitions>
-  <LocLabels>
-    <LocLabel Id="cp.cp_pocketnotebook.Button3.Button.LabelText">
-      <Titles>
-        <Title description="Create PDF" languagecode="1033" />
-      </Titles>
-    </LocLabel>
-    <LocLabel Id="cp.cp_pocketnotebook.Button3.Button.ToolTipDescription">
-      <Titles>
-        <Title description="Create a PDF copy of this Pocket Notebook entry" languagecode="1033" />
-      </Titles>
-    </LocLabel>
-    <LocLabel Id="cp.cp_pocketnotebook.Button3.Button.ToolTipTitle">
-      <Titles>
-        <Title description="Create PDF" languagecode="1033" />
-      </Titles>
-    </LocLabel>
-  </LocLabels>
+  <LocLabels />
 </RibbonDiffXml>

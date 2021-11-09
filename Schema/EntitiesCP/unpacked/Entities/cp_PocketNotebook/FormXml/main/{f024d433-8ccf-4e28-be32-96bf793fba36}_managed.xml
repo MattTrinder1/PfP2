@@ -14,19 +14,25 @@
           <columns>
             <column width="100%">
               <sections>
-                <section showlabel="false" showbar="false" IsUserDefined="0" id="{3ec6ab91-c3fa-48f0-b15b-534b6ad531dc}" name="{3ec6ab91-c3fa-48f0-b15b-534b6ad531dc}" columns="11" locklevel="0" labelwidth="130" celllabelalignment="Left" celllabelposition="Left">
+                <section showlabel="false" showbar="false" IsUserDefined="0" id="{3ec6ab91-c3fa-48f0-b15b-534b6ad531dc}" name="{3ec6ab91-c3fa-48f0-b15b-534b6ad531dc}" columns="111" locklevel="0" labelwidth="130" celllabelalignment="Left" celllabelposition="Left">
                   <labels>
                     <label description="General" languagecode="1033" />
                   </labels>
                   <rows>
                     <row>
-                      <cell id="{f2234a09-1cd3-4850-b5bf-0edcb96ceec8}" visible="false">
+                      <cell id="{f2234a09-1cd3-4850-b5bf-0edcb96ceec8}">
                         <labels>
                           <label description="Incident Number" languagecode="1033" />
                         </labels>
                         <control id="cp_incidentnumber" classid="{4273EDBD-AC1D-40d3-9FB2-095C621B552D}" datafieldname="cp_incidentnumber" />
                       </cell>
-                      <cell id="{6a0874ce-c3e7-487a-5ede-8a5c1be00cc2}" showlabel="true" rowspan="1" auto="false" colspan="1" locklevel="0">
+                      <cell id="{c3b1ff67-27bd-4729-806c-6a5c596c962c}" locklevel="0" showlabel="true">
+                        <labels>
+                          <label description="Sketch" languagecode="1033" />
+                        </labels>
+                        <control id="cp_sketch" classid="{7E548B0D-209C-477B-9DCD-F0F44472381D}" datafieldname="cp_sketch" disabled="false" uniqueid="{4ab94422-5cd7-7e41-6924-9925983a60b8}" />
+                      </cell>
+                      <cell id="{6a0874ce-c3e7-487a-5ede-8a5c1be00cc2}" showlabel="true" rowspan="15" auto="false" colspan="1" locklevel="0">
                         <labels>
                           <label description="Note Text" languagecode="1033" />
                         </labels>
@@ -38,7 +44,7 @@
                             <UClientShowFilterPane>true</UClientShowFilterPane>
                             <UClientExpandFilterPane>false</UClientExpandFilterPane>
                             <UClientOrderBy>descending</UClientOrderBy>
-                            <UClientRecordPerPage>5</UClientRecordPerPage>
+                            <UClientRecordPerPage>10</UClientRecordPerPage>
                             <UClientEnableWhatsNewFilter>false</UClientEnableWhatsNewFilter>
                             <DefaultTabId>ActivitiesTab</DefaultTabId>
                             <EmailConversationView>true</EmailConversationView>
@@ -64,10 +70,30 @@
                           </parameters>
                         </control>
                       </cell>
-                      <cell id="{5371846c-18b7-85d1-6637-755e6090cd26}" showlabel="false">
+                      <cell id="{baa8b966-360f-43d1-b7c0-1db3be0e1b7e}" locklevel="0">
                         <labels>
-                          <label description="" languagecode="1033" />
+                          <label description="Signature" languagecode="1033" />
                         </labels>
+                        <control id="cp_signature" classid="{7E548B0D-209C-477B-9DCD-F0F44472381D}" datafieldname="cp_signature" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
+                      <cell locklevel="0" id="{afa84d38-3abf-4724-8953-c61cda59f709}">
+                        <labels>
+                          <label description="New QV control 1613591916717" languagecode="1033" />
+                        </labels>
+                        <control id="QuickviewControl1613591916717" classid="{5C5600E0-1D6E-4205-A272-BE80DA87FD42}" datafieldname="cp_incidentno" disabled="false">
+                          <parameters>
+                            <DisplayAsCustomer360Tile>false</DisplayAsCustomer360Tile>
+                            <QuickForms>&lt;QuickFormIds&gt;&lt;QuickFormId entityname="cp_incident"&gt;653fc736-916f-eb11-a812-000d3ab02051&lt;/QuickFormId&gt;&lt;/QuickFormIds&gt;</QuickForms>
+                          </parameters>
+                        </control>
+                      </cell>
+                      <cell id="{b1dede9d-5e49-43cf-acbd-96d6718cc75e}" locklevel="0">
+                        <labels>
+                          <label description="Signatory Name" languagecode="1033" />
+                        </labels>
+                        <control id="cp_signatoryname" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_signatoryname" disabled="false" />
                       </cell>
                     </row>
                     <row>
@@ -77,10 +103,11 @@
                         </labels>
                         <control id="cp_notes" classid="{E0DECE4B-6FC8-4A8F-A065-082708572369}" datafieldname="cp_notes" disabled="false" uniqueid="{725ce40c-d568-a737-bdee-cab0d5d24664}" />
                       </cell>
-                      <cell locklevel="0" id="{4920bd28-33c9-46ce-817f-9b7b236e55f9}" showlabel="false">
+                      <cell id="{c62aac82-8f02-4944-9928-e5b022c9a8c5}" locklevel="0">
                         <labels>
-                          <label description="" languagecode="1033" />
+                          <label description="Signature Date and Time" languagecode="1033" />
                         </labels>
+                        <control id="cp_signaturedateandtime" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="cp_signaturedateandtime" disabled="false" />
                       </cell>
                     </row>
                     <row>
@@ -90,7 +117,7 @@
                         </labels>
                         <control id="cp_notedateandtime" classid="{5B773807-9FB2-42db-97C3-7A91EFF8ADFF}" datafieldname="cp_notedateandtime" disabled="false" />
                       </cell>
-                      <cell locklevel="0" id="{29b8f9dc-e067-4c27-8328-bdbe6c9d9c6d}" showlabel="false">
+                      <cell id="{8ba095e1-0789-81da-853c-261595672d65}" showlabel="false">
                         <labels>
                           <label description="" languagecode="1033" />
                         </labels>
@@ -103,59 +130,7 @@
                         </labels>
                         <control id="cp_enteredby" classid="{270BD3DB-D9AF-4782-9025-509E298DEC0A}" datafieldname="cp_enteredby" disabled="false" />
                       </cell>
-                      <cell locklevel="0" id="{cd710de2-ac0a-4656-8357-9d48ac11171d}" showlabel="false">
-                        <labels>
-                          <label description="" languagecode="1033" />
-                        </labels>
-                      </cell>
-                    </row>
-                    <row>
-                      <cell id="{c3b1ff67-27bd-4729-806c-6a5c596c962c}" locklevel="0" showlabel="true" colspan="1" rowspan="1">
-                        <labels>
-                          <label description="Sketch" languagecode="1033" />
-                        </labels>
-                        <control id="cp_sketch" classid="{7E548B0D-209C-477B-9DCD-F0F44472381D}" datafieldname="cp_sketch" disabled="false" uniqueid="{4ab94422-5cd7-7e41-6924-9925983a60b8}" />
-                      </cell>
-                      <cell locklevel="0" id="{db53a146-8b6f-4730-931a-3c267f011864}" showlabel="false">
-                        <labels>
-                          <label description="" languagecode="1033" />
-                        </labels>
-                      </cell>
-                    </row>
-                    <row>
-                      <cell id="{baa8b966-360f-43d1-b7c0-1db3be0e1b7e}" locklevel="0" colspan="1" rowspan="1">
-                        <labels>
-                          <label description="Signature" languagecode="1033" />
-                        </labels>
-                        <control id="cp_signature" classid="{7E548B0D-209C-477B-9DCD-F0F44472381D}" datafieldname="cp_signature" disabled="false" />
-                      </cell>
-                      <cell locklevel="0" id="{5dfc442c-7cac-48f0-b266-72d5fa51dc89}" showlabel="false">
-                        <labels>
-                          <label description="" languagecode="1033" />
-                        </labels>
-                      </cell>
-                    </row>
-                    <row>
-                      <cell id="{b1dede9d-5e49-43cf-acbd-96d6718cc75e}" locklevel="0" colspan="1" rowspan="1">
-                        <labels>
-                          <label description="Signatory Name" languagecode="1033" />
-                        </labels>
-                        <control id="cp_signatoryname" classid="{4273EDBD-AC1D-40D3-9FB2-095C621B552D}" datafieldname="cp_signatoryname" disabled="false" />
-                      </cell>
-                      <cell locklevel="0" id="{fbff75b2-c2fa-4bce-b8a7-117d489cf038}" showlabel="false">
-                        <labels>
-                          <label description="" languagecode="1033" />
-                        </labels>
-                      </cell>
-                    </row>
-                    <row>
-                      <cell id="{c62aac82-8f02-4944-9928-e5b022c9a8c5}" locklevel="0" colspan="1" rowspan="1">
-                        <labels>
-                          <label description="Signature Date and Time" languagecode="1033" />
-                        </labels>
-                        <control id="cp_signaturedateandtime" classid="{5B773807-9FB2-42DB-97C3-7A91EFF8ADFF}" datafieldname="cp_signaturedateandtime" disabled="false" />
-                      </cell>
-                      <cell id="{b5e7c513-d62c-4891-6554-d503883bdcee}" showlabel="false">
+                      <cell id="{074182e8-88c5-eaeb-db26-7aa2920141cd}" showlabel="false">
                         <labels>
                           <label description="" languagecode="1033" />
                         </labels>
@@ -173,7 +148,103 @@
                           </parameters>
                         </control>
                       </cell>
-                      <cell id="{73c0535a-7236-d75c-04bb-e2832b9b7286}" showlabel="false">
+                      <cell id="{23db6717-cce7-6898-b12e-a9a2d3963b29}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{d585804c-0e64-382a-ce24-9e90c2cc9b88}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                      <cell id="{9b08d629-14b3-a4ea-b35c-c1acbb3ba670}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{c84d71a3-89c8-3d55-347b-8207d68ae3c3}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                      <cell id="{7cb79b6c-9e8b-5455-a039-88379ae8d222}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{58a52ce4-bbc7-8d7e-7081-cb87563c910b}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                      <cell id="{eb3dd3d6-a95a-5d9e-b4ab-89d0c82a4876}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{26ee3607-73ad-82bc-be5b-615b3eca8980}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                      <cell id="{08eee97d-b794-d36d-9e4a-00d6cac8b8e8}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{9001a5c3-06a5-1daa-4249-e0cc30b8c664}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                      <cell id="{de62960a-3905-5350-8082-d5a56a081d25}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{93e139ca-b47e-4992-035a-c556558c1cb8}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                      <cell id="{1212e1d5-5c50-e7ba-c167-3b6e6b1de41a}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{ed74e6d7-4968-1b78-6399-60bcbb8e14e0}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                      <cell id="{be61249a-9791-95c3-9396-9d82943bc5e2}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                    </row>
+                    <row>
+                      <cell id="{880b1d17-6e49-022d-2e5b-edba58b2d09a}" showlabel="false">
+                        <labels>
+                          <label description="" languagecode="1033" />
+                        </labels>
+                      </cell>
+                      <cell id="{5371846c-18b7-85d1-6637-755e6090cd26}" showlabel="false">
                         <labels>
                           <label description="" languagecode="1033" />
                         </labels>
@@ -181,29 +252,38 @@
                     </row>
                   </rows>
                 </section>
-                <section name="{6651d1a2-8474-4615-982f-db8acba65dcd}_section_3" id="540c4190-bbcb-42d4-85a2-4d3b95c29647" IsUserDefined="0" locklevel="0" showlabel="true" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
+              </sections>
+            </column>
+          </columns>
+        </tab>
+        <tab name="tab_2" id="f9e80afb-3e6c-4f1d-be9c-7c737d42c492" IsUserDefined="0" locklevel="0" showlabel="true">
+          <labels>
+            <label description="Exhibits" languagecode="1033" />
+          </labels>
+          <columns>
+            <column width="100%">
+              <sections>
+                <section name="tab_2_section_1" id="70b435eb-a814-40a9-b241-38d06bda26ba" IsUserDefined="0" locklevel="0" showlabel="false" showbar="false" layout="varwidth" celllabelalignment="Left" celllabelposition="Left" columns="1" labelwidth="115">
                   <labels>
-                    <label description="Exhibits" languagecode="1033" />
+                    <label description="New Section" languagecode="1033" />
                   </labels>
                   <rows>
                     <row>
-                      <cell locklevel="0" id="{9e2cb77b-91d8-417a-8be6-2e21e5c7a192}" rowspan="1" colspan="1" auto="true">
+                      <cell locklevel="0" id="{e3fe026a-438d-437e-b34b-ba040cb45416}" rowspan="1" colspan="1">
                         <labels>
                           <label description="Photos" languagecode="1033" />
                         </labels>
-                        <control id="Subgrid_2" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}" indicationOfSubgrid="true">
+                        <control id="Subgrid_1" classid="{E7A81278-8635-4D9E-8D4D-59480B391C5B}" indicationOfSubgrid="true">
                           <parameters>
                             <TargetEntityType>cp_photo</TargetEntityType>
                             <ViewId>{E0A5FFC0-2311-43AA-A494-123901CDADB8}</ViewId>
                             <ViewIds>{E0A5FFC0-2311-43AA-A494-123901CDADB8}</ViewIds>
                             <EnableViewPicker>false</EnableViewPicker>
                             <RelationshipName>cp_Photo_PocketNotebook_cp_PocketNotebook</RelationshipName>
-                            <AutoExpand>Auto</AutoExpand>
                           </parameters>
                         </control>
                       </cell>
                     </row>
-                    <row height="auto" />
                   </rows>
                 </section>
               </sections>
@@ -224,11 +304,10 @@
                 <label description="" languagecode="1033" />
               </labels>
             </cell>
-            <cell id="{42054593-747a-aba7-3c9a-3577ac3da851}" showlabel="true" locklevel="0">
+            <cell id="{a91d34f0-f546-4c9c-996a-2b79bba68fa2}" showlabel="false">
               <labels>
-                <label description="Status Reason" languagecode="1033" />
+                <label description="" languagecode="1033" />
               </labels>
-              <control id="header_statuscode" classid="{5D68B988-0661-4db2-BC3E-17598AD3BE6C}" datafieldname="statuscode" disabled="true" uniqueid="{cbb1b9d4-1c09-9b42-719a-b6381617438a}" />
             </cell>
           </row>
         </rows>
