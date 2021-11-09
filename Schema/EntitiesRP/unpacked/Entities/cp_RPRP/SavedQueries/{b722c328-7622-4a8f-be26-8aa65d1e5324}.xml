@@ -11,6 +11,8 @@
       <grid name="resultset" jump="cp_name" select="1" icon="1" preview="1">
         <row name="result" id="cp_rprpid">
           <cell name="cp_name" width="300" />
+          <cell name="cp_participant" width="100" />
+          <cell name="cp_reviewer" width="100" />
           <cell name="createdon" width="125" />
         </row>
       </grid>
@@ -19,7 +21,6 @@
     <fetchxml>
       <fetch version="1.0" mapping="logical">
         <entity name="cp_rprp">
-          <attribute name="cp_rprpid" />
           <attribute name="cp_name" />
           <attribute name="createdon" />
           <order attribute="cp_name" descending="false" />
@@ -27,8 +28,13 @@
             <condition attribute="statecode" operator="eq" value="0" />
           </filter>
           <filter type="or" isquickfindfields="1">
+            <condition attribute="cp_reviewer" operator="like" value="{0}" />
             <condition attribute="cp_name" operator="like" value="{0}" />
+            <condition attribute="cp_participant" operator="like" value="{0}" />
           </filter>
+          <attribute name="cp_reviewer" />
+          <attribute name="cp_participant" />
+          <attribute name="cp_rprpid" />
         </entity>
       </fetch>
     </fetchxml>
