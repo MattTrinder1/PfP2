@@ -1,0 +1,397 @@
+"Scr_staff_injuries As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    OnVisible: |
+        =Set(AllReset, true);
+               UpdateContext({AllReset: true});
+        
+        Set(
+            addcontactmethod,
+            false
+        );
+        UpdateContext({addcontactmethod: false});
+        Set(
+            contactworkphone,
+            false
+        );
+        UpdateContext({contactworkphone: false});
+        Set(
+            contactmail,
+            false
+        );
+        UpdateContext({contactmail: false});
+        Set(
+            contacthomephone,
+            false
+        );
+        UpdateContext({contacthomephone: false});
+        Set(
+            contactmobile,
+            false
+        );
+        UpdateContext({contactmobile: false});
+        Set(
+            occupation,
+            false
+        );
+        UpdateContext({occupation: false});
+        Set(
+            ycontactmethodid,
+            0
+        );
+        Set(
+            yretiredid,
+            0
+        );
+        
+        Set(madcol,LightGoldenRodYellow);UpdateContext({madcol:LightGoldenRodYellow});
+        Set(madcolA,LightGoldenRodYellow);UpdateContext({madcolA:LightGoldenRodYellow});
+        Set(madcolB,LightGoldenRodYellow);UpdateContext({madcolB:LightGoldenRodYellow});
+        Set(madcolC,LightGoldenRodYellow);UpdateContext({madcolC:LightGoldenRodYellow});
+        Set(madcolD,LightGoldenRodYellow);UpdateContext({madcolD:LightGoldenRodYellow});
+        Set(madcolE,LightGoldenRodYellow);UpdateContext({madcolE:LightGoldenRodYellow});
+        Set(madcolF,LightGoldenRodYellow);UpdateContext({madcolF:LightGoldenRodYellow});
+        Set(madcolG,LightGoldenRodYellow);UpdateContext({madcolG:LightGoldenRodYellow});
+        Set(madcolH,LightGoldenRodYellow);UpdateContext({madcolH:LightGoldenRodYellow});
+        Set(madcolI,LightGoldenRodYellow);UpdateContext({madcolI:LightGoldenRodYellow});
+        Set(madcolJ,LightGoldenRodYellow);UpdateContext({madcolJ:LightGoldenRodYellow});
+        Set(madcolK,LightGoldenRodYellow);UpdateContext({madcolK:LightGoldenRodYellow});
+        Set(madcolL,LightGoldenRodYellow);UpdateContext({madcolL:LightGoldenRodYellow});
+        Set(madcolM,LightGoldenRodYellow);UpdateContext({madcolM:LightGoldenRodYellow});
+        Set(madcolN,LightGoldenRodYellow);UpdateContext({madcolN:LightGoldenRodYellow});
+        Set(madcolO,LightGoldenRodYellow);UpdateContext({madcolO:LightGoldenRodYellow});
+        Set(madcolsinj,LightGoldenRodYellow);UpdateContext({madcolsinj:LightGoldenRodYellow});
+        Set(madcolsinjury,LightGoldenRodYellow);UpdateContext({madcolsinjury:LightGoldenRodYellow});
+        
+        
+        If(
+            Radio_physically_injured.Selected.Value = "Yes, I was injured as a result of an assault" And Injury1=0,
+            Set(Injury1, Injury1+380));
+            If(
+            Radio_physically_injured.Selected.Value = "No, I was assaulted but not injured",
+           Set(Injury1,0));
+            If(
+            Radio_physically_injured.Selected.Value = "Not applicable – I was not assaulted",
+            Set(Injury1,0));
+            If(IsBlank(Radio_physically_injured.Selected.Value),Set(Injury1,0));
+        
+        
+            If(Len(Radio_physically_injured.Selected.Value)>0,UpdateContext({madcolsinj:White}),UpdateContext({madcolsinj:LightGoldenRodYellow}));
+            If(Len(Radio_intetional_assault.Selected.Value)>0,UpdateContext({madcolsinjury:White}),UpdateContext({madcolsinjury:LightGoldenRodYellow}));
+        If(Len(Drpdn_injury_lvl.Selected.cp_name)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}));
+
+    RectQuickActionBar_header_8 As rectangle:
+        Height: =88
+        Width: =Parent.Width
+        ZIndex: =1
+
+    Lbl_header_details_8 As label:
+        Align: =Align.Center
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =88
+        Size: =27
+        Text: ="Staff injury"
+        Width: =Parent.Width
+        ZIndex: =2
+
+    Canvas_details_8 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1048
+        Width: =Parent.Width
+        Y: =RectQuickActionBar_header_8.Y + RectQuickActionBar_header_8.Height
+        ZIndex: =3
+
+        DataCard_details_scroll_8 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =1030
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Drpdn_incident_key_8 As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =Use_of_force_Primary_key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: ='Use of force offline'.Key
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =16
+                ZIndex: =2
+
+            Label_retired_22 As label:
+                Height: =66
+                Size: =21
+                Text: ="Were you injured as a result of the subject assaulting you?"
+                Width: =560
+                X: =40
+                Y: =110
+                ZIndex: =3
+
+            Radio_physically_injured As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('Use of force offline',Key=Drpdn_incident_key_8.Selected.Key).Staffphysicallyinjured
+                Fill: =If(!IsBlank(Self.Selected.Value),White,LightGoldenRodYellow) 
+                Height: =238
+                Items: =["Yes, I was injured as a result of an assault","No, I was assaulted but not injured","Not applicable – I was not assaulted"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(
+                        Radio_physically_injured.Selected.Value = "Yes, I was injured as a result of an assault" And Injury1=0,
+                        Set(Injury1, Injury1+380));
+                        If(
+                        Radio_physically_injured.Selected.Value = "No, I was assaulted but not injured",
+                       Set(Injury1,0));
+                        If(
+                        Radio_physically_injured.Selected.Value = "Not applicable – I was not assaulted",
+                        Set(Injury1,0));
+                        If(IsBlank(Radio_physically_injured.Selected.Value),Set(Injury1,0));
+                    
+                       /*  If(
+                        Radio_physically_injured.Selected.Value = "Yes",
+                        Set(Injury1,Injury1+600));
+                        If(
+                        Radio_physically_injured.Selected.Value = "No",
+                        Set(Injury1,0));
+                        */
+                    
+                             If(Len(Radio_physically_injured.Selected.Value)>0,UpdateContext({madcolsinj:White}),UpdateContext({madcolsinj:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(
+                        Radio_physically_injured.Selected.Value = "Yes, I was injured as a result of an assault" And Injury1=0,
+                        Set(Injury1, Injury1+380));
+                        If(
+                        Radio_physically_injured.Selected.Value = "No, I was assaulted but not injured",
+                       Set(Injury1,0));
+                        If(
+                        Radio_physically_injured.Selected.Value = "Not applicable – I was not assaulted",
+                        Set(Injury1,0));
+                        If(!IsBlank(Radio_physically_injured.Selected.Value),Set(Injury1,0));
+                      /*  If(
+                        Radio_physically_injured.Selected.Value = "Yes",
+                        Set(Injury1,Injury1+600));
+                        If(
+                        Radio_physically_injured.Selected.Value = "No",
+                        Set(Injury1,0));
+                        */
+                        If(Len(Radio_physically_injured.Selected.Value)>0,UpdateContext({madcolsinj:White}),UpdateContext({madcolsinj:LightGoldenRodYellow}))
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Reset: =AllReset
+                Size: =21
+                Width: =571
+                X: =34
+                Y: =176
+                ZIndex: =4
+
+            Label_retired_24 As label:
+                Height: =66
+                Size: =21
+                Text: ="Was medical assistance provided?"
+                Width: =560
+                X: =42
+                Y: =418+Injury1
+                ZIndex: =10
+
+            Radio_medical_Assist_provi As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('Use of force offline',Key=Drpdn_incident_key_8.Selected.Key).staffmedicalassistance
+                Fill: =If(!IsBlank(Self.Selected.Value),White,LightGoldenRodYellow) 
+                Height: =97
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(
+                        Radio_medical_Assist_provi.Selected.Value = "Yes",
+                        UpdateContext({occupation: true});UpdateContext({y1:y1+100}));
+                        If(
+                        Radio_medical_Assist_provi.Selected.Value = "No",
+                        UpdateContext({occupation: false});UpdateContext({y1:0}));
+                OnSelect: |-
+                    =If(
+                        Radio_medical_Assist_provi.Selected.Value = "Yes",
+                        UpdateContext({occupation: true});UpdateContext({y1:y1+100}));
+                        If(
+                        Radio_medical_Assist_provi.Selected.Value = "No",
+                        UpdateContext({occupation: false});UpdateContext({y1:0}));
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Reset: =AllReset
+                Size: =21
+                Width: =335
+                X: =42
+                Y: =484+Injury1
+                ZIndex: =11
+
+            Btn_add_details_13 As button:
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =70
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =UpdateIf('Use of force offline',Key=Drpdn_incident_key_8.Selected.Key,{
+                             Staffphysicallyinjured: Radio_physically_injured.Selected.Value,
+                             staffintetionalassult:Radio_intetional_assault.Selected.Value,
+                             stafinjurylvl:Drpdn_injury_lvl.Selected.cp_lookupvalueid,
+                             stafinjurylvlname:Drpdn_injury_lvl.Selected.cp_name,
+                             staffmedicalassistance:Radio_medical_Assist_provi.Selected.Value
+                        
+                           
+                    }
+                    );SaveData('Use of force offline',"Use of force offline");Navigate(Scr_home,UnCoverRight)
+                Size: =24
+                Text: ="Save and Continue"
+                Width: =545
+                X: =43
+                Y: =960
+                ZIndex: =12
+
+            Label_star_address_45 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =51
+                Size: =21
+                Text: ="*"
+                Visible: =If(Radio_physically_injured.Selected.Value = "Yes, I was injured as a result of an assault",true,false)
+                Width: =27
+                X: =575
+                Y: =397
+                ZIndex: =14
+
+            Label_star_Preferred_contact_method_11 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =576
+                Y: =110
+                ZIndex: =15
+
+            Group1 As group:
+                Height: =5
+                Width: =5
+                X: =60
+                Y: =60
+                ZIndex: =15
+
+                Drpdn_injury_lvl As dropdown:
+                    BorderColor: =RGBA(128, 128, 128, 1)
+                    ChevronBackground: =RGBA(128, 128, 128, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                    Default: =LookUp('Use of force offline',Key=Drpdn_incident_key_8.Selected.Key).stafinjurylvlname
+                    Fill: =madcolO
+                    Height: =76
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Items: =InjuryDetailoffline
+                    OnChange: |-
+                        =If(Len(Drpdn_injury_lvl.Selected.cp_name)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}))
+                    OnSelect: |-
+                        =If(Len(Drpdn_injury_lvl.Selected.cp_name)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}))
+                    PressedFill: =RGBA(230, 230, 230, 1)
+                    SelectionFill: =RGBA(128, 128, 128, 1)
+                    Size: =21
+                    Visible: =If(Radio_physically_injured.Selected.Value = "Yes, I was injured as a result of an assault",true,false)
+                    Width: =545
+                    X: =47
+                    Y: =695
+                    ZIndex: =5
+
+                Label_IncidentLocation_22 As label:
+                    Height: =66
+                    Size: =21
+                    Text: ="Injury level"
+                    Visible: =If(Radio_physically_injured.Selected.Value = "Yes, I was injured as a result of an assault",true,false)
+                    Width: =560
+                    Wrap: =
+                    X: =47
+                    Y: =629
+                    ZIndex: =6
+
+                Label_retired_23 As label:
+                    Height: =146
+                    Size: =21
+                    Text: |-
+                        ="Do you believe the injury you received was as a direct result of the subject INTENTIONALLY attempting to assault you?
+                        "
+                    Visible: =If(Radio_physically_injured.Selected.Value = "Yes, I was injured as a result of an assault",true,false)
+                    Width: =560
+                    X: =40
+                    Y: =397
+                    ZIndex: =7
+
+                Radio_intetional_assault As radio:
+                    BorderStyle: =BorderStyle.None
+                    Default: =LookUp('Use of force offline',Key=Drpdn_incident_key_8.Selected.Key).staffintetionalassult
+                    Fill: =madcolsinjury
+                    Height: =97
+                    Items: =["Yes","No"]
+                    Layout: =Layout.Horizontal
+                    OnChange: |-
+                        =    If(Len(Radio_intetional_assault.Selected.Value)>0,UpdateContext({madcolsinjury:White}),UpdateContext({madcolsinjury:LightGoldenRodYellow}))
+                    OnSelect: |-
+                        =    If(Len(Radio_intetional_assault.Selected.Value)>0,UpdateContext({madcolsinjury:White}),UpdateContext({madcolsinjury:LightGoldenRodYellow}))
+                    RadioBorderColor: =RGBA(128, 128, 128, 1)
+                    Size: =21
+                    Visible: =If(Radio_physically_injured.Selected.Value = "Yes, I was injured as a result of an assault",true,false)
+                    Width: =335
+                    X: =40
+                    Y: =547
+                    ZIndex: =8
+
+                Icon3 As icon.Message:
+                    BorderColor: =RGBA(128, 128, 128, 1)
+                    Color: =RGBA(128, 128, 128, 1)
+                    Height: =47
+                    Icon: =Icon.Message
+                    OnSelect: =
+                    Tooltip: |-
+                        ="Severe (i.e.: a fracture, deep cut, deep laceration or an injury causing damage to an internal organ or the impairment of any bodily function). Minor (i.e.: Graze or bruise)"
+                    Visible: =If(Radio_physically_injured.Selected.Value = "Yes, I was injured as a result of an assault",true,false)
+                    X: =506
+                    Y: =628
+                    ZIndex: =9
+
+            Label_star_address_48 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =39
+                Size: =21
+                Text: ="*"
+                Visible: =If(Radio_physically_injured.Selected.Value = "Yes, I was injured as a result of an assault",true,false)
+                Width: =26
+                X: =576
+                Y: =651
+                ZIndex: =16
+
+            Label_star_Preferred_contact_method_12 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =577
+                Y: =430+Injury1
+                ZIndex: =17
+
+    Icon_back_details_home_8 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Back()
+        X: =31
+        Y: =13
+        ZIndex: =4
+
+    Icn_exit_Home_8 As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =576
+        Y: =13
+        ZIndex: =5
+

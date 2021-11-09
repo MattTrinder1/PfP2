@@ -1,0 +1,98 @@
+[
+  {
+    "DisplayName": "signatures (Views)",
+    "Name": "_cp_signature_views",
+    "RelatedEntityName": "signatures",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "195d2906-09b6-4320-bfa9-5feeeba52382": "Inactive signatures",
+      "2a0f0772-db52-4d35-bae5-c7867edf71e1": "Signature Lookup View",
+      "37308dec-fbc0-43f1-91c2-30e8bd5324ba": "Signature Associated View",
+      "55db45e5-f356-425c-a380-f62bc84eeea3": "Signature Advanced Find View",
+      "b3e4363b-72c4-4aee-b453-d9299f14b8a2": "Active signatures"
+    }
+  },
+  {
+    "DisplayName": "Status (signatures)",
+    "Name": "cp_signature_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "signatures"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "signatures",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (signatures)",
+    "Name": "cp_signature_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "signatures"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "signatures",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_signatures",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_signature",
+    "MaxGetRowsCount": 2000,
+    "Name": "signatures",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "cp_datetimeofsignature": "Date/time of signature",
+      "cp_name": "Name",
+      "cp_signature_AsyncOperations": "System Jobs",
+      "cp_signature_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_signature_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_signature_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_signature_ProcessSession": "Process Sessions",
+      "cp_signature_SyncErrors": "Sync Errors",
+      "cp_signatureid": "Signature",
+      "cp_signatureimage": "Signature image",
+      "cp_signatureimageid": "cp_signatureimageId",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "signatures",
+    "Type": "NativeCDSDataSourceInfo"
+  }
+]

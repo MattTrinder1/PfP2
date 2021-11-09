@@ -1,0 +1,99 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_tactictypes",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_tactictype",
+    "MaxGetRowsCount": 2000,
+    "Name": "Tactic Types",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "cp_displaysequenceno": "Display Sequence No",
+      "cp_name": "Name",
+      "cp_tactictype_AsyncOperations": "System Jobs",
+      "cp_tactictype_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_TacticType_cp_TacticType_cp_Tactic": "Tactics",
+      "cp_tactictype_DuplicateBaseRecord": "Duplicate Records (cp_tactictype_DuplicateBaseRecord)",
+      "cp_tactictype_DuplicateMatchingRecord": "Duplicate Records (cp_tactictype_DuplicateMatchingRecord)",
+      "cp_tactictype_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_tactictype_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_tactictype_ProcessSession": "Process Sessions",
+      "cp_tactictype_SyncErrors": "Sync Errors",
+      "cp_tactictypeid": "Tactic Type",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Tactic Types",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Tactic Types (Views)",
+    "Name": "_cp_tactictype_views",
+    "RelatedEntityName": "Tactic Types",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "21c79cee-da3e-4ebb-9209-9ee1e2d6d834": "Active Tactic Types",
+      "7726c2d7-bb15-42b1-b034-0e942f76489d": "Tactic Type Advanced Find View",
+      "b50ba416-4e4a-40fe-a070-8eca67833e12": "Tactic Type Associated View",
+      "bf431d89-ca38-4f76-b9a2-029e052d677e": "Tactic Type Lookup View",
+      "d9630692-92ac-4806-bc40-971c1eaf79f5": "Inactive Tactic Types"
+    }
+  },
+  {
+    "DisplayName": "Status (Tactic Types)",
+    "Name": "cp_tactictype_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Tactic Types"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Tactic Types",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Tactic Types)",
+    "Name": "cp_tactictype_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Tactic Types"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Tactic Types",
+    "Type": "OptionSetInfo"
+  }
+]

@@ -1,0 +1,746 @@
+Scr_colection As screen:
+    OnVisible: |-
+        =UpdateContext({validationwarning:false})
+
+    Lbl_header_4 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =27
+        Text: ="Unsubmitted incidents"
+        Width: =640
+        ZIndex: =1
+
+    Icn_exit_4 As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Navigate(Scr_home,UnCover)
+        X: =576
+        Y: =13
+        ZIndex: =2
+
+    Btn_save_5 As button:
+        DisplayMode: =DisplayMode.Disabled
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =Bold
+        Height: =70
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |
+            =Clear(Photos);
+            Set(
+                UOFprimaryonlinekey,
+                ""
+            );
+            UpdateContext(
+                {
+                    UOFprimaryonlinekey: ForAll(
+                        'Use of force offline',
+                        Patch(
+                            'Use of Force STGS',
+                            Defaults('Use of Force STGS'),
+                            {
+                                cp_incidentnumber: 'Incident number',
+                                cp_incidentsuffix: 'Incident suffix',
+                                cp_incidentdate: 'Incident date',
+                                cp_custodynumber: Custody,
+                                cp_place: IncidentLocation,
+                                /*cp_:IncidentNPT,*/
+                                cp_officerassaulted: If(
+                                    Assaultedbysubject = "Yes",
+                                    'Officer Assaulted (Use of Force STGS)'.Yes,
+                                    Assaultedbysubject = "No",
+                                    'Officer Assaulted (Use of Force STGS)'.No
+                                ),
+                                cp_officerthreatened: Weaponthreat,
+                                cp_spat: If(
+                                    Spatat = "Yes",
+                                    'Spat (Use of Force STGS)'.Yes,
+                                    Spatat = "No",
+                                    'Spat (Use of Force STGS)'.No
+                                ),
+                                cp_impactfactors: Impactfactors,
+                                cp_reasonforforce: Reasonofforce,
+                                cp_officerduty: Officermainduty,
+                                cp_singlecrew: If(
+                                    Singlecrewed = "Yes",
+                                    'Single Crew (Use of Force STGS)'.Yes,
+                                    Singlecrewed = "No",
+                                    'Single Crew (Use of Force STGS)'.No
+                                ),
+                                /*specialytrained*/
+                                cp_carryced: If(
+                                    CEDcarrying = "Yes",
+                                    'Carry CED (Use of Force STGS)'.Yes,
+                                    CEDcarrying = "No",
+                                    'Carry CED (Use of Force STGS)'.No
+                                ),
+                                cp_officerinjured: If(
+                                    Staffphysicallyinjured = "Yes",
+                                    'Officer Injured (Use of Force STGS)'.Yes,
+                                    Staffphysicallyinjured = "No",
+                                    'Officer Injured (Use of Force STGS)'.No
+                                ),
+                                cp_officerinjurycausedbysubject: If(
+                                    staffintetionalassult = "Yes",
+                                    'Officer Injury Caused By Subject (Use of Force STGS)'.Yes,
+                                    staffintetionalassult = "No",
+                                    'Officer Injury Caused By Subject (Use of Force STGS)'.No
+                                ),
+                                cp_officerphysicalinjurydetail: stafinjurylvl,
+                                cp_officermedicalassistance: If(
+                                    staffmedicalassistance = "Yes",
+                                    'Officer Medical Assistance (Use of Force STGS)'.Yes,
+                                    staffmedicalassistance = "No",
+                                    'Officer Medical Assistance (Use of Force STGS)'.No
+                                ),
+                                cp_subjectinjured: If(
+                                    Subjectinjuries = "Yes",
+                                    'Subject Injured (Use of Force STGS)'.Yes,
+                                    Subjectinjuries = "No",
+                                    'Subject Injured (Use of Force STGS)'.No
+                                ),
+                                cp_subjectinjurydetail: Subjectinjurylvl,
+                                cp_subjectmedicalassistanceoffered: If(
+                                    Subjectmedassistance = "Yes",
+                                    'Subject Medical Assistance Offered (Use of Force STGS)'.Yes,
+                                    Subjectmedassistance = "No",
+                                    'Subject Medical Assistance Offered (Use of Force STGS)'.No
+                                ),
+                                cp_subjectmedicalassistanceprovided: If(
+                                    Subjectmedicalassisprov = "Yes",
+                                    'Subject Medical Assistance Provided (Use of Force STGS)'.Yes,
+                                    Subjectmedicalassisprov = "No",
+                                    'Subject Medical Assistance Provided (Use of Force STGS)'.No
+                                ),
+                                cp_outcome: useofforceoutcome,
+                                Photo1: photo1,
+                                Photo2: photo2,
+                                Photo3: photo3,
+                                Photo4: photo4,
+                                Photo5: photo5,
+                                'Subject Role': subjectrole,
+                                'Subject ForeName': subjectforename,
+                                'Subject SureName': subjectSurname,
+                                /*subjectadditionalname*/
+                                'Subject Additional Names': subjectadditionalnames,
+                                'Subject Additional Name Type': subjectadditionalnametype,
+                                /*subjectdateofbirthknown,*/
+                                'Subject BirthDate': Subjectdayofbirth,
+                                /*Subjectage,*/
+                                'Subject Perceived Age': subjectpercievedage,
+                                /*subjectpercievedgender,*/
+                                'Subject Officer Perceived Ethnicity': subjectpercievedethnicity,
+                                'Subject Unknown Perceived Physical Disability': subjectphysicalimpoairment,
+                                'Subject Unknown Perceived Mental Health Condition': subjectmentalimpairment,
+                                cp_officerspresent: numberofofficers,
+                                cp_officer: officerspresent
+                            /*cp_subjectinvolved:subjectsdinvolved,*/
+                            /*Bodycamincluded*/
+                            }
+                        ).'Use of Force STG'
+                    )
+                }
+            );
+                /*UpdateIf('Use of Force STGS',UOFprimaryonlinekey='Use of Force STG',UpdateContext({cp_stagingentrystatus:778230001}));*/
+            Clear('Use of force offline');
+            /*Navigate(
+                Scr_home,
+                UnCover
+            );*/
+        Size: =24
+        Text: ="Submit"
+        Visible: =false
+        Width: =541
+        X: =49
+        Y: =1042
+        ZIndex: =3
+
+    Icon3_3 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home,UnCover)
+        X: =31
+        Y: =13
+        ZIndex: =8
+
+    Gallery_unsubmitted As gallery.galleryVertical:
+        Height: =496
+        Items: ='Use of force offline'
+        Layout: =Layout.Vertical
+        TemplateSize: =244
+        Y: =87
+        ZIndex: =9
+
+        Label6 As label:
+            Height: =51
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.Key
+            Visible: =false
+            Width: =52
+            X: =475
+            Y: =7
+            ZIndex: =1
+
+        Label7 As label:
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.'Incident date'
+            Width: =500
+            X: =10
+            Y: =40
+            ZIndex: =2
+
+        Label8 As label:
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.Key
+            Width: =500
+            X: =10
+            Y: =203
+            ZIndex: =3
+
+        Label8_1 As label:
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.'Incident number'
+            Width: =500
+            X: =10
+            Y: =124
+            ZIndex: =4
+
+        Icon4 As icon.Edit:
+            Color: =RGBA(153, 153, 153, 1)
+            Icon: =Icon.Edit
+            OnSelect: |
+                =Set(
+                    Txt_incident_suffixvar,
+                    ThisItem.'Incident suffix'
+                );
+                Set(
+                    Use_of_force_Primary_key,
+                    ThisItem.Key
+                );
+                Set(
+                    incidentnumbervar,
+                    ThisItem.'Incident number'
+                );
+                Navigate(
+                    Scr_home,
+                    ScreenTransition.UnCover
+                );
+            Tooltip: ="Edit incident"
+            X: =548
+            Y: =7
+            ZIndex: =5
+
+        Label3 As label:
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Date"
+            Underline: =true
+            Width: =165
+            X: =6
+            ZIndex: =6
+
+        Label3_2 As label:
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Incident number"
+            Underline: =true
+            Width: =250
+            X: =9
+            Y: =84
+            ZIndex: =7
+
+        Label3_3 As label:
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Incident Key"
+            Underline: =true
+            Width: =233
+            X: =6
+            Y: =163
+            ZIndex: =8
+
+        Rectangle1 As rectangle:
+            BorderColor: =RGBA(230, 230, 230, 1)
+            Fill: =RGBA(204, 204, 204, 1)
+            Height: =2
+            OnSelect: =Select(Parent)
+            Width: =619
+            X: =6
+            Y: =242
+            ZIndex: =9
+
+        Icon6 As icon.Cancel:
+            BorderColor: =RGBA(153, 153, 153, 1)
+            Color: =RGBA(128, 128, 128, 1)
+            Icon: =Icon.Cancel
+            OnSelect: |-
+                =Remove('Use of force offline',LookUp('Use of force offline' ,Key=ThisItem.Key));
+                Set(
+                        Use_of_force_Primary_key,
+                        Last('Use of force offline').Key
+                    );
+                RemoveIf(Tactictsoffline,UOFKey=ThisItem.Key);
+                SaveData('Use of force offline',"Use of force offline");
+                SaveData(Tactictsoffline,"Tactictsoffline")
+            Tooltip: ="Delete Incident"
+            X: =548
+            Y: =159
+            ZIndex: =10
+
+        Icon2 As icon.Check:
+            Color: =RGBA(128, 128, 128, 1)
+            Icon: =Icon.Check
+            OnSelect: |-
+                =Clear(AllErrors);
+                If(
+                   Len(Text(ThisItem.'Incident date')) > 0 And Len(ThisItem.IncidentLocation) > 0 And Len(ThisItem.IncidentLocationname) > 0 And Len(ThisItem.IncidentNPT) > 0
+                   /* And Len(ThisItem.Assaultedbysubject)>0
+                    And Len(ThisItem.Weaponasulteddet)>0
+                    And Len(ThisItem.Weaponthreat)>0
+                    And Len(ThisItem.Spatat)>0
+                    And Len(ThisItem.Impactfactors)>0
+                    And Len(ThisItem.Reasonofforce)>0
+                    And Len(ThisItem.Officermainduty)>0
+                    And Len(ThisItem.Singlecrewed)>0
+                    And Len(ThisItem.specialytrained)>0
+                    And Len(ThisItem.CEDcarrying)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).Tacticname)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).Effectivetactic)>0
+                    And Len(ThisItem.stafinjurylvl)>0
+                    And Len(ThisItem.Subjectinjurylvl)>0
+                    And Len(ThisItem.useofforceoutcome)>0,
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).Firearmsusedtype)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).ceddevice)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).ceddeviceserial)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).tasertimesused)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).Numberofbarbs)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).Cycleinterupted)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).Repeatcycle)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).Totalnumbercycles)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).forceusedfrontback)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).forceusefront)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).forceusedback)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).catridgenumber)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).addanothertactic)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).Cycleextended)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).Furthercatridges)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).Numberofbarbs_1)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).Cycleinterupted_1)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).Repeatcycle_1)>0
+                   And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).Totalnumbercycles_1)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).forceusedfrontback_1)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).forceusefront_1)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).forceusedback_1)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).catridgenumber_1)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).Cycleextended_1)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).Furthercatridges_1)>0    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).Numberofbarbs_1)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).Cycleinterupted_2)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).Repeatcycle_2)>0
+                   And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).Totalnumbercycles_2)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).forceusedfrontback_2)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).forceusefront_2)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).forceusedback_2)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).catridgenumber_2)>0
+                    And Len(LookUp(Tactictsoffline,UOFKey = ThisItem.Key).Cycleextended_2)>0*/,
+                    UpdateContext(
+                        {
+                            Useofforcepk: Patch(
+                                'Use of Force STGS',
+                                Defaults('Use of Force STGS'),
+                                {
+                                    'Incident Number': ThisItem.'Incident number',
+                                    'Incident Suffix': ThisItem.'Incident suffix',
+                                    'Incident Date': ThisItem.'Incident date',
+                                    'Custody Number': ThisItem.Custody,
+                                    'Entered By': "dummy",
+                                    //this will be overwritten by the flow, but needs an entry as the field is required
+                Officer: ThisItem.Enteredby,
+                                    Place: ThisItem.IncidentLocation,
+                                    TPA: ThisItem.IncidentNPT,
+                                    Latitude: Value(ThisItem.Latitude),
+                                    Longitude: Value(ThisItem.Longitude),
+                                    'Officer Assaulted': If(
+                                        ThisItem.Assaultedbysubject = "Yes",
+                                        'Officer Assaulted (Use of Force STGS)'.Yes,
+                                        ThisItem.Assaultedbysubject = "No",
+                                        'Officer Assaulted (Use of Force STGS)'.No
+                                    ),
+                                    'Are you a specially trained CED': If(
+                                        ThisItem.specialytrained = "Yes",
+                                        'Are you a specially trained CED (Use of Force STGS)'.Yes,
+                                        ThisItem.specialytrained = "No",
+                                        'Are you a specially trained CED (Use of Force STGS)'.No
+                                    ),
+                                    'How many subjects were involved': ThisItem.subjectsdinvolved,
+                                    'Officer Assaulted Details': ThisItem.Weaponasulteddet,
+                                    'Officer Threatened': ThisItem.Weaponthreat,
+                                    Spat: If(
+                                        ThisItem.Spatat = "Yes",
+                                        'Spat (Use of Force STGS)'.Yes,
+                                        ThisItem.Spatat = "No",
+                                        'Spat (Use of Force STGS)'.No
+                                    ),
+                                    'Impact Factors': ThisItem.Impactfactors,
+                                    'Reason For Force': ThisItem.Reasonofforce,
+                                    'Officer Duty': ThisItem.Officermainduty,
+                                    'Subject Behaviour': ThisItem.Subjectbehaviour,
+                                    'Single Crew': If(
+                                        ThisItem.Singlecrewed = "Yes",
+                                        'Single Crew (Use of Force STGS)'.Yes,
+                                        ThisItem.Singlecrewed = "No",
+                                        'Single Crew (Use of Force STGS)'.No
+                                    ),
+                                    /*specialytrained*/
+                                    'Carry CED': If(
+                                        ThisItem.CEDcarrying = "Yes",
+                                        'Carry CED (Use of Force STGS)'.Yes,
+                                        ThisItem.CEDcarrying = "No",
+                                        'Carry CED (Use of Force STGS)'.No
+                                    ),
+                                    cp_injuredasaresultofthesubjectassaultingyou: Text(ThisItem.Staffphysicallyinjured)
+                                     /*If(
+                                        ThisItem.Staffphysicallyinjured = "Yes",
+                                        'Officer Injured (Use of Force STGS)'.Yes,
+                                        ThisItem.Staffphysicallyinjured = "No",
+                                        'Officer Injured (Use of Force STGS)'.No
+                                    )*/,
+                                    'Officer Injury Caused By Subject': If(
+                                        ThisItem.staffintetionalassult = "Yes",
+                                        'Officer Injury Caused By Subject (Use of Force STGS)'.Yes,
+                                        ThisItem.staffintetionalassult = "No",
+                                        'Officer Injury Caused By Subject (Use of Force STGS)'.No
+                                    ),
+                                    'Officer Physical Injury Detail': ThisItem.stafinjurylvl,
+                                    'Officer Medical Assistance': If(
+                                        ThisItem.staffmedicalassistance = "Yes",
+                                        'Officer Medical Assistance (Use of Force STGS)'.Yes,
+                                        ThisItem.staffmedicalassistance = "No",
+                                        'Officer Medical Assistance (Use of Force STGS)'.No
+                                    ),
+                                    'Subject Injured': If(
+                                        ThisItem.Subjectinjuries = "Yes",
+                                        'Subject Injured (Use of Force STGS)'.Yes,
+                                        ThisItem.Subjectinjuries = "No",
+                                        'Subject Injured (Use of Force STGS)'.No
+                                    ),
+                                    'Subject Injury Detail': ThisItem.Subjectinjurylvl,
+                                    'Subject Medical Assistance Offered': If(
+                                        ThisItem.Subjectmedassistance = "Yes",
+                                        'Subject Medical Assistance Offered (Use of Force STGS)'.Yes,
+                                        ThisItem.Subjectmedassistance = "No",
+                                        'Subject Medical Assistance Offered (Use of Force STGS)'.No
+                                    ),
+                                    'Subject Medical Assistance Provided': If(
+                                        ThisItem.Subjectmedicalassisprov = "Yes",
+                                        'Subject Medical Assistance Provided (Use of Force STGS)'.Yes,
+                                        ThisItem.Subjectmedicalassisprov = "No",
+                                        'Subject Medical Assistance Provided (Use of Force STGS)'.No
+                                    ),
+                                    Outcome: ThisItem.useofforceoutcome,
+                                    'Crime report submitted': If(
+                                        ThisItem.Crimereport = "Yes",
+                                        'Crime report submitted (Use of Force STGS)'.Yes,
+                                        ThisItem.Crimereport = "No",
+                                        'Crime report submitted (Use of Force STGS)'.No
+                                    ),
+                                    'Injury on duty form submitted': If(
+                                        ThisItem.'Injury on duty form submitted?' = "Yes",
+                                        'Injury on duty form submitted (Use of Force STGS)'.Yes,
+                                        ThisItem.'Injury on duty form submitted?' = "No",
+                                        'Injury on duty form submitted (Use of Force STGS)'.No
+                                    ),
+                                    Photo1: /*ThisItem.photo1*/If(
+                                        CountRows(
+                                            Filter(
+                                                Photos,
+                                                Photokey = ThisItem.Key
+                                            )
+                                        ) >= 1,
+                                        First(
+                                            Filter(
+                                                Photos,
+                                                Photokey = ThisItem.Key
+                                            )
+                                        ).photo1
+                                    ),
+                                    Photo2: If(
+                                        CountRows(
+                                            Filter(
+                                                Photos,
+                                                Photokey = ThisItem.Key
+                                            )
+                                        ) >= 2,
+                                        Last(
+                                            FirstN(
+                                                Filter(
+                                                    Photos,
+                                                    Photokey = ThisItem.Key
+                                                ),
+                                                2
+                                            )
+                                        ).photo1
+                                    ),
+                                    Photo3: If(
+                                        CountRows(
+                                            Filter(
+                                                Photos,
+                                                Photokey = ThisItem.Key
+                                            )
+                                        ) >= 3,
+                                        Last(
+                                            FirstN(
+                                                Filter(
+                                                    Photos,
+                                                    Photokey = ThisItem.Key
+                                                ),
+                                                3
+                                            )
+                                        ).photo1
+                                    ),
+                                    Photo4: If(
+                                        CountRows(
+                                            Filter(
+                                                Photos,
+                                                Photokey = ThisItem.Key
+                                            )
+                                        ) >= 4,
+                                        Last(
+                                            FirstN(
+                                                Filter(
+                                                    Photos,
+                                                    Photokey = ThisItem.Key
+                                                ),
+                                                4
+                                            )
+                                        ).photo1
+                                    ),
+                                    Photo5: If(
+                                        CountRows(
+                                            Filter(
+                                                Photos,
+                                                Photokey = ThisItem.Key
+                                            )
+                                        ) >= 5,
+                                        Last(
+                                            FirstN(
+                                                Filter(
+                                                    Photos,
+                                                    Photokey = ThisItem.Key
+                                                ),
+                                                5
+                                            )
+                                        ).photo1
+                                    ),
+                                    /*
+                                    'Photo 1 Caption': ThisItem.caption1,
+                                    'Photo 2 Caption': ThisItem.caption2,
+                                    'Photo 3 Caption': ThisItem.caption3,
+                                    'Photo 4 Caption': ThisItem.caption4,
+                                    'Photo 5 Caption': ThisItem.caption5,
+                                    */
+                                    'Subject Role': ThisItem.subjectrole,
+                                    'Subject ForeName': ThisItem.subjectforename,
+                                    'Subject SureName': ThisItem.subjectSurname,
+                                    /*subjectadditionalname*/
+                                    'Subject Additional Names': ThisItem.subjectadditionalnames,
+                                    'Subject Additional Name Type': ThisItem.subjectadditionalnametype,
+                                    /*subjectdateofbirthknown,*/
+                                    'Subject BirthDate': ThisItem.Subjectdayofbirth,
+                                    /*Subjectage,*/
+                                    'Subject Perceived Age': ThisItem.subjectpercievedage,
+                                    cp_subjectgender: ThisItem.subjectpercievedgender,
+                                    'Subject Officer Perceived Ethnicity': ThisItem.subjectpercievedethnicity,
+                                    /*not known*/
+                                    'Subject Unknown Perceived Physical Disability':  If(
+                                        LookUp(SubjectRoleoffline, cp_lookupvalueid = GUID(ThisItem.subjectrole), cp_name) = "Subject (Not Known)",
+                                        ThisItem.subjectphysicalimpoairment,
+                                        Blank()
+                                    ),
+                                    'Subject Unknown Perceived Mental Health Condition': If(
+                                        LookUp(SubjectRoleoffline, cp_lookupvalueid = GUID(ThisItem.subjectrole), cp_name) = "Subject (Not Known)",
+                                        ThisItem.subjectmentalimpairment,
+                                        Blank()
+                                    ),
+                                    /*known*/
+                                    'Subject Known Physically Disabled': If(
+                                        LookUp(SubjectRoleoffline, cp_lookupvalueid = GUID(ThisItem.subjectrole), cp_name) = "Subject (Known)",
+                                        ThisItem.subjectphysicalimpoairment,
+                                        Blank()
+                                    ),
+                                    'Subject Known Mental Health Condition': If(
+                                        LookUp(SubjectRoleoffline, cp_lookupvalueid =GUID(ThisItem.subjectrole), cp_name) = "Subject (Known)",
+                                        ThisItem.subjectmentalimpairment,
+                                        Blank()
+                                    ),
+                                    'Officers Present': ThisItem.numberofofficers,
+                                    /*cp_subjectinvolved:subjectsdinvolved,*/
+                                    'Body Cam': If(
+                                        ThisItem.Bodycamincluded = "Yes",
+                                        'Body Cam (Use of Force STGS)'.Yes,
+                                        ThisItem.Bodycamincluded = "No",
+                                        'Body Cam (Use of Force STGS)'.No
+                                    )
+                                }
+                            ).'Use of Force STG'
+                        }
+                    );
+                    If(
+                        !IsEmpty(Errors('Use of Force STGS')),
+                        Collect(
+                            AllErrors,
+                            Errors('Use of Force STGS')
+                        );
+                        //Notify(
+                            //"There was an error submitting your request: " & Last(Errors('Use of Force STGS')).Message & "  (" & Last(Errors('Use of Force STGS')).Column & ")",
+                            //NotificationType.Error
+                        //)
+                    );
+                    ForAll(
+                        Tactictsoffline,
+                        Patch(
+                            'Use of Force Tactics STGS',
+                            Defaults('Use of Force Tactics STGS'),
+                            {
+                                'Use Of Force STG': LookUp(
+                                    'Use of Force STGS',
+                                    'Use of Force STG' = Useofforcepk
+                                ),
+                                'Tactic Name': Tacticname,
+                                'Tactic Type': Tacticid,
+                                Effective: If(
+                                    Effectivetactic = "Yes",
+                                    'Effective (Use of Force Tactics STGS)'.Yes,
+                                    Effectivetactic = "No",
+                                    'Effective (Use of Force Tactics STGS)'.No
+                                ),
+                                'Sequence Number': Tacticorder,
+                                'Firearm Use Type': Firearmsusedtype,
+                                'Taser Device Type': ceddevice,
+                                'Taser Device Serial': ceddeviceserial,
+                                'Taser Use': useoftaser,
+                                'Taser1 Barbs No': Value(Numberofbarbs),
+                                'Taser1 Five Second Cycle': If(
+                                    Cycleinterupted = "Yes",
+                                    'Taser1 Five Second Cycle (Use of Force Tactics STGS)'.Yes,
+                                    Cycleinterupted = "No",
+                                    'Taser1 Five Second Cycle (Use of Force Tactics STGS)'.No
+                                ),
+                                'Taser1 Repeat Cycle': If(
+                                    Repeatcycle = "Yes",
+                                    'Taser1 Repeat Cycle (Use of Force Tactics STGS)'.Yes,
+                                    Repeatcycle = "No",
+                                    'Taser1 Repeat Cycle (Use of Force Tactics STGS)'.No
+                                ),
+                                'Taser1 Total Cycles': Value(Totalnumbercycles),
+                                'Taser1 Area Used': forceusedfrontback,
+                                'Taser1 Front Location': forceusedfront,
+                                'Taser1 Back Location': forceusedback,
+                                'Taser1 Cartidge Number': catridgenumber
+                            }
+                        );
+                        If(
+                            !IsEmpty(Errors('Use of Force Tactics STGS')),
+                            //then--------------------------------------------
+                            Collect(
+                                AllErrors,
+                                Errors('Use of Force Tactics STGS')
+                            );
+                        );
+                        //end--------------------------------------------
+                    );
+                    If (
+                        !IsEmpty(AllErrors),
+                        //then--------------------------------------------
+                        ForAll(
+                            AllErrors,
+                            Notify(
+                                "There was an error submitting your request: " & ThisRecord.Message & "  (" & ThisRecord.Column & ")",
+                                NotificationType.Error
+                            )
+                        ),
+                        //else--------------------------------------------
+                        UpdateContext(
+                            {
+                                Test: LookUp(
+                                    Choices('Staging Entry Status'),
+                                    Value = 'Staging Entry Status'.'Ready for Submission'
+                                ).Value
+                            }
+                        );
+                        UpdateIf(
+                            'Use of Force STGS',
+                            Useofforcepk = 'Use of Force STG',
+                            {'Staging Entry Status': Test}
+                        );
+                        RemoveIf(
+                            'Use of force offline',
+                            Key = ThisItem.Key
+                        );
+                        RemoveIf(
+                            Tactictsoffline,
+                            UOFKey = ThisItem.Key
+                        );
+                        UpdateContext({validationwarning: false});
+                    );
+                    //end---------------------------------------------
+                ,
+                    UpdateContext({validationwarning: true})
+                );
+                SaveData(
+                    'Use of force offline',
+                    "Use of force offline"
+                );
+                SaveData(
+                    Tactictsoffline,
+                    "Tactictsoffline"
+                )
+            Tooltip: ="Submit Incident"
+            X: =548
+            Y: =80
+            ZIndex: =11
+
+    Label2 As label:
+        Color: =RGBA(255, 0, 0, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =116
+        Size: =21
+        Text: ="Please fill in all the mandatory fields before submitting."
+        Visible: =validationwarning
+        Width: =355
+        X: =49
+        Y: =925
+        ZIndex: =10
+
+    Icon5 As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =139
+        Icon: =Icon.Warning
+        Visible: =validationwarning
+        Width: =122
+        X: =440
+        Y: =888
+        ZIndex: =11
+
+    Button1 As button:
+        DisplayMode: =DisplayMode.Disabled
+        Height: =70
+        OnSelect: =Clear('Use of force offline');Clear(Tactictsoffline);Clear(Contactsoffline)
+        Size: =24
+        Text: ="Button"
+        Visible: =false
+        Width: =280
+        X: =360
+        Y: =888
+        ZIndex: =12
+

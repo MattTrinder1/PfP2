@@ -1,0 +1,628 @@
+"Scr_incident_third_taser As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    OnVisible: |
+        =Set(AllReset, true);
+               UpdateContext({AllReset: true});
+        
+        Set(
+            addcontactmethod,
+            false
+        );
+        UpdateContext({addcontactmethod: false});
+        Set(
+            contactworkphone,
+            false
+        );
+        UpdateContext({contactworkphone: false});
+        Set(
+            contactmail,
+            false
+        );
+        UpdateContext({contactmail: false});
+        Set(
+            contacthomephone,
+            false
+        );
+        UpdateContext({contacthomephone: false});
+        Set(
+            contactmobile,
+            false
+        );
+        UpdateContext({contactmobile: false});
+        Set(
+            occupation,
+            false
+        );
+        UpdateContext({occupation: false});
+        Set(
+            ycontactmethodid,
+            0
+        );
+        Set(
+            yretiredid,
+            0
+        );
+        UpdateContext({y1: 0});Set(madcol,LightGoldenRodYellow);UpdateContext({madcol:LightGoldenRodYellow});Set(madcolA,LightGoldenRodYellow);UpdateContext({madcolA:LightGoldenRodYellow});
+        
+        Set(madcolB,LightGoldenRodYellow);UpdateContext({madcolB:LightGoldenRodYellow});
+        
+        Set(madcolC,LightGoldenRodYellow);UpdateContext({madcolC:LightGoldenRodYellow});
+        
+        Set(madcolD,LightGoldenRodYellow);UpdateContext({madcolD:LightGoldenRodYellow});
+        
+        Set(madcolE,LightGoldenRodYellow);UpdateContext({madcolE:LightGoldenRodYellow});
+        
+        
+        Set(madcolF,LightGoldenRodYellow);UpdateContext({madcolF:LightGoldenRodYellow});
+        
+        Set(madcolF,LightGoldenRodYellow);UpdateContext({madcolF:LightGoldenRodYellow});
+        Set(madcolG,LightGoldenRodYellow);UpdateContext({madcolG:LightGoldenRodYellow});
+        Set(madcolH,LightGoldenRodYellow);UpdateContext({madcolH:LightGoldenRodYellow});
+        Set(madcolI,LightGoldenRodYellow);UpdateContext({madcolI:LightGoldenRodYellow});
+        Set(madcolJ,LightGoldenRodYellow);UpdateContext({madcolJ:LightGoldenRodYellow});
+        Set(madcolK,LightGoldenRodYellow);UpdateContext({madcolK:LightGoldenRodYellow});
+        Set(madcolL,LightGoldenRodYellow);UpdateContext({madcolL:LightGoldenRodYellow});
+        Set(madcolM,LightGoldenRodYellow);UpdateContext({madcolM:LightGoldenRodYellow});
+        Set(madcolM,LightGoldenRodYellow);UpdateContext({madcolM:LightGoldenRodYellow});
+        Set(madcolN,LightGoldenRodYellow);UpdateContext({madcolN:LightGoldenRodYellow});
+        Set(madcolO,LightGoldenRodYellow);UpdateContext({madcolO:LightGoldenRodYellow});
+        
+        
+        If(
+            Len(Txt_total_number_2.Text) > 0,
+            UpdateContext({madcolC: White}),
+            UpdateContext({madcolC: LightGoldenRodYellow})
+        );
+        If(Len(Drpdn_front_back_2.Selected.cp_name)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}));
+        If(Len(ComboBox_TaserFront_2.Selected.cp_areaname)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}));
+        If(Len(ComboBox_TaserBack_2.Selected.cp_areaname)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}));
+        If(
+            Len(Txt_catridge_number_2.Text) > 0,
+            UpdateContext({madcolC: Transparent}),
+            UpdateContext({madcolC: LightGoldenRodYellow})
+        );
+
+    RectQuickActionBar_header_6 As rectangle:
+        Height: =88
+        Width: =Parent.Width
+        ZIndex: =1
+
+    Lbl_header_details_6 As label:
+        Align: =Align.Center
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =88
+        Size: =27
+        Text: ="Third cartridge"
+        Width: =Parent.Width
+        ZIndex: =2
+
+    Canvas_details_6 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1046
+        Width: =Parent.Width
+        Y: =RectQuickActionBar_header_6.Y + RectQuickActionBar_header_6.Height
+        ZIndex: =3
+
+        DataCard_details_scroll_6 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =953
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Drpdn_incident_key_6 As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =Use_of_force_Primary_key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: ='Use of force offline'.Key
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =31
+                ZIndex: =2
+
+            Txt_total_number_2 As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Tactictsoffline,UOFKey=Drpdn_incident_key_6.Selected.Key).Totalnumbercycles_2
+                Fill: =madcolC
+                Height: =70
+                HintText: ="Total number of cycles "
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: |-
+                    =If(
+                        Len(Txt_total_number_2.Text) > 0,
+                        UpdateContext({madcolC: White}),
+                        UpdateContext({madcolC: LightGoldenRodYellow})
+                    );
+                OnSelect: |-
+                    =If(
+                        Len(Txt_total_number_2.Text) > 0,
+                        UpdateContext({madcolC: White}),
+                        UpdateContext({madcolC: LightGoldenRodYellow})
+                    );
+                Reset: =AllReset
+                Size: =21
+                VirtualKeyboardMode: =VirtualKeyboardMode.Numeric
+                Width: =545
+                X: =40
+                Y: =550
+                ZIndex: =4
+
+            ComboBox_number_of_barbs_2 As combobox:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                ChevronBackground: =RGBA(116, 116, 116, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                DisplayFields: =
+                Height: =70
+                InputTextPlaceholder: ="Select number of barbs"
+                Items: |-
+                    =["0",
+                    "1",
+                    "2"]
+                OnSelect: =
+                Reset: =AllReset
+                SearchFields: =["Value"]
+                SearchItems: |-
+                    =Search(["0",
+                    "1",
+                    "2"],ComboBox_number_of_barbs_2.SearchText,"Value")
+                SelectionFill: =RGBA(116, 116, 116, 1)
+                SelectMultiple: =false
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =150
+                ZIndex: =6
+
+            Label_IncidentLocation_17 As label:
+                Size: =21
+                Text: ="How many barbs attached to the subject?"
+                Width: =560
+                X: =40
+                Y: =110
+                ZIndex: =7
+
+            Label_retired_19 As label:
+                Height: =66
+                Size: =21
+                Text: |-
+                    ="Five second cycle interrupted?
+                    "
+                Width: =560
+                X: =40
+                Y: =221
+                ZIndex: =8
+
+            Radio_cycle_interupted_2 As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp(Tactictsoffline,UOFKey=Drpdn_incident_key_6.Selected.Key).Cycleinterupted_2
+                Height: =97
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(
+                        Radio_cycle_interupted_2.Selected.Value = "Yes",
+                        UpdateContext({occupation: true});UpdateContext({y1:y1+100}));
+                        If(
+                        Radio_cycle_interupted_2.Selected.Value = "No",
+                        UpdateContext({occupation: false});UpdateContext({y1:0}));
+                OnSelect: |-
+                    =If(
+                        Radio_cycle_interupted_2.Selected.Value = "Yes",
+                        UpdateContext({occupation: true});UpdateContext({y1:y1+100}));
+                        If(
+                        Radio_cycle_interupted_2.Selected.Value = "No",
+                        UpdateContext({occupation: false});UpdateContext({y1:0}));
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Reset: =AllReset
+                Size: =21
+                Width: =335
+                X: =40
+                Y: =271
+                ZIndex: =9
+
+            Drpdn_front_back_2 As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =LookUp(Tactictsoffline,UOFKey=Drpdn_incident_key_6.Selected.Key).forceusedfrontback_2
+                Fill: =madcolO
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =TaserBodyAreaUseoffline
+                OnChange: |-
+                    =If(Len(Drpdn_front_back_2.Selected.cp_name)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Drpdn_front_back_2.Selected.cp_name)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}))
+                PressedFill: =RGBA(230, 230, 230, 1)
+                Reset: =AllReset
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =861
+                ZIndex: =10
+
+            Label_IncidentLocation_18 As label:
+                Height: =66
+                Size: =21
+                Text: ="Was force used on the front or back of the subject?"
+                Width: =560
+                X: =40
+                Y: =795
+                ZIndex: =11
+
+            Label_retired_20 As label:
+                Height: =66
+                Size: =21
+                Text: |-
+                    ="Repeat cycle of the same cartridge?
+                    "
+                Width: =560
+                X: =40
+                Y: =357
+                ZIndex: =12
+
+            Radio_repeat_cycle_2 As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp(Tactictsoffline,UOFKey=Drpdn_incident_key_6.Selected.Key).Repeatcycle_2
+                Height: =97
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(
+                        Radio_repeat_cycle_2.Selected.Value = "Yes",
+                        UpdateContext({occupation: true});UpdateContext({y1:y1+100}));
+                        If(
+                        Radio_repeat_cycle_2.Selected.Value = "No",
+                        UpdateContext({occupation: false});UpdateContext({y1:0}));
+                OnSelect: |-
+                    =If(
+                        Radio_repeat_cycle_2.Selected.Value = "Yes",
+                        UpdateContext({occupation: true});UpdateContext({y1:y1+100}));
+                        If(
+                        Radio_repeat_cycle_2.Selected.Value = "No",
+                        UpdateContext({occupation: false});UpdateContext({y1:0}));
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Reset: =AllReset
+                Size: =21
+                Width: =335
+                X: =40
+                Y: =407
+                ZIndex: =13
+
+            Label_retired_21 As label:
+                Height: =66
+                Size: =21
+                Text: |-
+                    ="Cycle extended beyond five seconds?
+                    "
+                Width: =560
+                X: =40
+                Y: =647
+                ZIndex: =14
+
+            Radio_cycle_extended_2 As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp(Tactictsoffline,UOFKey=Drpdn_incident_key_6.Selected.Key).Cycleextended_2
+                Height: =97
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(
+                        Radio_cycle_extended_2.Selected.Value = "Yes",
+                        UpdateContext({occupation: true});UpdateContext({y1:y1+100}));
+                        If(
+                        Radio_cycle_extended_2.Selected.Value = "No",
+                        UpdateContext({occupation: false});UpdateContext({y1:0}));
+                OnSelect: |-
+                    =If(
+                        Radio_cycle_extended_2.Selected.Value = "Yes",
+                        UpdateContext({occupation: true});UpdateContext({y1:y1+100}));
+                        If(
+                        Radio_cycle_extended_2.Selected.Value = "No",
+                        UpdateContext({occupation: false});UpdateContext({y1:0}));
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Reset: =AllReset
+                Size: =21
+                Width: =335
+                X: =40
+                Y: =697
+                ZIndex: =15
+
+            Label_retired_36 As label:
+                Height: =66
+                Size: =21
+                Text: ="Total Number of Cycles "
+                Width: =560
+                X: =40
+                Y: =484
+                ZIndex: =18
+
+            Label_star_address_31 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =504
+                ZIndex: =26
+
+            Label_star_address_32 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =809
+                ZIndex: =27
+
+        DataCard_FrontLoaction2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =If(Drpdn_front_back_2.SelectedText.Value="Front" Or Drpdn_front_back_2.SelectedText.Value="Both",true,false)
+            Width: =640
+            X: =0
+            Y: =1
+            ZIndex: =2
+
+            Label_IncidentLocation_19 As label:
+                Height: =66
+                Size: =21
+                Text: ="Front location"
+                Width: =504
+                X: =47
+                ZIndex: =1
+
+            Label_star_address_33 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =28
+                ZIndex: =2
+
+            Image8 As image:
+                Height: =440
+                Image: =BodyMapFront
+                Width: =534
+                X: =46
+                Y: =150
+                ZIndex: =3
+
+            ComboBox_TaserFront_2 As combobox:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                ChevronBackground: =RGBA(116, 116, 116, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                Default: |
+                    =
+                DefaultSelectedItems: =LookUp(TaserAreaUsedFrontoffline,LookUp(Tactictsoffline,UOFKey=Drpdn_incident_key_4.Selected.Key).forceusedfrontname=cp_areaname)
+                DisplayFields: =
+                Fill: =madcol
+                Height: =70
+                InputTextPlaceholder: ="Select one or more Locations"
+                IsSearchable: =false
+                Items: =TaserAreaUsedFrontoffline
+                OnChange: |-
+                    =If(Len(ComboBox_TaserFront_2.Selected.cp_areaname)>0,UpdateContext({madcol:White}),UpdateContext({madcol:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(ComboBox_TaserFront_2.Selected.cp_areaname)>0,UpdateContext({madcol:White}),UpdateContext({madcol:LightGoldenRodYellow}))
+                Reset: =AllReset
+                SearchFields: =["cp_areaname"]
+                SearchItems: =[]
+                SelectionFill: =RGBA(116, 116, 116, 1)
+                Size: =21
+                Width: =545
+                X: =46
+                Y: =65
+                ZIndex: =4
+
+        DataCard_BackLocation2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =If(Drpdn_front_back_2.SelectedText.Value="Back" Or Drpdn_front_back_2.SelectedText.Value="Both",true,false)
+            Width: =640
+            X: =0
+            Y: =2
+            ZIndex: =3
+
+            Lbl_address_10 As label:
+                Height: =70
+                Size: =21
+                Text: ="Back location"
+                Width: =560
+                X: =47
+                ZIndex: =1
+
+            Label_star_address_8 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =20
+                ZIndex: =2
+
+            Image9 As image:
+                Height: =460
+                Image: =BodyMapBack
+                Width: =537
+                X: =48
+                Y: =128
+                ZIndex: =3
+
+            ComboBox_TaserBack_2 As combobox:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                ChevronBackground: =RGBA(116, 116, 116, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                DefaultSelectedItems: =LookUp(TaserAreaUsedBackoffline,LookUp(Tactictsoffline,UOFKey=Drpdn_incident_key_4.Selected.Key).forceusedbackname=cp_areaname)
+                DisplayFields: =
+                Fill: =madcol
+                Height: =70
+                InputTextPlaceholder: ="Select one or more Locations"
+                IsSearchable: =false
+                Items: =TaserAreaUsedBackoffline
+                OnChange: |-
+                    =If(Len(ComboBox_TaserBack_2.Selected.cp_areaname)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(ComboBox_TaserBack_2.Selected.cp_areaname)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}))
+                Reset: =AllReset
+                SearchFields: =["cp_areaname"]
+                SearchItems: =[]
+                SelectionFill: =RGBA(116, 116, 116, 1)
+                Size: =21
+                Width: =545
+                X: =47
+                Y: =58
+                ZIndex: =4
+
+        DataCard_Cartridge2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =3
+            ZIndex: =4
+
+            Label_star_address_9 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =571
+                Y: =88
+                ZIndex: =1
+
+            Btn_add_details_9 As button:
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =70
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =UpdateIf(
+                        Tactictsoffline,
+                        UOFKey = Drpdn_incident_key_9.Selected.Key And Tactickey=newKey1,
+                        { Numberofbarbs_2:ComboBox_number_of_barbs_2.Selected.Value,
+                        Cycleinterupted_2:Radio_cycle_interupted_2.Selected.Value,
+                        Repeatcycle_2:Radio_repeat_cycle_2.Selected.Value,
+                        Totalnumbercycles_2:Txt_total_number_2.Text,
+                        forceusedfrontback_2:Drpdn_front_back_2.Selected.cp_lookupvalueid, 
+                        forceusedfront2:Left(Concat(ComboBox_TaserFront_2.SelectedItems.cp_taseruseareafrontid,cp_taseruseareafrontid &","),Len(Concat(ComboBox_TaserFront_2.SelectedItems.cp_taseruseareafrontid,cp_taseruseareafrontid &","))-1),
+                        forceusedfrontname2:Concat(ComboBox_TaserFront_2.SelectedItems.cp_areaname,cp_areaname &","),
+                        forceusedback2:Left(Concat(ComboBox_TaserBack_2.SelectedItems.cp_taseruseareabackid,cp_taseruseareabackid &","),Len(Concat(ComboBox_TaserBack_2.SelectedItems.cp_taseruseareabackid,cp_taseruseareabackid &","))-1),
+                        forceusedbackname2:Concat(ComboBox_TaserBack_2.SelectedItems.cp_areaname,cp_areaname &","),
+                        //forceusedfront2:ComboBox_TaserFront_2.Selected.cp_taseruseareafrontid,
+                        //forceusedfrontname2:ComboBox_TaserFront_2.Selected.cp_areaname,
+                        //forceusedback2:ComboBox_TaserBack_2.Selected.cp_taseruseareabackid,
+                        //forceusedbackname2:ComboBox_TaserBack_2.Selected.cp_areaname,
+                        catridgenumber_2:Txt_catridge_number_2.Text,
+                        Cycleextended_2:Radio_cycle_extended_2.Selected.Value
+                        
+                        }
+                    );SaveData('Use of force offline',"Use of force offline");Navigate(Scr_incident_tacticts,UnCoverRight)
+                Size: =24
+                Text: ="Save and Continue"
+                Width: =545
+                X: =46
+                Y: =234
+                ZIndex: =2
+
+            Txt_catridge_number_2 As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Tactictsoffline,UOFKey=Drpdn_incident_key_6.Selected.Key).catridgenumber_2
+                Fill: =madcolC
+                Height: =70
+                HintText: ="Cartridge number"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                MaxLength: =9
+                OnChange: |-
+                    =If(
+                        Len(Txt_catridge_number_2.Text) > 0,
+                        UpdateContext({madcolC: Transparent}),
+                        UpdateContext({madcolC: LightGoldenRodYellow})
+                    );
+                    
+                    If(IsMatch(Txt_catridge_number_1.Text, "[a-zA-Z0-9]{9}"),
+                         " ", "Cartridge number cannot contain special characters and not more than 9 alpha-numeric characters"
+                    )
+                OnSelect: |-
+                    =If(IsMatch(Txt_catridge_number_1.Text, "[a-zA-Z0-9]{9}"),
+                         " ", "Cartridge number cannot contain special characters and not more than 9 alpha-numeric characters"
+                    );
+                    If(
+                        Len(Txt_catridge_number_2.Text) > 0,
+                        UpdateContext({madcolC: Transparent}),
+                        UpdateContext({madcolC: LightGoldenRodYellow})
+                    );
+                Reset: =AllReset
+                Size: =21
+                Width: =545
+                X: =46
+                Y: =126
+                ZIndex: =3
+
+            Lbl_address_13 As label:
+                Height: =70
+                Size: =21
+                Text: ="Cartridge Number"
+                Width: =498
+                X: =46
+                Y: =52
+                ZIndex: =4
+
+            Lbl_CatNoWarning2_1 As label:
+                Color: =RGBA(151, 0, 0, 1)
+                Height: =57
+                Italic: =true
+                Size: =16
+                Text: |-
+                    =If(IsMatch(Txt_catridge_number_2.Text, "[a-zA-Z0-9]{9}"),
+                         " ", "Cartridge number cannot contain special characters and not more than 9 alpha-numeric characters"
+                    )
+                Width: =546
+                X: =47
+                Y: =7
+                ZIndex: =5
+
+    Icon_back_details_home_6 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Back()
+        X: =31
+        Y: =13
+        ZIndex: =4
+
+    Icn_exit_Home_6 As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =563
+        Y: =13
+        ZIndex: =5
+

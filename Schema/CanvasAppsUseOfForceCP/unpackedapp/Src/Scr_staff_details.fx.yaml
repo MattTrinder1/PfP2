@@ -1,0 +1,506 @@
+"Scr_staff_details As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    OnVisible: |
+        =Set(
+            madcol,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcol: LightGoldenRodYellow});
+        Set(
+            madcolA,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolA: LightGoldenRodYellow});
+        Set(
+            madcolB,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolB: LightGoldenRodYellow});
+        Set(
+            madcolC,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolC: LightGoldenRodYellow});
+        Set(
+            madcolD,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolD: LightGoldenRodYellow});
+        Set(
+            madcolE,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolE: LightGoldenRodYellow});
+        Set(
+            madcolF,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolF: LightGoldenRodYellow});
+        Set(
+            madcolF,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolF: LightGoldenRodYellow});
+        Set(
+            madcolG,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolG: LightGoldenRodYellow});
+        Set(
+            madcolH,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolH: LightGoldenRodYellow});
+        Set(
+            madcolI,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolI: LightGoldenRodYellow});
+        Set(
+            madcolJ,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolJ: LightGoldenRodYellow});
+        Set(
+            madcolK,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolK: LightGoldenRodYellow});
+
+    RectQuickActionBar_header As rectangle:
+        Height: =88
+        Width: =Parent.Width
+        ZIndex: =1
+
+    Lbl_header_details As label:
+        Align: =Align.Center
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =88
+        Size: =27
+        Text: ="Staff Details"
+        Width: =Parent.Width
+        ZIndex: =2
+
+    Canvas_details As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1048
+        Width: =Parent.Width
+        Y: =RectQuickActionBar_header.Y + RectQuickActionBar_header.Height
+        ZIndex: =3
+
+        DataCard_details_scroll As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =1547
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Drpdn_incident_key As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =LookUp('Use of force offline',Key=Use_of_force_Primary_key)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =31
+                ZIndex: =2
+
+            Txt_forename As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Usersalllocal,Lower(officermail)=Lower(internalemailaddress)).firstname
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisplayMode: =DisplayMode.Disabled
+                Fill: =madcolA
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |-
+                    =If(
+                        Len(Txt_forename.Text) > 0,
+                        UpdateContext({madcolA: Transparent}),
+                        UpdateContext({madcolA: LightGoldenRodYellow})
+                    );
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =163
+                ZIndex: =6
+
+            Txt_surname As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Usersalllocal,Lower(officermail)=Lower(internalemailaddress)).lastname
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisplayMode: =DisplayMode.Disabled
+                Fill: =madcolB
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |-
+                    =If(
+                        Len(Txt_surname.Text) > 0,
+                        UpdateContext({madcolB: White}),
+                        UpdateContext({madcolB: LightGoldenRodYellow})
+                    );
+                OnSelect: |-
+                    =If(
+                        Len(Txt_surname.Text) > 0,
+                        UpdateContext({madcolB: White}),
+                        UpdateContext({madcolB: LightGoldenRodYellow})
+                    );
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =299
+                ZIndex: =7
+
+            Txt_collarnumber As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Usersalllocal,Lower(officermail)=Lower(internalemailaddress)).cp_badgenumber
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisplayMode: =DisplayMode.Disabled
+                Fill: =madcolD
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: |-
+                    =If(
+                        Len(Txt_collarnumber.Text) > 0,
+                        UpdateContext({madcolD: White}),
+                        UpdateContext({madcolD: LightGoldenRodYellow})
+                    );
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =441
+                ZIndex: =15
+
+            Label_retired_1 As label:
+                Height: =66
+                Size: =21
+                Text: |-
+                    ="Is the officer a detective?
+                    "
+                Width: =454
+                X: =39
+                Y: =653
+                ZIndex: =20
+
+            Lbl_preferedcontactmethod_4 As label:
+                Height: =70
+                Size: =21
+                Text: ="Length of service"
+                Width: =530
+                X: =40
+                Y: =788
+                ZIndex: =23
+
+            Label_star_Preferred_contact_method_5 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =813
+                ZIndex: =24
+
+            Txt_officer_detective As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Usersalllocal,Lower(officermail)=Lower(internalemailaddress)).cp_detective
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisplayMode: =DisplayMode.Disabled
+                Fill: =madcolF
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: |-
+                    =If(
+                        Len(Txt_officer_detective.Text) > 0,
+                        UpdateContext({madcolF: White}),
+                        UpdateContext({madcolF: LightGoldenRodYellow})
+                    );
+                Size: =21
+                Width: =545
+                X: =39
+                Y: =720
+                ZIndex: =26
+
+            Label_ofiicer_age_6 As label:
+                Height: =70
+                Size: =21
+                Text: ="Collar Number"
+                Width: =525
+                X: =40
+                Y: =368
+                ZIndex: =29
+
+            Label_ofiicer_age_7 As label:
+                Height: =70
+                Size: =21
+                Text: ="Surname"
+                Width: =520
+                X: =40
+                Y: =232
+                ZIndex: =30
+
+            Label_ofiicer_age_8 As label:
+                Height: =70
+                Size: =21
+                Text: ="Forename"
+                Width: =525
+                X: =40
+                Y: =101
+                ZIndex: =31
+
+            Label_star_preffered_contact_method As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =975
+                ZIndex: =33
+
+            Lbl_preferedcontactmethod As label:
+                Height: =70
+                Size: =21
+                Text: ="Length of time since PSU level two training"
+                Width: =530
+                X: =40
+                Y: =1109
+                ZIndex: =34
+
+            Label_star_Preferred_contact_method As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =1141
+                ZIndex: =35
+
+            Lbl_addcontactmethod As label:
+                Height: =70
+                Size: =21
+                Text: ="Length of time since personal safety training"
+                Width: =515
+                X: =40
+                Y: =941
+                ZIndex: =37
+
+            Lbl_preferedcontactmethod_5 As label:
+                Height: =70
+                Size: =21
+                Text: ="Where are you currently based?"
+                Width: =530
+                X: =40
+                Y: =1279
+                ZIndex: =38
+
+            Label_star_Preferred_contact_method_6 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =1304
+                ZIndex: =39
+
+            Drpdn_length_of_service As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =If(!IsBlank(LookUp(Usersalllocal,Lower(officermail)=Lower(internalemailaddress)).cp_ServiceLength.Value),LookUp(Usersalllocal,Lower(officermail)=Lower(internalemailaddress)).cp_ServiceLength.Value,"")
+                Fill: =If (IsBlank(Self.SelectedText.'data-ADB4D7A662F548B49FAC2B986E348A1Bcp_name'),LightGoldenRodYellow,White)
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =LengthOffserviceoffline
+                OnChange: =
+                OnSelect: =
+                PressedFill: =RGBA(230, 230, 230, 1)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =851
+                ZIndex: =44
+
+            Drpdn_officerpsutrng As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =If(!IsBlank(LookUp(Usersalllocal,Lower(officermail)=Lower(internalemailaddress)).cp_PSUTraining.Value),LookUp(Usersalllocal,Lower(officermail)=Lower(internalemailaddress)).cp_PSUTraining.Value,"")
+                Fill: =If (IsBlank(Self.SelectedText.'data-ADB4D7A662F548B49FAC2B986E348A1Bcp_name'),LightGoldenRodYellow,White)
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =LengthPSUoffline
+                OnChange: =
+                OnSelect: =
+                PressedFill: =RGBA(230, 230, 230, 1)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =1195
+                ZIndex: =45
+
+            Drpdn_officerregion As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =If(!IsBlank(LookUp(Usersalllocal,Lower(officermail)=Lower(internalemailaddress)).cp_Territory.Name),LookUp(Usersalllocal,Lower(officermail)=Lower(internalemailaddress)).cp_Territory.Name,"")
+                Fill: =If (IsBlank(Self.SelectedText.'data-ADB4D7A662F548B49FAC2B986E348A1Bcp_name'),LightGoldenRodYellow,White)
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =TPA
+                OnChange: =
+                OnSelect: =
+                PressedFill: =RGBA(230, 230, 230, 1)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =1349
+                ZIndex: =46
+
+            Drpdn_officersafetytrng As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =If(!IsBlank(LookUp(Usersalllocal,Lower(officermail)=Lower(internalemailaddress)).cp_SafetyTraining.Value),LookUp(Usersalllocal,Lower(officermail)=Lower(internalemailaddress)).cp_SafetyTraining.Value,"")
+                Fill: =If (IsBlank(Self.SelectedText.'data-ADB4D7A662F548B49FAC2B986E348A1Bcp_name'),LightGoldenRodYellow,White)
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =Lengthofpsafetytrainigoffline
+                OnChange: =
+                OnSelect: =
+                PressedFill: =RGBA(230, 230, 230, 1)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1025
+                ZIndex: =47
+
+            Btn_add_details_18 As button:
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =70
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |
+                    =ClearCollect(
+                        Contactsoffline,
+                        {
+                            Officerlengthofservice: Drpdn_length_of_service.Selected.cp_name,
+                            Officersafetytrainning: Drpdn_officersafetytrng.Selected.cp_name,
+                            Officerpsutraining: Drpdn_officerpsutrng.Selected.cp_name,
+                            Officerregion: Drpdn_officerregion.Selected.cp_territorialpolicingareaid
+                        }
+                    );
+                    SaveData(
+                        Contactsoffline,
+                        "Contactsoffline"
+                    );
+                    ForAll(
+                        Contactsoffline,
+                        UpdateIf(
+                            Users,
+                            Lower('Primary Email') = Lower(officermail),
+                            {
+                                'Service Length': LookUp(
+                                    'Lookup Values',
+                                    Value = Officerlengthofservice
+                                ),
+                                'Safety Training': LookUp(
+                                    'Lookup Values',
+                                    Value = Officersafetytrainning
+                                ),
+                                'PSU Training': LookUp(
+                                    'Lookup Values',
+                                    Value = Officerpsutraining
+                                ),
+                                cp_Territory: LookUp(
+                                    'Territorial Policing Areas',
+                                    cp_territorialpolicingareaid = Officerregion
+                                )
+                            }
+                        )
+                    );
+                    SaveData(
+                        'Use of force offline',
+                        "Use of force offline"
+                    );
+                    Navigate(
+                        Scr_home,
+                        UnCoverRight
+                    );
+                Size: =24
+                Text: ="Save and Continue"
+                Width: =545
+                X: =40
+                Y: =1470
+                ZIndex: =49
+
+            Label_retired_4 As label:
+                Height: =66
+                Size: =21
+                Text: |-
+                    ="Officer Rank
+                    "
+                Width: =454
+                X: =42
+                Y: =522
+                ZIndex: =51
+
+            Txt_officer_detective_1 As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Usersalllocal,Lower(officermail)=Lower(internalemailaddress)).positionid.Name
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisplayMode: =DisplayMode.Disabled
+                Fill: =madcolF
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: |-
+                    =If(
+                        Len(Txt_officer_detective_1.Text) > 0,
+                        UpdateContext({madcolF: White}),
+                        UpdateContext({madcolF: LightGoldenRodYellow})
+                    );
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =589
+                ZIndex: =52
+
+    Icon_back_details_home As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home,UnCover)
+        X: =31
+        Y: =13
+        ZIndex: =4
+
+    Icn_exit_Home As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =563
+        Y: =13
+        ZIndex: =5
+

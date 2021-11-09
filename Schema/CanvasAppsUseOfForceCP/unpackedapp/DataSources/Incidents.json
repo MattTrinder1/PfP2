@@ -1,0 +1,156 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_incidents",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_incident",
+    "MaxGetRowsCount": 2000,
+    "Name": "Incidents",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "cp_AdditionalOfficer": "Additional Officer",
+      "cp_Covid_incident_cp_incident": "Covids",
+      "cp_EnteredBy": "Entered By",
+      "cp_incident_AsyncOperations": "System Jobs",
+      "cp_incident_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_incident_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_incident_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_incident_ProcessSession": "Process Sessions",
+      "cp_incident_SyncErrors": "Sync Errors",
+      "cp_incidentdate": "Incident Date",
+      "cp_incidentid": "Incident",
+      "cp_IncidentLocation": "Incident Location",
+      "cp_incidentnumber": "Incident Number",
+      "cp_incidentsuffix": "Incident Suffix",
+      "cp_IncidentType": "Incident Type",
+      "cp_incidentunique": "Incident Unique",
+      "cp_ItsYourChoice_Incident_cp_incident": "Its Your Choices",
+      "cp_PocketNotebook_IncidentNo_cp_incident": "Pocket Notebooks",
+      "cp_reportingofficer": "Reporting Officer",
+      "cp_singleofficerevent": "Single Officer Event",
+      "cp_statement_cp_incident_cp_incident": "Statements",
+      "cp_suddendeath_cp_incident_cp_incident": "Sudden Deaths",
+      "cp_SuddenDeathIdentification_Incident_cp_": "Sudden Death Identifications",
+      "cp_UseofForce_Incident_cp_incident": "Uses of Force",
+      "cp_vehicleticket_incident_cp_incident": "Vehicle Tickets",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Incidents",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Incidents (Views)",
+    "Name": "_cp_incident_views",
+    "RelatedEntityName": "Incidents",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "254140fc-1487-4cf3-9292-e4e66a1bfb15": "Incident Advanced Find View",
+      "4476bf37-4da1-4724-ba18-6989c9b6d667": "Inactive Incidents",
+      "5f1a4674-4e70-eb11-a812-000d3ab02051": "Pocket Notebook Active Incidents",
+      "7088fd97-8fe3-4c6b-905e-09f8b2d98d44": "Incident Lookup View",
+      "777a408a-cc58-eb11-a812-000d3a654f72": "Use of Force Active Incidents",
+      "90dcb14f-2dba-4c00-8b48-dd1fc2fd7066": "Incident Associated View",
+      "c71254a5-d46a-eb11-a812-0022489abb0c": "Statement Active Incidents",
+      "de10a196-f965-eb11-a812-000d3ab403cd": "Vehicle Tickets Active Incidents",
+      "de7419c8-7e60-eb11-a812-0022489c79d7": "Sudden Death Active Incidents",
+      "e4827fd6-236d-eb11-a812-0022489abb0c": "Its Your Choice Incident",
+      "f934e14f-6966-eb11-a812-000d3ab40f79": "Covid Active Incidents",
+      "fa452b87-eb7a-42dc-961f-da1a90996a17": "Active Incidents"
+    }
+  },
+  {
+    "DisplayName": "Status (Incidents)",
+    "Name": "cp_incident_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Incidents"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Incidents",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Incidents)",
+    "Name": "cp_incident_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Incidents"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Incidents",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Yes, No, NA list",
+    "Name": "cp_yes_no_na_list",
+    "OptionSetInfoNameMapping": {
+      "778230000": "No",
+      "778230001": "Yes",
+      "778230002": "N/A"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": true,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "cp_reportingofficer",
+        "OptionSetReferenceEntityName": "Incidents"
+      },
+      "OptionSetReferenceItem1": {
+        "OptionSetReferenceColumnName": "cp_singleofficerevent",
+        "OptionSetReferenceEntityName": "Incidents"
+      },
+      "OptionSetReferenceItem2": {
+        "OptionSetReferenceColumnName": "cp_perceivedmentalimpairment",
+        "OptionSetReferenceEntityName": "Contacts"
+      },
+      "OptionSetReferenceItem3": {
+        "OptionSetReferenceColumnName": "cp_retired",
+        "OptionSetReferenceEntityName": "Contacts"
+      },
+      "OptionSetReferenceItem4": {
+        "OptionSetReferenceColumnName": "cp_perceivedphysicalimpairment",
+        "OptionSetReferenceEntityName": "Contacts"
+      }
+    },
+    "OptionSetTypeKey": "PicklistType",
+    "RelatedColumnInvariantName": "cp_reportingofficer",
+    "RelatedEntityName": "Incidents",
+    "Type": "OptionSetInfo"
+  }
+]

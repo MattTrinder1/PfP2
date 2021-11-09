@@ -1,0 +1,99 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_stations",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_station",
+    "MaxGetRowsCount": 2000,
+    "Name": "Stations",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "cp_customer": "Customer",
+      "cp_prefix": "Prefix",
+      "cp_station_AsyncOperations": "System Jobs",
+      "cp_station_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_station_DuplicateBaseRecord": "Duplicate Records (cp_station_DuplicateBaseRecord)",
+      "cp_station_DuplicateMatchingRecord": "Duplicate Records (cp_station_DuplicateMatchingRecord)",
+      "cp_station_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_station_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_station_ProcessSession": "Process Sessions",
+      "cp_station_SyncErrors": "Sync Errors",
+      "cp_stationid": "Station",
+      "cp_stationname": "Station Name",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Stations",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Stations (Views)",
+    "Name": "_cp_station_views",
+    "RelatedEntityName": "Stations",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "9e18748e-6141-416e-8eca-25c5b21678cc": "Station Lookup View",
+      "a0eef1ae-459c-45be-b5b1-8aaeb0d4bded": "Inactive Stations",
+      "a4b84220-b0c0-45c2-af42-404df352885f": "Station Advanced Find View",
+      "ca21637c-ef64-42e4-b49c-66c2ab6e9f6e": "Station Associated View",
+      "fbe8b250-2736-4b5a-8105-1dc28830d40a": "Active Stations"
+    }
+  },
+  {
+    "DisplayName": "Status (Stations)",
+    "Name": "cp_station_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Stations"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Stations",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Stations)",
+    "Name": "cp_station_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Stations"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Stations",
+    "Type": "OptionSetInfo"
+  }
+]

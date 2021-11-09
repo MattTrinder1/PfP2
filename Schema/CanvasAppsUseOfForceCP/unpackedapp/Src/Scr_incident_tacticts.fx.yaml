@@ -1,0 +1,755 @@
+"Scr_incident_tacticts As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    OnVisible: |+
+        =Set(AllReset, true);
+               UpdateContext({AllReset: true});
+        Set(madcol,LightGoldenRodYellow);UpdateContext({madcol:LightGoldenRodYellow});Set(madcolA,LightGoldenRodYellow);UpdateContext({madcolA:LightGoldenRodYellow});
+        Set(madcolB,LightGoldenRodYellow);UpdateContext({madcolB:LightGoldenRodYellow});
+        Set(madcolC,LightGoldenRodYellow);UpdateContext({madcolC:LightGoldenRodYellow});
+        Set(madcolD,LightGoldenRodYellow);UpdateContext({madcolD:LightGoldenRodYellow});
+        Set(madcolE,LightGoldenRodYellow);UpdateContext({madcolE:LightGoldenRodYellow});
+        Set(galHeight,CountRows(Sort(Tactictsoffline,Tacticorder)) * (Gallery_tactics.TemplateHeight));
+        Set(madcolF,LightGoldenRodYellow);UpdateContext({madcolF:LightGoldenRodYellow});
+        Set(madcolF,LightGoldenRodYellow);UpdateContext({madcolF:LightGoldenRodYellow});
+        Set(madcolG,LightGoldenRodYellow);UpdateContext({madcolG:LightGoldenRodYellow});
+        Set(madcolH,LightGoldenRodYellow);UpdateContext({madcolH:LightGoldenRodYellow});
+        Set(madcolI,LightGoldenRodYellow);UpdateContext({madcolI:LightGoldenRodYellow});
+        Set(madcolJ,LightGoldenRodYellow);UpdateContext({madcolJ:LightGoldenRodYellow});
+        Set(madcolK,LightGoldenRodYellow);UpdateContext({madcolK:LightGoldenRodYellow});
+        Set(madcolL,LightGoldenRodYellow);UpdateContext({madcolL:LightGoldenRodYellow});
+        Set(madcolM,LightGoldenRodYellow);UpdateContext({madcolM:LightGoldenRodYellow});
+        Set(madcolM,LightGoldenRodYellow);UpdateContext({madcolM:LightGoldenRodYellow});
+        Set(madcolN,LightGoldenRodYellow);UpdateContext({madcolN:LightGoldenRodYellow});
+        Set(madcolO,LightGoldenRodYellow);UpdateContext({madcolO:LightGoldenRodYellow});
+        If(
+            Len(ComboBox_tactics_used.Selected.cp_name) > 0,
+            UpdateContext({madcol: White}),
+            UpdateContext({madcol: LightGoldenRodYellow})
+        );
+        UpdateContext ({galHeight: CountIf(Tactictsoffline,UOFKey=Drpdn_incident_key_9.Selected.Key ) * (Gallery_tactics.TemplateHeight)});
+        If(Len(Radio_tactic_effective.Selected.Value)>0,UpdateContext({madcolA:White})
+        ,UpdateContext({madcolA:LightGoldenRodYellow}));
+        
+        
+        Set(AllReset, true);
+               UpdateContext({AllReset: true});
+        
+        Set(
+            addcontactmethod,
+            false
+        );
+        UpdateContext({addcontactmethod: false});
+        Set(
+            contactworkphone,
+            false
+        );
+        UpdateContext({contactworkphone: false});
+        Set(
+            contactmail,
+            false
+        );
+        UpdateContext({contactmail: false});
+        Set(
+            contacthomephone,
+            false
+        );
+        UpdateContext({contacthomephone: false});
+        Set(
+            contactmobile,
+            false
+        );
+        UpdateContext({contactmobile: false});
+        Set(
+            occupation,
+            false
+        );
+        UpdateContext({occupation: false});
+        Set(
+            ycontactmethodid,
+            0
+        );
+        Set(
+            yretiredid,
+            0
+        );
+        UpdateContext({y1: 0});Set(madcol,LightGoldenRodYellow);UpdateContext({madcol:LightGoldenRodYellow});Set(madcolA,LightGoldenRodYellow);UpdateContext({madcolA:LightGoldenRodYellow});
+        
+        Set(madcolB,LightGoldenRodYellow);UpdateContext({madcolB:LightGoldenRodYellow});
+        
+        Set(madcolC,LightGoldenRodYellow);UpdateContext({madcolC:LightGoldenRodYellow});
+        
+        Set(madcolD,LightGoldenRodYellow);UpdateContext({madcolD:LightGoldenRodYellow});
+        
+        Set(madcolE,LightGoldenRodYellow);UpdateContext({madcolE:LightGoldenRodYellow});
+        
+        
+        Set(madcolF,LightGoldenRodYellow);UpdateContext({madcolF:LightGoldenRodYellow});
+        
+        Set(madcolF,LightGoldenRodYellow);UpdateContext({madcolF:LightGoldenRodYellow});
+        Set(madcolG,LightGoldenRodYellow);UpdateContext({madcolG:LightGoldenRodYellow});
+        Set(madcolH,LightGoldenRodYellow);UpdateContext({madcolH:LightGoldenRodYellow});
+        Set(madcolI,LightGoldenRodYellow);UpdateContext({madcolI:LightGoldenRodYellow});
+        Set(madcolJ,LightGoldenRodYellow);UpdateContext({madcolJ:LightGoldenRodYellow});
+        Set(madcolK,LightGoldenRodYellow);UpdateContext({madcolK:LightGoldenRodYellow});
+        Set(madcolL,LightGoldenRodYellow);UpdateContext({madcolL:LightGoldenRodYellow});
+        Set(madcolM,LightGoldenRodYellow);UpdateContext({madcolM:LightGoldenRodYellow});
+        Set(madcolM,LightGoldenRodYellow);UpdateContext({madcolM:LightGoldenRodYellow});
+        Set(madcolN,LightGoldenRodYellow);UpdateContext({madcolN:LightGoldenRodYellow});
+        Set(madcolO,LightGoldenRodYellow);UpdateContext({madcolO:LightGoldenRodYellow});
+        
+        If(Len(Drpdn_Subjects_involved.Selected.Value)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}));
+        If(Len(Radio_body_cam_included.Selected.Value)>0,UpdateContext({madcolA:White}),UpdateContext({madcolA:LightGoldenRodYellow}));
+        
+        
+        
+
+    RectQuickActionBar_header_14 As rectangle:
+        Height: =88
+        Width: =Parent.Width
+        ZIndex: =1
+
+    Lbl_header_details_14 As label:
+        Align: =Align.Center
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =88
+        Size: =27
+        Text: ="Tactics Used"
+        Width: =Parent.Width
+        ZIndex: =2
+
+    Canvas_details_14 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1048
+        Width: =Parent.Width
+        Y: =RectQuickActionBar_header_14.Y + RectQuickActionBar_header_14.Height
+        ZIndex: =3
+
+        DataCard_add_tactic As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =535
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Drpdn_incident_key_9 As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =Use_of_force_Primary_key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: ='Use of force offline'.Key
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =40
+                ZIndex: =1
+
+            ComboBox_tactics_used As combobox:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                ChevronBackground: =RGBA(116, 116, 116, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                Default: =LookUp(tactictypeoffline,LookUp(Tactictsoffline,UOFKey=Drpdn_incident_key_9.Selected.Key).Tacticname=cp_name)
+                DefaultSelectedItems: =LookUp(tactictypeoffline,LookUp(Tactictsoffline,UOFKey=Drpdn_incident_key_9.Selected.Key).Tacticname=cp_name)
+                DisplayFields: =
+                Fill: =madcol
+                Height: =70
+                InputTextPlaceholder: ="Please select the tactic used"
+                IsSearchable: =false
+                Items: |-
+                    =
+                    SortByColumns(Filter(tactictypeoffline, statecode in "Active"),"cp_displaysequenceno", Descending)
+                    //Implement When needed ^^^^^^
+                    
+                    //Sort(tactictypeoffline,"cp_displaysequenceno", Descending)
+                OnChange: |-
+                    =If(
+                        Len(ComboBox_tactics_used.Selected.cp_name) > 0,
+                        UpdateContext({madcol: White}),
+                        UpdateContext({madcol: LightGoldenRodYellow})
+                    );
+                    If(
+                        ComboBox_tactics_used.Selected.cp_name = "Firearms fired ",
+                        UpdateContext({ceddevicevis: true});
+                        UpdateContext({ytasertactics: ytasertactics + 100});,
+                        UpdateContext({ceddevicevis: false});
+                        UpdateContext({ytasertactics: 0});
+                    );
+                OnSelect: |-
+                    =If(
+                        ComboBox_tactics_used.Selected.cp_name = "Firearms fired",
+                        UpdateContext({ceddevicevis: true});
+                        UpdateContext({ytasertactics: ytasertactics + 100});,
+                        UpdateContext({ceddevicevis: false});
+                        UpdateContext({ytasertactics: 0});
+                    );
+                Reset: =AllReset
+                SearchFields: =["cp_name"]
+                SearchItems: =[]
+                SelectionFill: =RGBA(116, 116, 116, 1)
+                SelectMultiple: =false
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =147
+                ZIndex: =2
+
+            Label_IncidentLocation_21 As label:
+                Size: =21
+                Text: ="Please select a tactic"
+                Width: =560
+                X: =38
+                Y: =107
+                ZIndex: =3
+
+            Label_retired_31 As label:
+                Height: =66
+                Size: =21
+                Text: |-
+                    ="Was the tactic used effective?
+                    "
+                Width: =560
+                X: =40
+                Y: =224
+                ZIndex: =4
+
+            Radio_tactic_effective As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp(Tactictsoffline,UOFKey=Drpdn_incident_key_9.Selected.Key).Effectivetactic
+                Fill: =If(!IsBlank(Self.Selected.Value),White,LightGoldenRodYellow)
+                Height: =97
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_tactic_effective.Selected.Value)>0,UpdateContext({madcolA:White}),UpdateContext({madcolA:LightGoldenRodYellow}))
+                OnSelect: =
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Reset: =AllReset
+                Size: =21
+                Width: =335
+                X: =46
+                Y: =281
+                ZIndex: =5
+
+            Btn_tactis_save_1 As button:
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Normal
+                Height: =70
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |+
+                    =If(Len(ComboBox_tactics_used.Selected.cp_name)>0,
+                    UpdateContext({z: z + 1});
+                    Set(newKey1, Text(
+                                Now(),
+                                "[$-en-GB]yyyymmdd"
+                            ) + z);
+                    
+                    Collect(
+                        Tactictsoffline,
+                        {
+                        UOFKey: Drpdn_incident_key_9.Selected.Key,
+                        Tacticname: ComboBox_tactics_used.Selected.cp_name,
+                        Tacticid:ComboBox_tactics_used.Selected.cp_tactictypeid,
+                        Effectivetactic: Radio_tactic_effective.Selected.Value,
+                        Tacticorder: CountIf( Tactictsoffline, Use_of_force_Primary_key=UOFKey ) + 1 
+                        /*CountRows(Tactictsoffline) + 1*/,
+                        Firearmsusedtype: LookUp(FirearmUseoffline,cp_name="").cp_name,
+                        Firearmsusedtypename: "",
+                        Tactickey: newKey1,
+                        ceddevice:LookUp(TaserDeviceoffline,cp_name="").cp_lookupvalueid,
+                        ceddeviceserial:"", 
+                        useoftaser:LookUp(TaserUseoffline,cp_name="").cp_lookupvalueid,
+                        tasertimesused:"",
+                        Numberofbarbs:"",
+                        Cycleinterupted:"",
+                        Repeatcycle:"",
+                        Totalnumbercycles:"",
+                        forceusedfrontback:LookUp(TaserBodyAreaUseoffline,cp_name="").cp_name,
+                        forceusedfront:LookUp(TaserAreaUsedFrontoffline,cp_areaname="").cp_areaname,
+                        forceusedfrontname:"",
+                        forceusedback:LookUp(TaserAreaUsedBackoffline,cp_areaname="").cp_areaname,
+                        forceusedbackname:"", 
+                        catridgenumber:"",
+                        addanothertactic:"",
+                        Cycleextended:"",
+                        Furthercatridges:"",
+                        Numberofbarbs_1:"",
+                        Cycleinterupted_1:"",
+                        Repeatcycle_1:"",
+                        Totalnumbercycles_1:"",
+                        forceusedfrontback_1:LookUp(TaserBodyAreaUseoffline,cp_name="").cp_name,
+                        forceusedfront1:LookUp(TaserAreaUsedFrontoffline,cp_areaname="").cp_areaname,
+                        forceusedfrontname1:"",
+                        forceusedback1:LookUp(TaserAreaUsedBackoffline,cp_areaname="").cp_areaname,
+                        forceusedbackname1:"",
+                        catridgenumber_1:"",
+                        Cycleextended_1:"",
+                        Furthercatridges_1:"",
+                        Numberofbarbs_2:"",
+                        Cycleinterupted_2:"",
+                        Repeatcycle_2:"",
+                        Totalnumbercycles_2:"",
+                        forceusedfrontback_2:LookUp(TaserBodyAreaUseoffline,cp_name="").cp_name,
+                        forceusedfront2:LookUp(TaserAreaUsedFrontoffline,cp_areaname="").cp_areaname,
+                        forceusedfrontname2:"",
+                        forceusedback2:LookUp(TaserAreaUsedBackoffline,cp_areaname="").cp_areaname,
+                        forceusedbackname2:"",
+                        catridgenumber_2:"",
+                        Cycleextended_2:""}
+                    );
+                    SaveData(
+                        Tactictsoffline,
+                        "Tactictsoffline"
+                    );
+                    UpdateContext ({galHeight: CountIf(Tactictsoffline,UOFKey=Drpdn_incident_key_9.Selected.Key) * (Gallery_tactics.TemplateHeight)});
+                    Set(AllReset, true);
+                    UpdateContext({AllReset: true});
+                    
+                    If(ComboBox_tactics_used.Selected.cp_name="C.E.D." Or ComboBox_tactics_used.Selected.cp_name="Firearms fired" ,
+                    Navigate(
+                        Scr_incident_taser,
+                        UnCoverRight
+                    )));
+                    
+                        Reset(ComboBox_tactics_used);
+                        Reset(Radio_tactic_effective);
+                    
+                Size: =24
+                Text: ="Add Tactic"
+                Width: =545
+                X: =40
+                Y: =418+ytasertactics
+                ZIndex: =6
+
+            Txt_times_used_1 As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =
+                Fill: =madcolC
+                Format: =TextFormat.Number
+                Height: =70
+                HintText: ="How many times was the taser used? "
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: |-
+                    =If(
+                        Len(Txt_times_used_1.Text) > 0,
+                        UpdateContext({madcolC: Transparent}),
+                        UpdateContext({madcolC: LightGoldenRodYellow})
+                    );
+                Size: =21
+                VirtualKeyboardMode: =VirtualKeyboardMode.Numeric
+                Visible: =cedtimesusedvis
+                Width: =545
+                X: =46
+                Y: =750
+                ZIndex: =7
+
+            ComboBox_firearmuse As combobox:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                ChevronBackground: =RGBA(116, 116, 116, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                Default: =LookUp(tactictypeoffline,LookUp(Tactictsoffline,UOFKey=Drpdn_incident_key_9.Selected.Key).Firearmsusedtypename=cp_name)
+                DisplayFields: =
+                Height: =70
+                InputTextPlaceholder: ="Select one or more tactics"
+                IsSearchable: =false
+                Items: =FirearmUseoffline
+                OnSelect: =
+                SearchFields: =["cp_name"]
+                SearchItems: =[]
+                SelectionFill: =RGBA(116, 116, 116, 1)
+                Size: =21
+                Visible: =ceddevicevis
+                Width: =545
+                X: =46
+                Y: =427
+                ZIndex: =8
+
+            Label_IncidentLocation_9 As label:
+                Size: =21
+                Text: ="Use of Firearms"
+                Visible: =ceddevicevis
+                Width: =560
+                X: =46
+                Y: =377
+                ZIndex: =9
+
+            Label_star_address_36 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =569
+                Y: =113
+                ZIndex: =10
+
+            Label_star_address_37 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =435
+                Y: =219
+                ZIndex: =11
+
+        DataCard_Tactics As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =140
+            Width: =620
+            X: =0
+            Y: =1
+            ZIndex: =2
+
+            Gallery_tactics As gallery.galleryVertical:
+                BorderColor: =RGBA(0, 0, 0, 1)
+                BorderThickness: =0.5
+                Height: =galHeight
+                Items: =SortByColumns(Filter(Tactictsoffline,UOFKey=Drpdn_incident_key_9.Selected.Key ),"Tacticorder",Ascending)
+                Layout: =Layout.Vertical
+                ShowScrollbar: =false
+                TemplateSize: =155
+                Visible: =If(!IsBlank(SortByColumns(Filter(Tactictsoffline,UOFKey=Drpdn_incident_key_9.Selected.Key ),"Tacticorder",Ascending)),true,false)
+                Width: =619
+                ZIndex: =3
+
+                Txt_tacticname As text:
+                    BorderStyle: =BorderStyle.None
+                    Default: =ThisItem.Tacticname
+                    DisplayMode: =DisplayMode.View
+                    FontWeight: =FontWeight.Bold
+                    Height: =68
+                    Mode: =TextMode.MultiLine
+                    OnSelect: =Select(Parent)
+                    Size: =17
+                    Width: =576
+                    Y: =41
+                    ZIndex: =1
+
+                Label_tactic_used As label:
+                    Height: =35
+                    OnSelect: =Select(Parent)
+                    Size: =21
+                    Text: =ThisItem.Cycleextended
+                    Underline: =true
+                    Width: =330
+                    ZIndex: =2
+
+                Label9 As label:
+                    BorderStyle: =BorderStyle.None
+                    Height: =35
+                    OnSelect: =Select(Parent)
+                    Size: =21
+                    Text: =ThisItem.Cycleextended_1
+                    Underline: =true
+                    Width: =99
+                    X: =480
+                    ZIndex: =3
+
+                Txt_tactic_order As text:
+                    BorderColor: =RGBA(230, 230, 230, 1)
+                    BorderStyle: =BorderStyle.Dashed
+                    Default: =ThisItem.Tacticorder
+                    Height: =50
+                    OnChange: |
+                        =UpdateIf(Tactictsoffline,Text(Tactickey)=Txt_key.Text,{Tacticorder:Value(Txt_tactic_order.Text)})
+                    OnSelect: =Select(Parent)
+                    Size: =21
+                    Width: =43
+                    X: =508
+                    Y: =11
+                    ZIndex: =4
+
+                Txt_key As text:
+                    Default: =ThisItem.Tactickey
+                    Height: =11
+                    OnSelect: =Select(Parent)
+                    Size: =21
+                    Visible: =false
+                    Width: =560
+                    Y: =98
+                    ZIndex: =7
+
+                Icon10 As icon.Cancel:
+                    Color: =RGBA(0, 0, 0, 1)
+                    Height: =56
+                    Icon: =Icon.Cancel
+                    OnSelect: |-
+                        =Remove(Tactictsoffline,ThisItem);
+                        
+                        
+                        UpdateContext ({galHeight: CountIf(Tactictsoffline,Use_of_force_Primary_key=UOFKey) * (Gallery_tactics.TemplateHeight)});
+                    Width: =33
+                    X: =576
+                    Y: =43
+                    ZIndex: =8
+
+                Rectangle3 As rectangle:
+                    BorderColor: =RGBA(153, 207, 236, 1)
+                    Fill: =RGBA(0, 0, 0, 1)
+                    Height: =1
+                    OnSelect: =Select(Parent)
+                    Width: =580
+                    X: =5
+                    Y: =140
+                    ZIndex: =9
+
+                Txt_tactic As text:
+                    BorderStyle: =BorderStyle.None
+                    Default: |-
+                        ="Tactic:"
+                    Height: =50
+                    OnSelect: =Select(Parent)
+                    Size: =17
+                    Width: =82
+                    ZIndex: =10
+
+                Txt_tactic_1 As text:
+                    BorderStyle: =BorderStyle.None
+                    Default: |-
+                        ="Was effective ? :"
+                    Height: =37
+                    OnSelect: =Select(Parent)
+                    Size: =17
+                    Width: =190
+                    Y: =98
+                    ZIndex: =11
+
+                Txt_tacticname_1 As text:
+                    BorderStyle: =BorderStyle.None
+                    Default: =ThisItem.Effectivetactic
+                    DisplayMode: =DisplayMode.View
+                    FontWeight: =FontWeight.Bold
+                    Height: =37
+                    OnSelect: =Select(Parent)
+                    Size: =17
+                    Width: =113
+                    X: =190
+                    Y: =98
+                    ZIndex: =12
+
+        DataCard3 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =567
+            Visible: =If(CountIf(Tactictsoffline,UOFKey=Drpdn_incident_key_9.Selected.Key)>0,true,false)
+            Width: =640
+            X: =0
+            Y: =2
+            ZIndex: =3
+
+            Drpdn_Subjects_involved As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =LookUp('Use of force offline',Key=Drpdn_incident_key_7.Selected.Key).subjectsdinvolved
+                Fill: =madcolO
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: |-
+                    =["Unknown",
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5",
+                    "6 + (i.e. public order situation)",""]
+                OnChange: |-
+                    =If(Len(Drpdn_Subjects_involved.Selected.Value)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Drpdn_Subjects_involved.Selected.Value)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}))
+                PressedFill: =RGBA(230, 230, 230, 1)
+                Reset: =AllReset
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =341
+                ZIndex: =1
+
+            Label_IncidentLocation_20 As label:
+                Height: =66
+                Size: =21
+                Text: ="How many subjects were involved?"
+                Width: =560
+                X: =40
+                Y: =284
+                ZIndex: =2
+
+            ComboBox_number_of_officers As combobox:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                ChevronBackground: =RGBA(116, 116, 116, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                Default: =LookUp(officerpresentoffline,LookUp('Use of force offline',Key=Drpdn_incident_key_7.Selected.Key).numberofofficersname=cp_name)
+                DefaultSelectedItems: =LookUp(officerpresentoffline,LookUp('Use of force offline',Key=Drpdn_incident_key_7.Selected.Key).numberofofficersname=cp_name)
+                DisplayFields: =
+                Height: =70
+                InputTextPlaceholder: ="Number of officers"
+                IsSearchable: =false
+                Items: =officerpresentoffline
+                OnSelect: =
+                Reset: =AllReset
+                SearchFields: =["cp_name"]
+                SearchItems: =[]
+                SelectionFill: =RGBA(116, 116, 116, 1)
+                SelectMultiple: =false
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =113
+                ZIndex: =3
+
+            Label_IncidentLocation_10 As label:
+                Height: =80
+                Size: =21
+                Text: ="How many officers were present at the time force was used?"
+                Width: =538
+                X: =40
+                Y: =33
+                ZIndex: =4
+
+            ComboBox_officers As combobox:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                ChevronBackground: =RGBA(116, 116, 116, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                Default: =LookUp(Usersalllocal,LookUp('Use of force offline',Key=Drpdn_incident_key_7.Selected.Key).officerspresentname=cp_badgenumber)
+                DefaultSelectedItems: =LookUp(Usersalllocal,LookUp('Use of force offline',Key=Drpdn_incident_key_7.Selected.Key).officerspresentname=cp_badgenumber)
+                DisplayFields: =["lastname","cp_badgenumber"]
+                Height: =70
+                InputTextPlaceholder: ="Find officers"
+                Items: =Usersalllocal
+                OnSelect: =
+                Reset: =AllReset
+                SearchFields: =["cp_badgenumber","lastname"]
+                SearchItems: =Search(Usersalllocal,ComboBox_officers.SearchText,"cp_badgenumber","lastname")
+                SelectionFill: =RGBA(116, 116, 116, 1)
+                Size: =21
+                Template: =ListItemTemplate.Double
+                Width: =545
+                X: =40
+                Y: =225
+                ZIndex: =5
+
+            Label_IncidentLocation_25 As label:
+                Height: =70
+                Size: =21
+                Text: ="Other officers present?"
+                Width: =560
+                X: =40
+                Y: =166
+                ZIndex: =6
+
+            Radio_body_cam_included As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('Use of force offline',Key=Drpdn_incident_key_7.Selected.Key).Bodycamincluded
+                Fill: =madcolA
+                Height: =97
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_body_cam_included.Selected.Value)>0,UpdateContext({madcolA:White}),UpdateContext({madcolA:LightGoldenRodYellow}))
+                OnSelect: =
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Reset: =AllReset
+                Size: =21
+                Width: =335
+                X: =40
+                Y: =470
+                ZIndex: =7
+
+            Label_IncidentLocation_26 As label:
+                Height: =66
+                Size: =21
+                Text: ="Did you record the incident on Body cam?"
+                Width: =560
+                X: =40
+                Y: =417
+                ZIndex: =8
+
+            Label_star_address_34 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =563
+                Y: =302
+                ZIndex: =9
+
+            Label_star_address_35 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =582
+                Y: =411
+                ZIndex: =10
+
+        DataCard_Save_and_Continue As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =3
+            ZIndex: =5
+
+            Btn_tactis_save_2 As button:
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Bold
+                Height: =70
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =UpdateIf('Use of force offline',Key=Drpdn_incident_key_2.Selected.Key,{
+                            numberofofficers:ComboBox_number_of_officers.Selected.cp_lookupvalueid ,
+                            officerspresent:ComboBox_officers.Selected.systemuserid,
+                           numberofofficersname:ComboBox_number_of_officers.Selected.cp_name ,
+                            officerspresentname:ComboBox_officers.Selected.cp_badgenumber,
+                            subjectsdinvolved:Drpdn_Subjects_involved.Selected.Value,
+                            Bodycamincluded:Radio_body_cam_included.Selected.Value
+                    
+                            
+                           
+                    }
+                    );SaveData('Use of force offline',"Use of force offline");
+                    Navigate(Scr_staff_injuries);
+                Size: =24
+                Text: ="Save and Continue"
+                Width: =545
+                X: =36
+                Y: =16
+                ZIndex: =1
+
+    Icon_back_details_home_14 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Back()
+        X: =31
+        Y: =13
+        ZIndex: =4
+
+    Icn_exit_Home_14 As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =563
+        Y: =13
+        ZIndex: =5
+
