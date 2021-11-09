@@ -1,0 +1,30 @@
+App As appinfo:
+    BackEnabled: =false
+    OnStart: |
+        =Set(
+            glbAppVersion,
+            1
+        );
+        //this value is a placeholder which is updated by the build pipeline, don't edit it manually
+        //its commented it out to avoid it being formatted, which prevents the pipeline from finding it
+        //Basically - leave it alone !
+        //Set(glbAppVersion,1);
+        IfError(
+            LoadData(
+                'Notebook Offline',
+                "NotebookOfflineCache",
+                true
+            ),
+            true
+        );
+        IfError(
+            LoadData(
+                Photos,
+                "PhotosCache",
+                true
+            ),
+            true
+        );
+        Set(gblLoading,false);
+        Set(gblLoading2,false);
+

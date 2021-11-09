@@ -1,0 +1,101 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_pocketnotebookimages",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_pocketnotebookimage",
+    "MaxGetRowsCount": 2000,
+    "Name": "Pocket Notebook Images",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "cp_image": "Image",
+      "cp_imageid": "cp_imageId",
+      "cp_imagetype": "Image Type",
+      "cp_name": "Name",
+      "cp_pocketnotebookimage_AsyncOperations": "System Jobs",
+      "cp_pocketnotebookimage_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_pocketnotebookimage_DuplicateBaseRecord": "Duplicate Records (cp_pocketnotebookimage_DuplicateBaseRecord)",
+      "cp_pocketnotebookimage_DuplicateMatchingRecord": "Duplicate Records (cp_pocketnotebookimage_DuplicateMatchingRecord)",
+      "cp_pocketnotebookimage_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_pocketnotebookimage_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_pocketnotebookimage_ProcessSession": "Process Sessions",
+      "cp_pocketnotebookimage_SyncErrors": "Sync Errors",
+      "cp_pocketnotebookimageid": "Pocket Notebook Image",
+      "cp_pocketnotebookkey": "Pocket Notebook Key",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Pocket Notebook Images",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Pocket Notebook Images (Views)",
+    "Name": "_cp_pocketnotebookimage_views",
+    "RelatedEntityName": "Pocket Notebook Images",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "24e19000-42d1-41bb-ba12-55c1bf068f85": "Pocket Notebook Image Advanced Find View",
+      "70de35ac-e111-4dfc-8da9-5d9c80363fd1": "Active Pocket Notebook Images",
+      "a3d93b05-8b53-40e2-bbd2-ce52ae76ff2f": "Inactive Pocket Notebook Images",
+      "fca67ea6-8e11-4e6b-9059-b7c8faa7d390": "Pocket Notebook Image Lookup View",
+      "fd2ffe23-a608-4ba4-98f7-e7d3248c044e": "Pocket Notebook Image Associated View"
+    }
+  },
+  {
+    "DisplayName": "Status (Pocket Notebook Images)",
+    "Name": "cp_pocketnotebookimage_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Pocket Notebook Images"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Pocket Notebook Images",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Pocket Notebook Images)",
+    "Name": "cp_pocketnotebookimage_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Pocket Notebook Images"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Pocket Notebook Images",
+    "Type": "OptionSetInfo"
+  }
+]
