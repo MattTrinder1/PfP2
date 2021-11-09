@@ -843,9 +843,20 @@ function onChangeMeetingStatus(executionContext, isLoadOrPostSave) {
 
     formContext.ui.tabs.get("tabReflectiveReview").sections.get("sectionReflectiveReview").setVisible(inProgress || completed);
 
+    formContext.ui.clearFormNotification("saveNotification");
+
     if (!currentUserIsParticipant(formContext)) {
         //Process start/end meeting trigger.
         if (inProgress) {
+            if (currentUserIsReviewer(formContext)) {
+                var participant = formContext.getAttribute("cp_participant").getValue();
+                var participantName = (participant != null ? participant[0].name : "the Participant");
+                formContext.ui.setFormNotification(
+                    "If " + participantName + " has this record open on their device, you can select 'Save' for them to review what has been recorded before ending the meeting.",
+                    "INFO",
+                    "saveNotification"
+                );
+            }
             if (!isLoadOrPostSave && !internalMeetingStatusChange) {
                 //Just switched to In Progress (in session).
                 var startedOn = new Date();
