@@ -154,10 +154,10 @@ stages:
         runOnce:
           deploy:
             steps:
-            - template : config-data-template.yml
-              parameters :
-                connectionString: $(pfpsystemtest.connection.string)
-                suffix: $(solution.prefix)
+              - template : config-data-template.yml
+                parameters :
+                  connectionString: $(pfpsystemtest.connection.string)
+                  suffix: $(solution.prefix)
 
       
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
