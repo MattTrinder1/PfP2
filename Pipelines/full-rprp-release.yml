@@ -62,6 +62,9 @@ variables:
   value: ${{parameters.release}}
 - template: connectionStrings.yml
 
+${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
+- name: Prod
+
 name: $(Build.DefinitionName) - $(Build.BuildId) 
 
 stages: 
@@ -146,15 +149,23 @@ stages:
       - name: configExists
       - name: currentConfigVersion  
       - name: newConfigVersion  
-
+      
       strategy:
         runOnce:
           deploy:
             steps:
+            - ${{ if eq(parameters.release, 'CP') }}:
               - template : config-data-template.yml
                 parameters :
                   connectionString: $(pfpsystemtest.connection.string)
-              
+                  suffix: ''
+            - ${{ if eq(parameters.release, 'RP') }}:
+              - template : config-data-template.yml
+                parameters :
+                  connectionString: $(pfpsystemtest.connection.string)
+                  suffix: 'RPRP'
+
+      
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #----------------------------------End Stage-------------------------------------------------------------------
