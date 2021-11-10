@@ -1,0 +1,244 @@
+{
+  "properties": {
+    "connectionReferences": {
+      
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "PowerApp",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Initializevariable2_Value": {
+                  "type": "any"
+                }
+              },
+              "required": [
+                "Initializevariable2_Value"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Compose": {
+          "runAfter": {
+            "Set_Vehicle_Reg": [
+              "Succeeded"
+            ]
+          },
+          "type": "Compose",
+          "inputs": {
+            "key": "dYc+mEzFzk6xfSNIXeYmuw==",
+            "VehicleReg": "@variables(\u0027VehicleReg\u0027)"
+          }
+        },
+        "Parse_JSON": {
+          "runAfter": {
+            "Compose": [
+              "Succeeded"
+            ]
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@outputs(\u0027Compose\u0027)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "VehicleReg": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "HTTP": {
+          "runAfter": {
+            "Parse_JSON": [
+              "Succeeded"
+            ]
+          },
+          "type": "Http",
+          "inputs": {
+            "method": "POST",
+            "uri": "https://prod-09.uksouth.logic.azure.com:443/workflows/2230592d8d8a4f38ba9b1828f54de135/triggers/manual/paths/invoke?api-version=2016-06-01\u0026sp=%2Ftriggers%2Fmanual%2Frun\u0026sv=1.0\u0026sig=-uMh5CFQSArsxlmhXy97mkFjHN5qY7YBBKY4QbmEdVs",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": "@body(\u0027Parse_JSON\u0027)"
+          }
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            "HTTP": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Json string",
+                "type": "string",
+              "value": "@{body(\u0027HTTP\u0027)}"
+              }
+            ]
+          }
+        },
+        "Response": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "Response",
+          "kind": "Http",
+          "inputs": {
+            "statusCode": 200,
+            "body": "@body(\u0027HTTP\u0027)",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "Make": {
+                    "type": "string"
+                  },
+                  "Model": {
+                    "type": "string"
+                  },
+                  "Colour": {
+                    "type": "string"
+                  },
+                  "Style": {
+                    "type": "string"
+                  },
+                  "Registered": {
+                    "type": "string"
+                  },
+                  "cc": {
+                    "type": "string"
+                  },
+                  "VrnReg": {
+                    "type": "string"
+                  },
+                  "ChassisNo": {
+                    "type": "string"
+                  },
+                  "EngineNo": {
+                    "type": "string"
+                  },
+                  "RegKeeper": {
+                    "type": "string"
+                  },
+                  "ad1": {
+                    "type": "string"
+                  },
+                  "ad2": {
+                    "type": "string"
+                  },
+                  "ad3": {
+                    "type": "string"
+                  },
+                  "ad4": {
+                    "type": "string"
+                  },
+                  "ad5": {
+                    "type": "string"
+                  },
+                  "ad6": {
+                    "type": "string"
+                  },
+                  "KeeperSince": {
+                    "type": "string"
+                  },
+                  "Stolen": {
+                    "type": "string"
+                  },
+                  "NoofReports": {
+                    "type": "string"
+                  },
+                  "MOTExpiry": {
+                    "type": "string"
+                  },
+                  "Ins1": {
+                    "type": "string"
+                  },
+                  "Ins2": {
+                    "type": "string"
+                  },
+                  "Report 1": {
+                    "type": "string"
+                  },
+                  "Report 2": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "Make",
+                  "Model",
+                  "Colour",
+                  "Style",
+                  "Registered",
+                  "cc",
+                  "VrnReg",
+                  "ChassisNo",
+                  "EngineNo",
+                  "RegKeeper",
+                  "ad1",
+                  "ad2",
+                  "ad3",
+                  "ad4",
+                  "ad5",
+                  "ad6",
+                  "KeeperSince",
+                  "Stolen",
+                  "NoofReports",
+                  "MOTExpiry",
+                  "Ins1",
+                  "Ins2",
+                  "Report 1"
+                ]
+              }
+            }
+          }
+        },
+        "Set_Vehicle_Reg": {
+          "runAfter": {
+            
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "VehicleReg",
+                "type": "string",
+              "value": "@{triggerBody()[\u0027Initializevariable2_Value\u0027]}"
+              }
+            ]
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

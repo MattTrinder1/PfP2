@@ -1,0 +1,448 @@
+{
+  "properties": {
+    "connectionReferences": {
+      
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "PowerAppV2",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "Reason",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "DriverNumber",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text",
+                "text_1"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Compose": {
+          "runAfter": {
+            
+          },
+          "type": "Compose",
+          "inputs": {
+          "ReasonCode": "@{triggerBody()[\u0027text\u0027]}",
+          "DriverNumber": "@{triggerBody()[\u0027text_1\u0027]}"
+          }
+        },
+        "HTTP": {
+          "runAfter": {
+            "Compose": [
+              "Succeeded"
+            ]
+          },
+          "type": "Http",
+          "inputs": {
+            "method": "POST",
+            "uri": "https://prod-06.uksouth.logic.azure.com:443/workflows/1fea657379f04019a887d5561ce2047e/triggers/manual/paths/invoke?api-version=2016-06-01\u0026sp=%2Ftriggers%2Fmanual%2Frun\u0026sv=1.0\u0026sig=WhUC3btEdxlAkaG4PBu_lD0T9gQfw9_EveT1wTbmhtg",
+            "body": "@outputs(\u0027Compose\u0027)"
+          }
+        },
+        "Response": {
+          "runAfter": {
+            "HTTP": [
+              "Succeeded"
+            ]
+          },
+          "type": "Response",
+          "kind": "Http",
+          "inputs": {
+            "statusCode": 200,
+            "body": "@body(\u0027HTTP\u0027)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "selected": {
+                  "type": "boolean"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "dateOfBirth": {
+                  "type": "string"
+                },
+                "gender": {
+                  "type": "string"
+                },
+                "birthplace": {
+                  "type": "string"
+                },
+                "address1": {
+                  "type": "string"
+                },
+                "address2": {
+                  "type": "string"
+                },
+                "address3": {
+                  "type": "string"
+                },
+                "postCode": {
+                  "type": "string"
+                },
+                "driverNumber": {
+                  "type": "string"
+                },
+                "markScars": {
+                  "type": "array"
+                },
+                "alerts": {
+                  "type": "array"
+                },
+                "warningSignals": {
+                  "type": "array"
+                },
+                "aliasNames": {
+                  "type": "array"
+                },
+                "aliasDOBs": {
+                  "type": "array"
+                },
+                "informationMarkers": {
+                  "type": "array"
+                },
+                "offences": {
+                  "type": "array"
+                },
+                "addresses": {
+                  "type": "array"
+                },
+                "nicknames": {
+                  "type": "array"
+                },
+                "descriptions": {
+                  "type": "array"
+                },
+                "disposalSummaries": {
+                  "type": "array"
+                },
+                "bailConditons": {
+                  "type": "array"
+                },
+                "wantedMissings": {
+                  "type": "array"
+                },
+                "operationalInfos": {
+                  "type": "array"
+                },
+                "disqualifieds": {
+                  "type": "array"
+                },
+                "otherDetails": {
+                  "type": "array"
+                },
+                "warningSignalsText": {
+                  "type": "string"
+                },
+                "croNumber": {
+                  "type": "string"
+                },
+                "ethnicity": {
+                  "type": "string"
+                },
+                "addressDate": {
+                  "type": "string"
+                },
+                "documentTrail": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "documentRef": {
+                        "type": "string"
+                      },
+                      "date": {
+                        "type": "string"
+                      },
+                      "description1": {
+                        "type": "string"
+                      },
+                      "description2": {
+                        "type": "string"
+                      },
+                      "description3": {
+                        "type": "string"
+                      },
+                      "description4": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      
+                    ]
+                  }
+                },
+                "stopsMarkers": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "description": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      
+                    ]
+                  }
+                },
+                "fullEntitlement": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "category": {
+                        "type": "string"
+                      },
+                      "from": {
+                        "type": "string"
+                      },
+                      "until": {
+                        "type": "string"
+                      },
+                      "description1": {
+                        "type": "string"
+                      },
+                      "description2": {
+                        "type": "string"
+                      },
+                      "description3": {
+                        "type": "string"
+                      },
+                      "description4": {
+                        "type": "string"
+                      },
+                      "description5": {
+                        "type": "string"
+                      },
+                      "restriction1": {
+                        "type": "string"
+                      },
+                      "restriction2": {
+                        "type": "string"
+                      },
+                      "restriction3": {
+                        "type": "string"
+                      },
+                      "restriction4": {
+                        "type": "string"
+                      },
+                      "eU3D": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      
+                    ]
+                  }
+                },
+                "provisionalEntitlement": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "category": {
+                        "type": "string"
+                      },
+                      "from": {
+                        "type": "string"
+                      },
+                      "until": {
+                        "type": "string"
+                      },
+                      "description1": {
+                        "type": "string"
+                      },
+                      "description2": {
+                        "type": "string"
+                      },
+                      "description3": {
+                        "type": "string"
+                      },
+                      "description4": {
+                        "type": "string"
+                      },
+                      "description5": {
+                        "type": "string"
+                      },
+                      "restriction1": {
+                        "type": "string"
+                      },
+                      "restriction2": {
+                        "type": "string"
+                      },
+                      "restriction3": {
+                        "type": "string"
+                      },
+                      "restriction4": {
+                        "type": "string"
+                      },
+                      "eU3D": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      
+                    ]
+                  }
+                },
+                "endorsements": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "convictionCourt": {
+                        "type": "string"
+                      },
+                      "convictionDate": {
+                        "type": "string"
+                      },
+                      "offenceCode": {
+                        "type": "string"
+                      },
+                      "offenceDate": {
+                        "type": "string"
+                      },
+                      "fine": {
+                        "type": "string"
+                      },
+                      "points": {
+                        "type": "string"
+                      },
+                      "disqPeriod": {
+                        "type": "string"
+                      },
+                      "otherSentence": {
+                        "type": "string"
+                      },
+                      "suspendSentence": {
+                        "type": "string"
+                      },
+                      "dateDisqRemoved": {
+                        "type": "string"
+                      },
+                      "dttPorDPS": {
+                        "type": "string"
+                      },
+                      "sentencingCourt": {
+                        "type": "string"
+                      },
+                      "sentencingDate": {
+                        "type": "string"
+                      },
+                      "disqPendAppeal": {
+                        "type": "string"
+                      },
+                      "appealDate": {
+                        "type": "string"
+                      },
+                      "disqReimposed": {
+                        "type": "string"
+                      },
+                      "appealCourt": {
+                        "type": "string"
+                      },
+                      "rehabReduction": {
+                        "type": "string"
+                      },
+                      "disqPendSentence": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      
+                    ]
+                  }
+                },
+                "crossRefs": {
+                  "type": "array"
+                },
+                "unclaimeds": {
+                  "type": "array"
+                },
+                "drivingSummary": {
+                  "type": "object",
+                  "properties": {
+                    "disqualified": {
+                      "type": "string"
+                    },
+                    "drinkDrug": {
+                      "type": "string"
+                    },
+                    "other": {
+                      "type": "string"
+                    },
+                    "points": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "licenceStatus": {
+                  "type": "string"
+                },
+                "disqualification": {
+                  "type": "string"
+                },
+                "licenceType": {
+                  "type": "string"
+                },
+                "licenceIssue": {
+                  "type": "string"
+                },
+                "counterPartIssue": {
+                  "type": "string"
+                },
+                "commencementDate": {
+                  "type": "string"
+                },
+                "expiryDate": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}
