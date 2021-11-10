@@ -1,6 +1,8 @@
 parameters:
 - name: connectionString
   type: string
+- name: suffix
+  type: string
 
 
 steps:
@@ -18,19 +20,19 @@ steps:
     entityName: 'cp_configdatahistory'
     lookupFieldName: 'cp_name'
     valueFieldName: 'cp_value'
-    lookupValue: 'CurrentVersionRPRP'
+    lookupValue: 'CurrentVersion${{parameters.suffix}}'
     existsVariableName: 'configExists'
     valueVariableName: 'currentConfigVersion'
 
 - powershell: |
-        $value = Get-Content  -Path $(Build.SourcesDirectory)/ConfigData/CumbriaRPRPVersionDate.txt 
+        $value = Get-Content  -Path $(Build.SourcesDirectory)/ConfigData/Cumbria${{parameters.suffix}}VersionDate.txt 
         Write-Host "##vso[task.setvariable variable=newConfigVersion]$value"
 
 - task: MSCRMImportCMData@12
   displayName: Import Configuration Data
   inputs:
     crmConnectionString: ${{parameters.connectionString}}
-    dataFile: $(Build.SourcesDirectory)/ConfigData/CumbriaRPRP.zip
+    dataFile: $(Build.SourcesDirectory)/ConfigData/Cumbria${{parameters.suffix}}.zip
   condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
 
 
@@ -40,5 +42,5 @@ steps:
     entityName: 'cp_configdatahistory'
     lookupFieldName: 'cp_name'
     valueFieldName: 'cp_value'
-    configurationRecordsJson: '[[''CurrentVersionRPRP'',''$(newConfigVersion)'']]'
+    configurationRecordsJson: '[[''CurrentVersion${{parameters.suffix}}'',''$(newConfigVersion)'']]'
   condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
