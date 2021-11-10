@@ -62,8 +62,6 @@ variables:
   value: ${{parameters.release}}
 - template: connectionStrings.yml
 
-${{ if eq(variables['Build.SourceBranchName'], 'master') }}:
-- name: Prod
 
 name: $(Build.DefinitionName) - $(Build.BuildId) 
 
@@ -217,6 +215,7 @@ stages:
               - template : config-data-template.yml
                 parameters :
                   connectionString: $(Cumbriapfpuat.connection.string)
+                  suffix: $(solution.prefix)
               
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -274,6 +273,7 @@ stages:
               - template : config-data-template.yml
                 parameters :
                   connectionString: $(Tisskipfpuat.connection.string)
+                  suffix: $(solution.prefix)
               
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #----------------------------------End Stage-------------------------------------------------------------------
