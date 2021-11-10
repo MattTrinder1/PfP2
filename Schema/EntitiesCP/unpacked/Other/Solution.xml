@@ -6,7 +6,7 @@
       <LocalizedName description="040 - Entities" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.0.0.144</Version>
+    <Version>1.0.0.145</Version>
     <Managed>1</Managed>
     <Publisher>
       <UniqueName>cumbriapolicepublisher</UniqueName>
@@ -96,6 +96,7 @@
       <RootComponent type="1" schemaName="cp_environment" behavior="0" />
       <RootComponent type="1" schemaName="cp_exhibit" behavior="0" />
       <RootComponent type="1" schemaName="cp_exhibitdetail" behavior="0" />
+      <RootComponent type="1" schemaName="cp_globaloptionset" behavior="0" />
       <RootComponent type="1" schemaName="cp_incident" behavior="0" />
       <RootComponent type="1" schemaName="cp_incidenttype" behavior="0" />
       <RootComponent type="1" schemaName="cp_insurancedetail" behavior="0" />
@@ -112,6 +113,7 @@
       <RootComponent type="1" schemaName="cp_medicalhistory" behavior="0" />
       <RootComponent type="1" schemaName="cp_offencecategory" behavior="0" />
       <RootComponent type="1" schemaName="cp_offencecode" behavior="0" />
+      <RootComponent type="1" schemaName="cp_optionsetvalue" behavior="0" />
       <RootComponent type="1" schemaName="cp_photo" behavior="0" />
       <RootComponent type="1" schemaName="cp_pnc" behavior="0" />
       <RootComponent type="1" schemaName="cp_pncbureau" behavior="0" />
@@ -190,10 +192,6 @@
           <package>msdynce_CustomerCareIntelligenceBots_Anchor (2.0.0.87)</package>
         </Required>
         <Dependent type="1" schemaName="systemuser" displayName="User" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_optionsetvalue" displayName="Option Set Value (Tisski)" solution="Active" />
-        <Dependent type="1" schemaName="cp_customersetting" displayName="Customer Setting" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_rprp" displayName="RPRP" solution="Active" />
