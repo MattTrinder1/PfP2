@@ -6,7 +6,7 @@
       <LocalizedName description="137 -  Flows - Vehicle" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.0.0.49</Version>
+    <Version>1.0.0.50</Version>
     <Managed>1</Managed>
     <Publisher>
       <UniqueName>cumbriapolicepublisher</UniqueName>
@@ -80,9 +80,11 @@
     <RootComponents>
       <RootComponent type="29" id="{0cd014f7-3e5a-eb11-a812-0022489ba6ad}" behavior="0" />
       <RootComponent type="29" id="{2a5cb575-1666-eb11-a812-000d3ab403cd}" behavior="0" />
+      <RootComponent type="29" id="{37c9a41c-8359-eb11-a812-000d3a654f72}" behavior="0" />
       <RootComponent type="29" id="{48b03529-1766-eb11-a812-000d3ab40f79}" behavior="0" />
       <RootComponent type="29" id="{6650edbf-a6c3-eb11-bacc-000d3ab9f7b1}" behavior="0" />
       <RootComponent type="29" id="{71ab4fd1-7959-eb11-a812-000d3a654f72}" behavior="0" />
+      <RootComponent type="29" id="{79674c64-ee92-eb11-b1ac-000d3adb2fd2}" behavior="0" />
       <RootComponent type="29" id="{823507cd-e787-eb11-a812-000d3ab52ab6}" behavior="0" />
       <RootComponent type="29" id="{ac004de4-6061-eb11-a812-0022489c7676}" behavior="0" />
       <RootComponent type="29" id="{b11a6067-a363-eb11-a812-000d3ab40f79}" behavior="0" />
@@ -258,18 +260,6 @@
       <MissingDependency>
         <Required type="2" schemaName="cp_stagingentrystatus" displayName="Staging Entry Status" parentSchemaName="cp_vehicleticketstg" parentDisplayName="Vehicle Ticket STG" solution="Active" />
         <Dependent type="29" displayName="Fill Lookup Values for Invalid Submissions" id="{823507cd-e787-eb11-a812-000d3ab52ab6}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="29" displayName="Return Choice Id for Choice Yes, No, Unknown" solution="Active" id="{37c9a41c-8359-eb11-a812-000d3a654f72}" />
-        <Dependent type="29" displayName="Create New Contact" id="{0cd014f7-3e5a-eb11-a812-0022489ba6ad}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="29" displayName="Return Choice Id for Choice Yes, No, Unknown" solution="Active" id="{37c9a41c-8359-eb11-a812-000d3a654f72}" />
-        <Dependent type="29" displayName="Update Contact Additional Fields" id="{ac004de4-6061-eb11-a812-0022489c7676}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="29" displayName="Return Choice Id for Choice No, Yes, N/A" solution="Active" id="{79674c64-ee92-eb11-b1ac-000d3adb2fd2}" />
-        <Dependent type="29" displayName="Check if Incident exists AND-OR Create" id="{71ab4fd1-7959-eb11-a812-000d3a654f72}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="connectionreference" displayName="cp_sharedcommondataserviceforapps_4c4b9" solution="Active" id.connectionreferencelogicalname="cp_sharedcommondataserviceforapps_4c4b9" />
