@@ -1,0 +1,371 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "description": "A service accepting authorised requests to retrieve the driving licence photograph for a driver from the Driver and Vehicle Licencing Agency (DVLA). Authorised users are those requiring photographs of drivers for the purpose of law enforcement and retrieval is via driving licence number (DLN).",
+    "version": "1.4.0",
+    "title": "Photo at Roadside Service"
+  },
+  "tags": [
+    {
+      "name": "Photo at Roadside Service",
+      "description": "Returns a driving licence photograph for a driving licence number (DLN)"
+    }
+  ],
+  "security": [{ "jwtAuth": [] }, { "apiKeyAuth": [] }],
+  "servers": [
+    {
+      "url": "https://driver-vehicle-licensing.api.gov.uk/driver-photo-at-the-roadside",
+      "description": "Production environment"
+    },
+    {
+      "url": "https://uat.driver-vehicle-licensing.api.gov.uk/driver-photo-at-the-roadside",
+      "description": "External testing (UAT) environment"
+    }
+  ],
+  "paths": {
+    "/v1/drivers/driver-details/s": {
+      "post": {
+        "deprecated": true,
+        "tags": ["Photo at Roadside Service"],
+        "summary": "Retrieve driver photo",
+        "operationId": "retrievePhoto",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "x-api-key",
+            "description": "API key used to access the service",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "in": "header",
+            "name": "X-Correlation-ID",
+            "description": "CorrelationID to track the request from the API gateway through the Enquiries stack",
+            "required": false,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "in": "header",
+            "name": "Authorization",
+            "description": "Valid JWT token issued as a result of authentication against the API Gateway",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "in": "header",
+            "name": "timestamp",
+            "description": "Timestamp that the request was initiated - ISO-8601 Format",
+            "required": true,
+            "schema": { "type": "string", "format": "date-time" }
+          }
+        ],
+        "requestBody": {
+          "description": "A UK driving licence number",
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/RetrievePhotoRequest" } } }
+        },
+        "responses": {
+          "200": {
+            "description": "Success. Returns the driving licence photograph for the supplied driving licence number",
+            "headers": {
+              "version": { "$ref": "#/components/headers/version" },
+              "timestamp": { "$ref": "#/components/headers/timestamp" }
+            },
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/RetrievePhotoResponse" } } }
+          },
+          "400": {
+            "description": "Bad request",
+            "headers": {
+              "version": { "$ref": "#/components/headers/version" },
+              "timestamp": { "$ref": "#/components/headers/timestamp" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "errors": [{ "status": "400", "code": "BRQ001", "detail": "Bad request" }] }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "headers": {
+              "version": { "$ref": "#/components/headers/version" },
+              "timestamp": { "$ref": "#/components/headers/timestamp" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": {
+                  "errors": [
+                    {
+                      "status": "401",
+                      "code": "401",
+                      "detail": "API Key or JWT is either not provided, expired or invalid."
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Record Not Found",
+            "headers": {
+              "version": { "$ref": "#/components/headers/version" },
+              "timestamp": { "$ref": "#/components/headers/timestamp" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": {
+                  "errors": [
+                    { "status": "404", "code": "ENQ002", "detail": "Record for supplied Driver Number cannot be found" }
+                  ]
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "System Error",
+            "headers": {
+              "version": { "$ref": "#/components/headers/version" },
+              "timestamp": { "$ref": "#/components/headers/timestamp" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "errors": [{ "status": "500", "code": "ENQ000", "detail": "System Error occurred" }] }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "headers": {
+              "version": { "$ref": "#/components/headers/version" },
+              "timestamp": { "$ref": "#/components/headers/timestamp" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": {
+                  "errors": [
+                    {
+                      "status": "503",
+                      "code": "ENQ001",
+                      "detail": "A connection could not be made to all necessary services to complete your request"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/v1/photos/retrieve": {
+      "post": {
+        "tags": ["Photo at Roadside Service"],
+        "summary": "Retrieve driver photo",
+        "operationId": "retrievePhoto",
+        "parameters": [
+          {
+            "in": "header",
+            "name": "X-Correlation-ID",
+            "description": "CorrelationID to track the request from the API gateway through the Enquiries stack",
+            "required": false,
+            "schema": { "type": "string", "format": "uuid" }
+          },
+          {
+            "in": "header",
+            "name": "timestamp",
+            "description": "Timestamp that the request was initiated - ISO-8601 Format",
+            "required": true,
+            "schema": { "type": "string", "format": "date-time" }
+          }
+        ],
+        "requestBody": {
+          "description": "A UK driving licence number",
+          "required": true,
+          "content": { "application/json": { "schema": { "$ref": "#/components/schemas/RetrievePhotoRequest" } } }
+        },
+        "responses": {
+          "200": {
+            "description": "Success. Returns the driving licence photograph for the supplied driving licence number",
+            "headers": {
+              "version": { "$ref": "#/components/headers/version" },
+              "timestamp": { "$ref": "#/components/headers/timestamp" }
+            },
+            "content": { "application/json": { "schema": { "$ref": "#/components/schemas/RetrievePhotoResponse" } } }
+          },
+          "400": {
+            "description": "Bad request",
+            "headers": {
+              "version": { "$ref": "#/components/headers/version" },
+              "timestamp": { "$ref": "#/components/headers/timestamp" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "errors": [{ "status": "400", "code": "BRQ001", "detail": "Bad request" }] }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized access",
+            "headers": {
+              "version": { "$ref": "#/components/headers/version" },
+              "timestamp": { "$ref": "#/components/headers/timestamp" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": {
+                  "errors": [
+                    {
+                      "status": "401",
+                      "code": "401",
+                      "detail": "API Key or JWT is either not provided, expired or invalid."
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Record Not Found",
+            "headers": {
+              "version": { "$ref": "#/components/headers/version" },
+              "timestamp": { "$ref": "#/components/headers/timestamp" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": {
+                  "errors": [
+                    { "status": "404", "code": "ENQ002", "detail": "Record for supplied Driver Number cannot be found" }
+                  ]
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Too many requests in a given amount of time.",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "errors": [{ "status": "429", "code": "ENQXXX", "detail": "Too many requests" }] }
+              }
+            }
+          },
+          "500": {
+            "description": "System Error",
+            "headers": {
+              "version": { "$ref": "#/components/headers/version" },
+              "timestamp": { "$ref": "#/components/headers/timestamp" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": { "errors": [{ "status": "500", "code": "ENQ000", "detail": "System Error occurred" }] }
+              }
+            }
+          },
+          "503": {
+            "description": "Service Unavailable",
+            "headers": {
+              "version": { "$ref": "#/components/headers/version" },
+              "timestamp": { "$ref": "#/components/headers/timestamp" }
+            },
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ErrorResponse" },
+                "example": {
+                  "errors": [
+                    {
+                      "status": "503",
+                      "code": "ENQ001",
+                      "detail": "A connection could not be made to all necessary services to complete your request"
+                    }
+                  ]
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "jwtAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT",
+        "description": "Valid JWT token issued as a result of authentication against the API Gateway"
+      },
+      "apiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-API-Key",
+        "description": "API key used to access the service"
+      }
+    },
+    "headers": {
+      "version": { "description": "Version of the service used in the response", "schema": { "type": "string" } },
+      "timestamp": {
+        "description": "Timestamp that the request was received by the DVLA",
+        "schema": { "type": "string", "format": "date-time" }
+      }
+    },
+    "schemas": {
+      "RetrievePhotoRequest": {
+        "type": "object",
+        "description": "Retrieve Photo Request",
+        "additionalProperties": false,
+        "required": ["driverNumber"],
+        "properties": {
+          "driverNumber": {
+            "type": "string",
+            "minLength": 5,
+            "maxLength": 16,
+            "example": "RULES905061EL9EL",
+            "pattern": "^[a-zA-Z0-9]*$",
+            "description": "A UK driving licence number"
+          }
+        }
+      },
+      "RetrievePhotoResponse": {
+        "type": "object",
+        "description": "Retrieve Photo Response",
+        "properties": {
+          "driverNumber": { "type": "string", "example": "RULES905061EL9EL" },
+          "image": {
+            "type": "string",
+            "format": "byte",
+            "description": "A base 64 encoded image of a driving licence photograph"
+          },
+          "driverRedirect": {
+            "type": "boolean",
+            "description": "Indicates if record was redirected from cross reference record."
+          }
+        }
+      },
+      "ErrorResponse": {
+        "type": "object",
+        "description": "Error Response",
+        "properties": { "errors": { "type": "array", "items": { "$ref": "#/components/schemas/Error" } } }
+      },
+      "Error": {
+        "type": "object",
+        "properties": {
+          "status": { "type": "string", "example": "400", "description": "Http status" },
+          "code": { "type": "string", "example": "ENQ003", "description": "DVLA reference code" },
+          "detail": {
+            "type": "string",
+            "description": "A meaningful description of the error which has occurred",
+            "example": "Invalid format for field - Driver Number"
+          }
+        }
+      }
+    }
+  }
+}

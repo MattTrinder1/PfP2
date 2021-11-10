@@ -14,11 +14,13 @@ Write-Host $jwt
 
 $driverNumber = "AMRSH652170JX8PD"
 
-Invoke-WebRequest `
+            #-Uri  https://uat.driver-vehicle-licensing.api.gov.uk/driver-photo-at-the-roadside/v1/drivers/driver-details/s `
+        Invoke-WebRequest `
             -Method POST `
-            -Uri  https://uat.driver-vehicle-licensing.api.gov.uk/driver-photo-at-the-roadside/v1/drivers/driver-details/s `
-            -Headers @{"Authorization" = $jwt;"x-api-key" =$apiKey} `
+            -Uri  https://uat.driver-vehicle-licensing.api.gov.uk/driver-photo-at-the-roadside/v1/photos/retrieve `
+            -Headers @{"Authorization" = $jwt;"x-api-key" =$apiKey;"timestamp"=(Get-Date).ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss.fffK")} `
             -Body (@{"driverNumber"=$driverNumber}|ConvertTo-Json) `
             -ContentType application/json
 
 
+#(Get-Date).ToString("yyyy-MM-ddTHH:mm:ss.fffK")
