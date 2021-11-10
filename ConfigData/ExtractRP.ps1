@@ -44,10 +44,10 @@ $package = Get-CrmDataPackage -Conn $conn -Fetches @("
 </fetch>"
 )
 
-$customerfile = $customer + "RPRP.zip"
+$customerfile = $customer + "RP.zip"
 Export-CrmDataPackage -Package $package -ZipPath $PSScriptRoot\$customerfile
 
-$fileName = $customer+"RPRPVersionDate.txt"
+$fileName = $customer+"RPVersionDate.txt"
 Remove-Item $fileName
 New-Item $fileName
 (Get-Date).ToString("yyyy-MM-dd HH:mm:ss") | Out-File $PSScriptRoot\$fileName 

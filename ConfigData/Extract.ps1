@@ -309,9 +309,10 @@ $package = Get-CrmDataPackage -Conn $conn -Fetches @("
 )
 
 
-Export-CrmDataPackage -Package $package -ZipPath $PSScriptRoot\$customer.zip
+$customerfile = $customer + "CP.zip"
+Export-CrmDataPackage -Package $package -ZipPath $PSScriptRoot\$customerfile
 
-$fileName = $customer+"VersionDate.txt"
+$fileName = $customer+"CPVersionDate.txt"
 Remove-Item $fileName
 New-Item $fileName
 (Get-Date).ToString("yyyy-MM-dd HH:mm:ss") | Out-File $PSScriptRoot\$fileName 
