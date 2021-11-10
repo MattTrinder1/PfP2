@@ -1,0 +1,829 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedcommondataserviceforapps_3a446"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_wordonlinebusiness": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedwordonlinebusiness_af04b"
+        },
+        "api": {
+          "name": "shared_wordonlinebusiness"
+        }
+      },
+      "shared_onedriveforbusiness": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedonedriveforbusiness_b61ca"
+        },
+        "api": {
+          "name": "shared_onedriveforbusiness"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "c60ecbb3-71a6-4dbb-a26b-190c3667265c"
+          },
+          "type": "Request",
+          "kind": "Http",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "recordId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "actions": {
+        "FetchedPNB": {
+          "runAfter": {
+            
+          },
+          "metadata": {
+            "operationMetadataId": "8f524599-8890-4534-a57c-c2163762720e"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_pocketnotebooks",
+            "recordId": "@triggerBody()?[\u0027recordId\u0027]",
+              "$expand": "\n"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Initialize_variable_-_WorkflowEnvironmentId": {
+          "runAfter": {
+            "Condition": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8ce9a1dd-896b-4342-8793-4f9e7c79697f"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "WorkflowEnvironmentId",
+                "type": "string",
+              "value": "@{workflow()[\u0027tags\u0027][\u0027environmentName\u0027]}"
+              }
+            ]
+          }
+        },
+        "List_rows_Environement": {
+          "runAfter": {
+            "Initialize_variable_-_WorkflowEnvironmentId": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0797cdba-3387-4508-9c3d-d504359eeb67"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_environments",
+            "$filter": "cp_workflowenvironmentid eq \u0027@{variables(\u0027WorkflowEnvironmentId\u0027)}\u0027"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Initialize_variable_-_EnvironmentConfigId": {
+          "runAfter": {
+            "List_rows_Environement": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f3ed2fa7-a827-40df-ad96-96618bb0a303"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "EnvironmentConfigId",
+                "type": "string",
+              "value": "@{first(body(\u0027List_rows_Environement\u0027)?[\u0027value\u0027])?[\u0027cp_environmentid\u0027]}"
+              }
+            ]
+          }
+        },
+        "List_rows_System_Settings_Template_Name": {
+          "runAfter": {
+            "Initialize_variable_-_EnvironmentName": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "9617f455-881b-4b45-b6a9-d2601c6a95aa"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_systemsettings",
+            "$filter": "_cp_environment_value eq @{variables(\u0027EnvironmentConfigId\u0027)} and cp_name eq \u0027PNB PDF Template (@{variables(\u0027EnvironmentName\u0027)})\u0027"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Initialize_variable_-_EnvironmentName": {
+          "runAfter": {
+            "Initialize_variable_-_EnvironmentConfigId": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "871d19d2-f923-4e91-a64b-248dc625a30b"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "EnvironmentName",
+                "type": "string",
+              "value": "@{first(body(\u0027List_rows_Environement\u0027)?[\u0027value\u0027])?[\u0027cp_name\u0027]}"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_-_TemplateName": {
+          "runAfter": {
+            "List_rows_System_Settings_Template_Name": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a561c7e6-ac39-458a-bc30-392f00eb87f4"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "TemplateName",
+                "type": "string",
+              "value": "@{first(body(\u0027List_rows_system_settings_template_name\u0027)?[\u0027value\u0027])?[\u0027cp_value\u0027]}"
+              }
+            ]
+          }
+        },
+        "List_rows_System_Settings_Document_Library": {
+          "runAfter": {
+            "Initialize_variable_-_TemplateName": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "20483f5a-f58c-4c15-9123-bda21a83f7bb"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_systemsettings",
+            "$filter": "_cp_environment_value eq @{variables(\u0027EnvironmentConfigId\u0027)} and cp_name eq \u0027PNB PDF Document Library (@{variables(\u0027EnvironmentName\u0027)})\u0027"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Initialize_variable_-_Document_Library": {
+          "runAfter": {
+            "Apply_to_each": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "666b5cfb-9f8b-4b36-9b8d-52083594552c"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "DocumentLibrary",
+                "type": "string",
+              "value": "@{first(body(\u0027List_rows_system_settings_document_library\u0027)?[\u0027value\u0027])?[\u0027cp_value\u0027]}"
+              }
+            ]
+          }
+        },
+        "Populate_a_Microsoft_Word_template": {
+          "runAfter": {
+            "Condition_3": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "016AAA3S5Q7LKV3X4W7NBIOTU6O77NEDU7": "/PNBTemplate.docx",
+            "operationMetadataId": "bef93f41-64ae-44c4-a71d-28fc1f16c888"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_wordonlinebusiness",
+              "operationId": "CreateFileItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+            },
+            "parameters": {
+              "source": "me",
+              "drive": "@variables(\u0027DocumentLibrary\u0027)",
+              "file": "@variables(\u0027TemplateName\u0027)",
+              "dynamicFileSchema": {
+              "39947689": "@if(greaterOrEquals(length(variables(\u0027PhotoArray\u0027)), 1), variables(\u0027PhotoArray\u0027)?[0].PhotoCaption, \u0027\u0027)",
+              "204687478": "@if(greaterOrEquals(length(variables(\u0027PhotoArray\u0027)), 4), variables(\u0027PhotoArray\u0027)?[3].Photo, outputs(\u0027Compose_Blank_Picture\u0027))",
+              "349612136": "@outputs(\u0027FetchedIncident\u0027)?[\u0027body/cp_incidentnumber\u0027]",
+              "723801384": "@if(greaterOrEquals(length(variables(\u0027PhotoArray\u0027)), 10), variables(\u0027PhotoArray\u0027)?[9].Photo, outputs(\u0027Compose_Blank_Picture\u0027))",
+              "734818386": "@if(greaterOrEquals(length(variables(\u0027PhotoArray\u0027)), 7), variables(\u0027PhotoArray\u0027)?[6].PhotoCaption, \u0027\u0027)",
+              "769818475": "@if(greaterOrEquals(length(variables(\u0027PhotoArray\u0027)), 1), variables(\u0027PhotoArray\u0027)?[0].Photo, outputs(\u0027Compose_Blank_Picture\u0027))",
+              "1137142761": "@formatDateTime(convertTimeZone( outputs(\u0027FetchedPNB\u0027)?[\u0027body/createdon\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy HH:mm:ss\u0027)",
+              "1213692155": "@if(greaterOrEquals(length(variables(\u0027PhotoArray\u0027)), 2), variables(\u0027PhotoArray\u0027)?[1].PhotoCaption, \u0027\u0027)",
+              "1287847924": "@if(\r\n    empty(outputs(\u0027FetchedPNB\u0027)?[\u0027body/cp_signaturedateandtime\u0027]),\u0027\u0027,formatDateTime(convertTimeZone( outputs(\u0027FetchedPNB\u0027)?[\u0027body/cp_signaturedateandtime\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027), \u0027dd/MM/yyyy HH:mm:ss\u0027))",
+              "1352450931": "@if(greaterOrEquals(length(variables(\u0027PhotoArray\u0027)), 4), variables(\u0027PhotoArray\u0027)?[3].PhotoCaption, \u0027\u0027)",
+                "1449428042": "@variables(\u0027Sketch\u0027)",
+              "1639605121": "@if(greaterOrEquals(length(variables(\u0027PhotoArray\u0027)), 7), variables(\u0027PhotoArray\u0027)?[6].Photo, outputs(\u0027Compose_Blank_Picture\u0027))",
+              "1779766254": "@if(greaterOrEquals(length(variables(\u0027PhotoArray\u0027)), 5), variables(\u0027PhotoArray\u0027)?[4].PhotoCaption, \u0027\u0027)",
+                "1932626939": "@variables(\u0027Signature\u0027)",
+              "1948347703": "@if(greaterOrEquals(length(variables(\u0027PhotoArray\u0027)), 3), variables(\u0027PhotoArray\u0027)?[2].Photo, outputs(\u0027Compose_Blank_Picture\u0027))",
+              "-140736271": "@outputs(\u0027FetchedOwner\u0027)?[\u0027body/cp_badgenumber\u0027]",
+              "-1002973794": "@if(empty(outputs(\u0027FetchedIncident\u0027)?[\u0027body/cp_incidentdate\u0027]),\u0027\u0027,formatDateTime(convertTimeZone( outputs(\u0027FetchedIncident\u0027)?[\u0027body/cp_incidentdate\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy\u0027))",
+              "-1351249563": "@outputs(\u0027FetchedPNB\u0027)?[\u0027body/cp_notes\u0027]",
+              "-734940356": "@if(greaterOrEquals(length(variables(\u0027PhotoArray\u0027)), 2), variables(\u0027PhotoArray\u0027)?[1].Photo, outputs(\u0027Compose_Blank_Picture\u0027))",
+              "-797602246": "@if(greaterOrEquals(length(variables(\u0027PhotoArray\u0027)), 3), variables(\u0027PhotoArray\u0027)?[2].PhotoCaption, \u0027\u0027)",
+              "-1949536285": "@if(greaterOrEquals(length(variables(\u0027PhotoArray\u0027)), 5), variables(\u0027PhotoArray\u0027)?[4].Photo, outputs(\u0027Compose_Blank_Picture\u0027))",
+              "-258226272": "@if(greaterOrEquals(length(variables(\u0027PhotoArray\u0027)), 6), variables(\u0027PhotoArray\u0027)?[5].PhotoCaption, \u0027\u0027)",
+              "-54790587": "@if(greaterOrEquals(length(variables(\u0027PhotoArray\u0027)), 6), variables(\u0027PhotoArray\u0027)?[5].Photo, outputs(\u0027Compose_Blank_Picture\u0027))",
+              "-1344008529": "@if(greaterOrEquals(length(variables(\u0027PhotoArray\u0027)), 8), variables(\u0027PhotoArray\u0027)?[7].PhotoCaption, \u0027\u0027)",
+              "-598794937": "@if(greaterOrEquals(length(variables(\u0027PhotoArray\u0027)), 8), variables(\u0027PhotoArray\u0027)?[7].Photo, outputs(\u0027Compose_Blank_Picture\u0027))",
+              "-698463660": "@if(greaterOrEquals(length(variables(\u0027PhotoArray\u0027)), 9), variables(\u0027PhotoArray\u0027)?[8].PhotoCaption, \u0027\u0027)",
+              "-539203943": "@if(greaterOrEquals(length(variables(\u0027PhotoArray\u0027)), 9), variables(\u0027PhotoArray\u0027)?[8].Photo, outputs(\u0027Compose_Blank_Picture\u0027))",
+              "-582524295": "@if(greaterOrEquals(length(variables(\u0027PhotoArray\u0027)), 10), variables(\u0027PhotoArray\u0027)?[9].PhotoCaption, \u0027\u0027)",
+              "-914154841": "@outputs(\u0027FetchedPNB\u0027)?[\u0027body/cp_signatoryname\u0027]",
+                "-1972810819": "@formatDateTime(convertTimeZone( utcNow(),\u0027UTC\u0027,\u0027GMT Standard Time\u0027), \u0027dd/MM/yyyy HH:mm:ss\u0027)"
+              }
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Create_file": {
+          "runAfter": {
+            "Initialize_variable_tempfilename": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "80f3f929-fb01-48f2-a472-d9dd1c89937a"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_onedriveforbusiness",
+              "operationId": "CreateFile",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+            },
+            "parameters": {
+              "folderPath": "temp",
+            "name": "temp@{variables(\u0027TempFileName\u0027)}",
+            "body": "@outputs(\u0027Populate_a_Microsoft_Word_template\u0027)?[\u0027body\u0027]"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          },
+          "runtimeConfiguration": {
+            "contentTransfer": {
+              "transferMode": "Chunked"
+            }
+          }
+        },
+        "Initialize_variable_tempfilename": {
+          "runAfter": {
+            "Populate_a_Microsoft_Word_template": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "02210374-6beb-415e-9365-a90f162209c1"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "TempFileName",
+                "type": "string",
+              "value": "@{concat(guid(),\u0027.docx\u0027)}"
+              }
+            ]
+          }
+        },
+        "Perform_a_changeset_request": {
+          "actions": {
+            "Add_a_new_row": {
+              "metadata": {
+                "operationMetadataId": "25759607-fa2c-47cf-bf27-b6c5bc126fca"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "CreateRecord",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "annotations",
+                "item/subject": "Generated Note @{formatDateTime(utcNow(),\u0027dd/MM/yyyy HH:mm:ss\u0027)}",
+                "item/notetext": "Generated Note @{formatDateTime(utcNow(),\u0027dd/MM/yyyy\u0027)}",
+                  "item/isdocument": true,
+                "item/documentbody": "@base64(outputs(\u0027Convert_file\u0027)?[\u0027body\u0027])",
+                "item/filename": "Generated Note @{formatDateTime(utcNow(),\u0027dd/MM/yyyy\u0027)}",
+                  "item/mimetype": "application/pdf",
+                "item/ownerid@odata.bind": "/systemusers(@{outputs(\u0027FetchedPNB\u0027)?[\u0027body/_ownerid_value\u0027]})",
+                "item/objectid_cp_pocketnotebook@odata.bind": "cp_pocketnotebooks(@{outputs(\u0027FetchedPNB\u0027)?[\u0027body/cp_pocketnotebookid\u0027]})"
+                },
+                "authentication": "@parameters(\u0027$authentication\u0027)"
+              }
+            }
+          },
+          "runAfter": {
+            "Convert_file": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "082bcd10-5962-409a-8df2-ec8c0724d6ec"
+          },
+          "type": "Changeset",
+          "kind": "ODataOpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ExecuteChangeset",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            }
+          }
+        },
+        "Convert_file": {
+          "runAfter": {
+            "Create_file": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "03220a53-2284-4f61-8c7f-9446a7ca1ed0"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_onedriveforbusiness",
+              "operationId": "ConvertFile",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+            },
+            "parameters": {
+            "id": "@outputs(\u0027Create_file\u0027)?[\u0027body/Id\u0027]",
+              "type": "PDF"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "FetchedOwner": {
+          "runAfter": {
+            "FetchedPNB": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8d425472-6f8d-431a-b2dc-83f3e37b32b5"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "systemusers",
+            "recordId": "@outputs(\u0027FetchedPNB\u0027)?[\u0027body/_ownerid_value\u0027]"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Condition": {
+          "actions": {
+            "FetchedIncident": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "e97981e3-8409-4ea6-b1e0-8dc7dd6ddfb5"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "GetItem",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "cp_incidents",
+                "recordId": "@outputs(\u0027FetchedPNB\u0027)?[\u0027body/_cp_incidentno_value\u0027]"
+                },
+                "authentication": "@parameters(\u0027$authentication\u0027)"
+              }
+            }
+          },
+          "runAfter": {
+            "FetchedOwner": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "not": {
+              "equals": [
+              "@outputs(\u0027FetchedPNB\u0027)?[\u0027body/_cp_incidentno_value\u0027]",
+                "@null"
+              ]
+            }
+          },
+          "metadata": {
+            "operationMetadataId": "a04ad21b-bdf6-44d2-9c59-847b78d57e6b"
+          },
+          "type": "If"
+        },
+        "List_rows": {
+          "runAfter": {
+            "List_rows_System_Settings_Document_Library": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b2631350-aaca-4405-9405-d19f4996d23f"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_photos",
+            "$filter": "_cp_pocketnotebook_value eq @{outputs(\u0027FetchedPNB\u0027)?[\u0027body/cp_pocketnotebookid\u0027]}",
+              "$orderby": "createdon"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Apply_to_each": {
+        "foreach": "@outputs(\u0027List_rows\u0027)?[\u0027body/value\u0027]",
+          "actions": {
+            "Compose": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "1a9f67df-6e2e-4341-b11a-536a97bfd349"
+              },
+              "type": "Compose",
+              "inputs": {
+                "$content-type": "image/jpeg",
+              "$content": "@items(\u0027Apply_to_each\u0027)?[\u0027cp_image\u0027]"
+              }
+            },
+            "Append_to_array_variable": {
+              "runAfter": {
+                "Compose": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "94f0b652-2d29-41f8-bb84-c18735bc86a6"
+              },
+              "type": "AppendToArrayVariable",
+              "inputs": {
+                "name": "PhotoArray",
+                "value": {
+                "PhotoCaption": "@items(\u0027Apply_to_each\u0027)?[\u0027cp_phototitle\u0027]",
+                  "Photo": "@outputs(\u0027Compose\u0027)"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Initialize_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "4df996d5-5444-4d48-bf12-530510ac01f5"
+          },
+          "type": "Foreach"
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            "List_rows": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "864bc28c-c640-4b83-905a-808542e780e7"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "PhotoCount",
+                "type": "integer",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "Initialize_variable_2": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0174267e-c65c-4d73-a466-26f9059eefce"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "PhotoArray",
+                "type": "array",
+                "value": "@null"
+              }
+            ]
+          }
+        },
+        "Compose_Blank_Picture": {
+          "runAfter": {
+            "Initialize_variable_-_Document_Library": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "685caa2b-f4ec-42dc-8fc3-41fad8002a71"
+          },
+          "type": "Compose",
+          "inputs": {
+            "$content-type": "image/jpeg",
+            "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+          }
+        },
+        "Condition_2": {
+          "actions": {
+            "Compose_Blank_Signature": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "9997c3f5-ac85-4128-9ec8-ac4863815122"
+              },
+              "type": "Compose",
+              "inputs": {
+                "$content-type": "image/jpeg",
+                "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+              }
+            },
+            "Set_variable": {
+              "runAfter": {
+                "Compose_Blank_Signature": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "970fa7fb-9719-4a4d-af9b-059ed95ed886"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "Signature",
+                "value": "@outputs(\u0027Compose_Blank_Signature\u0027)"
+              }
+            }
+          },
+          "runAfter": {
+            "Initialize_variable_3": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Compose_2": {
+                "runAfter": {
+                  
+                },
+                "metadata": {
+                  "operationMetadataId": "84f8beaf-1804-4dc8-a09a-e8d695b32b97"
+                },
+                "type": "Compose",
+                "inputs": {
+                  "$content-type": "image/png",
+                "$content": "@{outputs(\u0027FetchedPNB\u0027)?[\u0027body/cp_signature\u0027]}"
+                }
+              },
+              "Set_variable_2": {
+                "runAfter": {
+                  "Compose_2": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "0dc06241-cb40-4e35-b3d8-65183cea1b92"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "Signature",
+                  "value": "@outputs(\u0027Compose_2\u0027)"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027FetchedPNB\u0027)?[\u0027body/cp_signature\u0027]",
+              "@null"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "829fff46-5ad1-48fe-ba27-6a822c116242"
+          },
+          "type": "If"
+        },
+        "Initialize_variable_3": {
+          "runAfter": {
+            "Compose_Blank_Picture": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2da736cd-d2dd-4daf-aec1-1fc926e14da8"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Signature",
+                "type": "object",
+                "value": "@null"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_4": {
+          "runAfter": {
+            "Condition_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "241904a4-658d-4df4-96bc-86e8dca97fcf"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Sketch",
+                "type": "object",
+                "value": "@null"
+              }
+            ]
+          }
+        },
+        "Condition_3": {
+          "actions": {
+            "Compose_Blank_Sketch": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "30b0a5c7-01d8-4717-8a65-996b92b9f0e5"
+              },
+              "type": "Compose",
+              "inputs": {
+                "$content-type": "image/jpeg",
+                "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+              }
+            },
+            "Set_variable_3": {
+              "runAfter": {
+                "Compose_Blank_Sketch": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "074185bf-a9b7-414b-90a9-5e88a4dfb1d4"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "Sketch",
+                "value": "@outputs(\u0027Compose_Blank_Sketch\u0027)"
+              }
+            }
+          },
+          "runAfter": {
+            "Initialize_variable_4": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Compose_3": {
+                "runAfter": {
+                  
+                },
+                "metadata": {
+                  "operationMetadataId": "e145d08d-b733-4cf4-b75b-82fb2db3318c"
+                },
+                "type": "Compose",
+                "inputs": {
+                  "$content-type": "image/png",
+                "$content": "@{outputs(\u0027FetchedPNB\u0027)?[\u0027body/cp_sketch\u0027]}"
+                }
+              },
+              "Set_variable_4": {
+                "runAfter": {
+                  "Compose_3": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "54d6105b-467a-4070-9ee4-200b549b8ddf"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "Sketch",
+                  "value": "@outputs(\u0027Compose_3\u0027)"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027FetchedPNB\u0027)?[\u0027body/cp_sketch\u0027]",
+              "@null"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d2dc30f0-f3b2-420b-9d3a-d0c853446f8e"
+          },
+          "type": "If"
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

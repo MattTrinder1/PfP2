@@ -1,0 +1,1598 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_b542f"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_wordonlinebusiness_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedwordonlinebusiness_d8ad7"
+        },
+        "api": {
+          "name": "shared_wordonlinebusiness"
+        }
+      },
+      "shared_onedriveforbusiness": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedonedriveforbusiness_fc480"
+        },
+        "api": {
+          "name": "shared_onedriveforbusiness"
+        }
+      },
+      "shared_wordonlinebusiness": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedwordonlinebusiness_7a2a4"
+        },
+        "api": {
+          "name": "shared_wordonlinebusiness"
+        }
+      },
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedcommondataserviceforapps_3a446"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "22218142-ff75-4e9a-9b18-a8b4240ad757"
+          },
+          "type": "Request",
+          "kind": "Http",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "recordId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "actions": {
+        "Initialize_Error_Message_variable": {
+          "runAfter": {
+            "Initialize_variable_-_EnvironmentConfigId": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "c1cd660c-7208-48cc-8dae-4de17bc1364e"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Error Message",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Initialize_Word_Template_for_Front_Statement": {
+          "runAfter": {
+            "Initialize_Error_Message_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "05e7eb0a-4c96-42c5-a86a-85cb9443fbe1"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "WordTemplate_Front",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Initialize_Word_Template_for_Back_Statement": {
+          "runAfter": {
+            "Initialize_Word_Template_for_Front_Statement": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "715294da-ac97-4a74-96cc-430b5211806a"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "WordTemplate_Back",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Get_Witness_Details": {
+          "runAfter": {
+            "Get_Incident_Details": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0df769f5-acc0-47d1-bec1-8c479e4a787d"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "contacts",
+            "recordId": "@outputs(\u0027FetchedStatement\u0027)?[\u0027body/_cp_witness_value\u0027]",
+              "$expand": "cp_Gender($select=cp_name),cp_SelfDefinedEthnicity($select=cp_name),cp_ContactPreferredMethodofContact($select=cp_name),cp_LastOccupation($select=cp_name)"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "If_Counter_Signer_Exists": {
+          "actions": {
+            
+          },
+          "runAfter": {
+            "If_Witness_Signature_Exists": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Get_Counter_Signer_Details": {
+                "runAfter": {
+                  
+                },
+                "metadata": {
+                  "operationMetadataId": "bb7c18c9-acbe-45c0-9d6d-7f97d69e0871"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "GetItem",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "contacts",
+                  "recordId": "@outputs(\u0027FetchedStatement\u0027)?[\u0027body/_cp_countersigner_value\u0027]"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              },
+              "If_Counter_Signature_Exists": {
+                "actions": {
+                  
+                },
+                "runAfter": {
+                  "If_Counter_Relationship_To_Witness_is_Empty": [
+                    "Succeeded"
+                  ]
+                },
+                "else": {
+                  "actions": {
+                    "Download_Counter_Signature": {
+                      "runAfter": {
+                        
+                      },
+                      "metadata": {
+                        "operationMetadataId": "be3ef802-0f13-4487-83f1-4c9d531274e8"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "GetEntityFileImageFieldContent",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_statements",
+                        "recordId": "@outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_statementid\u0027]",
+                          "fileImageFieldName": "cp_countersignature"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    },
+                    "Compose_-_Counter_Signature": {
+                      "runAfter": {
+                        "Download_Counter_Signature": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "cb7a0b0b-b3e5-453c-ae29-c121d652713c"
+                      },
+                      "type": "Compose",
+                      "inputs": {
+                        "$content-type": "image/jpeg",
+                      "$content": "@{base64(outputs(\u0027Download_Counter_Signature\u0027)?[\u0027body\u0027])}"
+                      }
+                    },
+                    "Set_Counter_Signature_variable": {
+                      "runAfter": {
+                        "Compose_-_Counter_Signature": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "5c786a36-b27f-4c66-b6fd-3d8a9715a8bc"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "Counter Signature",
+                        "value": "@outputs(\u0027Compose_-_Counter_Signature\u0027)"
+                      }
+                    }
+                  }
+                },
+                "expression": {
+                  "equals": [
+                  "@empty(outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_countersignatureid\u0027])",
+                    "@true"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "559581c1-7dbe-43ff-ad68-a7031178ad68"
+                },
+                "type": "If"
+              },
+              "If_Counter_Relationship_To_Witness_is_Empty": {
+                "actions": {
+                  
+                },
+                "runAfter": {
+                  "Get_Counter_Signer_Details": [
+                    "Succeeded"
+                  ]
+                },
+                "else": {
+                  "actions": {
+                    "Get_Counter_Relationship_to_Witness_Value": {
+                      "runAfter": {
+                        
+                      },
+                      "metadata": {
+                        "operationMetadataId": "64bcd322-a578-4a1b-8628-2174970af456"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "GetItem",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_lookupvalues",
+                        "recordId": "@outputs(\u0027FetchedStatement\u0027)?[\u0027body/_cp_counterrelationshiptowitness_value\u0027]"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    }
+                  }
+                },
+                "expression": {
+                  "equals": [
+                  "@empty(outputs(\u0027FetchedStatement\u0027)?[\u0027body/_cp_counterrelationshiptowitness_value\u0027])",
+                    "@true"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "da2a99ae-2e8b-4b70-8d97-9e98842bc15e"
+                },
+                "type": "If"
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+            "@empty(outputs(\u0027FetchedStatement\u0027)?[\u0027body/_cp_countersigner_value\u0027])",
+              "@true"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "4e2931dd-12ed-40df-8deb-5e605c85f273"
+          },
+          "type": "If"
+        },
+        "If_Witness_Signature_Exists": {
+          "actions": {
+            "Append_to_Error_variable_3": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "0bc94c4d-1612-46e9-b20a-84f9ce8f42bc"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Witness Signature is empty!\n"
+              }
+            }
+          },
+          "runAfter": {
+            "If_Witness_BirthDate_Exists": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Download_Witness_Signature": {
+                "runAfter": {
+                  
+                },
+                "metadata": {
+                  "operationMetadataId": "d3970826-0613-4cd5-b173-95f95e4ef7e5"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "GetEntityFileImageFieldContent",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cp_statements",
+                  "recordId": "@outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_statementid\u0027]",
+                    "fileImageFieldName": "cp_witnesssignature",
+                    "size": "full"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              },
+              "Compose_-_Witness_Signature": {
+                "runAfter": {
+                  "Download_Witness_Signature": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "c24eca92-a43d-4ae8-bb9f-8a812c07c742"
+                },
+                "type": "Compose",
+                "inputs": {
+                  "$content-type": "image/jpeg",
+                "$content": "@{base64(outputs(\u0027Download_Witness_Signature\u0027)?[\u0027body\u0027])}"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+            "@empty(outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_witnesssignatureid\u0027])",
+              "@true"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e0eec197-e882-4db9-9ab8-3d8a7556dbad"
+          },
+          "type": "If"
+        },
+        "List_Statement_Setup_rows": {
+          "runAfter": {
+            "Initialize_Drive_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "bccebf38-8145-428d-aaf6-f7b0940a24d0"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_statementsetups",
+            "$filter": "_cp_environment_value eq @{variables(\u0027EnvironmentConfigId\u0027)}",
+              "$top": 1
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "If_Statement_Front_Template_Exists": {
+          "actions": {
+            "Append_to_Error_variable": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "1b471d4d-1845-46ff-9945-c735e8d2de86"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Statement Front Template in Statement Setup is empty!\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Initialize_variable_DocumentLibraryId": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Set_Word_Template_Front_variable": {
+                "runAfter": {
+                  
+                },
+                "metadata": {
+                  "operationMetadataId": "509b76a2-5b23-4e90-bec2-b54071cb4d76"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "WordTemplate_Front",
+                "value": "@{first(body(\u0027List_Statement_Setup_rows\u0027)?[\u0027value\u0027])?[\u0027cp_statementfronttemplate\u0027]}"
+                }
+              },
+              "Set_Temp_Directory_variable": {
+                "runAfter": {
+                  "Set_Word_Template_Front_variable": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "6bf50dd6-a3b3-4720-86b3-53d7a95245df"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "Temp Directory",
+                "value": "@{substring(first(body(\u0027List_Statement_Setup_rows\u0027)?[\u0027value\u0027])?[\u0027cp_statementfronttemplate\u0027],0,lastIndexOf(first(body(\u0027List_Statement_Setup_rows\u0027)?[\u0027value\u0027])?[\u0027cp_statementfronttemplate\u0027], \u0027/\u0027))}"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+            "@empty(first(body(\u0027List_Statement_Setup_rows\u0027)?[\u0027value\u0027])?[\u0027cp_statementfronttemplate\u0027])",
+              "@true"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "c419b1af-6f11-41c9-a631-e3b52de6de10"
+          },
+          "type": "If"
+        },
+        "If_Statement_Back_Template_Exists": {
+          "actions": {
+            "Append_to_Error_variable_2": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "a39ba11f-c072-48b7-9ed8-020f009a11ac"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Statement Back Template in Statement Setup is empty!\n"
+              }
+            }
+          },
+          "runAfter": {
+            "If_Statement_Front_Template_Exists": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Set_Word_Template_Front_variable_2": {
+                "runAfter": {
+                  
+                },
+                "metadata": {
+                  "operationMetadataId": "266a3f50-dc82-4462-be33-135fee96d644"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "WordTemplate_Back",
+                "value": "@{first(body(\u0027List_Statement_Setup_rows\u0027)?[\u0027value\u0027])?[\u0027cp_statementbacktemplate\u0027]}"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+            "@empty(first(body(\u0027List_Statement_Setup_rows\u0027)?[\u0027value\u0027])?[\u0027cp_statementbacktemplate\u0027])",
+              "@true"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "bfe012db-398f-4e5f-b3c1-643db5b67dbe"
+          },
+          "type": "If"
+        },
+        "If_Errors_found": {
+          "actions": {
+            "Update_Statement_row_(Genarate_PDF,_Issues)": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "bf696221-c2b4-446e-bffe-5f5dbfb434ff"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "UpdateRecord",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "cp_statements",
+                "recordId": "@outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_statementid\u0027]",
+                  "item/cp_statementpdfissues": "@variables(\u0027Error Message\u0027)"
+                },
+                "authentication": "@parameters(\u0027$authentication\u0027)"
+              }
+            }
+          },
+          "runAfter": {
+            "If_Witness_Special_Needs_Exist": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Try_-_Execute_Transactions": {
+                "actions": {
+                  "Populate_Statement_Front_Microsoft_Word_template": {
+                    "runAfter": {
+                      
+                    },
+                    "metadata": {
+                      "01I2IRW6GMTG64DV5ZDVC3FJJIJFOHUHMC": "/Cumbria/Witness_Statement_Front.docx",
+                      "01FWXBH5JV6FEIFNR7HZCJVPLODNN37F4J": "/Test Folder For Cubria/Witness Statement_Back.docx",
+                      "01FWXBH5ILK4GKEQI5PVGKIC7YDOMHNVQL": "/Test Folder For Cubria/Witness_Statement_Front.docx",
+                      "operationMetadataId": "34ffb610-fc81-4677-996e-1bf2977b49b9"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_wordonlinebusiness_1",
+                        "operationId": "CreateFileItem",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+                      },
+                      "parameters": {
+                        "source": "me",
+                        "drive": "@variables(\u0027DocumentLibraryId\u0027)",
+                        "file": "@variables(\u0027WordTemplate_Front\u0027)",
+                        "dynamicFileSchema": {
+                          "981116040": "@outputs(\u0027Compose_-_Witness_Signature\u0027)",
+                          "1016205489": "@if(and(greater(variables(\u0027Witness Age\u0027), 1), less(variables(\u0027Witness Age\u0027), 18)), int(first(split(string(variables(\u0027Witness Age\u0027)), \u0027.\u0027))), \u0027Over 18\u0027)",
+                        "1638061290": "@if (empty(outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_signaturedatetime\u0027]),\u0027\u0027, formatDateTime(convertTimeZone(outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_signaturedatetime\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy HH:mm:ss\u0027))",
+                        "-1661458585": "@outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/fullname\u0027]",
+                        "-1880315749": "@outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_witnessstatement\u0027]",
+                        "-958638486": "@outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/cp_otheroccupation\u0027]"
+                        }
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  },
+                  "Store_Front_Statement": {
+                    "runAfter": {
+                      "Populate_Statement_Front_Microsoft_Word_template": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "1b797513-a3e9-47cf-baa2-a5ff6e4d33c4"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_onedriveforbusiness",
+                        "operationId": "CreateFile",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+                      },
+                      "parameters": {
+                        "folderPath": "@variables(\u0027Temp Directory\u0027)",
+                      "name": "@{guid()}.docx",
+                      "body": "@outputs(\u0027Populate_Statement_Front_Microsoft_Word_template\u0027)?[\u0027body\u0027]"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    },
+                    "runtimeConfiguration": {
+                      "contentTransfer": {
+                        "transferMode": "Chunked"
+                      }
+                    }
+                  },
+                  "Convert_Front_Statement_to_PDF": {
+                    "runAfter": {
+                      "Store_Front_Statement": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "d01154f9-dfe7-460a-a224-f70c20afd6a7"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_onedriveforbusiness",
+                        "operationId": "ConvertFile",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+                      },
+                      "parameters": {
+                      "id": "@outputs(\u0027Store_Front_Statement\u0027)?[\u0027body/Id\u0027]",
+                        "type": "PDF"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  },
+                  "Populate_Statement_Back_Word_template": {
+                    "runAfter": {
+                      "Convert_Front_Statement_to_PDF": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "01FWXBH5JV6FEIFNR7HZCJVPLODNN37F4J": "/Test Folder For Cubria/Witness Statement_Back.docx",
+                      "operationMetadataId": "aa9fb695-1736-49da-8d87-4a0f411b0a0a"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_wordonlinebusiness",
+                        "operationId": "CreateFileItem",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+                      },
+                      "parameters": {
+                        "source": "me",
+                        "drive": "@variables(\u0027DocumentLibraryId\u0027)",
+                        "file": "@variables(\u0027WordTemplate_Back\u0027)",
+                        "dynamicFileSchema": {
+                        "59533817": "@outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/address1_line1\u0027]",
+                        "236992032": "@outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/mobilephone\u0027]",
+                          "377672461": "@outputs(\u0027Compose_-_Witness_Signature\u0027)",
+                        "451374639": "@outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/address1_telephone1\u0027]",
+                        "625747803": "@outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/cp_gender/cp_name\u0027]",
+                        "712465031": "@outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/emailaddress1\u0027]",
+                        "816683993": "@if(outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_witnessleafletgiven\u0027],\u0027Yes\u0027,\u0027No\u0027)",
+                          "870030028": "",
+                        "964541373": "@outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/cp_housenumber\u0027]",
+                        "1439873098": "@concat(\r\nif(empty(outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/birthdate\u0027]),\u0027\u0027,formatDateTime(convertTimeZone(outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/birthdate\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy\u0027)) ,concat(\u0027   \u0027,outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/cp_birthplace\u0027]))",
+                        "1537621173": "@outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_newmedicalrecordconsent@OData.Community.Display.V1.FormattedValue\u0027]",
+                        "1562897997": "@outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/cp_additionalname\u0027]",
+                        "1610075324": "@outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/_cp_officerdefinedethnicity_value@OData.Community.Display.V1.FormattedValue\u0027]",
+                        "1942791370": "@if (empty(outputs(\u0027Get_Incident_Details\u0027)?[\u0027body/cp_incidentdate\u0027]),\u0027\u0027,formatDateTime(convertTimeZone(outputs(\u0027Get_Incident_Details\u0027)?[\u0027body/cp_incidentdate\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy\u0027))",
+                        "2068992023": "@outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/address1_county\u0027]",
+                        "2078463891": "@outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_witnessdatesnotavailable\u0027]",
+                        "-964966353": "@outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/fullname\u0027]",
+                        "-56785191": "@outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/cp_housename\u0027]",
+                        "-1414390413": "@outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/address1_city\u0027]",
+                        "-1244802428": "@outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/address1_postalcode\u0027]",
+                        "-1783255164": "@outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/company\u0027]",
+                        "-1531333582": "@outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/cp_contactpreferredmethodofcontact/cp_name\u0027]",
+                        "-1269385931": "@if(outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_witnesswillingtocourt\u0027],\u0027Yes\u0027,\u0027No\u0027)",
+                        "-1876293093": "@outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_ensurewitnessattendance\u0027]",
+                        "-547145682": "@if(outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_specialmeasuresrequired\u0027],\u0027Yes\u0027,\u0027No\u0027)",
+                          "-254677523": "@string(variables(\u0027Has Witness Special Needs\u0027))",
+                          "-1284506323": "@variables(\u0027Witness Special Needs\u0027)",
+                        "-1358659365": "@if(outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_victimleafletgiven\u0027],\u0027Yes\u0027,\u0027No\u0027)",
+                        "-1310781588": "@if(outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_victimstatementprovided\u0027],\u0027Yes\u0027,\u0027No\u0027)\r\n",
+                        "-973832152": "@outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_newmedicalrecorddefenceconsent@OData.Community.Display.V1.FormattedValue\u0027]",
+                        "-946620768": "@outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_newcivildisclosureconsent@OData.Community.Display.V1.FormattedValue\u0027]",
+                        "-2098397978": "@outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/fullname\u0027]",
+                        "-624002270": "@outputs(\u0027Get_Counter_Relationship_to_Witness_Value\u0027)?[\u0027body/cp_name\u0027]",
+                          "-2073262903": "@variables(\u0027Counter Signature\u0027)",
+                        "-721759295": "@outputs(\u0027Get_Counter_Signer_Details\u0027)?[\u0027body/fullname\u0027]",
+                        "-54789162": "@{outputs(\u0027Get_EnteredBy_Name\u0027)?[\u0027body/fullname\u0027]}",
+                        "-77683746": "@outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_childwitnessonly@OData.Community.Display.V1.FormattedValue\u0027]",
+                        "-1508896422": "@outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_cpsapplyconsent@OData.Community.Display.V1.FormattedValue\u0027]",
+                          "-353576337": "@formatDateTime(convertTimeZone(utcNow(),\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy HH:mm:ss\u0027)"
+                        }
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  },
+                  "Create_Back_Statement": {
+                    "runAfter": {
+                      "Populate_Statement_Back_Word_template": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "66ec5564-d7dd-489d-aef5-a7b5f07371ec"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_onedriveforbusiness",
+                        "operationId": "CreateFile",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+                      },
+                      "parameters": {
+                        "folderPath": "@variables(\u0027Temp Directory\u0027)",
+                      "name": "@{guid()}.docx",
+                      "body": "@outputs(\u0027Populate_Statement_Back_Word_template\u0027)?[\u0027body\u0027]"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    },
+                    "runtimeConfiguration": {
+                      "contentTransfer": {
+                        "transferMode": "Chunked"
+                      }
+                    }
+                  },
+                  "Convert_Back_Statement_to_PDF": {
+                    "runAfter": {
+                      "Create_Back_Statement": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "9c862078-9377-4a0f-bb87-791c6c7abe10"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_onedriveforbusiness",
+                        "operationId": "ConvertFile",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+                      },
+                      "parameters": {
+                      "id": "@outputs(\u0027Create_Back_Statement\u0027)?[\u0027body/Id\u0027]",
+                        "type": "PDF"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  },
+                  "Perform_a_changeset_request": {
+                    "actions": {
+                      "Add_a_new_row_(Note_for_Front_Statement)": {
+                        "metadata": {
+                          "operationMetadataId": "5cfbe290-9d06-44cd-a74e-02f0ddd9876d"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps",
+                            "operationId": "CreateRecord",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "annotations",
+                          "item/subject": "Statement Front - Witness @{outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/fullname\u0027]}",
+                          "item/notetext": "Statement Front - Witness @{outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/fullname\u0027]}",
+                            "item/isdocument": true,
+                          "item/documentbody": "@body(\u0027Convert_Front_Statement_to_PDF\u0027)?[\u0027$content\u0027]",
+                          "item/filename": "Statement Front - Witness @{outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/fullname\u0027]}.pdf",
+                          "item/mimetype": "@body(\u0027Convert_Front_Statement_to_PDF\u0027)?[\u0027$content-type\u0027]",
+                          "item/ownerid@odata.bind": "/systemusers(@{outputs(\u0027FetchedStatement\u0027)?[\u0027body/_ownerid_value\u0027]})",
+                          "item/objectid_cp_statement@odata.bind": "/cp_statements(@{outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_statementid\u0027]})"
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      },
+                      "Add_a_new_row_(Note_for_Back_Statement)": {
+                        "metadata": {
+                          "operationMetadataId": "63df23c7-2cf2-4c3b-ab57-d6ec54fa1d86"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps",
+                            "operationId": "CreateRecord",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "annotations",
+                          "item/subject": "Statement Back - Witness @{outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/fullname\u0027]}",
+                          "item/notetext": "Statement Back - Witness @{outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/fullname\u0027]}",
+                            "item/isdocument": true,
+                          "item/documentbody": "@body(\u0027Convert_Back_Statement_to_PDF\u0027)?[\u0027$content\u0027]",
+                          "item/filename": "Statement Back - Witness @{outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/fullname\u0027]}.pdf",
+                          "item/mimetype": "@body(\u0027Convert_Back_Statement_to_PDF\u0027)?[\u0027$content-type\u0027]",
+                          "item/ownerid@odata.bind": "/systemusers(@{outputs(\u0027FetchedStatement\u0027)?[\u0027body/_ownerid_value\u0027]})",
+                          "item/objectid_cp_statement@odata.bind": "/cp_statements(@{outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_statementid\u0027]})"
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      },
+                      "Update_Statement_row_(PDF_Created_On)": {
+                        "metadata": {
+                          "operationMetadataId": "f2107ccc-8a23-43c0-8fd1-5bcdf4272ae2"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps",
+                            "operationId": "UpdateRecord",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "cp_statements",
+                          "recordId": "@outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_statementid\u0027]",
+                            "item/cp_statementpdfscreatedon": "@utcNow()"
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      }
+                    },
+                    "runAfter": {
+                      "Convert_Back_Statement_to_PDF": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "28ecba9c-701c-4f70-bcbc-68f922f9fe53"
+                    },
+                    "type": "Changeset",
+                    "kind": "ODataOpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps",
+                        "operationId": "ExecuteChangeset",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      }
+                    }
+                  },
+                  "Delete_Back_Statement_DOCX_temp_file": {
+                    "runAfter": {
+                      "Perform_a_changeset_request": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "c8075d51-1121-4a4a-8918-885e7e151d85"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_onedriveforbusiness",
+                        "operationId": "DeleteFile",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+                      },
+                      "parameters": {
+                      "id": "@outputs(\u0027Create_Back_Statement\u0027)?[\u0027body/Id\u0027]"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  },
+                  "Delete_Front_Statement_DOCX_temp_file": {
+                    "runAfter": {
+                      "Delete_Back_Statement_DOCX_temp_file": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "2f8d45a6-abe7-40a5-b389-70af6f274036"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_onedriveforbusiness",
+                        "operationId": "DeleteFile",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+                      },
+                      "parameters": {
+                      "id": "@outputs(\u0027Store_Front_Statement\u0027)?[\u0027body/Id\u0027]"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  }
+                },
+                "runAfter": {
+                  
+                },
+                "metadata": {
+                  "operationMetadataId": "2b888d1f-b169-4bd0-8fc7-86dddbb128d9"
+                },
+                "type": "Scope"
+              },
+              "Catch_(Errors)": {
+                "actions": {
+                  "Update_Statement_row": {
+                    "runAfter": {
+                      
+                    },
+                    "metadata": {
+                      "operationMetadataId": "9207ad87-8205-4566-88b9-5583229d5d80"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps",
+                        "operationId": "UpdateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_statements",
+                      "recordId": "@outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_statementid\u0027]",
+                        "item/cp_generatewitnessstatement": false,
+                        "item/cp_statementpdfissues": "Creation of Statement PDFs failed! Contact Administrator to check the History of Generate Withness Statement PDFs Flow. "
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  }
+                },
+                "runAfter": {
+                  "Try_-_Execute_Transactions": [
+                    "Failed",
+                    "Skipped",
+                    "TimedOut"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "c20562ff-18c1-46c9-a7b8-4a3eb4d2d6eb"
+                },
+                "type": "Scope"
+              }
+            }
+          },
+          "expression": {
+            "not": {
+              "equals": [
+                "@empty(variables(\u0027Error Message\u0027))",
+                "@true"
+              ]
+            }
+          },
+          "metadata": {
+            "operationMetadataId": "fc00a3c6-db11-49ac-a6e5-ea2317a33fe6"
+          },
+          "type": "If"
+        },
+        "Get_Incident_Details": {
+          "runAfter": {
+            "If_Statement_Back_Template_Exists": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "24008659-be5a-457f-8336-31362a943246"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_incidents",
+            "recordId": "@outputs(\u0027FetchedStatement\u0027)?[\u0027body/_cp_incident_value\u0027]",
+              "$expand": "cp_EnteredBy($select=fullname,cp_badgenumber)"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Initialize_Counter_Sign_variable": {
+          "runAfter": {
+            "Initialize_Word_Template_for_Back_Statement": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f729906c-994b-470a-a7c5-dda2559cfc38"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Counter Signature",
+                "type": "object",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            ]
+          }
+        },
+        "Initialize_Witness_Special_Needs_variable": {
+          "runAfter": {
+            "Initialize_Witness_Special_Needs_Bool_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0a9af105-0916-48ab-aac3-073cd9a1d628"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Witness Special Needs",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "List_Witness_Special_Needs": {
+          "runAfter": {
+            "If_Counter_Signer_Exists": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "fe50d04a-abef-48d1-b818-a84b15b85419"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_statementwitnessneeds",
+              "$select": "cp_name",
+            "fetchXml": "\u003cfetch\u003e\n  \u003centity name=\"cp_statementwitnessneed\" \u003e\n    \u003clink-entity name=\"cp_statement_cp_statementwitnessneed\" from=\"cp_statementwitnessneedid\" to=\"cp_statementwitnessneedid\" intersect=\"true\" \u003e\n      \u003cfilter\u003e\n        \u003ccondition attribute=\"cp_statementid\" operator=\"eq\" value=\"@{outputs(\u0027FetchedStatement\u0027)?[\u0027body/cp_statementid\u0027]}\" /\u003e\n      \u003c/filter\u003e\n    \u003c/link-entity\u003e\n  \u003c/entity\u003e\n\u003c/fetch\u003e"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "If_Witness_Special_Needs_Exist": {
+          "actions": {
+            
+          },
+          "runAfter": {
+            "List_Witness_Special_Needs": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Apply_to_each": {
+              "foreach": "@outputs(\u0027List_Witness_Special_Needs\u0027)?[\u0027body/value\u0027]",
+                "actions": {
+                  "Parse_JSON_-_Witness_Needs": {
+                    "runAfter": {
+                      
+                    },
+                    "metadata": {
+                      "operationMetadataId": "f15490cb-6adc-4382-a93c-afd43e798a56"
+                    },
+                    "type": "ParseJson",
+                    "inputs": {
+                      "content": "@items(\u0027Apply_to_each\u0027)",
+                      "schema": {
+                        "type": "object",
+                        "properties": {
+                          "@@odata.type": {
+                            "type": "string"
+                          },
+                          "@@odata.id": {
+                            "type": "string"
+                          },
+                          "@@odata.etag": {
+                            "type": "string"
+                          },
+                          "@@odata.editLink": {
+                            "type": "string"
+                          },
+                          "_owningbusinessunit_value@Microsoft.Dynamics.CRM.associatednavigationproperty": {
+                            "type": "string"
+                          },
+                          "_owningbusinessunit_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+                            "type": "string"
+                          },
+                          "_owningbusinessunit_value@odata.type": {
+                            "type": "string"
+                          },
+                          "_owningbusinessunit_value": {
+                            "type": "string"
+                          },
+                          "statecode@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "statecode": {
+                            "type": "integer"
+                          },
+                          "statuscode@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "statuscode": {
+                            "type": "integer"
+                          },
+                          "cp_displaysequenceno@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "cp_displaysequenceno": {
+                            "type": "integer"
+                          },
+                          "_createdby_value@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "_createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+                            "type": "string"
+                          },
+                          "_createdby_value@odata.type": {
+                            "type": "string"
+                          },
+                          "_createdby_value": {
+                            "type": "string"
+                          },
+                          "_ownerid_value@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "_ownerid_value@Microsoft.Dynamics.CRM.associatednavigationproperty": {
+                            "type": "string"
+                          },
+                          "_ownerid_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+                            "type": "string"
+                          },
+                          "_ownerid_value@odata.type": {
+                            "type": "string"
+                          },
+                          "_ownerid_value": {
+                            "type": "string"
+                          },
+                          "modifiedon@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "modifiedon@odata.type": {
+                            "type": "string"
+                          },
+                          "modifiedon": {
+                            "type": "string"
+                          },
+                          "cp_name": {
+                            "type": "string"
+                          },
+                          "_owninguser_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+                            "type": "string"
+                          },
+                          "_owninguser_value@odata.type": {
+                            "type": "string"
+                          },
+                          "_owninguser_value": {
+                            "type": "string"
+                          },
+                          "_modifiedby_value@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "_modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+                            "type": "string"
+                          },
+                          "_modifiedby_value@odata.type": {
+                            "type": "string"
+                          },
+                          "_modifiedby_value": {
+                            "type": "string"
+                          },
+                          "cp_statementwitnessneedid@odata.type": {
+                            "type": "string"
+                          },
+                          "cp_statementwitnessneedid": {
+                            "type": "string"
+                          },
+                          "createdon@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "createdon@odata.type": {
+                            "type": "string"
+                          },
+                          "createdon": {
+                            "type": "string"
+                          },
+                          "owningbusinessunit@odata.associationLink": {
+                            "type": "string"
+                          },
+                          "owningbusinessunit@odata.navigationLink": {
+                            "type": "string"
+                          },
+                          "ownerid@odata.associationLink": {
+                            "type": "string"
+                          },
+                          "ownerid@odata.navigationLink": {
+                            "type": "string"
+                          },
+                          "createdby@odata.associationLink": {
+                            "type": "string"
+                          },
+                          "createdby@odata.navigationLink": {
+                            "type": "string"
+                          },
+                          "owningteam@odata.associationLink": {
+                            "type": "string"
+                          },
+                          "owningteam@odata.navigationLink": {
+                            "type": "string"
+                          },
+                          "createdonbehalfby@odata.associationLink": {
+                            "type": "string"
+                          },
+                          "createdonbehalfby@odata.navigationLink": {
+                            "type": "string"
+                          },
+                          "modifiedonbehalfby@odata.associationLink": {
+                            "type": "string"
+                          },
+                          "modifiedonbehalfby@odata.navigationLink": {
+                            "type": "string"
+                          },
+                          "owninguser@odata.associationLink": {
+                            "type": "string"
+                          },
+                          "owninguser@odata.navigationLink": {
+                            "type": "string"
+                          },
+                          "modifiedby@odata.associationLink": {
+                            "type": "string"
+                          },
+                          "modifiedby@odata.navigationLink": {
+                            "type": "string"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Append_to_Witness_Needs_variable": {
+                    "runAfter": {
+                      "Parse_JSON_-_Witness_Needs": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "8798f004-8c3b-4c1f-8a44-2627f4e56aee"
+                    },
+                    "type": "AppendToStringVariable",
+                    "inputs": {
+                      "name": "Witness Special Needs",
+                    "value": "@concat(\u0027, \u0027, body(\u0027Parse_JSON_-_Witness_Needs\u0027)?[\u0027cp_name\u0027])"
+                    }
+                  }
+                },
+                "runAfter": {
+                  
+                },
+                "metadata": {
+                  "operationMetadataId": "130c7d54-88e5-49e4-a616-4c37286bb883"
+                },
+                "type": "Foreach"
+              },
+              "Compose_(Remove_Starting_,)": {
+                "runAfter": {
+                  "Apply_to_each": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "4afce1f0-b3d3-4591-a634-61ddc74193c8"
+                },
+                "type": "Compose",
+                "inputs": "@substring(variables(\u0027Witness Special Needs\u0027), 2)"
+              },
+              "Set_Witness_Needs_variable": {
+                "runAfter": {
+                  "Compose_(Remove_Starting_,)": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "0eac0be8-f4d4-4466-8d1d-4df9eb1df0f1"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "Witness Special Needs",
+                "value": "@{outputs(\u0027Compose_(Remove_Starting_,)\u0027)}"
+                }
+              },
+              "Set_Witness_Special_Needs_Bool_variable": {
+                "runAfter": {
+                  "Set_Witness_Needs_variable": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "7b004c5e-09de-4fb6-adf8-5f2d03bbb389"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "Has Witness Special Needs",
+                  "value": "Yes"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+            "@empty(outputs(\u0027List_Witness_Special_Needs\u0027)?[\u0027body/value\u0027])",
+              "@true"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "917b6034-5c0a-495d-82a8-fb9718e451dd"
+          },
+          "type": "If"
+        },
+        "Initialize_Witness_Special_Needs_Bool_variable": {
+          "runAfter": {
+            "Initialize_Counter_Sign_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2b17cf76-2335-4cc9-b99b-e614f52ef21a"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Has Witness Special Needs",
+                "type": "string",
+                "value": "No"
+              }
+            ]
+          }
+        },
+        "Initialize_Temp_Directory_variable": {
+          "runAfter": {
+            "Initialize_Witness_Special_Needs_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "362603ba-b7e0-4270-b0ed-80d276814fe1"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Temp Directory",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Initialize_Witness_Age_variable": {
+          "runAfter": {
+            "Initialize_Temp_Directory_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6d0a817f-c169-4859-8856-fccaa29c47a8"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Witness Age",
+                "type": "float",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "If_Witness_BirthDate_Exists": {
+          "actions": {
+            
+          },
+          "runAfter": {
+            "Get_Witness_Details": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Set_Witness_Age_variable": {
+                "runAfter": {
+                  
+                },
+                "metadata": {
+                  "operationMetadataId": "b4d1a5dc-9f35-44c2-a5a9-36528ba56eca"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "Witness Age",
+                "value": "@div(div(sub(ticks(utcNow(\u0027yyyy-MM-dd\u0027)),ticks(outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/birthdate\u0027])),864000000000),365.25)"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+            "@empty(outputs(\u0027Get_Witness_Details\u0027)?[\u0027body/birthdate\u0027])",
+              "@true"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "741806be-3a85-4b0b-ad40-ce3211fa3c25"
+          },
+          "type": "If"
+        },
+        "FetchedStatement": {
+          "runAfter": {
+            
+          },
+          "metadata": {
+            "operationMetadataId": "c2d29f0b-1749-4345-ad09-70df93390921"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_statements",
+            "recordId": "@triggerBody()?[\u0027recordId\u0027]"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Initialize_Drive_variable": {
+          "runAfter": {
+            "Initialize_Witness_Age_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6a596d00-169a-456c-94f4-45d3e2a9a642"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "DriveId",
+                "type": "string",
+                "value": "b!LLHLGlsDIkmF3kHd9K1RfAdi4qCIA8dEg12UCdqoniGUi0H61w2TR5mzR0P4ojaT"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_-_WorkflowEnvironmentId": {
+          "runAfter": {
+            "Get_EnteredBy_Name": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "bc83e033-719f-4f2b-9887-04727f7af635"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "WorkflowEnvironmentId",
+                "type": "string",
+              "value": "@{workflow()[\u0027tags\u0027][\u0027environmentName\u0027]}"
+              }
+            ]
+          }
+        },
+        "List_rows_Environement": {
+          "runAfter": {
+            "Initialize_variable_-_WorkflowEnvironmentId": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "74e55637-0baa-4283-b5c7-cbba02ee1485"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_environments",
+            "$filter": "cp_workflowenvironmentid eq \u0027@{variables(\u0027WorkflowEnvironmentId\u0027)}\u0027"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Initialize_variable_-_EnvironmentConfigId": {
+          "runAfter": {
+            "List_rows_Environement": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "3282d540-2313-4b2f-bbe1-b6b6c7381b50"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "EnvironmentConfigId",
+                "type": "string",
+              "value": "@{first(body(\u0027List_rows_Environement\u0027)?[\u0027value\u0027])?[\u0027cp_environmentid\u0027]}"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_DocumentLibraryId": {
+          "runAfter": {
+            "List_Statement_Setup_rows": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "11e7510a-8768-4bf3-8560-2affc48a2150"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "DocumentLibraryId",
+                "type": "string",
+              "value": "@{first(body(\u0027List_Statement_Setup_rows\u0027)?[\u0027value\u0027])?[\u0027cp_templatesdocumentlibrary\u0027]}"
+              }
+            ]
+          }
+        },
+        "Get_EnteredBy_Name": {
+          "runAfter": {
+            "FetchedStatement": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "4f9f6d3a-4e64-4127-ac4d-1b6d93c88e66"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "systemusers",
+            "recordId": "@outputs(\u0027FetchedStatement\u0027)?[\u0027body/_ownerid_value\u0027]"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}
