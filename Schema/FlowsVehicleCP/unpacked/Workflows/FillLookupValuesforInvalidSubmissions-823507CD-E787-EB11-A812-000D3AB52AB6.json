@@ -1,0 +1,545 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_dbcd7"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_a_row_is_added,_modified_or_deleted": {
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "cp_vehicleticketstg",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filteringattributes": "cp_stagingentrystatus",
+              "subscriptionRequest/filterexpression": "cp_stagingentrystatus eq 778230003"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        }
+      },
+      "actions": {
+        "Update_Staging_Record_Lookup_Fields": {
+          "runAfter": {
+            
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "UpdateRecord",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_vehicleticketstgs",
+            "recordId": "@triggerOutputs()?[\u0027body/cp_vehicleticketstgid\u0027]",
+            "item/cp_AdditionalOfficerValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_additionalofficer\u0027]), null, concat(\u0027/systemusers(\u0027, triggerOutputs()?[\u0027body/cp_additionalofficer\u0027], \u0027)\u0027))",
+            "item/cp_DaylightValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_daylight\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_daylight\u0027], \u0027)\u0027))",
+            "item/cp_DriverObserverValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_driverobserver\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_driverobserver\u0027], \u0027)\u0027))",
+            "item/cp_EnteredByValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_enteredby\u0027]), null, concat(\u0027/systemusers(\u0027, triggerOutputs()?[\u0027body/cp_enteredby\u0027], \u0027)\u0027))",
+            "item/cp_InformationFromValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_informationfrom\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_informationfrom\u0027], \u0027)\u0027))",
+            "item/cp_IssuedToValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_issuedto\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_issuedto\u0027], \u0027)\u0027))",
+            "item/cp_MarkedUnmarkedCarValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_markedunmarkedcar\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_markedunmarkedcar\u0027], \u0027)\u0027))",
+            "item/cp_OffenderAdditionalNameTypeValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_additionalnametype\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_additionalnametype\u0027], \u0027)\u0027))",
+            "item/cp_OffenderForeignLicenceCountryValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_foreignlicencecountry\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_foreignlicencecountry\u0027], \u0027)\u0027))",
+            "item/cp_OffenderGenderValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_gender\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_gender\u0027], \u0027)\u0027))",
+            "item/cp_OffenderLicenceTypeValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_licencetype\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_licencetype\u0027], \u0027)\u0027))",
+            "item/cp_OffenderOccupationValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_occupation\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_occupation\u0027], \u0027)\u0027))",
+            "item/cp_OffenderOfficerDefinedEthnicityValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_officerdefinedethnicity\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_officerdefinedethnicity\u0027], \u0027)\u0027))",
+            "item/cp_OffenderPreferredContactMethodValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_preferredcontactmethod\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_preferredcontactmethod\u0027], \u0027)\u0027))",
+            "item/cp_OffenderSelfDefinedEthnicityValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_selfdefinedethnicity\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_selfdefinedethnicity\u0027], \u0027)\u0027))",
+            "item/cp_TitleValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_title\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_title\u0027], \u0027)\u0027))",
+            "item/cp_OfficerTrainingValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_officertraining\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_officertraining\u0027], \u0027)\u0027))",
+            "item/cp_OfficerValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_officer\u0027]), null, concat(\u0027/systemusers(\u0027, triggerOutputs()?[\u0027body/cp_officer\u0027], \u0027)\u0027))",
+            "item/cp_ReasonforStoppingValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_reasonforstopping\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_reasonforstopping\u0027], \u0027)\u0027))",
+            "item/cp_SpeedDetectionMethodValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_speeddetectionmethod\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_speeddetectionmethod\u0027], \u0027)\u0027))",
+            "item/cp_SpeedLimitValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_speedlimit\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_speedlimit\u0027], \u0027)\u0027))",
+            "item/cp_StatementOfValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_statementof\u0027]), null, concat(\u0027/systemusers(\u0027, triggerOutputs()?[\u0027body/cp_statementof\u0027], \u0027)\u0027))",
+            "item/cp_StreetLightingValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_streetlighting\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_streetlighting\u0027], \u0027)\u0027))",
+            "item/cp_TPAValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_tpa\u0027]), null, concat(\u0027/cp_territorialpolicingareas(\u0027, triggerOutputs()?[\u0027body/cp_tpa\u0027], \u0027)\u0027))",
+            "item/cp_UseofVehicleValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_useofvehicle\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_useofvehicle\u0027], \u0027)\u0027))",
+            "item/cp_VehicleColourValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_vehiclecolour\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_vehiclecolour\u0027], \u0027)\u0027))",
+            "item/cp_VehicleMakeValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_vehiclemake\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_vehiclemake\u0027], \u0027)\u0027))",
+            "item/cp_VehicleRoleValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_vehiclerole\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_vehiclerole\u0027], \u0027)\u0027))",
+            "item/cp_VehicleWasSeenValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_vehiclewasseen\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_vehiclewasseen\u0027], \u0027)\u0027))",
+            "item/cp_VisibilityValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_visibility\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_visibility\u0027], \u0027)\u0027))",
+            "item/cp_WeatherValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_weather\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_weather\u0027], \u0027)\u0027))"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "List_Vehicle_Ticket_Offenses_STG": {
+          "runAfter": {
+            "Update_Staging_Record_Lookup_Fields": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_vehicleticketoffencesstgs",
+            "$filter": "(_cp_vehicleticketstgid_value eq @{triggerOutputs()?[\u0027body/cp_vehicleticketstgid\u0027]})"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "If_Vehicle_Ticket_Offences_EXIST": {
+          "actions": {
+            "Apply_to_each_Offence": {
+            "foreach": "@outputs(\u0027List_Vehicle_Ticket_Offenses_STG\u0027)?[\u0027body/value\u0027]",
+              "actions": {
+                "Case_-_Traffic_Offence": {
+                  "actions": {
+                    "Update_Traffic_Offence_row": {
+                      "runAfter": {
+                        
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "UpdateRecord",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_vehicleticketoffencesstgs",
+                        "recordId": "@items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_vehicleticketoffencesstgid\u0027]",
+                        "item/cp_TicketTypeValue@odata.bind": "@if(empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_tickettype\u0027]), null, concat(\u0027/cp_tickettypes(\u0027, items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_tickettype\u0027], \u0027)\u0027))"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    },
+                    "If_Offence_Codes_provided": {
+                      "actions": {
+                        "Compose_Offence_Codes": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "Compose",
+                        "inputs": "@split(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_offencecode\u0027], \u0027,\u0027)"
+                        },
+                        "Apply_to_each_Offence_Codes": {
+                          "foreach": "@outputs(\u0027Compose_Offence_Codes\u0027)",
+                          "actions": {
+                            "Relate_rows_(Traffic_Offence_-_Offence_Codes)": {
+                              "runAfter": {
+                                
+                              },
+                              "type": "OpenApiConnection",
+                              "inputs": {
+                                "host": {
+                                  "connectionName": "shared_commondataserviceforapps",
+                                  "operationId": "AssociateEntities",
+                                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                },
+                                "parameters": {
+                                  "entityName": "cp_offencecodes",
+                                  "recordId": "@items(\u0027Apply_to_each_Offence_Codes\u0027)",
+                                  "associationEntityRelationship": "cp_VehicleTicketOffencesSTG_Offencecode",
+                                "item/@odata.id": "@outputs(\u0027Update_Traffic_Offence_row\u0027)?[\u0027body/@odata.id\u0027]"
+                                },
+                                "authentication": "@parameters(\u0027$authentication\u0027)"
+                              }
+                            }
+                          },
+                          "runAfter": {
+                            "Compose_Offence_Codes": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "Foreach"
+                        }
+                      },
+                      "runAfter": {
+                        "Update_Traffic_Offence_row": [
+                          "Succeeded"
+                        ]
+                      },
+                      "expression": {
+                        "not": {
+                          "equals": [
+                          "@empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_offencecode\u0027])",
+                            "@true"
+                          ]
+                        }
+                      },
+                      "type": "If"
+                    }
+                  },
+                  "runAfter": {
+                    
+                  },
+                  "expression": {
+                    "equals": [
+                    "@items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_tickettype\u0027]",
+                      "6245096f-5b39-eb11-bf68-000d3a654276"
+                    ]
+                  },
+                  "type": "If"
+                },
+                "Case_-_HORT": {
+                  "actions": {
+                    "Update_the_HORT_row": {
+                      "runAfter": {
+                        
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "UpdateRecord",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_vehicleticketoffencesstgs",
+                        "recordId": "@items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_vehicleticketoffencesstgid\u0027]",
+                        "item/cp_CheckOrRecordValue@odata.bind": "@if(empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_checkorrecord\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_checkorrecord\u0027], \u0027)\u0027))",
+                        "item/cp_ProduceStationValue@odata.bind": "@if(empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_producestation\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_producestation\u0027], \u0027)\u0027))",
+                        "item/cp_TicketTypeValue@odata.bind": "@if(empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_tickettype\u0027]), null, concat(\u0027/cp_tickettypes(\u0027, items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_tickettype\u0027], \u0027)\u0027))"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    },
+                    "Condition_Document_Type_ISNULL": {
+                      "actions": {
+                        "Compose_Document_Type": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "Compose",
+                        "inputs": "@split(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_documenttype\u0027], \u0027,\u0027)"
+                        },
+                        "Apply_to_each_Document_Type": {
+                          "foreach": "@outputs(\u0027Compose_Document_Type\u0027)",
+                          "actions": {
+                            "Relate_rows_(Traffic_Offence_-_Document_Type)": {
+                              "runAfter": {
+                                
+                              },
+                              "type": "OpenApiConnection",
+                              "inputs": {
+                                "host": {
+                                  "connectionName": "shared_commondataserviceforapps",
+                                  "operationId": "AssociateEntities",
+                                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                },
+                                "parameters": {
+                                  "entityName": "cp_vehicledocuments",
+                                  "recordId": "@items(\u0027Apply_to_each_Document_Type\u0027)",
+                                  "associationEntityRelationship": "cp_VehicleTicketOffencesSTG_VehicleDoc",
+                                "item/@odata.id": "@outputs(\u0027Update_the_HORT_row\u0027)?[\u0027body/@odata.id\u0027]"
+                                },
+                                "authentication": "@parameters(\u0027$authentication\u0027)"
+                              }
+                            }
+                          },
+                          "runAfter": {
+                            "Compose_Document_Type": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "Foreach"
+                        }
+                      },
+                      "runAfter": {
+                        "Update_the_HORT_row": [
+                          "Succeeded"
+                        ]
+                      },
+                      "expression": {
+                        "not": {
+                          "equals": [
+                          "@empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_documenttype\u0027])",
+                            "@true"
+                          ]
+                        }
+                      },
+                      "type": "If"
+                    }
+                  },
+                  "runAfter": {
+                    "VDRS": [
+                      "Succeeded"
+                    ]
+                  },
+                  "expression": {
+                    "equals": [
+                    "@items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_tickettype\u0027]",
+                      "5c45096f-5b39-eb11-bf68-000d3a654276"
+                    ]
+                  },
+                  "type": "If"
+                },
+                "VDRS": {
+                  "actions": {
+                    "Update_VDRS_row": {
+                      "runAfter": {
+                        
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "UpdateRecord",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_vehicleticketoffencesstgs",
+                        "recordId": "@items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_vehicleticketoffencesstgid\u0027]",
+                        "item/cp_TicketTypeValue@odata.bind": "@if(empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_tickettype\u0027]), null, concat(\u0027/cp_tickettypes(\u0027, items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_tickettype\u0027], \u0027)\u0027))"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    },
+                    "If_VDRS_Offence_Codes_provided": {
+                      "actions": {
+                        "Compose_VDRS_Offence_Codes": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "Compose",
+                        "inputs": "@split(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_vdroffencecode\u0027], \u0027,\u0027)"
+                        },
+                        "Apply_to_each_VDRS_Offence_Codes": {
+                          "foreach": "@outputs(\u0027Compose_VDRS_Offence_Codes\u0027)",
+                          "actions": {
+                            "Relate_rows_(Traffic_Offence_-_VDRS_Offence_Codes)": {
+                              "runAfter": {
+                                
+                              },
+                              "type": "OpenApiConnection",
+                              "inputs": {
+                                "host": {
+                                  "connectionName": "shared_commondataserviceforapps",
+                                  "operationId": "AssociateEntities",
+                                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                },
+                                "parameters": {
+                                  "entityName": "cp_offencecodes",
+                                  "recordId": "@items(\u0027Apply_to_each_VDRS_Offence_Codes\u0027)",
+                                  "associationEntityRelationship": "cp_VehicleTicketOffencesSTG_Offencecode",
+                                "item/@odata.id": "@outputs(\u0027Update_VDRS_row\u0027)?[\u0027body/@odata.id\u0027]"
+                                },
+                                "authentication": "@parameters(\u0027$authentication\u0027)"
+                              }
+                            }
+                          },
+                          "runAfter": {
+                            "Compose_VDRS_Offence_Codes": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "Foreach"
+                        }
+                      },
+                      "runAfter": {
+                        "Update_VDRS_row": [
+                          "Succeeded"
+                        ]
+                      },
+                      "expression": {
+                        "not": {
+                          "equals": [
+                          "@empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_vdroffencecode\u0027])",
+                            "@true"
+                          ]
+                        }
+                      },
+                      "type": "If"
+                    }
+                  },
+                  "runAfter": {
+                    "Case_-_Traffic_Offence": [
+                      "Succeeded"
+                    ]
+                  },
+                  "expression": {
+                    "equals": [
+                    "@items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_tickettype\u0027]",
+                      "6445096f-5b39-eb11-bf68-000d3a654276"
+                    ]
+                  },
+                  "type": "If"
+                },
+                "Section_165": {
+                  "actions": {
+                    "Update_the_Section_165_row_2": {
+                      "runAfter": {
+                        
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "UpdateRecord",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_vehicleticketoffencesstgs",
+                        "recordId": "@items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_vehicleticketoffencesstgid\u0027]",
+                        "item/cp_DesignatedStationValue@odata.bind": "@if(empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_designatedstation\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_designatedstation\u0027], \u0027)\u0027))",
+                        "item/cp_S165RecoveryGarageValue@odata.bind": "@if(empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_s165recoverygarage\u0027]), null, concat(\u0027/accounts(\u0027, items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_s165recoverygarage\u0027], \u0027)\u0027))",
+                        "item/cp_TicketTypeValue@odata.bind": "@if(empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_tickettype\u0027]), null, concat(\u0027/cp_tickettypes(\u0027, items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_tickettype\u0027], \u0027)\u0027))",
+                        "item/cp_WithoutValue@odata.bind": "@if(empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_without\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_without\u0027], \u0027)\u0027))"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    "Case_-_HORT": [
+                      "Succeeded"
+                    ]
+                  },
+                  "expression": {
+                    "equals": [
+                    "@items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_tickettype\u0027]",
+                      "5e45096f-5b39-eb11-bf68-000d3a654276"
+                    ]
+                  },
+                  "type": "If"
+                },
+                "Section_163": {
+                  "actions": {
+                    "Update_the_Section_163_row": {
+                      "runAfter": {
+                        
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "UpdateRecord",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_vehicleticketoffencesstgs",
+                        "recordId": "@items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_vehicleticketoffencesstgid\u0027]",
+                        "item/cp_OutcomeofStopValue@odata.bind": "@if(empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_outcomeofstop\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_outcomeofstop\u0027], \u0027)\u0027))",
+                        "item/cp_ReasonForUsingS163PowerValue@odata.bind": "@if(empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_reasonforusings163power\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_reasonforusings163power\u0027], \u0027)\u0027))",
+                        "item/cp_TicketTypeValue@odata.bind": "@if(empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_tickettype\u0027]), null, concat(\u0027/cp_tickettypes(\u0027, items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_tickettype\u0027], \u0027)\u0027))"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    "Section_165": [
+                      "Succeeded"
+                    ]
+                  },
+                  "expression": {
+                    "equals": [
+                    "@items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_tickettype\u0027]",
+                      "9bdd1977-de5f-eb11-a812-0022489c79d7"
+                    ]
+                  },
+                  "type": "If"
+                },
+                "Section_59": {
+                  "actions": {
+                    "Update_the_Section_59_row_2": {
+                      "runAfter": {
+                        
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "UpdateRecord",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_vehicleticketoffencesstgs",
+                        "recordId": "@items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_vehicleticketoffencesstgid\u0027]",
+                        "item/cp_DrivingMannerValue@odata.bind": "@if(empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_drivingmanner\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_drivingmanner\u0027], \u0027)\u0027))",
+                        "item/cp_DrivingVehicleInValue@odata.bind": "@if(empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_drivingvehiclein\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_drivingvehiclein\u0027], \u0027)\u0027))",
+                        "item/cp_S59RecoveryGarageValue@odata.bind": "@if(empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_s59recoverygarage\u0027]), null, concat(\u0027/accounts(\u0027, items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_s59recoverygarage\u0027], \u0027)\u0027))",
+                        "item/cp_SectionValue@odata.bind": "@if(empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_section\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_section\u0027], \u0027)\u0027))",
+                        "item/cp_TicketTypeValue@odata.bind": "@if(empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_tickettype\u0027]), null, concat(\u0027/cp_tickettypes(\u0027, items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_tickettype\u0027], \u0027)\u0027))",
+                        "item/cp_WarningorSeizureValue@odata.bind": "@if(empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_warningorseizure\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_warningorseizure\u0027], \u0027)\u0027))",
+                        "item/cp_YouWording1Value@odata.bind": "@if(empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_youwording1\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_youwording1\u0027], \u0027)\u0027))",
+                        "item/cp_YouWording3Value@odata.bind": "@if(empty(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_youwording3\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_youwording3\u0027], \u0027)\u0027))"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    "Section_163": [
+                      "Succeeded"
+                    ]
+                  },
+                  "expression": {
+                    "equals": [
+                    "@items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_tickettype\u0027]",
+                      "6045096f-5b39-eb11-bf68-000d3a654276"
+                    ]
+                  },
+                  "type": "If"
+                }
+              },
+              "runAfter": {
+                
+              },
+              "type": "Foreach"
+            }
+          },
+          "runAfter": {
+            "List_Vehicle_Ticket_Offenses_STG": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "not": {
+              "equals": [
+              "@empty(outputs(\u0027List_Vehicle_Ticket_Offenses_STG\u0027)?[\u0027body/value\u0027])",
+                "@true"
+              ]
+            }
+          },
+          "type": "If"
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

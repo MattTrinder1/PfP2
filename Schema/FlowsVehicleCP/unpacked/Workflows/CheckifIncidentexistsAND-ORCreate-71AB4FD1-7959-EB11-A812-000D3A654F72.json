@@ -1,0 +1,289 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_ce4a8"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "Incident Number",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "Incident Suffix",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_2": {
+                  "title": "Incident Type",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_3": {
+                  "title": "Additional Officer Id",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_4": {
+                  "title": "Entered By",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_5": {
+                  "title": "Incident Date",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_6": {
+                  "title": "Single Officer Event",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_7": {
+                  "title": "Reporting Officer",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text",
+                "text_2",
+                "text_4"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Filter_Incidents_with_Incident_Number_": {
+          "runAfter": {
+            "Compose_Incident_Date": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_incidents",
+            "$filter": "(cp_incidentnumber eq \u0027@{triggerBody()[\u0027text\u0027]}\u0027 and _cp_incidenttype_value eq @{triggerBody()[\u0027text_2\u0027]})",
+              "$top": 1
+            },
+            "authentication": {
+              "type": "Raw",
+            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+            }
+          }
+        },
+        "According_to_Retrieved_Results": {
+          "actions": {
+            "Set_variable_Incident_Id": {
+              "runAfter": {
+                "Create_a_new_Incident": [
+                  "Succeeded"
+                ]
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "IncidentId",
+              "value": "@outputs(\u0027Create_a_new_Incident\u0027)?[\u0027body/cp_incidentid\u0027]"
+              }
+            },
+            "Create_a_new_Incident": {
+              "runAfter": {
+                "Run_a_Child_Flow_(Get_Single_Officer_Event_Choice_Id)": [
+                  "Succeeded"
+                ]
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "CreateRecord",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "cp_incidents",
+                "item/cp_incidentnumber": "@triggerBody()[\u0027text\u0027]",
+                "item/cp_IncidentType@odata.bind": "/cp_incidenttypes(@{triggerBody()[\u0027text_2\u0027]})",
+                "item/cp_AdditionalOfficer@odata.bind": "@if(empty(triggerBody()?[\u0027text_3\u0027]),\u0027\u0027,concat(\u0027/systemusers(\u0027,triggerBody()?[\u0027text_3\u0027],\u0027)\u0027))",
+                "item/cp_EnteredBy@odata.bind": "/systemusers(@{triggerBody()[\u0027text_4\u0027]})",
+                  "item/cp_incidentdate": "@outputs(\u0027Compose_Incident_Date\u0027)",
+                "item/cp_incidentsuffix": "@triggerBody()[\u0027text_1\u0027]",
+                "item/ownerid@odata.bind": "/systemusers(@{triggerBody()[\u0027text_4\u0027]})",
+                "item/cp_reportingofficer": "@outputs(\u0027Run_a_Child_Flow_(Get_Reporting_Officer_Choice_Id)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]",
+                "item/cp_singleofficerevent": "@outputs(\u0027Run_a_Child_Flow_(Get_Single_Officer_Event_Choice_Id)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]"
+                },
+                "authentication": {
+                  "type": "Raw",
+                "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                }
+              }
+            },
+            "Run_a_Child_Flow_(Get_Reporting_Officer_Choice_Id)": {
+              "runAfter": {
+                
+              },
+              "type": "Workflow",
+              "inputs": {
+                "host": {
+                  "workflowReferenceName": "79674c64-ee92-eb11-b1ac-000d3adb2fd2"
+                },
+                "body": {
+                "text": "@triggerBody()?[\u0027text_7\u0027]"
+                }
+              }
+            },
+            "Run_a_Child_Flow_(Get_Single_Officer_Event_Choice_Id)": {
+              "runAfter": {
+                "Run_a_Child_Flow_(Get_Reporting_Officer_Choice_Id)": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Workflow",
+              "inputs": {
+                "host": {
+                  "workflowReferenceName": "79674c64-ee92-eb11-b1ac-000d3adb2fd2"
+                },
+                "body": {
+                "text": "@triggerBody()?[\u0027text_6\u0027]"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Initialize_Incident_Id_variable": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Store_Incident_Id": {
+                "runAfter": {
+                  
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "IncidentId",
+                "value": "@{first(body(\u0027Filter_Incidents_with_Incident_Number_\u0027)?[\u0027value\u0027])?[\u0027cp_incidentid\u0027]}"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+            "@empty(outputs(\u0027Filter_Incidents_with_Incident_Number_\u0027)?[\u0027body/value\u0027])",
+              "@true"
+            ]
+          },
+          "type": "If"
+        },
+        "Initialize_Incident_Id_variable": {
+          "runAfter": {
+            "Filter_Incidents_with_Incident_Number_": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "IncidentId",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Respond_to_a_PowerApp_or_flow_Incident_Id": {
+          "runAfter": {
+            "According_to_Retrieved_Results": [
+              "Succeeded"
+            ]
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "incidentid": "@variables(\u0027IncidentId\u0027)"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "incidentid": {
+                  "title": "IncidentId",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Compose_Incident_Date": {
+          "runAfter": {
+            
+          },
+          "type": "Compose",
+        "inputs": "@if(empty(triggerBody()?[\u0027text_5\u0027]),null,triggerBody()?[\u0027text_5\u0027])"
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

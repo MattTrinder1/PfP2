@@ -1,0 +1,276 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_ce4a8"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "Contact Id",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "IsRetired",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_2": {
+                  "title": "Occupation",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_3": {
+                  "title": "Marital Status",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_4": {
+                  "title": "Additional Info",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_5": {
+                  "title": "PreferedContactMethod",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_6": {
+                  "title": "Phone",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_7": {
+                  "title": "Email",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_8": {
+                  "title": "PreferedContactTime",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_9": {
+                  "title": "Mobile Phone",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_10": {
+                  "title": "Work Phone",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_11": {
+                  "title": "Evening Phone",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_12": {
+                  "title": "Birth Place",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_13": {
+                  "title": "Country DropDown",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_14": {
+                  "title": "Other Occupation",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_15": {
+                  "title": "Self-Definedethnicity",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_16": {
+                  "title": "Officer Defined Ethnicity ",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Run_a_Child_Flow_(Get_Choice_Id_for_Is_Retired)": {
+          "runAfter": {
+            "ComposePreferedContactMethod": [
+              "Succeeded"
+            ]
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "37c9a41c-8359-eb11-a812-000d3a654f72"
+            },
+            "body": {
+            "text": "@triggerBody()?[\u0027text_1\u0027]"
+            }
+          }
+        },
+        "Update_Contact_with_additional_fields": {
+          "runAfter": {
+            "Run_a_Child_Flow_(Get_Choice_Id_for_Marital_Status)": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "UpdateRecord",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "contacts",
+            "recordId": "@triggerBody()[\u0027text\u0027]",
+            "item/cp_OfficerDefinedEthnicity@odata.bind": "@if(empty(triggerBody()?[\u0027text_16\u0027]),null,concat(\u0027/cp_lookupvalues(\u0027,triggerBody()?[\u0027text_16\u0027],\u0027)\u0027))",
+            "item/cp_SelfDefinedEthnicity@odata.bind": "@if(empty(triggerBody()?[\u0027text_15\u0027]),null,concat(\u0027/cp_lookupvalues(\u0027,triggerBody()?[\u0027text_15\u0027],\u0027)\u0027))",
+            "item/address1_telephone1": "@triggerBody()?[\u0027text_6\u0027]",
+            "item/cp_birthplace": "@triggerBody()?[\u0027text_12\u0027]",
+            "item/company": "@triggerBody()?[\u0027text_10\u0027]",
+            "item/cp_ContactCountry@odata.bind": "@if(empty(triggerBody()?[\u0027text_13\u0027]),null,concat(\u0027/cp_lookupvalues(\u0027,triggerBody()?[\u0027text_13\u0027],\u0027)\u0027))",
+            "item/cp_contactpreferredcontacttime": "@triggerBody()?[\u0027text_8\u0027]",
+            "item/cp_ContactPreferredMethodofContact@odata.bind": "@if(empty(triggerBody()?[\u0027text_5\u0027]),null,concat(\u0027/cp_lookupvalues(\u0027,triggerBody()?[\u0027text_5\u0027],\u0027)\u0027))",
+            "item/emailaddress1": "@triggerBody()?[\u0027text_7\u0027]",
+            "item/address1_telephone2": "@triggerBody()?[\u0027text_11\u0027]",
+            "item/cp_LastOccupation@odata.bind": "@if(empty(triggerBody()?[\u0027text_2\u0027]),null,concat(\u0027/cp_lookupvalues(\u0027,triggerBody()?[\u0027text_2\u0027],\u0027)\u0027))",
+            "item/familystatuscode": "@outputs(\u0027Run_a_Child_Flow_(Get_Choice_Id_for_Marital_Status)\u0027)?[\u0027Body\u0027]?[\u0027marital_status_id\u0027]",
+            "item/mobilephone": "@triggerBody()?[\u0027text_9\u0027]",
+            "item/cp_otheroccupation": "@triggerBody()?[\u0027text_14\u0027]",
+            "item/cp_retired": "@outputs(\u0027Run_a_Child_Flow_(Get_Choice_Id_for_Is_Retired)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]"
+            },
+            "authentication": {
+              "type": "Raw",
+            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+            }
+          }
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "Update_Contact_with_additional_fields": [
+              "Succeeded"
+            ]
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "status": "OK"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "title": "Status",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Run_a_Child_Flow_(Get_Choice_Id_for_Marital_Status)": {
+          "runAfter": {
+            "Run_a_Child_Flow_(Get_Choice_Id_for_Is_Retired)": [
+              "Succeeded"
+            ]
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "ccb264c3-3762-eb11-a812-0022489c79d7"
+            },
+            "body": {
+            "text": "@triggerBody()?[\u0027text_3\u0027]"
+            }
+          }
+        },
+        "ComposePreferedContactMethod": {
+          "runAfter": {
+            
+          },
+          "type": "Compose",
+        "inputs": "@if(empty(triggerBody()?[\u0027text_5\u0027]),null,triggerBody()?[\u0027text_5\u0027])"
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}
