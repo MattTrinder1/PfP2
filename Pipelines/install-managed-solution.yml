@@ -12,7 +12,7 @@ steps:
     - ${{ if contains(parameter.Value, 'FileName') }}:
 
       - powershell:
-        displayName:CheckFileExists
+        displayName: CheckFileExists
               |
               $fileExists = Test-Path -Path '${{parameters.pipelineworkspace}}/${{parameter.Value}}' -PathType leaf
               Write-Output "##vso[task.setvariable variable=FileExists]$fileExists"
