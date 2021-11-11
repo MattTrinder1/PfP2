@@ -6,11 +6,16 @@ parameters:
 - name: SolutionFileName
   type: string
 
-
 steps:
 
   - ${{ each parameter in parameters }}:
     - ${{ if contains(parameter.Value, 'FileName') }}:
+
+      - powershell: |
+              $fileExists = Test-Path -Path '${{parameters.pipelineworkspace}}/${{parameter.Value}}' -PathType leaf
+              Write-Output "##vso[task.setvariable variable=FileExists]$fileExists"
+
+
       - task: MSCRMImportSolution@11
         displayName: '${{parameter.Value}}'
         inputs:
@@ -20,3 +25,4 @@ steps:
             publishWorkflows: true
             useAsyncMode: false
             asyncWaitTimeout: 1500
+        condition: eq(variables['FileExists'],true)

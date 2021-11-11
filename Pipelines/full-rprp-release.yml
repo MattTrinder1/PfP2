@@ -123,15 +123,20 @@ stages:
             - checkout: none
             - task: MSCRMToolInstaller@9
               displayName: 'MSCRM Tool Installer'
+
+            - template: get-solution-filenames.yml
+              parameters:
+                pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
             
             - ${{ each parameter in parameters }}:
               - ${{ if contains(parameter.Key, 'SolutionName') }}:
-                - template: deployBaseSolution.yml
+                - template: install-managed-solution.yml
                   parameters:
-                    minorversion : $(minor.version)
-                    releaseversion : $(release.version)
-                    solutionprefix : $(solution.prefix)
-                    solutionName: ${{parameter.Value}}
+                    SolutionFileName : $(${{parameter.Value}}SolutionFileName)
+                    pipelineworkspace: $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
                     connectionString: $(pfpsystemtest.connection.string)
 
 
@@ -186,13 +191,12 @@ stages:
             
             - ${{ each parameter in parameters }}:
               - ${{ if contains(parameter.Key, 'SolutionName') }}:
-                - template: deployBaseSolution.yml
+                - template: install-managed-solution.yml
                   parameters:
-                    minorversion : $(minor.version)
-                    releaseversion : $(release.version)
-                    solutionprefix : $(solution.prefix)
-                    solutionName: ${{parameter.Value}}
+                    SolutionFileName : $(${{parameter.Value}}SolutionFileName)
+                    pipelineworkspace: $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
                     connectionString: $(Cumbriapfpuat.connection.string)
+
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -244,12 +248,10 @@ stages:
             
             - ${{ each parameter in parameters }}:
               - ${{ if contains(parameter.Key, 'SolutionName') }}:
-                - template: deployBaseSolution.yml
+                - template: install-managed-solution.yml
                   parameters:
-                    minorversion : $(minor.version)
-                    releaseversion : $(release.version)
-                    solutionprefix : $(solution.prefix)
-                    solutionName: ${{parameter.Value}}
+                    SolutionFileName : $(${{parameter.Value}}SolutionFileName)
+                    pipelineworkspace: $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
                     connectionString: $(Tisskipfpuat.connection.string)
 
 
