@@ -123,13 +123,13 @@ stages:
             - checkout: none
             - task: MSCRMToolInstaller@9
               displayName: 'MSCRM Tool Installer'
-              
+
             - template: get-solution-filenames.yml
               parameters:
                 pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
-                minorversion : ${{parameters.minorversion}}
-                releaseversion : ${{parameters.releaseversion}}
-                solutionprefix : ${{parameters.solutionprefix}}
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
             
             - ${{ each parameter in parameters }}:
               - ${{ if contains(parameter.Key, 'SolutionName') }}:
