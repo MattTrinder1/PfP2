@@ -5,12 +5,9 @@ parameters:
   type: string
 - name: SolutionFileName
   type: string
-- name: FileExists
-  type: string
 
 steps:
 
-  #- ${{ if eq(parameters.FileExists,true) }}:
   - ${{ each parameter in parameters }}:
     - ${{ if contains(parameter.Value, 'FileName') }}:
       - task: MSCRMImportSolution@11
@@ -22,4 +19,3 @@ steps:
             publishWorkflows: true
             useAsyncMode: false
             asyncWaitTimeout: 1500
-
