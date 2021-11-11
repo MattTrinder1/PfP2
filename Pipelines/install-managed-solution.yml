@@ -10,7 +10,7 @@ parameters:
 
 steps:
 
-  - ${{ eq(parameters.FileExists,'True') }}:
+  - ${{if eq(parameters.FileExists,'True') }}:
     - ${{ each parameter in parameters }}:
       - ${{ if contains(parameter.Value, 'FileName') }}:
         - task: MSCRMImportSolution@11
