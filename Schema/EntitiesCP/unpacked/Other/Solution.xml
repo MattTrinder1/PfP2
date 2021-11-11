@@ -6,7 +6,7 @@
       <LocalizedName description="040 - Entities" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.0.0.145</Version>
+    <Version>1.0.0.146</Version>
     <Managed>1</Managed>
     <Publisher>
       <UniqueName>cumbriapolicepublisher</UniqueName>
@@ -124,6 +124,11 @@
       <RootComponent type="1" schemaName="cp_pocketnotebookimage" behavior="0" />
       <RootComponent type="1" schemaName="cp_pocketnotebookstg" behavior="0" />
       <RootComponent type="1" schemaName="cp_property" behavior="0" />
+      <RootComponent type="1" schemaName="cp_rprp" behavior="0" />
+      <RootComponent type="1" schemaName="cp_rprpbpf" behavior="0" />
+      <RootComponent type="1" schemaName="cp_rprpcategory" behavior="0" />
+      <RootComponent type="1" schemaName="cp_rprphistory" behavior="0" />
+      <RootComponent type="1" schemaName="cp_rprptype" behavior="0" />
       <RootComponent type="1" schemaName="cp_shift" behavior="0" />
       <RootComponent type="1" schemaName="cp_signature" behavior="0" />
       <RootComponent type="1" schemaName="cp_statement" behavior="0" />
@@ -180,6 +185,7 @@
       <RootComponent type="29" id="{7dc2c985-6c32-ec11-b6e6-000d3a86da8e}" behavior="0" />
       <RootComponent type="29" id="{9212dff1-7911-ec11-b6e6-0022489a3e43}" behavior="0" />
       <RootComponent type="29" id="{a1dd4e29-7911-ec11-b6e6-0022489a3e43}" behavior="0" />
+      <RootComponent type="29" id="{eb1f4a29-a838-ec11-8c64-000d3a871d8b}" behavior="0" />
       <RootComponent type="29" id="{f2afb74b-d616-ec11-b6e6-000d3ad9c048}" behavior="0" />
     </RootComponents>
     <MissingDependencies>
@@ -194,44 +200,12 @@
         <Dependent type="1" schemaName="systemuser" displayName="User" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="1" schemaName="cp_rprp" displayName="RPRP" solution="Active" />
-        <Dependent type="1" schemaName="systemuser" displayName="User" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_rprp" displayName="RPRP" solution="Active" />
-        <Dependent type="29" displayName="RPRP - Prevent Reviewer = Participant" id="{7dc2c985-6c32-ec11-b6e6-000d3a86da8e}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_rprptype" displayName="RPRP Type" solution="Active" />
-        <Dependent type="1" schemaName="role" displayName="Security Role" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_rprptype" displayName="RPRP Type" solution="Active" />
-        <Dependent type="1" schemaName="team" displayName="Team" />
-      </MissingDependency>
-      <MissingDependency>
         <Required type="1" schemaName="teammobileofflineprofilemembership" displayName="TeamMobileOfflineProfileMembership" solution="MobileOfflineMembership (1.0.0.2)" />
         <Dependent type="1" schemaName="team" displayName="Team" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="usermobileofflineprofilemembership" displayName="UserMobileOfflineProfileMembership" solution="MobileOfflineMembership (1.0.0.2)" />
         <Dependent type="1" schemaName="systemuser" displayName="User" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="2" schemaName="cp_name" displayName="Reference" parentSchemaName="cp_rprp" parentDisplayName="RPRP" solution="Active" />
-        <Dependent type="29" displayName="RPRP - Prevent Reviewer = Participant" id="{7dc2c985-6c32-ec11-b6e6-000d3a86da8e}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="2" schemaName="cp_participant" displayName="Participant" parentSchemaName="cp_rprp" parentDisplayName="RPRP" solution="Active" />
-        <Dependent type="29" displayName="RPRP - Prevent Reviewer = Participant" id="{7dc2c985-6c32-ec11-b6e6-000d3a86da8e}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="2" schemaName="cp_reviewer" displayName="Reviewer" parentSchemaName="cp_rprp" parentDisplayName="RPRP" solution="Active" />
-        <Dependent type="29" displayName="RPRP - Prevent Reviewer = Participant" id="{7dc2c985-6c32-ec11-b6e6-000d3a86da8e}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="2" schemaName="cp_rprpid" displayName="RPRP" parentSchemaName="cp_rprp" parentDisplayName="RPRP" solution="Active" />
-        <Dependent type="29" displayName="RPRP - Prevent Reviewer = Participant" id="{7dc2c985-6c32-ec11-b6e6-000d3a86da8e}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="2" schemaName="territoryid" displayName="(DNU) Territory" parentSchemaName="systemuser" parentDisplayName="User" solution="msdynce_AppCommon (9.0.4.0066)">
@@ -309,11 +283,51 @@
         <Required type="61" schemaName="AppCommon/Contact/Contact_main_system_library.js" displayName="AppCommon/Contact/Contact_main_system_library.js" solution="msdynce_AppCommon (9.0.4.0066)">
           <package>msdynce_AppCommonAnchor (9.0.21103.10001)</package>
         </Required>
-        <Dependent type="60" displayName="Contact" parentDisplayName="Contact" id="{1fed44d1-ae68-4a41-bd2b-f13acac4acfa}" />
+        <Dependent type="60" displayName="Information" parentDisplayName="Contact" id="{894cc46a-b0cb-4ab0-8bf6-200544e46a2d}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="61" schemaName="cp_/HTML/RecordId" displayName="cp_/HTML/RecordId" solution="Active" />
         <Dependent type="60" displayName="Information" parentDisplayName="Integration Key" id="{68ec744a-b8e0-4b3e-83ca-9a878933a5d8}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="cp_/image/RPRPIcon16px.png" displayName="cp_/image/RPRPIcon16px.png" solution="Active" />
+        <Dependent type="1" schemaName="cp_rprp" displayName="RPRP" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="cp_/image/RPRPIcon16px.png" displayName="cp_/image/RPRPIcon16px.png" solution="Active" />
+        <Dependent type="1" schemaName="cp_rprpcategory" displayName="RPRP Category" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="cp_/image/RPRPIcon16px.png" displayName="cp_/image/RPRPIcon16px.png" solution="Active" />
+        <Dependent type="1" schemaName="cp_rprphistory" displayName="RPRP Snapshot" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="cp_/image/RPRPIcon16px.png" displayName="cp_/image/RPRPIcon16px.png" solution="Active" />
+        <Dependent type="1" schemaName="cp_rprptype" displayName="RPRP Type" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="cp_/image/RPRPIcon32px.png" displayName="cp_/image/RPRPIcon32px.png" solution="Active" />
+        <Dependent type="1" schemaName="cp_rprp" displayName="RPRP" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="cp_/image/RPRPIcon32px.png" displayName="cp_/image/RPRPIcon32px.png" solution="Active" />
+        <Dependent type="1" schemaName="cp_rprpcategory" displayName="RPRP Category" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="cp_/image/RPRPIcon32px.png" displayName="cp_/image/RPRPIcon32px.png" solution="Active" />
+        <Dependent type="1" schemaName="cp_rprphistory" displayName="RPRP Snapshot" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="cp_/image/RPRPIcon32px.png" displayName="cp_/image/RPRPIcon32px.png" solution="Active" />
+        <Dependent type="1" schemaName="cp_rprptype" displayName="RPRP Type" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="cp_/js/RPRPForm" displayName="cp_/js/RPRPForm" solution="Active" />
+        <Dependent type="60" displayName="Information" parentDisplayName="RPRP" id="{d6cacc76-7ec8-4011-a42c-ed186eeef45d}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="61" schemaName="cp_/js/RPRPRibbon" displayName="cp_/js/RPRPRibbon" solution="Active" />
+        <Dependent type="50" schemaName="cp_rprp:RibbonDiffXml" displayName="cp_rprp:RibbonDiffXml" parentSchemaName="ribboncustomization" parentDisplayName="Application Ribbons" />
       </MissingDependency>
       <MissingDependency>
         <Required type="61" schemaName="cp_GeneratePDF.js" displayName="cp_GeneratePDF.js" solution="Active" />
@@ -384,6 +398,10 @@
         <Dependent type="60" displayName="Information" parentDisplayName="Sudden Death Identification" id="{1f74b8a7-cbea-4861-825b-8b2fc4dc3b98}" />
       </MissingDependency>
       <MissingDependency>
+        <Required type="9" schemaName="cp_acceptreject" displayName="Accept, Reject" solution="Active" />
+        <Dependent type="2" schemaName="cp_participantresponse" displayName="Participant Response" parentSchemaName="cp_rprp" parentDisplayName="RPRP" />
+      </MissingDependency>
+      <MissingDependency>
         <Required type="9" schemaName="cp_applicationused" displayName="Application Used" solution="Active" />
         <Dependent type="2" schemaName="cp_applicationused" displayName="Application Used" parentSchemaName="cp_configdatahistory" parentDisplayName="Config Data History" />
       </MissingDependency>
@@ -400,12 +418,24 @@
         <Dependent type="2" schemaName="cp_approvalstatus" displayName="Approval Status" parentSchemaName="cp_suddendeath" parentDisplayName="Sudden Death" />
       </MissingDependency>
       <MissingDependency>
+        <Required type="9" schemaName="cp_contactmethod" displayName="Contact Method" solution="Active" />
+        <Dependent type="2" schemaName="cp_complainantcontactmethod" displayName="Complainant Contact Method" parentSchemaName="cp_rprp" parentDisplayName="RPRP" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="9" schemaName="cp_meetingstatus" displayName="Meeting Status" solution="Active" />
+        <Dependent type="2" schemaName="cp_reviewmeetingstatus" displayName="Review Meeting Status" parentSchemaName="cp_rprp" parentDisplayName="RPRP" />
+      </MissingDependency>
+      <MissingDependency>
         <Required type="9" schemaName="cp_officerrank" displayName="Officer Rank" solution="Active" />
         <Dependent type="2" schemaName="cp_officerrank" displayName="(DNU) Officer Rank" parentSchemaName="systemuser" parentDisplayName="User" />
       </MissingDependency>
       <MissingDependency>
         <Required type="9" schemaName="cp_officeryype" displayName="Officer Type" solution="Active" />
         <Dependent type="2" schemaName="cp_officeryype" displayName="Officer Type" parentSchemaName="systemuser" parentDisplayName="User" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="9" schemaName="cp_rprpnextsteps" displayName="RPRP Next Steps" solution="Active" />
+        <Dependent type="2" schemaName="cp_nextsteps" displayName="Next Steps" parentSchemaName="cp_rprp" parentDisplayName="RPRP" />
       </MissingDependency>
       <MissingDependency>
         <Required type="9" schemaName="cp_stagingentrystatus" displayName="Staging Entry Status" solution="Active" />
@@ -486,6 +516,22 @@
       <MissingDependency>
         <Required type="9" schemaName="cp_type" displayName="Type" solution="Active" />
         <Dependent type="2" schemaName="cp_type" displayName="(DNU) Type" parentSchemaName="cp_offencecode" parentDisplayName="Offence Code" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="9" schemaName="cp_uielementbehaviour" displayName="UI Element Behaviour" solution="Active" />
+        <Dependent type="2" schemaName="cp_appointreviewerbehaviour" displayName="Appoint Reviewer Behaviour" parentSchemaName="cp_rprptype" parentDisplayName="RPRP Type" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="9" schemaName="cp_uielementbehaviour" displayName="UI Element Behaviour" solution="Active" />
+        <Dependent type="2" schemaName="cp_appropriateauthoritybehaviour" displayName="Appropriate Authority Behaviour" parentSchemaName="cp_rprptype" parentDisplayName="RPRP Type" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="9" schemaName="cp_uielementbehaviour" displayName="UI Element Behaviour" solution="Active" />
+        <Dependent type="2" schemaName="cp_categorybehaviour" displayName="Category Behaviour" parentSchemaName="cp_rprptype" parentDisplayName="RPRP Type" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="9" schemaName="cp_uielementbehaviour" displayName="UI Element Behaviour" solution="Active" />
+        <Dependent type="2" schemaName="cp_referencebehaviour" displayName="Reference Behaviour" parentSchemaName="cp_rprptype" parentDisplayName="RPRP Type" />
       </MissingDependency>
       <MissingDependency>
         <Required type="9" schemaName="cp_vehicleticketstatus" displayName="Vehicle Ticket Status" solution="Active" />
