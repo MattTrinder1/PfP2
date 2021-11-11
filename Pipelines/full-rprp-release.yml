@@ -83,21 +83,6 @@ stages:
         inputs:
           command: 'build'
           projects: 'PipelineTools/FlowRewriter/FlowRewriter.csproj'
-      
-      - task: PowerShell@2
-        inputs:
-          targetType: 'inline'
-          script: |
-            # Write your PowerShell commands here.
-            New-Item -Path "$(build.sourcesdirectory)/PipelineTools/FlowRewriter" -Name "RewrittenFlows" -ItemType "directory"
-            New-Item -Path "$(build.sourcesdirectory)/PipelineTools/FlowRewriter/RewrittenFlows" -Name "Cumbria" -ItemType "directory"
-            New-Item -Path "$(build.sourcesdirectory)/PipelineTools/FlowRewriter/RewrittenFlows" -Name "Durham" -ItemType "directory"
-            New-Item -Path "$(build.sourcesdirectory)/PipelineTools/FlowRewriter/RewrittenFlows/Cumbria" -Name "SystemTest" -ItemType "directory"
-            New-Item -Path "$(build.sourcesdirectory)/PipelineTools/FlowRewriter/RewrittenFlows/Durham" -Name "SystemTest" -ItemType "directory"
-            New-Item -Path "$(build.sourcesdirectory)/PipelineTools/FlowRewriter/RewrittenFlows/Cumbria" -Name "UAT" -ItemType "directory"
-            New-Item -Path "$(build.sourcesdirectory)/PipelineTools/FlowRewriter/RewrittenFlows/Durham" -Name "UAT" -ItemType "directory"
-            New-Item -Path "$(build.sourcesdirectory)/PipelineTools/FlowRewriter/RewrittenFlows/Cumbria" -Name "Live" -ItemType "directory"
-            New-Item -Path "$(build.sourcesdirectory)/PipelineTools/FlowRewriter/RewrittenFlows/Durham" -Name "Live" -ItemType "directory"
             
       - task: CmdLine@2
         inputs:
