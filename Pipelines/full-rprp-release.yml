@@ -67,6 +67,44 @@ name: $(Build.DefinitionName) - $(Build.BuildId)
 
 stages: 
 #----------------------------------Start Stage-------------------------------------------------------------------
+  - stage: RewriteFiles
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - job: BuildRewriteTools
+      steps:
+      - task: UseDotNet@2
+        displayName: 'Use .NET Core sdk 5.0.100'
+        inputs:
+          packageType: 'sdk'
+          version: '5.0.100'
+          includePreviewVersions: true
+                
+      - task: DotNetCoreCLI@2
+        displayName: Build Flow Rewriter Tool
+        inputs:
+          command: 'build'
+          projects: 'PipelineTools/FlowRewriter/FlowRewriter.csproj'
+            
+      - task: CmdLine@2
+        displayName: Run Flow Rewriter Tool
+        inputs:
+          workingDirectory: $(build.sourcesdirectory)/PipelineTools/FlowRewriter/bin/Debug/net5.0
+          script: |
+            $(build.sourcesdirectory)/PipelineTools/FlowRewriter/bin/Debug/net5.0/FlowRewriter.exe
+      - task: PublishBuildArtifacts@1
+        displayName: Publish Rewritten Flows
+        inputs:
+          PathtoPublish: '$(build.sourcesdirectory)/PipelineTools/FlowRewriter/RewrittenFlows'
+          ArtifactName: 'RewrittenFlows'
+          publishLocation: 'Container'
+      
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
+
+#----------------------------------Start Stage-------------------------------------------------------------------
   - stage: AssembleRelease
     jobs:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
