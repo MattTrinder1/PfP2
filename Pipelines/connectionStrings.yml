@@ -7,19 +7,38 @@ variables:
   #had trouble getting the specific app registration value to work.
   #value: 51f81489-12ee-4a9e-aaae-a2591f45987d
 
+-name: tisskiserviceaccount.username
+  value pfp.service@tisski.com
+-name: tisskiserviceaccount.password
+  value Direct.Drop.Bribe.Earn.2
+
 - name: pfpsystemtest.instancename
   value: policeproductsystemtest
 - name: pfpsystemtest.url
   value: https://$(pfpsystemtest.instancename).crm11.dynamics.com
 - name: pfpsystemtest.connection.string
-  value: RequireNewInstance=True;AuthType=OAuth;UserName=pfp.service@tisski.com;Password=Direct.Drop.Bribe.Earn.2;Url=$(pfpsystemtest.url);AppId=$(pfp.clientid);RedirectUri=app://$(pfp.clientid);LoginPrompt=Never
+  value: RequireNewInstance=True;AuthType=OAuth;UserName=$(tisskiserviceaccount.username);Password=$(tisskiserviceaccount.password);Url=$(pfpsystemtest.url);AppId=$(pfp.clientid);RedirectUri=app://$(pfp.clientid);LoginPrompt=Never
+
+- name: cumbriasystemtest.instancename
+  value: cumbriapretest
+- name: cumbriasystemtest.url
+  value: https://$(cumbriasystemtest.instancename).crm11.dynamics.com
+- name: cumbriasystemtest.connection.string
+  value: RequireNewInstance=True;AuthType=OAuth;UserName=$(tisskiserviceaccount.username);Password=$(tisskiserviceaccount.password);Url=$(cumbriasystemtest.url);AppId=$(pfp.clientid);RedirectUri=app://$(pfp.clientid);LoginPrompt=Never
+
+- name: durhamsystemtest.instancename
+  value: durhampretest
+- name: durhamsystemtest.url
+  value: https://$(durhamsystemtest.instancename).crm11.dynamics.com
+- name: durhamsystemtest.connection.string
+  value: RequireNewInstance=True;AuthType=OAuth;UserName=$(tisskiserviceaccount.username);Password=$(tisskiserviceaccount.password);Url=$(durhamsystemtest.url);AppId=$(pfp.clientid);RedirectUri=app://$(pfp.clientid);LoginPrompt=Never
 
 - name: pfpuat.instancename
   value: policeproductuat
 - name: pfpuat.url
   value: https://$(pfpuat.instancename).crm11.dynamics.com
 - name: Tisskipfpuat.connection.string
-  value: RequireNewInstance=True;AuthType=OAuth;UserName=pfp.service@tisski.com;Password=Direct.Drop.Bribe.Earn.2;Url=$(pfpuat.url);AppId=$(pfp.clientid);RedirectUri=app://$(pfp.clientid);LoginPrompt=Never
+  value: RequireNewInstance=True;AuthType=OAuth;UserName=$(tisskiserviceaccount.username);Password=$(tisskiserviceaccount.password);Url=$(pfpuat.url);AppId=$(pfp.clientid);RedirectUri=app://$(pfp.clientid);LoginPrompt=Never
 
 
 - name: cumbria.username
