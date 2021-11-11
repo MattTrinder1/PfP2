@@ -102,6 +102,7 @@ stages:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #----------------------------------End Stage-------------------------------------------------------------------
+
 #----------------------------------Start Stage-------------------------------------------------------------------
 
   - stage: ReleaseToTisskiPfPSystemTest
@@ -160,6 +161,71 @@ stages:
               - template : config-data-template.yml
                 parameters :
                   connectionString: $(pfpsystemtest.connection.string)
+                  suffix: $(solution.prefix)
+
+      
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
+
+#----------------------------------Start Stage-------------------------------------------------------------------
+
+  - stage: ReleaseToCumbriaSystemTest
+    dependsOn: AssembleRelease
+    displayName: Release to Cumbria System Test
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: ReleaseToCumbriaSystemTest
+      environment: CumbriaSystemTest
+      displayName: Release To Cumbria SystemTest
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            
+            steps:
+            
+            - checkout: none
+            - task: MSCRMToolInstaller@9
+              displayName: 'MSCRM Tool Installer'
+
+            - template: get-solution-filenames.yml
+              parameters:
+                pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
+            
+            - ${{ each parameter in parameters }}:
+              - ${{ if contains(parameter.Key, 'SolutionName') }}:
+                - template: install-managed-solution.yml
+                  parameters:
+                    SolutionFileName : $(${{parameter.Value}}SolutionFileName)
+                    pipelineworkspace: $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
+                    connectionString: $(cumbriasystemtest.connection.string)
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: DeployConfigDataToCumbriaSystemTest
+      dependsOn: ReleaseToCumbriaSystemTest
+      environment: CumbriaSystemTest
+      displayName: Deploy Config Data
+     # workspace:
+     #   clean: all 
+      variables:
+      - name: configExists
+      - name: currentConfigVersion  
+      - name: newConfigVersion  
+      
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - template : config-data-template.yml
+                parameters :
+                  connectionString: $(cumbriasystemtest.connection.string)
                   suffix: $(solution.prefix)
 
       
