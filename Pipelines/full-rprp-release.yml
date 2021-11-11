@@ -88,6 +88,13 @@ stages:
         inputs:
           workingDirectory: $(build.sourcesdirectory)/PipelineTools/FlowRewriter/bin/Debug/net5.0
           script: |
+            mkdir $(build.sourcesdirectory)/PipelineTools/FlowRewriter/RewrittenFlows
+            mkdir $(build.sourcesdirectory)/PipelineTools/FlowRewriter/RewrittenFlows/Cumbria
+            mkdir $(build.sourcesdirectory)/PipelineTools/FlowRewriter/RewrittenFlows/Durham
+            mkdir $(build.sourcesdirectory)/PipelineTools/FlowRewriter/RewrittenFlows/Cumbria/UAT
+            mkdir $(build.sourcesdirectory)/PipelineTools/FlowRewriter/RewrittenFlows/Durham/UAT
+            mkdir $(build.sourcesdirectory)/PipelineTools/FlowRewriter/RewrittenFlows/Cumbria/Live
+            mkdir $(build.sourcesdirectory)/PipelineTools/FlowRewriter/RewrittenFlows/Durham/Live
             $(build.sourcesdirectory)/PipelineTools/FlowRewriter/bin/Debug/net5.0/FlowRewriter.exe
       
 
