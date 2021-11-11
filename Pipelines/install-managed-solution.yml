@@ -6,20 +6,20 @@ parameters:
 - name: SolutionFileName
   type: string
 - name: FileExists
-  type: boolean
+  type: string
 
 steps:
 
-  - ${{ if eq(parameters.FileExists,true) }}:
-    - ${{ each parameter in parameters }}:
-      - ${{ if contains(parameter.Value, 'FileName') }}:
-        - task: MSCRMImportSolution@11
-          displayName: '${{parameter.Value}}'
-          inputs:
-              crmConnectionString: ${{parameters.connectionstring}}
-              solutionFile: '${{parameters.pipelineworkspace}}/${{parameter.Value}}'
-              overwriteUnmanagedCustomizations: true
-              publishWorkflows: true
-              useAsyncMode: false
-              asyncWaitTimeout: 1500
+  #- ${{ if eq(parameters.FileExists,true) }}:
+  - ${{ each parameter in parameters }}:
+    - ${{ if contains(parameter.Value, 'FileName') }}:
+      - task: MSCRMImportSolution@11
+        displayName: '${{parameter.Value}}'
+        inputs:
+            crmConnectionString: ${{parameters.connectionstring}}
+            solutionFile: '${{parameters.pipelineworkspace}}/${{parameter.Value}}'
+            overwriteUnmanagedCustomizations: true
+            publishWorkflows: true
+            useAsyncMode: false
+            asyncWaitTimeout: 1500
 
