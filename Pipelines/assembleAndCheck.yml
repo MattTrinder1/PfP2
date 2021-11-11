@@ -13,17 +13,24 @@ parameters:
   type: string
 
 steps:
+
+  - powershell: |
+                $folderExists = Test-Path -Path 'Schema/${{parameters.solutionName}}${{parameters.solutionprefix}}/unpacked'
+                Write-Output "##vso[task.setvariable variable=FolderExists]$folderExists"
+
   - task: MSCRMPackSolution@10
     displayName: 'Pack - ${{parameters.solutionName}}'
     inputs:
       unpackedFilesFolder: 'Schema/${{parameters.solutionName}}${{parameters.solutionprefix}}/unpacked'
       packageType: ${{parameters.managed}}
       includeVersionInSolutionFile: true
+    condition: eq(variables['FolderExists'], True)
 
   - powershell: |
               $GeneratedSolutionFile = get-childitem -path "$(Build.BinariesDirectory)/${{parameters.solutionprefix}}${{parameters.solutionName}}_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
               $GeneratedSolutionFileName = $GeneratedSolutionFile.Name
               Write-Host "##vso[task.setvariable variable=GeneratedSolutionFileName]$GeneratedSolutionFileName"
+    condition: eq(variables['FolderExists'], True)
 
 
  # - task: CopyFiles@2
@@ -43,6 +50,7 @@ steps:
       targetFolder: '$(Build.BinariesDirectory)\SystemTest'
       overWrite: true 
       flattenFolders: true
+    condition: eq(variables['FolderExists'], True)
 
  # - task: CopyFiles@2
  #   displayName: Copy to UAT folder
