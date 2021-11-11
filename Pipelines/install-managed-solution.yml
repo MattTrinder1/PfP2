@@ -11,7 +11,9 @@ steps:
   - ${{ each parameter in parameters }}:
     - ${{ if contains(parameter.Value, 'FileName') }}:
 
-      - powershell: |
+      - powershell:
+        displayName:CheckFileExists
+              |
               $fileExists = Test-Path -Path '${{parameters.pipelineworkspace}}/${{parameter.Value}}' -PathType leaf
               Write-Output "##vso[task.setvariable variable=FileExists]$fileExists"
 
@@ -26,3 +28,4 @@ steps:
             useAsyncMode: false
             asyncWaitTimeout: 1500
         condition: eq(variables['FileExists'],true)
+        dependsOn: CheckFileExists
