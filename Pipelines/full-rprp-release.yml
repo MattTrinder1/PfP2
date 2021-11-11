@@ -67,13 +67,18 @@ name: $(Build.DefinitionName) - $(Build.BuildId)
 
 stages: 
 #----------------------------------Start Stage-------------------------------------------------------------------
-  - stage: Rewrite files
+  - stage: RewriteFiles
     jobs:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    - job: Build Rewrite Tools
+    - job: BuildRewriteTools
       steps:
       - task: NuGetToolInstaller@1
         displayName: 'Use NuGet '
+      
+      - task: DotNetCoreCLI@2
+        inputs:
+          command: 'build'
+          projects: 'PipelineTools/FlowRewriter/FlowRewriter.csproj'
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
