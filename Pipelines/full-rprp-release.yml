@@ -80,17 +80,24 @@ stages:
           includePreviewVersions: true
                 
       - task: DotNetCoreCLI@2
+        displayName: Build Flow Rewriter Tool
         inputs:
           command: 'build'
           projects: 'PipelineTools/FlowRewriter/FlowRewriter.csproj'
             
       - task: CmdLine@2
+        displayName: Run Flow Rewriter Tool
         inputs:
           workingDirectory: $(build.sourcesdirectory)/PipelineTools/FlowRewriter/bin/Debug/net5.0
           script: |
             $(build.sourcesdirectory)/PipelineTools/FlowRewriter/bin/Debug/net5.0/FlowRewriter.exe
+      - task: PublishBuildArtifacts@1
+        displayName: Publish Rewritten Flows
+        inputs:
+          PathtoPublish: '$(build.sourcesdirectory)/PipelineTools/FlowRewriter/RewrittenFlows'
+          ArtifactName: 'RewrittenFlows'
+          publishLocation: 'Container'
       
-
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
