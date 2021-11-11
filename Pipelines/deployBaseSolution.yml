@@ -23,7 +23,6 @@ steps:
     minorversion : ${{parameters.minorversion}}
     releaseversion : ${{parameters.releaseversion}}
     solutionprefix : ${{parameters.solutionprefix}}
-  condition: eq(variables['FileExists'], True)
 
 
 - template: install-managed-solution.yml
@@ -31,4 +30,5 @@ steps:
     pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
     connectionstring : ${{parameters.connectionString}}
     SolutionFileName : $(${{parameters.solutionName}}SolutionFileName)
-  condition: eq(variables['FileExists'], True)
+    FileExists: variables['FileExists']
+
