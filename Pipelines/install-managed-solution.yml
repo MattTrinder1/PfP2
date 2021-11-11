@@ -5,18 +5,21 @@ parameters:
   type: string
 - name: SolutionFileName
   type: string
-
+- name: FileExists
+  type: string
 
 steps:
 
-  - ${{ each parameter in parameters }}:
-    - ${{ if contains(parameter.Value, 'FileName') }}:
-      - task: MSCRMImportSolution@11
-        displayName: '${{parameter.Value}}'
-        inputs:
-            crmConnectionString: ${{parameters.connectionstring}}
-            solutionFile: '${{parameters.pipelineworkspace}}/${{parameter.Value}}'
-            overwriteUnmanagedCustomizations: true
-            publishWorkflows: true
-            useAsyncMode: false
-            asyncWaitTimeout: 1500
+  - ${{ eq(parameters.FileExists,'True') }}:
+    - ${{ each parameter in parameters }}:
+      - ${{ if contains(parameter.Value, 'FileName') }}:
+        - task: MSCRMImportSolution@11
+          displayName: '${{parameter.Value}}'
+          inputs:
+              crmConnectionString: ${{parameters.connectionstring}}
+              solutionFile: '${{parameters.pipelineworkspace}}/${{parameter.Value}}'
+              overwriteUnmanagedCustomizations: true
+              publishWorkflows: true
+              useAsyncMode: false
+              asyncWaitTimeout: 1500
+
