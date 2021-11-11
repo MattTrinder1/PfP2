@@ -11,24 +11,10 @@ parameters:
   type: string
 
 steps:
-    
-- powershell: |
-              $fileExists = Test-Path -Path '$(pipeline.workspace)\CumbriaBuild-Managed-RPRP\${{parameters.solutionprefix}}${{parameters.solutionName}}*' -PathType leaf
-              Write-Output "##vso[task.setvariable variable=FileExists]$fileExists"
-
-
-#- template: get-solution-filenames.yml
-#  parameters:
-#    pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
-#    minorversion : ${{parameters.minorversion}}
-#    releaseversion : ${{parameters.releaseversion}}
-#    solutionprefix : ${{parameters.solutionprefix}}
-
 
 - template: install-managed-solution.yml
   parameters:
     pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
     connectionstring : ${{parameters.connectionString}}
     SolutionFileName : $(${{parameters.solutionName}}SolutionFileName)
-    FileExists: variables['FileExists']
 
