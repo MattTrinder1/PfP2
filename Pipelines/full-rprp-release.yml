@@ -235,6 +235,71 @@ stages:
 
 #----------------------------------Start Stage-------------------------------------------------------------------
 
+  - stage: ReleaseToDurhamSystemTest
+    dependsOn: AssembleRelease
+    displayName: Release to Durham System Test
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: ReleaseToDurhamSystemTest
+      environment: DurhamSystemTest
+      displayName: Release To Durham SystemTest
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            
+            steps:
+            
+            - checkout: none
+            - task: MSCRMToolInstaller@9
+              displayName: 'MSCRM Tool Installer'
+
+            - template: get-solution-filenames.yml
+              parameters:
+                pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
+            
+            - ${{ each parameter in parameters }}:
+              - ${{ if contains(parameter.Key, 'SolutionName') }}:
+                - template: install-managed-solution.yml
+                  parameters:
+                    SolutionFileName : $(${{parameter.Value}}SolutionFileName)
+                    pipelineworkspace: $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
+                    connectionString: $(durhamsystemtest.connection.string)
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: DeployConfigDataToDurhamSystemTest
+      dependsOn: ReleaseToDurhamSystemTest
+      environment: DurhamSystemTest
+      displayName: Deploy Config Data
+     # workspace:
+     #   clean: all 
+      variables:
+      - name: configExists
+      - name: currentConfigVersion  
+      - name: newConfigVersion  
+      
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - template : config-data-template.yml
+                parameters :
+                  connectionString: $(durhamsystemtest.connection.string)
+                  suffix: $(solution.prefix)
+
+      
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
+
+#----------------------------------Start Stage-------------------------------------------------------------------
+
   - stage: ReleaseToCumbriaUAT
     dependsOn: ReleaseToCumbriaSystemTest
     displayName: Release to Cumbria UAT
