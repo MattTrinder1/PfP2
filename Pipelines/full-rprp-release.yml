@@ -83,6 +83,11 @@ stages:
         inputs:
           command: 'build'
           projects: 'PipelineTools/FlowRewriter/FlowRewriter.csproj'
+      
+      - task: CmdLine@2
+        inputs:
+          script: |
+            $(build.sourcesdirectory)/PipelineTools/FlowRewriter/bin/Debug/net5.0/FlowRewriter.exe
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
