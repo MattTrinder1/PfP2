@@ -86,8 +86,11 @@ stages:
       
       - task: CmdLine@2
         inputs:
+          workingDirectory: $(build.sourcesdirectory)/PipelineTools/FlowRewriter/bin/Debug/net5.0
           script: |
             $(build.sourcesdirectory)/PipelineTools/FlowRewriter/bin/Debug/net5.0/FlowRewriter.exe
+      
+
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
