@@ -133,7 +133,7 @@ stages:
             
             - ${{ each parameter in parameters }}:
               - ${{ if contains(parameter.Key, 'SolutionName') }}:
-                - template: install-mamaged-solution.yml
+                - template: install-managed-solution.yml
                   parameters:
                     SolutionFileName : $(${{parameter.Value}}SolutionFileName)
                     pipelineworkspace: $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
