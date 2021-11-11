@@ -25,4 +25,4 @@ steps:
             publishWorkflows: true
             useAsyncMode: false
             asyncWaitTimeout: 1500
-        condition: eq($(FileExists),true)
+        condition: eq(variables['FileExists'],true)
