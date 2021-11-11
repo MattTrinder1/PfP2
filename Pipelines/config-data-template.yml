@@ -3,6 +3,8 @@ parameters:
   type: string
 - name: suffix
   type: string
+- name: customer
+  type: string
 
 
 steps:
@@ -25,14 +27,14 @@ steps:
     valueVariableName: 'currentConfigVersion'
 
 - powershell: |
-        $value = Get-Content  -Path $(Build.SourcesDirectory)/ConfigData/Cumbria${{parameters.suffix}}VersionDate.txt 
+        $value = Get-Content  -Path $(Build.SourcesDirectory)/ConfigData/${{parameters.customer}}${{parameters.suffix}}VersionDate.txt 
         Write-Host "##vso[task.setvariable variable=newConfigVersion]$value"
 
 - task: MSCRMImportCMData@12
   displayName: Import Configuration Data
   inputs:
     crmConnectionString: ${{parameters.connectionString}}
-    dataFile: $(Build.SourcesDirectory)/ConfigData/Cumbria${{parameters.suffix}}.zip
+    dataFile: $(Build.SourcesDirectory)/ConfigData/${{parameters.customer}}${{parameters.suffix}}.zip
   condition: ne (variables.newConfigVersion,variables.currentConfigVersion)
 
 
