@@ -1,0 +1,3656 @@
+Scr_home As screen:
+    OnHidden: |-
+        =Reset(PenInput_Traffic_offence);
+        Reset(PenInput_HORT1_sign);
+        Reset(PenInput_VDRS_Sign);
+        Reset(PenInput_Section165_Sign);
+        Reset(PenInput_Section59_sign);
+        Reset(PenInput_EvidenceYes_OfficerSignature);
+    OnVisible: |
+        =Set(
+            y7,
+            0
+        );
+        Set(
+            y8,
+            0
+        );
+        Set(
+            y9,
+            0
+        );
+        Set(
+            onlinestart,
+            true
+        );
+        Set(
+            checkicon2,
+            false
+        );
+        Set(
+            checkicon,
+            false
+        );
+        UpdateContext({s163timerstart: false});
+        UpdateContext({s163timerreset: true});
+        UpdateContext({s163Warndetails: false});
+        UpdateContext({s59timerstart: false});
+        UpdateContext({s59timerreset: true});
+        UpdateContext({s59Warndetails: false});
+        UpdateContext({s165timerstart: false});
+        UpdateContext({s165timerreset: true});
+        UpdateContext({s165Warndetails: false});
+        UpdateContext({traffictimerstart: false});
+        UpdateContext({traffictimerreset: true});
+        UpdateContext({trafficWarndetails: false});
+        UpdateContext({vdrstimerstart: false});
+        UpdateContext({vdrstimerreset: true});
+        UpdateContext({vdrsWarndetails: false});
+        UpdateContext({horttimerstart: false});
+        UpdateContext({horttimerreset: true});
+        UpdateContext({hortWarndetails: false});
+         //Unsubmitted Tickets warning
+        UpdateContext({Warnunsubmitunsub: false});
+        UpdateContext({timerstartunsub: false});
+        UpdateContext({timerresetunsub: true});
+        If(
+            LookUp(
+                'Vehicle Offline',
+                Key = Label_key.Text
+            ).'Officer Signature sign and submit' = Blank(),
+            Set(
+                signreadonly,
+                DisplayMode.Edit
+            )
+        );
+        If(
+            LookUp(
+                'Vehicle Offline',
+                Key = Label_key.Text
+            ).'Officer Signature ev:no ' = Blank(),
+            Set(
+                signreadonlyev,
+                DisplayMode.Edit
+            )
+        );
+        If(
+            LookUp(
+                'Vehicle Offline',
+                Key = Label_key.Text
+            ).'Officer Signature ev:no ' <> Blank(),
+            Set(
+                signreadonlyev,
+                DisplayMode.Disabled
+            )
+        );
+        If(
+            LookUp(
+                'Vehicle Offline',
+                Key = Label_key.Text
+            ).'Officer Signature sign and submit' <> Blank(),
+            Set(
+                signreadonly,
+                DisplayMode.Disabled
+            )
+        );
+        If(
+            CountRows(Gallery_unsubmitted.AllItems) > 0,
+            UpdateContext({timerstartunsub: true})
+        );
+        //Vehicle Ticket Part 1 warning
+        UpdateContext({vtp1timerstart: false});
+        UpdateContext({vtp1timerreset: true});
+        UpdateContext({vtp1Warndetails: false});
+        If(
+            CountRows(Gallery_unsubmitted.AllItems) > 0 And !IsBlank(DatePicker_vehicleticket_pt1.SelectedDate) And !IsBlank(dropdown_issued_to.Selected.cp_name),
+            UpdateContext({vtp1timerstart: false}),
+            UpdateContext({vtp1timerstart: true})
+        );
+        //Person warning
+        UpdateContext(
+            {
+                trfcounter: CountIf(
+                    'Traffic Offence codes',
+                    TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+                )
+            }
+        );
+        If(
+            CountIf(
+                'Traffic Offence codes',
+                TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key And Text(Personnotmandatory) = "Yes"
+            ) = CountIf(
+                'Traffic Offence codes',
+                TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+            ) And trfcounter <> 0,
+            UpdateContext({persontimerstart: false});
+            UpdateContext({personWarndetails: false});
+            ,
+            UpdateContext({persontimerstart: false});
+            UpdateContext({persontimerreset: true});
+            UpdateContext({personWarndetails: false});
+            If(
+                CountRows(Gallery_unsubmitted.AllItems) > 0 And Len(Dropdown_person_title.Selected.cp_name) > 0 And Len(txt_person_forename.Text) > 0 And Len(TextInput_housename.Text) > 0 And Len(TextInput_street.Text) > 0 And Len(TextInput_Postcode.Text) > 0 And Len(TextInput_Country.Text) > 0 And Len(Radio_driving_licence_details.Selected.Value) > 0 And Len(Radio_foreign_details.Selected.Value) > 0 And Len(Radio_birth_known.Selected.Value) > 0,
+                UpdateContext({persontimerstart: false}),
+                UpdateContext({persontimerstart: true})
+            )
+        );
+        //Vehicle warning
+        UpdateContext({vehicletimerstart: false});
+        UpdateContext({vehicletimerreset: true});
+        UpdateContext({vehicleWarndetails: false});
+        If(
+            CountRows(Gallery_unsubmitted.AllItems) > 0 And Len(TextInput_VRM.Text) > 0 And !IsBlank(Dropdown_VehicleMake.Selected.cp_name),
+            UpdateContext({vehicletimerstart: false}),
+            UpdateContext({vehicletimerstart: true})
+        );
+            //Location warning
+        UpdateContext({Locationtimerstart: false});
+        UpdateContext({Locationtimerreset: true});
+        UpdateContext({LocationWarndetails: false});
+        If(
+            CountRows(Gallery_unsubmitted.AllItems) > 0 And Len(TextInput_Location_Description.Text) > 0 And Len(TextInput_Location_Street.Text) > 0 And Len(TextInput_Location_Town.Text) > 0 And !IsBlank(Dropdown_TPA.Selected.cp_name),
+            UpdateContext({Locationtimerstart: false}),
+            UpdateContext({Locationtimerstart: true})
+        );
+        If(
+            CountRows(
+                Filter(
+                    TrOffOffline,
+                    TicketTypename = "S163 (Vehicle Stop)" And OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                )
+            ) = 0,
+            Set(
+                displays163vs,
+                DisplayMode.Disabled
+            )
+        );
+        If(
+            CountRows(
+                Filter(
+                    TrOffOffline,
+                    TicketTypename = "HORT1" And OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                )
+            ) = 0,
+            Set(
+                displayhort1,
+                DisplayMode.Disabled
+            )
+        );
+        If(
+            CountRows(
+                Filter(
+                    TrOffOffline,
+                    TicketTypename = "VDRS" And OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                )
+            ) = 0,
+            Set(
+                displayvdrs,
+                DisplayMode.Disabled
+            )
+        );
+        If(
+            CountRows(
+                Filter(
+                    TrOffOffline,
+                    TicketTypename = "Section 59" And OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                )
+            ) = 0,
+            Set(
+                displaysection59,
+                DisplayMode.Disabled
+            )
+        );
+        If(
+            CountRows(
+                Filter(
+                    TrOffOffline,
+                    TicketTypename = "Traffic Offence" And OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                )
+            ) = 0,
+            Set(
+                displaytrafficoffence,
+                DisplayMode.Disabled
+            )
+        );
+        If(
+            CountRows(
+                Filter(
+                    TrOffOffline,
+                    TicketTypename = "S165 (No Ins/DL)" And OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                )
+            ) = 0,
+            Set(
+                displays165noinsdl,
+                DisplayMode.Disabled
+            )
+        );
+        If(
+            CountRows(
+                Filter(
+                    TrOffOffline,
+                    TicketTypename = "S163 (Vehicle Stop)" And OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                )
+            ) = 1,
+            Set(
+                displays163vs,
+                DisplayMode.Edit
+            );
+            UpdateContext({s163timerstart: false});
+            UpdateContext({s163timerreset: true});
+            UpdateContext({s163Warndetails: false});
+            If(
+                CountRows(Gallery_vehicle_ticket_types.AllItems) > 0 And Len(ComboBox_Reason_for_using_S163.Selected.cp_name) > 0,
+                UpdateContext({s163timerstart: false}),
+                UpdateContext({s163timerstart: true})
+            );
+            
+        );
+        If(
+            CountRows(
+                Filter(
+                    TrOffOffline,
+                    TicketTypename = "HORT1" And OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                )
+            ) = 1,
+            Set(
+                displayhort1,
+                DisplayMode.Edit
+            );
+            UpdateContext({horttimerstart: false});
+            UpdateContext({horttimerreset: true});
+            UpdateContext({hortWarndetails: false});
+            If(
+                CountRows(Gallery_vehicle_ticket_types.AllItems) > 0 /*And !IsBlank(ComboBox_Hort1_DocumentType.Selected.cp_name)*/And !IsBlank(Dropdown_ProduceStation.Selected.cp_name) And !IsBlank(Dropdown_Hort1_CheckOrRecord.Selected.cp_name),
+                UpdateContext({horttimerstart: false}),
+                UpdateContext({horttimerstart: true})
+            );
+            
+        );
+        If(
+            CountRows(
+                Filter(
+                    TrOffOffline,
+                    TicketTypename = "VDRS" And OffenceKey = Dropdown_VDRS_key.Selected.Key
+                )
+            ) = 1,
+            Set(
+                displayvdrs,
+                DisplayMode.Edit
+            );
+            UpdateContext({vdrstimerstart: false});
+            UpdateContext({vdrstimerreset: true});
+            UpdateContext({vdrsWarndetails: false});
+            If(
+                CountRows(Gallery_vehicle_ticket_types.AllItems) > 0 And !IsBlank(
+                    LookUp(
+                        'Vdrs codes',
+                        OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                    )
+                ),
+                UpdateContext({vdrstimerstart: false}),
+                UpdateContext({vdrstimerstart: true})
+            );
+            
+        );
+        If(
+            CountRows(
+                Filter(
+                    TrOffOffline,
+                    TicketTypename = "Section 59" And OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                )
+            ) = 1,
+            Set(
+                displaysection59,
+                DisplayMode.Edit
+            );
+            UpdateContext({s59timerstart: false});
+            UpdateContext({s59timerreset: true});
+            UpdateContext({s59Warndetails: false});
+            If(
+                CountRows(Gallery_vehicle_ticket_types.AllItems) > 0 And Len(Dropdown_S59_Section3or34.Selected.cp_name) > 0,
+                UpdateContext({s59timerstart: false}),
+                UpdateContext({s59timerstart: true})
+            );
+            
+        );
+        If(
+            CountRows(
+                Filter(
+                    TrOffOffline,
+                    TicketTypename = "Traffic Offence" And OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                )
+            ) = 1,
+            Set(
+                displaytrafficoffence,
+                DisplayMode.Edit
+            );
+            UpdateContext({traffictimerstart: false});
+            UpdateContext({traffictimerreset: true});
+            UpdateContext({trafficWarndetails: false});
+            If(
+                CountRows(Gallery_vehicle_ticket_types.AllItems) > 0 And !IsBlank(
+                    LookUp(
+                        'Traffic Offence codes',
+                        OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                    )
+                ),
+                UpdateContext({traffictimerstart: false}),
+                UpdateContext({traffictimerstart: true})
+            );
+            
+        );
+        If(
+            CountRows(
+                Filter(
+                    TrOffOffline,
+                    TicketTypename = "S165 (No Ins/DL)" And OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                )
+            ) = 1,
+            Set(
+                displays165noinsdl,
+                DisplayMode.Edit
+            );
+            UpdateContext({s165timerstart: false});
+            UpdateContext({s165timerreset: true});
+            UpdateContext({s165Warndetails: false});
+            If(
+                CountRows(Gallery_vehicle_ticket_types.AllItems) > 0 And Len(ComboBox_S165_without.Selected.cp_name) > 0,
+                UpdateContext({s165timerstart: false}),
+                UpdateContext({s165timerstart: true})
+            );
+            
+        );
+        If(
+            CountRows('Vehicle Offline') = 0,
+            Set(
+                Vehiclebtndis,
+                DisplayMode.Disabled
+            );
+            Set(
+                personvis,
+                DisplayMode.Disabled
+            );
+            Set(
+                vehiclevis,
+                DisplayMode.Disabled
+            );
+            Set(
+                locationvis,
+                DisplayMode.Disabled
+            );
+            Set(
+                vehpart2vis,
+                DisplayMode.Disabled
+            );
+            Set(
+                evidencevis,
+                DisplayMode.Disabled
+            ),
+            /*Else*/
+            Set(
+                Vehiclebtndis,
+                DisplayMode.Edit
+            );
+            If(
+                LookUp(
+                    'Vehicle Offline',
+                    Key = Vehicle_Ticket_pt1_Key.Selected.Key,
+                    'Vehicle Ticket pt 1 Issued to name'
+                ) <> "Unattended vehicle",
+                Set(
+                    personvis,
+                    DisplayMode.Edit
+                ),
+                Set(
+                    personvis,
+                    DisplayMode.Disabled
+                );
+                UpdateIf(
+                    'Vehicle Offline',
+                    Key = Vehicle_Primary_key,
+                    {PersonValidation: true}
+                )
+            );
+            If(
+               And( LookUp(
+                    'Vehicle Offline',
+                    Key = Vehicle_Ticket_pt1_Key.Selected.Key,
+                    'Vehicle Ticket pt 1 Issued to name')
+                 <> "Rider of bicycle", CountRows('Vehicle Offline') <> 0),
+                Set(
+                    vehiclevis,
+                    DisplayMode.Edit
+                ),
+                Set(
+                    vehiclevis,
+                    DisplayMode.Disabled;
+                );
+                UpdateIf(
+                    'Vehicle Offline',
+                    Key = Vehicle_Primary_key,
+                    {VehicleValidation: true}
+                )
+            );
+        Set(
+            locationvis,
+            DisplayMode.Edit
+        );
+        Set(
+            vehpart2vis,
+            DisplayMode.Edit
+        );
+        Set(
+            evidencevis,
+            DisplayMode.Edit
+        ));
+
+    Label_Home As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Vehicle Tickets"
+        VerticalAlign: =VerticalAlign.Top
+        Width: =640
+        ZIndex: =1
+
+    Icn_exit_2 As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =576
+        Y: =11
+        ZIndex: =2
+
+    Canvas_Home As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1049
+        Width: =Parent.Width
+        Y: =87
+        ZIndex: =23
+
+        DataCard_Home As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =1307
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Timer1 As timer:
+                AutoPause: =false
+                AutoStart: =true
+                Duration: =1000
+                Height: =50
+                OnTimerEnd: |-
+                    =If(Connection.Connected,UpdateContext({connectionstatus:"Online"}),UpdateContext({connectionstatus:"Offline"}))
+                OnTimerStart: |-
+                    =If(Connection.Connected,UpdateContext({connectionstatus:"Online"}),UpdateContext({connectionstatus:"Offline"}))
+                Repeat: =true
+                Reset: =true
+                Start: =onlinestart
+                Visible: =false
+                Width: =116
+                X: =524
+                Y: =1269
+                ZIndex: =1
+
+            Btn_save_43 As button:
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =72
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =If(CountRows('Vehicle Offline')=0,Set(i,0));If(flagback=true,Set(i,i + 1);Set(Vehicle_Primary_key,TextInput_incident_no & " No:" & i);Set(flagback,false););Navigate('Scr_incident details',ScreenTransition.Cover)
+                Size: =24
+                Text: ="New Ticket"
+                Width: =552
+                X: =39
+                Y: =101
+                ZIndex: =2
+
+            Btn_save_54 As button:
+                DisplayMode: =displaysection59
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =72
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: =Navigate(Scr_section59,ScreenTransition.Cover)
+                Size: =24
+                Text: ="Section 59"
+                Width: =552
+                X: =39
+                Y: =902
+                ZIndex: =3
+
+            Btn_Hort_1 As button:
+                AutoDisableOnSelect: =false
+                DisplayMode: =displayhort1
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =72
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =Navigate(
+                        Scr_hort1,
+                        ScreenTransition.Cover
+                    )
+                Size: =24
+                Text: ="HORT1"
+                Width: =552
+                X: =39
+                Y: =635
+                ZIndex: =4
+
+            Btn_save_46 As button:
+                DisplayMode: =displaytrafficoffence
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =72
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: =Navigate(Scr_traffic_offence,ScreenTransition.Cover)
+                Size: =24
+                Text: ="Traffic Offence"
+                Width: =552
+                X: =39
+                Y: =546
+                ZIndex: =5
+
+            Btn_save_53 As button:
+                DisplayMode: =displayvdrs
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =72
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: =Navigate(Scr_vdrs,ScreenTransition.Cover)
+                Size: =24
+                Text: ="VDRS"
+                Width: =552
+                X: =41
+                Y: =724
+                ZIndex: =6
+
+            Btn_save_55 As button:
+                DisplayMode: =displays165noinsdl
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =72
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: =Navigate(Scr_section165,ScreenTransition.Cover)
+                Size: =24
+                Text: ="Section 165"
+                Width: =552
+                X: =39
+                Y: =813
+                ZIndex: =7
+
+            Btn_vehicle As button:
+                DisplayMode: =vehiclevis
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =72
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: =Navigate(Scr_vehicle,ScreenTransition.Cover)
+                Size: =24
+                Text: ="Vehicle"
+                Width: =552
+                X: =39
+                Y: =369
+                ZIndex: =8
+
+            Btn_person As button:
+                DisplayMode: =personvis
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =72
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: =Navigate(Scr_Person,ScreenTransition.Cover)
+                Size: =24
+                Text: ="Person"
+                Width: =552
+                X: =39
+                Y: =279
+                ZIndex: =9
+
+            Btn_vehiclept1 As button:
+                DisplayMode: =Vehiclebtndis
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =72
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =
+                    Navigate(
+                        Scr_Vehicle_Ticket_Pt1,
+                        ScreenTransition.Cover
+                    )
+                Size: =24
+                Text: ="Vehicle Ticket Pt.1"
+                Width: =552
+                X: =40
+                Y: =192
+                ZIndex: =10
+
+            Btn_location As button:
+                DisplayMode: =locationvis
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =72
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =Navigate(
+                        Scr_Location,
+                        ScreenTransition.Cover
+                    )
+                Size: =24
+                Text: ="Location"
+                Width: =552
+                X: =39
+                Y: =457
+                ZIndex: =11
+
+            Btn_save_47 As button:
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =72
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: =Navigate(Scr_uncompleted_ticket,ScreenTransition.Cover)
+                Size: =24
+                Text: ="Unfinished Tickets"
+                Width: =552
+                X: =39
+                Y: =12
+                ZIndex: =14
+
+            Icon_unfinished_tickets As icon.ListWatchlistRemind:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(255, 255, 255, 1)
+                Icon: =Icon.ListWatchlistRemind
+                X: =528
+                Y: =12
+                ZIndex: =15
+
+            Icon_incident As icon.DocumentwithContent:
+                Color: =RGBA(255, 255, 255, 1)
+                Icon: =Icon.DocumentWithContent
+                X: =528
+                Y: =106
+                ZIndex: =16
+
+            Icon_Person As icon.Person:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(255, 255, 255, 1)
+                Icon: =Icon.Person
+                X: =525
+                Y: =279
+                ZIndex: =17
+
+            Icon_Vehicle As icon.Cars:
+                Color: =RGBA(255, 255, 255, 1)
+                Icon: =Icon.Cars
+                X: =525
+                Y: =378
+                ZIndex: =18
+
+            Icon_Vehicle_Ticket_pt1 As icon.AddDocument:
+                Color: =RGBA(255, 255, 255, 1)
+                Icon: =Icon.AddDocument
+                X: =525
+                Y: =194
+                ZIndex: =19
+
+            Icon_Location As icon.Waypoint:
+                Color: =RGBA(255, 255, 255, 1)
+                Icon: =Icon.Waypoint
+                Width: =65
+                X: =524
+                Y: =464
+                ZIndex: =21
+
+            Icon2_1 As icon.Warning:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =60
+                Icon: =Icon.Warning
+                Visible: |
+                    =CountRows(Gallery_unsubmitted.AllItems) >0 And LblHORT1valid.Text <> "true" And Btn_Hort_1.DisplayMode = DisplayMode.Edit
+                Width: =60
+                X: =60
+                Y: =646
+                ZIndex: =23
+
+            Icon2_2 As icon.Warning:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =60
+                Icon: =Icon.Warning
+                Visible: =CountRows(Gallery_unsubmitted.AllItems) >0 And LblTOvalid.Text <> "true" And Btn_save_46.DisplayMode = DisplayMode.Edit
+                Width: =60
+                X: =60
+                Y: =552
+                ZIndex: =24
+
+            Icon2_3 As icon.Warning:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =60
+                Icon: =Icon.Warning
+                Visible: =CountRows(Gallery_unsubmitted.AllItems) >0 And LblVDRSvalid.Text <> "true" And Btn_save_53.DisplayMode = DisplayMode.Edit
+                Width: =60
+                X: =60
+                Y: =736
+                ZIndex: =25
+
+            Icon2_4 As icon.Warning:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =60
+                Icon: =Icon.Warning
+                OnSelect: =
+                Visible: =CountRows(Gallery_unsubmitted.AllItems) >0 And LblS165valid.Text <> "true" And Btn_save_55.DisplayMode = DisplayMode.Edit
+                Width: =60
+                X: =60
+                Y: =826
+                ZIndex: =26
+
+            Icon2_5 As icon.Warning:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =60
+                Icon: =Icon.Warning
+                Visible: =CountRows(Gallery_unsubmitted.AllItems) >0 And LblS59valid.Text <> "true" And Btn_save_54.DisplayMode = DisplayMode.Edit
+                Width: =60
+                X: =60
+                Y: =911
+                ZIndex: =27
+
+            Button_sync As button:
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =50
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |
+                    =Set(gblLoading1,true);
+                    Refresh(Users);
+                    Refresh('Lookup Fields');
+                    Refresh('Lookup Values');
+                    Refresh('Territorial Policing Areas');
+                    Refresh('Offence Categories');
+                    Refresh('Ticket Types');
+                    Refresh('Offence codes');
+                    Refresh('Vehicle Ticket Offences STGS');
+                    Refresh('Vehicle Ticket STGS');
+                    Refresh('Vehicle Tickets');
+                    Refresh('Ticket Type - VDRS');
+                    Refresh(Accounts);
+                    Refresh('Licence Categories');
+                    UpdateContext(
+                        {
+                            pendingsub: LookUp(
+                                Choices('Staging Entry Status'),
+                                Value = 'Staging Entry Status'.'Pending Submission'
+                            ).Value
+                        }
+                    );
+                    ClearCollect(
+                        Userlocal,
+                        {
+                            Usermaillocal: User().Email,
+                            Collarnumber: LookUp(
+                                Users,
+                                'Primary Email'= officermail
+                            ).'Collar Number',
+                            Name: LookUp(
+                                Users,
+                                'Primary Email' = officermail
+                            ).'Full Name',
+                            UserId: LookUp(
+                                Users,
+                                'Primary Email' = officermail
+                            ).systemuserid
+                        }
+                    );
+                    SaveData(
+                        Userlocal,
+                        "Userlocal"
+                    );
+                    ClearCollect(
+                        Usersalllocal,
+                        ShowColumns(Filter(
+                                Users,
+                                StartsWith (
+                                    cp_badgenumber,
+                                    "0"
+                                )),
+                            "cp_StaffTitle",
+                            "cp_badgenumber",
+                            "firstname",
+                            "lastname",
+                            "cp_birthdate",
+                            "internalemailaddress",
+                            "cp_officerrank",
+                            "cp_officeryype",
+                            "cp_detective",
+                            "cp_PSUTraining",
+                            "cp_SafetyTraining",
+                            "cp_ServiceLength",
+                            "cp_Gender",
+                            "systemuserid",
+                            "fullname"
+                        )
+                    );
+                    SaveData(
+                        Usersalllocal,
+                        "Usersalllocal"
+                    );
+                    ClearCollect(
+                        Usersalllocal,
+                        ShowColumns(Filter(
+                                Users,
+                                StartsWith (
+                                    cp_badgenumber,
+                                    "1"
+                                )),
+                            "cp_StaffTitle",
+                            "cp_badgenumber",
+                            "firstname",
+                            "lastname",
+                            "cp_birthdate",
+                            "internalemailaddress",
+                            "cp_officerrank",
+                            "cp_officeryype",
+                            "cp_detective",
+                            "cp_PSUTraining",
+                            "cp_SafetyTraining",
+                            "cp_ServiceLength",
+                            "cp_Gender",
+                            "systemuserid",
+                            "fullname"
+                        )
+                    );
+                    SaveData(
+                        Usersalllocal,
+                        "Usersalllocal"
+                    );
+                    ClearCollect(
+                        Usersalllocal,
+                        ShowColumns(Filter(
+                                Users,
+                                StartsWith (
+                                    cp_badgenumber,
+                                    "2"
+                                )),
+                            "cp_StaffTitle",
+                            "cp_badgenumber",
+                            "firstname",
+                            "lastname",
+                            "cp_birthdate",
+                            "internalemailaddress",
+                            "cp_officerrank",
+                            "cp_officeryype",
+                            "cp_detective",
+                            "cp_PSUTraining",
+                            "cp_SafetyTraining",
+                            "cp_ServiceLength",
+                            "cp_Gender",
+                            "systemuserid",
+                            "fullname"
+                        )
+                    );
+                    SaveData(
+                        Usersalllocal,
+                        "Usersalllocal"
+                    );
+                    ClearCollect(
+                        Usersalllocal,
+                        ShowColumns(Filter(
+                                Users,
+                                StartsWith (
+                                    cp_badgenumber,
+                                    "3"
+                                )),
+                            "cp_StaffTitle",
+                            "cp_badgenumber",
+                            "firstname",
+                            "lastname",
+                            "cp_birthdate",
+                            "internalemailaddress",
+                            "cp_officerrank",
+                            "cp_officeryype",
+                            "cp_detective",
+                            "cp_PSUTraining",
+                            "cp_SafetyTraining",
+                            "cp_ServiceLength",
+                            "cp_Gender",
+                            "systemuserid",
+                            "fullname"
+                        )
+                    );
+                    SaveData(
+                        Usersalllocal,
+                        "Usersalllocal"
+                    );
+                    ClearCollect(
+                        Usersalllocal,
+                        ShowColumns(Filter(
+                                Users,
+                                StartsWith (
+                                    cp_badgenumber,
+                                    "4"
+                                )),
+                            "cp_StaffTitle",
+                            "cp_badgenumber",
+                            "firstname",
+                            "lastname",
+                            "cp_birthdate",
+                            "internalemailaddress",
+                            "cp_officerrank",
+                            "cp_officeryype",
+                            "cp_detective",
+                            "cp_PSUTraining",
+                            "cp_SafetyTraining",
+                            "cp_ServiceLength",
+                            "cp_Gender",
+                            "systemuserid",
+                            "fullname"
+                        )
+                    );
+                    
+                    SaveData(
+                        Usersalllocal,
+                        "Usersalllocal"
+                    );ClearCollect(
+                        Usersalllocal,
+                        ShowColumns(Filter(
+                                Users,
+                                StartsWith (
+                                    cp_badgenumber,
+                                    "5"
+                                )),
+                            "cp_StaffTitle",
+                            "cp_badgenumber",
+                            "firstname",
+                            "lastname",
+                            "cp_birthdate",
+                            "internalemailaddress",
+                            "cp_officerrank",
+                            "cp_officeryype",
+                            "cp_detective",
+                            "cp_PSUTraining",
+                            "cp_SafetyTraining",
+                            "cp_ServiceLength",
+                            "cp_Gender",
+                            "systemuserid",
+                            "fullname"
+                        )
+                    );
+                    SaveData(
+                        Usersalllocal,
+                        "Usersalllocal"
+                    );
+                    ClearCollect(
+                        Usersalllocal,
+                        ShowColumns(Filter(
+                                Users,
+                                StartsWith (
+                                    cp_badgenumber,
+                                    "6"
+                                )),
+                            "cp_StaffTitle",
+                            "cp_badgenumber",
+                            "firstname",
+                            "lastname",
+                            "cp_birthdate",
+                            "internalemailaddress",
+                            "cp_officerrank",
+                            "cp_officeryype",
+                            "cp_detective",
+                            "cp_PSUTraining",
+                            "cp_SafetyTraining",
+                            "cp_ServiceLength",
+                            "cp_Gender",
+                            "systemuserid",
+                            "fullname"
+                        )
+                    );
+                    SaveData(
+                        Usersalllocal,
+                        "Usersalllocal"
+                    );
+                    ClearCollect(
+                        Usersalllocal,
+                        ShowColumns(Filter(
+                                Users,
+                                StartsWith (
+                                    cp_badgenumber,
+                                    "7"
+                                )),
+                            "cp_StaffTitle",
+                            "cp_badgenumber",
+                            "firstname",
+                            "lastname",
+                            "cp_birthdate",
+                            "internalemailaddress",
+                            "cp_officerrank",
+                            "cp_officeryype",
+                            "cp_detective",
+                            "cp_PSUTraining",
+                            "cp_SafetyTraining",
+                            "cp_ServiceLength",
+                            "cp_Gender",
+                            "systemuserid",
+                            "fullname"
+                        )
+                    );
+                    SaveData(
+                        Usersalllocal,
+                        "Usersalllocal"
+                    );
+                    ClearCollect(
+                        Usersalllocal,
+                        ShowColumns(Filter(
+                                Users,
+                                StartsWith (
+                                    cp_badgenumber,
+                                    "8"
+                                )),
+                            "cp_StaffTitle",
+                            "cp_badgenumber",
+                            "firstname",
+                            "lastname",
+                            "cp_birthdate",
+                            "internalemailaddress",
+                            "cp_officerrank",
+                            "cp_officeryype",
+                            "cp_detective",
+                            "cp_PSUTraining",
+                            "cp_SafetyTraining",
+                            "cp_ServiceLength",
+                            "cp_Gender",
+                            "systemuserid",
+                            "fullname"
+                        )
+                    );
+                    SaveData(
+                        Usersalllocal,
+                        "Usersalllocal"
+                    );ClearCollect(
+                        Usersalllocal,
+                        ShowColumns(Filter(
+                                Users,
+                                StartsWith (
+                                    cp_badgenumber,
+                                    "9"
+                                )),
+                            "cp_StaffTitle",
+                            "cp_badgenumber",
+                            "firstname",
+                            "lastname",
+                            "cp_birthdate",
+                            "internalemailaddress",
+                            "cp_officerrank",
+                            "cp_officeryype",
+                            "cp_detective",
+                            "cp_PSUTraining",
+                            "cp_SafetyTraining",
+                            "cp_ServiceLength",
+                            "cp_Gender",
+                            "systemuserid",
+                            "fullname"
+                        )
+                    );
+                    SaveData(
+                        Usersalllocal,
+                        "Usersalllocal"
+                    );
+                    ClearCollect(
+                        Usersalllocal,
+                        ShowColumns(Filter(
+                                Users,
+                                
+                                    IsBlank(cp_badgenumber)
+                                    
+                                ),
+                            "cp_StaffTitle",
+                            "cp_badgenumber",
+                            "firstname",
+                            "lastname",
+                            "cp_birthdate",
+                            "internalemailaddress",
+                            "cp_officerrank",
+                            "cp_officeryype",
+                            "cp_detective",
+                            "cp_PSUTraining",
+                            "cp_SafetyTraining",
+                            "cp_ServiceLength",
+                            "cp_Gender",
+                            "systemuserid",
+                            "fullname"
+                        )
+                    );
+                    SaveData(
+                        Usersalllocal,
+                        "Usersalllocal"
+                    );
+                    // Ticket pt1 section look ups
+                    ClearCollect(
+                        OffencesOffline,
+                        ShowColumns(
+                            'Ticket Types',
+                            "cp_name",
+                            "cp_tickettypeid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    SaveData(
+                        OffencesOffline,
+                        "OffencesOffline"
+                    );
+                    Set(
+                        issuedtoid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "27"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        IssueTooffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = issuedtoid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        IssueTooffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        IssueTooffline,
+                        "IssueTooffline"
+                    );
+                    Set(
+                        Reasonforstopid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "28"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Reasonforstopoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Reasonforstopid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Reasonforstopoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Reasonforstopoffline,
+                        "Reasonforstopoffline"
+                    );
+                    // Ticket pt1 end
+                    //Person section look ups
+                    Set(
+                        Additionalnameid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "20"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Additionalnameoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Additionalnameid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Additionalnameoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Additionalnameoffline,
+                        "Additionalnameoffline"
+                    );
+                    Set(
+                        Titleid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "24"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Titleoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Titleid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Titleoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Titleoffline,
+                        "Titleoffline"
+                    );
+                    Set(
+                        Prefferedmeanofcontactid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "34"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Prefferedmeanofcontactoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Prefferedmeanofcontactid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Prefferedmeanofcontactoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Prefferedmeanofcontactoffline,
+                        "Prefferedmeanofcontactoffline"
+                    );
+                    Set(
+                        methodofcontactid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "83"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        methodofcontactoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = methodofcontactid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        methodofcontactoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        methodofcontactoffline,
+                        "methodofcontactoffline"
+                    );
+                    Set(
+                        Selfdefinedethnicityid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "31"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Selfdefinedethnicityoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Selfdefinedethnicityid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Selfdefinedethnicityoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Selfdefinedethnicityoffline,
+                        "Selfdefinedethnicityoffline"
+                    );
+                    Set(
+                        Occupationid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "35"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Occupationoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Occupationid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Occupationoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Occupationoffline,
+                        "Occupationoffline"
+                    );
+                    Set(
+                        Officerdefinedethnicityid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "32"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Officerdefinedethnicityoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Officerdefinedethnicityid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Officerdefinedethnicityoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Officerdefinedethnicityoffline,
+                        "Officerdefinedethnicityoffline"
+                    );
+                    Set(
+                        Licencetypeid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "36"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        LicenceTypeoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Licencetypeid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        LicenceTypeoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        LicenceTypeoffline,
+                        "LicenceTypeoffline"
+                    );
+                    Set(
+                        Genderid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "12"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Genderoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Genderid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Genderoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Genderoffline,
+                        "Genderoffline"
+                    );
+                    Set(
+                        Countryid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "30"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Countryoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Countryid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Countryoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Countryoffline,
+                        "Countryoffline"
+                    );
+                    Set(
+                        LicenceCategoryid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "37"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        LicenceCategoryoffline,
+                        {
+                            cp_licencecategoryname: "",
+                            cp_licencecategoryid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            'Licence Categories',
+                            "cp_licencecategoryname",
+                            "cp_licencecategoryid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        LicenceCategoryoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        LicenceCategoryoffline,
+                        "LicenceCategoryoffline"
+                    );
+                    //End of person look up
+                    //Vehicle Look ups 
+                    Set(
+                        Vehiclemakeid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "38"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        VehicleMakeoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Vehiclemakeid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        VehicleMakeoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        VehicleMakeoffline,
+                        "VehicleMakeoffline"
+                    );
+                    Set(
+                        Vehiclecolourid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "40"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Vehiclecolouroffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Vehiclecolourid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Vehiclecolouroffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Vehiclecolouroffline,
+                        "Vehiclecolouroffline"
+                    );
+                    Set(
+                        VehicleRoleid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "65"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        VehicleRoleoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = VehicleRoleid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        VehicleRoleoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        VehicleRoleoffline,
+                        "VehicleRoleoffline"
+                    );
+                    //End of vehicle Look ups
+                    //Traffic Offence Lookups
+                    ClearCollect(
+                        OffenceCatOffline,
+                        {cp_name: ""},
+                        ShowColumns(
+                            'Offence Categories',
+                            "cp_name",
+                            "cp_offencecategoryid",
+                            "cp_tickettypeid"
+                        )
+                    );
+                    SaveData(
+                        OffenceCatOffline,
+                        "OffenceCatOffline"
+                    );
+                    ClearCollect(
+                        OffenceCodeOffline,
+                        {cp_offencedescription: ""},
+                        ShowColumns(
+                            'Offence codes',
+                            "cp_offencecategoryid",
+                            "cp_offencedescription",
+                            "cp_name",
+                            "cp_offencecodeid",
+                            "cp_personnotmandatory"
+                        
+                        )
+                    );
+                    SaveData(
+                        OffenceCodeOffline,
+                        "OffenceCodeOffline"
+                    );
+                    ClearCollect(
+                        'Offence Cat and Code',
+                        AddColumns(
+                            OffenceCodeOffline,
+                            "cp_category_id",
+                            LookUp(
+                                OffenceCatOffline,
+                                OffenceCodeOffline[@cp_offencecategoryid].'Offence Category' = cp_offencecategoryid,
+                                cp_offencecategoryid 
+                                
+                            ),
+                            "cp_ticket_type_id",
+                            LookUp(OffenceCatOffline,
+                            OffenceCodeOffline[@cp_offencecategoryid].'Offence Category' = OffenceCatOffline[@cp_offencecategoryid],
+                            cp_tickettypeid),
+                    
+                    
+                            "cp_category_name",
+                            LookUp(OffenceCatOffline,
+                            OffenceCodeOffline[@cp_offencecategoryid].'Offence Category' = OffenceCatOffline[@cp_offencecategoryid],
+                            cp_name)
+                        )
+                        
+                    );
+                    SaveData(
+                        'Offence Cat and Code',
+                        "Offence Cat and Code"
+                    );
+                    
+                    //End of Traffic Offence Lookups
+                    //HORT1 Lookups
+                    ClearCollect(
+                        Documenttypeoffline,
+                        {
+                            cp_name: "",
+                            cp_vehicledocumentid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            'Vehicle Documents',
+                            "cp_name",
+                            "cp_vehicledocumentid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Documenttypeoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Documenttypeoffline,
+                        "Documenttypeoffline"
+                    );
+                    Set(
+                        ProduceStationid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "44"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        ProduceStationoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = ProduceStationid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        ProduceStationoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        ProduceStationoffline,
+                        "ProduceStationoffline"
+                    );
+                    Set(
+                        CheckorRecordid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "43"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        CheckorRecordoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = CheckorRecordid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        CheckorRecordoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        CheckorRecordoffline,
+                        "CheckorRecordoffline"
+                    );
+                    //End HORT1 Lookups
+                    //Section 59 lookups
+                    Set(
+                        Sectionid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "45"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Sectionoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Sectionid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Sectionoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Sectionoffline,
+                        "Sectionoffline"
+                    );
+                    Set(
+                        Warningorseizureid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "46"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Warningorseizureoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Warningorseizureid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Warningorseizureoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Warningorseizureoffline,
+                        "Warningorseizureoffline"
+                    );
+                    Set(
+                        Youwording1id,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "47"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Youwording1offline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Youwording1id
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Youwording1offline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Youwording1offline,
+                        "Youwording1offline"
+                    );
+                    Set(
+                        Youwording3id,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "48"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Youwording3offline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Youwording3id
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Youwording3offline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Youwording3offline,
+                        "Youwording3offline"
+                    );
+                    Set(
+                        DrivingVehicleInid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "49"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        DrivingVehicleInoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = DrivingVehicleInid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        DrivingVehicleInoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        DrivingVehicleInoffline,
+                        "DrivingVehicleInoffline"
+                    );
+                    Set(
+                        DrivingMannerid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "50"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        DrivingManneroffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = DrivingMannerid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        DrivingManneroffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        DrivingManneroffline,
+                        "DrivingManneroffline"
+                    );
+                    ClearCollect(
+                        TPA,
+                        {
+                            cp_name: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            'Territorial Policing Areas',
+                            "cp_name",
+                            "cp_territorialpolicingareaid"
+                        )
+                    );
+                    SaveData(
+                        TPA,
+                        "TPA"
+                    );
+                    ClearCollect(
+                        VehicleStagingOffline,
+                        ShowColumns(
+                            Filter(
+                                'Vehicle Ticket STGS',
+                                'Staging Entry Status' = pendingsub
+                            ),
+                            "cp_incidentnumber",
+                            "cp_incidentsuffix",
+                            "cp_incidentdate",
+                            "cp_enteredby",
+                            "cp_offencedatetime",
+                            "cp_issuedto",
+                            "cp_reasonforstopping",/*
+                                    "cp_photo1",
+                                    "cp_photo2",
+                                    "cp_photo3",
+                                    "cp_photo4",
+                                    "cp_photo5",*/
+                            "cp_title",
+                            "cp_forname",
+                            "cp_surname"/*,
+                                    "cp_hasadditionalnames",
+                                    "cp_additionalnametype",
+                                    "cp_additionalname",
+                                    "cp_dateofbirthknown",
+                                    "cp_birthdate",
+                                    "cp_housename",
+                                    "cp_housenumber",
+                                    "cp_street",
+                                    "cp_district",
+                                    "cp_town",
+                                    "cp_county",
+                                    "cp_postcode",
+                                    "cp_country",
+                                    "cp_preferredcontactmethod",
+                                    "cp_homephone",
+                                    "cp_workphone",
+                                    "cp_mobilephone",
+                                    "cp_homeemail",
+                                    "cp_gender",
+                                    "cp_selfdefinedethnicity",
+                                    "cp_officerdefinedethnicity",
+                                    "cp_drivinglicencedetails",
+                                    "cp_drivinglicencenumber",
+                                    "cp_licencetype",
+                                    "cp_licencecategory",
+                                    "cp_licencevalidfrom",
+                                    "cp_licenceexpiry",
+                                    "cp_issuenumber",
+                                    "cp_penaltypoints",
+                                    "cp_foreignlicence",
+                                    "cp_foreignlicencenumber",
+                                    "cp_foreignlicencecountry",
+                                    "cp_alternativeid",
+                                    "cp_vrm",
+                                    "cp_vehiclemake",
+                                    "cp_vehiclemakeother",
+                                    "cp_vehiclemodel",
+                                    "cp_vehiclecolour",
+                                    "cp_enginenumber",
+                                    "cp_chassisnumber",
+                                    "cp_motexpiry",
+                                    "cp_enginecc",
+                                    "cp_insurancedetailsavailable",
+                                    "cp_insuredby",
+                                    "cp_insurancenumber",
+                                    "cp_insurancevalidfrom",
+                                    "cp_insurancevalidto",
+                                    "cp_vehiclenotes",
+                                    "cp_vehiclerole",
+                                    "cp_restrictedvehicle",
+                                    "cp_manualtransmission",
+                                    "cp_dateofregistation",
+                                    "cp_excisedutycurrent",
+                                    "cp_longitude",
+                                    "cp_latitude",
+                                    "cp_locationdescription",
+                                    "cp_locationstreet",
+                                    "cp_locationtown",
+                                    "cp_tpa",
+                                    "cp_hasmot",
+                                    "cp_hasvalidinsurance",
+                                    "cp_isdriverkeeper",
+                                    "cp_isdriversupervised",
+                                    "cp_haslplates",
+                                    "cp_haspassengers",
+                                    "cp_onmotorway",
+                                    "cp_useofvehicle",
+                                    "cp_statementof",
+                                    "cp_officertraining",
+                                    "cp_speedlimit",
+                                    "cp_speeddetectionmethod",
+                                    "cp_driverobserver",
+                                    "cp_markedunmarkedcar",
+                                    "cp_policevehiclenumber",
+                                    "cp_distancefollowed",
+                                    "cp_fromreferencepointfc",
+                                    "cp_toreferencecheckfc",
+                                    "cp_recordedspeedmphfc",
+                                    "cp_distancebehind",
+                                    "cp_speedometercheck",
+                                    "cp_deviceserialnumber",
+                                    "cp_firstchecklaser",
+                                    "cp_firstchecklocationlaser",
+                                    "cp_secondchecklaser",
+                                    "cp_secondchecklocationlaser",
+                                    "cp_deviceserialnumberradar",
+                                    "cp_recordedspeedlaser",
+                                    "cp_vehiclewasseen",
+                                    "cp_fromreferencepoint",
+                                    "cp_toreferencepoint",
+                                    "cp_firstcheck",
+                                    "cp_secondchecklocation",
+                                    "cp_recordedspeed",
+                                    "cp_recordingdistance",
+                                    "cp_informationfrom",
+                                    "cp_officer",
+                                    "cp_vehiclestopped",
+                                    "cp_drivershownreading",
+                                    "cp_daylight",
+                                    "cp_streetlighting",
+                                    "cp_weather",
+                                    "cp_visibility",
+                                    "cp_speedlimitsignspresentclear",
+                                    "cp_officerstatement",
+                                    "cp_officersignature",
+                                    "cp_officersignaturenoscreen"*/,
+                            "cp_vehicleticketstgid",
+                            "cp_stagingentrystatus",
+                            "createdon"
+                        )
+                    );
+                    SaveData(
+                        VehicleStagingOffline,
+                        "VehicleStagingOffline"
+                    );
+                    // Section 165- needs recovery garage and address look up
+                    ClearCollect(
+                        GaragesOffline,
+                        {
+                            name: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                Accounts,
+                                cp_isrecoverygarage = 'Is Recovery Garage (Accounts)'.'1'
+                            ),
+                            "name",
+                            "accountid",
+                            "address1_composite",
+                            "telephone1",
+                            "address1_city",
+                            "cp_isrecoverygarage",
+                            "address2_stateorprovince",
+                            "address2_telephone1",
+                            "address2_postalcode",
+                            "address2_telephone2",
+                            "parentaccountid"
+                        )
+                    );
+                    SaveData(
+                        GaragesOffline,
+                        "GaragesOffline"
+                    );
+                    ClearCollect(
+                        GaragescompanyOffline,
+                        {
+                            name: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                Accounts,
+                                cp_isrecoverygaragecompany = 'Is Recovery Garage Company (Accounts)'.'1'
+                            ),
+                            "name",
+                            "accountid",
+                            "address1_composite",
+                            "telephone1",
+                            "address1_city",
+                            "cp_isrecoverygarage",
+                            "cp_isrecoverygaragecompany",
+                            "address2_stateorprovince",
+                            "address2_telephone1",
+                            "address2_postalcode",
+                            "address2_telephone2",
+                            "parentaccountid"
+                        )
+                    );
+                    SaveData(
+                        GaragescompanyOffline,
+                        "GaragescompanyOffline"
+                    );
+                    Set(
+                        Withoutid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "51"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Withoutoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Withoutid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Withoutoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Withoutoffline,
+                        "Withoutoffline"
+                    );
+                    Set(
+                        DesignatedStationid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "72"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        DesignatedStationoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = DesignatedStationid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        DesignatedStationoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        DesignatedStationoffline,
+                        "DesignatedStationoffline"
+                    );
+                    //End 165 
+                    //Evidence_yes and no screen
+                    Set(
+                        Statementofid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "52"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Statementofoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Statementofid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Statementofoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Statementofoffline,
+                        "Statementofoffline"
+                    );
+                    Set(
+                        OfficerTrainingid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "53"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        OfficerTrainingoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = OfficerTrainingid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        OfficerTrainingoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        OfficerTrainingoffline,
+                        "OfficerTrainingoffline"
+                    );
+                    Set(
+                        SpeedLimitid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "54"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        SpeedLimitoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = SpeedLimitid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        SpeedLimitoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        SpeedLimitoffline,
+                        "SpeedLimitoffline"
+                    );
+                    Set(
+                        Speeddetectionmethodid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "55"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Speeddetectionmethodoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Speeddetectionmethodid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Speeddetectionmethodoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Speeddetectionmethodoffline,
+                        "Speeddetectionmethodoffline"
+                    );
+                    Set(
+                        informationfromid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "59"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        informationfromoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = informationfromid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        informationfromoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        informationfromoffline,
+                        "informationfromoffline"
+                    );
+                    Set(
+                        StreetLightingid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "61"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        StreetLightingoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = StreetLightingid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        StreetLightingoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        StreetLightingoffline,
+                        "StreetLightingoffline"
+                    );
+                    Set(
+                        Vehiclewasseenid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "58"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Vehiclewasseenoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Vehiclewasseenid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Vehiclewasseenoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Vehiclewasseenoffline,
+                        "Vehiclewasseenoffline"
+                    );
+                    Set(
+                        Markedorunmarkedid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "57"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Markedorunmarkedoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Markedorunmarkedid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Markedorunmarkedoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Markedorunmarkedoffline,
+                        "Markedorunmarkedoffline"
+                    );
+                    Set(
+                        weatherid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "62"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        weatheroffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = weatherid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        weatheroffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        weatheroffline,
+                        "weatheroffline"
+                    );
+                    Set(
+                        Visibilityid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "63"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Visibilityoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Visibilityid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Visibilityoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Visibilityoffline,
+                        "Visibilityoffline"
+                    );
+                    Set(
+                        VehicleUseid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "65"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        VehicleUseoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Visibilityid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        VehicleUseoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        VehicleUseoffline,
+                        "VehicleUseoffline"
+                    );
+                    Set(
+                        Daylightid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "60"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Daylightoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Daylightid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Daylightoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Daylightoffline,
+                        "Daylightoffline"
+                    );
+                    Set(
+                        DriverorObserverid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "56"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        DriverorObserveroffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = DriverorObserverid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        DriverorObserveroffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        DriverorObserveroffline,
+                        "DriverorObserveroffline"
+                    );
+                    //Section 163
+                    Set(
+                        Reasonforusingpowerid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "78"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Reasonforusingpoweroffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Reasonforusingpowerid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Reasonforusingpoweroffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Reasonforusingpoweroffline,
+                        "Reasonforusingpoweroffline"
+                    );
+                    Set(
+                        Outcomeofstopid,
+                        LookUp(
+                            'Lookup Fields',
+                            cp_id = "79"
+                        ).cp_id
+                    );
+                    ClearCollect(
+                        Outcomeofstopoffline,
+                        {
+                            cp_name: "",
+                            cp_lookupvalueid: "",
+                            cp_displaysequenceno: 0
+                        },
+                        ShowColumns(
+                            Filter(
+                                'Lookup Values',
+                                cp_lookupfield.cp_id = Outcomeofstopid
+                            ),
+                            "cp_name",
+                            "cp_lookupfield",
+                            "cp_lookupvalueid",
+                            "cp_displaysequenceno"
+                        )
+                    );
+                    Sort(
+                        Outcomeofstopoffline,
+                        "cp_displaysequenceno"
+                    );
+                    SaveData(
+                        Outcomeofstopoffline,
+                        "Outcomeofstopoffline"
+                    );
+                    Set(gblLoading1,false);
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Size: =21
+                Text: ="Sync"
+                Width: =215
+                Y: =1269
+                ZIndex: =28
+
+            Btn_save_62 As button:
+                DisplayMode: =displays163vs
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =72
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: =Navigate(Scr_Section163,ScreenTransition.Cover)
+                Size: =24
+                Text: ="Section 163"
+                Width: =552
+                X: =39
+                Y: =991
+                ZIndex: =29
+
+            Icon2_6 As icon.Warning:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =60
+                Icon: =Icon.Warning
+                Visible: =CountRows(Gallery_unsubmitted.AllItems) >0 And LblS163valid.Text <> "true" And Btn_save_62.DisplayMode = DisplayMode.Edit
+                Width: =60
+                X: =60
+                Y: =1002
+                ZIndex: =30
+
+            Icon_Unfinished_Tickets_alert As icon.Warning:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =60
+                Icon: =Icon.Warning
+                Visible: =Warnunsubmitunsub
+                Width: =60
+                X: =60
+                Y: =18
+                ZIndex: =33
+
+            Timer_vehicle_ticket_pt1 As timer:
+                BorderColor: =ColorFade(Timer_vehicle_ticket_pt1.Fill, -15%)
+                DisabledBorderColor: =ColorFade(Timer_vehicle_ticket_pt1.BorderColor, 70%)
+                DisabledColor: =ColorFade(Timer_vehicle_ticket_pt1.Fill, 90%)
+                DisabledFill: =ColorFade(Timer_vehicle_ticket_pt1.Fill, 70%)
+                Duration: =1000
+                FocusedBorderColor: =Timer_vehicle_ticket_pt1.BorderColor
+                Height: =47
+                HoverBorderColor: =ColorFade(Timer_vehicle_ticket_pt1.BorderColor, 20%)
+                OnTimerEnd: =
+                OnTimerStart: |-
+                    =UpdateContext({vtp1Warndetails:true})
+                PressedBorderColor: =Timer_vehicle_ticket_pt1.Fill
+                PressedColor: =Timer_vehicle_ticket_pt1.Fill
+                PressedFill: =Timer_vehicle_ticket_pt1.Color
+                Repeat: =true
+                Reset: =vtp1timerreset
+                Start: =vtp1timerstart
+                Text: |-
+                    =Text(Time(0, 0, Timer_vehicle_ticket_pt1.Value/1000), "hh:mm:ss")
+                Visible: =false
+                Width: =61
+                X: =126
+                Y: =201
+                ZIndex: =34
+
+            Icon_VTP1_alert As icon.Warning:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =60
+                Icon: =Icon.Warning
+                Visible: =CountRows(Gallery_unsubmitted.AllItems) >0 And LblVTpt1valid.Text <> "true"
+                Width: =60
+                X: =60
+                Y: =194
+                ZIndex: =35
+
+            Timer_Person As timer:
+                BorderColor: =ColorFade(Timer_Person.Fill, -15%)
+                DisabledBorderColor: =ColorFade(Timer_Person.BorderColor, 70%)
+                DisabledColor: =ColorFade(Timer_Person.Fill, 90%)
+                DisabledFill: =ColorFade(Timer_Person.Fill, 70%)
+                Duration: =1000
+                FocusedBorderColor: =Timer_Person.BorderColor
+                Height: =47
+                HoverBorderColor: =ColorFade(Timer_Person.BorderColor, 20%)
+                OnTimerEnd: =
+                OnTimerStart: |-
+                    =UpdateContext({personWarndetails:true})
+                PressedBorderColor: =Timer_Person.Fill
+                PressedColor: =Timer_Person.Fill
+                PressedFill: =Timer_Person.Color
+                Repeat: =true
+                Reset: =persontimerreset
+                Start: =persontimerstart
+                Text: |-
+                    =Text(Time(0, 0, Timer_Person.Value/1000), "hh:mm:ss")
+                Visible: =false
+                Width: =61
+                X: =126
+                Y: =293
+                ZIndex: =36
+
+            Icon_Person_alert As icon.Warning:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =60
+                Icon: =Icon.Warning
+                Visible: =CountRows(Gallery_unsubmitted.AllItems) >0 And Lblpersonvalid.Text <> "true" And  LookUp('Vehicle Offline', Key = Vehicle_Ticket_pt1_Key.Selected.Key,'Vehicle Ticket pt 1 Issued to name') <> "Unattended vehicle"
+                Width: =60
+                X: =60
+                Y: =286
+                ZIndex: =37
+
+            Timer_Vehicle As timer:
+                BorderColor: =ColorFade(Timer_Vehicle.Fill, -15%)
+                DisabledBorderColor: =ColorFade(Timer_Vehicle.BorderColor, 70%)
+                DisabledColor: =ColorFade(Timer_Vehicle.Fill, 90%)
+                DisabledFill: =ColorFade(Timer_Vehicle.Fill, 70%)
+                Duration: =1000
+                FocusedBorderColor: =Timer_Vehicle.BorderColor
+                Height: =47
+                HoverBorderColor: =ColorFade(Timer_Vehicle.BorderColor, 20%)
+                OnTimerEnd: =
+                OnTimerStart: |-
+                    =UpdateContext({vehicleWarndetails:true})
+                PressedBorderColor: =Timer_Vehicle.Fill
+                PressedColor: =Timer_Vehicle.Fill
+                PressedFill: =Timer_Vehicle.Color
+                Repeat: =true
+                Reset: =vehicletimerreset
+                Start: =vehicletimerstart
+                Text: |-
+                    =Text(Time(0, 0, Timer_Vehicle.Value/1000), "hh:mm:ss")
+                Visible: =false
+                Width: =61
+                X: =126
+                Y: =379
+                ZIndex: =38
+
+            Icon_Vehicle_alert As icon.Warning:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =60
+                Icon: =Icon.Warning
+                Visible: |-
+                    =CountRows(Gallery_unsubmitted.AllItems) >0 And Lblvehiclevalid.Text <> "true" And LookUp(
+                                'Vehicle Offline',
+                                Key = Vehicle_Ticket_pt1_Key.Selected.Key,
+                                'Vehicle Ticket pt 1 Issued to name'
+                            ) <> "Rider of bicycle"
+                Width: =60
+                X: =60
+                Y: =372
+                ZIndex: =39
+
+            Timer_Location As timer:
+                BorderColor: =ColorFade(Timer_Location.Fill, -15%)
+                DisabledBorderColor: =ColorFade(Timer_Location.BorderColor, 70%)
+                DisabledColor: =ColorFade(Timer_Location.Fill, 90%)
+                DisabledFill: =ColorFade(Timer_Location.Fill, 70%)
+                Duration: =1000
+                FocusedBorderColor: =Timer_Location.BorderColor
+                Height: =47
+                HoverBorderColor: =ColorFade(Timer_Location.BorderColor, 20%)
+                OnTimerEnd: =
+                OnTimerStart: |-
+                    =UpdateContext({LocationWarndetails: true})
+                PressedBorderColor: =Timer_Location.Fill
+                PressedColor: =Timer_Location.Fill
+                PressedFill: =Timer_Location.Color
+                Repeat: =true
+                Reset: =Locationtimerreset
+                Start: =Locationtimerstart
+                Text: |-
+                    =Text(Time(0, 0, Timer_Location.Value/1000), "hh:mm:ss")
+                Visible: =false
+                Width: =61
+                X: =126
+                Y: =477
+                ZIndex: =40
+
+            Icon_Location_alert As icon.Warning:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =60
+                Icon: =Icon.Warning
+                Visible: =CountRows(Gallery_unsubmitted.AllItems) >0 And Lbllocationvalid.Text <> "true"
+                Width: =60
+                X: =60
+                Y: =463
+                ZIndex: =41
+
+            Button_sync_1 As button:
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =50
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: =
+                RadiusBottomLeft: =0
+                RadiusBottomRight: =0
+                RadiusTopLeft: =0
+                RadiusTopRight: =0
+                Size: =21
+                Text: |-
+                    ="App Version: " & glbAppVersion
+                Width: =267
+                X: =372
+                Y: =1269
+                ZIndex: =42
+
+            Label_onlineoffline As label:
+                Align: =Align.Center
+                BorderColor: =RGBA(179, 179, 179, 1)
+                BorderThickness: =2
+                Color: =RGBA(128, 128, 128, 1)
+                DisplayMode: =DisplayMode.View
+                Fill: =RGBA(230, 230, 230, 1)
+                FontWeight: =FontWeight.Bold
+                Height: =50
+                Size: =21
+                Text: =connectionstatus
+                Width: =173
+                X: =215
+                Y: =1269
+                ZIndex: =43
+
+            Timer_hort1 As timer:
+                BorderColor: =ColorFade(Timer_hort1.Fill, -15%)
+                DisabledBorderColor: =ColorFade(Timer_hort1.BorderColor, 70%)
+                DisabledColor: =ColorFade(Timer_hort1.Fill, 90%)
+                DisabledFill: =ColorFade(Timer_hort1.Fill, 70%)
+                Duration: =1000
+                FocusedBorderColor: =Timer_hort1.BorderColor
+                Height: =47
+                HoverBorderColor: =ColorFade(Timer_hort1.BorderColor, 20%)
+                OnTimerEnd: =
+                OnTimerStart: |-
+                    =UpdateContext({hortWarndetails:true})
+                PressedBorderColor: =Timer_hort1.Fill
+                PressedColor: =Timer_hort1.Fill
+                PressedFill: =Timer_hort1.Color
+                Repeat: =true
+                Reset: =horttimerreset
+                Start: =horttimerstart
+                Text: |-
+                    =Text(Time(0, 0, Timer_hort1.Value/1000), "hh:mm:ss")
+                Visible: =false
+                Width: =61
+                X: =154
+                Y: =659
+                ZIndex: =44
+
+            Timer_traffic As timer:
+                BorderColor: =ColorFade(Timer_traffic.Fill, -15%)
+                DisabledBorderColor: =ColorFade(Timer_traffic.BorderColor, 70%)
+                DisabledColor: =ColorFade(Timer_traffic.Fill, 90%)
+                DisabledFill: =ColorFade(Timer_traffic.Fill, 70%)
+                Duration: =1000
+                FocusedBorderColor: =Timer_traffic.BorderColor
+                Height: =47
+                HoverBorderColor: =ColorFade(Timer_traffic.BorderColor, 20%)
+                OnTimerEnd: =
+                OnTimerStart: |-
+                    =UpdateContext({trafficWarndetails:true})
+                PressedBorderColor: =Timer_traffic.Fill
+                PressedColor: =Timer_traffic.Fill
+                PressedFill: =Timer_traffic.Color
+                Repeat: =true
+                Reset: =traffictimerreset
+                Start: =traffictimerstart
+                Text: |-
+                    =Text(Time(0, 0, Timer_traffic.Value/1000), "hh:mm:ss")
+                Visible: =false
+                Width: =61
+                X: =120
+                Y: =570
+                ZIndex: =45
+
+            Timer_vdrs As timer:
+                BorderColor: =ColorFade(Timer_vdrs.Fill, -15%)
+                DisabledBorderColor: =ColorFade(Timer_vdrs.BorderColor, 70%)
+                DisabledColor: =ColorFade(Timer_vdrs.Fill, 90%)
+                DisabledFill: =ColorFade(Timer_vdrs.Fill, 70%)
+                Duration: =1000
+                FocusedBorderColor: =Timer_vdrs.BorderColor
+                Height: =47
+                HoverBorderColor: =ColorFade(Timer_vdrs.BorderColor, 20%)
+                OnTimerEnd: =
+                OnTimerStart: |-
+                    =UpdateContext({vdrsWarndetails:true})
+                PressedBorderColor: =Timer_vdrs.Fill
+                PressedColor: =Timer_vdrs.Fill
+                PressedFill: =Timer_vdrs.Color
+                Repeat: =true
+                Reset: =vdrstimerreset
+                Start: =vdrstimerstart
+                Text: |-
+                    =Text(Time(0, 0, Timer_vdrs.Value/1000), "hh:mm:ss")
+                Visible: =false
+                Width: =61
+                X: =135
+                Y: =743
+                ZIndex: =46
+
+            Timer_section165 As timer:
+                BorderColor: =ColorFade(Timer_section165.Fill, -15%)
+                DisabledBorderColor: =ColorFade(Timer_section165.BorderColor, 70%)
+                DisabledColor: =ColorFade(Timer_section165.Fill, 90%)
+                DisabledFill: =ColorFade(Timer_section165.Fill, 70%)
+                Duration: =1000
+                FocusedBorderColor: =Timer_section165.BorderColor
+                Height: =47
+                HoverBorderColor: =ColorFade(Timer_section165.BorderColor, 20%)
+                OnTimerEnd: =
+                OnTimerStart: |-
+                    =UpdateContext({s165Warndetails:true})
+                PressedBorderColor: =Timer_section165.Fill
+                PressedColor: =Timer_section165.Fill
+                PressedFill: =Timer_section165.Color
+                Repeat: =true
+                Reset: =s165timerreset
+                Start: =s165timerstart
+                Text: |-
+                    =Text(Time(0, 0, Timer_section165.Value/1000), "hh:mm:ss")
+                Visible: =false
+                Width: =61
+                X: =120
+                Y: =833
+                ZIndex: =47
+
+            Timer_section59 As timer:
+                BorderColor: =ColorFade(Timer_section59.Fill, -15%)
+                DisabledBorderColor: =ColorFade(Timer_section59.BorderColor, 70%)
+                DisabledColor: =ColorFade(Timer_section59.Fill, 90%)
+                DisabledFill: =ColorFade(Timer_section59.Fill, 70%)
+                Duration: =1000
+                FocusedBorderColor: =Timer_section59.BorderColor
+                Height: =47
+                HoverBorderColor: =ColorFade(Timer_section59.BorderColor, 20%)
+                OnTimerEnd: =
+                OnTimerStart: |-
+                    =UpdateContext({s59Warndetails:true})
+                PressedBorderColor: =Timer_section59.Fill
+                PressedColor: =Timer_section59.Fill
+                PressedFill: =Timer_section59.Color
+                Repeat: =true
+                Reset: =s59timerreset
+                Start: =s59timerstart
+                Text: |-
+                    =Text(Time(0, 0, Timer_section59.Value/1000), "hh:mm:ss")
+                Visible: =false
+                Width: =61
+                X: =151
+                Y: =925
+                ZIndex: =48
+
+            Timer_section163 As timer:
+                BorderColor: =ColorFade(Timer_section163.Fill, -15%)
+                DisabledBorderColor: =ColorFade(Timer_section163.BorderColor, 70%)
+                DisabledColor: =ColorFade(Timer_section163.Fill, 90%)
+                DisabledFill: =ColorFade(Timer_section163.Fill, 70%)
+                Duration: =1000
+                FocusedBorderColor: =Timer_section163.BorderColor
+                Height: =47
+                HoverBorderColor: =ColorFade(Timer_section163.BorderColor, 20%)
+                OnTimerEnd: =
+                OnTimerStart: |-
+                    =UpdateContext({s163Warndetails:true})
+                PressedBorderColor: =Timer_section163.Fill
+                PressedColor: =Timer_section163.Fill
+                PressedFill: =Timer_section163.Color
+                Repeat: =true
+                Reset: =s163timerreset
+                Start: =s163timerstart
+                Text: |-
+                    =Text(Time(0, 0, Timer_section163.Value/1000), "hh:mm:ss")
+                Visible: =false
+                Width: =61
+                X: =135
+                Y: =1017
+                ZIndex: =49
+
+            iconVTpt1valid As icon.Add:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(187, 221, 140, 1)
+                Height: =60
+                Icon: =Icon.Check
+                Visible: =LblVTpt1valid.Text = "true"
+                Width: =60
+                X: =60
+                Y: =198
+                ZIndex: =50
+
+            Group7 As group:
+                Height: =5
+                Width: =5
+                X: =40
+                Y: =40
+                ZIndex: =50
+
+                Btn_vehpt2 As button:
+                    DisplayMode: =vehpart2vis
+                    Fill: =RGBA(153, 153, 153, 1)
+                    Height: =72
+                    HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                    OnSelect: =Navigate(Scr_Vehicle_Ticket_Pt2,ScreenTransition.Cover)
+                    Size: =24
+                    Text: ="Vehicle Ticket Pt.2"
+                    Width: =552
+                    X: =39
+                    Y: =1080
+                    ZIndex: =12
+
+                Icon_Vehicle_Ticket_pt2 As icon.AddDocument:
+                    Color: =RGBA(255, 255, 255, 1)
+                    Icon: =Icon.AddDocument
+                    X: =529
+                    Y: =1081
+                    ZIndex: =20
+
+            Group17 As group:
+                Height: =5
+                Width: =5
+                X: =40
+                Y: =40
+                ZIndex: =50
+
+                Btn_evidence As button:
+                    DisplayMode: =If(LookUp('Vehicle Offline',Key = Vehicle_Primary_key).EvidenceRequired,DisplayMode.Edit,DisplayMode.Disabled)
+                    Fill: =RGBA(153, 153, 153, 1)
+                    Height: =72
+                    HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                    OnSelect: |
+                        =If(
+                            CountRows(
+                                Filter(
+                                    TrOffOffline,
+                                    TicketTypename = "Traffic Offence" And OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                                )
+                            ) = 0,  Navigate(
+                            Scr_Evidence_SpeedLimit_No,
+                            ScreenTransition.Cover
+                        ));
+                        If(
+                            Radio_TrafficOffence_Contains_speed_limit_offence_1.Selected.Value = "Yes",
+                          Navigate(
+                            Scr_Evidence_If_speed_limit_is_yes,
+                            ScreenTransition.Cover
+                        )
+                        );
+                        If(
+                            IsBlank(Radio_TrafficOffence_Contains_speed_limit_offence_1.Selected.Value),
+                          Navigate(
+                            Scr_Evidence_SpeedLimit_No,
+                            ScreenTransition.Cover
+                        )
+                        );
+                        
+                        If(
+                            Radio_TrafficOffence_Contains_speed_limit_offence_1.Selected.Value = "No",
+                          Navigate(
+                            Scr_Evidence_SpeedLimit_No,
+                            ScreenTransition.Cover
+                        )
+                        );
+                        
+                    Size: =24
+                    Text: ="Evidence"
+                    Width: =552
+                    X: =39
+                    Y: =1165
+                    ZIndex: =13
+
+                Icon_Evidence As icon.Camera:
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisplayMode: =If(LookUp('Vehicle Offline',Key = Vehicle_Primary_key).EvidenceRequired,DisplayMode.Edit,DisplayMode.Disabled)
+                    Icon: =Icon.Camera
+                    OnSelect: =
+                    X: =529
+                    Y: =1173
+                    ZIndex: =22
+
+            iconVTpt1valid_1 As icon.Add:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(187, 221, 140, 1)
+                Height: =60
+                Icon: =Icon.Check
+                Visible: =And(Lblpersonvalid.Text = "true", LookUp('Vehicle Offline', Key = Vehicle_Ticket_pt1_Key.Selected.Key,'Vehicle Ticket pt 1 Issued to name') <> "Unattended vehicle")
+                Width: =60
+                X: =60
+                Y: =284
+                ZIndex: =51
+
+            iconVTpt1valid_2 As icon.Add:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(187, 221, 140, 1)
+                Height: =60
+                Icon: =Icon.Check
+                Visible: |-
+                    =Lblvehiclevalid.Text = "true" And LookUp(
+                                'Vehicle Offline',
+                                Key = Vehicle_Ticket_pt1_Key.Selected.Key,
+                                'Vehicle Ticket pt 1 Issued to name'
+                            ) <> "Rider of bicycle"
+                Width: =60
+                X: =66
+                Y: =374
+                ZIndex: =52
+
+            iconVTpt1valid_3 As icon.Add:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(187, 221, 140, 1)
+                Icon: =Icon.Check
+                Visible: =Lbllocationvalid.Text = "true"
+                Width: =60
+                X: =66
+                Y: =463
+                ZIndex: =53
+
+            iconVTpt1valid_4 As icon.Add:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(187, 221, 140, 1)
+                Height: =60
+                Icon: =Icon.Check
+                Visible: =LblTOvalid.Text = "true"
+                Width: =60
+                X: =60
+                Y: =548
+                ZIndex: =54
+
+            iconVTpt1valid_5 As icon.Add:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(187, 221, 140, 1)
+                Height: =60
+                Icon: =Icon.Check
+                Visible: =LblHORT1valid.Text = "true"
+                Width: =60
+                X: =60
+                Y: =640
+                ZIndex: =55
+
+            iconVTpt1valid_6 As icon.Add:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(187, 221, 140, 1)
+                Height: =60
+                Icon: =Icon.Check
+                Visible: =LblVDRSvalid.Text = "true"
+                Width: =60
+                X: =60
+                Y: =734
+                ZIndex: =56
+
+            iconVTpt1valid_7 As icon.Add:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(187, 221, 140, 1)
+                Height: =60
+                Icon: =Icon.Check
+                Visible: =LblS165valid.Text = "true"
+                Width: =60
+                X: =60
+                Y: =821
+                ZIndex: =57
+
+            iconVTpt1valid_8 As icon.Add:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(187, 221, 140, 1)
+                Height: =60
+                Icon: =Icon.Check
+                Visible: =LblS59valid.Text = "true"
+                Width: =60
+                X: =60
+                Y: =912
+                ZIndex: =58
+
+            iconVTpt1valid_9 As icon.Add:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(187, 221, 140, 1)
+                Height: =60
+                Icon: =Icon.Check
+                Visible: =LblS163valid.Text = "true"
+                Width: =60
+                X: =60
+                Y: =1004
+                ZIndex: =59
+
+            Icon2_7 As icon.Warning:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =60
+                Icon: =Icon.Warning
+                Visible: |-
+                    =And(
+                        LookUp(
+                            'Vehicle Offline',
+                            Key = Vehicle_Primary_key
+                        ).EvidenceRequired,
+                        CountRows(Gallery_unsubmitted.AllItems) > 0,
+                        LblevidencevalidNO.Text <> "true",
+                        (IsBlank(Radio_TrafficOffence_Contains_speed_limit_offence_1.Selected.Value) Or Radio_TrafficOffence_Contains_speed_limit_offence_1.Selected.Value = "No")
+                    )
+                Width: =60
+                X: =60
+                Y: =1171
+                ZIndex: =60
+
+            Icon2_8 As icon.Warning:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =60
+                Icon: =Icon.Warning
+                Visible: |-
+                    =And(
+                        LookUp(
+                            'Vehicle Offline',
+                            Key = Vehicle_Primary_key
+                        ).EvidenceRequired,
+                        CountRows(Gallery_unsubmitted.AllItems) > 0,
+                        LblevidencevalidYES.Text <> "true",
+                        (Radio_TrafficOffence_Contains_speed_limit_offence_1.Selected.Value = "Yes")
+                    )
+                Width: =60
+                X: =66
+                Y: =1171
+                ZIndex: =61
+
+            iconVTpt1valid_10 As icon.Add:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(187, 221, 140, 1)
+                Height: =60
+                Icon: =Icon.Check
+                Visible: =LblevidencevalidNO.Text = "true"
+                Width: =60
+                X: =60
+                Y: =1173
+                ZIndex: =62
+
+            iconVTpt1valid_11 As icon.Add:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(187, 221, 140, 1)
+                Height: =60
+                Icon: =Icon.Check
+                Visible: =LblevidencevalidYES.Text = "true"
+                Width: =60
+                X: =72
+                Y: =1171
+                ZIndex: =63
+
+    "'Timer_Unfinished Tickets' As timer":
+        BorderColor: =ColorFade('Timer_Unfinished Tickets'.Fill, -15%)
+        DisabledBorderColor: =ColorFade('Timer_Unfinished Tickets'.BorderColor, 70%)
+        DisabledColor: =ColorFade('Timer_Unfinished Tickets'.Fill, 90%)
+        DisabledFill: =ColorFade('Timer_Unfinished Tickets'.Fill, 70%)
+        Duration: =1000
+        FocusedBorderColor: ='Timer_Unfinished Tickets'.BorderColor
+        Height: =67
+        HoverBorderColor: =ColorFade('Timer_Unfinished Tickets'.BorderColor, 20%)
+        OnTimerEnd: =
+        OnTimerStart: |-
+            =UpdateContext({Warnunsubmitunsub:!Warnunsubmitunsub})
+        PressedBorderColor: ='Timer_Unfinished Tickets'.Fill
+        PressedColor: ='Timer_Unfinished Tickets'.Fill
+        PressedFill: ='Timer_Unfinished Tickets'.Color
+        Repeat: =true
+        Reset: =timerresetunsub
+        Start: =timerstartunsub
+        Text: |-
+            =Text(Time(0, 0, 'Timer_Unfinished Tickets'.Value/1000), "hh:mm:ss")
+        Visible: =false
+        Width: =175
+        ZIndex: =24
+
+    Label_key As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =42
+        Size: =21
+        Text: =Vehicle_Primary_key
+        Width: =440
+        X: =100
+        Y: =45
+        ZIndex: =25
+
+    LblVTpt1valid As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =35
+        Size: =0
+        Text: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).'VT-PT1 validation'
+        Visible: =false
+        Width: =78
+        X: =60
+        Y: =52
+        ZIndex: =29
+
+    Group14_1 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =29
+
+        Rectangle2_2 As rectangle:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Fill: =RGBA(255, 255, 255, 0.89)
+            Height: =1136
+            Visible: =gblLoading1
+            Width: =640
+            ZIndex: =26
+
+        Image1_4 As image:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Height: =109
+            Image: =syncinggif
+            Visible: =gblLoading1
+            Width: =107
+            X: =266
+            Y: =458
+            ZIndex: =27
+
+        Label5_6 As label:
+            Align: =Align.Center
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Height: =71
+            Size: =21
+            Text: ="Syncing ..."
+            Visible: =gblLoading1
+            Width: =560
+            X: =40
+            Y: =362
+            ZIndex: =28
+
+    Lblpersonvalid As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =35
+        Size: =0
+        Text: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).PersonValidation
+        Visible: =false
+        Width: =78
+        X: =60
+        Y: =75
+        ZIndex: =30
+
+    Lblvehiclevalid As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =35
+        Size: =0
+        Text: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).VehicleValidation
+        Visible: =false
+        Width: =78
+        X: =48
+        Y: =32
+        ZIndex: =31
+
+    Lbllocationvalid As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =35
+        Size: =0
+        Text: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).LocationValidation
+        Visible: =false
+        Width: =78
+        X: =60
+        Y: =52
+        ZIndex: =32
+
+    LblTOvalid As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =35
+        Size: =0
+        Text: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).TOvalid
+        Visible: =false
+        Width: =78
+        X: =60
+        Y: =40
+        ZIndex: =33
+
+    LblHORT1valid As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =27
+        Size: =0
+        Text: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).HORT1valid
+        Visible: =false
+        Width: =78
+        X: =60
+        Y: =40
+        ZIndex: =34
+
+    LblVDRSvalid As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =27
+        Size: =0
+        Text: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).VDRSvalid
+        Visible: =false
+        Width: =78
+        X: =60
+        Y: =40
+        ZIndex: =35
+
+    LblS59valid As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =27
+        Size: =0
+        Text: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).S59valid
+        Visible: =false
+        Width: =78
+        X: =60
+        Y: =48
+        ZIndex: =36
+
+    LblS165valid As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =27
+        Size: =0
+        Text: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).S165valid
+        Visible: =false
+        Width: =78
+        X: =60
+        Y: =45
+        ZIndex: =37
+
+    LblS163valid As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =27
+        Size: =0
+        Text: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).S163valid
+        Visible: =false
+        Width: =78
+        X: =60
+        Y: =32
+        ZIndex: =38
+
+    LblevidencevalidYES As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =27
+        Size: =0
+        Text: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).EvidenceYESvalid
+        Visible: =false
+        Width: =78
+        X: =48
+        Y: =44
+        ZIndex: =39
+
+    LblevidencevalidNO As label:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =27
+        Size: =0
+        Text: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).EvidenceNOvalid
+        Visible: =false
+        Width: =78
+        X: =60
+        Y: =45
+        ZIndex: =40
+
+    Button1 As button:
+        Height: =58
+        OnSelect: =Navigate(Scr_Debug);
+        Size: =24
+        Text: ="?"
+        Visible: =glbDebug
+        Width: =76
+        X: =500
+        Y: =20
+        ZIndex: =41
+

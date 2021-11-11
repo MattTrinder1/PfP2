@@ -1,0 +1,1300 @@
+Scr_traffic_offence As screen:
+    OnHidden: =Reset(PenInput_Traffic_offence)
+    OnVisible: |-
+        =Set(
+            madcolto,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolto: LightGoldenRodYellow});
+        Set(
+            madcolto1,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolto1: LightGoldenRodYellow});
+        Set(
+            madcolto2,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolto2: LightGoldenRodYellow});
+        Set(
+            madcolto3,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolto3: LightGoldenRodYellow});
+        Set(
+            madcolto4,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolto4: LightGoldenRodYellow});
+        /*Set(
+            madcolto5,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolto5: LightGoldenRodYellow}); */
+        Set(
+            madcolto6,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolto6: LightGoldenRodYellow});
+        Set(
+            madcolto7,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolto7: LightGoldenRodYellow});
+        Set(
+            madcolto8,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolto8: LightGoldenRodYellow});
+        Set(
+            madcolto9,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolto9: LightGoldenRodYellow});
+        Set(
+            madcolpe,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolpe: LightGoldenRodYellow});
+        Set(
+            madcolse,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolse: LightGoldenRodYellow});
+        Set(
+            madcolsee,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolsee: LightGoldenRodYellow});
+        Set(
+            to1,
+            0
+        );
+        Set(
+            madcolto,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolto: LightGoldenRodYellow});
+        Set(
+            madcolto1,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolto1: LightGoldenRodYellow});
+        Set(
+            madcolto2,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolto2: LightGoldenRodYellow});
+        Set(
+            madcolto3,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolto3: LightGoldenRodYellow});
+        Set(
+            madcolto4,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolto4: LightGoldenRodYellow});
+        Set(
+            madcolto5,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolto5: LightGoldenRodYellow});
+        Set(
+            madcolto6,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolto6: LightGoldenRodYellow});
+        Set(
+            madcolto7,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolto7: LightGoldenRodYellow});
+        Set(
+            madcolto8,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolto8: LightGoldenRodYellow});
+        Set(
+            madcolto9,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolto9: LightGoldenRodYellow});
+        Set(
+            madcolpe,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolpe: LightGoldenRodYellow});
+        Set(
+            madcolse,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolse: LightGoldenRodYellow});
+        Set(
+            madcolsee,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolsee: LightGoldenRodYellow});
+        Set(
+            to1,
+            0
+        );
+        Set(
+            yTOF2,
+            0
+        );
+        Set(
+            yTOF1,
+            0
+        );
+        If(
+            Radio_TrafficOffence_NIP_Given_1.Selected.Value = "No" And to1 = 0,
+            UpdateContext({to1: 140})
+        );
+        If(
+            Radio_TrafficOffence_NIP_Given_1.Selected.Value = "Yes",
+            UpdateContext({to1: 0})
+        );
+        Set(
+            madcoladdoffence,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcoladdoffence: LightGoldenRodYellow});
+        UpdateContext(
+            {
+                BlankImage: PenInput_Traffic_offence.Image,
+                locSigDateTime: Now()
+            }
+        );
+        If(
+            LookUp(
+                TrOffOffline,
+                TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+            ).TrafficOffenceSigned = SampleImage,
+            Set(
+                TOsign,
+                DisplayMode.Edit
+            )
+        );
+        If(
+            LookUp(
+                TrOffOffline,
+                TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+            ).TrafficOffenceSigned <> Blank(),
+            Set(
+                TOsign,
+                DisplayMode.Disabled
+            )
+        );
+        
+        UpdateContext({hasBeenSigned:true});
+        If(LookUp(
+                TrOffOffline,
+                TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+            ).TrafficOffenceSigned <> Blank() ,UpdateContext({hasBeenSigned:true}),UpdateContext({hasBeenSigned:false}));
+        
+        
+        Set(
+            ymulti,
+            Last(
+                Filter(
+                    'Traffic Offence codes',
+                    OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+                )
+            ).Offenceorder
+        );
+        If(
+            LookUp(
+                'Traffic Offence codes',
+                OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+            ).Offenceorder > 0,
+            UpdateContext({yaddoffence: 330 * ymulti}),
+            UpdateContext({yaddoffence: 0})
+        )
+
+    Label_Header_TrafficOffence As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Traffic Offences" 
+        VerticalAlign: =VerticalAlign.Top
+        Width: =640
+        ZIndex: =1
+
+    Icon_back6 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home,UnCoverRight)
+        X: =27
+        Y: =17
+        ZIndex: =4
+
+    Canvas_TrafficOffence_Loop As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1047
+        Width: =Parent.Width
+        Y: =89
+        ZIndex: =5
+
+        DataCard_TrafficOffence_loop As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =1658
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Dropdown_traffic_offence_1 As dropdown:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                Default: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).Key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                Items: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =17
+                ZIndex: =2
+
+            Radio_TrafficOffence_Contains_speed_limit_offence_1 As radio:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_traffic_offence_1.Selected.Key And TicketTypename="Traffic Offence").ContainsSpeedLimitOffence
+                DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                Height: =98
+                Items: =["Yes", "No"]
+                Layout: =Layout.Horizontal
+                OnChange: |
+                    =If(Radio_TrafficOffence_Contains_speed_limit_offence_1.Selected.Value="No",Set(evidencescr,DisplayMode.Disabled));
+                    If(Radio_TrafficOffence_Contains_speed_limit_offence_1.Selected.Value="Yes",Set(evidencescr,DisplayMode.Edit));
+                OnSelect: =
+                RadioBorderColor: =RGBA(116, 116, 116, 1)
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =36
+                Y: =932+yaddoffence
+                ZIndex: =9
+
+            label_Contains_TrafficOffence_Speed_limit_Offence_1 As label:
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Contains speed limit offence?"
+                Width: =545
+                X: =36
+                Y: =882+yaddoffence
+                ZIndex: =11
+
+            Checkbox_TrafficOffence_acknowledge_statement_1 As checkbox:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                CheckboxBorderColor: =RGBA(153, 153, 153, 1)
+                Default: =If(Len(LookUp(TrOffOffline,OffenceKey=Dropdown_traffic_offence_1.Selected.Key And TicketTypename="Traffic Offence").AcknowledgedTrafficOffence)>0,true,false)
+                DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: |-
+                    =If(
+                        CountIf(
+                            'Traffic Offence codes',
+                            TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key And Text(Personnotmandatory) = "Yes"
+                        ) = CountIf(
+                            'Traffic Offence codes',
+                            TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+                        ) And CountIf(
+                            'Traffic Offence codes',
+                            TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+                        ) <> 0,
+                        White,
+                        If(
+                            !Self.Value ,
+                            LightGoldenRodYellow,
+                            White
+                        )
+                    )
+                Height: =85
+                OnCheck: |-
+                    =If(Checkbox_TrafficOffence_acknowledge_statement_1.Value=true,UpdateContext({madcolto2:Transparent}),UpdateContext({madcolto2:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Checkbox_TrafficOffence_acknowledge_statement_1.Value=true,UpdateContext({madcolto2:Transparent}),UpdateContext({madcolto2:LightGoldenRodYellow}))
+                Reset: =resetall
+                Size: =21
+                Text: ="I have read and acknowledged the statements above"
+                Width: =573
+                X: =44
+                Y: =1390+yaddoffence
+                ZIndex: =12
+
+            Label_TrafficOffence_wording_part1_1 As label:
+                DisplayMode: =DisplayMode.View
+                Fill: =LightGoldenRodYellow
+                FontWeight: =FontWeight.Bold
+                Height: =126
+                Italic: =true
+                Size: =21
+                Text: ="You will be reported for consideration of the question of prosecuting you for the above offences"
+                Width: =545
+                X: =40
+                Y: =1050+yaddoffence
+                ZIndex: =13
+
+            Label_TrafficOffence_wording_part2_1 As label:
+                DisplayMode: =DisplayMode.View
+                Fill: =LightGoldenRodYellow
+                FontWeight: =FontWeight.Bold
+                Height: =194
+                Italic: =true
+                Size: =21
+                Text: ="You do not have to say anything but it may harm your defence if you do not mention now something which you later rely on in court, anything you do say may be given in evidence"
+                Width: =545
+                X: =44
+                Y: =1177+yaddoffence
+                ZIndex: =14
+
+            Radio_TrafficOffence_NIP_Given_1 As radio:
+                BorderColor: =RGBA(255, 255, 255, 1)
+                Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_traffic_offence_1.Selected.Key And TicketTypename="Traffic Offence").NIPGiven
+                DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: |-
+                    =If(
+                        CountIf(
+                            'Traffic Offence codes',
+                            TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key And Text(Personnotmandatory) = "Yes"
+                        ) = CountIf(
+                            'Traffic Offence codes',
+                            TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+                        ) And CountIf(
+                            'Traffic Offence codes',
+                            TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+                        ) <> 0,
+                        White,
+                        If(
+                            IsBlank(Self.SelectedText.Value ),
+                            LightGoldenRodYellow,
+                            White
+                        )
+                    )
+                Height: =98
+                Items: =["Yes", "No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_TrafficOffence_NIP_Given_1.Selected.Value)>0,UpdateContext({madcolto3:Transparent}),UpdateContext({madcolto3:LightGoldenRodYellow}));
+                    If(Radio_TrafficOffence_NIP_Given_1.Selected.Value="No" And to1=0,UpdateContext({to1:140}));If(Radio_TrafficOffence_NIP_Given_1.Selected.Value="Yes",UpdateContext({to1:0}));
+                OnSelect: |-
+                    =If(Len(Radio_TrafficOffence_NIP_Given_1.Selected.Value)>0,UpdateContext({madcolto3:Transparent}),UpdateContext({madcolto3:LightGoldenRodYellow}));
+                    If(Radio_TrafficOffence_NIP_Given_1.Selected.Value="No" And to1=0,UpdateContext({to1:140}));If(Radio_TrafficOffence_NIP_Given_1.Selected.Value="Yes",UpdateContext({to1:0}));
+                RadioBorderColor: =RGBA(116, 116, 116, 1)
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =44
+                Y: =1566+yaddoffence
+                ZIndex: =15
+
+            label_TrafficOffence_NIPGiven_1 As label:
+                Height: =80
+                OnSelect: =
+                Size: =21
+                Text: ="Notice of intended Prosecution (NIP) given"
+                Width: =508
+                X: =44
+                Y: =1491+yaddoffence
+                ZIndex: =16
+
+            Label_asterik_TrafficOffence_statement_acknowledged_1 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Visible: |-
+                    =If(
+                        CountIf(
+                            'Traffic Offence codes',
+                            TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key And Text(Personnotmandatory) = "Yes"
+                        ) = CountIf(
+                            'Traffic Offence codes',
+                            TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+                        ) And CountIf(
+                            'Traffic Offence codes',
+                            TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+                        ) <> 0,
+                        false,
+                        true
+                    )
+                Width: =20
+                X: =549
+                Y: =1374+yaddoffence
+                ZIndex: =19
+
+            Label_TrafficOffence_asterik_NIP_given_1 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Visible: |-
+                    =If(
+                        CountIf(
+                            'Traffic Offence codes',
+                            TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key And Text(Personnotmandatory) = "Yes"
+                        ) = CountIf(
+                            'Traffic Offence codes',
+                            TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+                        ) And CountIf(
+                            'Traffic Offence codes',
+                            TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+                        ) <> 0,
+                        false,
+                        true
+                    )
+                Width: =20
+                X: =547
+                Y: =1504+yaddoffence
+                ZIndex: =20
+
+            Label_TrafficOffence_offence_category_5 As label:
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Offence Category" +yaddoffence
+                Width: =545
+                X: =40
+                Y: =105
+                ZIndex: =22
+
+            btnAddOffence As button:
+                DisplayMode: =If (IsBlank(ComboBox_TrafficOffence_OffenceCategory_6.Selected),DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =72
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |+
+                    =Collect(
+                        'Traffic Offence codes',
+                        {
+                            OffenceKey: Dropdown_traffic_offence_1.Selected.Key,
+                            TicketTypeTrafficOffence: LookUp(
+                                OffencesOffline,
+                                cp_name = "Traffic Offence"
+                            ).cp_tickettypeid,
+                            TicketTypename: "Traffic Offence",
+                            OffenceCategory: ComboBox_TrafficOffence_OffenceCategory_6.Selected.cp_category_name,
+                            OffenceCategoryID: ComboBox_TrafficOffence_OffenceCategory_6.Selected.cp_category_id,
+                            OffenceName: ComboBox_TrafficOffence_OffenceCategory_6.Selected.cp_offencedescription,
+                            OffenceNameID: ComboBox_TrafficOffence_OffenceCategory_6.Selected.cp_offencecodeid,
+                            OffenceCode: ComboBox_TrafficOffence_OffenceCategory_6.Selected.cp_name,
+                            OffenceCodeID: ComboBox_TrafficOffence_OffenceCategory_6.Selected.cp_offencecodeid,
+                            Personnotmandatory:LookUp(OffenceCodeOffline,ComboBox_TrafficOffence_OffenceCategory_6.Selected.cp_name=cp_name).cp_personnotmandatory,
+                            Offenceorder: CountRows('Traffic Offence codes') + 1
+                        }
+                    );
+                    SaveData('Traffic Offence codes',"Traffic Offence codes");
+                    UpdateContext({yaddoffence: yaddoffence + 330});
+                    UpdateContext({madcoladdoffence: White});
+                    Reset(ComboBox_TrafficOffence_OffenceCategory_6);
+                    
+                Size: =24
+                Text: ="Add Selected Offence"
+                Width: =545
+                X: =43
+                Y: =765
+                ZIndex: =33
+
+            ComboBox_TrafficOffence_OffenceCategory_6 As combobox:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Offence Cat and Code',LookUp(TrOffOffline,OffenceKey=Dropdown_traffic_offence_1.Selected.Key And TicketTypename="Traffic Offence").OffenceCategory=cp_category_name And LookUp(TrOffOffline,OffenceKey=Dropdown_traffic_offence_1.Selected.Key And TicketTypename="Traffic Offence").OffenceName)
+                DefaultSelectedItems: =LookUp('Offence Cat and Code',LookUp(TrOffOffline,OffenceKey=Dropdown_traffic_offence_1.Selected.Key And TicketTypename="Traffic Offence").OffenceCategory=cp_category_name And LookUp(TrOffOffline,OffenceKey=Dropdown_traffic_offence_1.Selected.Key And TicketTypename="Traffic Offence").OffenceName)
+                DisplayFields: =["cp_offencedescription","cp_category_name"]
+                Height: =70
+                InputTextPlaceholder: ="Search using Category or Description"
+                Items: |-
+                    =//Filter(
+                    //    'Offence Cat and Code',
+                    //    cp_personnotmandatory = [@'Person Not Mandatory (Offence codes)'].Yes
+                    //)
+                    
+                    If(LookUp('Vehicle Offline', Key = Vehicle_Ticket_pt1_Key.Selected.Key,'Vehicle Ticket pt 1 Issued to name') = "Unattended vehicle",
+                    
+                    Filter(
+                       'Offence Cat and Code',
+                     cp_personnotmandatory = [@'Person Not Mandatory (Offence codes)'].Yes),
+                    'Offence Cat and Code')
+                OnChange: |-
+                    =Set(offencecatid,LookUp('Offence Cat and Code',cp_category_id=ComboBox_TrafficOffence_OffenceCategory_6.Selected.cp_category_id).cp_category_id);
+                    Set(offencedescription,LookUp('Offence Cat and Code',cp_offencedescription=ComboBox_TrafficOffence_OffenceCategory_6.Selected.cp_offencedescription).cp_offencedescription)
+                OnSelect: |-
+                    =Set(offencecatid,LookUp('Offence Cat and Code',cp_category_id=ComboBox_TrafficOffence_OffenceCategory_6.Selected.cp_category_id).cp_category_id);
+                    Set(offencedescription,LookUp('Offence Cat and Code',cp_offencedescription=ComboBox_TrafficOffence_OffenceCategory_6.Selected.cp_offencedescription).cp_offencedescription)
+                Reset: =resetall
+                SearchFields: =["cp_offencedescription","cp_category_name"]
+                SearchItems: |-
+                    =Search(//Filter(
+                    //    'Offence Cat and Code',
+                    //    cp_personnotmandatory = [@'Person Not Mandatory (Offence codes)'].Yes
+                    //)
+                    
+                    If(LookUp('Vehicle Offline', Key = Vehicle_Ticket_pt1_Key.Selected.Key,'Vehicle Ticket pt 1 Issued to name') = "Unattended vehicle",
+                    
+                    Filter(
+                       'Offence Cat and Code',
+                     cp_personnotmandatory = [@'Person Not Mandatory (Offence codes)'].Yes),
+                    'Offence Cat and Code'),ComboBox_TrafficOffence_OffenceCategory_6.SearchText,"cp_offencedescription","cp_category_name")
+                SelectMultiple: =false
+                Size: =21
+                Template: =ListItemTemplate.Double
+                Width: =545
+                X: =43
+                Y: =160
+                ZIndex: =34
+
+            Gallery_multipleoffences As gallery.galleryVertical:
+                BorderStyle: =BorderStyle.None
+                BorderThickness: =1
+                Default: =LookUp('Traffic Offence codes',TicketTypename="Traffic Offence" And OffenceKey=Dropdown_traffic_offence_1.Selected.Key )
+                DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                Height: =(CountRows(Self.AllItems) * Self.TemplateHeight) + 20
+                Items: =Filter('Traffic Offence codes',TicketTypename="Traffic Offence" And OffenceKey=Dropdown_traffic_offence_1.Selected.Key )
+                Layout: =Layout.Vertical
+                ShowNavigation: =true
+                TemplateSize: =335
+                Visible: |-
+                    =If(LookUp('Traffic Offence codes', 
+                           OffenceKey= Dropdown_traffic_offence_1.Selected.Key).Offenceorder>0,true,false)
+                Width: =631
+                Y: =844
+                ZIndex: =38
+
+                TxtInput_TrafficOffence_OffenceCategory As text:
+                    BorderStyle: =BorderStyle.None
+                    Default: =ThisItem.OffenceCategory
+                    Fill: =White
+                    Height: =50
+                    OnSelect: =Select(Parent)
+                    Size: =21
+                    Width: =466
+                    X: =35
+                    Y: =33
+                    ZIndex: =1
+
+                Label_TrafficOffence_OffenceCat As label:
+                    FontWeight: =FontWeight.Semibold
+                    Height: =35
+                    OnSelect: =Select(Parent)
+                    Size: =21
+                    Text: ="Offence Category"
+                    Underline: =true
+                    Width: =330
+                    X: =35
+                    ZIndex: =2
+
+                TextInput_key As text:
+                    Default: =
+                    Height: =11
+                    OnSelect: =Select(Parent)
+                    Size: =21
+                    Visible: =false
+                    Width: =560
+                    X: =5
+                    Y: =324
+                    ZIndex: =7
+
+                Icon_TrafficOffence_deletecategory As icon.Cancel:
+                    Color: =RGBA(0, 0, 0, 1)
+                    Height: =68
+                    Icon: =Icon.Cancel
+                    OnSelect: |-
+                        =RemoveIf('Traffic Offence codes',Offenceorder=ThisItem.Offenceorder);UpdateContext({yaddoffence:yaddoffence-330})
+                    Width: =80
+                    X: =529
+                    Y: =129
+                    ZIndex: =8
+
+                TextInput_TrafficOffence_OffenceName As text:
+                    BorderStyle: =BorderStyle.None
+                    Default: =ThisItem.OffenceCategory
+                    Fill: =White
+                    Height: =129
+                    Mode: =TextMode.MultiLine
+                    OnSelect: =Select(Parent)
+                    Size: =21
+                    Width: =466
+                    X: =35
+                    Y: =122
+                    ZIndex: =9
+
+                Label_TrafficOffence_OffeneName As label:
+                    FontWeight: =FontWeight.Semibold
+                    Height: =35
+                    OnSelect: =Select(Parent)
+                    Size: =21
+                    Text: ="Offence Description"
+                    Underline: =true
+                    Width: =330
+                    X: =35
+                    Y: =88
+                    ZIndex: =10
+
+                TextInput_TrafficOffence_Offence_code As text:
+                    BorderStyle: =BorderStyle.None
+                    Default: =ThisItem.OffenceCode
+                    Fill: =White
+                    Height: =50
+                    OnSelect: =Select(Parent)
+                    Size: =21
+                    Width: =466
+                    X: =35
+                    Y: =275
+                    ZIndex: =14
+
+                Label_TrafficOffence_Offence_code As label:
+                    FontWeight: =FontWeight.Semibold
+                    Height: =35
+                    OnSelect: =Select(Parent)
+                    Size: =21
+                    Text: ="Offence Code"
+                    Underline: =true
+                    Width: =330
+                    X: =35
+                    Y: =243
+                    ZIndex: =15
+
+                Rectangle11 As rectangle:
+                    BorderColor: =RGBA(202, 202, 202, 1)
+                    Fill: =RGBA(202, 202, 202, 1)
+                    Height: =5
+                    OnSelect: =Select(Parent)
+                    Width: =616
+                    X: =5
+                    Y: =325
+                    ZIndex: =16
+
+            Group13_2 As group:
+                Height: =5
+                Width: =5
+                X: =17
+                Y: =-470
+                ZIndex: =38
+
+                Label_asterik_offence_code_3 As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =32
+                    Size: =21
+                    Text: ="*"
+                    Width: =22
+                    X: =559
+                    Y: =256
+                    ZIndex: =35
+
+                ComboBox_TrafficOffence_OffenceCategory_8 As combobox:
+                    BorderColor: =RGBA(128, 128, 128, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Offence Cat and Code',ComboBox_TrafficOffence_OffenceCategory_6.Selected.cp_category_name=cp_category_name)
+                    DefaultSelectedItems: =LookUp('Offence Cat and Code',ComboBox_TrafficOffence_OffenceCategory_6.Selected.cp_category_name=cp_category_name)
+                    DisplayFields: =["cp_category_name"]
+                    DisplayMode: =DisplayMode.Disabled
+                    Height: =70
+                    IsSearchable: =false
+                    Items: =LookUp('Offence Cat and Code',ComboBox_TrafficOffence_OffenceCategory_6.Selected.cp_category_name=cp_category_name)
+                    OnChange: =
+                    OnSelect: =
+                    Reset: =resetall
+                    SearchFields: =["cp_name"]
+                    SearchItems: =[]
+                    SelectMultiple: =false
+                    Size: =21
+                    Width: =545
+                    X: =44
+                    Y: =288
+                    ZIndex: =36
+
+                Label_TrafficOffence_offence_category_10 As label:
+                    Height: =50
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Offence Category"
+                    Width: =519
+                    X: =40
+                    Y: =238
+                    ZIndex: =37
+
+            Rectangle10_1 As rectangle:
+                Fill: =RGBA(255, 255, 255, 0.7)
+                Height: =782
+                Visible: =If(CountRows(Gallery_multipleoffences.AllItems) >0,false,true)
+                Width: =617
+                Y: =882
+                ZIndex: =39
+
+            Group12 As group:
+                Height: =5
+                Width: =5
+                X: =60
+                Y: =60
+                ZIndex: =40
+
+                Label_asterik_street_Offence_namely_1 As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =32
+                    Size: =21
+                    Text: ="*"
+                    Width: =22
+                    X: =566
+                    Y: =128
+                    ZIndex: =23
+
+                Label_TrafficOffence_offence_category_6 As label:
+                    Height: =50
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Offence"
+                    Width: =512
+                    X: =40
+                    Y: =99
+                    ZIndex: =28
+
+            Group10 As group:
+                Height: =5
+                Width: =5
+                X: =60
+                Y: =60
+                ZIndex: =40
+
+                Label_desc_2 As label:
+                    BorderColor: =RGBA(128, 128, 128, 1)
+                    BorderThickness: =1
+                    Fill: =RGBA(245, 245, 245, 1)
+                    Height: =208
+                    Size: =21
+                    Text: =ComboBox_TrafficOffence_OffenceCategory_6.Selected.cp_offencedescription
+                    Width: =545
+                    X: =44
+                    Y: =408
+                    ZIndex: =30
+
+                Label_TrafficOffence_offence_category_8 As label:
+                    Height: =50
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Detailed Description"
+                    Width: =545
+                    X: =44
+                    Y: =358
+                    ZIndex: =31
+
+            Group13 As group:
+                Height: =5
+                Width: =5
+                X: =60
+                Y: =60
+                ZIndex: =40
+
+                Label_asterik_offence_code_1 As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =32
+                    Size: =21
+                    Text: ="*"
+                    Width: =22
+                    X: =560
+                    Y: =644
+                    ZIndex: =24
+
+                ComboBox_TrafficOffence_OffenceCategory_5 As combobox:
+                    BorderColor: =RGBA(128, 128, 128, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Offence Cat and Code',ComboBox_TrafficOffence_OffenceCategory_6.Selected.cp_offencecodeid=cp_offencecodeid)
+                    DefaultSelectedItems: =LookUp('Offence Cat and Code',ComboBox_TrafficOffence_OffenceCategory_6.Selected.cp_offencecodeid=cp_offencecodeid)
+                    DisplayFields: =["cp_name"]
+                    DisplayMode: =DisplayMode.Disabled
+                    Height: =70
+                    IsSearchable: =false
+                    Items: =LookUp('Offence Cat and Code',ComboBox_TrafficOffence_OffenceCategory_6.Selected.cp_offencecodeid=cp_offencecodeid)
+                    OnChange: =
+                    OnSelect: =
+                    Reset: =resetall
+                    SearchFields: =["cp_name"]
+                    SearchItems: =[]
+                    SelectMultiple: =false
+                    Size: =21
+                    Width: =545
+                    X: =41
+                    Y: =676
+                    ZIndex: =27
+
+                Label_TrafficOffence_offence_category_7 As label:
+                    Height: =50
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Offence Code"
+                    Width: =519
+                    X: =41
+                    Y: =626
+                    ZIndex: =29
+
+        DataCard2 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =1381
+            Visible: =true
+            Width: =640
+            X: =0
+            Y: =2
+            ZIndex: =3
+
+            Btn_save_continue_Traffic_Offence_1 As button:
+                DisplayMode: |-
+                    =
+                    If(LookUp(
+                            TrOffOffline,
+                            TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+                        ).TrafficOffenceSigned <> Blank() ,DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =72
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |
+                    =UpdateIf(
+                        TrOffOffline,
+                        TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key,
+                        {
+                            OffenceKey: Dropdown_traffic_offence_1.Selected.Key,
+                            TicketTypeTrafficOffence: LookUp(
+                                OffencesOffline,
+                                cp_name = "Traffic Offence"
+                            ).cp_tickettypeid,
+                            TicketTypename: "Traffic Offence",
+                            OffenceCategory: Concat(
+                                Gallery_multipleoffences.AllItems.OffenceCategory,
+                                OffenceCategory & ","
+                            ),
+                            OffenceCategoryID: Concat(
+                                Gallery_multipleoffences.AllItems.OffenceCategoryID,
+                                OffenceCategoryID & ","
+                            ),
+                            OffenceName: Concat(
+                                Gallery_multipleoffences.AllItems.OffenceName,
+                                OffenceName & ","
+                            ),
+                            OffenceNameID: Concat(
+                                Gallery_multipleoffences.AllItems.OffenceNameID,
+                                OffenceNameID & ","
+                            ),
+                            OffenceCode: Left(
+                                Concat(
+                                    Gallery_multipleoffences.AllItems.OffenceCode,
+                                    OffenceCode & ","
+                                ),
+                                Len(
+                                    Concat(
+                                        Gallery_multipleoffences.AllItems.OffenceCode,
+                                        OffenceCode & ","
+                                    )
+                                ) - 1
+                            ),
+                            OffenceCodeID: Left(
+                                Concat(
+                                    Gallery_multipleoffences.AllItems.OffenceCodeID,
+                                    OffenceCodeID & ","
+                                ),
+                                Len(
+                                    Concat(
+                                        Gallery_multipleoffences.AllItems.OffenceCodeID,
+                                        OffenceCodeID & ","
+                                    )
+                                ) - 1
+                            ),
+                            MultipleOffences: If(
+                                CountRows(Gallery_multipleoffences.AllItems) > 1,
+                                "Yes",
+                                "No"
+                            ),
+                            ContainsSpeedLimitOffence: Radio_TrafficOffence_Contains_speed_limit_offence_1.Selected.Value,
+                            AcknowledgedTrafficOffence: Checkbox_TrafficOffence_acknowledge_statement_1.Value,
+                            NIPGiven: Radio_TrafficOffence_NIP_Given_1.Selected.Value,
+                            OffenderReply: TextInput_Offender_after_caution_1.Text,
+                            TOSerialNo: TextInput_Traffic_Offence_SerialNo_1.Text,
+                            TOPrinted: Radio_Traffic_offence_printed_1.Selected.Value,
+                            TrafficOffenceSigned: If(
+                                hasBeenSigned = true,
+                                PenInput_Traffic_offence.Image,
+                                Blank()
+                            ),
+                            NIPNotRequired: Radio_NIP_NotRequired_2.Selected.Value,
+                            Offenceorder: CountRows(TrOffOffline) + 1
+                        }
+                    );
+                    UpdateContext(
+                        {
+                            rec: LookUp(
+                                TrOffOffline,
+                                TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+                            )
+                        }
+                    );
+                    UpdateIf(
+                        'Vehicle Offline',
+                        Key = Dropdown_traffic_offence_1.Selected.Key,
+                        {
+                            TOvalid: And(
+                                !IsBlank(
+                                    Filter(
+                                        'Traffic Offence codes',
+                                        TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+                                    )
+                                ),
+                                If(
+                                    LookUp(
+                                        'Vehicle Offline',
+                                        Key = Vehicle_Ticket_pt1_Key.Selected.Key,
+                                        'Vehicle Ticket pt 1 Issued to name'
+                                    ) <> "Unattended vehicle",
+                                    And(
+                                        !IsBlank(rec.NIPGiven),
+                                        !IsBlank(rec.OffenderReply),
+                                        !IsBlank(rec.TrafficOffenceSigned),
+                                        !IsBlank(rec.AcknowledgedTrafficOffence)
+                                    ),
+                                    true
+                                )
+                            )
+                        }
+                    );
+                    Navigate(
+                        Scr_home,
+                        ScreenTransition.Cover
+                    );
+                    Set(
+                        TOsign,
+                        DisplayMode.Disabled
+                    );
+                    SaveData(
+                        TrOffOffline,
+                        "TrOffOffline"
+                    );
+                Size: =24
+                Text: ="Save & Continue"
+                Width: =545
+                X: =40
+                Y: =1284
+                ZIndex: =1
+
+            Label1_19 As label:
+                Fill: =LightGoldenRodYellow
+                Height: =135
+                Size: =21
+                Text: ="I acknowledge the above statement is correct and I have understood the caution"
+                Width: =545
+                X: =40
+                Y: =670
+                ZIndex: =6
+
+            Group15 As group:
+                Height: =5
+                Width: =5
+                X: =60
+                Y: =60
+                ZIndex: =6
+
+                "'Image_traffic_offence signature' As image":
+                    Height: =282
+                    Image: |
+                        =LookUp(TrOffOffline,TicketTypename = "Traffic Offence" And OffenceKey=Dropdown_traffic_offence_1.Selected.Key).TrafficOffenceSigned
+                    Visible: =If(LookUp(TrOffOffline,TicketTypename = "Traffic Offence" And OffenceKey=Dropdown_traffic_offence_1.Selected.Key).TrafficOffenceSigned = Blank() ,false,true)
+                    Width: =545
+                    X: =40
+                    Y: =854
+                    ZIndex: =2
+
+                TextInput_Sign_and_Submit_SignatureDateTime_1 As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: |-
+                        =Text(locSigDateTime, "[$-en-GB]dd/mm/yyyy hh:mm:ss")
+                    DisplayMode: =DisplayMode.Disabled
+                    Height: =74
+                    HintText: ="Date/time of signature"
+                    OnSelect: =
+                    Size: =21
+                    Width: =545
+                    X: =40
+                    Y: =1186
+                    ZIndex: =3
+
+                PenInput_Traffic_offence As inkControl:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    DisplayMode: =	If(!IsBlank(TextInput_Offender_after_caution_1.Text) And !IsBlank(Radio_TrafficOffence_NIP_Given_1.Selected.Value) ,DisplayMode.Edit,DisplayMode.Disabled)
+                    Height: =282
+                    OnSelect: |-
+                        =UpdateContext({hasBeenSigned:true})
+                    Reset: =true
+                    Visible: =If(LookUp(TrOffOffline,TicketTypename = "Traffic Offence" And OffenceKey=Dropdown_traffic_offence_1.Selected.Key).TrafficOffenceSigned = Blank() ,true,false)
+                    Width: =545
+                    X: =40
+                    Y: =886
+                    ZIndex: =4
+
+                Label_Sign_and_Submit_TFOffenderSignature_1 As label:
+                    Height: =75
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Offender Signature"
+                    Width: =545
+                    X: =40
+                    Y: =817
+                    ZIndex: =5
+
+            TextInput_Traffic_Offence_SerialNo_1 As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_traffic_offence_1.Selected.Key And TicketTypename="Traffic Offence").TOSerialNo
+                DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =White
+                Height: =70
+                HintText: =""
+                OnChange: |-
+                    =If(Len(TextInput_Traffic_Offence_SerialNo_1.Text)>0,UpdateContext({madcolto8:White}),UpdateContext({madcolto8:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(TextInput_Traffic_Offence_SerialNo_1.Text)>0,UpdateContext({madcolto8:White}),UpdateContext({madcolto8:LightGoldenRodYellow}));
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =403
+                ZIndex: =7
+
+            Radio_Traffic_offence_printed_1 As radio:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_traffic_offence_1.Selected.Key And TicketTypename="Traffic Offence").TOPrinted
+                DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =White
+                Height: =99
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_Traffic_offence_printed_1.Selected.Value)>0,UpdateContext({madcolto9:Transparent}),UpdateContext({madcolto9:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Radio_Traffic_offence_printed_1.Selected.Value)>0,UpdateContext({madcolto9:Transparent}),UpdateContext({madcolto9:LightGoldenRodYellow}));
+                RadioBorderColor: =RGBA(153, 153, 153, 1)
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =539
+                ZIndex: =8
+
+            Label_Traffic_offence_printed_1 As label:
+                DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="Traffic offence printed"
+                Width: =545
+                X: =40
+                Y: =480
+                ZIndex: =9
+
+            Label_Traffic_offence_serial_number_1 As label:
+                Height: =70
+                Size: =21
+                Text: ="Traffic Offence Serial Number"
+                Width: =545
+                X: =40
+                Y: =343
+                ZIndex: =10
+
+            Rectangle10 As rectangle:
+                Fill: =RGBA(255, 255, 255, 0.7)
+                Height: =1381
+                Visible: =If(CountRows(Gallery_multipleoffences.AllItems) >0,false,true)
+                Width: =616
+                ZIndex: =14
+
+            Group16 As group:
+                Height: =5
+                Width: =5
+                X: =20
+                Y: =60
+                ZIndex: =14
+
+                TextInput_Offender_after_caution_1 As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_traffic_offence_1.Selected.Key And TicketTypename="Traffic Offence").OffenderReply
+                    DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: |-
+                        =If(
+                            CountIf(
+                                'Traffic Offence codes',
+                                TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key And Text(Personnotmandatory) = "Yes"
+                            ) = CountIf(
+                                'Traffic Offence codes',
+                                TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+                            ) And CountIf(
+                                'Traffic Offence codes',
+                                TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+                            ) <> 0,
+                            White,
+                            If(
+                                IsBlank(Self.Text),
+                                LightGoldenRodYellow,
+                                White
+                            )
+                        )
+                    Height: =280
+                    HintText: =""
+                    Mode: =TextMode.MultiLine
+                    OnChange: |-
+                        =If(Len(TextInput_Offender_after_caution_1.Text)>0,UpdateContext({madcolto5:Transparent}),UpdateContext({madcolto5:LightGoldenRodYellow}));
+                    OnSelect: |-
+                        =If(Len(TextInput_Offender_after_caution_1.Text)>0,UpdateContext({madcolto5:Transparent}),UpdateContext({madcolto5:LightGoldenRodYellow}));
+                    Reset: =resetall
+                    Size: =21
+                    Width: =545
+                    X: =40
+                    Y: =63
+                    ZIndex: =11
+
+                label_Offender_Reply_1 As label:
+                    Height: =55
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Offender reply"
+                    Width: =498
+                    X: =40
+                    Y: =7
+                    ZIndex: =12
+
+                Label_asterik_offender_reply_1 As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =32
+                    Size: =21
+                    Text: ="*"
+                    Visible: |-
+                        =If(
+                            CountIf(
+                                'Traffic Offence codes',
+                                TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key And Text(Personnotmandatory) = "Yes"
+                            ) = CountIf(
+                                'Traffic Offence codes',
+                                TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+                            ) And CountIf(
+                                'Traffic Offence codes',
+                                TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+                            ) <> 0,
+                            false,
+                            true
+                        )
+                    Width: =20
+                    X: =565
+                    Y: =4
+                    ZIndex: =13
+
+        DataCard3 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Visible: =If(Radio_TrafficOffence_NIP_Given_1.Selected.Value="No",true,false)
+            Width: =640
+            X: =0
+            Y: =1
+            ZIndex: =4
+
+            Group10_1 As group:
+                Height: =5
+                Width: =5
+                X: =25
+                Y: =-60
+                ZIndex: =4
+
+                Radio_NIP_NotRequired_2 As radio:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_traffic_offence_1.Selected.Key).NIPNotRequired
+                    DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: |-
+                        =If(
+                            CountIf(
+                                'Traffic Offence codes',
+                                TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key And Text(Personnotmandatory) = "Yes"
+                            ) = CountIf(
+                                'Traffic Offence codes',
+                                TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+                            ) And CountIf(
+                                'Traffic Offence codes',
+                                TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+                            ) <> 0,
+                            White,
+                            If(
+                                IsBlank(Self.SelectedText.Value),
+                                LightGoldenRodYellow,
+                                White
+                            )
+                        )
+                    Height: =98
+                    Items: =["Yes", "No"]
+                    Layout: =Layout.Horizontal
+                    OnChange: |-
+                        =If(Len(Radio_NIP_NotRequired_2.Selected.Value)>0,UpdateContext({madcolto4:Transparent}),UpdateContext({madcolto4:LightGoldenRodYellow}));
+                    OnSelect: |-
+                        =If(Len(Radio_NIP_NotRequired_2.Selected.Value)>0,UpdateContext({madcolto4:Transparent}),UpdateContext({madcolto4:LightGoldenRodYellow}));
+                    RadioBorderColor: =RGBA(116, 116, 116, 1)
+                    Size: =21
+                    Width: =545
+                    X: =40
+                    Y: =80
+                    ZIndex: =1
+
+                lbl_NIP_NotRequired_2 As label:
+                    Fill: =White
+                    Height: =80
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Are you sure this offence does NOT require a NIP?"
+                    Width: =507
+                    X: =40
+                    Y: =8
+                    ZIndex: =2
+
+                Label_asterik_street_18 As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Fill: =White
+                    Height: =32
+                    Size: =21
+                    Text: ="*"
+                    Visible: |-
+                        =If(
+                            CountIf(
+                                'Traffic Offence codes',
+                                TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key And Text(Personnotmandatory) = "Yes"
+                            ) = CountIf(
+                                'Traffic Offence codes',
+                                TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+                            ) And CountIf(
+                                'Traffic Offence codes',
+                                TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
+                            ) <> 0,
+                            false,
+                            true
+                        )
+                    Width: =20
+                    X: =547
+                    Y: =8
+                    ZIndex: =3
+
+    Label1_6 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =42
+        Size: =21
+        Text: =Vehicle_Primary_key
+        Width: =440
+        X: =100
+        Y: =45
+        ZIndex: =6
+

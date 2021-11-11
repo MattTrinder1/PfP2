@@ -1,0 +1,1719 @@
+Scr_PNC_Details As screen:
+    OnVisible: |-
+        = Set(MenuBar,false);
+         UpdateContext({AD: false});
+        UpdateContext({ND: true});
+        UpdateContext({WS: false});
+        UpdateContext({DE: false});
+        UpdateContext({MS: false});
+        UpdateContext({BC: false});
+        UpdateContext({WM: false});
+        UpdateContext({OI: false});
+        UpdateContext({DD: false});
+        UpdateContext({IM: false});
+        UpdateContext({OD: false});
+
+    Label1_21 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="PNC Search"
+        Width: =640
+        ZIndex: =1
+
+    "'exit icon 3_5' As icon.Cancel":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =562
+        Y: =11
+        ZIndex: =2
+
+    "'Back Icon 2_5' As icon.ArrowLeft":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_PNC_Possibles, Fade)
+        X: =10
+        Y: =11
+        ZIndex: =3
+
+    NominalDetails As gallery.variableTemplateHeightGallery:
+        Height: =976
+        Items: =PNCPersonDetails
+        Layout: =Layout.Vertical
+        ShowScrollbar: =false
+        TemplatePadding: =0
+        TemplateSize: =977
+        Visible: =ND
+        Y: =160
+        ZIndex: =4
+
+        Label9_5 As label:
+            Align: =Align.Justify
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =Concatenate(ThisItem.lastName,", ",ThisItem.firstName)
+            Width: =630
+            Wrap: =false
+            Y: =140
+            ZIndex: =1
+
+        Label2_4 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Name"
+            Width: =560
+            Y: =100
+            ZIndex: =2
+
+        Label3_12 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.croNumber
+            Width: =606
+            Y: =220
+            ZIndex: =3
+
+        Label4_6 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="CRO Number"
+            Width: =560
+            Y: =180
+            ZIndex: =4
+
+        Label3_13 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =Proper(ThisItem.gender)
+            Width: =606
+            Y: =300
+            ZIndex: =5
+
+        Label4_12 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Gender"
+            Width: =560
+            Y: =260
+            ZIndex: =6
+
+        Label3_14 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.ethnicity
+            Width: =606
+            Y: =380
+            ZIndex: =7
+
+        Label4_13 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Ethnicity"
+            Width: =560
+            Y: =340
+            ZIndex: =8
+
+        Label3_15 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.address1
+            Width: =606
+            Y: =460
+            ZIndex: =9
+
+        Label4_14 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Address1"
+            Width: =560
+            Y: =420
+            ZIndex: =10
+
+        Label3_16 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.address2
+            Width: =606
+            Y: =540
+            ZIndex: =11
+
+        Label4_16 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Address2"
+            Width: =560
+            Y: =500
+            ZIndex: =12
+
+        Label3_17 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.address3
+            Width: =606
+            Y: =620
+            ZIndex: =13
+
+        Label4_17 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Address3"
+            Width: =560
+            Y: =580
+            ZIndex: =14
+
+        Label3_18 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.addressDate
+            Width: =606
+            Y: =700
+            ZIndex: =15
+
+        Label4_18 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Address Date"
+            Width: =560
+            Y: =660
+            ZIndex: =16
+
+        Label3_19 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.driverNumber
+            Width: =606
+            Y: =780
+            ZIndex: =17
+
+        Label4_19 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Driver No"
+            Width: =560
+            Y: =740
+            ZIndex: =18
+
+        Label3_22 As label:
+            Fill: =RGBA(255, 0, 0, 1)
+            FontWeight: =Semibold
+            Height: =60
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.warningSignalsText
+            Width: =640
+            Y: =40
+            ZIndex: =19
+
+        Label4_15 As label:
+            Fill: =RGBA(255, 0, 0, 1)
+            FontWeight: =Bold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Warning Signals"
+            Width: =640
+            ZIndex: =20
+
+    MarksScars As gallery.galleryVertical:
+        Fill: =RGBA(255, 255, 255, 1)
+        Height: =976
+        Items: =PNCPersonDetails.markScars
+        Layout: =Layout.Vertical
+        ShowScrollbar: =false
+        TemplatePadding: =0
+        TemplateSize: =557
+        Visible: =MS
+        Y: =160
+        ZIndex: =5
+
+        ms_text As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.text
+            Width: =630
+            Y: =351
+            ZIndex: =1
+
+        ms_keyword3 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.keyword3
+            Width: =630
+            Y: =271
+            ZIndex: =2
+
+        ms_keyword2 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.keyword2
+            Width: =630
+            Y: =191
+            ZIndex: =3
+
+        ms_keyword1 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.keyword1
+            Width: =630
+            Y: =111
+            ZIndex: =4
+
+        ms_type As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.type
+            Width: =630
+            Y: =40
+            ZIndex: =5
+
+        ms_location As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.location
+            Width: =630
+            Y: =511
+            ZIndex: =7
+
+        ms_detail As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.detail
+            Width: =630
+            Y: =431
+            ZIndex: =8
+
+        ms_txt_text As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Text"
+            Width: =630
+            Y: =311
+            ZIndex: =9
+
+        ms_txt_location As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Location"
+            Width: =630
+            Y: =471
+            ZIndex: =10
+
+        ms_txt_detail As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Detail"
+            Width: =630
+            Y: =391
+            ZIndex: =11
+
+        ms_txt_keyword3 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Keyword 3"
+            Width: =630
+            Y: =231
+            ZIndex: =12
+
+        ms_txt_keyword2 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Keyword 2"
+            Width: =630
+            Y: =151
+            ZIndex: =13
+
+        ms_txt_keyword1 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Keyword 1"
+            Width: =630
+            Y: =80
+            ZIndex: =14
+
+        ms_txt_type As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Type"
+            Width: =630
+            ZIndex: =15
+
+        Rectangle5 As rectangle:
+            Fill: =RGBA(153, 153, 153, 1)
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =630
+            Y: =556
+            ZIndex: =16
+
+    WarningSignals As gallery.variableTemplateHeightGallery:
+        Height: =976
+        Items: =PNCPersonDetails.warningSignals
+        Layout: =Layout.Vertical
+        ShowScrollbar: =false
+        TemplatePadding: =0
+        TemplateSize: =259
+        Visible: =WS
+        Y: =160
+        ZIndex: =6
+
+        Label3_20 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.warning
+            Width: =606
+            Y: =90
+            ZIndex: =3
+
+        Label4_21 As label:
+            Color: =RGBA(255, 0, 0, 1)
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Warning"
+            Width: =560
+            Y: =50
+            ZIndex: =4
+
+        Label3_21 As label:
+            Height: =80
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.text
+            VerticalAlign: =VerticalAlign.Top
+            Width: =606
+            Y: =171
+            ZIndex: =7
+
+        Label4_22 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Text"
+            Width: =560
+            Y: =131
+            ZIndex: =10
+
+        Label4_20 As label:
+            Fill: =RGBA(179, 179, 179, 1)
+            FontWeight: =Bold
+            Height: =50
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Warning Signal"
+            Width: =640
+            ZIndex: =12
+
+    Descriptions As gallery.variableTemplateHeightGallery:
+        Height: =976
+        Items: =PNCPersonDetails.descriptions
+        Layout: =Layout.Vertical
+        ShowScrollbar: =false
+        TemplatePadding: =0
+        TemplateSize: =946
+        Visible: =DE
+        Y: =160
+        ZIndex: =7
+
+        Label9_12 As label:
+            Align: =Align.Justify
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =LookUp(NEResultPossibles, pncId = VARCheckedItem, name)
+            Width: =630
+            Wrap: =false
+            Y: =40
+            ZIndex: =1
+
+        Label2_5 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Name"
+            Width: =560
+            ZIndex: =2
+
+        Label3_31 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.height
+            Width: =606
+            Y: =120
+            ZIndex: =3
+
+        Label4_24 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Height"
+            Width: =560
+            Y: =80
+            ZIndex: =4
+
+        Label3_30 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.build
+            Width: =606
+            Y: =200
+            ZIndex: =5
+
+        Label4_23 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Build"
+            Width: =560
+            Y: =160
+            ZIndex: =6
+
+        Label3_29 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.shoeSize
+            Width: =606
+            Y: =280
+            ZIndex: =7
+
+        Label4_25 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Shoe Size"
+            Width: =560
+            Y: =240
+            ZIndex: =8
+
+        Label3_28 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.eyeColour1
+            Width: =606
+            Y: =360
+            ZIndex: =9
+
+        Label4_26 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Eye Colour"
+            Width: =560
+            Y: =320
+            ZIndex: =10
+
+        Label3_27 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.glasses
+            Width: =606
+            Y: =440
+            ZIndex: =11
+
+        Label4_27 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Glasses"
+            Width: =560
+            Y: =400
+            ZIndex: =12
+
+        Label3_26 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.handedness
+            Width: =606
+            Y: =520
+            ZIndex: =13
+
+        Label4_28 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Handedness"
+            Width: =560
+            Y: =480
+            ZIndex: =14
+
+        Label3_25 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.facialHair1Type
+            Width: =606
+            Y: =600
+            ZIndex: =15
+
+        Label4_29 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Facial Hair Type"
+            Width: =560
+            Y: =560
+            ZIndex: =16
+
+        Label3_24 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.accent
+            Width: =606
+            Y: =680
+            ZIndex: =17
+
+        Label4_30 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Accent"
+            Width: =560
+            Y: =640
+            ZIndex: =18
+
+    Label9_13 As label:
+        Align: =Center
+        FontWeight: =Semibold
+        Height: =64
+        OnSelect: =
+        Size: =16
+        Text: ="Description"
+        Visible: =DE
+        Width: =640
+        Wrap: =false
+        Y: =90
+        ZIndex: =8
+
+    WantedMissings As gallery.variableTemplateHeightGallery:
+        Height: =976
+        Items: =PNCPersonDetails.wantedMissings
+        Layout: =Layout.Vertical
+        ShowScrollbar: =false
+        TemplatePadding: =0
+        TemplateSize: =955
+        Visible: =WM
+        Y: =160
+        ZIndex: =9
+
+        Label3_39 As label:
+            Height: =107
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.class
+            VerticalAlign: =VerticalAlign.Top
+            Width: =606
+            Y: =40
+            ZIndex: =3
+
+        Label4_32 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Class"
+            Width: =560
+            ZIndex: =4
+
+        Label3_38 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.power
+            Width: =606
+            Y: =187
+            ZIndex: =5
+
+        Label4_31 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Power"
+            Width: =560
+            Y: =147
+            ZIndex: =6
+
+        Label3_37 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.dateOn
+            Width: =606
+            Y: =267
+            ZIndex: =7
+
+        Label4_33 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Date On"
+            Width: =560
+            Y: =227
+            ZIndex: =8
+
+        Label3_36 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.reported
+            Width: =606
+            Y: =347
+            ZIndex: =9
+
+        Label4_34 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Reported"
+            Width: =560
+            Y: =307
+            ZIndex: =10
+
+        Label3_35 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.weed
+            Width: =606
+            Y: =427
+            ZIndex: =11
+
+        Label4_35 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Weed"
+            Width: =560
+            Y: =387
+            ZIndex: =12
+
+        Label3_34 As label:
+            Height: =154
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =Concatenate(ThisItem.text1," ",ThisItem.text2," ",ThisItem.text3)
+            VerticalAlign: =VerticalAlign.Top
+            Width: =606
+            Y: =507
+            ZIndex: =13
+
+        Label4_36 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Text"
+            Width: =560
+            Y: =467
+            ZIndex: =14
+
+        Label3_33 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.casePapers
+            Width: =606
+            Y: =701
+            ZIndex: =15
+
+        Label4_37 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Case Papers"
+            Width: =560
+            Y: =661
+            ZIndex: =16
+
+        Label3_32 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.fsRef
+            Width: =606
+            Y: =781
+            ZIndex: =17
+
+        Label4_38 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="FS Reference"
+            Width: =560
+            Y: =741
+            ZIndex: =18
+
+        Rectangle7 As rectangle:
+            Fill: =RGBA(153, 153, 153, 1)
+            Height: =1
+            Width: =630
+            Y: =821
+            ZIndex: =19
+
+    Label9_14 As label:
+        Align: =Center
+        FontWeight: =Semibold
+        Height: =64
+        OnSelect: =
+        Size: =16
+        Text: =Concatenate("Wanted Missing ", "(", Text(CountRows(PNCPersonDetails.wantedMissings)),")")
+        Visible: =WM
+        Width: =640
+        Wrap: =false
+        Y: =130
+        ZIndex: =10
+
+    Disqualifieds As gallery.variableTemplateHeightGallery:
+        Height: =976
+        Items: =PNCPersonDetails.disqualifieds
+        Layout: =Layout.Vertical
+        ShowScrollbar: =false
+        TemplatePadding: =0
+        TemplateSize: =447
+        Visible: =DD
+        Y: =160
+        ZIndex: =11
+
+        Label3_40 As label:
+            Height: =80
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.sentence
+            VerticalAlign: =VerticalAlign.Top
+            Width: =606
+            Y: =40
+            ZIndex: =3
+
+        Label4_39 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Sentence"
+            Width: =560
+            ZIndex: =4
+
+        Label3_41 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.date
+            Width: =606
+            Y: =160
+            ZIndex: =5
+
+        Label4_40 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Date From"
+            Width: =560
+            Y: =120
+            ZIndex: =6
+
+        Label3_42 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.date
+            Width: =606
+            Y: =240
+            ZIndex: =7
+
+        Label4_41 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Court"
+            Width: =560
+            Y: =200
+            ZIndex: =8
+
+        Label3_43 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.notes
+            Width: =606
+            Y: =320
+            ZIndex: =9
+
+        Label4_42 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Status"
+            Width: =560
+            Y: =280
+            ZIndex: =10
+
+        Label4_43 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Text"
+            Width: =560
+            Y: =360
+            ZIndex: =12
+
+        Rectangle7_1 As rectangle:
+            Fill: =RGBA(153, 153, 153, 1)
+            Height: =1
+            Width: =630
+            Y: =440
+            ZIndex: =19
+
+        Label3_44 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.text
+            Width: =606
+            Y: =400
+            ZIndex: =20
+
+    Label9_15 As label:
+        Align: =Center
+        FontWeight: =Semibold
+        Height: =64
+        OnSelect: =
+        Size: =16
+        Text: =Concatenate("Disqualified Drivers ", "(", Text(CountRows(PNCPersonDetails.disqualifieds)),")")
+        Visible: =DD
+        Width: =640
+        Wrap: =false
+        Y: =130
+        ZIndex: =12
+
+    InformatiomMarkers As gallery.variableTemplateHeightGallery:
+        Height: =976
+        Items: =PNCPersonDetails.informationMarkers
+        Layout: =Layout.Vertical
+        ShowScrollbar: =false
+        TemplatePadding: =0
+        TemplateSize: =325
+        Visible: =IM
+        Y: =160
+        ZIndex: =13
+
+        Label3_45 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.marker
+            VerticalAlign: =VerticalAlign.Top
+            Width: =606
+            Y: =40
+            ZIndex: =3
+
+        Label4_44 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Marker"
+            Width: =560
+            ZIndex: =4
+
+        Label3_46 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.text
+            Width: =606
+            Y: =120
+            ZIndex: =5
+
+        Label4_45 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Text"
+            Width: =560
+            Y: =80
+            ZIndex: =6
+
+        Label3_47 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.date
+            Width: =606
+            Y: =200
+            ZIndex: =7
+
+        Label4_46 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Date"
+            Width: =560
+            Y: =160
+            ZIndex: =8
+
+        Label4_47 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="FS REference"
+            Width: =560
+            Y: =240
+            ZIndex: =10
+
+        Rectangle7_2 As rectangle:
+            Fill: =RGBA(153, 153, 153, 1)
+            Height: =1
+            Width: =630
+            Y: =320
+            ZIndex: =19
+
+        Label3_48 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.fsRef
+            Width: =606
+            Y: =280
+            ZIndex: =20
+
+    Label9_16 As label:
+        Align: =Center
+        FontWeight: =Semibold
+        Height: =64
+        OnSelect: =
+        Size: =16
+        Text: =Concatenate("Information Markers ", "(", Text(CountRows(PNCPersonDetails.informationMarkers)),")")
+        Visible: =IM
+        Width: =640
+        Wrap: =false
+        Y: =130
+        ZIndex: =14
+
+    OtherDetails As gallery.variableTemplateHeightGallery:
+        Height: =976
+        Items: =PNCPersonDetails.otherDetails
+        Layout: =Layout.Vertical
+        ShowScrollbar: =false
+        TemplatePadding: =0
+        TemplateSize: =289
+        Visible: =OD
+        Y: =160
+        ZIndex: =15
+
+        Label3_49 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.owner
+            VerticalAlign: =VerticalAlign.Top
+            Width: =606
+            Y: =40
+            ZIndex: =3
+
+        Label4_48 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Owner"
+            Width: =560
+            ZIndex: =4
+
+        Label3_50 As label:
+            Height: =80
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.text
+            VerticalAlign: =VerticalAlign.Top
+            Width: =606
+            Y: =120
+            ZIndex: =5
+
+        Label4_49 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Text"
+            Width: =560
+            Y: =80
+            ZIndex: =6
+
+        Label3_51 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.update
+            Width: =606
+            Y: =240
+            ZIndex: =7
+
+        Label4_50 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Update"
+            Width: =560
+            Y: =200
+            ZIndex: =8
+
+        Rectangle7_3 As rectangle:
+            Fill: =RGBA(153, 153, 153, 1)
+            Height: =1
+            Width: =630
+            Y: =280
+            ZIndex: =19
+
+    Label9_17 As label:
+        Align: =Center
+        FontWeight: =Semibold
+        Height: =64
+        OnSelect: =
+        Size: =16
+        Text: =Concatenate("Other Details ", "(", Text(CountRows(PNCPersonDetails.otherDetails)),")")
+        Visible: =OD
+        Width: =640
+        Wrap: =false
+        Y: =130
+        ZIndex: =16
+
+    OperationalInfos As gallery.variableTemplateHeightGallery:
+        Height: =976
+        Items: =PNCPersonDetails.operationalInfos
+        Layout: =Layout.Vertical
+        ShowScrollbar: =false
+        TemplatePadding: =0
+        TemplateSize: =387
+        Visible: =OI
+        Y: =160
+        ZIndex: =17
+
+        Label3_52 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.fsRef
+            VerticalAlign: =VerticalAlign.Top
+            Width: =606
+            Y: =40
+            ZIndex: =3
+
+        Label4_51 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="FS Reference"
+            Width: =560
+            ZIndex: =4
+
+        Label3_53 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.power
+            VerticalAlign: =VerticalAlign.Top
+            Width: =606
+            Y: =120
+            ZIndex: =5
+
+        Label4_52 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Power"
+            Width: =560
+            Y: =80
+            ZIndex: =6
+
+        Label3_54 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.startDate
+            Width: =606
+            Y: =200
+            ZIndex: =7
+
+        Label4_53 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Start Date"
+            Width: =560
+            Y: =160
+            ZIndex: =8
+
+        Rectangle7_4 As rectangle:
+            Fill: =RGBA(153, 153, 153, 1)
+            Height: =1
+            Width: =630
+            Y: =379
+            ZIndex: =19
+
+        Label3_55 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.expiryDate
+            Width: =606
+            Y: =280
+            ZIndex: =20
+
+        Label4_54 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Expiry Date"
+            Width: =560
+            Y: =240
+            ZIndex: =21
+
+        Label3_56 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.type
+            Width: =606
+            Y: =347
+            ZIndex: =22
+
+        Label4_55 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Type"
+            Width: =560
+            Y: =320
+            ZIndex: =23
+
+    Label9_18 As label:
+        Align: =Center
+        FontWeight: =Semibold
+        Height: =64
+        OnSelect: =
+        Size: =16
+        Text: =Concatenate("Operational Information ", "(", Text(CountRows(PNCPersonDetails.operationalInfos)),")")
+        Visible: =OI
+        Width: =640
+        Wrap: =false
+        Y: =130
+        ZIndex: =18
+
+    NominalDetails_1 As gallery.variableTemplateHeightGallery:
+        Height: =976
+        Items: =PNCPersonDetails.addresses
+        Layout: =Layout.Vertical
+        ShowScrollbar: =false
+        TemplatePadding: =0
+        TemplateSize: =249
+        Visible: =AD
+        Y: =160
+        ZIndex: =19
+
+        Label2_6 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Date At / Description"
+            Width: =560
+            ZIndex: =2
+
+        Label3_23 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.description
+            Width: =606
+            Y: =40
+            ZIndex: =3
+
+        Label3_57 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.address1
+            Width: =606
+            Y: =120
+            ZIndex: =5
+
+        Label4_56 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Address"
+            Width: =560
+            Y: =80
+            ZIndex: =6
+
+        Label3_59 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.address2
+            Width: =606
+            Y: =160
+            ZIndex: =9
+
+        Label3_60 As label:
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: =ThisItem.address3
+            Width: =606
+            Y: =200
+            ZIndex: =11
+
+        Rectangle8 As rectangle:
+            Fill: =RGBA(153, 153, 153, 1)
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =630
+            Y: =240
+            ZIndex: =12
+
+    Label9_19 As label:
+        Align: =Center
+        FontWeight: =Semibold
+        Height: =64
+        OnSelect: =
+        Size: =16
+        Text: =Concatenate("Address History ", "(", Text(CountRows(PNCPersonDetails.addresses)),")")
+        Visible: =AD
+        Width: =640
+        Wrap: =false
+        Y: =130
+        ZIndex: =20
+
+    Group1_1 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =38
+
+        Label9_20 As label:
+            Align: =Center
+            FontWeight: =Semibold
+            Height: =64
+            OnSelect: =
+            Size: =16
+            Text: ="Warning Signals"
+            Visible: =WS
+            Width: =640
+            Wrap: =false
+            Y: =90
+            ZIndex: =21
+
+        Rectangle4_2 As rectangle:
+            Fill: =RGBA(255, 255, 255, 0.44)
+            Height: =976
+            Visible: =MenuBar
+            Width: =640
+            Y: =160
+            ZIndex: =22
+
+        Rectangle4_1 As rectangle:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderThickness: =1
+            Fill: =RGBA(255, 255, 255, 1)
+            Height: =976
+            Visible: =MenuBar
+            Width: =329
+            Y: =160
+            ZIndex: =23
+
+        Button5 As button:
+            Align: =Align.Left
+            Color: =If(ND = false,RGBA(0, 0, 0, 1), White)
+            Fill: =If(ND = false,RGBA(0, 0, 0, 0), Self.PressedFill)
+            Height: =64
+            HoverFill: =ColorFade(RGBA(153, 153, 153, 1), -20%)
+            OnSelect: |-
+                =UpdateContext({ND: true});
+                UpdateContext({WS: false});
+                UpdateContext({DE: false});
+                UpdateContext({MS: false});
+                UpdateContext({BC: false});
+                UpdateContext({WM: false});
+                UpdateContext({OI: false});
+                UpdateContext({DD: false});
+                UpdateContext({IM: false});
+                UpdateContext({AD: false});
+                UpdateContext({OD: false});
+                If(MenuBar = true, Set(MenuBar,false),Set(MenuBar,true))
+            PaddingLeft: =10
+            PressedColor: =White
+            PressedFill: =ColorFade(Self.HoverFill, 30%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =16
+            Text: ="Nominal Details"
+            Visible: =MenuBar
+            Width: =329
+            Y: =160
+            ZIndex: =24
+
+        Button5_1 As button:
+            Align: =Align.Left
+            Color: =If(WS = false,RGBA(255, 0, 0, 1), RGBA(255, 0, 0, 1))
+            DisplayMode: =If(IsEmpty(PNCPersonDetails.warningSignals),DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =If(WS = false,RGBA(0, 0, 0, 0), Self.PressedFill)
+            Height: =64
+            HoverFill: =ColorFade(RGBA(153, 153, 153, 1), -20%)
+            OnSelect: |-
+                =UpdateContext({ND: false});
+                UpdateContext({WS: true});
+                UpdateContext({DE: false});
+                UpdateContext({MS: false});
+                UpdateContext({BC: false});
+                UpdateContext({WM: false});
+                UpdateContext({OI: false});
+                UpdateContext({DD: false});
+                UpdateContext({IM: false});
+                UpdateContext({AD: false});
+                UpdateContext({OD: false});
+                If(MenuBar = true, Set(MenuBar,false),Set(MenuBar,true))
+            PaddingLeft: =10
+            PressedColor: =White
+            PressedFill: =ColorFade(Self.HoverFill, 30%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =16
+            Text: =Concatenate("Warning Signals (", Text(CountRows(PNCPersonDetails.warningSignals)),")")
+            Visible: =MenuBar
+            Width: =329
+            Y: =224
+            ZIndex: =25
+
+        Button5_2 As button:
+            Align: =Align.Left
+            Color: =If(DE = false,RGBA(0, 0, 0, 1), White)
+            DisplayMode: =If(IsEmpty(PNCPersonDetails.descriptions),DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =If(DE = false,RGBA(0, 0, 0, 0), Self.PressedFill)
+            Height: =64
+            HoverFill: =ColorFade(RGBA(153, 153, 153, 1), -20%)
+            OnSelect: |-
+                =UpdateContext({ND: false});
+                UpdateContext({WS: false});
+                UpdateContext({DE: true});
+                UpdateContext({MS: false});
+                UpdateContext({BC: false});
+                UpdateContext({WM: false});
+                UpdateContext({OI: false});
+                UpdateContext({AD: false});
+                UpdateContext({DD: false});
+                UpdateContext({IM: false});
+                UpdateContext({OD: false});
+                If(MenuBar = true, Set(MenuBar,false),Set(MenuBar,true))
+            PaddingLeft: =10
+            PressedColor: =White
+            PressedFill: =ColorFade(Self.HoverFill, 30%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =16
+            Text: ="Description" 
+            Visible: =MenuBar
+            Width: =329
+            Y: =288
+            ZIndex: =26
+
+        Button5_3 As button:
+            Align: =Align.Left
+            Color: =If(MS = false,RGBA(0, 0, 0, 1), White)
+            DisplayMode: =If(IsEmpty(PNCPersonDetails.markScars),DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =If(MS = false,RGBA(0, 0, 0, 0), Self.PressedFill)
+            Height: =64
+            HoverFill: =ColorFade(RGBA(153, 153, 153, 1), -20%)
+            OnSelect: |-
+                =UpdateContext({ND: false});
+                UpdateContext({WS: false});
+                UpdateContext({DE: false});
+                UpdateContext({MS: true});
+                UpdateContext({BC: false});
+                UpdateContext({WM: false});
+                UpdateContext({AD: false});
+                UpdateContext({OI: false});
+                UpdateContext({DD: false});
+                UpdateContext({IM: false});
+                UpdateContext({OD: false});
+                If(MenuBar = true, Set(MenuBar,false),Set(MenuBar,true))
+            PaddingLeft: =10
+            PressedColor: =White
+            PressedFill: =ColorFade(Self.HoverFill, 30%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =16
+            Text: =Concatenate("Marks Scars (", Text(CountRows(PNCPersonDetails.markScars)),")")
+            Visible: =MenuBar
+            Width: =329
+            Y: =352
+            ZIndex: =27
+
+        Button5_4 As button:
+            Align: =Align.Left
+            Color: =If(BC = false,RGBA(0, 0, 0, 1), White)
+            DisplayMode: =DisplayMode.Disabled
+            Fill: =If(BC = false,RGBA(0, 0, 0, 0), Self.PressedFill)
+            Height: =64
+            HoverFill: =ColorFade(RGBA(153, 153, 153, 1), -20%)
+            OnSelect: |-
+                =UpdateContext({ND: false});
+                UpdateContext({WS: false});
+                UpdateContext({DE: false});
+                UpdateContext({MS: false});
+                UpdateContext({BC: true});
+                UpdateContext({AD: false});
+                UpdateContext({WM: false});
+                UpdateContext({OI: false});
+                UpdateContext({DD: false});
+                UpdateContext({IM: false});
+                UpdateContext({OD: false});
+                If(MenuBar = true, Set(MenuBar,false),Set(MenuBar,true))
+            PaddingLeft: =10
+            PressedColor: =White
+            PressedFill: =ColorFade(Self.HoverFill, 30%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =16
+            Text: ="Bail Conditions"
+            Visible: =MenuBar
+            Width: =329
+            Y: =416
+            ZIndex: =28
+
+        Button5_5 As button:
+            Align: =Align.Left
+            Color: =If(WM = false,RGBA(0, 0, 0, 1), White)
+            DisplayMode: =If(IsEmpty(PNCPersonDetails.wantedMissings),DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =If(WM = false,RGBA(0, 0, 0, 0), Self.PressedFill)
+            Height: =64
+            HoverFill: =ColorFade(RGBA(153, 153, 153, 1), -20%)
+            OnSelect: |-
+                =UpdateContext({ND: false});
+                UpdateContext({WS: false});
+                UpdateContext({DE: false});
+                UpdateContext({MS: false});
+                UpdateContext({AD: false});
+                UpdateContext({BC: false});
+                UpdateContext({WM: true});
+                UpdateContext({OI: false});
+                UpdateContext({DD: false});
+                UpdateContext({IM: false});
+                UpdateContext({OD: false});
+                If(MenuBar = true, Set(MenuBar,false),Set(MenuBar,true))
+            PaddingLeft: =10
+            PressedColor: =White
+            PressedFill: =ColorFade(Self.HoverFill, 30%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =16
+            Text: =Concatenate("Wanted Missing (", Text(CountRows(PNCPersonDetails.wantedMissings)),")")
+            Visible: =MenuBar
+            Width: =329
+            Y: =480
+            ZIndex: =29
+
+        Button5_6 As button:
+            Align: =Align.Left
+            Color: =If(OI = false,RGBA(0, 0, 0, 1), White)
+            DisplayMode: =If(IsEmpty(PNCPersonDetails.operationalInfos),DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =If(OI = false,RGBA(0, 0, 0, 0), Self.PressedFill)
+            Height: =64
+            HoverFill: =ColorFade(RGBA(153, 153, 153, 1), -20%)
+            OnSelect: |-
+                =UpdateContext({ND: false});
+                UpdateContext({WS: false});
+                UpdateContext({DE: false});
+                UpdateContext({AD: false});
+                UpdateContext({MS: false});
+                UpdateContext({BC: false});
+                UpdateContext({WM: false});
+                UpdateContext({OI: true});
+                UpdateContext({DD: false});
+                UpdateContext({IM: false});
+                UpdateContext({OD: false});
+                If(MenuBar = true, Set(MenuBar,false),Set(MenuBar,true))
+            PaddingLeft: =10
+            PressedColor: =White
+            PressedFill: =ColorFade(Self.HoverFill, 30%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =16
+            Text: =Concatenate("Operational Information ", "(", Text(CountRows(PNCPersonDetails.operationalInfos)),")")
+            Visible: =MenuBar
+            Width: =329
+            Y: =544
+            ZIndex: =30
+
+        Button5_7 As button:
+            Align: =Align.Left
+            Color: =If(DD = false,RGBA(0, 0, 0, 1), White)
+            DisplayMode: =If(IsEmpty(PNCPersonDetails.disqualifieds),DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =If(DD = false,RGBA(0, 0, 0, 0), Self.PressedFill)
+            Height: =64
+            HoverFill: =ColorFade(RGBA(153, 153, 153, 1), -20%)
+            OnSelect: |-
+                =UpdateContext({ND: false});
+                UpdateContext({WS: false});
+                UpdateContext({AD: false});
+                UpdateContext({DE: false});
+                UpdateContext({MS: false});
+                UpdateContext({BC: false});
+                UpdateContext({WM: false});
+                UpdateContext({OI: false});
+                UpdateContext({DD: true});
+                UpdateContext({IM: false});
+                UpdateContext({OD: false});
+                If(MenuBar = true, Set(MenuBar,false),Set(MenuBar,true))
+            PaddingLeft: =10
+            PressedColor: =White
+            PressedFill: =ColorFade(Self.HoverFill, 30%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =16
+            Text: =Concatenate("Disqualified Drivers (", Text(CountRows(PNCPersonDetails.disqualifieds)),")")
+            Visible: =MenuBar
+            Width: =329
+            Y: =608
+            ZIndex: =31
+
+        Button5_8 As button:
+            Align: =Align.Left
+            Color: =If(IM = false,RGBA(0, 0, 0, 1), White)
+            DisplayMode: =If(IsEmpty(PNCPersonDetails.informationMarkers),DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =If(IM = false,RGBA(0, 0, 0, 0), Self.PressedFill)
+            Height: =64
+            HoverFill: =ColorFade(RGBA(153, 153, 153, 1), -20%)
+            OnSelect: |-
+                =UpdateContext({ND: false});
+                UpdateContext({AD: false});
+                UpdateContext({WS: false});
+                UpdateContext({DE: false});
+                UpdateContext({MS: false});
+                UpdateContext({BC: false});
+                UpdateContext({WM: false});
+                UpdateContext({OI: false});
+                UpdateContext({DD: false});
+                UpdateContext({IM: true});
+                UpdateContext({OD: false});
+                If(MenuBar = true, Set(MenuBar,false),Set(MenuBar,true))
+            PaddingLeft: =10
+            PressedColor: =White
+            PressedFill: =ColorFade(Self.HoverFill, 30%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =16
+            Text: =Concatenate("Information Markers (", Text(CountRows(PNCPersonDetails.informationMarkers)),")")
+            Visible: =MenuBar
+            Width: =329
+            Y: =672
+            ZIndex: =32
+
+        Button5_9 As button:
+            Align: =Align.Left
+            Color: =If(OD = false,RGBA(0, 0, 0, 1), White)
+            DisplayMode: =If(IsEmpty(PNCPersonDetails.otherDetails),DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =If(OD = false,RGBA(0, 0, 0, 0), Self.PressedFill)
+            Height: =64
+            HoverFill: =ColorFade(RGBA(153, 153, 153, 1), -20%)
+            OnSelect: |-
+                =UpdateContext({ND: false});
+                UpdateContext({AD: false});
+                UpdateContext({WS: false});
+                UpdateContext({DE: false});
+                UpdateContext({MS: false});
+                UpdateContext({BC: false});
+                UpdateContext({WM: false});
+                UpdateContext({OI: false});
+                UpdateContext({DD: false});
+                UpdateContext({IM: false});
+                UpdateContext({OD: true});
+                If(MenuBar = true, Set(MenuBar,false),Set(MenuBar,true))
+            PaddingLeft: =10
+            PressedColor: =White
+            PressedFill: =ColorFade(Self.HoverFill, 30%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =16
+            Text: =Concatenate("Other Details (", Text(CountRows(PNCPersonDetails.otherDetails)),")")
+            Visible: =MenuBar
+            Width: =329
+            Y: =795
+            ZIndex: =33
+
+        Label9_7 As label:
+            Align: =Center
+            FontWeight: =Semibold
+            Height: =64
+            OnSelect: =
+            Size: =16
+            Text: ="Nominal Details"
+            Visible: =ND
+            Width: =640
+            Wrap: =false
+            Y: =90
+            ZIndex: =34
+
+        Label9_6 As label:
+            Align: =Center
+            FontWeight: =Semibold
+            Height: =64
+            OnSelect: =
+            Size: =16
+            Text: =Concatenate("Marks and Scars ", "(",Text(CountRows(PNCPersonDetails.markScars)),")")
+            Visible: =MS
+            Width: =640
+            Wrap: =false
+            Y: =130
+            ZIndex: =35
+
+        ico_Menu As icon.Hamburger:
+            Color: =RGBA(153, 153, 153, 1)
+            Icon: =Icon.Hamburger
+            OnSelect: |
+                =If(MenuBar = true, Set(MenuBar,false),Set(MenuBar,true))
+            X: =10
+            Y: =90
+            ZIndex: =36
+
+        Button5_10 As button:
+            Align: =Align.Left
+            Color: =If(AD = false,RGBA(0, 0, 0, 1), White)
+            DisplayMode: =If(IsEmpty(PNCPersonDetails.otherDetails),DisplayMode.Disabled,DisplayMode.Edit)
+            Fill: =If(AD = false,RGBA(0, 0, 0, 0), Self.PressedFill)
+            Height: =64
+            HoverFill: =ColorFade(RGBA(153, 153, 153, 1), -20%)
+            OnSelect: |-
+                =UpdateContext({ND: false});
+                UpdateContext({WS: false});
+                UpdateContext({DE: false});
+                UpdateContext({MS: false});
+                UpdateContext({BC: false});
+                UpdateContext({WM: false});
+                UpdateContext({OI: false});
+                UpdateContext({DD: false});
+                UpdateContext({IM: false});
+                UpdateContext({OD: false});
+                UpdateContext({AD: true});
+                If(MenuBar = true, Set(MenuBar,false),Set(MenuBar,true))
+            PaddingLeft: =10
+            PressedColor: =White
+            PressedFill: =ColorFade(Self.HoverFill, 30%)
+            RadiusBottomLeft: =0
+            RadiusBottomRight: =0
+            RadiusTopLeft: =0
+            RadiusTopRight: =0
+            Size: =16
+            Text: =Concatenate("Address History (", Text(CountRows(PNCPersonDetails.addresses)),")")
+            Visible: =MenuBar
+            Width: =329
+            Y: =731
+            ZIndex: =37
+

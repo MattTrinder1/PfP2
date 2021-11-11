@@ -1,0 +1,711 @@
+Scr_colection As screen:
+    OnVisible: |-
+        =UpdateContext({validationwarning:false})
+
+    Lbl_header_4 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =27
+        Text: ="Unsubmitted Incidents"
+        Width: =640
+        ZIndex: =1
+
+    Icn_exit_4 As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Navigate(Scr_home,UnCover)
+        X: =576
+        Y: =13
+        ZIndex: =2
+
+    Btn_save_5 As button:
+        DisplayMode: =DisplayMode.Disabled
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =Bold
+        Height: =70
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |
+            =/*ForAll (
+                'Incident offline',
+                Patch(
+                    Incidents,
+                    Defaults(Incidents),
+                    {
+                        'Incident Unique': IncidentUnique,
+                        'Incident Suffix': 'Incident suffix',
+                        'Incident Number': 'Incident number',
+                        'Incident Date': 'Incident date'
+                    }
+                )
+            );
+            ForAll (
+                'Event offline',
+                Patch(
+                    Events,
+                    Defaults(Events),
+                    {
+                        'Event Unique': EventUnique,
+                        'Primary Officer': If(PrimaryOfficer="Yes",'Primary Officer (Events)'.Yes,PrimaryOfficer="No",'Primary Officer (Events)'.No),
+                        'Single Officer Event': If('Single Officer'="Yes",'Single Officer Event (Events)'.Yes,'Single Officer'="No",'Single Officer Event (Events)'.No),
+                        'Event Date': 'Incident date',
+                        Incident: LookUp(
+                            Incidents,
+                            'Incident Unique' = IncidentUnique
+                        ),
+                        'Event Type': LookUp(
+                            'Event Types',
+                            cp_name in 'Event offline'.'Event Type'
+                        ),
+                        Name: Key
+                    }
+                )
+            );
+            
+            Set(
+                deceased,
+                Filter(
+                    'Sudden death offline',
+                    ! IsBlank(DeceasedSurname)
+                )
+            );
+            Set(
+                other,
+                Filter(
+                    'Sudden death offline',
+                    ! IsBlank(Surname)
+                )
+            );
+            ForAll(
+                deceased,
+                Patch(
+                    Contacts,
+                    Defaults(Contacts),
+                    {
+                        'Contact Unique': DeceasedUnique,
+                        'First Name': DeceasedForename,
+                        'Last Name': DeceasedSurname
+                        ,
+                        Birthday: 'Deceased Date of Birth',
+                        'Address 1: Street 1': DeceasedHousename,
+                        'Address 1: Street 2': DeceasedHousenumber,
+                        'Address 1: Street 3': DeceasedAddress1,
+                        'Address 1: County': DeceasedCounty,
+                        'Address 1: City': DeceasedDistrict,
+                        'Address 1: ZIP/Postal Code': Deceasedpcode,
+                        'Address 1: Country/Region': DeceasedCountry,
+                        'Address 1: Telephone 2': DeceasedHomephone,
+                        'Address 1: Telephone 3': DeceasedWorkphone,
+                        'Address 1: Phone': 'Mobile sudden death',
+                        Email: DeceasedEMail,
+                        'Preferred Method of Contact': LookUp(Contacts,Text('Preferred Method of Contact') = DeceasedPreferedcontactmethod).'Preferred Method of Contact',
+                        'Job Title': DeceasedFormeroccupation 
+                    }
+                )
+            );
+            ForAll(
+                other,
+                Patch(
+                    Contacts,
+                    Defaults(Contacts),
+                    {
+                        'Contact Unique': OtherContactUnique,
+                        'First Name': Forename,
+                        'Last Name': Surname
+                        ,
+                        Birthday: 'Date of Birth',
+                        'Address 1: Street 1': Housename,
+                        'Address 1: Street 2': Housenumber,
+                        'Address 1: Street 3': Address1,
+                        'Address 1: County': County,
+                        'Address 1: ZIP/Postal Code': pcode,
+                        'Address 1: Country/Region': Country,
+                        'Address 1: Telephone 2': Homephone,
+                        'Address 1: Telephone 3': Workphone,
+                        'Address 1: Phone': Mobile,
+                        Email: EMail,
+                        'Preferred Method of Contact': 'Preferred Method of Contact (Contacts)'.Email,
+                        'Job Title': Formeroccupation 
+                    }
+                )
+            );
+            UpdateContext(
+                {
+                    PropertyID: ForAll(
+                        'Property offline',
+                        Patch(
+                            Properties,
+                            Defaults(Properties),
+                            {
+                                'Property Number': PropertyKey,
+                                'Disposed Property': PropertyDisposed,
+                                'Location (cp_location)': PropertyLocation,
+                                'Person authorising disposal': PersonAuthorisingProperty,
+                                'Relationship to deceased': PropertyRelationshipToDeceased,
+                                Date: PropertyDate
+                                
+                            }
+                        )
+                    ).Property
+                }
+            );
+            ForAll(
+                'Sudden death offline',
+                Patch(
+                    'Sudden Deaths',
+                    Defaults('Sudden Deaths'),
+                    {
+                        Event: LookUp(
+                            Events,
+                            'Event Unique' = EventUnique
+                        ),
+                        Name: Key,
+                        ' Last GP visit further information': MedicalHistoryReasonForVisit,
+                        'Able to complete formal identification of the dece': 'Able to complete formal identification of the dece (Sudden Deaths)'.Yes,
+                        'Additional information': Additionalinfo,
+                        'Additional notes': AdditionalNotes,
+                        'Any other known past medical history, drug or alco': MedicalHistoryPastHistory,
+                        'Are GP Details Known?': If(
+                            GPdetailsknown = "Yes",
+                            'Are GP Details Known? (Sudden Deaths)'.Yes
+                        ),
+                        'Body found by': 'Body found By',
+                        'Burial or cremation?': LookUp(
+                            'Sudden Deaths',
+                            'Burial Or Cremation' in 'Burial or cremation?'
+                        ).'Burial or cremation?',
+                        'CID / CSI attended?': 'CID/CSI Attended (Sudden Deaths)'.Yes,
+                        'Circumstances surrounding and leading up to death': Circumstances,
+                        'Clothing / general condition': Clothing,
+                        County: County,
+                        'Date and time body found': 'Date body found',
+                        'Date and time last seen alive': DateLastSeenAlive,
+                        'Date and time of fact of death confirmed': 'Date fact confirmed',
+                        'Day of death': 'Day of Death',
+                        'Death certificate issued?': 'Death Certificate Issued (Sudden Deaths)'.Yes,
+                        'Death diagnosed by': 'Death diagnosed by',
+                        'Death in custody?': LookUp(
+                            'Sudden Deaths',
+                            DeathInCustody.Value in 'Death in custody?'
+                        ).'Death in custody?',
+                        'Death in healthcare?': LookUp(
+                            'Sudden Deaths',
+                            DeathInHealthCare.Value in 'Death in healthcare?'
+                        ).'Death in healthcare?',
+                        'Diagnosis and medication prescribed': MedicalHistoryDiagnosisanmedication,
+                        District: District,
+                        'Family Liaison Officer ': 'Family Liasion officer',
+                        'FLO Telephone': 'Liasion officer phone',
+                        'Has body been identified?': 'Has body been identified? (Sudden Deaths)'.Yes,
+                        'GP phone number': GPphonenumber,
+                        'House Name': Housename,
+                        'House Number': Housenumber,
+                        'House temperature': LookUp(
+                            'Sudden Deaths',
+                            HouseTemperature.Value in 'House temperature'
+                        ).'House temperature',
+                        'How have next of kin been informed?': 'Next of kin way of info',
+                        'Is Submitted': 'Yes, No, NA list'.Yes,
+                        'Last GP visit exact date known': 'Last GP visit exact date known (Sudden Deaths)'.Yes,
+                        'Last visit to GP': MedicalHistorylastvisitdate,
+                        'Marks or bruises': MarksBruises,
+                        'Next of kin informed?': 'Next of Kin Informed (Sudden Deaths)'.Yes,
+                        'Photos taken by CSI?': 'Photos taken by CSI? (Sudden Deaths)'.Yes,
+                        'Physical position of body': PhysicalPosition,
+                        'Post Code': pcode,
+                        'Reason for visit': MedicalHistoryReasonForVisit,
+                        'Removed to': 'Removed to',
+                        'Steps taken to formally identify deceased.': 'Formal Identification steps',
+                        Street: Address1,
+                        'Subject of DOLS?': 'Yes, No, Unknown'.Yes,
+                        'Suicide note left?': 'Suicide note left? (Sudden Deaths)'.Yes,
+                        Telephone: TelephoneLastSeenAliveBy,
+                        'Time of death': Now(),
+                        Town: Town,
+                        'Undertaker arranging funeral': 'Undertaker funeral',
+                        'Was house secure?': 'Was house secure? (Sudden Deaths)'.Yes,
+                        'Was the deceased a smoker?': 'Yes, No, Unknown'.Yes,
+                        'What actions are in place to inform?': 'Action of next of Kin',
+                        'Where last seen alive': WhereLastSeenAlive,
+                        'Work related death?': 'Yes, No, Unknown'.Yes,NPT:LookUp('Constabulary Regions',Name='NPT sudden death')
+                    }
+                )
+            );
+            ForAll(
+                deceased,
+                Patch (
+                    'Contact Event Roles',
+                    Defaults('Contact Event Roles'),
+                    {
+                        Contact: LookUp(
+                            Contacts,
+                            'Contact Unique' = DeceasedUnique
+                        ),
+                        Event: LookUp(
+                            Events,
+                            'Event Unique' = EventUnique
+                        ),
+                        'Contact Role Type': LookUp(
+                            'Contact Role Types',
+                            Name = "Deceased"
+                        )
+                    }
+                )
+            );
+            
+            ForAll(
+                Filter(
+                    roleSelection,
+                    Selected = true;
+                ) ,
+                ForAll(
+                    other,
+                    Patch (
+                        'Contact Event Roles',
+                        Defaults('Contact Event Roles'),
+                        {
+                            Contact: LookUp(
+                                Contacts,
+                                'Contact Unique' = OtherContactUnique
+                            ),
+                            Event: LookUp(
+                                Events,
+                                'Event Unique' = EventUnique
+                            ),
+                            'Contact Role Type': LookUp(
+                                'Contact Role Types',
+                                Name = RoleName
+                            )
+                        }
+                    )
+                )
+            );
+            Clear('Sudden death offline');
+            Clear('Incident offline');
+            Clear('Event offline');
+            Navigate(
+                Scr_home,
+                UnCover
+            );
+            Clear('Property offline');
+            Set(
+                pk,
+                0
+            );
+            SaveData(
+                'Sudden death offline',
+                "Sudden death offline"
+            );*/
+        Size: =24
+        Text: ="Submit"
+        Visible: =false
+        Width: =541
+        X: =49
+        Y: =1050
+        ZIndex: =3
+
+    Icon3_3 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home,UnCover)
+        X: =31
+        Y: =13
+        ZIndex: =8
+
+    Gallery_unsubmitted As gallery.galleryVertical:
+        Height: =756
+        Items: ='IYC offline'
+        Layout: =Layout.Vertical
+        TemplateSize: =261
+        Y: =87
+        ZIndex: =9
+
+        Label6 As label:
+            Height: =76
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.Key
+            Visible: =false
+            Width: =97
+            X: =515
+            Y: =24
+            ZIndex: =1
+
+        Label7 As label:
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.'Incident date'
+            Width: =165
+            X: =6
+            Y: =40
+            ZIndex: =2
+
+        Label8 As label:
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.Key
+            Width: =551
+            X: =6
+            Y: =140
+            ZIndex: =3
+
+        Label8_1 As label:
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.'Incident number'//ThisItem.'Incident number'
+            Width: =310
+            X: =218
+            Y: =40
+            ZIndex: =4
+
+        Icon4 As icon.Edit:
+            Color: =RGBA(153, 153, 153, 1)
+            Icon: =Icon.Edit
+            OnSelect: |-
+                =Set(
+                    Txt_incident_suffixvar,
+                    ThisItem.'Incident suffix'
+                );
+                Set(
+                    IYC_Primary_key,
+                    ThisItem.Key
+                );
+                Set(
+                    incidentnumbervar,
+                    ThisItem.'Incident number'
+                );
+                Navigate(
+                    Scr_home,
+                    ScreenTransition.UnCover
+                )
+            X: =557
+            ZIndex: =5
+
+        Label3 As label:
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Date"
+            Underline: =true
+            Width: =165
+            X: =6
+            ZIndex: =6
+
+        Label3_2 As label:
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Incident number"
+            Underline: =true
+            Width: =250
+            X: =218
+            ZIndex: =7
+
+        Label3_3 As label:
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Incident Key"
+            Underline: =true
+            Width: =233
+            X: =6
+            Y: =100
+            ZIndex: =8
+
+        Rectangle1 As rectangle:
+            BorderColor: =RGBA(230, 230, 230, 1)
+            Fill: =RGBA(204, 204, 204, 1)
+            Height: =2
+            OnSelect: =Select(Parent)
+            Width: =619
+            X: =6
+            Y: =257
+            ZIndex: =9
+
+        Icon6 As icon.Cancel:
+            BorderColor: =RGBA(153, 153, 153, 1)
+            Color: =RGBA(128, 128, 128, 1)
+            Icon: =Icon.Cancel
+            OnSelect: |
+                =Remove(
+                    'IYC offline',
+                    LookUp(
+                        'IYC offline',
+                        Key = ThisItem.Key
+                    )
+                );
+                UpdateContext({validationwarning: false});
+                SaveData(
+                    'IYC offline',
+                    "IYC offline"
+                );
+                Set(
+                        IYC_Primary_key,
+                        Last('IYC offline').Key
+                    );
+            X: =560
+            Y: =180
+            ZIndex: =10
+
+        Icon2_1 As icon.Check:
+            Color: =RGBA(128, 128, 128, 1)
+            Icon: =Icon.Check
+            OnSelect: |
+                =If(
+                    And(
+                        /*Len(ThisItem.'Incident number') > 0,
+                        Len(ThisItem.'Incident suffix') > 0,
+                        Len(Text(ThisItem.'Incident date')) > 0,*/
+                        ThisItem.personValid,
+                        ThisItem.iycPt1Valid,
+                        ThisItem.iycPt2Valid
+                    ),
+                    UpdateContext(
+                        {
+                            itsyourchoicepk: Patch(
+                                'Its Your Choice STGS',
+                                Defaults('Its Your Choice STGS'),
+                                {
+                                    'Incident Number': ThisItem.'Incident number',
+                                    'Incident Suffix': ThisItem.'Incident suffix',
+                                    'Incident Date': ThisItem.'Incident date',
+                                    'Entered By': "dummy",
+                                    //this will be overwritten by the flow, but needs an entry as the field is required
+                'Additional Officer': ThisItem.Additionalofficerid,
+                                    'Reporting Officer': If(
+                                        ThisItem.PrimaryOfficer = "Yes",
+                                        'Reporting Officer (Its Your Choice STGS)'.Yes,
+                                        ThisItem.PrimaryOfficer = "No",
+                                        'Reporting Officer (Its Your Choice STGS)'.No
+                                    ),
+                                    'Single Officer': If(
+                                        ThisItem.'Single Officer' = "Yes",
+                                        'Single Officer (Its Your Choice STGS)'.Yes,
+                                        ThisItem.'Single Officer' = "No",
+                                        'Single Officer (Its Your Choice STGS)'.No
+                                    ),
+                                    //pt1
+                                    TPA: ThisItem.IYC_TPA_Id,
+                                    'Location Longitude': Value(ThisItem.IYC_logitidute),
+                                    'Location Latitude': Value(ThisItem.IYC_latitude),
+                                    'Incident Location': ThisItem.IncidentLocaton,
+                                    'Its Your Choice Description': ThisItem.Incidentbriefdesc,
+                                    'Full Details': ThisItem.Incidentfulldetails,
+                                    'Action Taken': ThisItem.Incident_action,
+                                    //pt2
+                                    'Leaflet Given': If(
+                                        ThisItem.RemedyLeaflet = "Yes",
+                                        'Leaflet Given (Its Your Choice STGS)'.Yes,
+                                        ThisItem.RemedyLeaflet = "No",
+                                        'Leaflet Given (Its Your Choice STGS)'.No
+                                    ),
+                                    'Victim Wishes': ThisItem.Victimwishes,
+                                    'Leaflet Reason Not Offered': ThisItem.Offered,
+                                    'Youth On Log Reason': ThisItem.youthdetails,
+                                    'Youth On Log': If(
+                                        ThisItem.youthdetail = "Yes",
+                                        'Youth On Log (Its Your Choice STGS)'.Yes,
+                                        ThisItem.youthdetail = "No",
+                                        'Youth On Log (Its Your Choice STGS)'.No
+                                    ),
+                                    'Alcohol Related': If(
+                                        ThisItem.alcoholrelated = "Yes",
+                                        'Alcohol Related (Its Your Choice STGS)'.Yes,
+                                        ThisItem.alcoholrelated = "No",
+                                        'Alcohol Related (Its Your Choice STGS)'.No
+                                    ),
+                                    'Alcohol Seized': ThisItem.alcoholseized,
+                                    'Alcohol Desc Quantity': ThisItem.alcoholdescription,
+                                    'Alcohol Seized Photo': ThisItem.Photoseized,
+                                    'Intel Submitted': If(
+                                        ThisItem.IntelSubmited = "Yes",
+                                        'Intel Submitted (Its Your Choice STGS)'.Yes,
+                                        ThisItem.IntelSubmited = "No",
+                                        'Intel Submitted (Its Your Choice STGS)'.No
+                                    ),
+                                    'Stop Search Submitted': If(
+                                        ThisItem.Stopnsearch = "Yes",
+                                        'Stop Search Submitted (Its Your Choice STGS)'.Yes,
+                                        ThisItem.Stopnsearch = "No",
+                                        'Stop Search Submitted (Its Your Choice STGS)'.No
+                                    ),
+                                    //person
+                                    'Involved Forename': ThisItem.Forename,
+                                    'Involved Surname': ThisItem.Surname,
+                                    'Involved Birthdate': Date(Year(ThisItem.'Date of Birth'),Month(ThisItem.'Date of Birth'),Day(ThisItem.'Date of Birth')),
+                                    'Involved House Name': ThisItem.Housename,
+                                    'Involved House Number': ThisItem.Housenumber,
+                                    'Involved Street': ThisItem.Address1,
+                                    'Involved District': ThisItem.District,
+                                    'Involved Town': ThisItem.Town,
+                                    'Involved County': ThisItem.County,
+                                    'Involved PostCode': ThisItem.pcode,
+                                    'Involved Gender': ThisItem.Gender,
+                                    'Involved Self Defined Ethnicity': ThisItem.Self_defined_ethnicity,
+                                    'Involved Officer Defined Ethnicity': ThisItem.Officer_defined_ethnicity,
+                                    'Involved School': ThisItem.SchoolCollege,
+                                    'Guardian Relationship To Involved': ThisItem.relationshiptoyouth,
+                                    'Guardian Lives Same Address': If(
+                                        ThisItem.sameaddress = "Yes",
+                                        'Guardian Lives Same Address (Its Your Choice STGS)'.Yes,
+                                        ThisItem.sameaddress = "No",
+                                        'Guardian Lives Same Address (Its Your Choice STGS)'.No
+                                    ),
+                                    'Guardian Title': ThisItem.pg_titlename,
+                                    'Guardian Forename': ThisItem.pg_Forename,
+                                    'Guardian Surename': ThisItem.pg_Surname,
+                                    'Guardian House Name': ThisItem.pg_Housename,
+                                    'Guardian House Number': ThisItem.pg_Housenumber,
+                                    'Guardian Street': ThisItem.pg_Address1,
+                                    'Guardian District': ThisItem.pg_District,
+                                    'Guardian Town': ThisItem.pg_Town,
+                                    'Guardian County': ThisItem.pg_County,
+                                    'Guardian Country': ThisItem.pg_country,
+                                    'Guardian PostCode': ThisItem.pg_pcode,
+                                    'Guardian Phone Number': ThisItem.pg_phone,
+                                    'Search For Alcohol Tobacco': If(
+                                        ThisItem.alcohotobacco = "Yes",
+                                        'Search For Alcohol Tobacco (Its Your Choice STGS)'.Yes,
+                                        ThisItem.alcohotobacco = "No",
+                                        'Search For Alcohol Tobacco (Its Your Choice STGS)'.No
+                                    ),
+                                    'Power Utilised': ThisItem.powerutilised,
+                                    'Tobacco seized': ThisItem.tobacooseized
+                                }
+                            ).'Its Your Choice STG'
+                        }
+                    );
+                    If(
+                        !IsEmpty(Errors('Its Your Choice STGS')),
+                        Notify(
+                            "There was an error submitting your request: " & Last(Errors('Its Your Choice STGS')).Message & "  (" & Last(Errors('Its Your Choice STGS')).Column & ")",
+                            NotificationType.Error
+                        ),
+                        UpdateContext(
+                            {
+                                Test: LookUp(
+                                    Choices('Staging Entry Status'),
+                                    Value = 'Staging Entry Status'.'Ready for Submission'
+                                ).Value
+                            }
+                        );
+                        UpdateIf(
+                            'Its Your Choice STGS',
+                            itsyourchoicepk = 'Its Your Choice STG',
+                            {'Staging Entry Status': Test}
+                        );    
+                        Remove(
+                            'IYC offline',
+                LookUp('IYC offline',Key=ThisItem.Key);
+                            
+                        );
+                       
+                SaveData(
+                    'IYC offline',
+                    "IYC offline"
+                );
+                Set(
+                        IYC_Primary_key,
+                        Last('IYC offline').Key
+                    );
+                        //Commented Out on 22/09/2021 working on 27168
+                       If(
+                            CountRows(Gallery_unsubmitted.AllItems) > 0,
+                            Set(
+                                IYC_Primary_key,
+                                First(Gallery_unsubmitted.AllItems).Key
+                            ),
+                            Set(
+                                IYC_Primary_key,
+                                ""
+                            )
+                        );
+                        Set(
+                            Txt_incident_suffixvar,
+                            ""
+                        );
+                        Set(
+                            incidentnumbervar,
+                            "CP" & "-" & Text(
+                                DateAdd(
+                                    DatePicker_incident.SelectedDate,
+                                    0
+                                ),
+                                "[$-en-GB]yyyymmdd"
+                            ) & "-" & Txt_incident_suffix
+                        );
+                        Reset(Txt_incident_suffix);
+                        Reset(Txt_incident_no);
+                        Set(
+                            Allreset,
+                            true
+                        );
+                        UpdateContext({Allreset: true});
+                        UpdateContext({validationwarning: false});
+                    ),
+                    UpdateContext({validationwarning: true});
+                    SaveData(
+                    'IYC offline',
+                    "IYC offline"
+                );
+                );
+            Tooltip: ="Submit Incident"
+            X: =560
+            Y: =90
+            ZIndex: =11
+
+        Label3_4 As label:
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Involved Name"
+            Underline: =true
+            Width: =233
+            Y: =178
+            ZIndex: =12
+
+        Label8_2 As label:
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.Forename &" "& ThisItem.Surname
+            Width: =551
+            X: =9
+            Y: =217
+            ZIndex: =13
+
+    Label2_2 As label:
+        Color: =RGBA(255, 0, 0, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =116
+        Size: =21
+        Text: ="Please fill in all the mandatory fields before submitting."
+        Visible: =validationwarning
+        Width: =355
+        X: =49
+        Y: =907
+        ZIndex: =10
+
+    Icon5_1 As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =139
+        Icon: =Icon.Warning
+        Visible: =validationwarning
+        Width: =122
+        X: =440
+        Y: =870
+        ZIndex: =11
+
+    Label1 As label:
+        Height: =70
+        OnSelect: =
+        Size: =21
+        Text: =
+        Width: =560
+        X: =40
+        Y: =495
+        ZIndex: =12
+

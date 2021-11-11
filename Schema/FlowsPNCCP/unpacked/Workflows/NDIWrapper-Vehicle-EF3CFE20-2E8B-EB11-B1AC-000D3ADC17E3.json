@@ -1,0 +1,980 @@
+{
+  "properties": {
+    "connectionReferences": {
+      
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "PowerApp",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Initializevariable_Value": {
+                  "type": "string",
+                  "description": "Enter initial value",
+                  "x-ms-powerflows-param-ispartial": false
+                },
+                "Initializevariable2_Value": {
+                  "type": "string",
+                  "description": "Enter initial value",
+                  "x-ms-powerflows-param-ispartial": false
+                },
+                "Initializevariable3_Value": {
+                  "type": "string",
+                  "description": "Enter initial value",
+                  "x-ms-powerflows-param-ispartial": false
+                }
+              },
+              "required": [
+                "Initializevariable_Value",
+                "Initializevariable2_Value",
+                "Initializevariable3_Value"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "HTTP": {
+          "runAfter": {
+            "Parse_JSON": [
+              "Succeeded"
+            ]
+          },
+          "type": "Http",
+          "inputs": {
+            "method": "POST",
+            "uri": "https://prod-26.uksouth.logic.azure.com:443/workflows/8fadf5f337ef4bc8a4f93293ad1b26b4/triggers/manual/paths/invoke?api-version=2016-06-01\u0026sp=%2Ftriggers%2Fmanual%2Frun\u0026sv=1.0\u0026sig=eg9UXTFESoQIDdSgaGXd2LAmWQXlWJ3glVbd1JDV2IA",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": "@body(\u0027Parse_JSON\u0027)"
+          }
+        },
+        "Compose": {
+          "runAfter": {
+            "Initialize_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "type": "Compose",
+          "inputs": {
+          "VRN": "@{variables(\u0027VRN\u0027)}",
+          "ReasonCode": "@{variables(\u0027ReasonCode\u0027)}",
+          "includeInsurance": "@{variables(\u0027includeInsurance\u0027)}"
+          }
+        },
+        "Parse_JSON": {
+          "runAfter": {
+            "Compose": [
+              "Succeeded"
+            ]
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@outputs(\u0027Compose\u0027)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "VRN": {
+                  "type": "string"
+                },
+                "ReasonCode": {
+                  "type": "string"
+                },
+                "includeInsurance": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            "Initialize_variable_3": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "VRN",
+                "type": "string",
+              "value": "@{triggerBody()[\u0027Initializevariable_Value\u0027]}"
+              }
+            ]
+          }
+        },
+        "Condition": {
+          "actions": {
+            "Parse_JSON_2": {
+              "runAfter": {
+                "Compose_2": [
+                  "Succeeded"
+                ]
+              },
+              "type": "ParseJson",
+              "inputs": {
+                "content": "@outputs(\u0027Compose_2\u0027)",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "insurance": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "insuranceHeld": {
+                            "type": "string"
+                          },
+                          "vrm": {
+                            "type": "string"
+                          },
+                          "makeModel": {
+                            "type": "string"
+                          },
+                          "holder": {
+                            "type": "string"
+                          },
+                          "address1": {
+                            "type": "string"
+                          },
+                          "address2": {
+                            "type": "string"
+                          },
+                          "insurer": {
+                            "type": "string"
+                          },
+                          "classLine1": {
+                            "type": "string"
+                          },
+                          "classLine2": {
+                            "type": "string"
+                          },
+                          "policyNumber": {
+                            "type": "string"
+                          },
+                          "allowedOthers": {
+                            "type": "string"
+                          },
+                          "startDate": {
+                            "type": "string"
+                          },
+                          "startTime": {
+                            "type": "string"
+                          },
+                          "expDate": {
+                            "type": "string"
+                          },
+                          "expTime": {
+                            "type": "string"
+                          },
+                          "permittedDrivers1": {
+                            "type": "string"
+                          },
+                          "permittedDrivers2": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          
+                        ]
+                      }
+                    },
+                    "keepers": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "regKeeper": {
+                            "type": "string"
+                          },
+                          "ad1": {
+                            "type": "string"
+                          },
+                          "ad2": {
+                            "type": "string"
+                          },
+                          "ad3": {
+                            "type": "string"
+                          },
+                          "ad4": {
+                            "type": "string"
+                          },
+                          "ad5": {
+                            "type": "string"
+                          },
+                          "ad6": {
+                            "type": "string"
+                          },
+                          "keeperSince": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          
+                        ]
+                      }
+                    },
+                    "markers": {
+                      "type": "array"
+                    },
+                    "make": {
+                      "type": "string"
+                    },
+                    "model": {
+                      "type": "string"
+                    },
+                    "colour": {
+                      "type": "string"
+                    },
+                    "style": {
+                      "type": "string"
+                    },
+                    "registered": {
+                      "type": "string"
+                    },
+                    "cc": {
+                      "type": "string"
+                    },
+                    "vrnReg": {
+                      "type": "string"
+                    },
+                    "chassisNo": {
+                      "type": "string"
+                    },
+                    "engineNo": {
+                      "type": "string"
+                    },
+                    "velNumber": {
+                      "type": "string"
+                    },
+                    "velDate": {
+                      "type": "string"
+                    },
+                    "keeperNotify": {
+                      "type": "string"
+                    },
+                    "previousVRNReg": {
+                      "type": "string"
+                    },
+                    "motExpiry": {
+                      "type": "string"
+                    },
+                    "insuranceText": {
+                      "type": "string"
+                    },
+                    "hazardsFlag": {
+                      "type": "string"
+                    },
+                    "tagNumber": {
+                      "type": "string"
+                    },
+                    "noOfReports": {
+                      "type": "integer"
+                    },
+                    "reports": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "reportType": {
+                            "type": "string"
+                          },
+                          "reportFSOwner": {
+                            "type": "string"
+                          },
+                          "reportFSCreator": {
+                            "type": "string"
+                          },
+                          "reportNum": {
+                            "type": "string"
+                          },
+                          "reportEarlyDate": {
+                            "type": "string"
+                          },
+                          "reportLateDate": {
+                            "type": "string"
+                          },
+                          "reportCreatedDate": {
+                            "type": "string"
+                          },
+                          "reportCreatedTime": {
+                            "type": "string"
+                          },
+                          "text1": {
+                            "type": "string"
+                          },
+                          "text2": {
+                            "type": "string"
+                          },
+                          "text3": {
+                            "type": "string"
+                          },
+                          "reportStatus": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "Compose_2": {
+              "runAfter": {
+                
+              },
+              "type": "Compose",
+              "inputs": {
+                "insurance": [
+                  {
+                    "insuranceHeld": "",
+                    "vrm": "",
+                    "makeModel": "",
+                    "holder": "",
+                    "address1": "",
+                    "address2": "",
+                    "insurer": "",
+                    "classLine1": "",
+                    "classLine2": "",
+                    "policyNumber": "",
+                    "allowedOthers": "",
+                    "startDate": "",
+                    "startTime": "",
+                    "expDate": "",
+                    "expTime": "",
+                    "permittedDrivers1": "",
+                    "permittedDrivers2": ""
+                  }
+                ],
+                "keepers": [
+                  {
+                    "regKeeper": "",
+                    "ad1": "",
+                    "ad2": "",
+                    "ad3": "",
+                    "ad4": "",
+                    "ad5": "",
+                    "ad6": "",
+                    "keeperSince": ""
+                  }
+                ],
+                "markers": [
+                  
+                ],
+                "make": "",
+                "model": "",
+                "colour": "",
+                "style": "",
+                "registered": "",
+                "cc": "",
+                "vrnReg": "",
+                "chassisNo": "",
+                "engineNo": "",
+                "velNumber": "",
+                "velDate": ".",
+                "keeperNotify": "",
+                "previousVRNReg": "",
+                "motExpiry": "",
+                "insuranceText": "",
+                "hazardsFlag": "",
+                "tagNumber": "",
+                "noOfReports": 1,
+                "reports": [
+                  {
+                    "reportType": "",
+                    "reportFSOwner": "",
+                    "reportFSCreator": "",
+                    "reportNum": "",
+                    "reportEarlyDate": "",
+                    "reportLateDate": "",
+                    "reportCreatedDate": "",
+                    "reportCreatedTime": "",
+                    "text1": "",
+                    "text2": "",
+                    "text3": "",
+                    "reportStatus": ""
+                  }
+                ]
+              }
+            },
+            "Response_2": {
+              "runAfter": {
+                "Parse_JSON_2": [
+                  "Succeeded"
+                ]
+              },
+              "type": "Response",
+              "kind": "Http",
+              "inputs": {
+                "statusCode": 200,
+                "body": "@body(\u0027Parse_JSON_2\u0027)",
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "insurance": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "insuranceHeld": {
+                            "type": "string"
+                          },
+                          "vrm": {
+                            "type": "string"
+                          },
+                          "makeModel": {
+                            "type": "string"
+                          },
+                          "holder": {
+                            "type": "string"
+                          },
+                          "address1": {
+                            "type": "string"
+                          },
+                          "address2": {
+                            "type": "string"
+                          },
+                          "insurer": {
+                            "type": "string"
+                          },
+                          "classLine1": {
+                            "type": "string"
+                          },
+                          "classLine2": {
+                            "type": "string"
+                          },
+                          "policyNumber": {
+                            "type": "string"
+                          },
+                          "allowedOthers": {
+                            "type": "string"
+                          },
+                          "startDate": {
+                            "type": "string"
+                          },
+                          "startTime": {
+                            "type": "string"
+                          },
+                          "expDate": {
+                            "type": "string"
+                          },
+                          "expTime": {
+                            "type": "string"
+                          },
+                          "permittedDrivers1": {
+                            "type": "string"
+                          },
+                          "permittedDrivers2": {
+                            "type": "string"
+                          },
+                          "namedDrivers": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "number": {
+                                  "type": "integer"
+                                },
+                                "name": {
+                                  "type": "string"
+                                },
+                                "dob": {
+                                  "type": "string"
+                                }
+                              },
+                              "required": [
+                                
+                              ]
+                            }
+                          }
+                        },
+                        "required": [
+                          
+                        ]
+                      }
+                    },
+                    "keepers": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "regKeeper": {
+                            "type": "string"
+                          },
+                          "ad1": {
+                            "type": "string"
+                          },
+                          "ad2": {
+                            "type": "string"
+                          },
+                          "ad3": {
+                            "type": "string"
+                          },
+                          "ad4": {
+                            "type": "string"
+                          },
+                          "ad5": {
+                            "type": "string"
+                          },
+                          "ad6": {
+                            "type": "string"
+                          },
+                          "keeperSince": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          
+                        ]
+                      }
+                    },
+                    "markers": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "text": {
+                            "type": "string"
+                          }
+                        }
+                      },
+                      "required": [
+                        
+                      ]
+                    },
+                    "make": {
+                      "type": "string"
+                    },
+                    "model": {
+                      "type": "string"
+                    },
+                    "colour": {
+                      "type": "string"
+                    },
+                    "style": {
+                      "type": "string"
+                    },
+                    "registered": {
+                      "type": "string"
+                    },
+                    "cc": {
+                      "type": "string"
+                    },
+                    "vrnReg": {
+                      "type": "string"
+                    },
+                    "chassisNo": {
+                      "type": "string"
+                    },
+                    "engineNo": {
+                      "type": "string"
+                    },
+                    "velNumber": {
+                      "type": "string"
+                    },
+                    "velDate": {
+                      "type": "string"
+                    },
+                    "vroLit": {
+                      "type": "string"
+                    },
+                    "keeperNotify": {
+                      "type": "string"
+                    },
+                    "previousVRNReg": {
+                      "type": "string"
+                    },
+                    "motExpiry": {
+                      "type": "string"
+                    },
+                    "insuranceText": {
+                      "type": "string"
+                    },
+                    "hazardsFlag": {
+                      "type": "string"
+                    },
+                    "tagNumber": {
+                      "type": "string"
+                    },
+                    "noOfReports": {
+                      "type": "integer"
+                    },
+                    "reports": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "reportType": {
+                            "type": "string"
+                          },
+                          "reportFSOwner": {
+                            "type": "string"
+                          },
+                          "reportFSCreator": {
+                            "type": "string"
+                          },
+                          "reportNum": {
+                            "type": "string"
+                          },
+                          "reportEarlyDate": {
+                            "type": "string"
+                          },
+                          "reportLateDate": {
+                            "type": "string"
+                          },
+                          "reportCreatedDate": {
+                            "type": "string"
+                          },
+                          "reportCreatedTime": {
+                            "type": "string"
+                          },
+                          "text1": {
+                            "type": "string"
+                          },
+                          "text2": {
+                            "type": "string"
+                          },
+                          "text3": {
+                            "type": "string"
+                          },
+                          "reportStatus": {
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "HTTP": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Response": {
+                "runAfter": {
+                  
+                },
+                "type": "Response",
+                "kind": "Http",
+                "inputs": {
+                  "statusCode": 200,
+                  "body": "@body(\u0027HTTP\u0027)",
+                  "schema": {
+                    "type": "object",
+                    "properties": {
+                      "insurance": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "insuranceHeld": {
+                              "type": "string"
+                            },
+                            "vrm": {
+                              "type": "string"
+                            },
+                            "makeModel": {
+                              "type": "string"
+                            },
+                            "holder": {
+                              "type": "string"
+                            },
+                            "address1": {
+                              "type": "string"
+                            },
+                            "address2": {
+                              "type": "string"
+                            },
+                            "insurer": {
+                              "type": "string"
+                            },
+                            "classLine1": {
+                              "type": "string"
+                            },
+                            "classLine2": {
+                              "type": "string"
+                            },
+                            "policyNumber": {
+                              "type": "string"
+                            },
+                            "allowedOthers": {
+                              "type": "string"
+                            },
+                            "startDate": {
+                              "type": "string"
+                            },
+                            "startTime": {
+                              "type": "string"
+                            },
+                            "expDate": {
+                              "type": "string"
+                            },
+                            "expTime": {
+                              "type": "string"
+                            },
+                            "permittedDrivers1": {
+                              "type": "string"
+                            },
+                            "permittedDrivers2": {
+                              "type": "string"
+                            },
+                            "namedDrivers": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "number": {
+                                    "type": "integer"
+                                  },
+                                  "name": {
+                                    "type": "string"
+                                  },
+                                  "dob": {
+                                    "type": "string"
+                                  }
+                                },
+                                "required": [
+                                  
+                                ]
+                              }
+                            }
+                          },
+                          "required": [
+                            
+                          ]
+                        }
+                      },
+                      "keepers": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "regKeeper": {
+                              "type": "string"
+                            },
+                            "ad1": {
+                              "type": "string"
+                            },
+                            "ad2": {
+                              "type": "string"
+                            },
+                            "ad3": {
+                              "type": "string"
+                            },
+                            "ad4": {
+                              "type": "string"
+                            },
+                            "ad5": {
+                              "type": "string"
+                            },
+                            "ad6": {
+                              "type": "string"
+                            },
+                            "keeperSince": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            
+                          ]
+                        }
+                      },
+                      "markers": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "text": {
+                              "type": "string"
+                            }
+                          }
+                        },
+                        "required": [
+                          
+                        ]
+                      },
+                      "make": {
+                        "type": "string"
+                      },
+                      "model": {
+                        "type": "string"
+                      },
+                      "colour": {
+                        "type": "string"
+                      },
+                      "style": {
+                        "type": "string"
+                      },
+                      "registered": {
+                        "type": "string"
+                      },
+                      "cc": {
+                        "type": "string"
+                      },
+                      "vrnReg": {
+                        "type": "string"
+                      },
+                      "chassisNo": {
+                        "type": "string"
+                      },
+                      "engineNo": {
+                        "type": "string"
+                      },
+                      "velNumber": {
+                        "type": "string"
+                      },
+                      "velDate": {
+                        "type": "string"
+                      },
+                      "vroLit": {
+                        "type": "string"
+                      },
+                      "keeperNotify": {
+                        "type": "string"
+                      },
+                      "previousVRNReg": {
+                        "type": "string"
+                      },
+                      "motExpiry": {
+                        "type": "string"
+                      },
+                      "insuranceText": {
+                        "type": "string"
+                      },
+                      "hazardsFlag": {
+                        "type": "string"
+                      },
+                      "tagNumber": {
+                        "type": "string"
+                      },
+                      "noOfReports": {
+                        "type": "integer"
+                      },
+                      "reports": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "reportType": {
+                              "type": "string"
+                            },
+                            "reportFSOwner": {
+                              "type": "string"
+                            },
+                            "reportFSCreator": {
+                              "type": "string"
+                            },
+                            "reportNum": {
+                              "type": "string"
+                            },
+                            "reportEarlyDate": {
+                              "type": "string"
+                            },
+                            "reportLateDate": {
+                              "type": "string"
+                            },
+                            "reportCreatedDate": {
+                              "type": "string"
+                            },
+                            "reportCreatedTime": {
+                              "type": "string"
+                            },
+                            "text1": {
+                              "type": "string"
+                            },
+                            "text2": {
+                              "type": "string"
+                            },
+                            "text3": {
+                              "type": "string"
+                            },
+                            "reportStatus": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            
+                          ]
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@body(\u0027HTTP\u0027)",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Initialize_variable_2": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ReasonCode",
+                "type": "string",
+              "value": "@{triggerBody()[\u0027Initializevariable2_Value\u0027]}"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_3": {
+          "runAfter": {
+            
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "includeInsurance",
+                "type": "string",
+              "value": "@{triggerBody()[\u0027Initializevariable3_Value\u0027]}"
+              }
+            ]
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

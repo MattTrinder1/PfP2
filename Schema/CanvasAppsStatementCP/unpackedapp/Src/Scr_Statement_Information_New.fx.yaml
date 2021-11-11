@@ -1,0 +1,260 @@
+Scr_Statement_Information_New As screen:
+    LoadingSpinnerColor: =RGBA(100, 118, 132, 1)
+    OnVisible: |-
+        =
+        
+        
+        If(IsBlank(LookUp('Statement offline',Key=Dropdown_StatementInformation_key.Selected.Key).WitnessSignature),Set(signreadonly,DisplayMode.Edit),Set(signreadonly,DisplayMode.Disabled));
+
+    Label1_17 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Statement Information"
+        Width: =640
+        ZIndex: =1
+
+    "'exit icon 3_22' As icon.Cancel":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =563
+        Y: =11
+        ZIndex: =2
+
+    "'Back Icon 2_22' As icon.ArrowLeft":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_Statements_Home_screen,ScreenTransition.UnCover)
+        X: =32
+        Y: =11
+        ZIndex: =3
+
+    Btn_save_31 As button:
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        DisplayMode: =signreadonly
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =72
+        HoverColor: =RGBA(255, 255, 255, 1)
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |
+            =UpdateIf(
+                'Statement offline',
+                Key = Dropdown_StatementInformation_key.Selected.Key,
+                {
+                   StatementTypename:Dropdown_Statement_Type_1.Selected.cp_name,
+                   StatementType:Dropdown_Statement_Type_1.Selected.cp_statementtypeid,
+                   StatementSaved:TextInput2_1.Text,
+                   StatementTemplatename:Dropdown_Statement_Template_1.Selected.cp_name,
+                   StatementTemplate:Dropdown_Statement_Template_1.Selected.cp_lookupvalueid
+                }
+            );
+            SaveData(
+                'Statement offline',
+                "Statement offline"
+            );
+            
+            Navigate(
+                Scr_Statements_Home_screen,
+                ScreenTransition.UnCover
+            );
+        Size: =24
+        Text: ="Save & Continue"
+        Tooltip: =
+        Width: =545
+        X: =40
+        Y: =1037
+        ZIndex: =12
+
+    Dropdown_StatementInformation_key As dropdown:
+        BorderColor: =RGBA(128, 128, 128, 1)
+        ChevronBackground: =RGBA(128, 128, 128, 1)
+        ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+        ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+        ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+        ChevronHoverFill: =RGBA(255, 255, 255, 1)
+        Default: =Statement_Primary_key /*LookUp('Statement offline',Key=Statement_Primary_key).Key*/
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        DisplayMode: =DisplayMode.Disabled
+        Height: =70
+        HoverColor: =RGBA(0, 0, 0, 1)
+        HoverFill: =RGBA(186, 202, 226, 1)
+        Items: ='Statement offline'.Key
+        OnChange: |-
+            =
+            /*If(IsBlank(LookUp('Statement offline',Key=Dropdown_StatementInformation_key.Selected.Key).WitnessSignature),Set(signreadonly,DisplayMode.Edit),Set(signreadonly,DisplayMode.Disabled));*/
+        PressedColor: =RGBA(255, 255, 255, 1)
+        PressedFill: =RGBA(0, 18, 107, 1)
+        SelectionFill: =RGBA(128, 128, 128, 1)
+        Size: =21
+        Width: =545
+        X: =52
+        Y: =99
+        ZIndex: =16
+
+    Label_Statement_Type_1 As label:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(0, 0, 0, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Height: =70
+        Size: =21
+        Text: |-
+            ="Statement Type:"
+        Width: =560
+        X: =51
+        Y: =251
+        ZIndex: =17
+
+    Dropdown_Statement_Type_1 As dropdown:
+        BorderColor: =RGBA(0, 0, 0, 1)
+        ChevronBackground: =RGBA(116, 116, 116, 1)
+        ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+        ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+        ChevronHoverBackground: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        ChevronHoverFill: =RGBA(255, 255, 255, 1)
+        Default: =LookUp('Statement offline',Key=Dropdown_StatementInformation_key.Selected.Key).StatementTypename
+        DisabledBorderColor: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(255, 255, 255, 1)
+        DisabledFill: =RGBA(116, 116, 116, 1)
+        DisplayMode: =signreadonly
+        Height: =70
+        HoverColor: =RGBA(0, 0, 0, 1)
+        HoverFill: =RGBA(205, 209, 213, 1)
+        Items: =StatementType
+        OnSelect: =
+        PressedColor: =RGBA(255, 255, 255, 1)
+        PressedFill: =RGBA(32, 54, 71, 1)
+        Reset: =Allreset
+        SelectionFill: =RGBA(255, 255, 255, 1)
+        Size: =21
+        Width: =545
+        X: =52
+        Y: =313
+        ZIndex: =18
+
+    Label_StatementType_Saved_1 As label:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(0, 0, 0, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Height: =70
+        Size: =21
+        Text: |-
+            ="Saved:"
+        Width: =545
+        X: =51
+        Y: =440
+        ZIndex: =19
+
+    TextInput2_1 As text:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        BorderThickness: =2
+        Color: =RGBA(0, 0, 0, 1)
+        Default: =If(!IsBlank(Statement_Primary_key),"Saved","Not Saved")
+        DisabledBorderColor: =RGBA(116, 116, 116, 1)
+        DisabledColor: =RGBA(255, 255, 255, 1)
+        DisabledFill: =RGBA(116, 116, 116, 1)
+        DisplayMode: =DisplayMode.Disabled
+        FocusedBorderThickness: =4
+        Height: =70
+        HoverBorderColor: =RGBA(32, 54, 71, 1)
+        HoverColor: =RGBA(0, 0, 0, 1)
+        HoverFill: =RGBA(205, 209, 213, 1)
+        Reset: =Allreset
+        Size: =21
+        Width: =545
+        X: =52
+        Y: =497
+        ZIndex: =20
+
+    Label_Statement_Template_1 As label:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(0, 0, 0, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Height: =70
+        Size: =21
+        Text: |-
+            ="Template:"
+        Width: =545
+        X: =52
+        Y: =590
+        ZIndex: =21
+
+    Dropdown_Statement_Template_1 As dropdown:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        ChevronBackground: =RGBA(116, 116, 116, 1)
+        ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+        ChevronDisabledFill: =RGBA(255, 255, 255, 1)
+        ChevronHoverBackground: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        ChevronHoverFill: =RGBA(255, 255, 255, 1)
+        Default: =LookUp('Statement offline',Key=Dropdown_StatementInformation_key.Selected.Key).StatementTemplatename
+        DisabledBorderColor: =RGBA(116, 116, 116, 1)
+        DisabledColor: =RGBA(255, 255, 255, 1)
+        DisabledFill: =RGBA(116, 116, 116, 1)
+        DisplayMode: =signreadonly
+        Height: =70
+        HoverColor: =RGBA(0, 0, 0, 1)
+        HoverFill: =RGBA(205, 209, 213, 1)
+        Items: =Sort(statementtemplateoffline,cp_displaysequenceno)
+        OnSelect: =statementtemplateoffline
+        PressedColor: =RGBA(255, 255, 255, 1)
+        PressedFill: =RGBA(32, 54, 71, 1)
+        Reset: =Allreset
+        SelectionColor: =RGBA(116, 116, 116, 1)
+        SelectionFill: =RGBA(255, 255, 255, 1)
+        Size: =21
+        Width: =545
+        X: =52
+        Y: =649
+        ZIndex: =22
+
+    Label_asterisk_27 As label:
+        BorderColor: =RGBA(0, 18, 107, 1)
+        Color: =RGBA(255, 0, 0, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Height: =59
+        Size: =21
+        Text: ="*"
+        Width: =46
+        X: =572
+        Y: =590
+        ZIndex: =23
+
+    Label_asterisk_26 As label:
+        BorderColor: =RGBA(0, 18, 107, 1)
+        Color: =RGBA(255, 0, 0, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Height: =59
+        Size: =21
+        Text: ="*"
+        Width: =20
+        X: =577
+        Y: =451
+        ZIndex: =24
+
+    Label_asterisk_25 As label:
+        BorderColor: =RGBA(0, 18, 107, 1)
+        Color: =RGBA(255, 0, 0, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Size: =21
+        Text: ="*"
+        Width: =31
+        X: =566
+        Y: =272
+        ZIndex: =25
+

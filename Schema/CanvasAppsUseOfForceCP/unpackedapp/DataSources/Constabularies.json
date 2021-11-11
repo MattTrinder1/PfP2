@@ -1,0 +1,92 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_constabularies",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_constabulary",
+    "MaxGetRowsCount": 2000,
+    "Name": "Constabularies",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "cp_constabulary_AsyncOperations": "System Jobs",
+      "cp_constabulary_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_constabulary_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_constabulary_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_constabulary_ProcessSession": "Process Sessions",
+      "cp_constabulary_SyncErrors": "Sync Errors",
+      "cp_constabularyid": "Constabulary",
+      "cp_name": "Name",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "organizationid": "Organization Id",
+      "overriddencreatedon": "Record Created On",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Constabularies",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Constabularies (Views)",
+    "Name": "_cp_constabulary_views",
+    "RelatedEntityName": "Constabularies",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "3f348cb2-0ee2-4f04-a710-81d98650f9b8": "Constabulary Associated View",
+      "435c7ba9-eb14-4ff5-931d-166f1500a67a": "Constabulary Advanced Find View",
+      "66600727-e4e1-4269-bc59-5a1d4e93c00c": "Constabulary Lookup View",
+      "9ae7c287-acff-49a5-9a24-01bef38d23bb": "Inactive Constabularies",
+      "a888bc06-3325-4037-8d24-6b6359321438": "Active Constabularies"
+    }
+  },
+  {
+    "DisplayName": "Status (Constabularies)",
+    "Name": "cp_constabulary_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Constabularies"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Constabularies",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Constabularies)",
+    "Name": "cp_constabulary_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Constabularies"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Constabularies",
+    "Type": "OptionSetInfo"
+  }
+]

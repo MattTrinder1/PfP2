@@ -1,0 +1,1178 @@
+Scr_home As screen:
+    OnVisible: |
+        =Set(
+            checkicon,
+            false
+        );
+        UpdateContext({Warnunsubmit: false});
+        UpdateContext({timerstart: false});
+        UpdateContext({timerreset: true});
+        If(
+            CountRows(Gallery_unsubmitted.AllItems) > 0,
+            UpdateContext({timerstart: true})
+        );
+        
+        UpdateContext({stafftimerstart: false});
+        UpdateContext({stafftimerreset: true});
+        UpdateContext({Warnstaffdetails: false});
+        If(
+            CountRows(Gallery_unsubmitted.AllItems) > 0 And personValid.Text = "true",
+            UpdateContext({stafftimerstart: false}),
+            UpdateContext({stafftimerstart: true})
+        );
+        
+        //Mantatory tacticts warning icon
+        UpdateContext({tactictstimerstart: false});
+        UpdateContext({tactictstimerreset: true});
+        UpdateContext({tactictsInvolved: false});
+        If(
+            CountRows(Gallery_unsubmitted.AllItems) > 0 And iycPt1Valid.Text = "true",
+            UpdateContext({tactictstimerstart: false}),
+            UpdateContext({tactictstimerstart: true})
+        );
+        //Mantatory fields  staff injuries warning icon
+        UpdateContext({Staffinjuriestimerstart: false});
+        UpdateContext({Staffinjuriestimerreset: true});
+        UpdateContext({WarningStaffinjuries: false});
+        If(
+            CountRows(Gallery_unsubmitted.AllItems) > 0 And iycPt2Valid.Text = "true",
+            UpdateContext({Staffinjuriestimerstart: false}),
+            UpdateContext({Staffinjuriestimerstart: true})
+        );
+
+    Lbl_header As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        PaddingBottom: =14
+        Size: =27
+        Text: =If(IsBlank(IYC_Primary_key),"Its your choice","Its your choice"& Char(10) & "("&IYC_Primary_key & " )")
+        Width: =640
+        ZIndex: =1
+
+    Icn_exit As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Launch("/providers/Microsoft.PowerApps/apps/8eb26210-4ef7-4d42-a6f2-65b31de08704")
+        X: =576
+        Y: =13
+        ZIndex: =2
+
+    Btn_incident_details As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |-
+            =If(CountRows('IYC offline')=0,Set(i,0));If(flagback=true,Set(i,i + 1);Set(IYC_Primary_key,Txt_incident_no & " No:" & i);Set(flagback,false););Navigate('Scr_incident details',ScreenTransition.Cover)
+        Size: =24
+        Text: ="Incident Details"
+        Width: =552
+        X: =44
+        Y: =200
+        ZIndex: =6
+
+    Icn_add_into As icon.Add:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Add
+        X: =498
+        Y: =1005
+        ZIndex: =11
+
+    Icn_incident_details As icon.DocumentwithContent:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.DocumentWithContent
+        X: =498
+        Y: =205
+        ZIndex: =15
+
+    Icon1 As icon.Check:
+        Color: =RGBA(152, 208, 70, 1)
+        Icon: =Icon.Check
+        Visible: =checkicon
+        X: =85
+        Y: =203
+        ZIndex: =20
+
+    Btn_incident_details_1 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Scr_colection,UnCover)
+        Size: =24
+        Text: ="Unsubmitted Incidents"
+        Width: =552
+        X: =44
+        Y: =100
+        ZIndex: =21
+
+    Timer1 As timer:
+        BorderColor: =ColorFade(Timer1.Fill, -15%)
+        DisabledBorderColor: =ColorFade(Timer1.BorderColor, 70%)
+        DisabledColor: =ColorFade(Timer1.Fill, 90%)
+        DisabledFill: =ColorFade(Timer1.Fill, 70%)
+        Duration: =1000
+        FocusedBorderColor: =Timer1.BorderColor
+        Height: =67
+        HoverBorderColor: =ColorFade(Timer1.BorderColor, 20%)
+        OnTimerEnd: =
+        OnTimerStart: |-
+            =UpdateContext({Warnunsubmit:!Warnunsubmit})
+        PressedBorderColor: =Timer1.Fill
+        PressedColor: =Timer1.Fill
+        PressedFill: =Timer1.Color
+        Repeat: =true
+        Reset: =timerreset
+        Start: =timerstart
+        Text: |-
+            =Text(Time(0, 0, Timer1.Value/1000), "hh:mm:ss")
+        Visible: =false
+        Width: =175
+        X: =40
+        Y: =40
+        ZIndex: =22
+
+    Icon2 As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =Warnunsubmit
+        Width: =60
+        X: =54
+        Y: =105
+        ZIndex: =23
+
+    Icon5 As icon.Edit:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Edit
+        X: =512
+        Y: =105
+        ZIndex: =24
+
+    Btn_add_into_1 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =50
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |-
+            =Set(gblLoading1,true);
+            Refresh(Users);
+            Refresh(Contacts);
+            Refresh('Contact Role Types');
+            Refresh('Lookup Fields');
+            Refresh('Lookup Values');
+            Refresh('Territorial Policing Areas');
+            Refresh('Its Your Choice STGS');
+            Refresh('Customer Settings');
+            
+            
+            Set(
+                officermail,
+                User().Email
+            );
+            ClearCollect(
+                Usersalllocal,
+                ShowColumns(
+                    Filter(
+                        Users,
+                        StartsWith (
+                            cp_badgenumber,
+                            "1"
+                        )
+                    ),
+                    "fullname",
+                    "cp_badgenumber",
+                    "firstname",
+                    "systemuserid",
+                    "internalemailaddress"
+                )
+            );
+            Collect(
+                Usersalllocal,
+                ShowColumns(
+                    Filter(
+                        Users,
+                        StartsWith (
+                            cp_badgenumber,
+                            "2"
+                        )
+                    ),
+                    "fullname",
+                    "cp_badgenumber",
+                    "firstname",
+                    "systemuserid",
+                    "internalemailaddress"
+                )
+            );
+            Collect(
+                Usersalllocal,
+                ShowColumns(
+                    Filter(
+                        Users,
+                        StartsWith (
+                            cp_badgenumber,
+                            "3"
+                        )
+                    ),
+                    "fullname",
+                    "cp_badgenumber",
+                    "firstname",
+                    "systemuserid",
+                    "internalemailaddress"
+                )
+            );
+            Collect(
+                Usersalllocal,
+                ShowColumns(
+                    Filter(
+                        Users,
+                        StartsWith (
+                            cp_badgenumber,
+                            "4"
+                        )
+                    ),
+                    "fullname",
+                    "cp_badgenumber",
+                    "firstname",
+                    "systemuserid",
+                    "internalemailaddress"
+                )
+            );
+            Collect(
+                Usersalllocal,
+                ShowColumns(
+                    Filter(
+                        Users,
+                        StartsWith (
+                            cp_badgenumber,
+                            "5"
+                        )
+                    ),
+                    "fullname",
+                    "cp_badgenumber",
+                    "firstname",
+                    "systemuserid",
+                    "internalemailaddress"
+                )
+            );
+            Collect(
+                Usersalllocal,
+                ShowColumns(
+                    Filter(
+                        Users,
+                        StartsWith (
+                            cp_badgenumber,
+                            "6"
+                        )
+                    ),
+                    "fullname",
+                    "cp_badgenumber",
+                    "firstname",
+                    "systemuserid",
+                    "internalemailaddress"
+                )
+            );
+            Collect(
+                Usersalllocal,
+                ShowColumns(
+                    Filter(
+                        Users,
+                        StartsWith (
+                            cp_badgenumber,
+                            "7"
+                        )
+                    ),
+                    "fullname",
+                    "cp_badgenumber",
+                    "firstname",
+                    "systemuserid",
+                    "internalemailaddress"
+                )
+            );
+            Collect(
+                Usersalllocal,
+                ShowColumns(
+                    Filter(
+                        Users,
+                        StartsWith (
+                            cp_badgenumber,
+                            "8"
+                        )
+                    ),
+                    "fullname",
+                    "cp_badgenumber",
+                    "firstname",
+                    "systemuserid",
+                    "internalemailaddress"
+                )
+            );
+            Collect(
+                Usersalllocal,
+                ShowColumns(
+                    Filter(
+                        Users,
+                        StartsWith (
+                            cp_badgenumber,
+                            "9"
+                        )
+                    ),
+                    "fullname",
+                    "cp_badgenumber",
+                    "firstname",
+                    "systemuserid",
+                    "internalemailaddress"
+                )
+            );
+            Collect(
+                Usersalllocal,
+                ShowColumns(
+                    Filter(
+                        Users,
+                        StartsWith (
+                            cp_badgenumber,
+                            "0"
+                        )
+                    ),
+                    "fullname",
+                    "cp_badgenumber",
+                    "firstname",
+                    "systemuserid",
+                    "internalemailaddress"
+                )
+            );
+            UpdateIf(
+                Usersalllocal,
+                true,
+                {firstname: cp_badgenumber & " - " & fullname}
+            );
+            Sort(
+                Usersalllocal,
+                "firstname"
+            );
+            SaveData(
+                Usersalllocal,
+                "Usersalllocal"
+            );
+            ClearCollect(
+                Userlocal,
+                {
+                    Usermaillocal: User().Email,
+                    Collarnumber: LookUp(
+                        Users,
+                        'Primary Email' = officermail
+                    ).'Collar Number',
+                    Name: LookUp(
+                        Users,
+                        'Primary Email' = officermail
+                    ).'Full Name'
+                }
+            );
+            SaveData(
+                Userlocal,
+                "Userlocal"
+            );
+            Set(
+                StaffTitleid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "24"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                StaffTitleoffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.'Filter Id' = StaffTitleid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                StaffTitleoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                StaffTitleoffline,
+                "StaffTitleoffline"
+            );
+            Set(
+                Burialorcremationid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "68"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                Burialorcremationoffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.'Filter Id' = Burialorcremationid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                Burialorcremationoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                Burialorcremationoffline,
+                "Burialorcremationoffline"
+            );
+            Set(
+                Maritalofflineid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "73"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                Maritaloffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.'Filter Id' = Maritalofflineid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                Maritaloffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                Maritaloffline,
+                "Maritaloffline"
+            );
+            Set(
+                Genderid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "12"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                Genderoffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        cp_lookupfield.'Filter Id' = Genderid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                Genderoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                Genderoffline,
+                "Genderoffline"
+            );
+            Set(
+                PerceivedEthnicityid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "32"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                PerceivedEthnicityoffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        cp_lookupfield.'Filter Id' = PerceivedEthnicityid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                PerceivedEthnicityoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                PerceivedEthnicityoffline,
+                "PerceivedEthnicityoffline"
+            );
+            Set(
+                selfEthnicityid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "31"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                selfEthnicityoffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        cp_lookupfield.'Filter Id' = selfEthnicityid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                selfEthnicityoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                selfEthnicityoffline,
+                "selfEthnicityoffline"
+            );
+            Set(
+                Housetemperatureid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "69"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                Housetemperatureoffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.'Filter Id' = Housetemperatureid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                Housetemperatureoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                Housetemperatureoffline,
+                "Housetemperatureoffline"
+            );
+            Set(
+                Housesecureid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "74"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                Housesecureoffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.'Filter Id' = Housesecureid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                Housesecureoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                Housesecureoffline,
+                "Housesecureoffline"
+            );
+            Set(
+                schoolcolegeid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "81"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                schoolcolegeoffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.'Filter Id' = schoolcolegeid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                schoolcolegeoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                schoolcolegeoffline,
+                "schoolcolegeoffline"
+            );
+            Set(
+                youthrelationshipid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "80"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                youthrelationshipoffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.'Filter Id' = youthrelationshipid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                youthrelationshipoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                youthrelationshipoffline,
+                "youthrelationshipoffline"
+            );
+            Set(
+                powerutilisedid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "82"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                powerutilisedoffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.'Filter Id' = powerutilisedid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                powerutilisedoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                powerutilisedoffline,
+                "powerutilisedoffline"
+            );
+            ClearCollect(
+                ActiveCustomerSettingsOffline,
+                ShowColumns(
+                    Filter(
+                        'Customer Settings',
+                        Active = 'Active (Customer Settings)'.Yes
+                    ),
+                    "cp_incidentprefix",
+                    "cp_policingareatext",
+                    "cp_customersettingid",
+                    "cp_areacode"
+                )
+            );
+            Set (
+                IncidentNumberPrefix,
+                First(ActiveCustomerSettingsOffline).cp_incidentprefix
+            );
+            SaveData(
+                ActiveCustomerSettingsOffline,
+                "ActiveCustomerSettingsOffline"
+            );
+            ClearCollect(
+                TPA,
+                {
+                    cp_name: "",
+                    cp_territorialpolicingareaid: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                    'Territorial Policing Areas',
+                    Customer.'Customer Setting' = First(ActiveCustomerSettingsOffline).cp_customersettingid
+                    ),
+                    "cp_name",
+                    "cp_territorialpolicingareaid"
+                )
+            );
+            SaveData(
+                TPA,
+                "TPA"
+            );
+            Set(gblLoading1,false);
+        RadiusBottomLeft: =0
+        RadiusBottomRight: =0
+        RadiusTopLeft: =0
+        RadiusTopRight: =0
+        Size: =21
+        Text: ="Sync"
+        Width: =215
+        Y: =1086
+        ZIndex: =25
+
+    Label5_1 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(179, 179, 179, 1)
+        BorderThickness: =2
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(179, 179, 179, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =50
+        Size: =21
+        Text: =connectionstatus
+        Width: =195
+        X: =209
+        Y: =1086
+        ZIndex: =26
+
+    Timer1_1 As timer:
+        AutoStart: =true
+        Duration: =1000
+        Height: =50
+        OnTimerEnd: |-
+            =If(Connection.Connected,UpdateContext({connectionstatus:"Online"}),UpdateContext({connectionstatus:"Offline"}))
+        Repeat: =true
+        Reset: =true
+        Start: =true
+        Visible: =false
+        Width: =116
+        X: =464
+        Y: =1086
+        ZIndex: =27
+
+    Btn_deceased_1 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Scr_details,ScreenTransition.Cover)
+        Size: =24
+        Text: ="Person"
+        Width: =552
+        X: =44
+        Y: =300
+        ZIndex: =40
+
+    Icn_deceased_1 As icon.LogJournal:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.LogJournal
+        X: =498
+        Y: =305
+        ZIndex: =41
+
+    timerPersonValid As timer:
+        BorderColor: =ColorFade(timerPersonValid.Fill, -15%)
+        DisabledBorderColor: =ColorFade(timerPersonValid.BorderColor, 70%)
+        DisabledColor: =ColorFade(timerPersonValid.Fill, 90%)
+        DisabledFill: =ColorFade(timerPersonValid.Fill, 70%)
+        Duration: =1000
+        FocusedBorderColor: =timerPersonValid.BorderColor
+        Height: =47
+        HoverBorderColor: =ColorFade(timerPersonValid.BorderColor, 20%)
+        OnTimerEnd: =
+        OnTimerStart: |-
+            =UpdateContext({Warnstaffdetails:!Warnstaffdetails})
+        PressedBorderColor: =timerPersonValid.Fill
+        PressedColor: =timerPersonValid.Fill
+        PressedFill: =timerPersonValid.Color
+        Repeat: =true
+        Reset: =stafftimerreset
+        Start: =stafftimerstart
+        Text: |-
+            =Text(Time(0, 0, timerPersonValid.Value/1000), "hh:mm:ss")
+        Visible: =false
+        Width: =69
+        X: =112
+        Y: =314
+        ZIndex: =42
+
+    iconPersonValid As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =Warnstaffdetails
+        Width: =60
+        X: =54
+        Y: =305
+        ZIndex: =43
+
+    Btn_Care As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Scr_iyc_pt1,ScreenTransition.Cover)
+        Size: =24
+        Text: ="It's Your Choice Pt.1"
+        Width: =552
+        X: =40
+        Y: =405
+        ZIndex: =44
+
+    Btn_Counter_Signers As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Scr_iyc_pt2,ScreenTransition.Cover)
+        Size: =24
+        Text: ="It's Your Choice Pt.2"
+        Width: =552
+        X: =40
+        Y: =505
+        ZIndex: =45
+
+    Icon3_1 As icon.People:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.People
+        OnSelect: =
+        X: =501
+        Y: =409
+        ZIndex: =46
+
+    Icon7 As icon.Draw:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Draw
+        OnSelect: =
+        X: =502
+        Y: =513
+        ZIndex: =47
+
+    Timer_staff_injuries As timer:
+        BorderColor: =ColorFade(Timer_staff_injuries.Fill, -15%)
+        DisabledBorderColor: =ColorFade(Timer_staff_injuries.BorderColor, 70%)
+        DisabledColor: =ColorFade(Timer_staff_injuries.Fill, 90%)
+        DisabledFill: =ColorFade(Timer_staff_injuries.Fill, 70%)
+        Duration: =1000
+        FocusedBorderColor: =Timer_staff_injuries.BorderColor
+        Height: =47
+        HoverBorderColor: =ColorFade(Timer_staff_injuries.BorderColor, 20%)
+        OnTimerEnd: =
+        OnTimerStart: |-
+            =UpdateContext({WarningStaffinjuries:!WarningStaffinjuries})
+        PressedBorderColor: =Timer_staff_injuries.Fill
+        PressedColor: =Timer_staff_injuries.Fill
+        PressedFill: =Timer_staff_injuries.Color
+        Repeat: =true
+        Reset: =Staffinjuriestimerreset
+        Start: =Staffinjuriestimerstart
+        Text: |-
+            =Text(Time(0, 0, Timer_staff_injuries.Value/1000), "hh:mm:ss")
+        Visible: =false
+        Width: =69
+        X: =125
+        Y: =511
+        ZIndex: =48
+
+    Icon_warning_staff_injuries As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =WarningStaffinjuries
+        Width: =60
+        X: =54
+        Y: =510
+        ZIndex: =49
+
+    Timer_incident_involved_1 As timer:
+        BorderColor: =ColorFade(Timer_incident_involved_1.Fill, -15%)
+        DisabledBorderColor: =ColorFade(Timer_incident_involved_1.BorderColor, 70%)
+        DisabledColor: =ColorFade(Timer_incident_involved_1.Fill, 90%)
+        DisabledFill: =ColorFade(Timer_incident_involved_1.Fill, 70%)
+        Duration: =1000
+        FocusedBorderColor: =Timer_incident_involved_1.BorderColor
+        Height: =47
+        HoverBorderColor: =ColorFade(Timer_incident_involved_1.BorderColor, 20%)
+        OnTimerEnd: =
+        OnTimerStart: |-
+            =UpdateContext({tactictsInvolved:!tactictsInvolved})
+        PressedBorderColor: =Timer_incident_involved_1.Fill
+        PressedColor: =Timer_incident_involved_1.Fill
+        PressedFill: =Timer_incident_involved_1.Color
+        Repeat: =true
+        Reset: =tactictstimerreset
+        Start: =tactictstimerstart
+        Text: |-
+            =Text(Time(0, 0, Timer_incident_involved_1.Value/1000), "hh:mm:ss")
+        Visible: =false
+        Width: =69
+        X: =123
+        Y: =402
+        ZIndex: =50
+
+    Icon_warning_incident_involved_1 As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =tactictsInvolved
+        Width: =60
+        X: =54
+        Y: =410
+        ZIndex: =51
+
+    Label5_2 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(179, 179, 179, 1)
+        BorderThickness: =2
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(179, 179, 179, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =50
+        Size: =21
+        Text: |-
+            ="App Version: " & glbAppVersion
+        Width: =280
+        X: =360
+        Y: =1086
+        ZIndex: =52
+
+    personValid As label:
+        Height: =70
+        Size: =21
+        Text: |-
+            =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).personValid
+            /*And(
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Forename),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Surname),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).'Date of Birth'),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Address1),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Housename),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Town),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).County),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pcode),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).GenderName),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Officer_defined_ethnicity_name),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Self_defined_ethnicity_name),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).SchoolCollege),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_title),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_Forename),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_Surname),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).relationshiptoyouthname),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_phone),
+                Or(
+                    LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).alcohotobacco = "No",
+                    And(
+                        LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).alcohotobacco = "Yes",
+                        !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).alcoholseized)
+                    )
+                ),
+                Or(
+                    LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).sameaddress = "Yes",
+                    And(
+                        LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).sameaddress = "No",
+                        !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_Housename),
+                        !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_Address1),
+                        !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_Town),
+                        !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_County),
+                        !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_pcode),
+                        !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_country)
+                    )
+                )
+            )*/
+        Visible: =false
+        Width: =560
+        X: =44
+        Y: =630
+        ZIndex: =54
+
+    iycPt1Valid As label:
+        Height: =70
+        Size: =21
+        Text: |-
+            =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).iycPt1Valid
+            /*And(
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Forename),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Surname),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).'Date of Birth'),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Address1),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Housename),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Town),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).County),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pcode),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).GenderName),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Officer_defined_ethnicity_name),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Self_defined_ethnicity_name),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).SchoolCollege),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_title),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_Forename),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_Surname),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).relationshiptoyouthname),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_phone),
+                Or(
+                    LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).alcohotobacco = "No",
+                    And(
+                        LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).alcohotobacco = "Yes",
+                        !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).alcoholseized)
+                    )
+                ),
+                Or(
+                    LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).sameaddress = "Yes",
+                    And(
+                        LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).sameaddress = "No",
+                        !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_Housename),
+                        !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_Address1),
+                        !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_Town),
+                        !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_County),
+                        !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_pcode),
+                        !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_country)
+                    )
+                )
+            )*/
+        Visible: =false
+        Width: =560
+        X: =54
+        Y: =706
+        ZIndex: =55
+
+    iycPt2Valid As label:
+        Height: =70
+        Size: =21
+        Text: |-
+            =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).iycPt2Valid
+            /*And(
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Forename),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Surname),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).'Date of Birth'),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Address1),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Housename),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Town),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).County),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pcode),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).GenderName),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Officer_defined_ethnicity_name),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Self_defined_ethnicity_name),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).SchoolCollege),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_title),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_Forename),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_Surname),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).relationshiptoyouthname),
+                !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_phone),
+                Or(
+                    LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).alcohotobacco = "No",
+                    And(
+                        LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).alcohotobacco = "Yes",
+                        !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).alcoholseized)
+                    )
+                ),
+                Or(
+                    LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).sameaddress = "Yes",
+                    And(
+                        LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).sameaddress = "No",
+                        !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_Housename),
+                        !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_Address1),
+                        !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_Town),
+                        !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_County),
+                        !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_pcode),
+                        !IsBlank(LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).pg_country)
+                    )
+                )
+            )*/
+        Visible: =false
+        Width: =560
+        X: =40
+        Y: =776
+        ZIndex: =56
+
+    Group14_1 As group:
+        Height: =5
+        Width: =5
+        X: =60
+        Y: =60
+        ZIndex: =60
+
+        Rectangle2_2 As rectangle:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Fill: =RGBA(255, 255, 255, 0.89)
+            Height: =1136
+            Visible: =gblLoading1
+            Width: =640
+            ZIndex: =57
+
+        Image1_4 As image:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Height: =109
+            Image: =syncinggif
+            Visible: =gblLoading1
+            Width: =107
+            X: =267
+            Y: =481
+            ZIndex: =58
+
+        Label5_6 As label:
+            Align: =Align.Center
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Height: =71
+            Size: =21
+            Text: ="Syncing ..."
+            Visible: =gblLoading1
+            Width: =560
+            X: =40
+            Y: =382
+            ZIndex: =59
+

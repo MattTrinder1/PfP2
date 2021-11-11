@@ -1,0 +1,177 @@
+App As appinfo:
+    BackEnabled: =false
+    OnStart: |
+        =Set(glbAppVersion,1);
+        Set(gblLoading1,false);
+        //this value is a placeholder which is updated by the build pipeline, don't edit it manually
+        //its commented it out to avoid it being formatted, which prevents the pipeline from finding it
+        //Basically - leave it alone !
+        //Set(glbAppVersion,1);
+        Set(
+            connectionstatus,
+            ""
+        );
+        Set(
+            i,
+            0
+        );
+        Set(
+            Txt_incident_suffixvar,
+            ""
+        );
+        Set(
+            agecalc,
+            If(
+                Month(Now()) < Month(DatePicker_dob.SelectedDate) Or ((Month(Now()) = Month(DatePicker_dob.SelectedDate) && Day(Now()) < Day(DatePicker_dob.SelectedDate))),
+                Year(Now()) - Year(DatePicker_dob.SelectedDate) - 1,
+                Year(Now()) - Year(DatePicker_dob.SelectedDate)
+            )
+        );
+        LoadData(
+            TPA,
+            "TPA",
+            true
+        );
+        LoadData(
+            Offences,
+            "Offences",
+            true
+        );
+        LoadData(
+            genderoffline,
+            "Gender offline",
+            true
+        );
+        /*LoadData(
+            Recorduseofpowersoffline,
+            "Record use of powersoffline"
+        );*/
+        LoadData(
+            IDchecksMadeoffline,
+            "ID checks Made offline",
+            true
+        );
+        LoadData(Photos,"Photos",true);
+        LoadData(
+            Officerdefinedethnicityoffline,
+            "Officer defined ethnicity offline",
+            true
+        );
+        LoadData(
+            Occupationoffline,
+            "Occupation offline",
+            true
+        );
+        LoadData(
+            Selfdefinedethnicityoffline,
+            "Self-defined ethnicity offline",
+            true
+        );
+        LoadData(
+            Prefferedmeanofcontactoffline,
+            "Preffered mean of contact offline",
+            true
+        );
+        LoadData(
+            ethnicityoffline,
+            "ethnicity code offline",
+            true
+        );
+        LoadData(
+            Additionalnameoffline,
+            "Additional Name offline",
+            true
+        );
+        LoadData(
+            Titleoffline,
+            "Title offline",
+            true
+        );
+        LoadData(
+            Userlocal,
+            "Userlocal",
+            true
+        );
+        LoadData(
+            'Covid Offline',
+            "Covid Offline",
+            true
+        );
+        LoadData(
+            Userlocal,
+            "Userlocal",
+            true
+        );
+        Set(
+            officermail,
+            User().Email
+        );
+        Reset(Txt_incident_suffix);
+        Reset(Txt_incident_no);
+        Set(
+            incidentnumbervar,
+            "CP" & "-" & Text(
+                DateAdd(
+                    DatePicker_incident.SelectedDate,
+                    0
+                ),
+                "[$-en-GB]yyyymmdd"
+            ) & "-" & Txt_incident_suffix
+        );
+        Set(
+            PNCselection,
+            false
+        );
+        LoadData(
+            colCovidVerificationText,
+            "colCovidVerificationText",
+            true
+        );
+        
+        ClearCollect(
+            PNCSearchReasonCode,
+            {
+                Reason: "Vehicle and/or person stopped",
+                ReasonCode: 01
+            },
+            {
+                Reason: "Moving vehicle",
+                ReasonCode: 02
+            },
+            {
+                Reason: "Abandoned or parked and unattended vehicle",
+                ReasonCode: 03
+            },
+            {
+                Reason: "Vehicle involved in a road accident",
+                ReasonCode: 04
+            },
+            {
+                Reason: "Subject of process or investigation",
+                ReasonCode: 5
+            },
+            {
+                Reason: "Administration",
+                ReasonCode: 06
+            },
+            {
+                Reason: "Enquiries relating to family protection issues",
+                ReasonCode: 07
+            },
+            {
+                Reason: "On behalf of an authorised agency",
+                ReasonCode: 08
+            },
+            {
+                Reason: "Record creation, updates, confirmation, broadcasts, etc",
+                ReasonCode: 09
+            },
+            {
+                Reason: "Transaction log and other audit checks",
+                ReasonCode: 00
+            }
+        );
+        
+        
+        Set(gblDLCheck, false);
+

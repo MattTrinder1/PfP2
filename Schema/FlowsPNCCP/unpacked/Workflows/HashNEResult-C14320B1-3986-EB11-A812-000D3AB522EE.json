@@ -1,0 +1,190 @@
+{
+  "properties": {
+    "connectionReferences": {
+      
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "PowerApp",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "SetPersonName_Value": {
+                  "type": "string",
+                  "description": "Enter initial value",
+                  "x-ms-powerflows-param-ispartial": false
+                },
+                "Initializevariable2_Value": {
+                  "type": "string",
+                  "description": "Enter initial value",
+                  "x-ms-powerflows-param-ispartial": false
+                }
+              },
+              "required": [
+                "SetPersonName_Value",
+                "Initializevariable2_Value"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Set_Person_Name": {
+          "runAfter": {
+            
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Name",
+                "type": "string",
+              "value": "@triggerBody()[\u0027SetPersonName_Value\u0027]"
+              }
+            ]
+          }
+        },
+        "Compose": {
+          "runAfter": {
+            "Initialize_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "type": "Compose",
+          "inputs": {
+            "key": "dYc+mEzFzk6xfSNIXeYmuw==",
+            "Name": "@variables(\u0027Name\u0027)",
+            "Index": "@variables(\u0027Index\u0027)"
+          }
+        },
+        "Parse_JSON": {
+          "runAfter": {
+            "Compose": [
+              "Succeeded"
+            ]
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@outputs(\u0027Compose\u0027)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "key": {
+                  "type": "string"
+                },
+                "Name": {
+                  "type": "string"
+                },
+                "Index": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "HTTP": {
+          "runAfter": {
+            "Parse_JSON": [
+              "Succeeded"
+            ]
+          },
+          "type": "Http",
+          "inputs": {
+            "method": "POST",
+            "uri": "https://prod-29.uksouth.logic.azure.com:443/workflows/c99d0f141a15440b9c55421ecef6a510/triggers/manual/paths/invoke?api-version=2016-06-01\u0026sp=%2Ftriggers%2Fmanual%2Frun\u0026sv=1.0\u0026sig=Q9btEuABlr8RiqPG9-napGuJJb5-b1aJJtei3OgZvZ4",
+            "headers": {
+              "Content-Type": "application/json"
+            },
+            "body": "@body(\u0027Parse_JSON\u0027)"
+          }
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            "HTTP": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Json string",
+                "type": "string",
+              "value": "@{body(\u0027HTTP\u0027)}"
+              }
+            ]
+          }
+        },
+        "Response": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "Response",
+          "kind": "Http",
+          "inputs": {
+            "statusCode": 200,
+            "body": "@body(\u0027HTTP\u0027)",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "ArrestSummons": {
+                    "type": "string"
+                  },
+                  "WantedMissing": {
+                    "type": "string"
+                  },
+                  "ImpendingProsecutions": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "ArrestSummons",
+                  "WantedMissing",
+                  "ImpendingProsecutions"
+                ]
+              }
+            }
+          }
+        },
+        "Initialize_variable_2": {
+          "runAfter": {
+            "Set_Person_Name": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Index",
+                "type": "string",
+              "value": "@{triggerBody()[\u0027Initializevariable2_Value\u0027]}"
+              }
+            ]
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

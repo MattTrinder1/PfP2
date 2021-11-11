@@ -1,0 +1,104 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_territorialpolicingareas",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_territorialpolicingarea",
+    "Name": "Territorial Policing Areas",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "cp_Covid_TPA_cp_TerritorialPolicingArea": "Covids",
+      "cp_customer": "Customer",
+      "cp_ItsYourChoice_TPA_cp_TerritorialPolici": "Its Your Choices",
+      "cp_name": "Name",
+      "cp_suddendeath_TPA_cp_TerritorialPolicing": "Sudden Deaths",
+      "cp_SystemUser_Territory_cp_TerritorialPolici": "Users",
+      "cp_territorialpolicingarea_AsyncOperations": "System Jobs",
+      "cp_territorialpolicingarea_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_territorialpolicingarea_DuplicateBaseRecord": "Duplicate Records (cp_territorialpolicingarea_DuplicateBaseRecord)",
+      "cp_territorialpolicingarea_DuplicateMatchingRecord": "Duplicate Records (cp_territorialpolicingarea_DuplicateMatchingRecord)",
+      "cp_territorialpolicingarea_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_territorialpolicingarea_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_territorialpolicingarea_ProcessSession": "Process Sessions",
+      "cp_territorialpolicingarea_SyncErrors": "Sync Errors",
+      "cp_TerritorialPolicingArea_TPA_cp_UseofFo": "Uses of Force",
+      "cp_territorialpolicingareaid": "Territorial Policing Area",
+      "cp_vehicleticket_tpa_cp_TerritorialPolici": "Vehicle Tickets",
+      "cp_VehicleTicketSTG_TPAValue_cp_Territori": "Vehicle Ticket STGS",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Territorial Policing Areas",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Territorial Policing Areas (Views)",
+    "Name": "_cp_territorialpolicingarea_views",
+    "RelatedEntityName": "Territorial Policing Areas",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "1804d60f-9eca-44c1-b311-40a5bac1d188": "Inactive Territorial Policing Areas",
+      "8082e9ee-e255-4dd3-9a29-1e497f8f7726": "Territorial Policing Area Lookup View",
+      "ba5afeb7-973c-48c4-9379-3d33b76a5f07": "Territorial Policing Area Advanced Find View",
+      "cff795a4-efa4-4785-80ee-49d45094546c": "Active Territorial Policing Areas",
+      "de5bbe30-18b7-4d91-b5a4-d77acf7dc8dc": "Territorial Policing Area Associated View"
+    }
+  },
+  {
+    "DisplayName": "Status (Territorial Policing Areas)",
+    "Name": "cp_territorialpolicingarea_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Territorial Policing Areas"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Territorial Policing Areas",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Territorial Policing Areas)",
+    "Name": "cp_territorialpolicingarea_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Territorial Policing Areas"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Territorial Policing Areas",
+    "Type": "OptionSetInfo"
+  }
+]

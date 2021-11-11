@@ -1,0 +1,98 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_incidenttypes",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_incidenttype",
+    "MaxGetRowsCount": 2000,
+    "Name": "Incident Types",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "cp_incident_IncidentType_cp_IncidentType": "Incidents",
+      "cp_incidenttype_AsyncOperations": "System Jobs",
+      "cp_incidenttype_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_incidenttype_DuplicateBaseRecord": "Duplicate Records (cp_incidenttype_DuplicateBaseRecord)",
+      "cp_incidenttype_DuplicateMatchingRecord": "Duplicate Records (cp_incidenttype_DuplicateMatchingRecord)",
+      "cp_incidenttype_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_incidenttype_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_incidenttype_ProcessSession": "Process Sessions",
+      "cp_incidenttype_SyncErrors": "Sync Errors",
+      "cp_incidenttypeid": "Incident Type",
+      "cp_incidenttypename": "Name",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Incident Types",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Incident Types (Views)",
+    "Name": "_cp_incidenttype_views",
+    "RelatedEntityName": "Incident Types",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "250e6da1-3393-435d-879d-69d7782aa75c": "Incident Type Associated View",
+      "3805be31-0541-48fa-9c53-1911df141342": "Incident Type Lookup View",
+      "5481636e-f083-4a79-aa00-cfd40460b445": "Active Incident Types",
+      "840ee56b-79a8-472f-8401-184a71d1104c": "Inactive Incident Types",
+      "d37840fc-86b2-4fba-b6ec-f01169ebe8fc": "Incident Type Advanced Find View"
+    }
+  },
+  {
+    "DisplayName": "Status (Incident Types)",
+    "Name": "cp_incidenttype_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Incident Types"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Incident Types",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Incident Types)",
+    "Name": "cp_incidenttype_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Incident Types"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Incident Types",
+    "Type": "OptionSetInfo"
+  }
+]

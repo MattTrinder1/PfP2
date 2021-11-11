@@ -1,0 +1,266 @@
+Screen1 As screen:
+
+    gal_PNCSearch_4 As gallery.variableTemplateHeightGallery:
+        Height: =874
+        Items: =VEResult1
+        Layout: =Layout.Vertical
+        ShowScrollbar: =false
+        TemplatePadding: =0
+        TemplateSize: =874
+        Y: =156
+        ZIndex: =1
+
+        lbl_txtcolour_3 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Colour"
+            Width: =630
+            Y: =240
+            ZIndex: =1
+
+        lbl_model_4 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =Concatenate(ThisItem.make," / ",ThisItem.model)
+            Width: =630
+            Y: =200
+            ZIndex: =2
+
+        lbl_txtmodel_8 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Make/Model"
+            Width: =630
+            Y: =160
+            ZIndex: =3
+
+        lbl_make_13 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =First(ThisItem.markers).text
+            Width: =630
+            Y: =40
+            ZIndex: =4
+
+        lbl_txtmake_8 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Markers"
+            Width: =576
+            ZIndex: =5
+
+        lbl_colour_4 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =ThisItem.colour
+            Width: =630
+            Y: =280
+            ZIndex: =6
+
+        lbl_txtcc_4 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Engine CC"
+            Width: =630
+            Y: =480
+            ZIndex: =7
+
+        lbl_registered_4 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =ThisItem.registered
+            Width: =630
+            Y: =440
+            ZIndex: =8
+
+        lbl_txtregistered_3 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Date Of Reg"
+            Width: =630
+            Y: =400
+            ZIndex: =9
+
+        lbl_style_4 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =ThisItem.style
+            Width: =630
+            Y: =360
+            ZIndex: =10
+
+        lbl_txtstyle_3 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Style"
+            Width: =630
+            Y: =320
+            ZIndex: =11
+
+        lbl_cc_4 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =ThisItem.cc
+            Width: =630
+            Y: =520
+            ZIndex: =12
+
+        lbl_txtregkeeper_3 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Registered Keeper"
+            Width: =630
+            Y: =720
+            ZIndex: =13
+
+        lbl_txtengineno_3 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="EngineNo"
+            Width: =630
+            Y: =640
+            ZIndex: =14
+
+        lbl_chassisno_3 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =ThisItem.chassisNo
+            Width: =630
+            Y: =598
+            ZIndex: =15
+
+        lbl_txt_chassisno_3 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Chassis No"
+            Width: =630
+            Y: =560
+            ZIndex: =16
+
+        lbl_regkeeper_3 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =First(ThisItem.keepers).regKeeper
+            Width: =630
+            Y: =760
+            ZIndex: =17
+
+        lbl_engineno_3 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =ThisItem.engineNo
+            Width: =630
+            X: =1
+            Y: =680
+            ZIndex: =18
+
+        lbl_txtkeepersince_9 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="Insurance Held"
+            Width: =630
+            Y: =800
+            ZIndex: =19
+
+        lbl_keepersince_9 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =ThisItem.insuranceText
+            Width: =630
+            Y: =834
+            ZIndex: =20
+
+        lbl_txtkeepersince_10 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="MOT Expiry"
+            Width: =630
+            Y: =834
+            ZIndex: =22
+
+        lbl_keepersince_10 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =ThisItem.motExpiry
+            Width: =630
+            Y: =834
+            ZIndex: =23
+
+        lbl_txtkeepersince_11 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="VEL Serial No"
+            Width: =630
+            Y: =834
+            ZIndex: =24
+
+        lbl_keepersince_11 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =ThisItem.tagNumber
+            Width: =630
+            Y: =834
+            ZIndex: =25
+
+        Rectangle4_7 As rectangle:
+            Fill: =RGBA(153, 153, 153, 0.51)
+            Height: =6
+            Visible: =false
+            Width: =640
+            Y: =868
+            ZIndex: =26
+
+        Button2_5 As button:
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =0
+            HoverFill: =
+            OnSelect: =Select(Parent)
+            PressedFill: =
+            Size: =16
+            Text: =""
+            Width: =640
+            Y: =874
+            ZIndex: =27
+
+        lbl_make_14 As label:
+            OnSelect: =Select(Parent)
+            PaddingLeft: =20
+            Size: =16
+            Text: =ThisItem.vrnReg
+            Width: =630
+            Y: =120
+            ZIndex: =28
+
+        lbl_txtmake_9 As label:
+            FontWeight: =Semibold
+            OnSelect: =Select(Parent)
+            Size: =16
+            Text: ="VRM"
+            Width: =576
+            Y: =80
+            ZIndex: =29
+

@@ -15,7 +15,9 @@ New-AzStorageQueue -Name "onlinecheckqueue" -Context $Context
 New-AzStorageQueue -Name "pocketnotebookqueue" -Context $Context
 New-AzStorageQueue -Name "pocketnotebookqueue-archive" -Context $Context
 New-AzStorageQueue -Name "suddendeathqueue" -Context $Context
+New-AzStorageQueue -Name "suddendeathqueue-blob" -Context $Context
 New-AzStorageQueue -Name "suddendeathqueue-archive" -Context $Context
+
 New-AzStorageContainer -Name "pnb" -Context $Context
 New-AzStorageContainer -Name "suddendeath" -Context $Context
 

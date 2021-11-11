@@ -1,0 +1,678 @@
+"'Scr_incident details' As screen":
+    OnVisible: |-
+        =Set(madcol,LightGoldenRodYellow);UpdateContext({madcol:LightGoldenRodYellow});Set(madcolre,LightGoldenRodYellow);UpdateContext({madcolre:LightGoldenRodYellow});Set(madcolse,LightGoldenRodYellow);UpdateContext({madcolse:LightGoldenRodYellow});Reset(TextInput_incident_suffix);
+        Set(Z,0000);
+        UpdateContext({Z:Z+1});
+
+    Label_header As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Incident"
+        VerticalAlign: =VerticalAlign.Top
+        Width: =640
+        ZIndex: =1
+
+    Btn_save_Continue As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Lighter
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |
+            =Set(
+                flagback,
+                true
+            );
+            If(
+                CountRows(
+                    Filter(
+                        'Vehicle Offline',
+                        Key = Vehicle_Primary_key
+                    )
+                ) > 0,
+                UpdateIf(
+                    'Vehicle Offline',
+                    Key = Vehicle_Primary_key,
+                    {
+                        Key: Vehicle_Primary_key,
+                        'Incident suffix': TextInput_incident_suffix.Text,
+                        'Incident number': TextInput_incident_no.Text,
+                        'Incident date': DatePicker_incident.SelectedDate + Time(
+                            Hour(Now()),
+                            Minute(Now()),
+                            0
+                        )
+                    }
+                );
+                SaveData(
+                    'Vehicle Offline',
+                    "Vehicle Offline"
+                );
+                Navigate(
+                    Scr_home,
+                    ScreenTransition.UnCover
+                ),
+                Set(
+                    Vehicle_Primary_key,
+                    TextInput_incident_no & " No:" & i
+                );
+                Collect(
+                    'Vehicle Offline',
+                    {
+                        Key: Vehicle_Primary_key,
+                        EvidenceRequired: false,
+                        PersonRequired: true,
+                        VehicleRequired: true,
+                        'VT-PT1 validation': false,
+                        PersonValidation: false,
+                        VehicleValidation: false,
+                        LocationValidation: false,
+                        TOvalid: false,
+                        HORT1valid: false,
+                        VDRSvalid: false,
+                        S165valid: false,
+                        S163valid: false,
+                        S59valid: false,
+                        EvidenceYESvalid: false,
+                        EvidenceNOvalid: false,
+                        //Incident
+            'Incident suffix': TextInput_incident_suffix.Text,
+                        'Incident number': TextInput_incident_no.Text,
+                        'Incident date': DatePicker_incident.SelectedDate + Time(
+                            Hour(Now()),
+                            Minute(Now()),
+                            0
+                        ),
+                        'Entered by': LookUp(
+                            Usersalllocal,
+                            Lower(internalemailaddress) = Lower(officermail),
+                            systemuserid
+                        ),
+                        //Vehicle Ticket pt1
+                        'Vehicle Ticket pt 1 Offence Date': Date(
+                            Blank(),
+                            Blank(),
+                            Blank()
+                        ),
+                        'Vehicle Ticket pt 1 Offence Time': Time(
+                            Value(Blank()),
+                            Value(Blank()),
+                            0
+                        ),
+                        'Vehicle Ticket pt 1 Issued to name': LookUp(
+                            IssueTooffline,
+                            cp_name = ""
+                        ).cp_name,
+                        'Vehicle Ticket pt 1 Issued to': LookUp(
+                            IssueTooffline,
+                            cp_lookupvalueid = ""
+                        ).cp_lookupvalueid,
+                        'Reason for stop name': "",
+                        'Reason for stop': "",
+                        'Vehicle Ticket pt 1 photo1': SampleImage/*LookUp(
+                                Photos,
+                                Row = 1,
+                                photo1
+                            )*/,
+                        'Vehicle Ticket pt 1 photo2': SampleImage/*LookUp(
+                                Photos,
+                                Row = 2,
+                                photo1
+                            )*/,
+                        'Vehicle Ticket pt 1 photo3': SampleImage/*LookUp(
+                                Photos,
+                                Row = 3,
+                                photo1
+                            )*/,
+                        'Vehicle Ticket pt 1 photo4': SampleImage/*LookUp(
+                                Photos,
+                                Row = 4,
+                                photo1
+                            )*/,
+                        'Vehicle Ticket pt 1 photo5': SampleImage/*LookUp(
+                                Photos,
+                                Row = 4,
+                                photo1
+                            )*/,
+                        'Vehicle Ticket pt 1 Caption1': "",
+                        'Vehicle Ticket pt 1 Caption2': "",
+                        'Vehicle Ticket pt 1 Caption3': "",
+                        'Vehicle Ticket pt 1 Caption4': "",
+                        'Vehicle Ticket pt 1 Caption5': "",
+                        VehicleTicketTypes: "",
+                        VehicleTicketTypesid: "",
+                        //Person
+                            //#1
+            'Title name': "",
+                        Title: "",
+                        //end#1
+                        'Person Forename': "",
+                        'Person Surname': "",
+                        'Additonal Names': "",
+                        //#2
+                        'Additional Name dropdown Type': "",
+                        'Additional Name dropdown': "",
+                        //end#2
+                        'Additonal Name': "",
+                        'Date of Birth Known': "",
+                        'Date of Birth': Date(
+                            Blank(),
+                            Blank(),
+                            Blank()
+                        ),
+                        Age: "",
+                        'House Name': "",
+                        'House Number': "",
+                        Street: "",
+                        District: "",
+                        Town: "",
+                        County: "",
+                        PostCode: "",
+                        Country: "",
+                        //#3
+                        'Preferred mean of contact name': "",
+                        'Preferred mean of contact': "",
+                        //end#3
+                            //#4
+                            //end#4
+            'Home phone': "",
+                        'Mobile Phone': "",
+                        'Work Phone': "",
+                        'Home Email': "",
+                        //#5
+                        'Gender name': "",
+                        Gender: "",
+                        //end#5
+                    //#6
+            'Occupation Name': "",
+                        Occupation: "",
+                        'Self-defined Ethnicity name': "",
+                        'Self-defined Ethnicity': "",
+                        //end#6
+                    //#7
+            'Officer-defined ethnicity name': "",
+                        'Officer-defined ethnicity': "",
+                        //#end#7
+                        'Driving Licence Details': "",
+                        'Driving Licence Number ': "",
+                        //#8
+                        'Driving Licence Type name': "",
+                        'Driving Licence Type': "",
+                        //end#8
+                    //#9
+            'Driving Licence Category name': "",
+                        'Driving Licence Category': "",
+                        //end#9
+                        'Drving Licence Valid From': Date(
+                            Blank(),
+                            Blank(),
+                            Blank()
+                        ),
+                        'Drving Licence expiry': Date(
+                            Blank(),
+                            Blank(),
+                            Blank()
+                        ),
+                        'Driving Licence Issue Number': "",
+                        'Driving Licence Penalty Points': "",
+                        'Foreign Licence Details': "",
+                        'Foreign Licence Number': "",
+                        'Foreign Licence Country name': "",
+                        'Foreign Licence Country': "",
+                        //end#9
+                        'Alternative Foreign ID': "",
+                        //Location
+                        'Longitude & Latitude': "" & "",
+                        Longitude: "",
+                        Latitude: "",
+                        'Location Description': "",
+                        'Location street': "",
+                        'Location Town': "",
+                        'Location TPA name': "",
+                        'Location TPA': "",
+                        //Vehicle
+                        VRM: "",
+                        'Vehicle Make name': LookUp(
+                            VehicleMakeoffline,
+                            cp_name = ""
+                        ).cp_name,
+                        'Vehicle Make': "",
+                        'Vehicle Make other': "",
+                        'Vehicle Model': "",
+                        'Vehicle Colour name': "",
+                        'Vehicle Colour': "",
+                        'Vehicle Chasis Number': "",
+                        'Vehicle Engine Number': "",
+                        'Vehicle Engine CC': "",
+                        'Vehicle MOT expiry': Date(
+                            Blank(),
+                            Blank(),
+                            Blank()
+                        ),
+                        'Insurance Details available ?': "",
+                        'Insurance number': "",
+                        'Insured by': "",
+                        'Valid from': Date(
+                            Blank(),
+                            Blank(),
+                            Blank()
+                        ),
+                        'Valid To': Date(
+                            Blank(),
+                            Blank(),
+                            Blank()
+                        ),
+                        Notes: "",
+                        'Vehicle Roles Name': "",
+                        'Vehicle Roles': "",
+                        'Restricted Vehicle': "",
+                        'Manual transmission': "",
+                        'Date of Registration': Date(
+                            Blank(),
+                            Blank(),
+                            Blank()
+                        ),
+                        'Up to date excise duty': "",
+                        //Traffic Offence(This section still requires the 3 drop downs, Offence Category, Offence Namely, Offence Code)
+                            //Vehicle Ticke Pt 2
+            'Has valid MOT': "",
+                        'Has valid Insurance': "",
+                        'Is driver Keeper': "",
+                        'Is driver supervised': "",
+                        'Has L plates': "",
+                        'Has Passengers': "",
+                        'On motorway': "",
+                        'Use of vehicle name': "",
+                        'Use of vehicle': "",
+                        //Evidence Yes screen 
+                        'Statement of name': "",
+                        'Statement of': "",
+                        'Officer Training Name': "",
+                        'Officer Training': "",
+                        'Speed Limit name': "",
+                        'Speed Limit': "",
+                        'Speed Detection method name': "",
+                        'Speed Detection method': "",
+                        'Information from name': "",
+                        'Information from': "",
+                        'Officer Name': "",
+                        'Vehicle Stopped ?': "",
+                        'Driver Shown Reading ?': "",
+                        'Daylight Name': "",
+                        Daylight: "",
+                        'Street Lighting name': "",
+                        'Street Lighting ': "",
+                        'Weather name': "",
+                        Weather: "",
+                        'Visibility name': "",
+                        Visibility: "",
+                        'Speed Limit signs present & clear': "",
+                        //Following Check
+                      //driver observer needs populating and creating
+            'Driver/Observer name': "",
+                        'Driver/Observer': "",
+                        'Mark/Unmarked car name': "",
+                        'Mark/Unmarked car': "",
+                        'Police vehicle number': "",
+                        'Distance followed (Miles)': "",
+                        'From reference point': "",
+                        'To reference point': "",
+                        'Recorded speed (mph)': "",
+                        'Distance behind (metres)': "",
+                        'Speedometer check date/time': Date(
+                            Blank(),
+                            Blank(),
+                            Blank()
+                        ),
+                        //End Following check
+                     //Hanheld radar
+            'Device serial number': "",
+                        'Recorded Speed': "",
+                        ' 1st device check date/time': Date(
+                            Blank(),
+                            Blank(),
+                            Blank()
+                        ),
+                        '1st device check location': "",
+                        '2nd device check date.time': Date(
+                            Blank(),
+                            Blank(),
+                            Blank()
+                        ),
+                        '2nd device check location': "",
+                        //End Handheldradar
+                      //Police pilot, PUMA, VASCAR (Fields that start with // are duplicates of previous fields used)
+                      //'Driver/Observer name': Dropdown_DriverObserver_1.Selected.Value
+                      //'Mark/Unmarked car name': Dropdown_MarkedUnmarked_1.Selected.Value
+                      //'Police vehicle number': TextInput_PoliceVehicleNumber_1.Text
+            'Vehicle was seen name': "",
+                        'Vehicle was seen': "",
+                        'Police pilot reference point A ': "",
+                        'Police pilot reference point B': "",
+                        'Police pilot recording distance': "",
+                        'Police pilot recorded speed': "",
+                        'Police Pilot 1st device check/date time': Date(
+                            Blank(),
+                            Blank(),
+                            Blank()
+                        ),
+                        'Police Pilot 2nd device check/date time': Date(
+                            Blank(),
+                            Blank(),
+                            Blank()
+                        ),
+                        // end Police pilot, PUMA, VASCAR(Fields that start with // are duplicates of previous fields used)
+                        'Officer Statement': "",
+                        'Officer Signature': SampleImage,
+                        'Date/time of signature': "",
+                        //Evidence screen NO
+                        'Statement of(evidence screen no) Name': "",
+                        'Statement of(evidence screen no)': "",
+                        'Officer Statement ev:no': "",
+                        'Officer Signature ev:no ': SampleImage,
+                        'Date/time ev:no': "",
+                        //Section 163 
+                        'Reason for using s163 power name': "",
+                        'Reason for using s163 power': "",
+                        'Other reason for using s163': "",
+                        'Outcome of stop / Reason for outcome name': "",
+                        'Outcome of stop / Reason for outcome': "",
+                        'Description: Outcome of stop / reason for outcome': "",
+                        'Is there a link between the reason for the stop and the outcome': "",
+                        //Sign and Submit
+                        'Signature date/time': "",
+                        'Officer Signature sign and submit': SampleImage
+                    }
+                );
+                Set(
+                    resetall,
+                    true
+                );
+                UpdateIf(
+                    'Vehicle Offline',
+                    Key = Vehicle_Primary_key,
+                    {
+                        'Officer Signature sign and submit': Blank(),
+                        'Officer Signature ev:no ': Blank(),
+                        'Officer Signature': Blank()
+                    }
+                );
+                SaveData(
+                    'Vehicle Offline',
+                    "Vehicle Offline"
+                );
+                Navigate(
+                    Scr_home,
+                    ScreenTransition.UnCover
+                );
+                UpdateContext({mandatory_inc_det: false}),
+                UpdateContext({mandatory_inc_det: false})
+            );
+            Set(
+                VEResult1,
+                Blank()
+            );
+            Set(
+                UseDetails,
+                false
+            );
+            Set(
+                NEREsult,
+                Blank()
+            );
+            Clear(NEResultPossibles);
+        Size: =24
+        Text: ="Save & Continue"
+        Width: =530
+        X: =52
+        Y: =1024
+        ZIndex: =3
+
+    Label_incident_date As label:
+        Height: =47
+        Size: =21
+        Text: ="Incident date"
+        Width: =188
+        X: =52
+        Y: =96
+        ZIndex: =4
+
+    TextInput_incident_suffix As text:
+        BorderColor: =RGBA(128, 128, 128, 1)
+        Default: =Txt_incident_suffixvar
+        Height: =60
+        HintText: ="Incident suffix"
+        MaxLength: =4
+        OnChange: |-
+            =If(
+                Len(TextInput_incident_suffix.Text) > 0,
+                UpdateContext({madcol: Transparent}),
+                UpdateContext({madcol: LightGoldenRodYellow})
+            );
+            If(
+                Len(TextInput_incident_suffix.Text) > 4,
+                Reset(TextInput_incident_suffix)
+            );If(
+                Value(TextInput_incident_suffix.Text) <= 0,
+                Reset(TextInput_incident_suffix)
+            );
+            If(
+                IsMatch(
+                    TextInput_incident_suffix.Text,
+                    Digit & Digit & Digit & Digit
+                ),
+                UpdateContext({madcol: Transparent}),
+                UpdateContext({madcol: Transparent}),
+                Reset(TextInput_incident_suffix)
+            );
+            UpdateContext(
+                {
+                    incidentnumbervar: "CP" & "-" & Text(
+                        DateAdd(
+                            DatePicker_incident.SelectedDate,
+                            0
+                        ),
+                        "[$-en-GB]yyyymmdd"
+                    ) & "-" & TextInput_incident_suffix
+                }
+            )
+        OnSelect: |-
+            =If(
+                Len(TextInput_incident_suffix.Text) > 0,
+                UpdateContext({madcol: Transparent}),
+                UpdateContext({madcol: LightGoldenRodYellow})
+            );
+            If(
+                Len(TextInput_incident_suffix.Text) > 4,
+                Reset(TextInput_incident_suffix)
+            );If(
+                Value(TextInput_incident_suffix.Text) <= 0,
+                Reset(TextInput_incident_suffix)
+            );
+            If(
+                IsMatch(
+                    TextInput_incident_suffix.Text,
+                    Digit & Digit & Digit & Digit
+                ),
+                UpdateContext({madcol: Transparent}),
+                UpdateContext({madcol: Transparent}),
+                Reset(TextInput_incident_suffix)
+            );
+            UpdateContext(
+                {
+                    incidentnumbervar: "CP" & "-" & Text(
+                        DateAdd(
+                            DatePicker_incident.SelectedDate,
+                            0
+                        ),
+                        "[$-en-GB]yyyymmdd"
+                    ) & "-" & TextInput_incident_suffix
+                }
+            )
+        Reset: =true
+        Size: =21
+        Tooltip: ="Only 4 digits allowed"
+        VirtualKeyboardMode: =VirtualKeyboardMode.Numeric
+        Width: =545
+        X: =61
+        Y: =253
+        ZIndex: =6
+
+    TextInput_incident_no As text:
+        BorderColor: =RGBA(128, 128, 128, 1)
+        Default: =incidentnumbervar
+        Height: =60
+        HintText: ="Incident number"
+        Reset: =true
+        Size: =21
+        Width: =545
+        X: =61
+        Y: =355
+        ZIndex: =7
+
+    TextInput_entered_by As text:
+        BorderColor: =RGBA(128, 128, 128, 1)
+        Default: =First(Userlocal).Collarnumber  & " - " & First(Userlocal).Name
+        DisabledColor: =RGBA(0, 0, 0, 1)
+        DisplayMode: =DisplayMode.Disabled
+        Height: =60
+        HintText: =""
+        Size: =21
+        Width: =545
+        X: =61
+        Y: =459
+        ZIndex: =8
+
+    Label_entering_by As label:
+        Height: =41
+        Size: =21
+        Text: |-
+            ="Entered by:"
+        Width: =545
+        X: =61
+        Y: =413
+        ZIndex: =9
+
+    Txt_incident_autogen_number As text:
+        AccessibleLabel: ="Auto generated number"
+        BorderColor: =RGBA(128, 128, 128, 1)
+        Default: |
+            =User().FullName &"-"&Round(Rand()*1000000000,0)
+        DisplayMode: =DisplayMode.Disabled
+        Height: =60
+        HintText: ="Auto Generated Number"
+        MaxLength: =1000
+        OnChange: =
+        OnSelect: =
+        Reset: =true
+        Size: =21
+        Tooltip: ="Only 4 digits allowed"
+        VirtualKeyboardMode: =VirtualKeyboardMode.Numeric
+        Visible: =false
+        Width: =545
+        X: =55
+        Y: =829
+        ZIndex: =10
+
+    Label_Unique_Number As label:
+        Height: =42
+        Size: =21
+        Text: |-
+            ="Unique Number:"
+        Visible: =false
+        Width: =545
+        X: =58
+        Y: =219
+        ZIndex: =11
+
+    Label_incident_suffix As label:
+        Height: =42
+        Size: =21
+        Text: ="Incident Suffix (if applicable)"
+        Width: =545
+        X: =61
+        Y: =211
+        ZIndex: =12
+
+    Label_Incident_Number As label:
+        Height: =42
+        Size: =21
+        Text: ="Incident Number"
+        Width: =545
+        X: =61
+        Y: =313
+        ZIndex: =13
+
+    Label4_2 As label:
+        BorderColor: =RGBA(255, 0, 0, 1)
+        BorderThickness: =1
+        Color: =RGBA(255, 0, 0, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =191
+        Size: =21
+        Text: ="Please fill in all mandatory fields"
+        Visible: =mandatory_inc_det
+        Width: =211
+        X: =391
+        Y: =594
+        ZIndex: =14
+
+    Label1_1 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =42
+        Size: =21
+        Text: =Vehicle_Primary_key
+        Width: =440
+        X: =100
+        Y: =45
+        ZIndex: =15
+
+    Icon_back As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: |-
+            =If(flagback=false,Set(i, i - 1);Set(flagback,true);
+                  Set(
+                        
+                            Vehicle_Primary_key, TextInput_incident_no.Text & " No:" & i
+                        
+                    ));Navigate(Scr_home,UnCoverRight);Set(flagback,true);
+        X: =27
+        Y: =17
+        ZIndex: =16
+
+    DatePicker_incident As datepicker:
+        BorderColor: =RGBA(128, 128, 128, 1)
+        Height: =60
+        IconBackground: =RGBA(128, 128, 128, 1)
+        InputTextPlaceholder: ="DD/MM/YYYY"    
+        IsEditable: =true
+        OnChange: |
+            =UpdateContext(
+                {
+                    incidentnumbervar: "CP" & "-" & Text(
+                        DateAdd(
+                            DatePicker_incident.SelectedDate,
+                            0
+                        ),
+                        "[$-en-GB]yyyymmdd"
+                    ) & "-" & TextInput_incident_suffix
+                }
+            );
+            If(
+                Self.SelectedDate > Today(),
+                Reset(DatePicker_incident)
+            );
+        OnSelect: =If(DatePicker_incident.SelectedDate > Today(), Reset(DatePicker_incident));
+        Size: =21
+        Width: =545
+        X: =61
+        Y: =143
+        ZIndex: =17
+

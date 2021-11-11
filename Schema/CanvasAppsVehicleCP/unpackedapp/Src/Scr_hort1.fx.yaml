@@ -1,0 +1,589 @@
+Scr_hort1 As screen:
+    OnHidden: =Reset(PenInput_HORT1_sign);
+    OnVisible: |
+        =Set(
+            madcolHort,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolHort: LightGoldenRodYellow});
+        Set(
+            madcolHort1,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolHort1: LightGoldenRodYellow});
+        Set(
+            madcolHort2,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolHort2: LightGoldenRodYellow});
+        Set(
+            madcolHort3,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolHort3: LightGoldenRodYellow});
+        Set(
+            madcolHort4,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolHort4: LightGoldenRodYellow});
+        Set(
+            madcolHort5,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolHort5: LightGoldenRodYellow});
+        Set(
+            madcolHort6,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolHort6: LightGoldenRodYellow});
+        Set(
+            madcolHort7,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolHort7: LightGoldenRodYellow});
+        Set(
+            madcolHort8,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolHort8: LightGoldenRodYellow});
+        Set(
+            madcolHort9,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolHort9: LightGoldenRodYellow});
+        Set(
+            madcolHort10,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolHort10: LightGoldenRodYellow});
+        Set(
+            madcolHort11,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolHort11: LightGoldenRodYellow});
+        Set(
+            madcolHort12,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolHort12: LightGoldenRodYellow});
+        Set(
+            madcolHort13,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolHort13: LightGoldenRodYellow});
+        
+        Set(
+            madcolHort14,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolHort14: LightGoldenRodYellow});
+        
+        Set(H1,0);
+        Set(H2,0);
+        Set(H3,0);
+        Set(H4,0);
+        
+        UpdateContext({BlankImage1 : PenInput_HORT1_sign.Image, locSigDateTime1: Now()});
+        
+        
+        UpdateContext({hasBeenSigned:true});
+        If(LookUp(TrOffOffline,TicketTypename = "HORT1" And OffenceKey=Dropdown_Hort1_key.Selected.Key).Hort1sign <> Blank() ,UpdateContext({hasBeenSigned:true}),UpdateContext({hasBeenSigned:false}))
+        
+
+    Label_header_HORT1 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="HORT1"
+        VerticalAlign: =VerticalAlign.Top
+        Width: =640
+        ZIndex: =1
+
+    Canvas_Hort1 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1049
+        Width: =Parent.Width
+        Y: =87
+        ZIndex: =3
+
+        DataCard_Hort1 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =1558
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Dropdown_Hort1_key As dropdown:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                Default: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).Key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                Items: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =27
+                ZIndex: =1
+
+            Radio_HORT1Printed As radio:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_Hort1_key.Selected.Key And TicketTypename ="HORT1").'HORT1 Printed'
+                DisplayMode: =If(hasBeenSigned =true,DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =White
+                Height: =98
+                Items: =["Yes", "No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_HORT1Printed.Selected.Value)>0,UpdateContext({madcolHort6:White}),UpdateContext({madcolHort6:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Radio_HORT1Printed.Selected.Value)>0,UpdateContext({madcolHort6:White}),UpdateContext({madcolHort6:LightGoldenRodYellow}))
+                RadioBorderColor: =RGBA(116, 116, 116, 1)
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =615+H2+H1
+                ZIndex: =2
+
+            label_HORT1_Printed As label:
+                Height: =66
+                OnSelect: =
+                Size: =21
+                Text: ="HORT1 printed ?"
+                Width: =545
+                X: =40
+                Y: =542+H2+H1
+                ZIndex: =3
+
+            TextInput_Hort1_SerialNumber As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_Hort1_key.Selected.Key And TicketTypename ="HORT1").'HORT1 Serial Number'
+                DisplayMode: =If(hasBeenSigned =true,DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =White
+                Height: =70
+                HintText: ="HORT1 serial no."
+                OnChange: |-
+                    =If(Len(TextInput_Hort1_SerialNumber.Text)>0,UpdateContext({madcolHort7:White}),UpdateContext({madcolHort7:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(TextInput_Hort1_SerialNumber.Text)>0,UpdateContext({madcolHort7:White}),UpdateContext({madcolHort7:LightGoldenRodYellow}))
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =770+H2+H1
+                ZIndex: =4
+
+            Button_Hort1_save_continue As button:
+                DisplayMode: =H1sign
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =72
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =If(
+                        CountRows(
+                            Filter(
+                                TrOffOffline,
+                                TicketTypename = "HORT1"
+                            )
+                        ) > 0,
+                        UpdateIf(
+                            TrOffOffline,
+                            TicketTypename = "HORT1" And OffenceKey = Dropdown_Hort1_key.Selected.Key,
+                            {
+                                TicketTypeTrafficOffence: LookUp(
+                                    OffencesOffline,
+                                    cp_name = "HORT1"
+                                ).cp_tickettypeid,
+                                TicketTypename: "HORT1",
+                                'Documents Name': Left(
+                                    Concat(
+                                        ComboBox_Hort1_DocumentType.SelectedItems.cp_name,
+                                        cp_name & ","
+                                    ),
+                                    Len(
+                                        Concat(
+                                            ComboBox_Hort1_DocumentType.SelectedItems.cp_name,
+                                            cp_name & ","
+                                        )
+                                    ) - 1
+                                ),
+                                Documents: Left(
+                                    Concat(
+                                        ComboBox_Hort1_DocumentType.SelectedItems.cp_vehicledocumentid,
+                                        cp_vehicledocumentid & ","
+                                    ),
+                                    Len(
+                                        Concat(
+                                            ComboBox_Hort1_DocumentType.SelectedItems.cp_vehicledocumentid,
+                                            cp_vehicledocumentid & ","
+                                        )
+                                    ) - 1
+                                ),
+                                'Other Documents': TextInput_Hort1_OtherDocuments.Text,
+                                'Check or Record Name': Dropdown_Hort1_CheckOrRecord.Selected.cp_name,
+                                'Check or Record': Dropdown_Hort1_CheckOrRecord.Selected.cp_lookupvalueid,
+                                'Produce Station Name': Dropdown_ProduceStation.Selected.cp_name,
+                                'Produce Station': Dropdown_ProduceStation.Selected.cp_lookupvalueid,
+                                'Out of force station': TextInput_Hort1_OutwithForceStation.Text,
+                                'HORT1 Printed': Radio_HORT1Printed.Selected.Value,
+                                'HORT1 Serial Number': TextInput_Hort1_SerialNumber.Text,
+                                Hort1sign: If(hasBeenSigned = true, PenInput_HORT1_sign.Image, Blank())
+                            }
+                        )
+                    );
+                    UpdateContext(
+                        {
+                            rec: LookUp(
+                                TrOffOffline,
+                                TicketTypename = "HORT1" And OffenceKey = Dropdown_Hort1_key.Selected.Key
+                            )
+                        }
+                    );
+                    UpdateIf(
+                        'Vehicle Offline',
+                        Key = Dropdown_Hort1_key.Selected.Key,
+                        {
+                            HORT1valid: And(
+                                !IsBlank(rec.'Documents Name'),
+                                If(
+                                    rec.'Documents Name' in "Other Documents (Specify)",
+                                    !IsBlank(rec.'Other Documents'),
+                                    !IsBlank(rec.'Documents Name')
+                                ),
+                            /*If(!IsBlank(Filter(TrOffOffline, TicketTypename = "HORT1" And OffenceKey = Dropdown_Hort1_key.Selected.Key And "Other Documents (Specify)" in "cp_name")),!IsBlank(rec.'Other Documents'))),*/
+                                !IsBlank(rec.'Check or Record Name'),
+                                !IsBlank(rec.'Produce Station Name'),
+                                !IsBlank(rec.Hort1sign)
+                            )
+                        }
+                    );
+                    Set(
+                        H1sign,
+                        DisplayMode.Disabled
+                    );
+                    SaveData(
+                        TrOffOffline,
+                        "TrOffOffline"
+                    );
+                    Navigate(
+                        Scr_home,
+                        ScreenTransition.Cover
+                    )
+                Size: =24
+                Text: ="Save & Continue"
+                Width: =545
+                X: =40
+                Y: =1477+H2+H1
+                ZIndex: =5
+
+            Label_Hort1_serial_number As label:
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="HORT1 serial no"
+                Width: =545
+                X: =40
+                Y: =713+H2+H1
+                ZIndex: =6
+
+            Label_Hort1_DocumentType As label:
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Documents"
+                Width: =545
+                X: =40
+                Y: =123
+                ZIndex: =7
+
+            Dropdown_Hort1_CheckOrRecord As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_Hort1_key.Selected.Key And TicketTypename ="HORT1").'Check or Record Name'
+                DisplayMode: =If(hasBeenSigned =true,DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =madcolHort2
+                Height: =70
+                Items: =CheckorRecordoffline
+                OnChange: |-
+                    =If(Len(Dropdown_Hort1_CheckOrRecord.Selected.cp_name)>0,UpdateContext({madcolHort2:White}),UpdateContext({madcolHort2:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Dropdown_Hort1_CheckOrRecord.Selected.cp_name)>0,UpdateContext({madcolHort2:White}),UpdateContext({madcolHort2:LightGoldenRodYellow}))
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =287+H1
+                ZIndex: =8
+
+            Label_CheckOrRecord As label:
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Check Or Record"
+                Width: =545
+                X: =40
+                Y: =240+H1
+                ZIndex: =9
+
+            Dropdown_ProduceStation As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_Hort1_key.Selected.Key And TicketTypename ="HORT1").'Produce Station Name'
+                DisplayMode: =If(hasBeenSigned =true,DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =madcolHort3
+                Height: =70
+                Items: =ProduceStationoffline
+                OnChange: |-
+                    =If(Len(Dropdown_ProduceStation.Selected.cp_name)>0,UpdateContext({madcolHort3:White}),UpdateContext({madcolHort3:LightGoldenRodYellow}));
+                    If(Dropdown_ProduceStation.Selected.cp_name="Out of Force",UpdateContext({H2:H2+200}),UpdateContext({H2:0}))
+                OnSelect: |-
+                    =If(Len(Dropdown_ProduceStation.Selected.cp_name)>0,UpdateContext({madcolHort3:White}),UpdateContext({madcolHort3:LightGoldenRodYellow}));
+                    If(Dropdown_ProduceStation.Selected.cp_name="Out of Force",UpdateContext({H2:H2+200}),UpdateContext({H2:0}))
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =424+H1
+                ZIndex: =10
+
+            Label_Hort1_ProduceStation As label:
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Produce at Station"
+                Width: =545
+                X: =40
+                Y: =374+H1
+                ZIndex: =11
+
+            Label_Hort1_OutwithForceStation As label:
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Out of force station"
+                Visible: =If(Dropdown_ProduceStation.Selected.cp_name="Out of Force",true,false)
+                Width: =545
+                X: =49
+                Y: =517+H1
+                ZIndex: =12
+
+            TextInput_Hort1_OtherDocuments As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(TrOffOffline,OffenceKey=Drpdn_person_key.Selected.Key).'Other Documents'
+                Fill: =madcolHort1
+                Height: =158
+                HintText: ="Please specify other documents"
+                Mode: =TextMode.MultiLine
+                OnChange: |-
+                    =If(Len(TextInput_Hort1_OtherDocuments.Text)>0,UpdateContext({madcolHort1:White}),UpdateContext({madcolHort1:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(TextInput_Hort1_OtherDocuments.Text)>0,UpdateContext({madcolHort1:White}),UpdateContext({madcolHort1:LightGoldenRodYellow}))
+                Size: =21
+                Visible: =docuvis
+                Width: =545
+                X: =40
+                Y: =309
+                ZIndex: =13
+
+            TextInput_Hort1_OutwithForceStation As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(TrOffOffline,OffenceKey=Drpdn_person_key.Selected.Key).'Out of force station'
+                Fill: =madcolHort4
+                Height: =146
+                Mode: =TextMode.MultiLine
+                OnChange: |
+                    =If(Len(TextInput_Hort1_OutwithForceStation.Text)>0,UpdateContext({madcolHort4:White}),UpdateContext({madcolHort4:LightGoldenRodYellow}));
+                    
+                    
+                OnSelect: |
+                    =If(Len(TextInput_Hort1_OutwithForceStation.Text)>0,UpdateContext({madcolHort4:White}),UpdateContext({madcolHort4:LightGoldenRodYellow}));
+                Size: =21
+                Visible: =If(Dropdown_ProduceStation.Selected.cp_name="Out of Force",true,false)
+                Width: =545
+                X: =45
+                Y: =567+H1
+                ZIndex: =14
+
+            Label_asterik_OtherDocument As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Visible: =docuvis
+                Width: =22
+                X: =572
+                Y: =277
+                ZIndex: =15
+
+            Label_asterik_Outwithforcestation As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =572
+                Y: =255+H1
+                ZIndex: =16
+
+            Label_asterik_Produce_Station As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =25
+                Size: =21
+                Text: ="*"
+                Width: =24
+                X: =571
+                Y: =399+H1
+                ZIndex: =17
+
+            Label_asterik_otuofforcestation As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =25
+                Size: =21
+                Text: ="*"
+                Visible: =If(Dropdown_ProduceStation.Selected.cp_name="Out of Force",true,false)
+                Width: =24
+                X: =572
+                Y: =542+H1
+                ZIndex: =18
+
+            Label_Hort1_Check_or_record As label:
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Documents"
+                Visible: =docuvis
+                Width: =545
+                X: =40
+                Y: =256
+                ZIndex: =19
+
+            Label_asterik_DocumentType As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =571
+                Y: =141
+                ZIndex: =20
+
+            ComboBox_Hort1_DocumentType As combobox:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                ChevronBackground: =RGBA(116, 116, 116, 1)
+                ChevronHoverBackground: =Self.HoverBorderColor
+                Default: =LookUp(Documenttypeoffline,LookUp(TrOffOffline,OffenceKey=Dropdown_Hort1_key.Selected.Key And TicketTypename ="HORT1").'Documents Name'=cp_name)
+                DefaultSelectedItems: =LookUp(Documenttypeoffline,LookUp(TrOffOffline,OffenceKey=Dropdown_Hort1_key.Selected.Key And TicketTypename ="HORT1").'Documents Name'=cp_name)
+                DisplayFields: =["cp_name"]
+                DisplayMode: =If(hasBeenSigned =true,DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =madcolHort
+                Height: =70
+                InputTextPlaceholder: ="Country"
+                IsSearchable: =false
+                Items: =Documenttypeoffline
+                OnChange: |-
+                    =If(Len(ComboBox_Hort1_DocumentType.Selected.cp_name)>0,UpdateContext({madcolHort:White}),UpdateContext({madcolHort:LightGoldenRodYellow}));Set(selection,"Other Documents (Specify)");
+                    If(ComboBox_Hort1_DocumentType.Selected.cp_name in selection,
+                    UpdateContext({H1:250});UpdateContext({docuvis:true}));If(ComboBox_Hort1_DocumentType.Selected.cp_name<>selection,
+                    UpdateContext({H1:0});UpdateContext({docuvis:false}));If(Find(selection,Concat(ComboBox_Hort1_DocumentType.SelectedItems.cp_name,cp_name&","))>0,UpdateContext({H1:250});UpdateContext({docuvis:true}));
+                OnSelect: |
+                    =If(Len(ComboBox_Hort1_DocumentType.Selected.cp_name)>0,UpdateContext({madcolHort:White}),UpdateContext({madcolHort:LightGoldenRodYellow}));
+                    
+                Reset: =resetall
+                SearchFields: =["cp_name"]
+                SearchItems: =[]
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =173
+                ZIndex: =21
+
+            TextInput_Sign_and_Submit_SignatureDateTime_2 As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: |-
+                    =Text(locSigDateTime1, "[$-en-GB]dd/mm/yyyy hh:mm:ss")
+                DisplayMode: =DisplayMode.Disabled
+                Height: =67
+                HintText: ="Date/time of signature"
+                OnSelect: =
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1373+H2+H1
+                ZIndex: =22
+
+            Label_Sign_and_Submit_TFOffenderSignature_2 As label:
+                Height: =68
+                OnSelect: =
+                Size: =21
+                Text: ="Offender Signature"
+                Width: =545
+                X: =40
+                Y: =1014+H2+H1
+                ZIndex: =23
+
+            "'Image_traffic_offence signature_1' As image":
+                Height: =255
+                Image: |
+                    =LookUp(TrOffOffline,TicketTypename = "HORT1" And OffenceKey=Dropdown_Hort1_key.Selected.Key).Hort1sign 
+                Visible: =If(LookUp(TrOffOffline,TicketTypename = "HORT1" And OffenceKey=Dropdown_Hort1_key.Selected.Key).Hort1sign = Blank(),false,true)
+                Width: =545
+                X: =40
+                Y: =1070+H2+H1
+                ZIndex: =24
+
+            PenInput_HORT1_sign As inkControl:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                DisplayMode: =If(!IsBlank(ComboBox_Hort1_DocumentType.Selected.cp_name) And !IsBlank(Dropdown_Hort1_CheckOrRecord.Selected.cp_name) And !IsBlank(Dropdown_ProduceStation.Selected.cp_name) ,DisplayMode.Edit,DisplayMode.Disabled)
+                Height: =255
+                OnSelect: |-
+                    =UpdateContext({hasBeenSigned:true})
+                Reset: =true
+                Visible: =If(LookUp(TrOffOffline,TicketTypename = "HORT1" And OffenceKey=Dropdown_Hort1_key.Selected.Key).Hort1sign = Blank(),true,false)
+                Width: =545
+                X: =32
+                Y: =1072
+                ZIndex: =25
+
+            Label1_18 As label:
+                Fill: =LightGoldenRodYellow
+                Height: =135
+                Size: =21
+                Text: ="I acknowledge the above statement is correct and I have understood the caution"
+                Width: =545
+                X: =40
+                Y: =864+H2+H1
+                ZIndex: =26
+
+    Label1_7 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =42
+        Size: =21
+        Text: =Vehicle_Primary_key
+        Width: =440
+        X: =100
+        Y: =45
+        ZIndex: =4
+
+    Icon_back7 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home,UnCoverRight)
+        X: =27
+        Y: =17
+        ZIndex: =5
+

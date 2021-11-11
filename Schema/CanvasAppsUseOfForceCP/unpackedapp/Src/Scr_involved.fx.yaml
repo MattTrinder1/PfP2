@@ -1,0 +1,1849 @@
+"Scr_involved As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    OnVisible: |
+        =Set(AllReset, true);
+               UpdateContext({AllReset: true});
+        Set(
+            addcontactmethod,
+            false
+        );
+        UpdateContext({addcontactmethod: false});
+        Set(
+            contactworkphone,
+            false
+        );
+        UpdateContext({contactworkphone: false});
+        Set(
+            contactmail,
+            false
+        );
+        UpdateContext({contactmail: false});
+        Set(
+            contacthomephone,
+            false
+        );
+        UpdateContext({contacthomephone: false});
+        Set(
+            contactmobile,
+            false
+        );
+        UpdateContext({contactmobile: false});
+        Set(
+            occupation,
+            false
+        );
+        UpdateContext({occupation: false});
+        Set(
+            ydetails,
+            0
+        );
+        Set(
+            y1details,
+            0
+        );Set(madcol,LightGoldenRodYellow);UpdateContext({madcol:LightGoldenRodYellow});Set(madcolA,LightGoldenRodYellow);UpdateContext({madcolA:LightGoldenRodYellow});
+        
+        Set(madcolB,LightGoldenRodYellow);UpdateContext({madcolB:LightGoldenRodYellow});
+        
+        Set(madcolC,LightGoldenRodYellow);UpdateContext({madcolC:LightGoldenRodYellow});
+        
+        Set(madcolD,LightGoldenRodYellow);UpdateContext({madcolD:LightGoldenRodYellow});
+        
+        Set(madcolE,LightGoldenRodYellow);UpdateContext({madcolE:LightGoldenRodYellow});
+        
+        
+        Set(madcolF,LightGoldenRodYellow);UpdateContext({madcolF:LightGoldenRodYellow});
+        
+        Set(madcolF,LightGoldenRodYellow);UpdateContext({madcolF:LightGoldenRodYellow});
+        Set(madcolG,LightGoldenRodYellow);UpdateContext({madcolG:LightGoldenRodYellow});
+        Set(madcolH,LightGoldenRodYellow);UpdateContext({madcolH:LightGoldenRodYellow});
+        Set(madcolI,LightGoldenRodYellow);UpdateContext({madcolI:LightGoldenRodYellow});
+        Set(madcolJ,LightGoldenRodYellow);UpdateContext({madcolJ:LightGoldenRodYellow});
+        Set(madcolK,LightGoldenRodYellow);UpdateContext({madcolK:LightGoldenRodYellow});
+        Set(madcolL,LightGoldenRodYellow);UpdateContext({madcolL:LightGoldenRodYellow});
+        Set(madcolM,LightGoldenRodYellow);UpdateContext({madcolM:LightGoldenRodYellow});
+        Set(madcolM,LightGoldenRodYellow);UpdateContext({madcolM:LightGoldenRodYellow});
+        Set(madcolN,LightGoldenRodYellow);UpdateContext({madcolN:LightGoldenRodYellow});
+        Set(madcolO,LightGoldenRodYellow);UpdateContext({madcolO:LightGoldenRodYellow});
+        
+        If(Len(Drpdn_role.Selected.cp_name)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}));
+        If(
+            Len(Txt_forename_1.Text) > 0,
+            UpdateContext({madcol: White}),
+            UpdateContext({madcol: LightGoldenRodYellow})
+        );
+        If(
+            Len(Txt_surname_1.Text) > 0,
+            UpdateContext({madcolA: White}),
+            UpdateContext({madcolA: LightGoldenRodYellow})
+        );
+        If(Len(Drpdn_percieved_age.Selected.cp_name)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}));
+        If(Len(Drpdn_subject_gender.Selected.cp_name)>0,UpdateContext({madcolL:White}),UpdateContext({madcolL:LightGoldenRodYellow}));
+        If(Len(Drpdn_ethnicity.Selected.cp_name)>0,UpdateContext({madcolL:White}),UpdateContext({madcolL:LightGoldenRodYellow}));
+        Set(PNCSearchReason,false);
+        
+        If(
+            Radio_Date_of_birth.Selected.Value = "Yes",
+            Set(
+                Personinvolved2,
+                 280
+            )
+        );
+        If(
+            Radio_Date_of_birth.Selected.Value = "No",
+            Set(
+                Personinvolved2,
+                0
+            )
+        );
+        If(Radio_additional_names.Selected.Value="Yes",Set(Personinvolved1,280));
+        If(Radio_additional_names.Selected.Value="No",Set(Personinvolved1,0));
+        If(Len(Drpdn_role.Selected.cp_name)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}));
+        If(Drpdn_role.SelectedText.Value="Subject (Known)",Set(persondetails,500));
+        If(Or(Drpdn_role.SelectedText.Value="Subject (Not Known)" Or Drpdn_role.SelectedText.Value=""),Set(persondetails,0))
+
+    RectQuickActionBar_header_1 As rectangle:
+        Height: =88
+        Width: =Parent.Width
+        ZIndex: =1
+
+    Lbl_header_details_1 As label:
+        Align: =Align.Center
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =88
+        Size: =27
+        Text: ="Person Involved"
+        Width: =Parent.Width
+        ZIndex: =2
+
+    Canvas_details_1 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1048
+        Width: =Parent.Width
+        Y: =RectQuickActionBar_header_1.Y + RectQuickActionBar_header_1.Height
+        ZIndex: =3
+
+        DataCard_details_scroll_1 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =1272
+            Width: =Parent.Width
+            X: =0
+            Y: =0+persondetails+Personinvolved1+Personinvolved2
+            ZIndex: =1
+
+            Drpdn_incident_key_1 As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =Use_of_force_Primary_key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: ='Use of force offline'.Key
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =27
+                ZIndex: =2
+
+            Drpdn_role As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =LookUp('Use of force offline',Key=Drpdn_incident_key_1.Selected.Key).subjectrolename
+                Fill: =madcolO
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =SubjectRoleoffline
+                OnChange: |
+                    =
+                    If(Len(Drpdn_role.Selected.cp_name)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}));
+                    If(Drpdn_role.SelectedText.Value="Subject (Known)",Set(persondetails,500));
+                    If(Or(Drpdn_role.SelectedText.Value="Subject (Not Known)" Or Drpdn_role.SelectedText.Value=""),Set(persondetails,0));
+                    
+                    
+                    If(Or(Drpdn_role.SelectedText.Value="Subject (Not Known)" Or Drpdn_role.SelectedText.Value=""),Reset(Radio_Date_of_birth))
+                OnSelect: |
+                    =If(Len(Drpdn_role.Selected.cp_name)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}));
+                    
+                    
+                    
+                    
+                PressedFill: =RGBA(230, 230, 230, 1)
+                Reset: =AllReset
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =147
+                ZIndex: =6
+
+            Txt_forename_1 As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: |-
+                    =//LookUp('Use of force offline',Key=Drpdn_incident_key_1.Selected.Key).subjectforename
+                    If(
+                        IsBlank(
+                            LookUp(
+                                'Use of force offline',
+                                Key = Drpdn_incident_key_1.Selected.Key
+                            ).subjectforename
+                        ),
+                        If(
+                            !IsBlank(First(NEREsult.records)),
+                            Trim(
+                                Last(
+                                    Split(
+                                        LookUp(
+                                            NEResultPossibles,
+                                            pncId = VARCheckedItem,
+                                            name
+                                        ),
+                                        ","
+                                    )
+                                ).Result
+                            ),
+                            LookUp(
+                                'Use of force offline',
+                                Key = Drpdn_incident_key_1.Selected.Key
+                            ).subjectforename
+                        ),
+                        LookUp(
+                            'Use of force offline',
+                            Key = Drpdn_incident_key_1.Selected.Key
+                        ).subjectforename
+                    )
+                Fill: =madcol
+                Height: =70
+                HintText: ="ForeName(s)"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |-
+                    =If(
+                        Len(Txt_forename_1.Text) > 0,
+                        UpdateContext({madcol: White}),
+                        UpdateContext({madcol: LightGoldenRodYellow})
+                    );
+                    
+                    If(IsMatch(Txt_forename_1.Text,"[a-zA-Z\s]+"),Green,Reset(Txt_forename)
+                    
+                    );
+                OnSelect: |
+                    =If(IsMatch(Txt_forename_1.Text,"[a-zA-Z\s]+"),Green,Reset(Txt_forename)
+                    
+                    );
+                    
+                    If(
+                        Len(Txt_forename_1.Text) > 0,
+                        UpdateContext({madcol: White}),
+                        UpdateContext({madcol: LightGoldenRodYellow})
+                    );
+                Reset: =AllReset
+                Size: =21
+                Visible: =If(Drpdn_role.SelectedText.Value="Subject (Known)",true,false)
+                Width: =545
+                X: =40
+                Y: =266
+                ZIndex: =7
+
+            Txt_surname_1 As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: |-
+                    =//LookUp('Use of force offline',Key=Drpdn_incident_key_1.Selected.Key).subjectSurname
+                    If(
+                        IsBlank(
+                            LookUp(
+                                'Use of force offline',
+                    Key=Drpdn_incident_key_1.Selected.Key).subjectSurname
+                        ),
+                        If(
+                            !IsBlank(First(NEREsult.records)),
+                            First(
+                                Split(
+                                    LookUp(NEResultPossibles, pncId = VARCheckedItem,name),
+                                    ","
+                                )
+                            ).Result,
+                            LookUp(
+                                'Use of force offline',
+                    Key=Drpdn_incident_key_1.Selected.Key).subjectSurname
+                        ),
+                        LookUp(
+                            'Use of force offline',
+                    Key=Drpdn_incident_key_1.Selected.Key).subjectSurname
+                    )
+                Fill: =madcolA
+                Height: =70
+                HintText: ="Surname"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |-
+                    =If(
+                        Len(Txt_surname_1.Text) > 0,
+                        UpdateContext({madcolA: White}),
+                        UpdateContext({madcolA: LightGoldenRodYellow})
+                    );
+                OnSelect: |-
+                    =If(
+                        Len(Txt_surname_1.Text) > 0,
+                        UpdateContext({madcolA: White}),
+                        UpdateContext({madcolA: LightGoldenRodYellow})
+                    );
+                Reset: =AllReset
+                Size: =21
+                Visible: =If(Drpdn_role.SelectedText.Value="Subject (Known)",true,false)
+                Width: =If(And(!IsBlank(Txt_surname_1.Text), !IsBlank(Txt_forename_1.Text)), 500,545)
+                X: =40
+                Y: =384
+                ZIndex: =8
+
+            Label_ofiicer_age_2 As label:
+                Height: =59
+                Size: =21
+                Text: ="Role"
+                Width: =545
+                X: =40
+                Y: =97
+                ZIndex: =9
+
+            Label_retired_11 As label:
+                Height: =66
+                Size: =21
+                Text: |-
+                    ="Additional names?
+                    "
+                Visible: =If(Drpdn_role.SelectedText.Value="Subject (Known)",true,false)
+                Width: =560
+                X: =41
+                Y: =447
+                ZIndex: =10
+
+            Radio_additional_names As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('Use of force offline',Key=Drpdn_incident_key_1.Selected.Key).subjectadditionalnames
+                Height: =97
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: =
+                OnSelect: |-
+                    =If(Radio_additional_names.Selected.Value="Yes",Set(Personinvolved1,280));
+                    If(Radio_additional_names.Selected.Value="No",Set(Personinvolved1,0));
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Reset: =AllReset
+                Size: =21
+                Visible: =If(Drpdn_role.SelectedText.Value="Subject (Known)",true,false)
+                Width: =335
+                X: =40
+                Y: =497
+                ZIndex: =11
+
+            Label_retired_25 As label:
+                Height: =66
+                Size: =21
+                Text: |-
+                    ="Date of birth known?
+                    "
+                Visible: =If(Drpdn_role.SelectedText.Value="Subject (Known)",true,false)
+                Width: =560
+                X: =40
+                Y: =594+Personinvolved1
+                ZIndex: =15
+
+            Radio_Date_of_birth As radio:
+                BorderStyle: =BorderStyle.None
+                Default: |
+                    =//LookUp('Use of force offline',Key=Drpdn_incident_key_2.Selected.Key).subjectdateofbirthknown
+                    
+                    If(
+                     IsBlank(
+                            LookUp(
+                               'Use of force offline',
+                                Key = Drpdn_incident_key_1.Selected.Key
+                            ).subjectdateofbirthknown
+                       ),
+                        If(
+                            !IsBlank(First(NEREsult.records)),
+                            If(!IsBlank(LookUp(NEResultPossibles, pncId = VARCheckedItem,dateOfBirth)),"Yes"),
+                            
+                            LookUp(
+                               'Use of force offline',
+                                Key = Drpdn_incident_key_1.Selected.Key
+                            ).subjectdateofbirthknown
+                    
+                        ),
+                        LookUp(
+                               'Use of force offline',
+                                Key = Drpdn_incident_key_1.Selected.Key
+                            ).subjectdateofbirthknown
+                    
+                    )
+                Fill: =If(!IsBlank(Self.Selected.Value),White,LightGoldenRodYellow)
+                Height: =97
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: =
+                OnSelect: |
+                    =    Set(
+                            Personinvolved2,
+                            0
+                        );
+                    If(
+                        Radio_Date_of_birth.Selected.Value = "Yes",
+                        Set(
+                            Personinvolved2,
+                            Personinvolved2 + 280
+                        )
+                    );
+                    If(
+                        Radio_Date_of_birth.Selected.Value = "No",
+                        Set(
+                            Personinvolved2,
+                            0
+                        )
+                    );
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Reset: =AllReset
+                Size: =21
+                Visible: =If(Drpdn_role.SelectedText.Value="Subject (Known)",true,false)
+                Width: =335
+                X: =40
+                Y: =663+Personinvolved1
+                ZIndex: =16
+
+            Label_ofiicer_age_11 As label:
+                Height: =59
+                Size: =21
+                Text: ="Forename"
+                Visible: =If(Drpdn_role.SelectedText.Value="Subject (Known)",true,false)
+                Width: =545
+                X: =40
+                Y: =211
+                ZIndex: =21
+
+            Label_ofiicer_age_12 As label:
+                Height: =59
+                Size: =21
+                Text: ="Surname"
+                Visible: =If(Drpdn_role.SelectedText.Value="Subject (Known)",true,false)
+                Width: =545
+                X: =40
+                Y: =325
+                ZIndex: =22
+
+            Label_star_address_41 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Visible: =If(Drpdn_role.SelectedText.Value="Subject (Known)",true,false)
+                Width: =22
+                X: =565
+                Y: =228
+                ZIndex: =24
+
+            Label_star_address_42 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =112
+                ZIndex: =25
+
+            Label_star_address_43 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Visible: =If(Drpdn_role.SelectedText.Value="Subject (Known)",true,false)
+                Width: =22
+                X: =565
+                Y: =341
+                ZIndex: =26
+
+            Txt_mobileph_1 As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =
+                Height: =70
+                HintText: ="Mobile phone"
+                Size: =21
+                Visible: =contactmobile
+                Width: =545
+                X: =51
+                Y: =942
+                ZIndex: =27
+
+            Drpdn_subject_gender As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: |-
+                    =//LookUp('Use of force offline',Key=Drpdn_incident_key_1.Selected.Key).subjectpercievedgendername
+                    
+                    If(
+                        IsBlank(
+                            LookUp(
+                                'Use of force offline',
+                    Key=Drpdn_incident_key_1.Selected.Key).subjectpercievedgendername
+                        ),
+                        If(
+                            !IsBlank(First(NEREsult.records)),
+                            Switch(
+                                Proper(LookUp(NEResultPossibles, pncId = VARCheckedItem,gender)),
+                                "M",
+                                "Male",
+                                "F",
+                                "Female",
+                                "U",
+                                "Unknown",
+                                Proper(LookUp(NEResultPossibles, pncId = VARCheckedItem,gender))
+                            ),
+                            LookUp(
+                                'Use of force offline',
+                                Key=Drpdn_incident_key_1.Selected.Key).subjectpercievedgendername
+                        ),
+                        LookUp(
+                            'Use of force offline',
+                    Key=Drpdn_incident_key_1.Selected.Key).subjectpercievedgendername
+                    )
+                Fill: =madcolL
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =Genderoffline
+                OnChange: |-
+                    =If(Len(Drpdn_subject_gender.Selected.cp_name)>0,UpdateContext({madcolL:White}),UpdateContext({madcolL:LightGoldenRodYellow}))
+                OnSelect: |
+                    =If(Len(Drpdn_subject_gender.Selected.cp_name)>0,UpdateContext({madcolL:White}),UpdateContext({madcolL:LightGoldenRodYellow}))
+                PressedFill: =RGBA(230, 230, 230, 1)
+                Reset: =AllReset
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =461+persondetails+Personinvolved1+Personinvolved2
+                ZIndex: =28
+
+            Lbl_preferedcontactmethod_8 As label:
+                Height: =59
+                Size: =21
+                Text: ="Perceived Gender"
+                Width: =530
+                X: =40
+                Y: =398+persondetails+Personinvolved1+Personinvolved2
+                ZIndex: =29
+
+            Label_star_Preferred_contact_method_1 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =419+persondetails+Personinvolved1+Personinvolved2
+                ZIndex: =30
+
+            Btn_add_details_1 As button:
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =70
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =UpdateIf('Use of force offline',Key=Drpdn_incident_key_1.Selected.Key,{
+                        
+                            subjectrole:Drpdn_role.Selected.cp_lookupvalueid,
+                            subjectrolename:Drpdn_role.Selected.cp_name,
+                            subjectforename: Txt_forename_1.Text,
+                            subjectSurname: Txt_surname_1.Text,
+                            subjectadditionalnames:Radio_additional_names.Selected.Value,
+                            subjectadditionalname:Txt_additional_name.Text,
+                            subjectadditionalnametype:Drpdn_name_type.Selected.cp_lookupvalueid,
+                            subjectadditionalnametypename:Drpdn_name_type.Selected.cp_name,
+                            subjectdateofbirthknown:Radio_Date_of_birth.Selected.Value,
+                            Subjectdayofbirth:DatePicker_person_involved.SelectedDate,
+                            Subjectage:Txt_age_involved.Text,
+                            subjectpercievedage:Drpdn_percieved_age.Selected.cp_lookupvalueid,
+                            subjectpercievedagename:Drpdn_percieved_age.Selected.cp_name,
+                            subjectpercievedgender:Drpdn_subject_gender.Selected.cp_lookupvalueid,
+                            subjectpercievedgendername:Drpdn_subject_gender.Selected.cp_name,
+                            subjectpercievedethnicity:Drpdn_ethnicity.Selected.cp_lookupvalueid,
+                            subjectpercievedethnicityname:Drpdn_ethnicity.Selected.cp_name,
+                            subjectphysicalimpoairment:Radio_physical_impairment.Selected.Value,
+                            subjectmentalimpairment:Radio_mental_impairment.Selected.Value
+                            
+                            
+                            
+                    }
+                    );SaveData('Use of force offline',"Use of force offline");Navigate(Scr_home,UnCoverRight)
+                Size: =24
+                Text: ="Save and continue"
+                Width: =545
+                X: =42
+                Y: =1069+persondetails+Personinvolved1+Personinvolved2
+                ZIndex: =31
+
+            Txt_mobileph_4 As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =
+                Height: =70
+                HintText: ="Mobile phone"
+                Size: =21
+                Visible: =contactmobile
+                Width: =545
+                X: =45
+                Y: =1069
+                ZIndex: =32
+
+            Drpdn_ethnicity As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =LookUp('Use of force offline',Key=Drpdn_incident_key_1.Selected.Key).subjectpercievedethnicityname
+                Fill: =madcolL
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =PerceivedEthnicityoffline
+                OnChange: |-
+                    =If(Len(Drpdn_ethnicity.Selected.cp_name)>0,UpdateContext({madcolL:White}),UpdateContext({madcolL:LightGoldenRodYellow}))
+                OnSelect: |
+                    =If(Len(Drpdn_ethnicity.Selected.cp_name)>0,UpdateContext({madcolL:White}),UpdateContext({madcolL:LightGoldenRodYellow}))
+                PressedFill: =RGBA(230, 230, 230, 1)
+                Reset: =AllReset
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =640+persondetails+Personinvolved1+Personinvolved2
+                ZIndex: =33
+
+            Lbl_preferedcontactmethod_9 As label:
+                Height: =70
+                Size: =21
+                Text: ="Officer-defined ethnicity (officer perceived)"
+                Width: =530
+                X: =40
+                Y: =566+persondetails+Personinvolved1+Personinvolved2
+                ZIndex: =34
+
+            Label_star_Preferred_contact_method_9 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =586+persondetails+Personinvolved1+Personinvolved2
+                ZIndex: =35
+
+            Label_preceivedage As label:
+                Height: =70
+                Size: =21
+                Text: ="Perceived age"
+                Visible: =If(Radio_Date_of_birth.Selected.Value="No" Or Drpdn_role.Selected.cp_name="Subject (Not Known)",true,false)
+                Width: =523
+                X: =42
+                Y: =237+persondetails+Personinvolved1+Personinvolved2
+                ZIndex: =36
+
+            Drpdn_percieved_age As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =LookUp('Use of force offline',Key=Drpdn_incident_key_1.Selected.Key).subjectpercievedagename
+                Fill: =If(!IsBlank(Self.Selected.cp_name),White,LightGoldenRodYellow)
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: |-
+                    =SortByColumns(Filter(PerceivedAgeoffline, statecode in "Active"),"cp_displaysequenceno", Descending)
+                    //Implement When needed ^^^^^^
+                    
+                    //Sort(PerceivedAgeoffline,cp_displaysequenceno)
+                OnChange: |-
+                    =If(Len(Drpdn_percieved_age.Selected.cp_name)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Drpdn_percieved_age.Selected.cp_name)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}))
+                PressedFill: =RGBA(230, 230, 230, 1)
+                Reset: =AllReset
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Visible: =If(Radio_Date_of_birth.Selected.Value="No" Or Drpdn_role.Selected.cp_name="Subject (Not Known)",true,false)
+                Width: =545
+                X: =42
+                Y: =297+persondetails+Personinvolved1+Personinvolved2
+                ZIndex: =37
+
+            Label_retired_26 As label:
+                Height: =66
+                Size: =21
+                Text: |-
+                    ="Physically disabled? (officer perceived)
+                    "
+                Width: =560
+                X: =40
+                Y: =725+persondetails+Personinvolved1+Personinvolved2
+                ZIndex: =38
+
+            Radio_physical_impairment As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('Use of force offline',Key=Drpdn_incident_key_1.Selected.Key).subjectphysicalimpoairment
+                Height: =97
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =UpdateContext({visibletag:true})
+                OnSelect: |-
+                    =If(
+                        Radio_physical_impairment.Selected.Value = "Yes",
+                        UpdateContext({occupation: true});UpdateContext({y1details:y1details+100}));
+                        If(
+                        Radio_physical_impairment.Selected.Value = "No",
+                        UpdateContext({occupation: false});UpdateContext({y1details:0}));
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Reset: =AllReset
+                Size: =21
+                Width: =335
+                X: =40
+                Y: =775+persondetails+Personinvolved1+Personinvolved2
+                ZIndex: =39
+
+            Label_retired_27 As label:
+                Height: =66
+                Size: =21
+                Text: |-
+                    ="Mental health condition? (officer perceived)
+                    "
+                Width: =560
+                X: =40
+                Y: =882+persondetails+Personinvolved1+Personinvolved2
+                ZIndex: =40
+
+            Radio_mental_impairment As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('Use of force offline',Key=Drpdn_incident_key_1.Selected.Key).subjectmentalimpairment
+                Height: =97
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =UpdateContext({visibletag:true})
+                OnSelect: |-
+                    =If(
+                        Radio_mental_impairment.Selected.Value = "Yes",
+                        UpdateContext({occupation: true});UpdateContext({y1details:y1details+100}));
+                        If(
+                        Radio_mental_impairment.Selected.Value = "No",
+                        UpdateContext({occupation: false});UpdateContext({y1details:0}));
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Reset: =AllReset
+                Size: =21
+                Width: =335
+                X: =40
+                Y: =941+persondetails+Personinvolved1+Personinvolved2
+                ZIndex: =41
+
+            Label_star_address_44 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Visible: =If(Radio_Date_of_birth.Selected.Value="No" Or Drpdn_role.Selected.cp_name="Subject (Not Known)",true,false)
+                Width: =22
+                X: =565
+                Y: =251+persondetails+Personinvolved1+Personinvolved2
+                ZIndex: =42
+
+            Group_DoB As group:
+                Height: =5
+                Width: =5
+                X: =60
+                Y: =60
+                ZIndex: =42
+
+                Lbl_incident_date_1 As label:
+                    Height: =47
+                    Size: =21
+                    Text: ="Date of birth"
+                    Visible: =If(Radio_Date_of_birth.Selected.Value="Yes" And Drpdn_role.SelectedText.Value="Subject (Known)",true,false)
+                    Width: =188
+                    X: =40
+                    Y: =758+Personinvolved1
+                    ZIndex: =17
+
+                DatePicker_person_involved As datepicker:
+                    BorderColor: =RGBA(128, 128, 128, 1)
+                    DefaultDate: |
+                        =//LookUp('Use of force offline',Key=Drpdn_incident_key_1.Selected.Key).Subjectdayofbirth
+                        
+                        If(
+                         IsBlank(
+                                LookUp(
+                                   'Use of force offline',
+                                    Key = Drpdn_incident_key_1.Selected.Key
+                                ).Subjectdayofbirth
+                           ),
+                            If(
+                                !IsBlank(First(NEREsult.records)),
+                                LookUp(NEResultPossibles, pncId = VARCheckedItem,dateOfBirth),
+                                LookUp(
+                                   'Use of force offline',
+                                    Key = Drpdn_incident_key_1.Selected.Key
+                                ).Subjectdayofbirth
+                        
+                            ),
+                            LookUp(
+                                   'Use of force offline',
+                                    Key = Drpdn_incident_key_1.Selected.Key
+                                ).Subjectdayofbirth
+                        
+                        )
+                    Fill: =If(!IsBlank(Self.SelectedDate),White,LightGoldenRodYellow)
+                    Height: =67
+                    IconBackground: =RGBA(128, 128, 128, 1)
+                    InputTextPlaceholder: ="DD/MM/YYYY"
+                    IsEditable: =true
+                    OnChange: |-
+                        =
+                        UpdateContext(
+                            {
+                                agecalc:     If(Month(Now()) < Month(DatePicker_person_involved.SelectedDate) Or ((Month(Now()) = Month(DatePicker_person_involved.SelectedDate) && Day(Now()) < Day(DatePicker_person_involved.SelectedDate))),
+                                Year(Now()) - Year(DatePicker_person_involved.SelectedDate) -1 , 
+                                Year(Now()) - Year(DatePicker_person_involved.SelectedDate) 
+                            )
+                            }
+                        );
+                    OnSelect: |-
+                        =
+                        UpdateContext(
+                            {
+                                agecalc:     If(Month(Now()) < Month(DatePicker_person_involved.SelectedDate) Or ((Month(Now()) = Month(DatePicker_person_involved.SelectedDate) && Day(Now()) < Day(DatePicker_person_involved.SelectedDate))),
+                                Year(Now()) - Year(DatePicker_person_involved.SelectedDate) -1 , 
+                                Year(Now()) - Year(DatePicker_person_involved.SelectedDate) 
+                            )
+                            }
+                        );
+                    Size: =24
+                    StartYear: =1920
+                    Visible: =If(Radio_Date_of_birth.Selected.Value="Yes" And Drpdn_role.SelectedText.Value="Subject (Known)",true,false)
+                    Width: =545
+                    X: =40
+                    Y: =800+Personinvolved1
+                    ZIndex: =18
+
+                Txt_age_involved As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =If(IsBlank(DatePicker_person_involved.SelectedDate),"",agecalc)
+                    Fill: =madcolA
+                    Height: =70
+                    HintText: ="Age"
+                    HoverBorderColor: =RGBA(128, 128, 128, 1)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    OnChange: |-
+                        =If(
+                            Len(Txt_age_involved.Text) > 0,
+                            UpdateContext({madcolA: Transparent}),
+                            UpdateContext({madcolA: LightGoldenRodYellow})
+                        ); If(Month(Now()) < Month(DatePicker_person_involved.SelectedDate) Or ((Month(Now()) = Month(DatePicker_person_involved.SelectedDate) && Day(Now()) < Day(DatePicker_person_involved.SelectedDate))),
+                                Year(Now()) - Year(DatePicker_person_involved.SelectedDate) -1 , 
+                                Year(Now()) - Year(DatePicker_person_involved.SelectedDate) 
+                            )
+                    OnSelect: |-
+                        =If(
+                            Len(Txt_age_involved.Text) > 0,
+                            UpdateContext({madcolA: Transparent}),
+                            UpdateContext({madcolA: LightGoldenRodYellow})
+                        );
+                    Size: =21
+                    Visible: =If(Radio_Date_of_birth.Selected.Value="Yes" And Drpdn_role.SelectedText.Value="Subject (Known)",true,false)
+                    Width: =545
+                    X: =40
+                    Y: =918+Personinvolved1
+                    ZIndex: =19
+
+                Label_ofiicer_age_5 As label:
+                    Height: =64
+                    Size: =21
+                    Text: ="Age"
+                    Visible: =If(Radio_Date_of_birth.Selected.Value="Yes" And Drpdn_role.SelectedText.Value="Subject (Known)",true,false)
+                    Width: =545
+                    X: =40
+                    Y: =867+Personinvolved1
+                    ZIndex: =20
+
+            Icon8_1 As icon.Search:
+                AccessibleLabel: ="Pnc Lens"
+                Color: =RGBA(153, 153, 153, 1)
+                HoverBorderColor: =RGBA(153, 153, 153, 1)
+                Icon: =Icon.Search
+                OnSelect: =Set(PNCSearchReason,true)
+                Visible: =And(!IsBlank(Txt_surname_1.Text), !IsBlank(Txt_forename_1.Text))
+                X: =544
+                Y: =387
+                ZIndex: =43
+
+            Label_star_Preferred_contact_method_2 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Visible: =If(Drpdn_role.SelectedText.Value="Subject (Known)",true,false)
+                Width: =22
+                X: =563
+                Y: =605
+                ZIndex: =44
+
+            Group7 As group:
+                Height: =5
+                Width: =5
+                X: =60
+                Y: =60
+                ZIndex: =44
+
+                Txt_additional_name As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Use of force offline',Key=Drpdn_incident_key_1.Selected.Key).subjectadditionalname
+                    Fill: =madcolA
+                    Height: =70
+                    HintText: ="Name"
+                    HoverBorderColor: =RGBA(128, 128, 128, 1)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    OnChange: |-
+                        =If(
+                            Len(Txt_additional_name.Text) > 0,
+                            UpdateContext({madcolA: Transparent}),
+                            UpdateContext({madcolA: LightGoldenRodYellow})
+                        );
+                    OnSelect: |-
+                        =If(
+                            Len(Txt_additional_name.Text) > 0,
+                            UpdateContext({madcolA: Transparent}),
+                            UpdateContext({madcolA: LightGoldenRodYellow})
+                        );
+                    Size: =21
+                    Visible: =If(Radio_additional_names.Selected.Value="Yes",true,false)
+                    Width: =545
+                    X: =40
+                    Y: =631
+                    ZIndex: =12
+
+                Drpdn_name_type As dropdown:
+                    AllowEmptySelection: =true
+                    BorderColor: =RGBA(128, 128, 128, 1)
+                    ChevronBackground: =RGBA(128, 128, 128, 1)
+                    ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                    Default: =LookUp('Use of force offline',Key=Drpdn_incident_key_2.Selected.Key).subjectadditionalnametypename
+                    Fill: =madcolO
+                    Height: =70
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    Items: =AdditionalNameTypeoffline
+                    OnChange: |-
+                        =If(Len(Drpdn_name_type.Selected.cp_name)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}))
+                    OnSelect: |-
+                        =If(Len(Drpdn_name_type.Selected.cp_name)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}))
+                    PressedFill: =RGBA(230, 230, 230, 1)
+                    SelectionFill: =RGBA(128, 128, 128, 1)
+                    Size: =21
+                    Visible: =If(Radio_additional_names.Selected.Value="Yes",true,false)
+                    Width: =545
+                    X: =40
+                    Y: =756
+                    ZIndex: =13
+
+                Label_ofiicer_age_3 As label:
+                    Height: =51
+                    Size: =21
+                    Text: ="Additional Name Type"
+                    Visible: =If(Radio_additional_names.Selected.Value="Yes",true,false)
+                    Width: =545
+                    X: =40
+                    Y: =706
+                    ZIndex: =14
+
+                Label_ofiicer_age_13 As label:
+                    Height: =51
+                    Size: =21
+                    Text: ="Additional Name"
+                    Visible: =If(Radio_additional_names.Selected.Value="Yes",true,false)
+                    Width: =545
+                    X: =40
+                    Y: =581
+                    ZIndex: =23
+
+            Label_star_Preferred_contact_method_3 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Visible: =If(Drpdn_role.SelectedText.Value="Subject (Known)" And Radio_Date_of_birth.Selected.Value="Yes",true,false)
+                Width: =22
+                X: =563
+                Y: =760
+                ZIndex: =45
+
+    Icon_back_details_home_1 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home,UnCover)
+        X: =31
+        Y: =13
+        ZIndex: =4
+
+    Icn_exit_Home_1 As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =576
+        Y: =13
+        ZIndex: =5
+
+    Group3_1 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =34
+
+        Rectangle3_1 As rectangle:
+            Fill: =RGBA(255, 255, 255, 0.84)
+            Height: =1136
+            Visible: =PNCSearchReason
+            Width: =640
+            ZIndex: =6
+
+        Button1_1 As button:
+            BorderColor: =ColorFade(RGBA(153, 153, 153, 1),30%)
+            BorderThickness: =1
+            DisplayMode: =DisplayMode.Disabled
+            Fill: =White
+            Height: =937
+            Size: =24
+            Text: =""
+            Visible: =PNCSearchReason
+            Width: =610
+            X: =11
+            Y: =99
+            ZIndex: =7
+
+        Button2_1 As button:
+            BorderThickness: =0
+            Color: =RGBA(0, 0, 0, 1)
+            Fill: =RGBA(244, 244, 244, 1)
+            FocusedBorderThickness: =0
+            Height: =50
+            HoverColor: =ColorFade(Self.Color, 30%)
+            HoverFill: =RGBA(244, 244, 244, 1)
+            OnSelect: |-
+                =/*check to see if a selection has already been made under the same search to prevent user waiting for same results again*/
+                Set(
+                    gblforename,
+                    txt_person_forename_1.Text
+                );
+                Set(
+                    gblsurname,
+                    Txt_person_surname_1.Text
+                );
+                Set(
+                    gbldob,
+                    DatePicker_dob_1.SelectedDate
+                );
+                Set(
+                    gblgender,
+                    Dropdown_Gender_1.Selected.Value
+                );
+                Set(
+                    gblEthnicity,
+                    Dropdown_Self_defined_ethnicity_1.Selected.Value
+                );
+                If(
+                    Or(
+                        gblforename <> txt_person_forename_1.Text,
+                        gblsurname <> Txt_person_surname_1.Text,
+                        gbldob <> DatePicker_dob_1.SelectedDate,
+                        gblgender <> Dropdown_Gender_1.Selected.Value,
+                        gblEthnicity <> Dropdown_Self_defined_ethnicity_1.Selected.Value
+                    ),
+                    Set(
+                        PNCselection,
+                        false
+                    )
+                );
+                /*Validation for search STARTS here*/
+                Set(
+                    Errors,
+                    false
+                );
+                Set(
+                    LoadingSplash,
+                    true
+                );
+                If(
+                    And(
+                        chkbox_Forename.Value = true,
+                        IsBlank(txt_person_forename_1.Text)
+                    ),
+                    Set(
+                        Errors,
+                        true
+                    );
+                    Notify(
+                        "Forename(s) is a mandatory field",
+                        NotificationType.Error
+                    )
+                );
+                If(
+                    And(
+                        chkbox_Surname.Value = true,
+                        IsBlank(Txt_person_surname_1.Text)
+                    ),
+                    Set(
+                        Errors,
+                        true
+                    );
+                    Notify(
+                        "Surname is a mandatory field",
+                        NotificationType.Error
+                    )
+                );
+                If(
+                    IsBlank(PNCSearchLocation.Text),
+                    Set(
+                        Errors,
+                        true
+                    );
+                    Notify(
+                        "Location is a mandatory field",
+                        NotificationType.Error
+                    )
+                );
+                If(
+                    And(
+                        chkbox_DOB.Value = true,
+                        IsBlank(DatePicker_dob_1.SelectedDate)
+                    ),
+                    Set(
+                        Errors,
+                        true
+                    );
+                    Notify(
+                        "Date of Birth has been selected, but no Date of Birth has been input",
+                        NotificationType.Error
+                    )
+                );
+                If(
+                    And(
+                        chkbox_Ethnicity.Value = true,
+                        IsBlank(Dropdown_Self_defined_ethnicity_1.Selected.Value)
+                    ),
+                    Set(
+                        Errors,
+                        true
+                    );
+                    Notify(
+                        "Ethnicity has been selected, but no Ethnicity has been input",
+                        NotificationType.Error
+                    )
+                );
+                If(
+                    And(
+                        chkbox_Gender.Value = true,
+                        IsBlank(Dropdown_Gender_1.Selected.Value)
+                    ),
+                    Set(
+                        Errors,
+                        true
+                    );
+                    Notify(
+                        "Gender has been selected, but no Gender has been input",
+                        NotificationType.Error
+                    )
+                );
+                /*Validation for search ENDS here*/
+                /*Check for validation errors first*/
+                If(
+                    Errors = false,
+                    /*if validation passes continue*/
+                    If(
+                        PNCselection = false,
+                        If(
+                            " " in Trim(txt_person_forename_1.Text),
+                            Set(
+                                gblSplitForename,
+                                Split(
+                                    txt_person_forename_1.Text,
+                                    " "
+                                )
+                            );
+                            Set(
+                                NEREsult,
+                                'NDIWrapper-Name'.Run(
+                                    Upper(
+                                        Trim(
+                                            Concatenate(
+                                                Txt_person_surname_1.Text,
+                                                "/",
+                                                Upper(
+                                                    Left(
+                                                        Concat(
+                                                            gblSplitForename,
+                                                            Result & "/"
+                                                        ),
+                                                        Len(
+                                                            Concat(
+                                                                gblSplitForename,
+                                                                Result & "/"
+                                                            )
+                                                        ) - 1
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    ),
+                                    Concatenate(
+                                        "0",
+                                        Text(drpdwn_PNCSearchReason.Selected.ReasonCode)
+                                    ),
+                                    If(
+                                        IsBlank(DatePicker_dob_1.SelectedDate),
+                                        "",
+                                        Text(
+                                            DatePicker_dob_1.SelectedDate,
+                                            "ddmmyyyy"
+                                        )
+                                    ),
+                                    Switch(
+                                        Dropdown_Gender_1.Selected.Value,
+                                        "Male",
+                                        "M",
+                                        "Female",
+                                        "F",
+                                        "Unknown",
+                                        "U",
+                                        ""
+                                    ),
+                                    Switch(
+                                        Dropdown_Self_defined_ethnicity_1.Selected.Value,
+                                        "White",
+                                        "W",
+                                        "Non-White",
+                                        "NW",
+                                        "Unknown",
+                                        "U",
+                                        ""
+                                    )
+                                )
+                            ),
+                            Set(
+                                NEREsult,
+                                'NDIWrapper-Name'.Run(
+                                    Upper(
+                                        Trim(
+                                            Concatenate(
+                                                Txt_person_surname_1.Text,
+                                                "/",
+                                                txt_person_forename_1.Text
+                                            )
+                                        )
+                                    ),
+                                    Concatenate(
+                                        "0",
+                                        Text(drpdwn_PNCSearchReason.Selected.ReasonCode)
+                                    ),
+                                    If(
+                                        IsBlank(DatePicker_dob_1.SelectedDate),
+                                        "",
+                                        Text(
+                                            DatePicker_dob_1.SelectedDate,
+                                            "ddmmyyyy"
+                                        )
+                                    ),
+                                    Switch(
+                                        Dropdown_Gender_1.Selected.Value,
+                                        "Male",
+                                        "M",
+                                        "Female",
+                                        "F",
+                                        "Unknown",
+                                        "U",
+                                        ""
+                                    ),
+                                    Switch(
+                                        Dropdown_Self_defined_ethnicity_1.Selected.Value,
+                                        "White",
+                                        "W",
+                                        "Non-White",
+                                        "NW",
+                                        "Unknown",
+                                        "U",
+                                        ""
+                                    )
+                                )
+                            )
+                        );
+                        If(
+                            IsEmpty(NEREsult.records),
+                            Notify(
+                                "No Results Found",
+                                NotificationType.Error
+                            );
+                            Set(
+                                LoadingSplash,
+                                false
+                            ),
+                            Navigate(Scr_PNC_Possibles);
+                            Set(
+                                PNCselection,
+                                false
+                            );
+                            /*AuditLog starts*/
+                If(
+                                " " in Trim(txt_person_forename_1.Text),
+                                Set(
+                                    gblSplitForename,
+                                    Split(
+                                        txt_person_forename_1.Text,
+                                        " "
+                                    )
+                                );
+                                Set(
+                                    NameSearchValue,
+                                    Upper(
+                                        Trim(
+                                            Concatenate(
+                                                Txt_person_surname_1.Text,
+                                                "/",
+                                                Upper(
+                                                    Left(
+                                                        Concat(
+                                                            gblSplitForename,
+                                                            Result & "/"
+                                                        ),
+                                                        Len(
+                                                            Concat(
+                                                                gblSplitForename,
+                                                                Result & "/"
+                                                            )
+                                                        ) - 1
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                ),
+                                Set(
+                                    NameSearchValue,
+                                    Upper(
+                                        Trim(
+                                            Concatenate(
+                                                Txt_person_surname_1.Text,
+                                                "/",
+                                                txt_person_forename_1.Text
+                                            )
+                                        )
+                                    )
+                                )
+                            );
+                            Patch(
+                                'PNC Searches',
+                                Defaults('PNC Searches'),
+                                {
+                                    'Initiated By': LookUp(
+                                        Users,
+                                        'Primary Email' = User().Email
+                                    ),
+                                    'Initiated DateTime': DateTimeValue(
+                                        Text(
+                                            Now(),
+                                            DateTimeFormat.UTC
+                                        )
+                                    ),
+                                    Location: PNCSearchLocation.Text,
+                                    'Search Data': NameSearchValue,
+                                    Reason: Concatenate(
+                                        "0",
+                                        Text((drpdwn_PNCSearchReason.Selected.ReasonCode))
+                                    ),
+                                    'Search Type': 'Search Type'.Person
+                                }
+                            );
+                        /*AuditLog ends*/
+                Set(
+                                LoadingSplash,
+                                false
+                            );
+                        ),
+                        Navigate(
+                            Scr_PNC_Possibles,
+                            Fade
+                        );
+                        Set(
+                            LoadingSplash,
+                            false
+                        )
+                    ),
+                    Set(
+                        LoadingSplash,
+                        false
+                    )
+                );
+                
+                ClearCollect(NEResultPossibles, AddColumns(NEREsult.records,"isSelected",0))
+            PressedColor: =ColorFade(Self.Color, 30%)
+            PressedFill: =RGBA(244, 244, 244, 1)
+            Size: =16
+            Text: ="Search"
+            Visible: =PNCSearchReason
+            Width: =152
+            X: =451
+            Y: =975
+            ZIndex: =8
+
+        drpdwn_PNCSearchReason As dropdown:
+            BorderColor: =RGBA(153, 153, 153, 1)
+            ChevronBackground: =RGBA(128, 128, 128, 1)
+            Default: =
+            Fill: =If(IsBlank(drpdwn_PNCSearchReason.Selected), LightGoldenRodYellow, White)
+            Height: =70
+            Items: =PNCSearchReasonCode
+            OnChange: =
+            SelectionFill: =RGBA(128, 128, 128, 1)
+            Size: =14
+            Visible: =PNCSearchReason
+            Width: =550
+            X: =53
+            Y: =891
+            ZIndex: =9
+
+        Label9_1 As label:
+            FontWeight: =Semibold
+            Height: =70
+            Size: =16
+            Text: ="PNC Search Reason"
+            Visible: =PNCSearchReason
+            Width: =560
+            X: =43
+            Y: =833
+            ZIndex: =10
+
+        Label_Birth_known_1 As label:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Size: =16
+            Text: ="Date of Birth"
+            Visible: =PNCSearchReason
+            Width: =500
+            X: =102
+            Y: =385
+            ZIndex: =11
+
+        Label_Forename_1 As label:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Size: =16
+            Text: ="Forename(s)"
+            Visible: =PNCSearchReason
+            Width: =500
+            X: =102
+            Y: =164
+            ZIndex: =12
+
+        Label_Surname_1 As label:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Size: =16
+            Text: ="Surname"
+            Visible: =PNCSearchReason
+            Width: =500
+            X: =102
+            Y: =274
+            ZIndex: =13
+
+        DatePicker_dob_1 As datepicker:
+            BorderColor: =RGBA(153, 153, 153, 1)
+            DateTimeZone: =DateTimeZone.UTC
+            DefaultDate: =
+            DisplayMode: =If(chkbox_DOB.Value = true, DisplayMode.Edit, DisplayMode.Disabled)
+            Fill: =If(IsBlank(DatePicker_dob_1.SelectedDate), LightGoldenRodYellow, White)
+            Format: =
+            Height: =70
+            IconBackground: =RGBA(153, 153, 153, 1)
+            InputTextPlaceholder: =
+            IsEditable: =true
+            OnChange: |
+                =If(IsBlank(DatePicker_dob_1),
+                    UpdateContext({personc: LightGoldenRodYellow}),
+                    UpdateContext({personc: White })
+                );
+                UpdateContext({agecalc: 0});
+                UpdateContext(
+                    {
+                        agecalc:     If(Month(Now()) < Month(DatePicker_dob_1.SelectedDate) Or ((Month(Now()) = Month(DatePicker_dob_1.SelectedDate) && Day(Now()) < Day(DatePicker_dob_1.SelectedDate))),
+                        Year(Now()) - Year(DatePicker_dob_1.SelectedDate) -1 , 
+                        Year(Now()) - Year(DatePicker_dob_1.SelectedDate) 
+                    )
+                    }
+                );
+                
+            OnSelect: |
+                =If(IsBlank(DatePicker_dob_1),
+                    UpdateContext({personc: LightGoldenRodYellow}),
+                    UpdateContext({personc: White })
+                );
+                UpdateContext(
+                    {
+                        agecalc:     If(Month(Now()) < Month(DatePicker_dob_1.SelectedDate) Or ((Month(Now()) = Month(DatePicker_dob_1.SelectedDate) && Day(Now()) < Day(DatePicker_dob_1.SelectedDate))),
+                        Year(Now()) - Year(DatePicker_dob_1.SelectedDate) -1 , 
+                        Year(Now()) - Year(DatePicker_dob_1.SelectedDate) 
+                    )
+                    }
+                );
+                
+            Reset: =true
+            Size: =16
+            StartYear: =1900
+            Visible: =PNCSearchReason
+            Width: =500
+            X: =102
+            Y: =426
+            ZIndex: =14
+
+        Label11 As label:
+            Align: =Center
+            FontWeight: =Semibold
+            Height: =67
+            Italic: =true
+            Size: =16
+            Text: ="PNC Search By"
+            Visible: =PNCSearchReason
+            Width: =579
+            X: =24
+            Y: =99
+            ZIndex: =15
+
+        Icon9_1 As icon.Cancel:
+            Color: =RGBA(0, 0, 0, 1)
+            Icon: =Icon.Cancel
+            OnSelect: =Set(PNCSearchReason,false)
+            PaddingBottom: =20
+            PaddingLeft: =20
+            PaddingRight: =20
+            PaddingTop: =20
+            Visible: =PNCSearchReason
+            X: =539
+            Y: =102
+            ZIndex: =16
+
+        Label14_9 As label:
+            Color: =RGBA(255, 0, 0, 1)
+            Height: =70
+            PaddingLeft: =10
+            Size: =16
+            Text: ="*"
+            Visible: =PNCSearchReason
+            Width: =368
+            X: =235
+            Y: =833
+            ZIndex: =17
+
+        chkbox_Forename As checkbox:
+            CheckboxSize: =45
+            Default: =true
+            FocusedBorderThickness: =0
+            Height: =70
+            OnUncheck: =Reset(txt_person_forename_1)
+            PaddingLeft: =5
+            Reset: =If(PNCSearchReason = false,true)
+            Size: =21
+            Text: =""
+            Visible: =false
+            Width: =62
+            X: =111
+            Y: =205
+            ZIndex: =18
+
+        txt_person_forename_1 As text:
+            BorderColor: =RGBA(153, 153, 153, 1)
+            Default: =Txt_forename_1.Text
+            DisplayMode: =If(chkbox_Forename.Value = true, DisplayMode.Edit, DisplayMode.Disabled)
+            Fill: =If(IsBlank(txt_person_forename_1.Text), LightGoldenRodYellow, White)
+            Height: =70
+            HintText: ="ForeName(s)"
+            OnChange: |-
+                =If(
+                    Len(txt_person_forename_1.Text) > 0,
+                    UpdateContext({persona: White}),
+                    UpdateContext({persona: LightGoldenRodYellow})
+                );
+                Set(
+                    PNCselection,
+                    false
+                )
+            OnSelect: |-
+                =If(Len(txt_person_forename_1.Text)>0,UpdateContext({persona:White}),UpdateContext({persona:LightGoldenRodYellow}))
+            Reset: =
+            Size: =16
+            Visible: =PNCSearchReason
+            Width: =500
+            X: =102
+            Y: =204
+            ZIndex: =19
+
+        chkbox_Surname As checkbox:
+            CheckboxSize: =45
+            Default: =true
+            FocusedBorderThickness: =0
+            Height: =70
+            OnUncheck: =Reset(Txt_person_surname_1)
+            PaddingLeft: =5
+            Reset: =If(PNCSearchReason = false,true)
+            Size: =21
+            Text: =""
+            Visible: =false
+            Width: =62
+            X: =40
+            Y: =312
+            ZIndex: =20
+
+        Txt_person_surname_1 As text:
+            BorderColor: =RGBA(153, 153, 153, 1)
+            Default: =Txt_surname_1.Text
+            DisplayMode: =If(chkbox_Surname.Value = true, DisplayMode.Edit, DisplayMode.Disabled)
+            Fill: =If(IsBlank(Txt_person_surname_1.Text), LightGoldenRodYellow, White)
+            Height: =70
+            HintText: ="Surname"
+            OnChange: |-
+                =If(
+                    Len(Txt_person_surname_1.Text) > 0,
+                    UpdateContext({personb: White}),
+                    UpdateContext({personb: LightGoldenRodYellow})
+                );
+                Set(
+                    PNCselection,
+                    false
+                )
+            OnSelect: |-
+                =If(Len(Txt_person_surname_1.Text)>0,UpdateContext({personb:White}),UpdateContext({personb:LightGoldenRodYellow}))
+            Reset: =
+            Size: =16
+            Visible: =PNCSearchReason
+            Width: =500
+            X: =102
+            Y: =314
+            ZIndex: =21
+
+        chkbox_DOB As checkbox:
+            CheckboxSize: =45
+            FocusedBorderThickness: =0
+            Height: =70
+            OnUncheck: =Reset(DatePicker_dob_1)
+            PaddingLeft: =5
+            Reset: =If(PNCSearchReason = false,true)
+            Size: =21
+            Text: =""
+            Visible: =PNCSearchReason
+            Width: =62
+            X: =40
+            Y: =426
+            ZIndex: =22
+
+        Dropdown_Gender_1 As dropdown:
+            AllowEmptySelection: =true
+            BorderColor: =RGBA(153, 153, 153, 1)
+            ChevronBackground: =RGBA(116, 116, 116, 1)
+            ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
+            Default: =
+            DisplayMode: =If(chkbox_Gender.Value = true, DisplayMode.Edit, DisplayMode.Disabled)
+            Fill: =If(IsBlank(Dropdown_Gender_1.Selected.Value), LightGoldenRodYellow, White)
+            Height: =70
+            Items: =["Male","Female","Unknown"]
+            OnChange: |-
+                =If(Len(Dropdown_Gender_1.Selected.Value)>0,UpdateContext({persone:White}),UpdateContext({persone:LightGoldenRodYellow}))
+            OnSelect: |-
+                =If(Len(Dropdown_Gender_1.Selected.Value)>0,UpdateContext({persone:White}),UpdateContext({persone:LightGoldenRodYellow}))
+            Reset: =
+            Size: =16
+            Visible: =PNCSearchReason
+            Width: =500
+            X: =103
+            Y: =536
+            ZIndex: =23
+
+        Label_person_Gender_4 As label:
+            OnSelect: =
+            Size: =16
+            Text: ="Gender"
+            Visible: =PNCSearchReason
+            Width: =500
+            X: =99
+            Y: =496
+            ZIndex: =24
+
+        Label_SelfDefined_1 As label:
+            BorderColor: =RGBA(116, 116, 116, 1)
+            OnSelect: =
+            Size: =16
+            Text: ="Ethnicity"
+            Visible: =PNCSearchReason
+            Width: =500
+            X: =103
+            Y: =606
+            ZIndex: =25
+
+        Dropdown_Self_defined_ethnicity_1 As dropdown:
+            AllowEmptySelection: =true
+            BorderColor: =RGBA(153, 153, 153, 1)
+            ChevronBackground: =RGBA(116, 116, 116, 1)
+            ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
+            Default: =Drpdn_ethnicity.Selected.cp_name
+            DisplayMode: =If(chkbox_Ethnicity.Value = true, DisplayMode.Edit, DisplayMode.Disabled)
+            Fill: =If(IsBlank(Dropdown_Self_defined_ethnicity_1.Selected.Value), LightGoldenRodYellow, White)
+            Height: =70
+            Items: =["White", "Non-White", "Unknown"]
+            OnChange: |-
+                =If(Len(Dropdown_Self_defined_ethnicity_1.Selected.Value)>0,UpdateContext({personf:White}),UpdateContext({personf:LightGoldenRodYellow}))
+            OnSelect: |-
+                =If(Len(Dropdown_Self_defined_ethnicity_1.Selected.Value)>0,UpdateContext({personf:White}),UpdateContext({personf:LightGoldenRodYellow}))
+            Reset: =
+            Size: =16
+            Visible: =PNCSearchReason
+            Width: =500
+            X: =103
+            Y: =643
+            ZIndex: =26
+
+        chkbox_Gender As checkbox:
+            CheckboxSize: =45
+            FocusedBorderThickness: =0
+            Height: =70
+            OnUncheck: =Reset(Dropdown_Gender_1)
+            PaddingLeft: =5
+            Reset: =If(PNCSearchReason = false,true)
+            Size: =21
+            Text: =""
+            Visible: =PNCSearchReason
+            Width: =62
+            X: =39
+            Y: =536
+            ZIndex: =27
+
+        chkbox_Ethnicity As checkbox:
+            CheckboxSize: =45
+            FocusedBorderThickness: =0
+            Height: =70
+            OnUncheck: =Reset(Dropdown_Self_defined_ethnicity_1)
+            PaddingLeft: =5
+            Reset: =If(PNCSearchReason = false,true)
+            Size: =21
+            Text: =""
+            Visible: =PNCSearchReason
+            Width: =62
+            X: =40
+            Y: =643
+            ZIndex: =28
+
+        Label14_8 As label:
+            Color: =RGBA(255, 0, 0, 1)
+            PaddingLeft: =10
+            Size: =16
+            Text: ="*"
+            Visible: =PNCSearchReason
+            Width: =368
+            X: =227
+            Y: =164
+            ZIndex: =29
+
+        Label14_3 As label:
+            Color: =RGBA(255, 0, 0, 1)
+            PaddingLeft: =10
+            Size: =16
+            Text: ="*"
+            Visible: =PNCSearchReason
+            Width: =368
+            X: =189
+            Y: =272
+            ZIndex: =30
+
+        PNCSearchLocation As text:
+            BorderColor: =RGBA(153, 153, 153, 1)
+            Default: =
+            DisplayMode: =If(chkbox_Surname.Value = true, DisplayMode.Edit, DisplayMode.Disabled)
+            Fill: =If(IsBlank(PNCSearchLocation.Text), LightGoldenRodYellow, White)
+            FocusedBorderThickness: =2
+            Height: =70
+            HintText: ="Location"
+            HoverBorderColor: =RGBA(153, 153, 153, 1)
+            OnChange: |
+                =If(
+                    Len(PNCSearchLocation.Text) > 0,
+                    UpdateContext({personb: White}),
+                    UpdateContext({personb: LightGoldenRodYellow})
+                );
+            OnSelect: |-
+                =If(Len(PNCSearchLocation.Text)>0,UpdateContext({personb:White}),UpdateContext({personb:LightGoldenRodYellow}))
+            Reset: =
+            Size: =16
+            Visible: =PNCSearchReason
+            Width: =550
+            X: =53
+            Y: =767
+            ZIndex: =31
+
+        Label9_11 As label:
+            FontWeight: =Semibold
+            Height: =70
+            Size: =16
+            Text: ="Location"
+            Visible: =PNCSearchReason
+            Width: =560
+            X: =43
+            Y: =713
+            ZIndex: =32
+
+        Label20 As label:
+            Color: =RGBA(255, 0, 0, 1)
+            Height: =70
+            Size: =16
+            Text: ="*"
+            Visible: =PNCSearchReason
+            Width: =203
+            X: =147
+            Y: =713
+            ZIndex: =33
+
+    Loading_2 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =36
+
+        Rectangle9_2 As rectangle:
+            Fill: =RGBA(255, 255, 255, 0.83)
+            Height: =1136
+            Visible: =LoadingSplash
+            Width: =640
+            ZIndex: =35
+
+        Image2_2 As image:
+            Height: =116
+            Image: ='loading-buffering'
+            Visible: =LoadingSplash
+            Width: =116
+            X: =255
+            Y: =470
+            ZIndex: =37
+
+        Label18_2 As label:
+            Align: =Align.Center
+            FontWeight: =Semibold
+            Height: =95
+            Italic: =true
+            Size: =21
+            Text: ="Searching..."
+            Visible: =LoadingSplash
+            Width: =640
+            Y: =384
+            ZIndex: =38
+

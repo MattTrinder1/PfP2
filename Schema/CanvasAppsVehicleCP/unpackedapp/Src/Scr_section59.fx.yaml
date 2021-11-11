@@ -1,0 +1,925 @@
+Scr_section59 As screen:
+    OnHidden: =Reset(PenInput_Section59_sign)
+    OnVisible: |
+        =Set(
+            madcols59,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcols59: LightGoldenRodYellow});
+        Set(
+            madcols591,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcols591: LightGoldenRodYellow});
+        Set(
+            madcols592,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcols592: LightGoldenRodYellow});
+        Set(
+            madcols593,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcols593: LightGoldenRodYellow});
+        Set(
+            madcols594,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcols594: LightGoldenRodYellow});
+        Set(
+            madcols595,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcols595: LightGoldenRodYellow});
+        Set(
+            madcols596,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcols596: LightGoldenRodYellow});
+        Set(
+            madcols597,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcols597: LightGoldenRodYellow});
+        Set(
+            madcols598,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcols598: LightGoldenRodYellow});
+        Set(
+            madcols599,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcols599: LightGoldenRodYellow});
+        Set(
+            madcols5910,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcols5910: LightGoldenRodYellow});
+        Set(
+            madcols5911,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcols5911: LightGoldenRodYellow});
+        Set(
+            madcols5912,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcols5912: LightGoldenRodYellow});
+        Set(
+            madcols5913,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcols5913: LightGoldenRodYellow});
+        
+        /*
+        If(LookUp(TrOffOffline,TicketTypename = "Section 59" And OffenceKey=Dropdown_Section59_key.Selected.Key).Section59sign = SampleImage ,Set(S59dis,DisplayMode.Edit));
+        
+        If(LookUp(TrOffOffline,TicketTypename = "Section 59" And OffenceKey=Dropdown_Section59_key.Selected.Key).Section59sign <> SampleImage ,Set(S59dis,DisplayMode.Disabled));*/
+        
+        UpdateContext({hasBeenSigned:true});
+        If(LookUp(TrOffOffline,TicketTypename = "Section 59" And OffenceKey=Dropdown_Section59_key.Selected.Key).Section59sign <> Blank() ,UpdateContext({hasBeenSigned:true}),UpdateContext({hasBeenSigned:false}));
+        
+        
+        UpdateContext({BlankImage5 : PenInput_Section59_sign.Image, locSigDateTime5: Now()});
+
+    Lbl_header_6 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Section 59"
+        VerticalAlign: =VerticalAlign.Top
+        Width: =640
+        ZIndex: =1
+
+    Icon3_6 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home,UnCoverRight)
+        X: =27
+        Y: =17
+        ZIndex: =15
+
+    Canvas_S59 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1049
+        Width: =Parent.Width
+        Y: =87
+        ZIndex: =16
+
+        DataCard_S59 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =1284
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Dropdown_Section59_key As dropdown:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                Default: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).Key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                Items: |
+                    =LookUp('Vehicle Offline',Key=Vehicle_Primary_key)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =21
+                ZIndex: =1
+
+            Group_S59_Warning As group:
+                Height: =5
+                Width: =5
+                X: =20
+                Y: =60
+                ZIndex: =9
+
+                Label_S59_warning_text As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =41
+                    Size: =21
+                    Text: ="*"
+                    Visible: =warningvis
+                    Width: =22
+                    X: =568
+                    Y: =376
+                    ZIndex: =2
+
+                Label_S59_warning_statement_text As label:
+                    Fill: =LightGoldenRodYellow
+                    Height: =242
+                    OnSelect: =
+                    Size: =21
+                    Text: ="I must warn you that if you continue to drive the vehicle in the same way or if you drive this or any other vehicle in the same way on any other occasion any Officer can seize the vehicle under Section 59 of the Police Reform Act 2002."
+                    Visible: =warningvis
+                    Width: =545
+                    X: =40
+                    Y: =416
+                    ZIndex: =3
+
+            Group_name_s59_printed As group:
+                Height: =5
+                Width: =5
+                X: =41
+                Y: =45
+                ZIndex: =13
+
+                Radio_S59_Printed As radio:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_Section59_key.Selected.Key And TicketTypename="Section 59").'Section 59 printed'
+                    DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =White
+                    Height: =98
+                    Items: =["Yes", "No"]
+                    Layout: =Layout.Horizontal
+                    OnChange: |-
+                        =If(Len(Radio_S59_Printed.Selected.Value)>0,UpdateContext({madcols5913:Transparent}),UpdateContext({madcols5913:LightGoldenRodYellow}));
+                    OnSelect: |-
+                        =If(Len(Radio_S59_Printed.Selected.Value)>0,UpdateContext({madcols5913:Transparent}),UpdateContext({madcols5913:LightGoldenRodYellow}));
+                    RadioBorderColor: =RGBA(116, 116, 116, 1)
+                    Reset: =resetall
+                    Size: =21
+                    Width: =545
+                    X: =48
+                    Y: =430+s59+s591+s592+s593
+                    ZIndex: =4
+
+                label_S59_Printed As label:
+                    Height: =80
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Section 59 Printed"
+                    Width: =545
+                    X: =48
+                    Y: =376+s59+s591+s592+s593
+                    ZIndex: =5
+
+                Btn_save_continue_S59 As button:
+                    DisplayMode: =If(LookUp(TrOffOffline,TicketTypename = "Section 59" And OffenceKey=Dropdown_Section59_key.Selected.Key).Section59sign <> Blank() ,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =RGBA(153, 153, 153, 1)
+                    Height: =72
+                    HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                    OnSelect: |-
+                        =If(
+                            CountRows(
+                                Filter(
+                                    TrOffOffline,
+                                    TicketTypename = "Section 59"
+                                )
+                            ) > 0,
+                            UpdateIf(
+                                TrOffOffline,
+                                TicketTypename = "Section 59" And OffenceKey = Dropdown_Section59_key.Selected.Key,
+                                {
+                                    OffenceKey: Dropdown_Section59_key.Selected.Key,
+                                    TicketTypeTrafficOffence: LookUp(
+                                        OffencesOffline,
+                                        cp_name = "Section 59"
+                                    ).cp_tickettypeid,
+                                    TicketTypename: "Section 59",
+                                    'Section 3 or 34 name': Dropdown_S59_Section3or34.Selected.cp_name,
+                                    'Section 3 or 34': Dropdown_S59_Section3or34.Selected.cp_lookupvalueid,
+                                    'Warning or Seizure name ': Dropdown_S59_WarningOrSeizure.Selected.cp_name,
+                                    'Warning or Seizure': Dropdown_S59_WarningOrSeizure.Selected.cp_lookupvalueid,
+                                    'You wording 1 name': Dropdown_S59_Section3_wording1_you.Selected.cp_name,
+                                    'You wording 1': Dropdown_S59_Section3_wording1_you.Selected.cp_lookupvalueid,
+                                    'You wording 3name': Dropdown_S59_Section34_youwording.Selected.cp_name,
+                                    'You wording 3': Dropdown_S59_Section34_youwording.Selected.cp_lookupvalueid,
+                                    'Driving the above vehicle in name': Dropdown_S59_Section3_wording2_driving_the_above.Selected.cp_name,
+                                    'Driving the above vehicle in': Dropdown_S59_Section3_wording2_driving_the_above.Selected.cp_lookupvalueid,
+                                    'and that driving was in a manner which name': Dropdown_S59_Section34_drivingmanner.Selected.cp_name,
+                                    'and that driving was in a manner which': Dropdown_S59_Section34_drivingmanner.Selected.cp_lookupvalueid,
+                                    'Recovery Garage name': Dropdown_S59_RecoveryGarage.Selected.name,
+                                    'Recovery Garage': Dropdown_S59_RecoveryGarage.Selected.accountid,
+                                    'Recovery Garage Company name': Dropdown_S59_RecoveryGarageCompany.Selected.name,
+                                    'Recovery Garage Company': Dropdown_S59_RecoveryGarageCompany.Selected.accountid,
+                                    'Recovery Telephone': TextInput_S59_RecoveryGarageTelephone.Text,
+                                    'Recovery Garage Address': TextInput_S59_RecoveryGarageAddress.Text,
+                                    'Section 59 printed': Radio_S59_Printed.Selected.Value,
+                                    Section59sign: If(hasBeenSigned = true,PenInput_Section59_sign.Image, Blank())
+                                }
+                            )
+                        );
+                        UpdateContext(
+                            {
+                                rec: LookUp(
+                                    TrOffOffline,
+                                    TicketTypename = "Section 59" And OffenceKey = Dropdown_Section59_key.Selected.Key
+                                )
+                            }
+                        );
+                        UpdateIf(
+                            'Vehicle Offline',
+                            Key = Dropdown_Section59_key.Selected.Key,
+                            {
+                                S59valid: And(
+                                    !IsBlank(rec.'Section 3 or 34 name'),
+                                    !IsBlank(rec.'Warning or Seizure name '),
+                                    Or(
+                                        If(
+                                            rec.'Section 3 or 34 name' = "Section 3" And rec.'Warning or Seizure name ' = "Warning",
+                                            And(
+                                                !IsBlank(rec.'You wording 1 name'),
+                                                !IsBlank(rec.'Driving the above vehicle in name'),
+                                                !IsBlank(rec.Section59sign)
+                                            )
+                                        ),
+                                        If(
+                                            rec.'Section 3 or 34 name' = "Section 3" And rec.'Warning or Seizure name ' = "Seizure",
+                                            And(
+                                                !IsBlank(rec.'Recovery Garage name'),
+                                                !IsBlank(rec.'Recovery Garage Company name'),
+                                                !IsBlank(rec.'Recovery Garage Address'),
+                                                !IsBlank(rec.'Recovery Telephone'),
+                                                !IsBlank(rec.'Driving the above vehicle in name'),
+                                                !IsBlank(rec.'You wording 1 name'),
+                                                !IsBlank(rec.Section59sign)
+                                            )
+                                        ),
+                                        If(
+                                            rec.'Section 3 or 34 name' = "Section 34" And rec.'Warning or Seizure name ' = "Warning",
+                                            And(
+                                                !IsBlank(rec.'You wording 3name'),
+                                                !IsBlank(rec.'and that driving was in a manner which name'),
+                                                !IsBlank(rec.Section59sign)
+                                            )
+                                        ),
+                                        If(
+                                            rec.'Section 3 or 34 name' = "Section 34" And rec.'Warning or Seizure name ' = "Seizure",
+                                            And(
+                                                !IsBlank(rec.'Recovery Garage name'),
+                                                !IsBlank(rec.'Recovery Garage Company name'),
+                                                !IsBlank(rec.'Recovery Garage Address'),
+                                                !IsBlank(rec.'Recovery Telephone'),
+                                                !IsBlank(rec.'and that driving was in a manner which name'),
+                                                !IsBlank(rec.'You wording 3name'),
+                                                !IsBlank(rec.Section59sign)
+                                            )
+                                        )
+                                    )
+                                )
+                            }
+                        );
+                        SaveData(
+                            TrOffOffline,
+                            "TrOffOffline"
+                        );
+                        Set(
+                            S59dis,
+                            DisplayMode.Edit
+                        );
+                        Navigate(
+                            Scr_home,
+                            ScreenTransition.Cover
+                        )
+                    Size: =24
+                    Text: ="Save & Continue"
+                    Width: =545
+                    X: =38
+                    Y: =1176+s59+s591+s592+s593
+                    ZIndex: =6
+
+            Group_s59_seizure As group:
+                Height: =5
+                Width: =5
+                X: =44
+                Y: =76
+                ZIndex: =27
+
+                Label_S59_seizure_statement_text As label:
+                    Fill: =LightGoldenRodYellow
+                    Height: =243
+                    OnSelect: =
+                    Size: =21
+                    Text: ="The above vehicle was being driven by you in the manner indicated above. It has been seized due to a warning having been given within the previous twelve months. For instructions on how to reclaim your vehicle please see guidance sheet."
+                    Visible: =If(Dropdown_S59_WarningOrSeizure.Selected.cp_name="Seizure",true,false)
+                    Width: =545
+                    X: =43
+                    Y: =389
+                    ZIndex: =7
+
+                Label_asterik_seizure_statement As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =32
+                    Size: =21
+                    Text: ="*"
+                    Visible: =If(Dropdown_S59_WarningOrSeizure.Selected.cp_name="Seizure",true,false)
+                    Width: =22
+                    X: =568
+                    Y: =387
+                    ZIndex: =8
+
+                Label_S59_RecoveryGarage As label:
+                    Height: =50
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Recovery Garage"
+                    Visible: =If(Dropdown_S59_WarningOrSeizure.Selected.cp_name="Seizure",true,false)
+                    Width: =545
+                    X: =45
+                    Y: =642
+                    ZIndex: =9
+
+                Dropdown_S59_RecoveryGarage As dropdown:
+                    AllowEmptySelection: =true
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_Section59_key.Selected.Key And TicketTypename="Section 59").'Recovery Garage name'
+                    DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =madcols596
+                    Height: =70
+                    Items: =GaragesOffline
+                    OnChange: |-
+                        =If(Len(Dropdown_S59_RecoveryGarage.Selected.name)>0,UpdateContext({madcols596:White}),UpdateContext({madcols596:LightGoldenRodYellow}));
+                    OnSelect: |-
+                        =If(Len(Dropdown_S59_RecoveryGarage.Selected.name)>0,UpdateContext({madcols596:White}),UpdateContext({madcols596:LightGoldenRodYellow}));
+                    Reset: =resetall
+                    Size: =21
+                    Visible: =If(Dropdown_S59_WarningOrSeizure.Selected.cp_name="Seizure",true,false)
+                    Width: =545
+                    X: =43
+                    Y: =692
+                    ZIndex: =10
+
+                Label_S59_RecoveryGarageCompany As label:
+                    Height: =50
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Recovery Garage Company"
+                    Visible: =If(Dropdown_S59_WarningOrSeizure.Selected.cp_name="Seizure",true,false)
+                    Width: =545
+                    X: =43
+                    Y: =762
+                    ZIndex: =11
+
+                Dropdown_S59_RecoveryGarageCompany As dropdown:
+                    AllowEmptySelection: =true
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_Section59_key.Selected.Key And TicketTypename="Section 59").'Recovery Garage Company name'
+                    DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =madcols597
+                    Height: =70
+                    Items: =Filter(GaragesOffline, name = Dropdown_S59_RecoveryGarage.Selected.name)
+                    OnChange: |-
+                        =If(Len(Dropdown_S59_RecoveryGarageCompany.Selected.name)>0,UpdateContext({madcols597:White}),UpdateContext({madcols597:LightGoldenRodYellow}));
+                    OnSelect: |-
+                        =If(Len(Dropdown_S59_RecoveryGarageCompany.Selected.name)>0,UpdateContext({madcols597:White}),UpdateContext({madcols597:LightGoldenRodYellow}));
+                    Reset: =resetall
+                    Size: =21
+                    Visible: =If(Dropdown_S59_WarningOrSeizure.Selected.cp_name="Seizure",true,false)
+                    Width: =545
+                    X: =45
+                    Y: =812
+                    ZIndex: =12
+
+                Label_asterik_S59_RecoveryGarage As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =28
+                    Size: =21
+                    Text: ="*"
+                    Visible: =If(Dropdown_S59_WarningOrSeizure.Selected.cp_name="Seizure",true,false)
+                    Width: =30
+                    X: =564
+                    Y: =648
+                    ZIndex: =13
+
+                Label_asterik_S59_RecoveryGarageCompany As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =28
+                    Size: =21
+                    Text: ="*"
+                    Visible: =If(Dropdown_S59_WarningOrSeizure.Selected.cp_name="Seizure",true,false)
+                    Width: =30
+                    X: =562
+                    Y: =782
+                    ZIndex: =14
+
+                TextInput_S59_RecoveryGarageAddress As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: |-
+                        =LookUp(GaragesOffline,name=Dropdown_S59_RecoveryGarage.Selected.name ).address1_composite
+                        /*ThisItem.'Recovery Garage Address'*/
+                    DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =madcols598
+                    Height: =128
+                    HintText: ="Enter Recovery Garage Address"
+                    HoverBorderColor: =RGBA(153, 153, 153, 1)
+                    LineHeight: =1
+                    Mode: =TextMode.MultiLine
+                    OnChange: |-
+                        =If(Len(TextInput_S59_RecoveryGarageAddress.Text)>0,UpdateContext({madcols598:White}),UpdateContext({madcols598:LightGoldenRodYellow}));
+                    OnSelect: |-
+                        =If(Len(TextInput_S59_RecoveryGarageAddress.Text)>0,UpdateContext({madcols598:White}),UpdateContext({madcols598:LightGoldenRodYellow}));
+                    Size: =19
+                    Visible: =If(Dropdown_S59_WarningOrSeizure.Selected.cp_name="Seizure",true,false)
+                    Width: =545
+                    X: =43
+                    Y: =923
+                    ZIndex: =15
+
+                TextInput_S59_RecoveryGarageTelephone As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: |-
+                        =LookUp(GaragesOffline,name=Dropdown_S59_RecoveryGarage.Selected.name).telephone1
+                        /*ThisItem.'Recovery Garage Telephone'*/
+                    DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =madcols599
+                    Height: =70
+                    HintText: ="Enter Recovery Garage Telephone"
+                    OnChange: |-
+                        =If(Len(TextInput_S59_RecoveryGarageTelephone.Text)>0,UpdateContext({madcols599:White}),UpdateContext({madcols599:LightGoldenRodYellow}));
+                    OnSelect: |-
+                        =If(Len(TextInput_S59_RecoveryGarageTelephone.Text)>0,UpdateContext({madcols599:White}),UpdateContext({madcols599:LightGoldenRodYellow}));
+                    Size: =21
+                    Visible: =If(Dropdown_S59_WarningOrSeizure.Selected.cp_name="Seizure",true,false)
+                    Width: =545
+                    X: =47
+                    Y: =1106
+                    ZIndex: =16
+
+                Label_asterik_RecoveryGarageAddress As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =32
+                    Size: =21
+                    Text: ="*"
+                    Visible: =If(Dropdown_S59_WarningOrSeizure.Selected.cp_name="Seizure",true,false)
+                    Width: =32
+                    X: =568
+                    Y: =882
+                    ZIndex: =17
+
+                Label_asterik_RecoveryGarageTelephone As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =28
+                    Size: =21
+                    Text: ="*"
+                    Visible: =If(Dropdown_S59_WarningOrSeizure.Selected.cp_name="Seizure",true,false)
+                    Width: =30
+                    X: =564
+                    Y: =1065
+                    ZIndex: =18
+
+                Label_S59_RecoveryGarageCompany_address As label:
+                    Height: =41
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Recovery Garage Address"
+                    Visible: =If(Dropdown_S59_WarningOrSeizure.Selected.cp_name="Seizure",true,false)
+                    Width: =545
+                    X: =43
+                    Y: =882
+                    ZIndex: =19
+
+                Label_S59_RecoveryGarageCompany_1 As label:
+                    Height: =50
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Recovery Garage Telephone"
+                    Visible: =If(Dropdown_S59_WarningOrSeizure.Selected.cp_name="Seizure",true,false)
+                    Width: =545
+                    X: =43
+                    Y: =1056
+                    ZIndex: =20
+
+            Group_s59_section34 As group:
+                Height: =5
+                Width: =5
+                X: =42
+                Y: =68
+                ZIndex: =35
+
+                Label_S59_section34_wording_1 As label:
+                    Fill: =LightGoldenRodYellow
+                    Height: =50
+                    OnSelect: =
+                    Size: =21
+                    Text: ="You"
+                    Visible: =Section34vis
+                    Width: =545
+                    X: =49
+                    Y: =387+s592+s593
+                    ZIndex: =21
+
+                Dropdown_S59_Section34_youwording As dropdown:
+                    AllowEmptySelection: =true
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_Section59_key.Selected.Key And TicketTypename="Section 59").'You wording 3name'
+                    DisplayMode: =S59dis
+                    Fill: =madcols594
+                    Height: =70
+                    Items: =Youwording3offline
+                    OnChange: |-
+                        =If(Len(Dropdown_S59_Section34_youwording.Selected.cp_name)>0,UpdateContext({madcols594:White}),UpdateContext({madcols594:LightGoldenRodYellow}));
+                    OnSelect: |-
+                        =If(Len(Dropdown_S59_Section34_youwording.Selected.cp_name)>0,UpdateContext({madcols594:White}),UpdateContext({madcols594:LightGoldenRodYellow}));
+                    Reset: =resetall
+                    Size: =21
+                    Visible: =Section34vis
+                    Width: =545
+                    X: =49
+                    Y: =437+s592+s593
+                    ZIndex: =22
+
+                Label_S59_Section34_wording2 As label:
+                    Fill: =LightGoldenRodYellow
+                    Height: =168
+                    OnSelect: =
+                    Size: =21
+                    Text: ="driving on common land, moorland, land which not part of a road, a footpath, a bridleway or restricted by way, contrary to Section 34 of the Road Traffic Act 1988"
+                    Visible: =Section34vis
+                    Width: =545
+                    X: =49
+                    Y: =533+s592+s593
+                    ZIndex: =23
+
+                Label_asterik_S59_Section34_wording1 As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =28
+                    Size: =21
+                    Text: ="*"
+                    Visible: =Section34vis
+                    Width: =30
+                    X: =565
+                    Y: =398+s592+s593
+                    ZIndex: =24
+
+                Label_asterik_Wording4 As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =32
+                    Size: =21
+                    Text: ="*"
+                    Visible: =Section34vis
+                    Width: =22
+                    X: =572
+                    Y: =744+s592+s593
+                    ZIndex: =25
+
+                Dropdown_S59_Section34_drivingmanner As dropdown:
+                    AllowEmptySelection: =true
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_Section59_key.Selected.Key And TicketTypename="Section 59").'and that driving was in a manner which name'
+                    DisplayMode: =S59dis
+                    Fill: =madcols595
+                    Height: =70
+                    Items: =DrivingManneroffline
+                    OnChange: |-
+                        =If(Len(Dropdown_S59_Section34_drivingmanner.Selected.cp_name)>0,UpdateContext({madcols595:White}),UpdateContext({madcols595:LightGoldenRodYellow}));
+                    OnSelect: |-
+                        =If(Len(Dropdown_S59_Section34_drivingmanner.Selected.cp_name)>0,UpdateContext({madcols595:White}),UpdateContext({madcols595:LightGoldenRodYellow}));
+                    Reset: =resetall
+                    Size: =21
+                    Visible: =Section34vis
+                    Width: =545
+                    X: =47
+                    Y: =773+s592+s593
+                    ZIndex: =26
+
+                Label_S59_section34_wording5 As label:
+                    Fill: =LightGoldenRodYellow
+                    Height: =78
+                    OnSelect: =
+                    Size: =21
+                    Text: ="alarm, distress or annoyance to members of the public."
+                    Visible: =Section34vis
+                    Width: =543
+                    X: =49
+                    Y: =862+s592+s593
+                    ZIndex: =27
+
+            TextInput_Sign_and_Submit_SignatureDateTime_5 As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: |-
+                    =Text(locSigDateTime5, "[$-en-GB]dd/mm/yyyy hh:mm:ss")
+                DisplayMode: =DisplayMode.Disabled
+                Height: =67
+                HintText: ="Date/time of signature"
+                OnSelect: =
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =38
+                Y: =1045+s59+s591+s592+s593
+                ZIndex: =41
+
+            Label_Sign_and_Submit_TFOffenderSignature_5 As label:
+                Height: =68
+                OnSelect: =
+                Size: =21
+                Text: ="Offender Signature"
+                Width: =545
+                X: =47
+                Y: =682+s59+s591+s592+s593
+                ZIndex: =42
+
+            Label1_20 As label:
+                Fill: =LightGoldenRodYellow
+                Height: =135
+                Size: =21
+                Text: ="I acknowledge the above statement is correct and I have understood the caution"
+                Width: =545
+                X: =47
+                Y: =524+s59+s591+s592+s593
+                ZIndex: =43
+
+            Image_section59_sign As image:
+                Height: =255
+                Image: |
+                    =LookUp(TrOffOffline,TicketTypename = "Section 59" And OffenceKey=Dropdown_Section59_key.Selected.Key).Section59sign 
+                Visible: =If(LookUp(TrOffOffline,TicketTypename = "Section 59" And OffenceKey=Dropdown_Section59_key.Selected.Key).Section59sign = Blank() ,false,true)
+                Width: =545
+                X: =43
+                Y: =750+s59+s591+s592+s593
+                ZIndex: =44
+
+            PenInput_Section59_sign As inkControl:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                DisplayMode: |-
+                    =If(!IsBlank(Dropdown_S59_Section3or34.Selected.cp_name) And !IsBlank(Dropdown_S59_WarningOrSeizure.Selected.cp_name)  And !IsBlank(Dropdown_S59_Section3_wording2_driving_the_above.Selected.cp_name)  And !IsBlank(Dropdown_S59_Section3_wording1_you.Selected.cp_name) And
+                    
+                    /*Seizure garages*/
+                    Not(And(Dropdown_S59_WarningOrSeizure.Selected.cp_name = "Seizure",  Or(IsBlank(Dropdown_S59_RecoveryGarage.Selected.name), IsBlank(Dropdown_S59_RecoveryGarageCompany.Selected.name), IsBlank(TextInput_S59_RecoveryGarageAddress.Text), IsBlank(TextInput_S59_RecoveryGarageTelephone)))),DisplayMode.Edit,DisplayMode.Disabled)
+                Height: =255
+                OnSelect: |-
+                    =UpdateContext({hasBeenSigned:true})
+                Reset: =true
+                Visible: =If(LookUp(TrOffOffline,TicketTypename = "Section 59" And OffenceKey=Dropdown_Section59_key.Selected.Key).Section59sign = Blank(),true,false)
+                Width: =545
+                X: =45
+                Y: =746+s59+s591+s592+s593
+                ZIndex: =45
+
+            Group_header As group:
+                Height: =5
+                Width: =5
+                X: =40
+                Y: =65
+                ZIndex: =48
+
+                Label_S59_Section As label:
+                    Fill: =White
+                    Height: =50
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Section?"
+                    Width: =545
+                    X: =40
+                    Y: =112
+                    ZIndex: =28
+
+                Label_S59_WarningOrSeizure As label:
+                    Fill: =White
+                    Height: =50
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Warning or seizure?"
+                    Width: =545
+                    X: =40
+                    Y: =248
+                    ZIndex: =29
+
+                Label_asterik_S59_Section As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =32
+                    Size: =21
+                    Text: ="*"
+                    Width: =22
+                    X: =573
+                    Y: =121
+                    ZIndex: =31
+
+                Label_asterik_WarningOrSeizure As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =32
+                    Size: =21
+                    Text: ="*"
+                    Width: =22
+                    X: =573
+                    Y: =266
+                    ZIndex: =32
+
+                Dropdown_S59_Section3or34 As dropdown:
+                    AllowEmptySelection: =true
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_Section59_key.Selected.Key And TicketTypename="Section 59").'Section 3 or 34 name'
+                    DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =madcols59
+                    Height: =70
+                    Items: =Sectionoffline
+                    OnChange: |
+                        =If(Len(Dropdown_S59_Section3or34.Selected.cp_name)>0,UpdateContext({madcols59:White});,UpdateContext({section3vis:false});UpdateContext({madcols59:LightGoldenRodYellow});UpdateContext({Section34vis:false}););
+                        
+                        If(Dropdown_S59_Section3or34.Selected.cp_name ="Section 34",UpdateContext({Section34vis:true});Set(s59,s59+600),UpdateContext({Section34vis:false});Set(s59,0));
+                        
+                        If(Dropdown_S59_Section3or34.Selected.cp_name ="Section 3",Set(s591,s591+400);UpdateContext({section3vis:true}),Set(s591,0);UpdateContext({section3vis:false}));
+                        
+                    OnSelect: |
+                        =If(Len(Dropdown_S59_Section3or34.Selected.cp_name)>0,UpdateContext({madcols59:White});,UpdateContext({section3vis:false});UpdateContext({madcols59:LightGoldenRodYellow});UpdateContext({Section34vis:false}););
+                        
+                        If(Dropdown_S59_Section3or34.Selected.cp_name ="Section 34",UpdateContext({Section34vis:true});Set(s59,s59+600),UpdateContext({Section34vis:false});Set(s59,0));
+                        
+                        If(Dropdown_S59_Section3or34.Selected.cp_name ="Section 3",Set(s591,s591+400);UpdateContext({section3vis:true}),Set(s591,0);UpdateContext({section3vis:false}));
+                        
+                    Reset: =resetall
+                    Size: =21
+                    Width: =545
+                    X: =40
+                    Y: =165
+                    ZIndex: =34
+
+                Dropdown_S59_WarningOrSeizure As dropdown:
+                    AllowEmptySelection: =true
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_Section59_key.Selected.Key And TicketTypename="Section 59").'Warning or Seizure name '
+                    DisplayMode: =If(Or(Dropdown_S59_Section3or34.Selected.cp_name="Section 3",Dropdown_S59_Section3or34.Selected.cp_name="Section 34"),If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit),DisplayMode.Disabled)
+                    Fill: =madcols591
+                    Height: =70
+                    Items: =Warningorseizureoffline
+                    OnChange: |
+                        =If(Len(Dropdown_S59_WarningOrSeizure.Selected.cp_name)>0,UpdateContext({madcols591:White}),UpdateContext({madcols591:LightGoldenRodYellow}));
+                        
+                        If(Dropdown_S59_WarningOrSeizure.Selected.cp_name ="Warning",UpdateContext({warningvis:true});Set(s592,s592+400),UpdateContext({warningvis:false});Set(s592,0));
+                        
+                        If(Dropdown_S59_WarningOrSeizure.Selected.cp_name ="Seizure",Set(s593,s593+800),Set(s593,0));
+                    OnSelect: =
+                    Reset: =resetall
+                    Size: =21
+                    Width: =544
+                    X: =43
+                    Y: =298
+                    ZIndex: =35
+
+            Section3 As group:
+                Height: =5
+                Width: =5
+                X: =40
+                Y: =65
+                ZIndex: =49
+
+                Label_S59_Section3_wording_you As label:
+                    Fill: =White
+                    Height: =50
+                    OnSelect: =
+                    Size: =21
+                    Text: ="You"
+                    Visible: =section3vis
+                    Width: =545
+                    X: =40
+                    Y: =390+s592+s593
+                    ZIndex: =30
+
+                Label_asterik_Wording1 As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =32
+                    Size: =21
+                    Text: ="*"
+                    Visible: =section3vis
+                    Width: =22
+                    X: =565
+                    Y: =408+s592+s593
+                    ZIndex: =33
+
+                Dropdown_S59_Section3_wording1_you As dropdown:
+                    AllowEmptySelection: =true
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_Section59_key.Selected.Key And TicketTypename="Section 59").'You wording 1 name'
+                    DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =madcols592
+                    Height: =70
+                    Items: =Youwording1offline
+                    OnChange: |-
+                        =If(Len(Dropdown_S59_Section3_wording1_you.Selected.cp_name)>0,UpdateContext({madcols592:White}),UpdateContext({madcols592:LightGoldenRodYellow}));
+                    OnSelect: |-
+                        =If(Len(Dropdown_S59_Section3_wording1_you.Selected.cp_name)>0,UpdateContext({madcols592:White}),UpdateContext({madcols592:LightGoldenRodYellow}));
+                    Reset: =resetall
+                    Size: =21
+                    Visible: =section3vis
+                    Width: =545
+                    X: =40
+                    Y: =440+s592+s593
+                    ZIndex: =36
+
+                Label_S59_Section3_wording2 As label:
+                    Fill: =White
+                    Height: =50
+                    OnSelect: =
+                    Size: =21
+                    Text: ="driving the above vehicle in"
+                    Visible: =section3vis
+                    Width: =545
+                    X: =40
+                    Y: =528+s592+s593
+                    ZIndex: =37
+
+                Dropdown_S59_Section3_wording2_driving_the_above As dropdown:
+                    AllowEmptySelection: =true
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    ChevronBackground: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_Section59_key.Selected.Key And TicketTypename="Section 59").'Driving the above vehicle in name'
+                    DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =madcols593
+                    Height: =70
+                    Items: =DrivingVehicleInoffline
+                    OnChange: |-
+                        =If(Len(Dropdown_S59_Section3_wording2_driving_the_above.Selected.cp_name)>0,UpdateContext({madcols593:White}),UpdateContext({madcols593:LightGoldenRodYellow}));
+                    OnSelect: |-
+                        =If(Len(Dropdown_S59_Section3_wording2_driving_the_above.Selected.cp_name)>0,UpdateContext({madcols593:White}),UpdateContext({madcols593:LightGoldenRodYellow}));
+                    Reset: =resetall
+                    Size: =21
+                    Visible: =section3vis
+                    Width: =545
+                    X: =40
+                    Y: =578+s592+s593
+                    ZIndex: =38
+
+                Label_S59_Section3_wording3 As label:
+                    Fill: =White
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="manner contrary to Section 3 of the Road Traffic Act 1998"
+                    Visible: =section3vis
+                    Width: =545
+                    X: =40
+                    Y: =666+s592+s593
+                    ZIndex: =39
+
+                Label_asterik_Wording2 As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =28
+                    Size: =21
+                    Text: ="*"
+                    Visible: =section3vis
+                    Width: =30
+                    X: =561
+                    Y: =539+s592+s593
+                    ZIndex: =40
+
+    Label1_9 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =42
+        Size: =21
+        Text: =Vehicle_Primary_key
+        Width: =440
+        X: =100
+        Y: =45
+        ZIndex: =17
+

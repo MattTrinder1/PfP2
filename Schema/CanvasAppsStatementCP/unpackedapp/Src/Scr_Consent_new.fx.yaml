@@ -1,0 +1,627 @@
+Scr_Consent_new As screen:
+    LoadingSpinnerColor: =RGBA(100, 118, 132, 1)
+    OnHidden: |-
+        =UpdateContext({resetCan:false})
+    OnVisible: |-
+        =UpdateContext({resetCan:true});
+        Set(
+            witnessstatement,
+            false
+        );
+        UpdateContext({witnessstatement: false});
+        Set(
+            y6,
+            0
+        );
+        If(Radio_ability_to_read.Selected.Value = "Yes" And SS = 0 ,Set(SS,450));
+        If(Radio_ability_to_read.Selected.Value = "No",Set(SS,0));
+        If(Radio_ability_to_read.Selected.Value = "N/A",Set(SS,0));
+        
+        If(Len(Radio_Victim_Personal_Statement_Scheme.Selected.Value)>0,UpdateContext({madcolAH:Transparent}),UpdateContext({madcolAH:LightGoldenRodYellow}));
+        If(Len(Radio_victim_personal_statement.Selected.Value)>0,UpdateContext({madcolAI:Transparent}),UpdateContext({madcolAI:LightGoldenRodYellow}));
+        If(Len(Radio_leaflet_given.Selected.Value)>0,UpdateContext({madcolAJ:Transparent}),UpdateContext({madcolAJ:LightGoldenRodYellow}));
+        If(Len(Radio_police_Access_consent.Selected.Value)>0,UpdateContext({madcolAK:Transparent}),UpdateContext({madcolAK:LightGoldenRodYellow}));
+        If(Len(Radio_medical_record_consent.Selected.Value)>0,UpdateContext({madcolAL:Transparent}),UpdateContext({madcolAL:LightGoldenRodYellow}));
+        If(Len(Radio_statement_consent.Selected.Value)>0,UpdateContext({madcolAM:Transparent}),UpdateContext({madcolAM:LightGoldenRodYellow}));
+        If(Len(Radio_child_witness.Selected.Value)>0,UpdateContext({madcolAN:Transparent}),UpdateContext({madcolAN:LightGoldenRodYellow}));
+        If(Len(Radio_cps_reporting_res.Selected.Value)>0,UpdateContext({madcolAO:Transparent}),UpdateContext({madcolAO:LightGoldenRodYellow}));
+        If(Len(Radio_ability_to_read.Selected.Value) > 0,UpdateContext({madcolAP: Transparent}),UpdateContext({madcolAP: LightGoldenRodYellow})
+        );
+        
+        /* Set(madcolAH,LightGoldenRodYellow);UpdateContext({madcolAH:LightGoldenRodYellow});
+        Set(madcolAI,LightGoldenRodYellow);UpdateContext({madcolAI:LightGoldenRodYellow});
+        Set(madcolAJ,LightGoldenRodYellow);UpdateContext({madcolAJ:LightGoldenRodYellow});
+        Set(madcolAK,LightGoldenRodYellow);UpdateContext({madcolAK:LightGoldenRodYellow});
+        Set(madcolAL,LightGoldenRodYellow);UpdateContext({madcolAL:LightGoldenRodYellow});
+        Set(madcolAM,LightGoldenRodYellow);UpdateContext({madcolAM:LightGoldenRodYellow});
+        Set(madcolAN,LightGoldenRodYellow);UpdateContext({madcolAN:LightGoldenRodYellow});
+        Set(madcolAO,LightGoldenRodYellow);UpdateContext({madcolAO:LightGoldenRodYellow});
+        Set(madcolAP,LightGoldenRodYellow);UpdateContext({madcolAP:LightGoldenRodYellow});
+        Set(madcolAQ,LightGoldenRodYellow);UpdateContext({madcolAQ:LightGoldenRodYellow});              */
+        
+        If(IsBlank(LookUp('Statement offline',Key=Dropdown_Consent_key.Selected.Key).'WitnessConsent signature'),Set(WitnessConsentRO,DisplayMode.Edit),Set(WitnessConsentRO,DisplayMode.Disabled));
+
+    Label1_16 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Consent"
+        Width: =640
+        ZIndex: =1
+
+    "'exit icon 3_17' As icon.Cancel":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =576
+        Y: =11
+        ZIndex: =2
+
+    "'Back Icon 2_17' As icon.ArrowLeft":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_Statements_Home_screen,ScreenTransition.UnCover)
+        X: =32
+        Y: =11
+        ZIndex: =3
+
+    Canvas_Consent_1 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1049
+        Width: =Parent.Width
+        Y: =87
+        ZIndex: =4
+
+        DataCard_Consent_1 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =2132
+            Visible: =resetCan
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Dropdown_Consent_key As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+                ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                Default: =Statement_Primary_key /*LookUp('Statement offline',Key=Statement_Primary_key).Key*/
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                Items: ='Statement offline'.Key
+                OnChange: |
+                    =/*If(LookUp('Statement offline',Key=Dropdown_Consent_key.Selected.Key).WitnessSignature =SampleImage,Set(signreadonly,DisplayMode.Edit),Set(signreadonly,DisplayMode.Disabled));*/
+                    
+                    /*If(IsBlank(LookUp('Statement offline',Key=Dropdown_Consent_key.Selected.Key).'WitnessConsent signature'),Set(WitnessConsentRO,DisplayMode.Edit),Set(WitnessConsentRO,DisplayMode.Disabled));*/
+                    
+                PressedColor: =RGBA(255, 255, 255, 1)
+                PressedFill: =RGBA(0, 18, 107, 1)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =30
+                ZIndex: =4
+
+            "'LabelThe Victim Personal Statement Scheme (victims only) has been explained to me and I have been given a Victim Personal Statement Leaflet_1' As label":
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =93
+                Size: =21
+                Text: ="The Victim Personal Statement Scheme (victims only) has been explained to me "/*and I have been given a Victim Personal Statement Leaflet?"*/
+                Width: =546
+                X: =40
+                Y: =136
+                ZIndex: =5
+
+            Radio_Victim_Personal_Statement_Scheme As radio:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Consent_key.Selected.Key).ConsentVictimLeaflet
+                DisplayMode: =WitnessConsentRO
+                Fill: =madcolAH
+                Height: =107
+                HoverColor: =RGBA(32, 54, 71, 1)
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_Victim_Personal_Statement_Scheme.Selected.Value)>0,UpdateContext({madcolAH:Transparent}),UpdateContext({madcolAH:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Radio_Victim_Personal_Statement_Scheme.Selected.Value)>0,UpdateContext({madcolAH:Transparent}),UpdateContext({madcolAH:LightGoldenRodYellow}));
+                RadioBorderColor: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                Size: =21
+                Width: =306
+                X: =40
+                Y: =243
+                ZIndex: =6
+
+            "'Label_I_consent_to_police_having_access_to_my_medical_record(s)_in_relation_to_this_matter_(obtained in_accordance_with_local_practice)_1' As label":
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =159
+                Size: =21
+                Text: ="I consent to police having access to my medical record(s) in relation to this matter (obtained in accordance with local practice)"
+                Width: =546
+                X: =40
+                Y: =714
+                ZIndex: =7
+
+            Radio_police_Access_consent As radio:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                BorderStyle: =BorderStyle.None
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Consent_key.Selected.Key).ConsentPoliceAccess
+                DisplayMode: =WitnessConsentRO
+                Fill: =madcolAK
+                Height: =107
+                HoverColor: =RGBA(32, 54, 71, 1)
+                Items: =["Yes","No","N/A"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_police_Access_consent.Selected.Value)>0,UpdateContext({madcolAK:Transparent}),UpdateContext({madcolAK:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Radio_police_Access_consent.Selected.Value)>0,UpdateContext({madcolAK:Transparent}),UpdateContext({madcolAK:LightGoldenRodYellow}));
+                RadioBorderColor: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                Size: =21
+                Width: =546
+                X: =40
+                Y: =877
+                ZIndex: =8
+
+            Label_I_have_provided_a_Victim_Personal_Statement_1 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =95
+                Size: =21
+                Text: ="I have provided a Victim Personal Statement ?"
+                Width: =546
+                X: =40
+                Y: =348
+                ZIndex: =9
+
+            Radio_victim_personal_statement As radio:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Consent_key.Selected.Key).ConsentVictimProvided
+                DisplayMode: =WitnessConsentRO
+                Fill: =madcolAI
+                Height: =107
+                HoverColor: =RGBA(32, 54, 71, 1)
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_victim_personal_statement.Selected.Value)>0,UpdateContext({madcolAI:Transparent}),UpdateContext({madcolAI:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Radio_victim_personal_statement.Selected.Value)>0,UpdateContext({madcolAI:Transparent}),UpdateContext({madcolAI:LightGoldenRodYellow}));
+                RadioBorderColor: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                Size: =21
+                Width: =306
+                X: =40
+                Y: =436
+                ZIndex: =10
+
+            "'Label_I_have_been_given_the_leaflet_Giving_a_witness_statement_to_the_police..._1' As label":
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =95
+                Size: =21
+                Text: ="I have been given the leaflet ""Giving a witness statement to the police..."""
+                Width: =546
+                X: =40
+                Y: =535
+                ZIndex: =11
+
+            Radio_leaflet_given As radio:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                BorderStyle: =BorderStyle.None
+                Color: =RGBA(0, 0, 0, 1)
+                Default: |
+                    =LookUp('Statement offline',Key=Dropdown_Consent_key.Selected.Key).ConsentWitnessLeaflet
+                DisplayMode: =WitnessConsentRO
+                Fill: =madcolAJ
+                Height: =107
+                HoverColor: =RGBA(32, 54, 71, 1)
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_leaflet_given.Selected.Value)>0,UpdateContext({madcolAJ:Transparent}),UpdateContext({madcolAJ:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Radio_leaflet_given.Selected.Value)>0,UpdateContext({madcolAJ:Transparent}),UpdateContext({madcolAJ:LightGoldenRodYellow}));
+                RadioBorderColor: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                Size: =21
+                Width: =306
+                X: =40
+                Y: =617
+                ZIndex: =12
+
+            "'Label_I consent_to_my_medical_record_in_relation_to_this_matter_being_disclosed_to_the_defence_1' As label":
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =141
+                Size: =21
+                Text: ="I consent to my medical record in relation to this matter being disclosed to the defence"
+                Width: =546
+                X: =40
+                Y: =960
+                ZIndex: =13
+
+            Radio_medical_record_consent As radio:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                BorderStyle: =BorderStyle.None
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Consent_key.Selected.Key).ConsentMedicalRecordDisclosed
+                DisplayMode: =WitnessConsentRO
+                Fill: =madcolAL
+                Height: =107
+                HoverColor: =RGBA(32, 54, 71, 1)
+                Items: =["Yes","No","N/A"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_medical_record_consent.Selected.Value)>0,UpdateContext({madcolAL:Transparent}),UpdateContext({madcolAL:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Radio_medical_record_consent.Selected.Value)>0,UpdateContext({madcolAL:Transparent}),UpdateContext({madcolAL:LightGoldenRodYellow}));
+                RadioBorderColor: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1078
+                ZIndex: =14
+
+            Lbl_asteriks_64 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =36
+                Size: =21
+                Text: ="*"
+                Width: =20
+                X: =565
+                Y: =136
+                ZIndex: =15
+
+            Lbl_asteriks_65 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =225
+                Y: =826
+                ZIndex: =16
+
+            Lbl_asteriks_66 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =22
+                Size: =21
+                Text: ="*"
+                Width: =28
+                X: =489
+                Y: =590
+                ZIndex: =17
+
+            Lbl_asteriks_67 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =199
+                Y: =387
+                ZIndex: =18
+
+            Lbl_asteriks_69 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =203
+                Y: =1040
+                ZIndex: =19
+
+            "'Label_I_consent_to_the_statement_being_disclosed_for_the_purposes_of_civil,_or_other_proceedings_if_applicable,_e.g._child_care_proceedings,_CICA_1' As label":
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =141
+                Size: =21
+                Text: ="I consent to the statement being disclosed for the purposes of civil, or other proceedings if applicable, e.g. child care proceedings, CICA"
+                Width: =546
+                X: =40
+                Y: =1193
+                ZIndex: =20
+
+            Radio_statement_consent As radio:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                BorderStyle: =BorderStyle.None
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Consent_key.Selected.Key).ConsentStatementDisclosure
+                DisplayMode: =WitnessConsentRO
+                Fill: =madcolAM
+                Height: =107
+                HoverColor: =RGBA(32, 54, 71, 1)
+                Items: =["Yes","No","N/A"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_statement_consent.Selected.Value)>0,UpdateContext({madcolAM:Transparent}),UpdateContext({madcolAM:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Radio_statement_consent.Selected.Value)>0,UpdateContext({madcolAM:Transparent}),UpdateContext({madcolAM:LightGoldenRodYellow}));
+                RadioBorderColor: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1334
+                ZIndex: =21
+
+            "'Label _Child_witness_only_I_have_had_the_provision_regarding_reporting_restrictions_explained_to_me._1' As label":
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =132
+                Size: =21
+                Text: ="Child witness only. I have had the provision regarding reporting restrictions explained to me ?"
+                Width: =546
+                X: =40
+                Y: =1421
+                ZIndex: =22
+
+            "'Label_I would_like_CPS_to_apply_for_reporting_restrictions_on_my_behalf_1' As label":
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =70
+                Size: =21
+                Text: ="I would like CPS to apply for reporting restrictions on my behalf "
+                Width: =546
+                X: =40
+                Y: =1649
+                ZIndex: =23
+
+            Radio_child_witness As radio:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                BorderStyle: =BorderStyle.None
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Consent_key.Selected.Key).ConsentChildWitness
+                DisplayMode: =WitnessConsentRO
+                Fill: =madcolAN
+                HoverColor: =RGBA(32, 54, 71, 1)
+                Items: =["Yes","No","N/A"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_child_witness.Selected.Value)>0,UpdateContext({madcolAN:Transparent}),UpdateContext({madcolAN:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Radio_child_witness.Selected.Value)>0,UpdateContext({madcolAN:Transparent}),UpdateContext({madcolAN:LightGoldenRodYellow}));
+                RadioBorderColor: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1549
+                ZIndex: =24
+
+            Radio_cps_reporting_res As radio:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                BorderStyle: =BorderStyle.None
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Consent_key.Selected.Key).ConsentCPS
+                DisplayMode: =WitnessConsentRO
+                Fill: =madcolAO
+                Height: =93
+                HoverColor: =RGBA(32, 54, 71, 1)
+                Items: =["Yes","No","N/A"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_cps_reporting_res.Selected.Value)>0,UpdateContext({madcolAO:Transparent}),UpdateContext({madcolAO:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Radio_cps_reporting_res.Selected.Value)>0,UpdateContext({madcolAO:Transparent}),UpdateContext({madcolAO:LightGoldenRodYellow}));
+                RadioBorderColor: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1726
+                ZIndex: =25
+
+            Lbl_asteriks_68 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =26
+                Size: =21
+                Text: ="*"
+                Width: =29
+                X: =428
+                Y: =1502
+                ZIndex: =26
+
+            Lbl_asteriks_70 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =346
+                Y: =1296
+                ZIndex: =27
+
+            Lbl_asteriks_71 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =368
+                Y: =1681
+                ZIndex: =28
+
+            "'Label_I am_able_to_read_the_statement_I_have_given_1' As label":
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =70
+                Size: =21
+                Text: ="I am able to read the statement I have given?"
+                Width: =546
+                X: =40
+                Y: =1819
+                ZIndex: =29
+
+            Radio_ability_to_read As radio:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                BorderStyle: =BorderStyle.None
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Consent_key.Selected.Key).ConsentAbleRead
+                DisplayMode: =WitnessConsentRO
+                Fill: =madcolAP
+                Height: =93
+                HoverColor: =RGBA(32, 54, 71, 1)
+                Items: =["Yes","No","N/A"]
+                Layout: =Layout.Horizontal
+                OnChange: |
+                    =If(Radio_ability_to_read.Selected.Value = "Yes" And SS = 0 ,Set(SS,450));
+                    If(Radio_ability_to_read.Selected.Value = "No",Set(SS,0));
+                    If(Radio_ability_to_read.Selected.Value = "N/A",Set(SS,0));
+                    
+                    If(Len(Radio_ability_to_read.Selected.Value)>0,UpdateContext({madcolAP:Transparent}),UpdateContext({madcolAP:LightGoldenRodYellow}));
+                    
+                OnSelect: |-
+                    =If(Radio_ability_to_read.Selected.Value = "Yes" And SS = 0 ,Set(SS,450));
+                    If(Radio_ability_to_read.Selected.Value = "No",Set(SS,0));
+                    If(Radio_ability_to_read.Selected.Value = "N/A",Set(SS,0));
+                    If(
+                        Len(Radio_ability_to_read.Selected.Value) > 0,
+                        UpdateContext({madcolAP: Transparent}),
+                        UpdateContext({madcolAP: LightGoldenRodYellow})
+                    );
+                RadioBorderColor: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                Size: =21
+                Width: =536
+                X: =50
+                Y: =1911
+                ZIndex: =30
+
+            Lbl_asteriks_72 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =134
+                Y: =1844
+                ZIndex: =31
+
+            Btn_save_20 As button:
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =WitnessConsentRO
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Semibold
+                Height: =72
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |
+                    =UpdateIf(
+                        'Statement offline',
+                        Key = Dropdown_Consent_key.Selected.Key,
+                        {
+                            ConsentVictimLeaflet: Radio_Victim_Personal_Statement_Scheme.Selected.Value,
+                            ConsentVictimProvided: Radio_victim_personal_statement.Selected.Value,
+                            ConsentWitnessLeaflet: Radio_leaflet_given.Selected.Value,
+                            ConsentPoliceAccess: Radio_police_Access_consent.Selected.Value,
+                            ConsentMedicalRecordDisclosed: Radio_medical_record_consent.Selected.Value,
+                            ConsentStatementDisclosure: Radio_statement_consent.Selected.Value,
+                            ConsentChildWitness: Radio_child_witness.Selected.Value,
+                            ConsentCPS: Radio_cps_reporting_res.Selected.Value,
+                            ConsentAbleRead: Radio_ability_to_read.Selected.Value
+                        }
+                    );
+                    UpdateContext(
+                        {
+                            rec: LookUp(
+                                'Statement offline',
+                                Key = Dropdown_Consent_key.Selected.Key
+                            )
+                        }
+                    );
+                    UpdateIf(
+                        'Statement offline',
+                        Key = Dropdown_Consent_key.Selected.Key,
+                        {
+                            consentValid: And(
+                                !IsBlank(rec.ConsentVictimLeaflet),
+                                !IsBlank(rec.ConsentVictimProvided),
+                                !IsBlank(rec.ConsentWitnessLeaflet),
+                                !IsBlank(rec.ConsentPoliceAccess),
+                                !IsBlank(rec.ConsentMedicalRecordDisclosed),
+                                !IsBlank(rec.ConsentStatementDisclosure),
+                                !IsBlank(rec.ConsentChildWitness),
+                                !IsBlank(rec.ConsentCPS),
+                                !IsBlank(rec.ConsentAbleRead)
+                            )
+                        }
+                    );
+                    SaveData(
+                        'Statement offline',
+                        "Statement offline"
+                    );
+                    Navigate(
+                        Scr_Statements_Home_screen,
+                        ScreenTransition.UnCover
+                    );
+                Size: =24
+                Text: ="Save & Continue"
+                Width: =545
+                X: =40
+                Y: =2034
+                ZIndex: =32
+

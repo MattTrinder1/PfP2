@@ -1,0 +1,229 @@
+<application xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:service="https://uk-001.azure-apim.net/apim/logicflows" xmlns:siena="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11" siena:serviceId="NDIWrapper-DriverNumber" xmlns="http://wadl.dev.java.net/2009/02">
+  <doc title="NDIWrapper-DriverNumber" />
+  <grammars>
+    <jsonTypes targetNamespace="https://uk-001.azure-apim.net/apim/logicflows" xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
+      <string name="ManualTriggerInput_text_def" />
+      <string name="ManualTriggerInput_text_1_def" />
+      <object name="ManualTriggerInput">
+        <property name="text" type="string" />
+        <property name="text_1" type="string" />
+      </object>
+      <boolean name="ResponseActionOutput_selected_def" />
+      <string name="ResponseActionOutput_firstName_def" />
+      <string name="ResponseActionOutput_lastName_def" />
+      <string name="ResponseActionOutput_dateOfBirth_def" />
+      <string name="ResponseActionOutput_gender_def" />
+      <string name="ResponseActionOutput_birthplace_def" />
+      <string name="ResponseActionOutput_address1_def" />
+      <string name="ResponseActionOutput_address2_def" />
+      <string name="ResponseActionOutput_address3_def" />
+      <string name="ResponseActionOutput_postCode_def" />
+      <string name="ResponseActionOutput_driverNumber_def" />
+      <string name="ResponseActionOutput_warningSignalsText_def" />
+      <string name="ResponseActionOutput_croNumber_def" />
+      <string name="ResponseActionOutput_ethnicity_def" />
+      <string name="ResponseActionOutput_addressDate_def" />
+      <string name="ResponseActionOutput_documentTrail_def_items_def_documentRef_def" />
+      <string name="ResponseActionOutput_documentTrail_def_items_def_date_def" />
+      <string name="ResponseActionOutput_documentTrail_def_items_def_description1_def" />
+      <string name="ResponseActionOutput_documentTrail_def_items_def_description2_def" />
+      <string name="ResponseActionOutput_documentTrail_def_items_def_description3_def" />
+      <string name="ResponseActionOutput_documentTrail_def_items_def_description4_def" />
+      <object name="ResponseActionOutput_documentTrail_def_items_def">
+        <property name="documentRef" type="string" />
+        <property name="date" type="string" />
+        <property name="description1" type="string" />
+        <property name="description2" type="string" />
+        <property name="description3" type="string" />
+        <property name="description4" type="string" />
+      </object>
+      <array typeRef="ResponseActionOutput_documentTrail_def_items_def" name="ResponseActionOutput_documentTrail_def" />
+      <string name="ResponseActionOutput_stopsMarkers_def_items_def_description_def" />
+      <object name="ResponseActionOutput_stopsMarkers_def_items_def">
+        <property name="description" type="string" />
+      </object>
+      <array typeRef="ResponseActionOutput_stopsMarkers_def_items_def" name="ResponseActionOutput_stopsMarkers_def" />
+      <string name="ResponseActionOutput_fullEntitlement_def_items_def_category_def" />
+      <string name="ResponseActionOutput_fullEntitlement_def_items_def_from_def" />
+      <string name="ResponseActionOutput_fullEntitlement_def_items_def_until_def" />
+      <string name="ResponseActionOutput_fullEntitlement_def_items_def_description1_def" />
+      <string name="ResponseActionOutput_fullEntitlement_def_items_def_description2_def" />
+      <string name="ResponseActionOutput_fullEntitlement_def_items_def_description3_def" />
+      <string name="ResponseActionOutput_fullEntitlement_def_items_def_description4_def" />
+      <string name="ResponseActionOutput_fullEntitlement_def_items_def_description5_def" />
+      <string name="ResponseActionOutput_fullEntitlement_def_items_def_restriction1_def" />
+      <string name="ResponseActionOutput_fullEntitlement_def_items_def_restriction2_def" />
+      <string name="ResponseActionOutput_fullEntitlement_def_items_def_restriction3_def" />
+      <string name="ResponseActionOutput_fullEntitlement_def_items_def_restriction4_def" />
+      <string name="ResponseActionOutput_fullEntitlement_def_items_def_eU3D_def" />
+      <object name="ResponseActionOutput_fullEntitlement_def_items_def">
+        <property name="category" type="string" />
+        <property name="from" type="string" />
+        <property name="until" type="string" />
+        <property name="description1" type="string" />
+        <property name="description2" type="string" />
+        <property name="description3" type="string" />
+        <property name="description4" type="string" />
+        <property name="description5" type="string" />
+        <property name="restriction1" type="string" />
+        <property name="restriction2" type="string" />
+        <property name="restriction3" type="string" />
+        <property name="restriction4" type="string" />
+        <property name="eU3D" type="string" />
+      </object>
+      <array typeRef="ResponseActionOutput_fullEntitlement_def_items_def" name="ResponseActionOutput_fullEntitlement_def" />
+      <string name="ResponseActionOutput_provisionalEntitlement_def_items_def_category_def" />
+      <string name="ResponseActionOutput_provisionalEntitlement_def_items_def_from_def" />
+      <string name="ResponseActionOutput_provisionalEntitlement_def_items_def_until_def" />
+      <string name="ResponseActionOutput_provisionalEntitlement_def_items_def_description1_def" />
+      <string name="ResponseActionOutput_provisionalEntitlement_def_items_def_description2_def" />
+      <string name="ResponseActionOutput_provisionalEntitlement_def_items_def_description3_def" />
+      <string name="ResponseActionOutput_provisionalEntitlement_def_items_def_description4_def" />
+      <string name="ResponseActionOutput_provisionalEntitlement_def_items_def_description5_def" />
+      <string name="ResponseActionOutput_provisionalEntitlement_def_items_def_restriction1_def" />
+      <string name="ResponseActionOutput_provisionalEntitlement_def_items_def_restriction2_def" />
+      <string name="ResponseActionOutput_provisionalEntitlement_def_items_def_restriction3_def" />
+      <string name="ResponseActionOutput_provisionalEntitlement_def_items_def_restriction4_def" />
+      <string name="ResponseActionOutput_provisionalEntitlement_def_items_def_eU3D_def" />
+      <object name="ResponseActionOutput_provisionalEntitlement_def_items_def">
+        <property name="category" type="string" />
+        <property name="from" type="string" />
+        <property name="until" type="string" />
+        <property name="description1" type="string" />
+        <property name="description2" type="string" />
+        <property name="description3" type="string" />
+        <property name="description4" type="string" />
+        <property name="description5" type="string" />
+        <property name="restriction1" type="string" />
+        <property name="restriction2" type="string" />
+        <property name="restriction3" type="string" />
+        <property name="restriction4" type="string" />
+        <property name="eU3D" type="string" />
+      </object>
+      <array typeRef="ResponseActionOutput_provisionalEntitlement_def_items_def" name="ResponseActionOutput_provisionalEntitlement_def" />
+      <string name="ResponseActionOutput_endorsements_def_items_def_convictionCourt_def" />
+      <string name="ResponseActionOutput_endorsements_def_items_def_convictionDate_def" />
+      <string name="ResponseActionOutput_endorsements_def_items_def_offenceCode_def" />
+      <string name="ResponseActionOutput_endorsements_def_items_def_offenceDate_def" />
+      <string name="ResponseActionOutput_endorsements_def_items_def_fine_def" />
+      <string name="ResponseActionOutput_endorsements_def_items_def_points_def" />
+      <string name="ResponseActionOutput_endorsements_def_items_def_disqPeriod_def" />
+      <string name="ResponseActionOutput_endorsements_def_items_def_otherSentence_def" />
+      <string name="ResponseActionOutput_endorsements_def_items_def_suspendSentence_def" />
+      <string name="ResponseActionOutput_endorsements_def_items_def_dateDisqRemoved_def" />
+      <string name="ResponseActionOutput_endorsements_def_items_def_dttPorDPS_def" />
+      <string name="ResponseActionOutput_endorsements_def_items_def_sentencingCourt_def" />
+      <string name="ResponseActionOutput_endorsements_def_items_def_sentencingDate_def" />
+      <string name="ResponseActionOutput_endorsements_def_items_def_disqPendAppeal_def" />
+      <string name="ResponseActionOutput_endorsements_def_items_def_appealDate_def" />
+      <string name="ResponseActionOutput_endorsements_def_items_def_disqReimposed_def" />
+      <string name="ResponseActionOutput_endorsements_def_items_def_appealCourt_def" />
+      <string name="ResponseActionOutput_endorsements_def_items_def_rehabReduction_def" />
+      <string name="ResponseActionOutput_endorsements_def_items_def_disqPendSentence_def" />
+      <object name="ResponseActionOutput_endorsements_def_items_def">
+        <property name="convictionCourt" type="string" />
+        <property name="convictionDate" type="string" />
+        <property name="offenceCode" type="string" />
+        <property name="offenceDate" type="string" />
+        <property name="fine" type="string" />
+        <property name="points" type="string" />
+        <property name="disqPeriod" type="string" />
+        <property name="otherSentence" type="string" />
+        <property name="suspendSentence" type="string" />
+        <property name="dateDisqRemoved" type="string" />
+        <property name="dttPorDPS" type="string" />
+        <property name="sentencingCourt" type="string" />
+        <property name="sentencingDate" type="string" />
+        <property name="disqPendAppeal" type="string" />
+        <property name="appealDate" type="string" />
+        <property name="disqReimposed" type="string" />
+        <property name="appealCourt" type="string" />
+        <property name="rehabReduction" type="string" />
+        <property name="disqPendSentence" type="string" />
+      </object>
+      <array typeRef="ResponseActionOutput_endorsements_def_items_def" name="ResponseActionOutput_endorsements_def" />
+      <string name="ResponseActionOutput_drivingSummary_def_disqualified_def" />
+      <string name="ResponseActionOutput_drivingSummary_def_drinkDrug_def" />
+      <string name="ResponseActionOutput_drivingSummary_def_other_def" />
+      <string name="ResponseActionOutput_drivingSummary_def_points_def" />
+      <object name="ResponseActionOutput_drivingSummary_def">
+        <property name="disqualified" type="string" />
+        <property name="drinkDrug" type="string" />
+        <property name="other" type="string" />
+        <property name="points" type="string" />
+      </object>
+      <string name="ResponseActionOutput_licenceStatus_def" />
+      <string name="ResponseActionOutput_disqualification_def" />
+      <string name="ResponseActionOutput_licenceType_def" />
+      <string name="ResponseActionOutput_licenceIssue_def" />
+      <string name="ResponseActionOutput_counterPartIssue_def" />
+      <string name="ResponseActionOutput_commencementDate_def" />
+      <string name="ResponseActionOutput_expiryDate_def" />
+      <string name="ResponseActionOutput_title_def" />
+      <object name="ResponseActionOutput">
+        <property name="selected" type="boolean" />
+        <property name="firstName" type="string" />
+        <property name="lastName" type="string" />
+        <property name="dateOfBirth" type="string" />
+        <property name="gender" type="string" />
+        <property name="birthplace" type="string" />
+        <property name="address1" type="string" />
+        <property name="address2" type="string" />
+        <property name="address3" type="string" />
+        <property name="postCode" type="string" />
+        <property name="driverNumber" type="string" />
+        <property name="warningSignalsText" type="string" />
+        <property name="croNumber" type="string" />
+        <property name="ethnicity" type="string" />
+        <property name="addressDate" type="string" />
+        <property name="documentTrail" typeRef="ResponseActionOutput_documentTrail_def" />
+        <property name="stopsMarkers" typeRef="ResponseActionOutput_stopsMarkers_def" />
+        <property name="fullEntitlement" typeRef="ResponseActionOutput_fullEntitlement_def" />
+        <property name="provisionalEntitlement" typeRef="ResponseActionOutput_provisionalEntitlement_def" />
+        <property name="endorsements" typeRef="ResponseActionOutput_endorsements_def" />
+        <property name="drivingSummary" typeRef="ResponseActionOutput_drivingSummary_def" />
+        <property name="licenceStatus" type="string" />
+        <property name="disqualification" type="string" />
+        <property name="licenceType" type="string" />
+        <property name="licenceIssue" type="string" />
+        <property name="counterPartIssue" type="string" />
+        <property name="commencementDate" type="string" />
+        <property name="expiryDate" type="string" />
+        <property name="title" type="string" />
+      </object>
+      <object name="Run_responses_default_def" />
+    </jsonTypes>
+  </grammars>
+  <resources siena:authenticationProviderHref="#PowerAppAuth" base="https://uk-001.azure-apim.net/apim/logicflows">
+    <resource path="/{connectionId}/triggers/manual/run">
+      <param style="template" name="connectionId" type="xs:string" required="true" />
+      <method siena:requiresAuthentication="true" name="POST" id="Run">
+        <doc title="Runs a logic flow trigger." />
+        <request>
+          <param style="query" name="api-version" type="xs:string" required="true" fixed="2015-02-01-preview">
+            <doc title="The api version" />
+          </param>
+          <representation mediaType="application/json">
+            <param style="plain" name="text" path="/text" type="xs:string" required="true">
+              <doc title="Reason" />
+            </param>
+            <param style="plain" name="text_1" path="/text_1" type="xs:string" required="true">
+              <doc title="DriverNumber" />
+            </param>
+          </representation>
+        </request>
+        <response>
+          <representation mediaType="application/json" element="service:ResponseActionOutput" />
+        </response>
+      </method>
+    </resource>
+  </resources>
+  <authenticationProviders xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
+    <connectionProvider id="PowerAppAuth" siena:connectionProviderId="logicflows" />
+  </authenticationProviders>
+  <template xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
+    <variable name="connectionId">
+      <modifyParams style="template" name="connectionId" attribute="fixed" />
+    </variable>
+  </template>
+</application>

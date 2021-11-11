@@ -1,0 +1,1882 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_ef737"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_dbcd7"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_commondataserviceforapps_2": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedcommondataserviceforapps_3a446"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "Staging Table Entry Id.",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Initialize_Error_Message_variable": {
+          "runAfter": {
+            
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Error Message",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "If_Vehicle_Ticket_Offences_Exist": [
+              "Succeeded"
+            ]
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "vehicleticketerrors": "@variables(\u0027Error Message\u0027)"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "vehicleticketerrors": {
+                  "title": "VehicleTicketErrors",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Get_Vehicle_Ticket_STG_row": {
+          "runAfter": {
+            "Update_a_row_3": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_vehicleticketstgs",
+            "recordId": "@triggerBody()[\u0027text\u0027]"
+            },
+            "authentication": {
+              "type": "Raw",
+            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+            }
+          }
+        },
+        "Check_Speed_Detection_Method_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_9": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Speed Detection Method cannot be blank\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_TPA_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+              "",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "List_Vehicle_Ticket_Offenses_STG": {
+          "runAfter": {
+            "Check_Speed_Detection_Method_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_vehicleticketoffencesstgs",
+            "$filter": "(_cp_vehicleticketstgid_value eq @{outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_vehicleticketstgid\u0027]})"
+            },
+            "authentication": {
+              "type": "Raw",
+            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+            }
+          }
+        },
+        "If_Vehicle_Ticket_Offences_Exist": {
+          "actions": {
+            "Append_to_Error_Message_10": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Vehicle Ticket should contain at least one Ticket Type.\n"
+              }
+            }
+          },
+          "runAfter": {
+            "List_Vehicle_Ticket_Offenses_STG": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Apply_to_each": {
+              "foreach": "@outputs(\u0027List_Vehicle_Ticket_Offenses_STG\u0027)?[\u0027body/value\u0027]",
+                "actions": {
+                  "Case_-_Traffic_Offense": {
+                    "actions": {
+                      "If_Line_Error_Found": {
+                        "actions": {
+                          "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "OpenApiConnection",
+                            "inputs": {
+                              "host": {
+                                "connectionName": "shared_commondataserviceforapps",
+                                "operationId": "UpdateRecord",
+                                "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                              },
+                              "parameters": {
+                                "entityName": "cp_vehicleticketoffencesstgs",
+                              "recordId": "@items(\u0027Apply_to_each\u0027)?[\u0027cp_vehicleticketoffencesstgid\u0027]",
+                                "item/cp_stagingentrystatus": 778230002,
+                                "item/cp_submissionerror": "@variables(\u0027Line Error\u0027)"
+                              },
+                              "authentication": {
+                                "type": "Raw",
+                              "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                              }
+                            }
+                          },
+                          "Set_Line_Error_Found_variable": {
+                            "runAfter": {
+                              "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)": [
+                                "Succeeded"
+                              ]
+                            },
+                            "type": "SetVariable",
+                            "inputs": {
+                              "name": "Line Error Found",
+                              "value": "@true"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          "Check_Offence_Code_ISNULL": [
+                            "Succeeded"
+                          ]
+                        },
+                        "expression": {
+                          "not": {
+                            "equals": [
+                              "@empty(variables(\u0027Line Error\u0027))",
+                              "@true"
+                            ]
+                          }
+                        },
+                        "type": "If"
+                      },
+                      "Check_Offence_Code_ISNULL": {
+                        "actions": {
+                          "Append_to_Line_Error_Message": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "AppendToStringVariable",
+                            "inputs": {
+                              "name": "Line Error",
+                              "value": "Traffic Offence Codes cannot be blank\n"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          "Condition_2": [
+                            "Succeeded"
+                          ]
+                        },
+                        "expression": {
+                          "equals": [
+                          "@items(\u0027Apply_to_each\u0027)?[\u0027cp_offencecode\u0027]",
+                            "@null"
+                          ]
+                        },
+                        "type": "If"
+                      },
+                      "Condition_2": {
+                        "actions": {
+                          "Check_Offender_Reply_ISNULL": {
+                            "actions": {
+                              "Append_to_Line_Error_Message_5": {
+                                "runAfter": {
+                                  
+                                },
+                                "type": "AppendToStringVariable",
+                                "inputs": {
+                                  "name": "Line Error",
+                                  "value": "Offender Reply cannot be blank\n"
+                                }
+                              }
+                            },
+                            "runAfter": {
+                              
+                            },
+                            "expression": {
+                              "equals": [
+                              "@items(\u0027Apply_to_each\u0027)?[\u0027cp_offenderreply\u0027]",
+                                "@null"
+                              ]
+                            },
+                            "type": "If"
+                          },
+                          "Check_NIP_Given_ISNULL_2": {
+                            "actions": {
+                              "Append_to_Line_Error_Message_2": {
+                                "runAfter": {
+                                  
+                                },
+                                "type": "AppendToStringVariable",
+                                "inputs": {
+                                  "name": "Line Error",
+                                  "value": "NIP Given cannot be blank\n"
+                                }
+                              }
+                            },
+                            "runAfter": {
+                              "Check_Offender_Reply_ISNULL": [
+                                "Succeeded"
+                              ]
+                            },
+                            "expression": {
+                              "equals": [
+                              "@items(\u0027Apply_to_each\u0027)?[\u0027cp_nipgiven\u0027]",
+                                "@null"
+                              ]
+                            },
+                            "type": "If"
+                          }
+                        },
+                        "runAfter": {
+                          
+                        },
+                        "expression": {
+                          "not": {
+                            "equals": [
+                              "@variables(\u0027OffenceCodeCount\u0027)",
+                              "@variables(\u0027PersonNotMandatoryCount\u0027)"
+                            ]
+                          }
+                        },
+                        "type": "If"
+                      }
+                    },
+                    "runAfter": {
+                      "Update_Staging_Entry_-_Clear_Staging_Entry_Status,_Submission_Error": [
+                        "Succeeded"
+                      ]
+                    },
+                    "expression": {
+                      "equals": [
+                      "@toLower(items(\u0027Apply_to_each\u0027)?[\u0027cp_tickettype\u0027])",
+                        "6245096f-5b39-eb11-bf68-000d3a654276"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "Reset_Line_Error_variable": {
+                    "runAfter": {
+                      
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "Line Error",
+                    "value": "@{null}"
+                    }
+                  },
+                  "Case_-_VDRS": {
+                    "actions": {
+                      "Check_VDRS_Offence_Code_ISNULL": {
+                        "actions": {
+                          "Append_to_Line_Error_Message_7": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "AppendToStringVariable",
+                            "inputs": {
+                              "name": "Line Error",
+                              "value": "VDRS Offence Code cannot be blank\n"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          
+                        },
+                        "expression": {
+                          "equals": [
+                          "@items(\u0027Apply_to_each\u0027)?[\u0027cp_vdroffencecode\u0027]",
+                            "@null"
+                          ]
+                        },
+                        "type": "If"
+                      },
+                      "If_Line_Error_Found_1": {
+                        "actions": {
+                          "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)_6": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "OpenApiConnection",
+                            "inputs": {
+                              "host": {
+                                "connectionName": "shared_commondataserviceforapps",
+                                "operationId": "UpdateRecord",
+                                "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                              },
+                              "parameters": {
+                                "entityName": "cp_vehicleticketoffencesstgs",
+                              "recordId": "@items(\u0027Apply_to_each\u0027)?[\u0027cp_vehicleticketoffencesstgid\u0027]",
+                                "item/cp_stagingentrystatus": 778230002,
+                                "item/cp_submissionerror": "@variables(\u0027Line Error\u0027)"
+                              },
+                              "authentication": {
+                                "type": "Raw",
+                              "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                              }
+                            }
+                          },
+                          "Set_Line_Error_Found_variable_6": {
+                            "runAfter": {
+                              "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)_6": [
+                                "Succeeded"
+                              ]
+                            },
+                            "type": "SetVariable",
+                            "inputs": {
+                              "name": "Line Error Found",
+                              "value": "@true"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          "Check_VDRS_Offence_Code_ISNULL": [
+                            "Succeeded"
+                          ]
+                        },
+                        "expression": {
+                          "not": {
+                            "equals": [
+                              "@empty(variables(\u0027Line Error\u0027))",
+                              "@true"
+                            ]
+                          }
+                        },
+                        "type": "If"
+                      }
+                    },
+                    "runAfter": {
+                      "Case_-_Traffic_Offense": [
+                        "Succeeded"
+                      ]
+                    },
+                    "expression": {
+                      "equals": [
+                      "@items(\u0027Apply_to_each\u0027)?[\u0027cp_tickettype\u0027]",
+                        "6445096f-5b39-eb11-bf68-000d3a654276"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "Case_-_HORT1": {
+                    "actions": {
+                      "Check_Check_or_Record_ISNULL": {
+                        "actions": {
+                          "Append_to_Line_Error_Message_9": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "AppendToStringVariable",
+                            "inputs": {
+                              "name": "Line Error",
+                              "value": "Check or Record cannot be blank\n"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          "Check_Document_Type__ISNULL": [
+                            "Succeeded"
+                          ]
+                        },
+                        "expression": {
+                          "equals": [
+                          "@items(\u0027Apply_to_each\u0027)?[\u0027cp_checkorrecord\u0027]",
+                            "@null"
+                          ]
+                        },
+                        "type": "If"
+                      },
+                      "Check_Produce_At_Station_ISNULL": {
+                        "actions": {
+                          "Append_to_Line_Error_Message_12": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "AppendToStringVariable",
+                            "inputs": {
+                              "name": "Line Error",
+                              "value": "Produce at Station cannot be blank\n"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          "Check_Check_or_Record_ISNULL": [
+                            "Succeeded"
+                          ]
+                        },
+                        "expression": {
+                          "equals": [
+                          "@items(\u0027Apply_to_each\u0027)?[\u0027cp_producestation\u0027]",
+                            "@null"
+                          ]
+                        },
+                        "type": "If"
+                      },
+                      "If_Line_Error_Found_2": {
+                        "actions": {
+                          "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)_2": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "OpenApiConnection",
+                            "inputs": {
+                              "host": {
+                                "connectionName": "shared_commondataserviceforapps",
+                                "operationId": "UpdateRecord",
+                                "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                              },
+                              "parameters": {
+                                "entityName": "cp_vehicleticketoffencesstgs",
+                              "recordId": "@items(\u0027Apply_to_each\u0027)?[\u0027cp_vehicleticketoffencesstgid\u0027]",
+                                "item/cp_stagingentrystatus": 778230002,
+                                "item/cp_submissionerror": "@variables(\u0027Line Error\u0027)"
+                              },
+                              "authentication": {
+                                "type": "Raw",
+                              "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                              }
+                            }
+                          },
+                          "Set_Line_Error_Found_variable_2": {
+                            "runAfter": {
+                              "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)_2": [
+                                "Succeeded"
+                              ]
+                            },
+                            "type": "SetVariable",
+                            "inputs": {
+                              "name": "Line Error Found",
+                              "value": "@true"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          "Check_Produce_At_Station_ISNULL": [
+                            "Succeeded"
+                          ]
+                        },
+                        "expression": {
+                          "not": {
+                            "equals": [
+                              "@empty(variables(\u0027Line Error\u0027))",
+                              "@true"
+                            ]
+                          }
+                        },
+                        "type": "If"
+                      },
+                      "Check_Document_Type__ISNULL": {
+                        "actions": {
+                          "Append_to_Line_Error_Message_8": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "AppendToStringVariable",
+                            "inputs": {
+                              "name": "Line Error",
+                              "value": "Document Type cannot be blank\n"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          
+                        },
+                        "expression": {
+                          "equals": [
+                          "@items(\u0027Apply_to_each\u0027)?[\u0027cp_documenttype\u0027]",
+                            "@null"
+                          ]
+                        },
+                        "type": "If"
+                      }
+                    },
+                    "runAfter": {
+                      "Case_-_VDRS": [
+                        "Succeeded"
+                      ]
+                    },
+                    "expression": {
+                      "equals": [
+                      "@items(\u0027Apply_to_each\u0027)?[\u0027cp_tickettype\u0027]",
+                        "5c45096f-5b39-eb11-bf68-000d3a654276"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "Case_-_Section_59": {
+                    "actions": {
+                      "Check_Section_ISNULL": {
+                        "actions": {
+                          "Append_to_Line_Error_Message_14": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "AppendToStringVariable",
+                            "inputs": {
+                              "name": "Line Error",
+                              "value": "Section cannot be blank\n"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          
+                        },
+                        "expression": {
+                          "equals": [
+                          "@items(\u0027Apply_to_each\u0027)?[\u0027cp_section\u0027]",
+                            "@null"
+                          ]
+                        },
+                        "type": "If"
+                      },
+                      "If_Line_Error_Found_3": {
+                        "actions": {
+                          "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)_3": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "OpenApiConnection",
+                            "inputs": {
+                              "host": {
+                                "connectionName": "shared_commondataserviceforapps",
+                                "operationId": "UpdateRecord",
+                                "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                              },
+                              "parameters": {
+                                "entityName": "cp_vehicleticketoffencesstgs",
+                              "recordId": "@items(\u0027Apply_to_each\u0027)?[\u0027cp_vehicleticketoffencesstgid\u0027]",
+                                "item/cp_stagingentrystatus": 778230002,
+                                "item/cp_submissionerror": "@variables(\u0027Line Error\u0027)"
+                              },
+                              "authentication": {
+                                "type": "Raw",
+                              "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                              }
+                            }
+                          },
+                          "Set_Line_Error_Found_variable_3": {
+                            "runAfter": {
+                              "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)_3": [
+                                "Succeeded"
+                              ]
+                            },
+                            "type": "SetVariable",
+                            "inputs": {
+                              "name": "Line Error Found",
+                              "value": "@true"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          "Check_Section_ISNULL": [
+                            "Succeeded"
+                          ]
+                        },
+                        "expression": {
+                          "not": {
+                            "equals": [
+                              "@empty(variables(\u0027Line Error\u0027))",
+                              "@true"
+                            ]
+                          }
+                        },
+                        "type": "If"
+                      }
+                    },
+                    "runAfter": {
+                      "Case_-_HORT1": [
+                        "Succeeded"
+                      ]
+                    },
+                    "expression": {
+                      "equals": [
+                      "@items(\u0027Apply_to_each\u0027)?[\u0027cp_tickettype\u0027]",
+                        "6045096f-5b39-eb11-bf68-000d3a654276"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "Case_-_Section_163": {
+                    "actions": {
+                      "Check_Reason_for_Using_S163_ISNULL": {
+                        "actions": {
+                          "Append_to_Line_Error_Message_17": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "AppendToStringVariable",
+                            "inputs": {
+                              "name": "Line Error",
+                              "value": "Reason for Using S163 cannot be blank\n"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          "Check_Outcome_of_Stop_ISNULL": [
+                            "Succeeded"
+                          ]
+                        },
+                        "expression": {
+                          "equals": [
+                          "@items(\u0027Apply_to_each\u0027)?[\u0027cp_reasonforusings163power\u0027]",
+                            "@null"
+                          ]
+                        },
+                        "type": "If"
+                      },
+                      "Check_Outcome_of_Stop_ISNULL": {
+                        "actions": {
+                          "Append_to_Line_Error_Message_16": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "AppendToStringVariable",
+                            "inputs": {
+                              "name": "Line Error",
+                              "value": "Outcome of Stop cannot be blank\n"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          
+                        },
+                        "expression": {
+                          "equals": [
+                          "@items(\u0027Apply_to_each\u0027)?[\u0027cp_outcomeofstop\u0027]",
+                            "@null"
+                          ]
+                        },
+                        "type": "If"
+                      },
+                      "If_Line_Error_Found_4": {
+                        "actions": {
+                          "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)_4": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "OpenApiConnection",
+                            "inputs": {
+                              "host": {
+                                "connectionName": "shared_commondataserviceforapps",
+                                "operationId": "UpdateRecord",
+                                "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                              },
+                              "parameters": {
+                                "entityName": "cp_vehicleticketoffencesstgs",
+                              "recordId": "@items(\u0027Apply_to_each\u0027)?[\u0027cp_vehicleticketoffencesstgid\u0027]",
+                                "item/cp_stagingentrystatus": 778230002,
+                                "item/cp_submissionerror": "@variables(\u0027Line Error\u0027)"
+                              },
+                              "authentication": {
+                                "type": "Raw",
+                              "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                              }
+                            }
+                          },
+                          "Set_Line_Error_Found_variable_4": {
+                            "runAfter": {
+                              "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)_4": [
+                                "Succeeded"
+                              ]
+                            },
+                            "type": "SetVariable",
+                            "inputs": {
+                              "name": "Line Error Found",
+                              "value": "@true"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          "Check_Reason_for_Using_S163_ISNULL": [
+                            "Succeeded"
+                          ]
+                        },
+                        "expression": {
+                          "not": {
+                            "equals": [
+                              "@empty(variables(\u0027Line Error\u0027))",
+                              "@true"
+                            ]
+                          }
+                        },
+                        "type": "If"
+                      }
+                    },
+                    "runAfter": {
+                      "Case_-_Section_59": [
+                        "Succeeded"
+                      ]
+                    },
+                    "expression": {
+                      "equals": [
+                      "@items(\u0027Apply_to_each\u0027)?[\u0027cp_tickettype\u0027]",
+                        "9bdd1977-de5f-eb11-a812-0022489c79d7"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "Case_-_Section_165": {
+                    "actions": {
+                      "Check_Recovery_Garage_ISNULL_2": {
+                        "actions": {
+                          "Append_to_Line_Error_Message_19": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "AppendToStringVariable",
+                            "inputs": {
+                              "name": "Line Error",
+                              "value": "Recovery Garage cannot be blank\n"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          
+                        },
+                        "expression": {
+                          "equals": [
+                          "@items(\u0027Apply_to_each\u0027)?[\u0027cp_s165recoverygarage\u0027]",
+                            "@null"
+                          ]
+                        },
+                        "type": "If"
+                      },
+                      "If_Line_Error_Found_5": {
+                        "actions": {
+                          "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)_5": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "OpenApiConnection",
+                            "inputs": {
+                              "host": {
+                                "connectionName": "shared_commondataserviceforapps",
+                                "operationId": "UpdateRecord",
+                                "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                              },
+                              "parameters": {
+                                "entityName": "cp_vehicleticketoffencesstgs",
+                              "recordId": "@items(\u0027Apply_to_each\u0027)?[\u0027cp_vehicleticketoffencesstgid\u0027]",
+                                "item/cp_stagingentrystatus": 778230002,
+                                "item/cp_submissionerror": "@variables(\u0027Line Error\u0027)"
+                              },
+                              "authentication": {
+                                "type": "Raw",
+                              "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                              }
+                            }
+                          },
+                          "Set_Line_Error_Found_variable_5": {
+                            "runAfter": {
+                              "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)_5": [
+                                "Succeeded"
+                              ]
+                            },
+                            "type": "SetVariable",
+                            "inputs": {
+                              "name": "Line Error Found",
+                              "value": "@true"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          "Check_Without_ISNULL": [
+                            "Succeeded"
+                          ]
+                        },
+                        "expression": {
+                          "not": {
+                            "equals": [
+                              "@empty(variables(\u0027Line Error\u0027))",
+                              "@true"
+                            ]
+                          }
+                        },
+                        "type": "If"
+                      },
+                      "Check_Designated_Station_ISNULL": {
+                        "actions": {
+                          "Append_to_Line_Error_Message_20": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "AppendToStringVariable",
+                            "inputs": {
+                              "name": "Line Error",
+                              "value": "Designated Station cannot be blank\n"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          "Check_Recovery_Garage_ISNULL_2": [
+                            "Succeeded"
+                          ]
+                        },
+                        "expression": {
+                          "equals": [
+                          "@items(\u0027Apply_to_each\u0027)?[\u0027cp_designatedstation\u0027]",
+                            "@null"
+                          ]
+                        },
+                        "type": "If"
+                      },
+                      "Check_Without_ISNULL": {
+                        "actions": {
+                          "Append_to_Line_Error_Message_21": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "AppendToStringVariable",
+                            "inputs": {
+                              "name": "Line Error",
+                              "value": "Without cannot be blank\n"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          "Check_Designated_Station_ISNULL": [
+                            "Succeeded"
+                          ]
+                        },
+                        "expression": {
+                          "equals": [
+                          "@items(\u0027Apply_to_each\u0027)?[\u0027cp_without\u0027]",
+                            "@null"
+                          ]
+                        },
+                        "type": "If"
+                      }
+                    },
+                    "runAfter": {
+                      "Case_-_Section_163": [
+                        "Succeeded"
+                      ]
+                    },
+                    "expression": {
+                      "equals": [
+                      "@items(\u0027Apply_to_each\u0027)?[\u0027cp_tickettype\u0027]",
+                        "5e45096f-5b39-eb11-bf68-000d3a654276"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "Update_Staging_Entry_-_Clear_Staging_Entry_Status,_Submission_Error": {
+                    "runAfter": {
+                      "Reset_Line_Error_variable": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps_1",
+                        "operationId": "UpdateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_vehicleticketoffencesstgs",
+                      "recordId": "@items(\u0027Apply_to_each\u0027)?[\u0027cp_vehicleticketoffencesstgid\u0027]",
+                        "item/cp_stagingentrystatus": 778230001,
+                        "item/cp_submissionerror": "@null"
+                      },
+                      "authentication": {
+                        "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                      }
+                    }
+                  }
+                },
+                "runAfter": {
+                  
+                },
+                "type": "Foreach"
+              },
+              "If_Error_Messages_found": {
+                "actions": {
+                  "Append_to_global_Error_Message_variable": {
+                    "runAfter": {
+                      
+                    },
+                    "type": "AppendToStringVariable",
+                    "inputs": {
+                      "name": "Error Message",
+                      "value": "Missing data in Vehicle Ticket Offences! Check the respective entries to identify the issues."
+                    }
+                  }
+                },
+                "runAfter": {
+                  "Apply_to_each": [
+                    "Succeeded"
+                  ]
+                },
+                "expression": {
+                  "equals": [
+                    "@variables(\u0027Line Error Found\u0027)",
+                    "@true"
+                  ]
+                },
+                "type": "If"
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+            "@empty(outputs(\u0027List_Vehicle_Ticket_Offenses_STG\u0027)?[\u0027body/value\u0027])",
+              "@true"
+            ]
+          },
+          "type": "If"
+        },
+        "Initialize_Line_Error_Found_variable": {
+          "runAfter": {
+            "Initialize_Error_Message_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Line Error Found",
+                "type": "boolean",
+                "value": "@false"
+              }
+            ]
+          }
+        },
+        "Initialize_Line_Error_variable": {
+          "runAfter": {
+            "Initialize_Line_Error_Found_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Line Error",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Check_Offence_DateTime_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_7": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Offence Date/Time cannot be blank\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Get_Vehicle_Ticket_STG_row": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_offencedatetime\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_Reason_for_Stopping_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_8": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Reason for Stopping cannot be blank\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_Offence_DateTime_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_reasonforstopping\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_Issued_To_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_6": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Issued To cannot be blank\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_Reason_for_Stopping_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_issuedto\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_Location_Details_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_16": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Required Location Details are missing!\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Validate_Vehicle_if_issued_to_!=_rider_of_bicycle": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "or": [
+              {
+                "equals": [
+                "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_locationdescription\u0027]",
+                  "@null"
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_locationstreet\u0027]",
+                  ""
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_locationtown\u0027]",
+                  ""
+                ]
+              }
+            ]
+          },
+          "type": "If"
+        },
+        "Check_TPA_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_17": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "TPA cannot be blank\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_Location_Details_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_tpa\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "List_Vehicle_Ticket_Offenses_STG_2": {
+          "runAfter": {
+            "Initialize_VehicleMandatory_to_true": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_vehicleticketoffencesstgs",
+            "$filter": "(_cp_vehicleticketstgid_value eq @{outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_vehicleticketstgid\u0027]} and cp_tickettype eq \u00276245096f-5b39-eb11-bf68-000d3a654276\u0027)"
+            },
+            "authentication": {
+              "type": "Raw",
+            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+            }
+          }
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            "Check_Issued_To_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ValidateOffender",
+                "type": "boolean",
+                "value": true
+              }
+            ]
+          }
+        },
+        "If_Vehicle_Ticket_Traffic_Offences_Exist_2": {
+          "actions": {
+            
+          },
+          "runAfter": {
+            "List_Vehicle_Ticket_Offenses_STG_2": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Apply_to_each_2": {
+              "foreach": "@outputs(\u0027List_Vehicle_Ticket_Offenses_STG_2\u0027)?[\u0027body/value\u0027]",
+                "actions": {
+                  "Case_-_Traffic_Offense_2": {
+                    "actions": {
+                      "Check_Offence_Code_ISNULL_2": {
+                        "actions": {
+                          "Set_variable": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "SetVariable",
+                            "inputs": {
+                              "name": "OffenceCodeMissing",
+                              "value": true
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          
+                        },
+                        "else": {
+                          "actions": {
+                            "SplitOffenceCode": {
+                              "runAfter": {
+                                
+                              },
+                              "type": "Compose",
+                            "inputs": "@split(items(\u0027Apply_to_each_2\u0027)?[\u0027cp_offencecode\u0027], \u0027,\u0027)"
+                            },
+                            "Apply_to_each_3": {
+                              "foreach": "@outputs(\u0027SplitOffenceCode\u0027)",
+                              "actions": {
+                                "List_rows": {
+                                  "runAfter": {
+                                    
+                                  },
+                                  "type": "OpenApiConnection",
+                                  "inputs": {
+                                    "host": {
+                                      "connectionName": "shared_commondataserviceforapps_2",
+                                      "operationId": "ListRecords",
+                                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                    },
+                                    "parameters": {
+                                      "entityName": "cp_offencecodes",
+                                    "$filter": "cp_offencecodeid eq @{items(\u0027Apply_to_each_3\u0027)}"
+                                    },
+                                    "authentication": {
+                                      "type": "Raw",
+                                    "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                                    }
+                                  }
+                                },
+                                "Apply_to_each_4": {
+                                "foreach": "@outputs(\u0027List_rows\u0027)?[\u0027body/value\u0027]",
+                                  "actions": {
+                                    "Condition": {
+                                      "actions": {
+                                        "Increment_variable_2": {
+                                          "runAfter": {
+                                            
+                                          },
+                                          "type": "IncrementVariable",
+                                          "inputs": {
+                                            "name": "PersonNotMandatoryCount",
+                                            "value": 1
+                                          }
+                                        }
+                                      },
+                                      "runAfter": {
+                                        
+                                      },
+                                      "expression": {
+                                        "equals": [
+                                        "@items(\u0027Apply_to_each_4\u0027)?[\u0027cp_personnotmandatory\u0027]",
+                                          true
+                                        ]
+                                      },
+                                      "type": "If"
+                                    }
+                                  },
+                                  "runAfter": {
+                                    "Increment_variable": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "type": "Foreach"
+                                },
+                                "Increment_variable": {
+                                  "runAfter": {
+                                    "List_rows": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "type": "IncrementVariable",
+                                  "inputs": {
+                                    "name": "OffenceCodeCount",
+                                    "value": 1
+                                  }
+                                }
+                              },
+                              "runAfter": {
+                                "SplitOffenceCode": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "type": "Foreach"
+                            }
+                          }
+                        },
+                        "expression": {
+                          "equals": [
+                          "@items(\u0027Apply_to_each_2\u0027)?[\u0027cp_offencecode\u0027]",
+                            "@null"
+                          ]
+                        },
+                        "type": "If"
+                      }
+                    },
+                    "runAfter": {
+                      
+                    },
+                    "expression": {
+                      "equals": [
+                      "@items(\u0027Apply_to_each_2\u0027)?[\u0027cp_tickettype\u0027]",
+                        "6245096f-5b39-eb11-bf68-000d3a654276"
+                      ]
+                    },
+                    "type": "If"
+                  }
+                },
+                "runAfter": {
+                  
+                },
+                "type": "Foreach"
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+            "@empty(outputs(\u0027List_Vehicle_Ticket_Offenses_STG_2\u0027)?[\u0027body/value\u0027])",
+              "@true"
+            ]
+          },
+          "type": "If"
+        },
+        "Initialize_variable_2": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "PersonNotMandatoryCount",
+                "type": "integer",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "Initialize_variable_3": {
+          "runAfter": {
+            "Initialize_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "OffenceCodeCount",
+                "type": "integer",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "If_validate_person": {
+          "actions": {
+            "Check_Offender_Details_ISNULL": {
+              "actions": {
+                "Append_to_Error_Message_11": {
+                  "runAfter": {
+                    
+                  },
+                  "type": "AppendToStringVariable",
+                  "inputs": {
+                    "name": "Error Message",
+                    "value": "Required Offender Details are missing!\n"
+                  }
+                }
+              },
+              "runAfter": {
+                
+              },
+              "expression": {
+                "or": [
+                  {
+                    "equals": [
+                    "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_title\u0027]",
+                      "@null"
+                    ]
+                  },
+                  {
+                    "equals": [
+                    "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_forname\u0027]",
+                      "@null"
+                    ]
+                  },
+                  {
+                    "equals": [
+                    "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_surname\u0027]",
+                      ""
+                    ]
+                  },
+                  {
+                    "equals": [
+                    "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_housename\u0027]",
+                      ""
+                    ]
+                  },
+                  {
+                    "equals": [
+                    "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_street\u0027]",
+                      ""
+                    ]
+                  },
+                  {
+                    "equals": [
+                    "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_postcode\u0027]",
+                      ""
+                    ]
+                  },
+                  {
+                    "equals": [
+                    "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_country\u0027]",
+                      ""
+                    ]
+                  }
+                ]
+              },
+              "type": "If"
+            },
+            "Update_a_row": {
+              "runAfter": {
+                "Check_Offender_Details_ISNULL": [
+                  "Succeeded"
+                ]
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps_2",
+                  "operationId": "UpdateRecord",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "cp_vehicleticketstgs",
+                "recordId": "@triggerBody()[\u0027text\u0027]",
+                  "item/cp_personnotmandatory": false
+                },
+                "authentication": {
+                  "type": "Raw",
+                "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "If_Vehicle_Ticket_Traffic_Offences_Exist_2": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Condition_3": {
+                "actions": {
+                  "Update_a_row_2": {
+                    "runAfter": {
+                      
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps_2",
+                        "operationId": "UpdateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_vehicleticketstgs",
+                      "recordId": "@triggerBody()[\u0027text\u0027]",
+                        "item/cp_personnotmandatory": true
+                      },
+                      "authentication": {
+                        "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                      }
+                    }
+                  }
+                },
+                "runAfter": {
+                  
+                },
+                "expression": {
+                  "equals": [
+                    "@variables(\u0027OffenceCodeMissing\u0027)",
+                    false
+                  ]
+                },
+                "type": "If"
+              }
+            }
+          },
+          "expression": {
+            "or": [
+              {
+                "not": {
+                  "equals": [
+                    "@variables(\u0027OffenceCodeCount\u0027)",
+                    "@variables(\u0027PersonNotMandatoryCount\u0027)"
+                  ]
+                }
+              },
+              {
+                "equals": [
+                  "@variables(\u0027OffenceCodeCount\u0027)",
+                  0
+                ]
+              }
+            ]
+          },
+          "type": "If"
+        },
+        "Initialize_variable_4": {
+          "runAfter": {
+            "Initialize_variable_3": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "OffenceCodeMissing",
+                "type": "boolean",
+                "value": false
+              }
+            ]
+          }
+        },
+        "Update_a_row_3": {
+          "runAfter": {
+            "Initialize_Line_Error_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_2",
+              "operationId": "UpdateRecord",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_vehicleticketstgs",
+            "recordId": "@triggerBody()[\u0027text\u0027]",
+              "item/cp_personnotmandatory": false
+            },
+            "authentication": {
+              "type": "Raw",
+            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+            }
+          }
+        },
+        "Initialize_VehicleMandatory_to_true": {
+          "runAfter": {
+            "Initialize_variable_4": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "VehicleMandatory",
+                "type": "boolean",
+                "value": true
+              }
+            ]
+          }
+        },
+        "Validate_Vehicle_if_issued_to_!=_rider_of_bicycle": {
+          "actions": {
+            "Check_VRM_ISNULL_2": {
+              "actions": {
+                "Append_to_Error_Message_14": {
+                  "runAfter": {
+                    
+                  },
+                  "type": "AppendToStringVariable",
+                  "inputs": {
+                    "name": "Error Message",
+                    "value": "VRM cannot be blank\n"
+                  }
+                }
+              },
+              "runAfter": {
+                
+              },
+              "expression": {
+                "equals": [
+                "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_vrm\u0027]",
+                  "@null"
+                ]
+              },
+              "type": "If"
+            },
+            "Check_Vehicle_Make_ISNULL_2": {
+              "actions": {
+                "Append_to_Error_Message": {
+                  "runAfter": {
+                    
+                  },
+                  "type": "AppendToStringVariable",
+                  "inputs": {
+                    "name": "Error Message",
+                    "value": "Vehicle Make cannot be blank\n"
+                  }
+                }
+              },
+              "runAfter": {
+                "Check_VRM_ISNULL_2": [
+                  "Succeeded"
+                ]
+              },
+              "expression": {
+                "equals": [
+                "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_vehiclemake\u0027]",
+                  "@null"
+                ]
+              },
+              "type": "If"
+            },
+            "Check_Vehicle_Make__Other_ISNULL_2": {
+              "actions": {
+                "Append_to_Error_Message_15": {
+                  "runAfter": {
+                    
+                  },
+                  "type": "AppendToStringVariable",
+                  "inputs": {
+                    "name": "Error Message",
+                    "value": "Vehicle Make Other cannot be blank when selected Vehicle Make is \u0027Other\u0027\n"
+                  }
+                }
+              },
+              "runAfter": {
+                "Check_Vehicle_Make_ISNULL_2": [
+                  "Succeeded"
+                ]
+              },
+              "expression": {
+                "and": [
+                  {
+                    "equals": [
+                    "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_vehiclemake\u0027]",
+                      "c4a83c6e-cf5f-eb11-89f5-000d3a654276\n"
+                    ]
+                  },
+                  {
+                    "equals": [
+                    "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_vehiclemakeother\u0027]",
+                      "@null"
+                    ]
+                  }
+                ]
+              },
+              "type": "If"
+            },
+            "Check_Vehicle_Model_ISNULL_2": {
+              "actions": {
+                "Append_to_Error_Message_18": {
+                  "runAfter": {
+                    
+                  },
+                  "type": "AppendToStringVariable",
+                  "inputs": {
+                    "name": "Error Message",
+                    "value": "Vehicle Model cannot be blank\n"
+                  }
+                }
+              },
+              "runAfter": {
+                "Check_Vehicle_Make__Other_ISNULL_2": [
+                  "Succeeded"
+                ]
+              },
+              "expression": {
+                "equals": [
+                "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_vehiclemodel\u0027]",
+                  "@null"
+                ]
+              },
+              "type": "If"
+            },
+            "Check_Vehicle_Color_ISNULL_2": {
+              "actions": {
+                "Append_to_Error_Message_19": {
+                  "runAfter": {
+                    
+                  },
+                  "type": "AppendToStringVariable",
+                  "inputs": {
+                    "name": "Error Message",
+                    "value": "Vehicle Color cannot be blank\n"
+                  }
+                }
+              },
+              "runAfter": {
+                "Check_Vehicle_Model_ISNULL_2": [
+                  "Succeeded"
+                ]
+              },
+              "expression": {
+                "equals": [
+                "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_vehiclecolour\u0027]",
+                  "@null"
+                ]
+              },
+              "type": "If"
+            },
+            "Check_Restricted_Vehicle_ISNULL_2": {
+              "actions": {
+                "Append_to_Error_Message_20": {
+                  "runAfter": {
+                    
+                  },
+                  "type": "AppendToStringVariable",
+                  "inputs": {
+                    "name": "Error Message",
+                    "value": "Restricted Vehicle cannot be blank\n"
+                  }
+                }
+              },
+              "runAfter": {
+                "Check_Vehicle_Color_ISNULL_2": [
+                  "Succeeded"
+                ]
+              },
+              "expression": {
+                "equals": [
+                "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_restrictedvehicle\u0027]",
+                  "@null"
+                ]
+              },
+              "type": "If"
+            },
+            "Check_Manual_Transmission_ISNULL_2": {
+              "actions": {
+                "Append_to_Error_Message_21": {
+                  "runAfter": {
+                    
+                  },
+                  "type": "AppendToStringVariable",
+                  "inputs": {
+                    "name": "Error Message",
+                    "value": "Manual Transmission cannot be blank\n"
+                  }
+                }
+              },
+              "runAfter": {
+                "Check_Restricted_Vehicle_ISNULL_2": [
+                  "Succeeded"
+                ]
+              },
+              "expression": {
+                "equals": [
+                "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_manualtransmission\u0027]",
+                  "@null"
+                ]
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {
+            "If_validate_person": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "not": {
+              "equals": [
+              "@outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_issuedto\u0027]",
+                "fca53c6e-cf5f-eb11-89f5-000d3a654276"
+              ]
+            }
+          },
+          "type": "If"
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

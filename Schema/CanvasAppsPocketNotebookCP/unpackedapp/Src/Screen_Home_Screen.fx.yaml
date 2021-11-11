@@ -1,0 +1,582 @@
+Screen_Home_Screen As screen:
+    OnVisible: |
+        =Set(
+            checkicon,
+            false
+        );//incident warning
+        UpdateContext({Warnunsubmit: false});
+        UpdateContext({timerstart: false});
+        UpdateContext({timerreset: true});
+
+    Lbl_header_2 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =90
+        Size: =21
+        Text: ="Pocket Notebook"
+        Width: =640
+        ZIndex: =1
+
+    Icn_exit_2 As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =66
+        Icon: =Icon.Cancel
+        OnSelect: =Launch("/providers/Microsoft.PowerApps/apps/8eb26210-4ef7-4d42-a6f2-65b31de08704")
+        X: =576
+        Y: =11
+        ZIndex: =2
+
+    Btn_save_56 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |-
+            =//Moved script to ontimerend on element tmrDelayNewNote
+            /*Set(gblOverlay,true);
+            UpdateContext({newNoteKey: GUID()});
+            Collect(
+                'Notebook Offline',
+                {
+                    //Incident 
+                    Key: newNoteKey,
+                    Id: "",
+                    Notes: "",
+                    Sketch: blankPenInput.Image ,
+                    Signature: blankPenInput.Image,
+                    'Signature Date and Time': Date(
+                        Blank(),
+                        Blank(),
+                        Blank()
+                    ),
+                    IncidentDateTime: Today(),
+                    //  'Entered by': userId,
+                    SignatoryName: "",
+                    IncidentSuffix: "",
+                    IncidentNumber: "",
+                    'Incident No': "",
+                    NoteDateAndTime: Now(),
+                    Synced: false
+                }
+            );
+            Set(
+                noteSaved,
+                false
+            );
+            Set(
+                noteSigned,
+                false
+            );
+            Set(
+                incidentnumbervar,
+                ""
+            );
+            
+            //cache the offline notes collection
+            SaveData(
+                'Notebook Offline',
+                "NotebookOfflineCache"
+            );
+            Navigate(
+                Screen_Notes,
+                UnCoverRight,
+                {
+                    RecordKey: newNoteKey,
+                    RecordId: newNoteKey
+                }
+            );
+            Set(gblOverlay,false);
+            */
+            Set(gblOverlay, true);
+            Reset(tmrDelayNewNote);
+            Set(tmrStart,false);
+            Set(tmrStart,true);
+        Size: =24
+        Text: ="New Note"
+        Width: =552
+        X: =44
+        Y: =131
+        ZIndex: =4
+
+    Icon1 As icon.ListWatchlistRemind:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =60
+        Icon: =Icon.ListWatchlistRemind
+        Width: =60
+        X: =531
+        Y: =130
+        ZIndex: =6
+
+    Icon6 As icon.DocumentwithContent:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =60
+        Icon: =Icon.DocumentWithContent
+        Width: =60
+        X: =531
+        Y: =237
+        ZIndex: =7
+
+    Icon2 As icon.LogJournal:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.LogJournal
+        X: =531
+        Y: =537
+        ZIndex: =8
+
+    Btn_Sync As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =50
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |
+            =//get the user id
+            Set (
+                userId,
+                LookUp(
+                    Users,
+                    internalemailaddress = User().Email
+                ).systemuserid
+            );
+            Set(gblLoading2,true);
+            //for each note in the offline collection
+            ForAll(
+                Filter(
+                    'Notebook Offline',
+                    Synced = false
+                ) As Unsynced,
+                //patch the note record
+                Patch(
+                    'Pocket Notebooks',
+                    Defaults('Pocket Notebooks'),
+                    {
+                        Key: Unsynced.Key,
+                        'Notes (cp_notes)': Unsynced.Notes,
+                        'Signature Date and Time': Unsynced.'Signature Date and Time',
+                        'Signatory Name': Unsynced.SignatoryName,
+                        'Incident Number': Unsynced.IncidentNumber,
+                        'Note Date And Time': Unsynced.NoteDateAndTime
+                    }
+                );
+                //save the images to the seperate entity as users do not have permission to edit entries once saved, and the image upload counts as an edit as it occurs after the save
+            If (
+                    !IsBlank(Unsynced.Sketch),
+                    Collect(
+                        'Pocket Notebook Images',
+                        {
+                            Name: "Sketch Image for " & Unsynced.Key,
+                            'Image Type': "Sketch",
+                            'Pocket Notebook Key': Unsynced.Key,
+                            Image: {
+                                Full: Unsynced.Sketch,
+                                Value: Unsynced.Sketch
+                            }
+                        }
+                    )
+                );
+                If (
+                    !IsBlank(Unsynced.Signature),
+                    Collect(
+                        'Pocket Notebook Images',
+                        {
+                            Name: "Signature Image for " & Unsynced.Key,
+                            'Image Type': "Signature",
+                            'Pocket Notebook Key': Unsynced.Key,
+                            Image: {
+                                Full: Unsynced.Signature,
+                                Value: Unsynced.Signature
+                            }
+                        }
+                    )
+                );
+                //if saved with out errors
+            If (
+                    IsEmpty(Errors('Pocket Notebooks')),
+                    Refresh('Pocket Notebooks');
+                    //update the synced flag
+            UpdateIf(
+                        'Notebook Offline',
+                        Key = Unsynced.Key,
+                        {Synced: true}
+                    );
+                    //save the photos for the note
+            ForAll(
+                        Filter(
+                            Photos,
+                            Synced = false,
+                            ParentRecordKey = Unsynced.Key
+                        ) As UnsyncedPhoto,
+                        Patch(
+                            Photos_1,
+                            Defaults(Photos_1),
+                            {
+                                'Photo Title': UnsyncedPhoto.Caption1,
+                                'Pocket Notebook': LookUp(
+                                    'Pocket Notebooks',
+                                    Key = UnsyncedPhoto.ParentRecordKey
+                                ),
+                                Image: UnsyncedPhoto.photo1
+                            }
+                        );
+                        UpdateIf(
+                            Photos,
+                            Photokey = UnsyncedPhoto.Photokey,
+                            {Synced: true}
+                        );
+                        //store the key of the saved photo
+            Collect(
+                            PhotosToRemove,
+                            {photoToRemoveKey: UnsyncedPhoto.Photokey}
+                        );
+                    );
+                    //store the key of the saved note
+            Collect(
+                        NotesToRemove,
+                        {recordToRemoveKey: Unsynced.Key}
+                    );
+                    ,
+                    //else if there was an Error, then notify the User, and don't store the key so that the note remains on the device
+                    ForAll(
+                        Errors('Pocket Notebooks'),
+                        Notify(
+                            "There was an error submitting your request: " & ThisRecord.Message & "  (" & ThisRecord.Column & ")",
+                            NotificationType.Error
+                        )
+                    );
+                );
+                
+            );
+            //for each photo that was saved successfully, remove it from the local collection
+            //ForAll(
+            //    PhotosToRemove,
+            //    RemoveIf(
+            //        Photos,
+            //        Photokey = photoToRemoveKey
+            //    )
+            //);
+            //for each note that was saved successfully, remove it from the local collection
+            //ForAll(
+            //    NotesToRemove,
+            //    RemoveIf(
+            //        'Notebook Offline',
+            //        Key = recordToRemoveKey
+            //    )
+            //);
+            //reload the users notes - unsaves ones will be retained in the collection
+            //RemoveIf(
+            //    'Notebook Offline',
+            //    NoteDateAndTime < DateAdd(
+            //        Now(),
+            //        -30,
+            //        Days
+            //    )
+            //);
+            ForAll(
+                Filter(
+                    'Pocket Notebooks',
+                    'Entered By'.User = userId And 'Note Date And Time' > DateAdd(
+                        Now(),
+                        -30,
+                        Days
+                    )
+                ) As PNB,
+                If (
+                    CountRows(
+                        Filter(
+                            'Notebook Offline',
+                            Key = PNB.Key
+                        )
+                    ) = 0,
+                //RemoveIf(
+                //    'Notebook Offline',
+                //    Text(Id) = Text(PNB.'Pocket Notebook')
+                //);
+                    Patch(
+                        'Notebook Offline',
+                        Defaults('Notebook Offline'),
+                        {
+                            Key: PNB.Key,
+                            Id: PNB.'Pocket Notebook',
+                            Notes: PNB.'Notes (cp_notes)',
+                            Sketch: PNB.Sketch,
+                            Signature: PNB.Signature,
+                            'Signature Date and Time': PNB.'Signature Date and Time',
+                            SignatoryName: PNB.'Signatory Name',
+                            IncidentNumber: PNB.'Incident Number',
+                            NoteDateAndTime: PNB.'Note Date And Time',
+                            Synced: true
+                        }
+                    );
+                    ForAll(
+                        Filter(
+                            Photos_1,
+                            'Pocket Notebook'.'Pocket Notebook' = PNB.'Pocket Notebook'
+                        ),
+                        Patch(
+                            Photos,
+                            Defaults(Photos),
+                            {
+                                Caption1: 'Photo Title',
+                                ParentRecordKey: PNB.Key,
+                                photo1: Image,
+                                Synced: true
+                            }
+                        )
+                    );
+                    ,
+                    UpdateIf(
+                        'Notebook Offline',
+                        Key = PNB.Key,
+                        {Id: PNB.'Pocket Notebook'}
+                    );
+                )
+            );
+            Set(gblLoading2,false);
+            SaveData(
+                'Notebook Offline',
+                "NotebookOfflineCache"
+            );
+            SaveData(
+                Photos,
+                "PhotosCache"
+            );
+        RadiusBottomLeft: =0
+        RadiusBottomRight: =0
+        RadiusTopLeft: =0
+        RadiusTopRight: =0
+        Size: =21
+        Text: ="Sync"
+        Width: =218
+        Y: =1086
+        ZIndex: =9
+
+    Label5_2 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(0, 0, 0, 0)
+        BorderThickness: =2
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(202, 202, 202, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =50
+        Size: =21
+        Text: =
+        Width: =211
+        X: =218
+        Y: =1086
+        ZIndex: =10
+
+    Icon4 As icon.Draw:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =66
+        Icon: =Icon.Draw
+        Width: =56
+        X: =535
+        Y: =334
+        ZIndex: =12
+
+    Btn_save_57 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: =Navigate(Screen_Search_notes, UnCoverRight)
+        Size: =24
+        Text: ="Previous Notes"
+        Width: =552
+        X: =44
+        Y: =225
+        ZIndex: =13
+
+    Icon4_1 As icon.Search:
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledFill: =Icon4_1.Fill
+        FocusedBorderColor: =Icon4_1.BorderColor
+        Height: =55
+        HoverBorderColor: =ColorFade(Icon4_1.BorderColor, 20%)
+        HoverColor: =ColorFade(Icon4_1.Color, 20%)
+        HoverFill: =Icon4_1.Fill
+        Icon: =Icon.Search
+        PressedBorderColor: =ColorFade(Icon4_1.BorderColor, -20%)
+        PressedColor: =ColorFade(Icon4_1.Color, -20%)
+        PressedFill: =Icon4_1.Fill
+        Width: =56
+        X: =543
+        Y: =438
+        ZIndex: =14
+
+    Icon2_1 As icon.Warning:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =60
+        Icon: =Icon.Warning
+        Visible: =Warnunsubmit
+        Width: =60
+        X: =58
+        Y: =143
+        ZIndex: =15
+
+    Icon7 As icon.Reload:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =42
+        Icon: =Icon.Reload
+        OnSelect: =Select(Btn_Sync)
+        Width: =36
+        X: =7
+        Y: =1094
+        ZIndex: =19
+
+    Label5_3 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(0, 0, 0, 0)
+        BorderThickness: =2
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(202, 202, 202, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =50
+        Size: =21
+        Text: |-
+            ="App Version: " & glbAppVersion
+        Width: =280
+        X: =360
+        Y: =1086
+        ZIndex: =20
+
+    Icon1_1 As icon.ListWatchlistRemind:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =60
+        Icon: =Icon.ListScrollWatchlist
+        Width: =60
+        X: =531
+        Y: =232
+        ZIndex: =22
+
+    blankImage As image:
+        Height: =320
+        Image: =
+        Visible: =false
+        Width: =320
+        X: =44
+        Y: =334
+        ZIndex: =23
+
+    blankPenInput As inkControl:
+        Visible: =false
+        X: =264
+        Y: =400
+        ZIndex: =24
+
+    Rectangle2 As rectangle:
+        Fill: =RGBA(0, 0, 0, 0)
+        Height: =1136
+        Visible: =gblOverlay
+        Width: =640
+        ZIndex: =25
+
+    tmrDelayNewNote As timer:
+        AutoPause: =false
+        Duration: =500
+        Height: =70
+        OnTimerEnd: |
+            =
+            UpdateContext({newNoteKey: Text(GUID())});
+            Collect(
+                'Notebook Offline',
+                {
+                    //Incident 
+                    Key: newNoteKey,
+                    Id: "",
+                    Notes: "",
+                    Sketch: blankPenInput.Image ,
+                    Signature: blankPenInput.Image,
+                    'Signature Date and Time': Date(
+                        Blank(),
+                        Blank(),
+                        Blank()
+                    ),
+                    IncidentDateTime: Today(),
+                    //  'Entered by': userId,
+                    SignatoryName: "",
+                    IncidentSuffix: "",
+                    IncidentNumber: "",
+                    'Incident No': "",
+                    NoteDateAndTime: Now(),
+                    Synced: false
+                }
+            );
+            Set(
+                noteSaved,
+                false
+            );
+            Set(
+                noteSigned,
+                false
+            );
+            Set(
+                incidentnumbervar,
+                ""
+            );
+            
+            Navigate(
+                Screen_Notes,
+                UnCoverRight,
+                {
+                    RecordKey: newNoteKey,
+                    RecordId: newNoteKey
+                }
+            );
+            
+            //cache the offline notes collection
+            SaveData(
+                'Notebook Offline',
+                "NotebookOfflineCache"
+            );
+            
+            
+        OnTimerStart: =Set(gblOverlay,true);
+        Start: =tmrStart
+        Visible: =false
+        Width: =280
+        X: =360
+        Y: =839
+        ZIndex: =26
+
+    Group14_1 As group:
+        Height: =5
+        Width: =5
+        X: =60
+        Y: =60
+        ZIndex: =30
+
+        Rectangle2_2 As rectangle:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Fill: =RGBA(255, 255, 255, 0.89)
+            Height: =1136
+            Visible: =gblLoading2
+            Width: =640
+            ZIndex: =27
+
+        Image1_2 As image:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Height: =107
+            Image: ='loading-buffering'
+            Visible: =gblLoading2
+            Width: =107
+            X: =274
+            Y: =486
+            ZIndex: =28
+
+        Label5_1 As label:
+            Align: =Align.Center
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Height: =70
+            Size: =21
+            Text: |-
+                ="syncing PNB
+                (Please do not close app while syncing )"
+            Visible: =gblLoading2
+            Width: =560
+            X: =40
+            Y: =392
+            ZIndex: =29
+

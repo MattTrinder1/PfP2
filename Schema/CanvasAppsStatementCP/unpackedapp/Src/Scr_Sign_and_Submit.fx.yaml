@@ -1,0 +1,1118 @@
+Scr_Sign_and_Submit As screen:
+    LoadingSpinnerColor: =RGBA(100, 118, 132, 1)
+    OnHidden: |
+        =Reset(PenInput_Witness_Signature_Statement_Signature);
+        Reset(PenInput_Witness_Signature_Consent_Signature);
+        Reset(PenInput_CounterSigner_Signatuer_Evidence);
+        Reset(PenInput_CounterSigner_Signature_Consent);
+    OnVisible: |-
+        =/* Set(madcolAA,LightGoldenRodYellow);UpdateContext({madcolAA:LightGoldenRodYellow});
+        Set(madcolAB,LightGoldenRodYellow);UpdateContext({madcolAB:LightGoldenRodYellow});
+        Set(madcolAC,LightGoldenRodYellow);UpdateContext({madcolAC:LightGoldenRodYellow});
+        Set(madcolAD,LightGoldenRodYellow);UpdateContext({madcolAD:LightGoldenRodYellow});
+        Set(madcolAEE,LightGoldenRodYellow);UpdateContext({madcolEE:LightGoldenRodYellow});
+        Set(madcolAEEE,LightGoldenRodYellow);UpdateContext({madcolAEEE:LightGoldenRodYellow});
+        Set(madcolAEEEE,LightGoldenRodYellow);UpdateContext({madcolAEEEE:LightGoldenRodYellow}); */
+        If(Len(Radio_Witness_read_statement.Selected.Value)>0,UpdateContext({madcolAB:Transparent}),UpdateContext({madcolAB:LightGoldenRodYellow}));
+        If(Len(PenInput_Witness_Signature_Statement_Signature.Image)>0,UpdateContext({madcolAA:Transparent}),UpdateContext({madcolAA:LightGoldenRodYellow}));
+        If(Len(Radio_Witness_Signatures_Complete.Selected.Value)>0,UpdateContext({madcolAD:Transparent}),UpdateContext({madcolAD:LightGoldenRodYellow}));
+        
+        If(IsBlank(LookUp('Statement offline',Key=Dropdown_Witness_Signature_key.Selected.Key).WitnessSignature),Set(signreadonly,DisplayMode.Edit),Set(signreadonly,DisplayMode.Disabled));
+        
+        If(IsBlank(LookUp('Statement offline',Key=Dropdown_Witness_Signature_key.Selected.Key).WitnessSigCounterConsent) And IsBlank(LookUp('Statement offline',Key=Dropdown_Witness_Signature_key.Selected.Key).WitnessSignatureCounter),Set(CounterRO,DisplayMode.Edit),Set(CounterRO,DisplayMode.Disabled));
+        
+        
+        If(IsBlank(LookUp('Statement offline',Key=Dropdown_Witness_Signature_key.Selected.Key).'WitnessConsent signature'),Set(WitnessConsentRO,DisplayMode.Edit),Set(WitnessConsentRO,DisplayMode.Disabled));
+        
+        
+        
+        
+        If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value ="Yes" And Len(Dropdown_Witness_title.Selected.cp_name)>0 And Len(Txt_witnessforename.Text)>0 And Len(Txt_witness_surname.Text)>0 And Len(Radio_Counter_same_address.Selected.Value)>0 And Len(Txt_Witness_housename.Text)>0 And (!IsBlank(Txt_Witness_houseno.Text) Or !IsBlank(Txt_Witness_housename.Text)) And Len(Txt_Witness_address.Text)>0 And Len(TextInput_Witness_Postcode.Text)>0 And Len(Dropdown_CounterSigner_Relationship.Selected.cp_name)>0, Set(countvis1,true); UpdateContext({countvis1:true});Set(ysandscount,820);UpdateContext({ysandscount:820});,Set(ysandscount,0);UpdateContext({ysandscount:0});Set(countvis1,false); UpdateContext({countvis1:false}););
+        
+        
+        
+        Set(overLayVisible,false);Set(overLayVisible2,false);Set(overLayVisible3,false);
+
+    Label1_14 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Sign and Submit"
+        Width: =640
+        ZIndex: =1
+
+    "'exit icon 3_15' As icon.Cancel":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =563
+        Y: =11
+        ZIndex: =2
+
+    "'Back Icon 2_15' As icon.ArrowLeft":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_Statements_Home_screen,ScreenTransition.UnCover)
+        X: =32
+        Y: =11
+        ZIndex: =3
+
+    Canvas_Witness_Signatures_1 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =Parent.Height - Self.Y
+        Width: =Parent.Width
+        Y: =Label1_6.Y + Label1_6.Height
+        ZIndex: =4
+
+        DataCard2_Witness_Signatures_1 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =881
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Dropdown_Witness_Signature_key As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+                ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                Default: =Statement_Primary_key /*LookUp('Statement offline',Key=Statement_Primary_key).Key*/
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                Items: ='Statement offline'.Key
+                OnChange: |
+                    =/*If(LookUp('Statement offline',Key=Dropdown_Witness_Signature_key.Selected.Key).WitnessSignature =SampleImage,Set(signreadonly,DisplayMode.Edit),Set(signreadonly,DisplayMode.Disabled));*/
+                    
+                    /*If(IsBlank(LookUp('Statement offline',Key=Dropdown_Witness_Signature_key.Selected.Key).WitnessSignature),Set(signreadonly,DisplayMode.Edit),Set(signreadonly,DisplayMode.Disabled));*/
+                OnSelect: =
+                PressedColor: =RGBA(255, 255, 255, 1)
+                PressedFill: =RGBA(0, 18, 107, 1)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =18
+                ZIndex: =1
+
+            Label4 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisplayMode: =DisplayMode.View
+                Fill: =LightGoldenRodYellow
+                FontWeight: =FontWeight.Bold
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="WITNESS SIGNATURES"
+                Underline: =true
+                Width: =545
+                X: =37
+                Y: =100
+                ZIndex: =2
+
+            Label_Complete_Witness_Signature_1 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisplayMode: =Disabled
+                Height: =70
+                Size: =21
+                Text: ="Complete ?"
+                Width: =545
+                X: =48
+                Y: =628
+                ZIndex: =3
+
+            Radio_Witness_Signatures_Complete As radio:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =/*LookUp('Statement offline',Key=Dropdown_Witness_Signature_key.Selected.Key).WitnessSignatureSectionComplete*/ If(IsBlank(LookUp('Statement offline',Key=Dropdown_Witness_Signature_key.Selected.Key).'WitnessConsent signature'),"No","Yes")
+                DisplayMode: =Disabled
+                Fill: =madcolAD
+                Height: =105
+                HoverColor: =RGBA(32, 54, 71, 1)
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_Witness_Signatures_Complete.Selected.Value)>0,UpdateContext({madcolAD:Transparent}),UpdateContext({madcolAD:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Radio_Witness_Signatures_Complete.Selected.Value)>0,UpdateContext({madcolAD:Transparent}),UpdateContext({madcolAD:LightGoldenRodYellow}))
+                RadioBorderColor: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                Size: =21
+                Width: =545
+                X: =51
+                Y: =672
+                ZIndex: =4
+
+            Lbl_asteriks_58 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisplayMode: =Disabled
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =211
+                Y: =630
+                ZIndex: =5
+
+            Btn_save_17 As button:
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =signreadonly
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Semibold
+                Height: =72
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =/*UpdateIf('Statement offline',Key=Dropdown_Witness_Signature_key.Selected.Key,{
+                            WitnessStatementReadtoWitness:Radio_Witness_read_statement.Selected.Value,
+                            WitnessSignatureCounter: PenInput_Witness_Signature_Consent_Signature.Image,
+                            WitnessSigCounterConsent:PenInput_CounterSigner_Signature_Consent.Image,
+                             'WitnessConsent signature': PenInput_Witness_Signature_Consent_Signature.Image,
+                            WitnessSignatureSectionComplete:Radio_Witness_Signatures_Complete.Selected.Value,
+                                    WitnessSignature:PenInput_Witness_Signature_Statement_Signature.Image
+                    }
+                    );
+                    SaveData('Statement offline',"Statement offline");UpdateContext({Signdisabled:DisplayModeDisabled});
+                    
+                    Set(signreadonly,DisplayMode.Disabled);
+                    Navigate(Scr_Statements_Home_screen,ScreenTransition.UnCover);*/
+                Size: =24
+                Text: ="Save and continue"
+                Visible: =false
+                Width: =562
+                X: =42
+                Y: =628
+                ZIndex: =7
+
+            Btn_save_Continue_2 As button:
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Bold
+                Height: =90
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: =Set(overLayVisible,!overLayVisible);
+                Size: =24
+                Text: ="Sign Statement Signature"
+                Visible: =If(overLayVisible=true,false,true)
+                Width: =545
+                X: =39
+                Y: =184
+                ZIndex: =11
+
+            Btn_save_Continue_3 As button:
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Bold
+                Height: =94
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: =Set(overLayVisible2,!overLayVisible2);
+                Size: =24
+                Text: ="Sign Witness Consent Signature"
+                Visible: =If(overLayVisible2 Or overLayVisible =true,false,true)
+                Width: =545
+                X: =39
+                Y: =301
+                ZIndex: =14
+
+            "'Label_Has_the_statement_been_read_to_the _witness?_1' As label":
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(255, 255, 255, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =61
+                Size: =21
+                Text: ="Has the statement been read to the witness?"
+                Visible: =overLayVisible
+                Width: =546
+                X: =47
+                Y: =27
+                ZIndex: =34
+
+            Radio_Witness_read_statement As radio:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(255, 255, 255, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Witness_Signature_key.Selected.Key).WitnessStatementReadtoWitness
+                DisplayMode: =signreadonly
+                Fill: =
+                Height: =102
+                HoverColor: =RGBA(32, 54, 71, 1)
+                Items: =["Yes","No","Not Required"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_Witness_read_statement.Selected.Value)>0,UpdateContext({madcolAB:Transparent}),UpdateContext({madcolAB:LightGoldenRodYellow}));
+                    If(Radio_Witness_read_statement.Selected.Value ="No",Navigate(Scr_Witness_Statement_New));
+                OnSelect: |-
+                    =If(Len(Radio_Witness_read_statement.Selected.Value)>0,UpdateContext({madcolAB:Transparent}),UpdateContext({madcolAB:LightGoldenRodYellow}));
+                    If(Radio_Witness_read_statement.Selected.Value ="No",Navigate(Scr_Witness_Statement_New));
+                RadioBorderColor: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                Size: =21
+                Visible: =overLayVisible
+                Width: =567
+                X: =37
+                Y: =100
+                ZIndex: =35
+
+            Lbl_asteriks_55 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 255, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Fill: =RGBA(0, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Visible: =overLayVisible
+                Width: =22
+                X: =177
+                Y: =50
+                ZIndex: =36
+
+            Btn_save_22 As button:
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =WitnessConsentRO
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Semibold
+                Height: =110
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |
+                    =UpdateIf(
+                        'Statement offline',
+                        Key = Dropdown_Witness_Signature_key.Selected.Key,
+                        {
+                            'WitnessConsent signature': PenInput_Witness_Signature_Consent_Signature.Image,
+                            WitnessSignatureSectionComplete: Radio_Witness_Signatures_Complete.Selected.Value,
+                            Timesignature: Now(),
+                              StatementTypename:Dropdown_Statement_Type_1.Selected.cp_name,
+                           StatementType:Dropdown_Statement_Type_1.Selected.cp_statementtypeid,
+                           StatementTemplatename:Dropdown_Statement_Template_1.Selected.cp_name,
+                           StatementTemplate:Dropdown_Statement_Template_1.Selected.cp_lookupvalueid
+                        }
+                    );
+                    SaveData(
+                        'Statement offline',
+                        "Statement offline"
+                    );
+                    UpdateContext(
+                        {
+                            rec: LookUp(
+                                'Statement offline',
+                                Key = Dropdown_Witness_Signature_key.Selected.Key
+                            )
+                        }
+                    );
+                    UpdateIf(
+                        'Statement offline',
+                        Key = Dropdown_Witness_Signature_key.Selected.Key,
+                        {
+                            //if countersigner needed, then check that all 4 sigs as not Blank, otherwise just 2 (sign and consent))
+                            signaturesValid: If(
+                                rec.Countersingerneeded = "Yes",
+                                And(
+                                    !IsBlank(rec.WitnessSignature),
+                                    !IsBlank(rec.'WitnessConsent signature'),
+                                    !IsBlank(rec.WitnessSignatureCounter),
+                                    !IsBlank(rec.WitnessSigCounterConsent)
+                                ),
+                                And(
+                                    !IsBlank(rec.WitnessSignature),
+                                    !IsBlank(rec.'WitnessConsent signature')
+                                )
+                            )
+                        }
+                    );
+                    UpdateContext({Signdisabled: DisplayMode.Disabled});
+                    /*Reset(Gallery_Name_Buttons_3);Reset(Gallery_Name_Buttons_2);*/
+                    Set(
+                        WitnessConsentRO,
+                        DisplayMode.Disabled
+                    );
+                    If(
+                        Radio_Yes_No_Counter_signer_reuqired.Selected.Value = "Yes" And Len(Dropdown_Witness_title.Selected.cp_name) > 0 And Len(Txt_witnessforename.Text) > 0 And Len(Txt_witness_surname.Text) > 0 And Len(Radio_Counter_same_address.Selected.Value) > 0 And (!IsBlank(Txt_Witness_houseno.Text) Or !IsBlank(Txt_Witness_housename.Text)) And Len(Txt_Witness_address.Text) > 0 And Len(TextInput_Witness_Postcode.Text) > 0 And Len(Dropdown_CounterSigner_Relationship.Selected.cp_name) > 0,
+                        Set(
+                            overLayVisible3,
+                            true
+                        ),
+                        Set(
+                            overLayVisible3,
+                            false
+                        );
+                        
+                    );
+                    Set(
+                        overLayVisible2,
+                        false
+                    );
+                Size: =24
+                Text: ="Save and continue"
+                Visible: =overLayVisible2
+                Width: =385
+                X: =194
+                Y: =837
+                ZIndex: =37
+
+            Btn_save_23 As button:
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =CounterRO
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Semibold
+                Height: =68
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |
+                    =UpdateIf(
+                        'Statement offline',
+                        Key = Dropdown_Witness_Signature_key.Selected.Key,
+                        {
+                            WitnessSignatureCounter: PenInput_CounterSigner_Signatuer_Evidence.Image,
+                            WitnessSigCounterConsent: PenInput_CounterSigner_Signature_Consent.Image
+                        }
+                    );
+                    UpdateContext(
+                        {
+                            rec: LookUp(
+                                'Statement offline',
+                                Key = Dropdown_Witness_Signature_key.Selected.Key
+                            )
+                        }
+                    );
+                    UpdateIf(
+                        'Statement offline',
+                        Key = Dropdown_Witness_Signature_key.Selected.Key,
+                        {
+                            //if countersigner needed, then check that all 4 sigs as not Blank, otherwise just 2 (sign and consent))
+                            signaturesValid: If(
+                                rec.Countersingerneeded = "Yes",
+                                And(
+                                    !IsBlank(rec.WitnessSignature),
+                                    !IsBlank(rec.'WitnessConsent signature'),
+                                    !IsBlank(rec.WitnessSignatureCounter),
+                                    !IsBlank(rec.WitnessSigCounterConsent)
+                                ),
+                                And(
+                                    !IsBlank(rec.WitnessSignature),
+                                    !IsBlank(rec.'WitnessConsent signature')
+                                )
+                            )
+                        }
+                    );
+                    
+                    Set(
+                        overLayVisible3,
+                        false
+                    );
+                    Set(
+                        CounterRO,
+                        DisplayMode.Disabled
+                    );
+                    SaveData(
+                        'Statement offline',
+                        "Statement offline"
+                    );
+                    UpdateContext({Signdisabled: DisplayMode.Disabled});
+                    /*Reset(Gallery_Name_Buttons_3);Reset(Gallery_Name_Buttons_2);*/
+                    Set(
+                        signreadonly,
+                        DisplayMode.Disabled
+                    );
+                Size: =24
+                Text: ="Save and continue"
+                Visible: =overLayVisible3
+                Width: =350
+                X: =229
+                Y: =1220
+                ZIndex: =38
+
+            Label6_2 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Fill: =LightGoldenRodYellow
+                Height: =223
+                OnSelect: =
+                Size: =16
+                Text: |-
+                    ="This statement is true to the best of my knowledge and belief and I make it knowing that, if it is tendered in evidence, I shall be liable to prosecution if I have wilfully stated in it anything which I know to be false, or do not believe to be true.
+                    
+                    I certify that the witness has read and signed the evidence presented above."
+                VerticalAlign: =VerticalAlign.Top
+                Visible: =overLayVisible3
+                Width: =545
+                X: =41
+                Y: =4
+                ZIndex: =39
+
+            Label6_3 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Fill: =LightGoldenRodYellow
+                Height: =68
+                OnSelect: =
+                Size: =16
+                Text: ="I certify that the witness has read and signed the consent and details sections"
+                VerticalAlign: =VerticalAlign.Top
+                Visible: =overLayVisible3
+                Width: =545
+                X: =40
+                Y: =647
+                ZIndex: =40
+
+            Txt_Witness_Signature_Name_3 As text:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_Witness_Signature_key.Selected.Key).Timesignature
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =DisplayMode.View
+                Fill: =LightGoldenRodYellow
+                FocusedBorderThickness: =4
+                Height: =83
+                HintText: ="Date/Time ofSignature"
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                OnChange: |-
+                    =If(Len(Txt_Witness_Signature_Name_3.Text)>0,UpdateContext({madcolAC:Transparent}),UpdateContext({madcolAC:LightGoldenRodYellow}))
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Visible: =overLayVisible2
+                Width: =545
+                X: =36
+                Y: =735
+                ZIndex: =41
+
+            Group_statement_signature As group:
+                Height: =5
+                Width: =5
+                X: =80
+                Y: =80
+                ZIndex: =44
+
+                rectOverlay_1 As rectangle:
+                    BorderColor: =RGBA(0, 18, 107, 1     )
+                    Fill: =RGBA(0,0,0,92%)
+                    Height: =1299
+                    Visible: =overLayVisible
+                    Width: =640
+                    ZIndex: =9
+
+                btnCancelSignature_1 As button:
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =
+                    Fill: =RGBA(153, 153, 153, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =97
+                    HoverColor: =RGBA(255, 255, 255, 1)
+                    HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                    OnSelect: |-
+                        =Reset(PenInput_Witness_Signature_Statement_Signature);
+                        Set(overLayVisible,false);
+                    Size: =24
+                    Text: ="Back"
+                    Visible: =overLayVisible
+                    Width: =133
+                    X: =49
+                    Y: =983
+                    ZIndex: =10
+
+                Label_Witness_Signature_Signature_1 As label:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =75
+                    Size: =21
+                    Text: |-
+                        ="Statement Signature:"
+                    Visible: =overLayVisible
+                    Width: =541
+                    X: =45
+                    Y: =390
+                    ZIndex: =12
+
+                Label6 As label:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(0, 0, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Fill: =LightGoldenRodYellow
+                    Height: =196
+                    OnSelect: =
+                    Size: =18
+                    Text: ="This statement is true to the best of my knowledge and belief and I make it knowing that, if it is tendered in evidence, I shall be liable to prosecution if I have wilfully stated in it anything which I know to be false, or do not believe to be true."
+                    Visible: =overLayVisible
+                    Width: =545
+                    X: =45
+                    Y: =210
+                    ZIndex: =13
+
+                Label_Signer_Name_2 As label:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =75
+                    Size: =21
+                    Text: |-
+                        ="Signer Name:"
+                    Visible: =overLayVisible
+                    Width: =546
+                    X: =44
+                    Y: =826
+                    ZIndex: =18
+
+                Txt_Witness_Signature_Name_1 As text:
+                    BorderColor: =RGBA(128, 128, 128, 1)
+                    BorderThickness: =2
+                    Color: =RGBA(0, 0, 0, 1)
+                    Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WForename & " " & LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WSurname &LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WitnessSignatureSignerName
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =DisplayMode.View
+                    Fill: =LightGoldenRodYellow
+                    FocusedBorderThickness: =4
+                    Height: =67
+                    HintText: =""
+                    HoverBorderColor: =RGBA(0, 18, 107, 1)
+                    HoverColor: =RGBA(0, 0, 0, 1)
+                    HoverFill: =RGBA(186, 202, 226, 1)
+                    OnChange: |-
+                        =If(Len(Txt_Witness_Signature_Name_1.Text)>0,UpdateContext({madcolAC:Transparent}),UpdateContext({madcolAC:LightGoldenRodYellow}))
+                    OnSelect: |-
+                        =If(Len(Txt_Witness_Signature_Name_1.Text)>0,UpdateContext({madcolAC:Transparent}),UpdateContext({madcolAC:LightGoldenRodYellow})) /*ThisItem.WitnessForename & ThisItem.WitnessSurname*/
+                    Reset: =Allreset
+                    Size: =21
+                    Visible: =overLayVisible
+                    Width: =545
+                    X: =44
+                    Y: =895
+                    ZIndex: =19
+
+                Lbl_asteriks_79 As label:
+                    BorderColor: =RGBA(0, 18, 107, 1)
+                    Color: =RGBA(255, 255, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =41
+                    Size: =21
+                    Text: ="*"
+                    Visible: =overLayVisible
+                    Width: =22
+                    X: =255
+                    Y: =831
+                    ZIndex: =20
+
+                Btn_save_21 As button:
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =signreadonly
+                    Fill: =RGBA(153, 153, 153, 1)
+                    FontWeight: =FontWeight.Semibold
+                    Height: =94
+                    HoverColor: =RGBA(255, 255, 255, 1)
+                    HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                    OnSelect: |
+                        =UpdateIf(
+                            'Statement offline',
+                            Key = Dropdown_Witness_Signature_key.Selected.Key,
+                            {
+                                WitnessStatementReadtoWitness: Radio_Witness_read_statement.Selected.Value,
+                                WitnessSignature: PenInput_Witness_Signature_Statement_Signature.Image
+                            }
+                        );
+                        UpdateContext(
+                            {
+                                rec: LookUp(
+                                    'Statement offline',
+                                    Key = Dropdown_Witness_Signature_key.Selected.Key
+                                )
+                            }
+                        );
+                        UpdateIf(
+                            'Statement offline',
+                            Key = Dropdown_Witness_Signature_key.Selected.Key,
+                            {
+                                //if countersigner needed, then check that all 4 sigs as not Blank, otherwise just 2 (sign and consent))
+                                signaturesValid: If(
+                                    rec.Countersingerneeded = "Yes",
+                                    And(
+                                        !IsBlank(rec.WitnessSignature),
+                                        !IsBlank(rec.'WitnessConsent signature'),
+                                        !IsBlank(rec.WitnessSignatureCounter),
+                                        !IsBlank(rec.WitnessSigCounterConsent)
+                                    ),
+                                    And(
+                                        !IsBlank(rec.WitnessSignature),
+                                        !IsBlank(rec.'WitnessConsent signature')
+                                    )
+                                )
+                            }
+                        );
+                        SaveData(
+                            'Statement offline',
+                            "Statement offline"
+                        );
+                        /*UpdateContext({Signdisabled:DisplayModeDisabled});*/
+                        /*Reset(Gallery_Name_Buttons_3);Reset(Gallery_Name_Buttons_2);*/
+                        Set(
+                            signreadonly,
+                            DisplayMode.Disabled
+                        );
+                        Set(
+                            overLayVisible2,
+                            true
+                        );
+                        Set(
+                            overLayVisible,
+                            false
+                        );
+                    Size: =24
+                    Text: ="Save and continue"
+                    Visible: =overLayVisible
+                    Width: =363
+                    X: =220
+                    Y: =981
+                    ZIndex: =24
+
+                Image2 As image:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    Height: =362
+                    Image: =LookUp('Statement offline',Key=Dropdown_Witness_Signature_key.Selected.Key).WitnessSignature
+                    Visible: =If(signreadonly=DisplayMode.Disabled,overLayVisible,false)
+                    Width: =544
+                    X: =45
+                    Y: =470
+                    ZIndex: =42
+
+                PenInput_Witness_Signature_Statement_Signature As inkControl:
+                    BorderColor: =RGBA(255, 255, 255, 1)
+                    BorderThickness: =3
+                    DisplayMode: =signreadonly
+                    Fill: =RGBA(255, 255, 255, 1)
+                    Height: =362
+                    OnSelect: |-
+                        =If(Len(PenInput_Witness_Signature_Statement_Signature.Image)>0,UpdateContext({madcolAA:Transparent}),UpdateContext({madcolAA:LightGoldenRodYellow}));
+                    Reset: =true
+                    Visible: =If(IsBlank(LookUp('Statement offline',Key=Dropdown_Witness_Signature_key.Selected.Key).WitnessSignature) And signreadonly=DisplayMode.Edit,overLayVisible,false)
+                    Width: =540
+                    X: =49
+                    Y: =468
+                    ZIndex: =47
+
+            Group15 As group:
+                Height: =5
+                Width: =5
+                X: =80
+                Y: =80
+                ZIndex: =44
+
+                Lbl_asteriks_63 As label:
+                    BorderColor: =RGBA(0, 18, 107, 1)
+                    Color: =RGBA(255, 0, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =51
+                    Size: =21
+                    Text: ="*"
+                    Visible: =overLayVisible2
+                    Width: =22
+                    X: =559
+                    Y: =319
+                    ZIndex: =8
+
+                rectOverlay_2 As rectangle:
+                    BorderColor: =RGBA(0, 18, 107, 1     )
+                    Fill: =RGBA(0,0,0,92%)
+                    Height: =1296
+                    OnSelect: =
+                    Visible: =overLayVisible2
+                    Width: =640
+                    ZIndex: =15
+
+                btnCancelSignature_2 As button:
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =
+                    Fill: =RGBA(153, 153, 153, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =110
+                    HoverColor: =RGBA(255, 255, 255, 1)
+                    HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                    OnSelect: |-
+                        =Set(overLayVisible2,false);
+                        Reset(PenInput_Witness_Signature_Consent_Signature);
+                    Size: =24
+                    Text: ="Back"
+                    Visible: =overLayVisible2
+                    Width: =133
+                    X: =34
+                    Y: =837
+                    ZIndex: =16
+
+                Label6_1 As label:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(0, 0, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Fill: =LightGoldenRodYellow
+                    Height: =163
+                    OnSelect: =
+                    Size: =18
+                    Text: ="This statement is true to the best of my knowledge and belief and I make it knowing that, if it is tendered in evidence, I shall be liable to prosecution if I have wilfully stated in it anything which I know to be false, or do not believe to be true."
+                    Visible: =overLayVisible2
+                    Width: =545
+                    X: =38
+                    Y: =7
+                    ZIndex: =17
+
+                Label_Signer_Name_3 As label:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =76
+                    OnSelect: =
+                    Size: =21
+                    Text: |-
+                        ="Signer Name:"
+                    Visible: =overLayVisible2
+                    Width: =546
+                    X: =38
+                    Y: =568
+                    ZIndex: =21
+
+                Txt_Witness_Signature_Name_2 As text:
+                    BorderColor: =RGBA(128, 128, 128, 1)
+                    BorderThickness: =2
+                    Color: =RGBA(0, 0, 0, 1)
+                    Default: =LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WForename & " " & LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WSurname &LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WitnessSignatureSignerName
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =DisplayMode.View
+                    Fill: =LightGoldenRodYellow
+                    FocusedBorderThickness: =4
+                    Height: =68
+                    HintText: =""
+                    HoverBorderColor: =RGBA(0, 18, 107, 1)
+                    HoverColor: =RGBA(0, 0, 0, 1)
+                    HoverFill: =RGBA(186, 202, 226, 1)
+                    OnChange: |-
+                        =If(Len(Txt_Witness_Signature_Name_2.Text)>0,UpdateContext({madcolAC:Transparent}),UpdateContext({madcolAC:LightGoldenRodYellow}))
+                    OnSelect: =
+                    Reset: =Allreset
+                    Size: =21
+                    Visible: =overLayVisible2
+                    Width: =545
+                    X: =39
+                    Y: =648
+                    ZIndex: =22
+
+                Lbl_asteriks_80 As label:
+                    BorderColor: =RGBA(0, 18, 107, 1)
+                    Color: =RGBA(255, 0, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =42
+                    OnSelect: =
+                    Size: =21
+                    Text: ="*"
+                    Visible: =overLayVisible2
+                    Width: =22
+                    X: =233
+                    Y: =562
+                    ZIndex: =23
+
+                Label_Witness_Signature_Signature_2 As label:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =76
+                    Size: =21
+                    Text: |-
+                        ="Consent Signature: "
+                    Visible: =overLayVisible2
+                    Width: =541
+                    X: =32
+                    Y: =148
+                    ZIndex: =25
+
+                Image2_1 As image:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =WitnessConsentRO
+                    Height: =341
+                    Image: =LookUp('Statement offline',Key=Dropdown_Witness_Signature_key.Selected.Key).'WitnessConsent signature'
+                    Visible: =If(WitnessConsentRO=DisplayMode.Disabled,overLayVisible2,false)
+                    Width: =545
+                    X: =32
+                    Y: =219
+                    ZIndex: =46
+
+                PenInput_Witness_Signature_Consent_Signature As inkControl:
+                    BorderColor: =RGBA(255, 255, 255, 1)
+                    DisplayMode: =WitnessConsentRO
+                    Fill: =RGBA(255, 255, 255, 1)
+                    Height: =343
+                    Reset: =true
+                    Visible: =If(IsBlank(LookUp('Statement offline',Key=Dropdown_Witness_Signature_key.Selected.Key).'WitnessConsent signature') And WitnessConsentRO=DisplayMode.Edit,overLayVisible2,false)
+                    Width: =545
+                    X: =36
+                    Y: =219
+                    ZIndex: =48
+
+            Label4_1 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisplayMode: =DisplayMode.View
+                Fill: =LightGoldenRodYellow
+                FontWeight: =FontWeight.Bold
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="COUNTER SIGNATURES"
+                Underline: =true
+                Visible: =If(overLayVisible3 Or overLayVisible2 Or overLayVisible =true,false,true)
+                Width: =539
+                X: =37
+                Y: =434
+                ZIndex: =50
+
+            Group2 As group:
+                Height: =5
+                Width: =5
+                X: =60
+                Y: =60
+                ZIndex: =50
+
+                Lbl_asteriks_81 As label:
+                    BorderColor: =RGBA(0, 18, 107, 1)
+                    Color: =RGBA(255, 0, 0, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =56
+                    Size: =21
+                    Text: ="*"
+                    Visible: =overLayVisible3
+                    Width: =22
+                    X: =559
+                    Y: =350
+                    ZIndex: =27
+
+                rectOverlay_3 As rectangle:
+                    BorderColor: =RGBA(0, 18, 107, 1     )
+                    Fill: =RGBA(0,0,0,85%)
+                    Height: =1296
+                    OnSelect: =
+                    Visible: =overLayVisible3
+                    Width: =640
+                    ZIndex: =28
+
+                btnCancelSignature_3 As button:
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =
+                    Fill: =RGBA(153, 153, 153, 1)
+                    FontWeight: =FontWeight.Bold
+                    Height: =76
+                    HoverColor: =RGBA(255, 255, 255, 1)
+                    HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                    OnSelect: |
+                        =Set(overLayVisible3,false);Reset(PenInput_CounterSigner_Signatuer_Evidence);Reset(PenInput_CounterSigner_Signature_Consent);
+                    Size: =24
+                    Text: ="Back"
+                    Visible: =overLayVisible3
+                    Width: =133
+                    X: =40
+                    Y: =1212
+                    ZIndex: =29
+
+                Label_CounterSigner_Signature_Evidence_2 As label:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =70
+                    Size: =21
+                    Text: ="Counter Signature (Evidence)"
+                    Visible: =overLayVisible3
+                    Width: =545
+                    X: =44
+                    Y: =227
+                    ZIndex: =30
+
+                Label_CounterSigner_Signature_consent_2 As label:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =70
+                    Size: =21
+                    Text: ="Counter Signature (Consent)"
+                    Visible: =overLayVisible3
+                    Width: =545
+                    X: =34
+                    Y: =711
+                    ZIndex: =31
+
+                Label_CounterSigner_signer_name_2 As label:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    Height: =70
+                    Size: =21
+                    Text: ="Counter Signer Name"
+                    Visible: =overLayVisible3
+                    Width: =545
+                    X: =41
+                    Y: =1086
+                    ZIndex: =32
+
+                TextInput_CounterSigner_Signer_Name_2 As text:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    BorderThickness: =2
+                    Color: =RGBA(0, 0, 0, 1)
+                    Default: =LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).CSignerForename &" " & LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).CSignerSurname &" ("&  LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).CSRelationname &")"
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =DisplayMode.View
+                    Fill: =LightGoldenRodYellow
+                    FocusedBorderThickness: =4
+                    Height: =52
+                    HoverBorderColor: =RGBA(32, 54, 71, 1)
+                    HoverColor: =RGBA(0, 0, 0, 1)
+                    HoverFill: =RGBA(205, 209, 213, 1)
+                    OnChange: |-
+                        =If(Len(TextInput_CounterSigner_Signer_Name_2.Text)>0,UpdateContext({madcolAC:Transparent}),UpdateContext({madcolAC:LightGoldenRodYellow}))
+                    OnSelect: |-
+                        =If(Len(TextInput_CounterSigner_Signer_Name_2.Text)>0,UpdateContext({madcolAC:Transparent}),UpdateContext({madcolAC:LightGoldenRodYellow})) & LookUp('Statement offline',Statement_Primary_key=Dropdown_CounterSigner_key.Selected.Key).CSignerForename & LookUp('Statement offline',Statement_Primary_key=Dropdown_CounterSigner_key.Selected.Key).CSignerSurname
+                    Size: =21
+                    Visible: =overLayVisible3
+                    Width: =545
+                    X: =44
+                    Y: =1149
+                    ZIndex: =33
+
+                Image2_3 As image:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    Height: =317
+                    Image: =LookUp('Statement offline',Key=Dropdown_Witness_Signature_key.Selected.Key).WitnessSigCounterConsent
+                    Visible: =If(CounterRO=DisplayMode.Disabled,overLayVisible3,false)
+                    Width: =538
+                    X: =41
+                    Y: =771
+                    ZIndex: =43
+
+                Image2_2 As image:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    Height: =324
+                    Image: =LookUp('Statement offline',Key=Dropdown_Witness_Signature_key.Selected.Key).WitnessSignatureCounter
+                    Visible: =If(CounterRO=DisplayMode.Disabled,overLayVisible3,false)
+                    Width: =541
+                    X: =51
+                    Y: =295
+                    ZIndex: =44
+
+                PenInput_CounterSigner_Signature_Consent As inkControl:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    DisplayMode: =CounterRO
+                    Fill: =RGBA(255, 255, 255, 1)
+                    Height: =315
+                    OnSelect: |-
+                        =If(Len(PenInput_CounterSigner_Signature_Consent.Image)>0,UpdateContext({madcolBK:Transparent}),UpdateContext({madcolBK:LightGoldenRodYellow}))
+                    Reset: =true
+                    Visible: =If(IsBlank(LookUp('Statement offline',Key=Dropdown_Witness_Signature_key.Selected.Key).WitnessSigCounterConsent) And CounterRO=DisplayMode.Edit,overLayVisible3,false)
+                    Width: =545
+                    X: =37
+                    Y: =773
+                    ZIndex: =45
+
+                PenInput_CounterSigner_Signatuer_Evidence As inkControl:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    DisplayMode: =CounterRO
+                    Fill: =RGBA(255, 255, 255, 1)
+                    Height: =327
+                    OnSelect: |-
+                        =If(Len(PenInput_CounterSigner_Signatuer_Evidence.Image)>0,UpdateContext({madcolBJ:Transparent}),UpdateContext({madcolBJ:LightGoldenRodYellow}))
+                    Reset: =true
+                    Visible: =If(IsBlank(LookUp('Statement offline',Key=Dropdown_Witness_Signature_key.Selected.Key).WitnessSignatureCounter) And CounterRO=DisplayMode.Edit,overLayVisible3,false)
+                    Width: =545
+                    X: =44
+                    Y: =292
+                    ZIndex: =49
+
+            Btn_save_Continue_4 As button:
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: |-
+                    =If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value ="Yes" And 
+                    Len(Dropdown_Witness_title.Selected.cp_name)>0 And
+                     Len(Txt_witnessforename.Text)>0 And
+                      Len(Txt_witness_surname.Text)>0 And
+                       Len(Radio_Counter_same_address.Selected.Value)>0 And
+                         (!IsBlank(Txt_Witness_houseno.Text) Or !IsBlank(Txt_Witness_housename.Text)) And
+                          Len(Txt_Witness_address.Text)>0 And
+                           Len(TextInput_Witness_Postcode.Text)>0 And 
+                           Len(Dropdown_CounterSigner_Relationship.Selected.cp_name)>0,DisplayMode.Edit,DisplayMode.Disabled)
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Bold
+                Height: =98
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: =Set(overLayVisible3,!overLayVisible3);
+                Size: =24
+                Text: ="Sign Counter Signatures"
+                Visible: =If(overLayVisible3 Or overLayVisible Or overLayVisible2 =true,false,true)
+                Width: =545
+                X: =36
+                Y: =520
+                ZIndex: =51
+

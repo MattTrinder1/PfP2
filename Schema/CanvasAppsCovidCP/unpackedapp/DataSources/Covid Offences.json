@@ -1,0 +1,100 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_covidoffenceses",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_covidoffences",
+    "MaxGetRowsCount": 2000,
+    "Name": "Covid Offences",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "cp_Covid_offence_cp_covidoffences": "Covids",
+      "cp_covidoffences_AsyncOperations": "System Jobs",
+      "cp_covidoffences_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_covidoffences_DuplicateBaseRecord": "Duplicate Records (cp_covidoffences_DuplicateBaseRecord)",
+      "cp_covidoffences_DuplicateMatchingRecord": "Duplicate Records (cp_covidoffences_DuplicateMatchingRecord)",
+      "cp_covidoffences_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_covidoffences_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_covidoffences_ProcessSession": "Process Sessions",
+      "cp_covidoffences_SyncErrors": "Sync Errors",
+      "cp_covidoffencesid": "Covid Offences ID",
+      "cp_offenceact": "Offence Act",
+      "cp_offencecode": "Offence Code",
+      "cp_offencedescription": "Offence Description",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Covid Offences",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Covid Offences (Views)",
+    "Name": "_cp_covidoffences_views",
+    "RelatedEntityName": "Covid Offences",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "22fd31ba-c451-46e5-8357-775f1b62c910": "Covid Offences Associated View",
+      "253aa512-6470-435d-a833-a540763cb5ae": "Active Covid Offences",
+      "36dd06b9-d22c-4203-8505-437b7849bafe": "Inactive Covid Offences",
+      "8c88dba2-0bd9-4495-96a4-ff19dd7e9109": "Covid Offences Lookup View",
+      "d4597da4-e780-49ec-9b7b-e9592d717bb4": "Covid Offences Advanced Find View"
+    }
+  },
+  {
+    "DisplayName": "Status (Covid Offences)",
+    "Name": "cp_covidoffences_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Covid Offences"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Covid Offences",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Covid Offences)",
+    "Name": "cp_covidoffences_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Covid Offences"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Covid Offences",
+    "Type": "OptionSetInfo"
+  }
+]

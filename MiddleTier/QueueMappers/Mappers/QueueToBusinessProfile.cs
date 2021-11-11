@@ -10,6 +10,70 @@ using System.Text.Json;
 
 namespace API.Mappers
 {
+    public class NullStringConverter : ITypeConverter<string, string>
+    {
+
+        public string Convert(string source, string destination, ResolutionContext context)
+        {
+            if (string.IsNullOrWhiteSpace(source))
+            {
+                return null;
+            }
+            else
+            {
+                return source;
+            }
+        }
+    }
+
+    public class BoolConverter : ITypeConverter<string, bool>
+    {
+
+        public bool Convert(string source, bool destination, ResolutionContext context)
+        {
+            if (string.IsNullOrWhiteSpace(source))
+            {
+                return false;
+            }
+            else
+            {
+                return source == "True";
+            }
+        }
+    }
+
+    public class NullDateConverter : ITypeConverter<string, DateTime?>
+    {
+
+        public DateTime? Convert(string source, DateTime? destination, ResolutionContext context)
+        {
+            if (string.IsNullOrWhiteSpace(source) || (DateTime.Parse(source) - new DateTime(1900,1,1)).Days == 0  )
+            {
+                return null;
+            }
+            else
+            {
+                return DateTime.Parse(source);
+            }
+        }
+    }
+
+    public class NullGuidConverter : ITypeConverter<string, Guid?>
+    {
+
+        public Guid? Convert(string source, Guid? destination, ResolutionContext context)
+        {
+            if (string.IsNullOrEmpty(source) || Guid.Parse(source) == Guid.Empty)
+            {
+                return null;
+            }
+            else
+            {
+                return Guid.Parse(source);
+            }
+        }
+    }
+
     public class QueueToBusinessProfile : Profile
     {
         private BlobContainerClient _PNBcontainerClient;
@@ -19,6 +83,11 @@ namespace API.Mappers
         {
             _PNBcontainerClient = containerClientFactory.GetBlobContainerClient("pnb");
             _SDcontainerClient = containerClientFactory.GetBlobContainerClient("suddendeath");
+
+            CreateMap<string, string>().ConvertUsing<NullStringConverter>();
+            CreateMap<string, Guid?>().ConvertUsing<NullGuidConverter>();
+            CreateMap<string, DateTime?>().ConvertUsing<NullDateConverter>();
+            CreateMap<string, bool>().ConvertUsing<BoolConverter>();
 
             CreateMap<JsonElement, Photo>()
                 .ForMember(dest => dest.Caption, map => map.MapFrom(src => src.GetProperty("caption").GetString()))
@@ -32,98 +101,64 @@ namespace API.Mappers
                 .ForMember(dest => dest.LastName, map => map.MapFrom(src => src.Surname))
                 .ForMember(dest => dest.DeceasedRelationship, map => map.MapFrom(src => src.Deceasedrelathionship))
                 .ForMember(dest => dest.Postcode, map => map.MapFrom(src => src.pcode))
-                .ForMember(dest => dest.Gender, map => map.MapFrom(src => GetGuid(src.Gender)))
-                .ForMember(dest => dest.OfficerDefinedEthnicity, map => map.MapFrom(src => GetGuid(src.OfficerDefinedEthnicity)))
+                .ForMember(dest => dest.Gender, map => map.MapFrom(src => src.Gender))
+                .ForMember(dest => dest.OfficerDefinedEthnicity, map => map.MapFrom(src => src.OfficerDefinedEthnicity))
 
                 ;
 
             CreateMap<QueueSuddenDeathProperty, SuddenDeathProperty>()
+                .ForMember(dest => dest.Id, map => map.MapFrom(src => src.PropertyId))
                 .ForMember(dest => dest.PhotoProperty, map => map.MapFrom(src => GetBlob(_SDcontainerClient, src.PhotoPropertyBlobName)))
                 .ForMember(dest => dest.PropertySignature, map => map.MapFrom(src => GetBlob(_SDcontainerClient, src.PropertySignatureBlobName)))
                 ;
 
+            CreateMap<QueuePocketNotebook, PocketNotebook>();
 
             CreateMap<QueueSuddenDeath, SuddenDeath>()
                     .ForMember(dest => dest.Id, map => map.MapFrom(src => Guid.Parse(src.Id)))
                     .ForMember(dest => dest.AreaLastSeenAlive, map => map.MapFrom(src => src.WhereLastSeenAlive))
                     .ForMember(dest => dest.NextOfKinInformedMethod, map => map.MapFrom(src => src.NextOfKinWayOfInfo))
                     .ForMember(dest => dest.DeathDiagnosedBy, map => map.MapFrom(src => src.DeathDiagnosedBy))
-                    //.ForMember(dest => dest.IdentificationLocation, map => map.MapFrom(src => src.))
                     .ForMember(dest => dest.UndertakerArrangingFuneral, map => map.MapFrom(src => src.UndertakerFuneral))
                     .ForMember(dest => dest.FamilyLiaisonOfficer, map => map.MapFrom(src => src.FamilyLiasionOfficer))
                     .ForMember(dest => dest.LastSeenAliveBy, map => map.MapFrom(src => src.LastSeenAliveBy))
                     .ForMember(dest => dest.NextOfKinActionToInform, map => map.MapFrom(src => src.ActionOfNextOfKin))
-                    //.ForMember(dest => dest.CertifiedBy, map => map.MapFrom(src => src.cer))
                     .ForMember(dest => dest.PlaceOfDeath, map => map.MapFrom(src => src.PlaceOfDeathDesc))
                     .ForMember(dest => dest.BodyRemovedTo, map => map.MapFrom(src => src.RemovedTo))
                     .ForMember(dest => dest.BodyFoundBy, map => map.MapFrom(src => src.BodyFoundBy))
-                    //.ForMember(dest => dest.BodyLabel, map => map.MapFrom(src => src.bod))
-                    //.ForMember(dest => dest.SupervisorNotes, map => map.MapFrom(src => src.super))
                     .ForMember(dest => dest.MarkBruises, map => map.MapFrom(src => src.MarksBruises))
                     .ForMember(dest => dest.FormalIdentificationSteps, map => map.MapFrom(src => src.FormalIdentificationSteps))
                     .ForMember(dest => dest.BodyPhysicalPosition, map => map.MapFrom(src => src.PhysicalPosition))
-                    //.ForMember(dest => dest.InquestVerdict, map => map.MapFrom(src => src.ver))
                     .ForMember(dest => dest.ClothingGeneralCondition, map => map.MapFrom(src => src.Clothing))
-                    //.ForMember(dest => dest.ApprovalStatusReason, map => map.MapFrom(src => src.ap))
-                    //.ForMember(dest => dest.AdditionalDetails, map => map.MapFrom(src => src.ad))
                     .ForMember(dest => dest.AdditionalNotes, map => map.MapFrom(src => src.AdditionalNotes))
-                    //.ForMember(dest => dest.CauseOfDeath, map => map.MapFrom(src => src.))
-                    //.ForMember(dest => dest.CoronerOfficeNotes, map => map.MapFrom(src => src.WhereLastSeenAlive))
                     .ForMember(dest => dest.Circumstances, map => map.MapFrom(src => src.Circumstances))
-                    //.ForMember(dest => dest.InquestLocation, map => map.MapFrom(src => src.WhereLastSeenAlive))
-
-                    //.ForMember(dest => dest.IdentificationSignedOn, map => map.MapFrom(src => src.dat))
-                    .ForMember(dest => dest.DatetimeDeathConfirmed, map => map.MapFrom(src => DateTime.Parse(src.DateFactConfirmed + " " + src.TimeFactConfirmed)))
-                    .ForMember(dest => dest.DatetimeBodyFound, map => map.MapFrom(src => DateTime.Parse(src.DateBodyFound + " " + src.TimeBodyFound)))
-                    .ForMember(dest => dest.DatetimeLastSeenAlive, map => map.MapFrom(src => DateTime.Parse(src.DateLastSeenAlive + " " + src.TimeLastSeenalive)))
-                    //.ForMember(dest => dest.AllPropertiesSignedOn, map => map.MapFrom(src => src.pr))
-                    //.ForMember(dest => dest.InquestDate, map => map.MapFrom(src => src.WhereLastSeenAlive))
-
+                    .ForMember(dest => dest.DatetimeDeathConfirmed, map => map.MapFrom(src => src.DateFactConfirmed ))
+                    .ForMember(dest => dest.DatetimeBodyFound, map => map.MapFrom(src => src.DateBodyFound))
+                    .ForMember(dest => dest.DatetimeLastSeenAlive, map => map.MapFrom(src => src.DateLastSeenAlive ))
                     .ForMember(dest => dest.CIDCSIAttended, map => map.MapFrom(src => src.CIDattended))
                     .ForMember(dest => dest.NextOfKinInformed, map => map.MapFrom(src => src.NextOfKinInformed))
                     .ForMember(dest => dest.CIDCSIPhotosTaken, map => map.MapFrom(src => src.PhotosTakenbyCID))
-                    //.ForMember(dest => dest.BodyIdentified, map => map.MapFrom(src => src.id))
                     .ForMember(dest => dest.FormalIdentification, map => map.MapFrom(src => src.FormalIdentification))
                     .ForMember(dest => dest.UndertakerRemovingBody, map => map.MapFrom(src => src.UndertakerRemovingBody))
                     .ForMember(dest => dest.SuspectSuicide, map => map.MapFrom(src => src.SuspectSuicide))
-                    //.ForMember(dest => dest.DeathCertificateIssued, map => map.MapFrom(src => src.deathc))
-
-//                    .ForMember(dest => dest.DeceasedAge, map => map.MapFrom(src => src.age))
-
                     .ForMember(dest => dest.DOLS, map => map.MapFrom(src => src.Dols))
                     .ForMember(dest => dest.SuicideNoteLeft, map => map.MapFrom(src => src.SuicideNoteLeft))
-                    //.ForMember(dest => dest.IsSubmitted, map => map.MapFrom(src => src.WhereLastSeenAlive))
                     .ForMember(dest => dest.Smoker, map => map.MapFrom(src => src.DeceasedSmoker))
                     .ForMember(dest => dest.PoliceInvolvementPriorDeath, map => map.MapFrom(src => src.PoliceContactPriorToDeath))
                     .ForMember(dest => dest.DeathInHealthCare, map => map.MapFrom(src => src.DeathInHealthCare))
                     .ForMember(dest => dest.WorkRelatedDeath, map => map.MapFrom(src => src.WorkRelatedDeath))
                     .ForMember(dest => dest.DeathInCustody, map => map.MapFrom(src => src.DeathInCustody))
-                    //.ForMember(dest => dest.ApprovalStatus, map => map.MapFrom(src => src.ap))
                     .ForMember(dest => dest.DeathInHospital, map => map.MapFrom(src => src.DeathInHospital))
-
-                    .ForMember(dest => dest.HouseTemperature, map => map.MapFrom(src => src.HouseTemperature))
-                    //.ForMember(dest => dest.SecondPointOfContact, map => map.MapFrom(src => src.sec))
-                    //.ForMember(dest => dest.DeathType, map => map.MapFrom(src => src.deat))
-                    //.ForMember(dest => dest.Spouse, map => map.MapFrom(src => src.spo))
+                    .ForMember(dest => dest.HouseTemperature, map => map.MapFrom(src => GetGuid(src.HouseTemperature)))
                     .ForMember(dest => dest.BurialCremation, map => map.MapFrom(src => src.BurialOrCremation))
-                    //.ForMember(dest => dest.NextOfKin, map => map.MapFrom(src => src.ne))
-                    .ForMember(dest => dest.TPA, map => map.MapFrom(src => src.NPTSuddenDeath))
-                    //.ForMember(dest => dest.ParentGuardian, map => map.MapFrom(src => src.pa))
-                    //.ForMember(dest => dest.CertifiedRole, map => map.MapFrom(src => src.WhereLastSeenAlive))
-                    //.ForMember(dest => dest.Deceased, map => map.MapFrom(src => src.WhereLastSeenAlive))
-                    .ForMember(dest => dest.HouseSecure, map => map.MapFrom(src => src.SecureHouse))
-                    //.ForMember(dest => dest.IdentifiedBy, map => map.MapFrom(src => src.i))
-                    //.ForMember(dest => dest.InvestigationStatus       , map => map.MapFrom(src => src.WhereLastSeenAlive))
-
+                    .ForMember(dest => dest.TPA, map => map.MapFrom(src => GetGuid(src.NPTSuddenDeath)))
+                    .ForMember(dest => dest.HouseSecure, map => map.MapFrom(src => GetGuid(src.SecureHouse)))
                     .ForMember(dest => dest.PhotoCircumstances, map => map.MapFrom(src => GetBlob(_SDcontainerClient, src.PhotoCircumstancesBlobName)))
                     .ForMember(dest => dest.PhotoSuicideNote, map => map.MapFrom(src => GetBlob(_SDcontainerClient, src.PhotoSuicideNoteBlobName)))
                     .ForMember(dest => dest.IdentificationSignature, map => map.MapFrom(src => GetBlob(_SDcontainerClient, src.identificationSignatureBlobName)))
-
                     .ForMember(dest => dest.CIDCSISelectedIds, map => map.MapFrom(src => GetGuids(src.CIDcsiselectid)))
                     .ForMember(dest => dest.AdditionalOfficerIds, map => map.MapFrom(src => GetGuids(src.Additionalofficerid)))
-                    
                     .ForMember(dest => dest.BurialCremation, map => map.MapFrom(src => GetGuid(src.BurialOrCremation)))
-
                     .ForMember(dest => dest.LatitudeSuddenDeath, map => map.MapFrom(src => GetNullableDouble(src.LatitudeSuddenDeath)))
                     .ForMember(dest => dest.LongtitudeSuddenDeath, map => map.MapFrom(src => GetNullableDouble(src.LongtitudeSuddenDeath)))
 
@@ -164,6 +199,15 @@ namespace API.Mappers
 
         }
 
+        private DateTime? GetDate(string dateString)
+        {
+            if (string.IsNullOrWhiteSpace(dateString))
+            {
+                return null;
+            }
+
+            return DateTime.Parse(dateString);
+        }
 
         private List<Guid> GetGuids(string GuidCSVList)
         {

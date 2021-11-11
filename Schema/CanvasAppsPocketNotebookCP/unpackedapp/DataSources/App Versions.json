@@ -1,0 +1,99 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_appversions",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_appversion",
+    "MaxGetRowsCount": 2000,
+    "Name": "App Versions",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "cp_appicon": "App Icon",
+      "cp_appiconid": "cp_appIconId",
+      "cp_appid": "AppId",
+      "cp_appname": "App Name",
+      "cp_apptype": "App Type",
+      "cp_appversion_AsyncOperations": "System Jobs",
+      "cp_appversion_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_appversion_DuplicateBaseRecord": "Duplicate Records (cp_appversion_DuplicateBaseRecord)",
+      "cp_appversion_DuplicateMatchingRecord": "Duplicate Records (cp_appversion_DuplicateMatchingRecord)",
+      "cp_appversion_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_appversion_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_appversion_ProcessSession": "Process Sessions",
+      "cp_appversion_SyncErrors": "Sync Errors",
+      "cp_appversionid": "App Version",
+      "cp_appversionnumber": "App Version Number",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "organizationid": "Organization Id",
+      "overriddencreatedon": "Record Created On",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "App Versions",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "App Versions (Views)",
+    "Name": "_cp_appversion_views",
+    "RelatedEntityName": "App Versions",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "04951a47-e4de-4096-92ec-a0d23945af98": "Inactive App Versions",
+      "0ea548de-3714-4b90-9587-317f8c429b3d": "App Version Lookup View",
+      "2f0d9636-e93c-4974-a719-1756ac509cd0": "Active App Versions",
+      "8a0426bf-f415-4b03-8c0d-ba2433b2b511": "App Version Associated View",
+      "b54806ff-7382-4706-9c8b-b780215e87e6": "App Version Advanced Find View"
+    }
+  },
+  {
+    "DisplayName": "Status (App Versions)",
+    "Name": "cp_appversion_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "App Versions"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "App Versions",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (App Versions)",
+    "Name": "cp_appversion_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "App Versions"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "App Versions",
+    "Type": "OptionSetInfo"
+  }
+]

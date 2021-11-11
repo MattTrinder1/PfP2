@@ -1,0 +1,94 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_offencecategories",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_offencecategory",
+    "MaxGetRowsCount": 2000,
+    "Name": "Offence Categories",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "cp_name": "Offence Category Name",
+      "cp_offencecategory_AsyncOperations": "System Jobs",
+      "cp_offencecategory_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_offencecategory_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_offencecategory_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_offencecategory_ProcessSession": "Process Sessions",
+      "cp_offencecategory_SyncErrors": "Sync Errors",
+      "cp_offencecategoryid": "Offence Category",
+      "cp_offencecode_offencecategoryid_offencecat": "Offence Codes",
+      "cp_tickettypeid": "Ticket Type",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "organizationid": "Organization Id",
+      "overriddencreatedon": "Record Created On",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Offence Categories",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Offence Categories (Views)",
+    "Name": "_cp_offencecategory_views",
+    "RelatedEntityName": "Offence Categories",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "127b3281-6556-4d9a-b7c3-88753b6c4b70": "Offence Category Advanced Find View",
+      "1b293a06-5b17-47b7-bd98-ca43af5de0b8": "Inactive Offence Categories",
+      "331e98d3-3416-4231-8f6a-a9bc92e598ec": "Offence Category Associated View",
+      "9adcb3aa-da40-423b-a97a-8ab89a4e7c4e": "Active Offence Categories",
+      "a348ff76-f2a2-48e4-bb5e-1b54d0f1a0c7": "Offence Category Lookup View"
+    }
+  },
+  {
+    "DisplayName": "Status (Offence Categories)",
+    "Name": "cp_offencecategory_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Offence Categories"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Offence Categories",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Offence Categories)",
+    "Name": "cp_offencecategory_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Offence Categories"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Offence Categories",
+    "Type": "OptionSetInfo"
+  }
+]

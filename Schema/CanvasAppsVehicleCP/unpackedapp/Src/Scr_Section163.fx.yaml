@@ -1,0 +1,356 @@
+Scr_Section163 As screen:
+    OnVisible: |-
+        =Set(
+            madcolreason,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolreason: LightGoldenRodYellow});
+        Set(
+            madcoloutcome,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcoloutcome: LightGoldenRodYellow});
+        Set(
+            madcolDesc,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolDesc: LightGoldenRodYellow});
+        Set(
+            madcolLink,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolLink: LightGoldenRodYellow});
+        Set(resetall,true);
+        
+        If(Len(LookUp(TrOffOffline,TicketTypename = "S163 (Vehicle Stop)" And OffenceKey=Dropdown_section163_key.Selected.Key).'Reason for using s163 power name')>0 And Len(LookUp(TrOffOffline,TicketTypename = "S163 (Vehicle Stop)" And OffenceKey=Dropdown_section163_key.Selected.Key).'Outcome of stop / Reason for outcome name')>0 ,Set(signreadonly,DisplayMode.Disabled));
+
+    Label_header_S163 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =91
+        Size: =21
+        Text: ="Section 163"
+        VerticalAlign: =VerticalAlign.Top
+        Width: =640
+        ZIndex: =1
+
+    Icon_back15 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Height: =67
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home,UnCoverRight)
+        X: =15
+        Y: =17
+        ZIndex: =3
+
+    Canvas_S163 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1045
+        Width: =Parent.Width
+        Y: =91
+        ZIndex: =4
+
+        DataCard_S163 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =1146
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Dropdown_section163_key As dropdown:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                Default: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).Key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                Items: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =22
+                ZIndex: =4
+
+            Label_S163_asterik_Reason As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =565
+                Y: =167
+                ZIndex: =9
+
+            Label_S163_OutcomeOfStopOrReason As label:
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Outcome of stop / Reason for outcome"
+                Visible: =s163vis
+                Width: =545
+                X: =40
+                Y: =291+yother
+                ZIndex: =10
+
+            Dropdown_S163_OutcomeOfStopOrReason As dropdown:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                Default: |-
+                    =LookUp(TrOffOffline,OffenceKey=Vehicle_Primary_key And TicketTypename="S163 (Vehicle Stop)").'Outcome of stop / Reason for outcome name'
+                    //LookUp('Vehicle Offline',Key=Dropdown_section163_key.Selected.Key ).'Outcome of stop / Reason for outcome name'
+                DisplayMode: =signreadonly
+                Fill: =If(IsBlank(Self.SelectedText.Value),LightGoldenRodYellow,White)
+                Height: =70
+                Items: =Outcomeofstopoffline
+                OnChange: |-
+                    =If(Len(Dropdown_S163_OutcomeOfStopOrReason.Selected.cp_name)>0,UpdateContext({madcoloutcome:White}),UpdateContext({madcoloutcome:LightGoldenRodYellow}));
+                OnSelect: |
+                    =If(
+                        Len(Dropdown_S163_OutcomeOfStopOrReason.Selected.cp_name) > 0,
+                        UpdateContext({madcoloutcome: White}),
+                        UpdateContext({madcoloutcome: LightGoldenRodYellow})
+                    );
+                Size: =21
+                Visible: =s163vis
+                Width: =545
+                X: =40
+                Y: =346+yother
+                ZIndex: =11
+
+            ComboBox_Reason_for_using_S163 As combobox:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                DefaultSelectedItems: =LookUp(Reasonforusingpoweroffline,LookUp(TrOffOffline,OffenceKey=Vehicle_Primary_key And TicketTypename="S163 (Vehicle Stop)").'Reason for using s163 power name'=cp_name)
+                DisplayFields: =
+                DisplayMode: =signreadonly
+                Fill: =If(IsBlank(Self.SelectedItems) Or CountRows(Self.SelectedItems) = 0 Or (CountRows(Self.SelectedItems) = 1 And (Trim( First(Self.SelectedItems).cp_name) = "")),LightGoldenRodYellow,White)
+                Height: =66
+                InputTextPlaceholder: =""
+                IsSearchable: =false
+                Items: =Reasonforusingpoweroffline
+                MultiValueDelimiter: =","
+                OnChange: |-
+                    =If(Len(ComboBox_Reason_for_using_S163.Selected.cp_name)>0,UpdateContext({madcolreason:White});Set(s163vis,true);Set(ys163vis,700),UpdateContext({madcolreason:LightGoldenRodYellow}));If(Len(ComboBox_Reason_for_using_S163.Selected.cp_name)=0,Set(s163vis,false);Set(ys163vis,0));
+                OnSelect: |
+                    =If(
+                        Len(Dropdown_S163_OutcomeOfStopOrReason.Selected.cp_name) > 0,
+                        UpdateContext({madcolreason: White}),
+                        UpdateContext({madcolreason: LightGoldenRodYellow})
+                    );
+                    If(
+                        ComboBox_Reason_for_using_S163.Selected.cp_name = "Other (please specify)",
+                        UpdateContext({othervis: true});
+                        UpdateContext({yother: 150}),
+                        UpdateContext({othervis: false});
+                        UpdateContext({yother: 0})
+                    );
+                Reset: =resetall
+                SearchFields: =["cp_name"]
+                SearchItems: =[]
+                SelectMultiple: =false
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =208
+                ZIndex: =12
+
+            Label_S163_ReasonforS163Power As label:
+                Fill: =RGBA(255, 255, 255, 1)
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Reason for using S163 power"
+                Width: =523
+                X: =40
+                Y: =158
+                ZIndex: =13
+
+            Button_save_continue_S163 As button:
+                DisplayMode: =signreadonly
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =72
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =If(
+                        CountRows(
+                            Filter(
+                                TrOffOffline,
+                                TicketTypename = "S163 (Vehicle Stop)"
+                            )
+                        ) > 0,
+                        UpdateIf(
+                            TrOffOffline,
+                            TicketTypename = "S163 (Vehicle Stop)" And OffenceKey = Dropdown_section163_key.Selected.Key,
+                            {
+                                OffenceKey: Dropdown_section163_key.Selected.Key,
+                                TicketTypeTrafficOffence: LookUp(
+                                    OffencesOffline,
+                                    cp_name = "S163 (Vehicle Stop)"
+                                ).cp_tickettypeid,
+                                TicketTypename: "S163 (Vehicle Stop)",
+                                'Reason for using s163 power name': ComboBox_Reason_for_using_S163.Selected.cp_name,
+                                'Reason for using s163 power': ComboBox_Reason_for_using_S163.Selected.cp_lookupvalueid,
+                                'Other reason for using s163': TextInput_S163_Other.Text,
+                                'Outcome of stop / Reason for outcome name': Dropdown_S163_OutcomeOfStopOrReason.Selected.cp_name,
+                                'Outcome of stop / Reason for outcome': Dropdown_S163_OutcomeOfStopOrReason.Selected.cp_lookupvalueid,
+                                'Description: Outcome of stop / reason for outcome': TextInput_S163_DescriptionOfOutcome.Text,
+                                linkreasonstopoutcome: Radio_S163_LinkBetweenReasonAndOutcome.Selected.Value
+                            }
+                        )
+                    );
+                    
+                    UpdateContext(
+                        {
+                            rec: LookUp(
+                                TrOffOffline,
+                                TicketTypename = "S163 (Vehicle Stop)" And OffenceKey = Dropdown_section163_key.Selected.Key
+                                )
+                    
+                            
+                        }
+                    );
+                    
+                    UpdateIf(  
+                        'Vehicle Offline',
+                    Key=Dropdown_section163_key.Selected.Key,
+                        {
+                            S163valid:And(
+                            !IsBlank(rec.'Reason for using s163 power name'),
+                            !IsBlank(rec. 'Outcome of stop / Reason for outcome name')
+                            )
+                            });
+                    SaveData(
+                        TrOffOffline,
+                        "TrOffOffline"
+                    );
+                    Navigate(
+                        Scr_home,
+                        ScreenTransition.Cover
+                    )
+                Size: =24
+                Text: ="Save & Continue"
+                Width: =541
+                X: =40
+                Y: =350+yother+ys163vis
+                ZIndex: =14
+
+            TextInput_S163_Other As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Vehicle Offline',Key=Drpdn_person_key.Selected.Key).'Other reason for using s163'
+                Height: =72
+                OnSelect: =
+                Size: =21
+                Visible: =othervis
+                Width: =545
+                X: =40
+                Y: =332
+                ZIndex: =15
+
+            TextInput_S163_DescriptionOfOutcome As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: |-
+                    =LookUp(TrOffOffline,OffenceKey=Vehicle_Primary_key And TicketTypename="S163 (Vehicle Stop)").'Description: Outcome of stop / reason for outcome'
+                    //LookUp('Vehicle Offline',Key=Drpdn_person_key.Selected.Key).'Description: Outcome of stop / reason for outcome'
+                DisplayMode: =signreadonly
+                Fill: =White
+                Height: =306
+                HintText: ="Description of outcome"
+                Mode: =TextMode.MultiLine
+                OnChange: |
+                    =If(Len(TextInput_S163_DescriptionOfOutcome.Text)>0,UpdateContext({madcolDesc:Transparent}),UpdateContext({madcolDesc:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(TextInput_S163_DescriptionOfOutcome.Text)>0,UpdateContext({madcolDesc:Transparent}),UpdateContext({madcolDesc:LightGoldenRodYellow}));
+                Size: =21
+                Visible: =s163vis
+                Width: =545
+                X: =40
+                Y: =478+yother
+                ZIndex: =16
+
+            Label_S163_DescriptionOfOutcome As label:
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Outcome of stop / Reason for outcome"
+                Visible: =s163vis
+                Width: =545
+                X: =40
+                Y: =428+yother
+                ZIndex: =17
+
+            Radio_S163_LinkBetweenReasonAndOutcome As radio:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: |-
+                    =LookUp(TrOffOffline,OffenceKey=Dropdown_section163_key.Selected.Key And TicketTypename="S163 (Vehicle Stop)").linkreasonstopoutcome
+                    //LookUp('Vehicle Offline',Key=Dropdown_section163_key.Selected.Key).'Is there a link between the reason for the stop and the outcome'
+                DisplayMode: =signreadonly
+                Fill: =White
+                Height: =91
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |
+                    =If(Len(Radio_S163_LinkBetweenReasonAndOutcome.Selected.Value)>0,UpdateContext({madcolLink:Transparent}),UpdateContext({madcolLink:LightGoldenRodYellow}));
+                OnSelect: |
+                    =If(Len(Radio_S163_LinkBetweenReasonAndOutcome.Selected.Value)>0,UpdateContext({madcolLink:Transparent}),UpdateContext({madcolLink:LightGoldenRodYellow}));
+                RadioBorderColor: =RGBA(32, 54, 71, 1)
+                Size: =21
+                Visible: =s163vis
+                Width: =545
+                X: =40
+                Y: =924+yother
+                ZIndex: =18
+
+            Label_S163_LinkBetweenReasonAndOutcome As label:
+                Height: =81
+                OnSelect: =
+                Size: =21
+                Text: ="Is there a link between the reason for the stop and the outcome?"
+                Visible: =s163vis
+                Width: =545
+                X: =40
+                Y: =825+yother
+                ZIndex: =19
+
+            Label_asterik_OutcomeOrReason As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Visible: =s163vis
+                Width: =22
+                X: =565
+                Y: =314+yother
+                ZIndex: =20
+
+            Label_S165_Other As label:
+                Fill: =RGBA(255, 255, 255, 1)
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Other"
+                Visible: =othervis
+                Width: =545
+                X: =40
+                Y: =281
+                ZIndex: =23
+
+    Label1_11 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =42
+        Size: =21
+        Text: =Vehicle_Primary_key
+        Width: =440
+        X: =100
+        Y: =45
+        ZIndex: =5
+

@@ -1,0 +1,101 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_statementwitnessneeds",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_statementwitnessneed",
+    "MaxGetRowsCount": 1500,
+    "Name": "Statement Witness Needs",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "cp_displaysequenceno": "Display Sequence No",
+      "cp_name": "Name",
+      "cp_statement_cp_StatementWitnessNeed_cp_S": "Statements",
+      "cp_statementstg_cp_StatementWitnessNeed_c": "Statement STGS",
+      "cp_statementwitnessneed_AsyncOperations": "System Jobs",
+      "cp_statementwitnessneed_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_statementwitnessneed_DuplicateBaseRecord": "Duplicate Records (cp_statementwitnessneed_DuplicateBaseRecord)",
+      "cp_statementwitnessneed_DuplicateMatchingRecord": "Duplicate Records (cp_statementwitnessneed_DuplicateMatchingRecord)",
+      "cp_statementwitnessneed_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_statementwitnessneed_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_statementwitnessneed_ProcessSession": "Process Sessions",
+      "cp_statementwitnessneed_SyncErrors": "Sync Errors",
+      "cp_statementwitnessneedid": "Statement Witness Need",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Statement Witness Needs",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Statement Witness Needs (Views)",
+    "Name": "_cp_statementwitnessneed_views",
+    "RelatedEntityName": "Statement Witness Needs",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "11040a8e-5d3e-4517-8a9a-1bf7da08f56a": "Statement Witness Need Associated View",
+      "51913639-fd02-42a1-94e8-e844cf77afba": "Statement Witness Need Lookup View",
+      "9c893a27-fdaa-495d-b312-bcdcfab24468": "Inactive Statement Witness Needs",
+      "b8315e1c-6b00-48fd-b015-7fb426cb704a": "Statement Witness Need Advanced Find View",
+      "d50f367b-889c-4504-839f-96d9d403fb23": "Active Statement Witness Needs",
+      "fe5b9e3b-6086-eb11-a812-000d3ab522ee": "Statement Witness Needs"
+    }
+  },
+  {
+    "DisplayName": "Status (Statement Witness Needs)",
+    "Name": "cp_statementwitnessneed_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Statement Witness Needs"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Statement Witness Needs",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Statement Witness Needs)",
+    "Name": "cp_statementwitnessneed_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Statement Witness Needs"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Statement Witness Needs",
+    "Type": "OptionSetInfo"
+  }
+]

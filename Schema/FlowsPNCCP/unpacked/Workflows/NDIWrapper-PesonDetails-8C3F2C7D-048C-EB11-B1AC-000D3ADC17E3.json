@@ -1,0 +1,892 @@
+{
+  "properties": {
+    "connectionReferences": {
+      
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "PowerApp",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Initializevariable_Value": {
+                  "type": "string",
+                  "description": "Enter initial value",
+                  "x-ms-powerflows-param-ispartial": false
+                }
+              },
+              "required": [
+                "Initializevariable_Value"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Initialize_variable": {
+          "runAfter": {
+            
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "PNCID",
+                "type": "string",
+              "value": "@{triggerBody()[\u0027Initializevariable_Value\u0027]}"
+              }
+            ]
+          }
+        },
+        "Compose": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "Compose",
+          "inputs": {
+          "PncID": "@{variables(\u0027PNCID\u0027)}",
+            "ReasonCode": "06"
+          }
+        },
+        "Parse_JSON": {
+          "runAfter": {
+            "Compose": [
+              "Succeeded"
+            ]
+          },
+          "type": "ParseJson",
+          "inputs": {
+            "content": "@outputs(\u0027Compose\u0027)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "PncID": {
+                  "type": "string"
+                },
+                "ReasonCode": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "HTTP": {
+          "runAfter": {
+            "Parse_JSON": [
+              "Succeeded"
+            ]
+          },
+          "type": "Http",
+          "inputs": {
+            "method": "POST",
+            "uri": "https://prod-14.uksouth.logic.azure.com:443/workflows/72783d7982a542ec9baff1c86ccdc286/triggers/manual/paths/invoke?api-version=2016-06-01\u0026sp=%2Ftriggers%2Fmanual%2Frun\u0026sv=1.0\u0026sig=Xuc483IyLfz3114hfVME93NH8Nf4Rql2O1K_en-bUME",
+            "body": "@body(\u0027Parse_JSON\u0027)"
+          }
+        },
+        "Response": {
+          "runAfter": {
+            "HTTP": [
+              "Succeeded"
+            ]
+          },
+          "type": "Response",
+          "kind": "Http",
+          "inputs": {
+            "statusCode": 200,
+            "body": "@body(\u0027HTTP\u0027)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "fileName": {
+                  "type": "string"
+                },
+                "warningSignalsText": {
+                  "type": "string"
+                },
+                "firstName": {
+                  "type": "string"
+                },
+                "lastName": {
+                  "type": "string"
+                },
+                "dateOfBirth": {
+                  "type": "string"
+                },
+                "croNumber": {
+                  "type": "string"
+                },
+                "fileDOB": {
+                  "type": "string"
+                },
+                "gender": {
+                  "type": "string"
+                },
+                "ethnicity": {
+                  "type": "string"
+                },
+                "birthplace": {
+                  "type": "string"
+                },
+                "address1": {
+                  "type": "string"
+                },
+                "address2": {
+                  "type": "string"
+                },
+                "address3": {
+                  "type": "string"
+                },
+                "addressDate": {
+                  "type": "string"
+                },
+                "driverNumber": {
+                  "type": "string"
+                },
+                "markScars": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "type": "string"
+                      },
+                      "keyword1": {
+                        "type": "string"
+                      },
+                      "keyword2": {
+                        "type": "string"
+                      },
+                      "keyword3": {
+                        "type": "string"
+                      },
+                      "text": {
+                        "type": "string"
+                      },
+                      "detail": {
+                        "type": "string"
+                      },
+                      "location": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "type",
+                      "keyword1",
+                      "keyword2",
+                      "keyword3",
+                      "text",
+                      "detail",
+                      "location"
+                    ]
+                  }
+                },
+                "alerts": {
+                  "type": "array"
+                },
+                "warningSignals": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "warning": {
+                        "type": "string"
+                      },
+                      "text": {
+                        "type": "string"
+                      },
+                      "date": {
+                        "type": "string"
+                      },
+                      "fsRef": {
+                        "type": "string"
+                      },
+                      "updated": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "warning",
+                      "text",
+                      "date",
+                      "fsRef",
+                      "updated"
+                    ]
+                  }
+                },
+                "aliasNames": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "date": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "owner": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "date",
+                      "name",
+                      "owner"
+                    ]
+                  }
+                },
+                "aliasDOBs": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "date": {
+                        "type": "string"
+                      },
+                      "aliasDOB": {
+                        "type": "string"
+                      },
+                      "owner": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "date",
+                      "aliasDOB",
+                      "owner"
+                    ]
+                  }
+                },
+                "informationMarkers": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "marker": {
+                        "type": "string"
+                      },
+                      "text": {
+                        "type": "string"
+                      },
+                      "date": {
+                        "type": "string"
+                      },
+                      "fsRef": {
+                        "type": "string"
+                      },
+                      "updated": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "marker",
+                      "text",
+                      "date",
+                      "fsRef",
+                      "updated"
+                    ]
+                  }
+                },
+                "offences": {
+                  "type": "array"
+                },
+                "addresses": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "address1": {
+                        "type": "string"
+                      },
+                      "address2": {
+                        "type": "string"
+                      },
+                      "address3": {
+                        "type": "string"
+                      },
+                      "description": {
+                        "type": "string"
+                      },
+                      "owner": {
+                        "type": "string"
+                      },
+                      "updated": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      
+                    ]
+                  }
+                },
+                "nicknames": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "date": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "owner": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      
+                    ]
+                  }
+                },
+                "descriptions": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "accent": {
+                        "type": "string"
+                      },
+                      "birthDay": {
+                        "type": "string"
+                      },
+                      "birthMonth": {
+                        "type": "string"
+                      },
+                      "birthYear": {
+                        "type": "string"
+                      },
+                      "build": {
+                        "type": "string"
+                      },
+                      "pob": {
+                        "type": "string"
+                      },
+                      "colour": {
+                        "type": "string"
+                      },
+                      "driverNumber1": {
+                        "type": "string"
+                      },
+                      "driverNumber2": {
+                        "type": "string"
+                      },
+                      "driverNumber3": {
+                        "type": "string"
+                      },
+                      "eaCode": {
+                        "type": "string"
+                      },
+                      "eyeColour1": {
+                        "type": "string"
+                      },
+                      "eyeColour2EyeColour2": {
+                        "type": "string"
+                      },
+                      "facialHair1Colour": {
+                        "type": "string"
+                      },
+                      "facialHair1Colour2": {
+                        "type": "string"
+                      },
+                      "facialHair1DG": {
+                        "type": "string"
+                      },
+                      "facialHair1Features": {
+                        "type": "string"
+                      },
+                      "facialHair1Type": {
+                        "type": "string"
+                      },
+                      "facialHair2Colour": {
+                        "type": "string"
+                      },
+                      "facialHair2Colour2": {
+                        "type": "string"
+                      },
+                      "facialHair2DG": {
+                        "type": "string"
+                      },
+                      "facialHair2Features": {
+                        "type": "string"
+                      },
+                      "facialHair2Type": {
+                        "type": "string"
+                      },
+                      "facialHair3Colour": {
+                        "type": "string"
+                      },
+                      "facialHair3Colour2": {
+                        "type": "string"
+                      },
+                      "facialHair3DG": {
+                        "type": "string"
+                      },
+                      "facialHair3Features": {
+                        "type": "string"
+                      },
+                      "facialHair3Type": {
+                        "type": "string"
+                      },
+                      "fileName": {
+                        "type": "string"
+                      },
+                      "glasses": {
+                        "type": "string"
+                      },
+                      "hairColour": {
+                        "type": "string"
+                      },
+                      "hairColour2": {
+                        "type": "string"
+                      },
+                      "hairDG": {
+                        "type": "string"
+                      },
+                      "hairFeatures1": {
+                        "type": "string"
+                      },
+                      "hairFeatures2": {
+                        "type": "string"
+                      },
+                      "hairType": {
+                        "type": "string"
+                      },
+                      "handedness": {
+                        "type": "string"
+                      },
+                      "height": {
+                        "type": "string"
+                      },
+                      "msA1": {
+                        "type": "string"
+                      },
+                      "msA2": {
+                        "type": "string"
+                      },
+                      "msA3": {
+                        "type": "string"
+                      },
+                      "msA4": {
+                        "type": "string"
+                      },
+                      "nationality1": {
+                        "type": "string"
+                      },
+                      "nationality2": {
+                        "type": "string"
+                      },
+                      "nationality3": {
+                        "type": "string"
+                      },
+                      "sex": {
+                        "type": "string"
+                      },
+                      "shoeSize": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      
+                    ]
+                  }
+                },
+                "disposalSummaries": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "dsExtraTextCount": {
+                        "type": "string"
+                      },
+                      "dsExtraTextList": {
+                        "type": "array"
+                      },
+                      "dsOffenceCount": {
+                        "type": "string"
+                      },
+                      "firstValue": {
+                        "type": "string"
+                      },
+                      "lastValue": {
+                        "type": "string"
+                      },
+                      "totalCautions": {
+                        "type": "string"
+                      },
+                      "totalConvictions": {
+                        "type": "string"
+                      },
+                      "totalDeport": {
+                        "type": "string"
+                      },
+                      "totalNFA": {
+                        "type": "string"
+                      },
+                      "totalNINonCourtDisposals": {
+                        "type": "string"
+                      },
+                      "totalNonConvictions": {
+                        "type": "string"
+                      },
+                      "totalNotGuilty": {
+                        "type": "string"
+                      },
+                      "totalPenaltyNotices": {
+                        "type": "string"
+                      },
+                      "totalRefer": {
+                        "type": "string"
+                      },
+                      "totalReprimands": {
+                        "type": "string"
+                      },
+                      "totalUnobtainable": {
+                        "type": "string"
+                      },
+                      "totalWarnings": {
+                        "type": "string"
+                      },
+                      "offences": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "offenceCount": {
+                              "type": "string"
+                            },
+                            "offenceDescription": {
+                              "type": "string"
+                            },
+                            "offencePeriod": {
+                              "type": "string"
+                            }
+                          },
+                          "required": [
+                            
+                          ]
+                        }
+                      }
+                    },
+                    "required": [
+                      
+                    ]
+                  }
+                },
+                "bailConditons": {
+                  "type": "array"
+                },
+                "wantedMissings": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "casePapers": {
+                        "type": "string"
+                      },
+                      "class": {
+                        "type": "string"
+                      },
+                      "count": {
+                        "type": "string"
+                      },
+                      "dateOn": {
+                        "type": "string"
+                      },
+                      "dateToDateTo": {
+                        "type": "string"
+                      },
+                      "endDate": {
+                        "type": "string"
+                      },
+                      "for": {
+                        "type": "string"
+                      },
+                      "fsRef": {
+                        "type": "string"
+                      },
+                      "issuedAt": {
+                        "type": "string"
+                      },
+                      "line13": {
+                        "type": "string"
+                      },
+                      "line14": {
+                        "type": "string"
+                      },
+                      "line15": {
+                        "type": "string"
+                      },
+                      "line16": {
+                        "type": "string"
+                      },
+                      "line17": {
+                        "type": "string"
+                      },
+                      "line18": {
+                        "type": "string"
+                      },
+                      "line19": {
+                        "type": "string"
+                      },
+                      "line20": {
+                        "type": "string"
+                      },
+                      "line21": {
+                        "type": "string"
+                      },
+                      "line22": {
+                        "type": "string"
+                      },
+                      "location": {
+                        "type": "string"
+                      },
+                      "pageRef": {
+                        "type": "string"
+                      },
+                      "power": {
+                        "type": "string"
+                      },
+                      "reported": {
+                        "type": "string"
+                      },
+                      "saCountry": {
+                        "type": "string"
+                      },
+                      "saCreated": {
+                        "type": "string"
+                      },
+                      "sadob": {
+                        "type": "string"
+                      },
+                      "saeawText": {
+                        "type": "string"
+                      },
+                      "saExpires": {
+                        "type": "string"
+                      },
+                      "saIdentMark1": {
+                        "type": "string"
+                      },
+                      "saIdentMark2": {
+                        "type": "string"
+                      },
+                      "saIdStatus": {
+                        "type": "string"
+                      },
+                      "saLastUpdated": {
+                        "type": "string"
+                      },
+                      "saLinked": {
+                        "type": "string"
+                      },
+                      "saName": {
+                        "type": "string"
+                      },
+                      "saNationality1": {
+                        "type": "string"
+                      },
+                      "saNationality2": {
+                        "type": "string"
+                      },
+                      "saNationality3": {
+                        "type": "string"
+                      },
+                      "saOffenceCategory": {
+                        "type": "string"
+                      },
+                      "saRiskStatus": {
+                        "type": "string"
+                      },
+                      "saStatus": {
+                        "type": "string"
+                      },
+                      "saText1": {
+                        "type": "string"
+                      },
+                      "saText2": {
+                        "type": "string"
+                      },
+                      "saText3": {
+                        "type": "string"
+                      },
+                      "saText4": {
+                        "type": "string"
+                      },
+                      "saText5": {
+                        "type": "string"
+                      },
+                      "saText6": {
+                        "type": "string"
+                      },
+                      "saText7": {
+                        "type": "string"
+                      },
+                      "saText8": {
+                        "type": "string"
+                      },
+                      "saText9": {
+                        "type": "string"
+                      },
+                      "saText10": {
+                        "type": "string"
+                      },
+                      "saText11": {
+                        "type": "string"
+                      },
+                      "saText12": {
+                        "type": "string"
+                      },
+                      "satrAliasCount": {
+                        "type": "string"
+                      },
+                      "satrBirthplace1": {
+                        "type": "string"
+                      },
+                      "satrBirthplace2": {
+                        "type": "string"
+                      },
+                      "satrBirthplace3": {
+                        "type": "string"
+                      },
+                      "satrBirthplace5": {
+                        "type": "string"
+                      },
+                      "satrBirthplace4": {
+                        "type": "string"
+                      },
+                      "satrFilename": {
+                        "type": "string"
+                      },
+                      "saType": {
+                        "type": "string"
+                      },
+                      "sisId": {
+                        "type": "string"
+                      },
+                      "text1": {
+                        "type": "string"
+                      },
+                      "text2": {
+                        "type": "string"
+                      },
+                      "text3": {
+                        "type": "string"
+                      },
+                      "warrantBailIssuedAt": {
+                        "type": "string"
+                      },
+                      "warrantIssuedAt": {
+                        "type": "string"
+                      },
+                      "weed": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      
+                    ]
+                  }
+                },
+                "operationalInfos": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "expiryDate": {
+                        "type": "string"
+                      },
+                      "fsRef": {
+                        "type": "string"
+                      },
+                      "power": {
+                        "type": "string"
+                      },
+                      "startDate": {
+                        "type": "string"
+                      },
+                      "type": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      
+                    ]
+                  }
+                },
+                "disqualifieds": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "date": {
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      },
+                      "fsRef": {
+                        "type": "string"
+                      },
+                      "notes": {
+                        "type": "string"
+                      },
+                      "sentence": {
+                        "type": "string"
+                      },
+                      "text": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      
+                    ]
+                  }
+                },
+                "otherDetails": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "owner": {
+                        "type": "string"
+                      },
+                      "text": {
+                        "type": "string"
+                      },
+                      "update": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

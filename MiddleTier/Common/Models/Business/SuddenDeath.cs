@@ -106,8 +106,9 @@ namespace Common.Models.Business
         public string MedicalHistoryPastHistory { get; set; }
         public string MedicalHistoryReasonForVisit { get; set; }
         public string MedicalHistoryRiskFactors { get; set; }
-        public string MedicalHistoryLastVisitDate { get; set; }
+        public DateTime? MedicalHistoryLastVisitDate { get; set; }
 
+        public bool Submitted { get; set; }
 
 
 

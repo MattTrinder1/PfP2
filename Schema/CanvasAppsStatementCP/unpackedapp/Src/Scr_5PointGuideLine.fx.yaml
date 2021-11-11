@@ -1,0 +1,82 @@
+Scr_5PointGuideLine As screen:
+    LoadingSpinnerColor: =RGBA(100, 118, 132, 1)
+
+    Label1_11 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="5 Point Guideline"
+        Width: =640
+        ZIndex: =1
+
+    "'exit icon 3_8' As icon.Cancel":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =563
+        Y: =11
+        ZIndex: =2
+
+    "'Back Icon 2_8' As icon.ArrowLeft":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_Statements_Home_screen,ScreenTransition.UnCover)
+        X: =32
+        Y: =11
+        ZIndex: =3
+
+    Canvas_Point_Guideline As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1046
+        Width: =Parent.Width
+        Y: =86
+        ZIndex: =6
+
+        DataCard_Point_Guideline As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =8005
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Btn_save_29 As button:
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Semibold
+                Height: =65
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: =Navigate(Scr_Statements_Home_screen,ScreenTransition.UnCover);
+                Size: =24
+                Text: ="Save & Exit"
+                Width: =545
+                X: =36
+                Y: =7859
+                ZIndex: =1
+
+            HtmlText2 As htmlViewer:
+                DisplayMode: =DisplayMode.View
+                Height: =7820
+                HtmlText: |-
+                    =" <h1><u>5 part Structure Statement</u></h1>  <h2><u>Part 1 -What's it all about</u></h2>  <p>This introduces what the statement is about and should be very brief one or two lines</p>   <h3>Examples of start to statement</h3>  <p>""This statement is my account of an arrest I made for driving whilst unfit through drink or drugs...”</p>  <p>OR</p>  <p>""This is my account of an assault that occurred outside the Bees Knees Public House on Saturday evening....”</p>   <h3><u>We do not start the statement with</u></h3>  <p>""my name is .......and I live at.... Or work at...... "" – total waste of ink. The details are on the rear, the name is at the top of the form.</p>   <p>The only time a witness would do this would be if we are calling on their professional qualifications..... Traffic officer trained in fatal collision investigation, authorised vehicle prohibition officer.  Police officer with authorisation for drug testing.....</p>   <h2><u>Part 2 - People</u></h2>  <p>This part introduces the main people that will be referred to in the statement and any relationships. Main people are:</p>   <p><b>Colleagues -</b> these are other officers present</p>   <p><b>Suspects -</b> name, dob and address (if known). There is nothing detrimental about placing the SUSPECTS details in the statement if they are known. This assists with the identification. You may subsequently have to explain why you know these details, but as a member of the organisation you may have dealt with them previously. If the witness definitely knows the person, again that is fine, later on in the statement we will deal with this element of the evidence.</p>   <p><b>Witness -</b> by all means name them if they are known to you or ""unknown person in the red coat” if not.  DO NOT add personal details of the witness or yourselves in the MG11. This is restricted. We place this information on the rear of the MG11. Consider what would happen if the witness is identified in this way and then intimidated by the suspect or the associates of the suspect.  You could add an address if for example the address mentioned is the target address (burglary etc) and the suspects already know the address, but otherwise the addition of personal details such as dates of birth and addresses are prohibited.  </p>   <h2><u>Part 3 - Where are we?</u></h2>   <p>This part of the statement should only include places and locations. This is similar to the introduction of people in PART 2 – in other words there can be no doubt about the knowledge of the place/location</p>   <h2><u>Part 4 - What happened?</u></h2>   <p>This is where, if you are obtaining a statement from a witness, you need to probe carefully to ascertain exactly where the locus is/was, and include all detail necessary to identify and  prove location. Eg ""It was a cross roads governed by a set of traffic lights. On my left was a public house called the DUCK and BOOT, on the far side of the junction again on my left was a motor vehicle glass repair garage, I believe called ‘AUTO GLASS’, on my right was a high sandstone wall, behind which I could see projecting above it the steeple of a church”. </p>   <p>Make sure all the people and places not previously described in Parts 2 or 3 are now included here.</p>   <h2>Do NOT USE Male 1, Male 2, Female 1 or Female 2</h2>   <h3>Why not male 1 and 2 etc.?</h3>   <p>HOLMES staff and other statement readers looking for specifics and similarities will read many statements in relation to multiple statement incidents and one person’s Male 1 can be another person’s male 3 and so on. We always try to find an identifying feature which will make it easier for readers to dissect the information correctly</p>   <h2><u>Part 5 - The Final Word</u></h2>   <ul>    <li>FULL detailed description of the persons mentioned by you  <b>- ADVOKATE</b></li>    <li>Then Exhibits listed and described as per exhibit label</li>    <li>Consent, values, injuries</li>  </ul>   <h3>Describing people – 10 point description</h3>   <ul>    <b><li>Gender</li>    <li>Colour</li>    <li>Age</li>    <li>Height</li>    <li>Build</li>    <li>Hair</li>    <li>Complexion</li>    <li>Distinguishing: Marks or features</li>    <li>Carrying Anything</li></b>  </ul>   <div>   <table border=""1"">     <tr>    <td>A</td>    <td>Amount of time <b>the person was being observed</b></td>     </tr>     <tr>    <td>D</td>    <td>Distance away from <b>the person being observed</b></td>     </tr>     <tr>    <td>V</td>    <td>Visibility - <b>time of day, street lights, lighting within classroom, etc</b></td>     </tr>     <tr>    <td>O</td>    <td>Obstructions to your view</td>     </tr>     <tr>    <td>C</td>    <td>Known to you? <b>seen before?</b> ,If so,</td>     </tr>     <tr>    <td>A</td>    <td>Any reason to remember the person</td>     </tr>     <tr>    <td>T</td>    <td>Time elapsed</td>     </tr>     <tr>    <td>E</td>    <td>Errors between the witness’s first description and statement </td>     </tr>   </table>  </div>   <h3>Describing Vehicles</h3>   <ul>    <b><li>Make,</li>    <li>Model,</li>    <li>Colour,</li>    <li>Type,</b> saloon, hatchback, motorcar, motorcycle,</li>    <b><li>Registration Number,</li>    <li>Distinguishing marks or features,</b> roof rack, stickers, rust patches, missing mirror etc.</li>  </ul>   <p>AVOID using: <b>""I would / not recognise them again""</b></p>"
+                Width: =617
+                ZIndex: =3
+

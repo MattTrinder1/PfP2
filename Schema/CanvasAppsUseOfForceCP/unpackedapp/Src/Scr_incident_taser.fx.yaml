@@ -1,0 +1,352 @@
+"Scr_incident_taser As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    OnVisible: |+
+        =Set(AllReset, true);
+               UpdateContext({AllReset: true});
+        Set(madcol,LightGoldenRodYellow);UpdateContext({madcol:LightGoldenRodYellow});Set(madcolA,LightGoldenRodYellow);UpdateContext({madcolA:LightGoldenRodYellow});
+        
+        Set(madcolB,LightGoldenRodYellow);UpdateContext({madcolB:LightGoldenRodYellow});
+        
+        Set(madcolC,LightGoldenRodYellow);UpdateContext({madcolC:LightGoldenRodYellow});
+        
+        Set(madcolD,LightGoldenRodYellow);UpdateContext({madcolD:LightGoldenRodYellow});
+        
+        Set(madcolE,LightGoldenRodYellow);UpdateContext({madcolE:LightGoldenRodYellow});
+        
+        
+        Set(madcolF,LightGoldenRodYellow);UpdateContext({madcolF:LightGoldenRodYellow});
+        
+        Set(madcolF,LightGoldenRodYellow);UpdateContext({madcolF:LightGoldenRodYellow});
+        Set(madcolG,LightGoldenRodYellow);UpdateContext({madcolG:LightGoldenRodYellow});
+        Set(madcolH,LightGoldenRodYellow);UpdateContext({madcolH:LightGoldenRodYellow});
+        Set(madcolI,LightGoldenRodYellow);UpdateContext({madcolI:LightGoldenRodYellow});
+        Set(madcolJ,LightGoldenRodYellow);UpdateContext({madcolJ:LightGoldenRodYellow});
+        Set(madcolK,LightGoldenRodYellow);UpdateContext({madcolK:LightGoldenRodYellow});
+        Set(madcolL,LightGoldenRodYellow);UpdateContext({madcolL:LightGoldenRodYellow});
+        Set(madcolM,LightGoldenRodYellow);UpdateContext({madcolM:LightGoldenRodYellow});
+        Set(madcolM,LightGoldenRodYellow);UpdateContext({madcolM:LightGoldenRodYellow});
+        Set(madcolN,LightGoldenRodYellow);UpdateContext({madcolN:LightGoldenRodYellow});
+        Set(madcolO,LightGoldenRodYellow);UpdateContext({madcolO:LightGoldenRodYellow});
+        
+        If(Len(Drpdn_ced_device.Selected.cp_name)>0,UpdateContext({madcolC:White}),UpdateContext({madcolC:LightGoldenRodYellow}));
+        If(Len(Txt_device_serial.Text) > 0, UpdateContext({madcolC: White}), UpdateContext({madcolC: LightGoldenRodYellow}));
+        If(Len(Drpdn_use_of_taser.Selected.cp_name)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}));
+        If(Len(Txt_times_used.Text) > 0,UpdateContext({madcolC: White}),UpdateContext({madcolC: LightGoldenRodYellow}));
+        
+
+    RectQuickActionBar_header_3 As rectangle:
+        Height: =88
+        Width: =Parent.Width
+        ZIndex: =1
+
+    Lbl_header_details_3 As label:
+        Align: =Align.Center
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =88
+        Size: =27
+        Text: ="Taser Used"
+        Width: =Parent.Width
+        ZIndex: =2
+
+    Canvas_details_3 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1006
+        Width: =Parent.Width
+        Y: =RectQuickActionBar_header_3.Y + RectQuickActionBar_header_3.Height
+        ZIndex: =3
+
+        DataCard_details_scroll_3 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =904
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Drpdn_incident_key_3 As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =Use_of_force_Primary_key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: ='Use of force offline'.Key
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =40
+                ZIndex: =2
+
+            Drpdn_ced_device As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =LookUp(TaserDeviceoffline,cp_lookupvalueid=LookUp(Tactictsoffline,UOFKey=Drpdn_incident_key_3.Selected.Key).ceddevice,cp_name)
+                Fill: =madcolC
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =TaserDeviceoffline
+                OnChange: |-
+                    =If(Len(Drpdn_ced_device.Selected.cp_name)>0,UpdateContext({madcolC:White}),UpdateContext({madcolC:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Drpdn_ced_device.Selected.cp_name)>0,UpdateContext({madcolC:White}),UpdateContext({madcolC:LightGoldenRodYellow}))
+                PressedFill: =RGBA(230, 230, 230, 1)
+                Reset: =AllReset
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =176
+                ZIndex: =3
+
+            Label_IncidentLocation_5 As label:
+                Height: =66
+                Size: =21
+                Text: ="Please select C.E.D. device"
+                Width: =545
+                X: =40
+                Y: =110
+                ZIndex: =4
+
+            Txt_device_serial As text:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                Color: =Black
+                Default: =LookUp(Tactictsoffline,UOFKey=Drpdn_incident_key_3.Selected.Key).ceddeviceserial
+                Fill: =madcolC
+                FontWeight: =FontWeight.Lighter
+                Height: =70
+                HintText: ="Device serial number"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                MaxLength: =10
+                OnChange: |-
+                    =If(
+                        Len(Txt_device_serial.Text) > 0,
+                        UpdateContext({madcolC: White}),
+                        UpdateContext({madcolC: LightGoldenRodYellow})
+                    );
+                    
+                    If(IsMatch(Txt_device_serial.Text, "[a-zA-Z0-9]{3}-[a-zA-Z0-9]{6}"),
+                       "Correct",
+                       "Incorrect Format"
+                    )
+                OnSelect: |-
+                    =If(IsMatch(Txt_device_serial.Text, "[a-zA-Z0-9]{3}-[a-zA-Z0-9]{6}"),
+                       "Correct",
+                       "Incorrect Format"
+                    );
+                    If(
+                        Len(Txt_device_serial.Text) > 0,
+                        UpdateContext({madcolC: White}),
+                        UpdateContext({madcolC: LightGoldenRodYellow})
+                    );
+                Reset: =AllReset
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =384
+                ZIndex: =5
+
+            Label_star_address_1 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =23
+                Size: =21
+                Text: ="*"
+                Width: =30
+                X: =565
+                Y: =352
+                ZIndex: =6
+
+            Btn_tactis_save As button:
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =70
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |+
+                    =UpdateIf(
+                        Tactictsoffline,
+                        UOFKey = Drpdn_incident_key_9.Selected.Key And Tactickey=newKey1,
+                        { ceddevice:Drpdn_ced_device.Selected.cp_lookupvalueid,
+                          ceddeviceserial:Txt_device_serial.Text,
+                          useoftaser:Drpdn_use_of_taser.Selected.cp_lookupvalueid,
+                          tasertimesused:Txt_times_used.Text
+                        }
+                    );SaveData('Use of force offline',"Use of force offline"); 
+                    
+                    
+                    If(Drpdn_use_of_taser.Selected.cp_name="Drawn" Or Drpdn_use_of_taser.Selected.cp_name="Aimed" Or Drpdn_use_of_taser.Selected.cp_name="Arced" Or Drpdn_use_of_taser.Selected.cp_name="Red-dotted", Navigate(Scr_incident_tacticts));
+                    
+                    //If(Txt_times_used.Text<>"0",Navigate(Scr_incident_first_taser),Navigate(Scr_home,UnCoverRight));
+                    
+                    /*
+                    If(Drpdn_use_of_taser.Selected.cp_name="Drive-stun" Or Drpdn_use_of_taser.Selected.cp_name="Angled drive-stun" Or Drpdn_use_of_taser.Selected.cp_name="Fired", Navigate(Scr_incident_first_taser),Navigate(Scr_home,UnCoverRight));*/
+                    
+                    If(Txt_times_used.Text<>"0" And (Or(Drpdn_use_of_taser.Selected.cp_name="Drive-stun" Or Drpdn_use_of_taser.Selected.cp_name="Angled drive-stun" Or Drpdn_use_of_taser.Selected.cp_name="Fired")), Navigate(Scr_incident_first_taser));
+                    
+                    
+                    
+                Size: =24
+                Text: ="Save and Continue"
+                Width: =545
+                X: =40
+                Y: =781
+                ZIndex: =7
+
+            Drpdn_use_of_taser As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =LookUp(TaserUseoffline,cp_lookupvalueid=LookUp(Tactictsoffline,UOFKey=Drpdn_incident_key_3.Selected.Key,useoftaser),cp_name)
+                Fill: =madcolO
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =TaserUseoffline
+                OnChange: |-
+                    =If(Len(Drpdn_use_of_taser.Selected.cp_name)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}));If(Drpdn_use_of_taser.Selected.cp_name="Drive-stun",UpdateContext({cedtimesusedvis:true});UpdateContext({ytasertimes:ytasertimes+100});,UpdateContext({cedtimesusedvis:false});UpdateContext({ytasertimes:0}));
+                OnSelect: |-
+                    =If(Len(Drpdn_use_of_taser.Selected.cp_name)>0,UpdateContext({madcolO:White}),UpdateContext({madcolO:LightGoldenRodYellow}));If(Drpdn_use_of_taser.Selected.cp_name="Drive-stun",UpdateContext({cedtimesusedvis:true});UpdateContext({ytasertimes:ytasertimes+100});,UpdateContext({cedtimesusedvis:false});UpdateContext({ytasertimes:0}));
+                PressedFill: =RGBA(230, 230, 230, 1)
+                Reset: =AllReset
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =538
+                ZIndex: =8
+
+            Label_IncidentLocation_8 As label:
+                Height: =66
+                Size: =21
+                Text: ="Use of taser"
+                Width: =520
+                X: =40
+                Y: =476
+                ZIndex: =9
+
+            Icon7 As icon.Message:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                Color: =RGBA(255, 191, 0, 1)
+                Height: =48
+                Icon: =Icon.Message
+                OnSelect: =
+                Tooltip: ="If more than one 'Use of Taser', please ensure that a new Tactic is included for each use"
+                Width: =80
+                X: =480
+                Y: =336
+                ZIndex: =10
+
+            Txt_times_used As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(Tactictsoffline,UOFKey=Drpdn_incident_key_3.Selected.Key).tasertimesused
+                Fill: =madcolC
+                Format: =TextFormat.Number
+                Height: =70
+                HintText: ="How many times was the taser used? "
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                OnChange: |-
+                    =If(
+                        Len(Txt_times_used.Text) > 0,
+                        UpdateContext({madcolC: White}),
+                        UpdateContext({madcolC: LightGoldenRodYellow})
+                    );
+                Size: =21
+                VirtualKeyboardMode: =VirtualKeyboardMode.Numeric
+                Visible: =If(Drpdn_use_of_taser.Selected.cp_name="Drive-stun" Or Drpdn_use_of_taser.Selected.cp_name="Angled drive-stun" Or Drpdn_use_of_taser.Selected.cp_name="Fired",true,false)
+                Width: =545
+                X: =40
+                Y: =678
+                ZIndex: =11
+
+            Label_star_address_22 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =23
+                Size: =21
+                Text: ="*"
+                Width: =30
+                X: =550
+                Y: =131
+                ZIndex: =12
+
+            Label_star_address_23 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =23
+                Size: =21
+                Text: ="*"
+                Width: =30
+                X: =565
+                Y: =506
+                ZIndex: =13
+
+            Label_star_address_24 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =23
+                Size: =21
+                Text: ="*"
+                Visible: =If(Drpdn_use_of_taser.Selected.cp_name="Drive-stun" Or Drpdn_use_of_taser.Selected.cp_name="Angled drive-stun" Or Drpdn_use_of_taser.Selected.cp_name="Fired",true,false)
+                Width: =30
+                X: =560
+                Y: =632
+                ZIndex: =14
+
+            Label_IncidentLocation_27 As label:
+                Height: =66
+                Size: =21
+                Text: ="How many times was the taser used ?"
+                Visible: =If(Drpdn_use_of_taser.Selected.cp_name="Drive-stun" Or Drpdn_use_of_taser.Selected.cp_name="Angled drive-stun" Or Drpdn_use_of_taser.Selected.cp_name="Fired",true,false)
+                Width: =520
+                X: =40
+                Y: =608
+                ZIndex: =15
+
+            Label_IncidentLocation_6 As label:
+                Height: =66
+                Size: =21
+                Text: ="Device Serial Number"
+                Width: =540
+                X: =40
+                Y: =316
+                ZIndex: =16
+
+            Label12 As label:
+                Color: =RGBA(151, 0, 0, 1)
+                Height: =52
+                Italic: =true
+                OnSelect: |-
+                    =If(
+                    IsMatch(
+                    Txt_device_serial.Text,
+                    Letter & Letter & Letter & Hyphen & Letter & Letter & Letter & Letter & Letter & Letter
+                    ), "","Incorrect format");
+                Size: =16
+                Text: |-
+                    =If(IsMatch(Txt_device_serial.Text, "[a-zA-Z0-9]{3}-[a-zA-Z0-9]{6}"),
+                         " ", "Device Serial number must be 3 alpha-numeric characters, a hyphen and 6 alpha-numeric characters"
+                    )
+                Width: =560
+                X: =40
+                Y: =269
+                ZIndex: =17
+
+    Icon_back_details_home_3 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Back()
+        X: =31
+        Y: =13
+        ZIndex: =4
+
+    Icn_exit_Home_3 As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =563
+        Y: =13
+        ZIndex: =5
+

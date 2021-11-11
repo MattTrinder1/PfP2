@@ -1,0 +1,485 @@
+<application xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:service="https://europe-002.azure-apim.net/apim/logicflows" xmlns:siena="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11" siena:serviceId="NDIWrapper-PesonDetails" xmlns="http://wadl.dev.java.net/2009/02">
+  <doc title="NDIWrapper-PesonDetails" />
+  <grammars>
+    <jsonTypes targetNamespace="https://europe-002.azure-apim.net/apim/logicflows" xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
+      <string name="ManualTriggerInput_Initializevariable_Value_def" />
+      <object name="ManualTriggerInput">
+        <property name="Initializevariable_Value" type="string" />
+      </object>
+      <string name="ResponseActionOutput_fileName_def" />
+      <string name="ResponseActionOutput_warningSignalsText_def" />
+      <string name="ResponseActionOutput_firstName_def" />
+      <string name="ResponseActionOutput_lastName_def" />
+      <string name="ResponseActionOutput_dateOfBirth_def" />
+      <string name="ResponseActionOutput_croNumber_def" />
+      <string name="ResponseActionOutput_fileDOB_def" />
+      <string name="ResponseActionOutput_gender_def" />
+      <string name="ResponseActionOutput_ethnicity_def" />
+      <string name="ResponseActionOutput_birthplace_def" />
+      <string name="ResponseActionOutput_address1_def" />
+      <string name="ResponseActionOutput_address2_def" />
+      <string name="ResponseActionOutput_address3_def" />
+      <string name="ResponseActionOutput_addressDate_def" />
+      <string name="ResponseActionOutput_driverNumber_def" />
+      <string name="ResponseActionOutput_markScars_def_items_def_type_def" />
+      <string name="ResponseActionOutput_markScars_def_items_def_keyword1_def" />
+      <string name="ResponseActionOutput_markScars_def_items_def_keyword2_def" />
+      <string name="ResponseActionOutput_markScars_def_items_def_keyword3_def" />
+      <string name="ResponseActionOutput_markScars_def_items_def_text_def" />
+      <string name="ResponseActionOutput_markScars_def_items_def_detail_def" />
+      <string name="ResponseActionOutput_markScars_def_items_def_location_def" />
+      <object name="ResponseActionOutput_markScars_def_items_def">
+        <property name="type" type="string" />
+        <property name="keyword1" type="string" />
+        <property name="keyword2" type="string" />
+        <property name="keyword3" type="string" />
+        <property name="text" type="string" />
+        <property name="detail" type="string" />
+        <property name="location" type="string" />
+      </object>
+      <array typeRef="ResponseActionOutput_markScars_def_items_def" name="ResponseActionOutput_markScars_def" />
+      <string name="ResponseActionOutput_warningSignals_def_items_def_warning_def" />
+      <string name="ResponseActionOutput_warningSignals_def_items_def_text_def" />
+      <string name="ResponseActionOutput_warningSignals_def_items_def_date_def" />
+      <string name="ResponseActionOutput_warningSignals_def_items_def_fsRef_def" />
+      <string name="ResponseActionOutput_warningSignals_def_items_def_updated_def" />
+      <object name="ResponseActionOutput_warningSignals_def_items_def">
+        <property name="warning" type="string" />
+        <property name="text" type="string" />
+        <property name="date" type="string" />
+        <property name="fsRef" type="string" />
+        <property name="updated" type="string" />
+      </object>
+      <array typeRef="ResponseActionOutput_warningSignals_def_items_def" name="ResponseActionOutput_warningSignals_def" />
+      <string name="ResponseActionOutput_aliasNames_def_items_def_date_def" />
+      <string name="ResponseActionOutput_aliasNames_def_items_def_name_def" />
+      <string name="ResponseActionOutput_aliasNames_def_items_def_owner_def" />
+      <object name="ResponseActionOutput_aliasNames_def_items_def">
+        <property name="date" type="string" />
+        <property name="name" type="string" />
+        <property name="owner" type="string" />
+      </object>
+      <array typeRef="ResponseActionOutput_aliasNames_def_items_def" name="ResponseActionOutput_aliasNames_def" />
+      <string name="ResponseActionOutput_aliasDOBs_def_items_def_date_def" />
+      <string name="ResponseActionOutput_aliasDOBs_def_items_def_aliasDOB_def" />
+      <string name="ResponseActionOutput_aliasDOBs_def_items_def_owner_def" />
+      <object name="ResponseActionOutput_aliasDOBs_def_items_def">
+        <property name="date" type="string" />
+        <property name="aliasDOB" type="string" />
+        <property name="owner" type="string" />
+      </object>
+      <array typeRef="ResponseActionOutput_aliasDOBs_def_items_def" name="ResponseActionOutput_aliasDOBs_def" />
+      <string name="ResponseActionOutput_informationMarkers_def_items_def_marker_def" />
+      <string name="ResponseActionOutput_informationMarkers_def_items_def_text_def" />
+      <string name="ResponseActionOutput_informationMarkers_def_items_def_date_def" />
+      <string name="ResponseActionOutput_informationMarkers_def_items_def_fsRef_def" />
+      <string name="ResponseActionOutput_informationMarkers_def_items_def_updated_def" />
+      <object name="ResponseActionOutput_informationMarkers_def_items_def">
+        <property name="marker" type="string" />
+        <property name="text" type="string" />
+        <property name="date" type="string" />
+        <property name="fsRef" type="string" />
+        <property name="updated" type="string" />
+      </object>
+      <array typeRef="ResponseActionOutput_informationMarkers_def_items_def" name="ResponseActionOutput_informationMarkers_def" />
+      <string name="ResponseActionOutput_addresses_def_items_def_address1_def" />
+      <string name="ResponseActionOutput_addresses_def_items_def_address2_def" />
+      <string name="ResponseActionOutput_addresses_def_items_def_address3_def" />
+      <string name="ResponseActionOutput_addresses_def_items_def_description_def" />
+      <string name="ResponseActionOutput_addresses_def_items_def_owner_def" />
+      <string name="ResponseActionOutput_addresses_def_items_def_updated_def" />
+      <object name="ResponseActionOutput_addresses_def_items_def">
+        <property name="address1" type="string" />
+        <property name="address2" type="string" />
+        <property name="address3" type="string" />
+        <property name="description" type="string" />
+        <property name="owner" type="string" />
+        <property name="updated" type="string" />
+      </object>
+      <array typeRef="ResponseActionOutput_addresses_def_items_def" name="ResponseActionOutput_addresses_def" />
+      <string name="ResponseActionOutput_nicknames_def_items_def_date_def" />
+      <string name="ResponseActionOutput_nicknames_def_items_def_name_def" />
+      <string name="ResponseActionOutput_nicknames_def_items_def_owner_def" />
+      <object name="ResponseActionOutput_nicknames_def_items_def">
+        <property name="date" type="string" />
+        <property name="name" type="string" />
+        <property name="owner" type="string" />
+      </object>
+      <array typeRef="ResponseActionOutput_nicknames_def_items_def" name="ResponseActionOutput_nicknames_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_accent_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_birthDay_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_birthMonth_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_birthYear_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_build_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_pob_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_colour_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_driverNumber1_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_driverNumber2_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_driverNumber3_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_eaCode_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_eyeColour1_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_eyeColour2EyeColour2_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_facialHair1Colour_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_facialHair1Colour2_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_facialHair1DG_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_facialHair1Features_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_facialHair1Type_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_facialHair2Colour_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_facialHair2Colour2_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_facialHair2DG_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_facialHair2Features_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_facialHair2Type_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_facialHair3Colour_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_facialHair3Colour2_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_facialHair3DG_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_facialHair3Features_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_facialHair3Type_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_fileName_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_glasses_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_hairColour_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_hairColour2_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_hairDG_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_hairFeatures1_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_hairFeatures2_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_hairType_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_handedness_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_height_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_msA1_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_msA2_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_msA3_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_msA4_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_nationality1_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_nationality2_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_nationality3_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_sex_def" />
+      <string name="ResponseActionOutput_descriptions_def_items_def_shoeSize_def" />
+      <object name="ResponseActionOutput_descriptions_def_items_def">
+        <property name="accent" type="string" />
+        <property name="birthDay" type="string" />
+        <property name="birthMonth" type="string" />
+        <property name="birthYear" type="string" />
+        <property name="build" type="string" />
+        <property name="pob" type="string" />
+        <property name="colour" type="string" />
+        <property name="driverNumber1" type="string" />
+        <property name="driverNumber2" type="string" />
+        <property name="driverNumber3" type="string" />
+        <property name="eaCode" type="string" />
+        <property name="eyeColour1" type="string" />
+        <property name="eyeColour2EyeColour2" type="string" />
+        <property name="facialHair1Colour" type="string" />
+        <property name="facialHair1Colour2" type="string" />
+        <property name="facialHair1DG" type="string" />
+        <property name="facialHair1Features" type="string" />
+        <property name="facialHair1Type" type="string" />
+        <property name="facialHair2Colour" type="string" />
+        <property name="facialHair2Colour2" type="string" />
+        <property name="facialHair2DG" type="string" />
+        <property name="facialHair2Features" type="string" />
+        <property name="facialHair2Type" type="string" />
+        <property name="facialHair3Colour" type="string" />
+        <property name="facialHair3Colour2" type="string" />
+        <property name="facialHair3DG" type="string" />
+        <property name="facialHair3Features" type="string" />
+        <property name="facialHair3Type" type="string" />
+        <property name="fileName" type="string" />
+        <property name="glasses" type="string" />
+        <property name="hairColour" type="string" />
+        <property name="hairColour2" type="string" />
+        <property name="hairDG" type="string" />
+        <property name="hairFeatures1" type="string" />
+        <property name="hairFeatures2" type="string" />
+        <property name="hairType" type="string" />
+        <property name="handedness" type="string" />
+        <property name="height" type="string" />
+        <property name="msA1" type="string" />
+        <property name="msA2" type="string" />
+        <property name="msA3" type="string" />
+        <property name="msA4" type="string" />
+        <property name="nationality1" type="string" />
+        <property name="nationality2" type="string" />
+        <property name="nationality3" type="string" />
+        <property name="sex" type="string" />
+        <property name="shoeSize" type="string" />
+      </object>
+      <array typeRef="ResponseActionOutput_descriptions_def_items_def" name="ResponseActionOutput_descriptions_def" />
+      <string name="ResponseActionOutput_disposalSummaries_def_items_def_dsExtraTextCount_def" />
+      <string name="ResponseActionOutput_disposalSummaries_def_items_def_dsOffenceCount_def" />
+      <string name="ResponseActionOutput_disposalSummaries_def_items_def_firstValue_def" />
+      <string name="ResponseActionOutput_disposalSummaries_def_items_def_lastValue_def" />
+      <string name="ResponseActionOutput_disposalSummaries_def_items_def_totalCautions_def" />
+      <string name="ResponseActionOutput_disposalSummaries_def_items_def_totalConvictions_def" />
+      <string name="ResponseActionOutput_disposalSummaries_def_items_def_totalDeport_def" />
+      <string name="ResponseActionOutput_disposalSummaries_def_items_def_totalNFA_def" />
+      <string name="ResponseActionOutput_disposalSummaries_def_items_def_totalNINonCourtDisposals_def" />
+      <string name="ResponseActionOutput_disposalSummaries_def_items_def_totalNonConvictions_def" />
+      <string name="ResponseActionOutput_disposalSummaries_def_items_def_totalNotGuilty_def" />
+      <string name="ResponseActionOutput_disposalSummaries_def_items_def_totalPenaltyNotices_def" />
+      <string name="ResponseActionOutput_disposalSummaries_def_items_def_totalRefer_def" />
+      <string name="ResponseActionOutput_disposalSummaries_def_items_def_totalReprimands_def" />
+      <string name="ResponseActionOutput_disposalSummaries_def_items_def_totalUnobtainable_def" />
+      <string name="ResponseActionOutput_disposalSummaries_def_items_def_totalWarnings_def" />
+      <string name="ResponseActionOutput_disposalSummaries_def_items_def_offences_def_items_def_offenceCount_def" />
+      <string name="ResponseActionOutput_disposalSummaries_def_items_def_offences_def_items_def_offenceDescription_def" />
+      <string name="ResponseActionOutput_disposalSummaries_def_items_def_offences_def_items_def_offencePeriod_def" />
+      <object name="ResponseActionOutput_disposalSummaries_def_items_def_offences_def_items_def">
+        <property name="offenceCount" type="string" />
+        <property name="offenceDescription" type="string" />
+        <property name="offencePeriod" type="string" />
+      </object>
+      <array typeRef="ResponseActionOutput_disposalSummaries_def_items_def_offences_def_items_def" name="ResponseActionOutput_disposalSummaries_def_items_def_offences_def" />
+      <object name="ResponseActionOutput_disposalSummaries_def_items_def">
+        <property name="dsExtraTextCount" type="string" />
+        <property name="dsOffenceCount" type="string" />
+        <property name="firstValue" type="string" />
+        <property name="lastValue" type="string" />
+        <property name="totalCautions" type="string" />
+        <property name="totalConvictions" type="string" />
+        <property name="totalDeport" type="string" />
+        <property name="totalNFA" type="string" />
+        <property name="totalNINonCourtDisposals" type="string" />
+        <property name="totalNonConvictions" type="string" />
+        <property name="totalNotGuilty" type="string" />
+        <property name="totalPenaltyNotices" type="string" />
+        <property name="totalRefer" type="string" />
+        <property name="totalReprimands" type="string" />
+        <property name="totalUnobtainable" type="string" />
+        <property name="totalWarnings" type="string" />
+        <property name="offences" typeRef="ResponseActionOutput_disposalSummaries_def_items_def_offences_def" />
+      </object>
+      <array typeRef="ResponseActionOutput_disposalSummaries_def_items_def" name="ResponseActionOutput_disposalSummaries_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_casePapers_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_class_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_count_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_dateOn_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_dateToDateTo_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_endDate_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_for_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_fsRef_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_issuedAt_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_line13_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_line14_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_line15_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_line16_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_line17_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_line18_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_line19_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_line20_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_line21_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_line22_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_location_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_pageRef_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_power_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_reported_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saCountry_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saCreated_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_sadob_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saeawText_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saExpires_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saIdentMark1_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saIdentMark2_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saIdStatus_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saLastUpdated_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saLinked_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saName_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saNationality1_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saNationality2_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saNationality3_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saOffenceCategory_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saRiskStatus_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saStatus_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saText1_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saText2_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saText3_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saText4_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saText5_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saText6_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saText7_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saText8_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saText9_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saText10_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saText11_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saText12_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_satrAliasCount_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_satrBirthplace1_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_satrBirthplace2_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_satrBirthplace3_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_satrBirthplace5_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_satrBirthplace4_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_satrFilename_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_saType_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_sisId_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_text1_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_text2_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_text3_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_warrantBailIssuedAt_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_warrantIssuedAt_def" />
+      <string name="ResponseActionOutput_wantedMissings_def_items_def_weed_def" />
+      <object name="ResponseActionOutput_wantedMissings_def_items_def">
+        <property name="casePapers" type="string" />
+        <property name="class" type="string" />
+        <property name="count" type="string" />
+        <property name="dateOn" type="string" />
+        <property name="dateToDateTo" type="string" />
+        <property name="endDate" type="string" />
+        <property name="for" type="string" />
+        <property name="fsRef" type="string" />
+        <property name="issuedAt" type="string" />
+        <property name="line13" type="string" />
+        <property name="line14" type="string" />
+        <property name="line15" type="string" />
+        <property name="line16" type="string" />
+        <property name="line17" type="string" />
+        <property name="line18" type="string" />
+        <property name="line19" type="string" />
+        <property name="line20" type="string" />
+        <property name="line21" type="string" />
+        <property name="line22" type="string" />
+        <property name="location" type="string" />
+        <property name="pageRef" type="string" />
+        <property name="power" type="string" />
+        <property name="reported" type="string" />
+        <property name="saCountry" type="string" />
+        <property name="saCreated" type="string" />
+        <property name="sadob" type="string" />
+        <property name="saeawText" type="string" />
+        <property name="saExpires" type="string" />
+        <property name="saIdentMark1" type="string" />
+        <property name="saIdentMark2" type="string" />
+        <property name="saIdStatus" type="string" />
+        <property name="saLastUpdated" type="string" />
+        <property name="saLinked" type="string" />
+        <property name="saName" type="string" />
+        <property name="saNationality1" type="string" />
+        <property name="saNationality2" type="string" />
+        <property name="saNationality3" type="string" />
+        <property name="saOffenceCategory" type="string" />
+        <property name="saRiskStatus" type="string" />
+        <property name="saStatus" type="string" />
+        <property name="saText1" type="string" />
+        <property name="saText2" type="string" />
+        <property name="saText3" type="string" />
+        <property name="saText4" type="string" />
+        <property name="saText5" type="string" />
+        <property name="saText6" type="string" />
+        <property name="saText7" type="string" />
+        <property name="saText8" type="string" />
+        <property name="saText9" type="string" />
+        <property name="saText10" type="string" />
+        <property name="saText11" type="string" />
+        <property name="saText12" type="string" />
+        <property name="satrAliasCount" type="string" />
+        <property name="satrBirthplace1" type="string" />
+        <property name="satrBirthplace2" type="string" />
+        <property name="satrBirthplace3" type="string" />
+        <property name="satrBirthplace5" type="string" />
+        <property name="satrBirthplace4" type="string" />
+        <property name="satrFilename" type="string" />
+        <property name="saType" type="string" />
+        <property name="sisId" type="string" />
+        <property name="text1" type="string" />
+        <property name="text2" type="string" />
+        <property name="text3" type="string" />
+        <property name="warrantBailIssuedAt" type="string" />
+        <property name="warrantIssuedAt" type="string" />
+        <property name="weed" type="string" />
+      </object>
+      <array typeRef="ResponseActionOutput_wantedMissings_def_items_def" name="ResponseActionOutput_wantedMissings_def" />
+      <string name="ResponseActionOutput_operationalInfos_def_items_def_expiryDate_def" />
+      <string name="ResponseActionOutput_operationalInfos_def_items_def_fsRef_def" />
+      <string name="ResponseActionOutput_operationalInfos_def_items_def_power_def" />
+      <string name="ResponseActionOutput_operationalInfos_def_items_def_startDate_def" />
+      <string name="ResponseActionOutput_operationalInfos_def_items_def_type_def" />
+      <object name="ResponseActionOutput_operationalInfos_def_items_def">
+        <property name="expiryDate" type="string" />
+        <property name="fsRef" type="string" />
+        <property name="power" type="string" />
+        <property name="startDate" type="string" />
+        <property name="type" type="string" />
+      </object>
+      <array typeRef="ResponseActionOutput_operationalInfos_def_items_def" name="ResponseActionOutput_operationalInfos_def" />
+      <string name="ResponseActionOutput_disqualifieds_def_items_def_date_def" />
+      <string name="ResponseActionOutput_disqualifieds_def_items_def_name_def" />
+      <string name="ResponseActionOutput_disqualifieds_def_items_def_fsRef_def" />
+      <string name="ResponseActionOutput_disqualifieds_def_items_def_notes_def" />
+      <string name="ResponseActionOutput_disqualifieds_def_items_def_sentence_def" />
+      <string name="ResponseActionOutput_disqualifieds_def_items_def_text_def" />
+      <object name="ResponseActionOutput_disqualifieds_def_items_def">
+        <property name="date" type="string" />
+        <property name="name" type="string" />
+        <property name="fsRef" type="string" />
+        <property name="notes" type="string" />
+        <property name="sentence" type="string" />
+        <property name="text" type="string" />
+      </object>
+      <array typeRef="ResponseActionOutput_disqualifieds_def_items_def" name="ResponseActionOutput_disqualifieds_def" />
+      <string name="ResponseActionOutput_otherDetails_def_items_def_owner_def" />
+      <string name="ResponseActionOutput_otherDetails_def_items_def_text_def" />
+      <string name="ResponseActionOutput_otherDetails_def_items_def_update_def" />
+      <object name="ResponseActionOutput_otherDetails_def_items_def">
+        <property name="owner" type="string" />
+        <property name="text" type="string" />
+        <property name="update" type="string" />
+      </object>
+      <array typeRef="ResponseActionOutput_otherDetails_def_items_def" name="ResponseActionOutput_otherDetails_def" />
+      <object name="ResponseActionOutput">
+        <property name="fileName" type="string" />
+        <property name="warningSignalsText" type="string" />
+        <property name="firstName" type="string" />
+        <property name="lastName" type="string" />
+        <property name="dateOfBirth" type="string" />
+        <property name="croNumber" type="string" />
+        <property name="fileDOB" type="string" />
+        <property name="gender" type="string" />
+        <property name="ethnicity" type="string" />
+        <property name="birthplace" type="string" />
+        <property name="address1" type="string" />
+        <property name="address2" type="string" />
+        <property name="address3" type="string" />
+        <property name="addressDate" type="string" />
+        <property name="driverNumber" type="string" />
+        <property name="markScars" typeRef="ResponseActionOutput_markScars_def" />
+        <property name="warningSignals" typeRef="ResponseActionOutput_warningSignals_def" />
+        <property name="aliasNames" typeRef="ResponseActionOutput_aliasNames_def" />
+        <property name="aliasDOBs" typeRef="ResponseActionOutput_aliasDOBs_def" />
+        <property name="informationMarkers" typeRef="ResponseActionOutput_informationMarkers_def" />
+        <property name="addresses" typeRef="ResponseActionOutput_addresses_def" />
+        <property name="nicknames" typeRef="ResponseActionOutput_nicknames_def" />
+        <property name="descriptions" typeRef="ResponseActionOutput_descriptions_def" />
+        <property name="disposalSummaries" typeRef="ResponseActionOutput_disposalSummaries_def" />
+        <property name="wantedMissings" typeRef="ResponseActionOutput_wantedMissings_def" />
+        <property name="operationalInfos" typeRef="ResponseActionOutput_operationalInfos_def" />
+        <property name="disqualifieds" typeRef="ResponseActionOutput_disqualifieds_def" />
+        <property name="otherDetails" typeRef="ResponseActionOutput_otherDetails_def" />
+      </object>
+      <object name="Run_responses_default_def" />
+    </jsonTypes>
+  </grammars>
+  <resources siena:authenticationProviderHref="#PowerAppAuth" base="https://europe-002.azure-apim.net/apim/logicflows">
+    <resource path="/{connectionId}/triggers/manual/run">
+      <param style="template" name="connectionId" type="xs:string" required="true" />
+      <method siena:requiresAuthentication="true" name="POST" id="Run">
+        <doc title="Runs a logic flow trigger." />
+        <request>
+          <param style="query" name="api-version" type="xs:string" required="true" fixed="2015-02-01-preview">
+            <doc title="The api version" />
+          </param>
+          <representation mediaType="application/json">
+            <param style="plain" name="Initializevariable_Value" path="/Initializevariable_Value" type="xs:string" required="true" />
+          </representation>
+        </request>
+        <response>
+          <representation mediaType="application/json" element="service:ResponseActionOutput" />
+        </response>
+      </method>
+    </resource>
+  </resources>
+  <authenticationProviders xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
+    <connectionProvider id="PowerAppAuth" siena:connectionProviderId="logicflows" />
+  </authenticationProviders>
+  <template xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
+    <variable name="connectionId">
+      <modifyParams style="template" name="connectionId" attribute="fixed" />
+    </variable>
+  </template>
+</application>

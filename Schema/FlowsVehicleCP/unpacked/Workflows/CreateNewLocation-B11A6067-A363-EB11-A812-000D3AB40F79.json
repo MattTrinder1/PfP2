@@ -1,0 +1,422 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_ef737"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_4c4b9"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "Location Name",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "House Name",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_2": {
+                  "title": "House Number",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_3": {
+                  "title": "Grid Reference",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_4": {
+                  "title": "Incident Id",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "location": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "object",
+                      "properties": {
+                        "city": {
+                          "title": "City",
+                          "type": "string",
+                          "x-ms-dynamically-added": false
+                        },
+                        "countryOrRegion": {
+                          "title": "Country/Region",
+                          "type": "string",
+                          "x-ms-dynamically-added": false
+                        },
+                        "street": {
+                          "title": "Street",
+                          "type": "string",
+                          "x-ms-dynamically-added": false
+                        }
+                      },
+                      "required": [
+                        "city",
+                        "countryOrRegion",
+                        "street"
+                      ]
+                    }
+                  }
+                },
+                "text_5": {
+                  "title": "County",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "number": {
+                  "title": "Lat",
+                  "type": "number",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter a number",
+                  "x-ms-content-hint": "NUMBER"
+                },
+                "number_1": {
+                  "title": "Long",
+                  "type": "number",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter a number",
+                  "x-ms-content-hint": "NUMBER"
+                },
+                "text_6": {
+                  "title": "District",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_7": {
+                  "title": "Description",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text",
+                "location"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "Update_Incident_if_Exists": [
+              "Succeeded"
+            ]
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "locationid": "@variables(\u0027LocationId\u0027)"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "locationid": {
+                  "title": "LocationId",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Update_Incident_if_Exists": {
+          "actions": {
+            "Create_a_new_Location": {
+              "runAfter": {
+                
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "CreateRecord",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "cp_locations",
+                "item/cp_name": "@triggerBody()[\u0027text\u0027]",
+                "item/cp_city": "@triggerBody()[\u0027location\u0027][\u0027address\u0027][\u0027city\u0027]",
+                "item/cp_country": "@triggerBody()[\u0027location\u0027][\u0027address\u0027][\u0027countryOrRegion\u0027]",
+                "item/cp_county": "@triggerBody()[\u0027text_5\u0027]",
+                "item/cp_description": "@triggerBody()?[\u0027text_7\u0027]",
+                "item/cp_district": "@triggerBody()[\u0027text_6\u0027]",
+                "item/cp_gridreference": "@triggerBody()?[\u0027text_3\u0027]",
+                "item/cp_housename": "@triggerBody()[\u0027text_1\u0027]",
+                "item/cp_housenumber": "@triggerBody()[\u0027text_2\u0027]",
+                "item/cp_latitude": "@triggerBody()[\u0027number\u0027]",
+                "item/cp_longitude": "@triggerBody()[\u0027number_1\u0027]",
+                "item/cp_street": "@triggerBody()[\u0027location\u0027][\u0027address\u0027][\u0027street\u0027]"
+                },
+                "authentication": {
+                  "type": "Raw",
+                "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                }
+              }
+            },
+            "Set_Location_Id_variable": {
+              "runAfter": {
+                "Create_a_new_Location": [
+                  "Succeeded"
+                ]
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "LocationId",
+              "value": "@outputs(\u0027Create_a_new_Location\u0027)?[\u0027body/cp_locationid\u0027]"
+              }
+            }
+          },
+          "runAfter": {
+            "Initialize_LocationId_variable": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Get_Incident": {
+                "runAfter": {
+                  
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "GetItem",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cp_incidents",
+                  "recordId": "@triggerBody()?[\u0027text_4\u0027]"
+                  },
+                  "authentication": {
+                    "type": "Raw",
+                  "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                  }
+                }
+              },
+              "If_Incident_has_not_Location": {
+                "actions": {
+                  "Create_a_new_Location_2": {
+                    "runAfter": {
+                      
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps",
+                        "operationId": "CreateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_locations",
+                      "item/cp_name": "@triggerBody()[\u0027text\u0027]",
+                      "item/cp_city": "@triggerBody()[\u0027location\u0027][\u0027address\u0027][\u0027city\u0027]",
+                      "item/cp_country": "@triggerBody()[\u0027location\u0027][\u0027address\u0027][\u0027countryOrRegion\u0027]",
+                      "item/cp_county": "@triggerBody()?[\u0027text_5\u0027]",
+                      "item/cp_description": "@triggerBody()?[\u0027text_7\u0027]",
+                      "item/cp_district": "@triggerBody()?[\u0027text_6\u0027]",
+                      "item/cp_gridreference": "@triggerBody()?[\u0027text_3\u0027]",
+                      "item/cp_housename": "@triggerBody()?[\u0027text_1\u0027]",
+                      "item/cp_housenumber": "@triggerBody()?[\u0027text_2\u0027]",
+                      "item/cp_latitude": "@triggerBody()?[\u0027number\u0027]",
+                      "item/cp_longitude": "@triggerBody()?[\u0027number_1\u0027]",
+                      "item/cp_street": "@triggerBody()[\u0027location\u0027][\u0027address\u0027][\u0027street\u0027]"
+                      },
+                      "authentication": {
+                        "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                      }
+                    }
+                  },
+                  "Set_Location_Id_variable_2": {
+                    "runAfter": {
+                      "Create_a_new_Location_2": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "LocationId",
+                    "value": "@outputs(\u0027Create_a_new_Location_2\u0027)?[\u0027body/cp_locationid\u0027]"
+                    }
+                  },
+                  "Update_Incident_with_the_new_Location": {
+                    "runAfter": {
+                      "Set_Location_Id_variable_2": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps",
+                        "operationId": "UpdateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_incidents",
+                      "recordId": "@outputs(\u0027Get_Incident\u0027)?[\u0027body/cp_incidentid\u0027]",
+                      "item/cp_IncidentLocation@odata.bind": "/cp_locations(@{variables(\u0027LocationId\u0027)})"
+                      },
+                      "authentication": {
+                        "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                      }
+                    }
+                  }
+                },
+                "runAfter": {
+                  "Get_Incident": [
+                    "Succeeded"
+                  ]
+                },
+                "else": {
+                  "actions": {
+                    "Update_the_existing_Incident_Location_with_new_details": {
+                      "runAfter": {
+                        
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps_1",
+                          "operationId": "UpdateRecord",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_locations",
+                        "recordId": "@outputs(\u0027Get_Incident\u0027)?[\u0027body/_cp_incidentlocation_value\u0027]",
+                        "item/cp_city": "@triggerBody()[\u0027location\u0027][\u0027address\u0027][\u0027city\u0027]",
+                        "item/cp_country": "@triggerBody()[\u0027location\u0027][\u0027address\u0027][\u0027countryOrRegion\u0027]",
+                        "item/cp_county": "@triggerBody()?[\u0027text_5\u0027]",
+                        "item/cp_description": "@triggerBody()?[\u0027text_7\u0027]",
+                        "item/cp_district": "@triggerBody()?[\u0027text_6\u0027]",
+                        "item/cp_gridreference": "@triggerBody()?[\u0027text_3\u0027]",
+                        "item/cp_housename": "@triggerBody()?[\u0027text_1\u0027]",
+                        "item/cp_housenumber": "@triggerBody()?[\u0027text_2\u0027]",
+                        "item/cp_latitude": "@triggerBody()?[\u0027number\u0027]",
+                        "item/cp_longitude": "@triggerBody()?[\u0027number_1\u0027]",
+                        "item/cp_street": "@triggerBody()[\u0027location\u0027][\u0027address\u0027][\u0027street\u0027]"
+                        },
+                        "authentication": {
+                          "type": "Raw",
+                        "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                        }
+                      }
+                    },
+                    "Set_Location_Id_variable_3": {
+                      "runAfter": {
+                        "Update_the_existing_Incident_Location_with_new_details": [
+                          "Succeeded"
+                        ]
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "LocationId",
+                      "value": "@outputs(\u0027Update_the_existing_Incident_Location_with_new_details\u0027)?[\u0027body/cp_locationid\u0027]"
+                      }
+                    }
+                  }
+                },
+                "expression": {
+                  "equals": [
+                  "@empty(outputs(\u0027Get_Incident\u0027)?[\u0027body/_cp_incidentlocation_value\u0027])",
+                    "@true"
+                  ]
+                },
+                "type": "If"
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+            "@empty(triggerBody()?[\u0027text_4\u0027])",
+              "@true"
+            ]
+          },
+          "type": "If"
+        },
+        "Initialize_LocationId_variable": {
+          "runAfter": {
+            
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "LocationId",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

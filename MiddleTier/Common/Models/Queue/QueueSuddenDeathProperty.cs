@@ -8,6 +8,7 @@ namespace Common.Models.Queue
 {
     public class QueueSuddenDeathProperty
     {
+        public string PropertyId { get; set; }
         public string IsDisposedOrRetained { get; set; }
         public string PersonAuthorisingProperty { get; set; }
         public string PhotoPropertyBlobName { get; set; }

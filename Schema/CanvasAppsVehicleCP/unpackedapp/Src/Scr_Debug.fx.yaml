@@ -1,0 +1,214 @@
+Scr_Debug As screen:
+
+    "Gallery2 As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+        Items: ='Vehicle Offline'
+        Layout: =Layout.Vertical
+        TemplatePadding: =0
+        TemplateSize: =313
+        Y: =40
+        ZIndex: =1
+
+        NextArrow1 As icon.ChevronRight:
+            AccessibleLabel: =Self.Tooltip
+            Height: =60
+            Icon: =Icon.ChevronRight
+            OnSelect: =Select(Parent)
+            PaddingBottom: =10
+            PaddingLeft: =10
+            PaddingRight: =10
+            PaddingTop: =10
+            TabIndex: =0
+            Tooltip: ="View item details"
+            Width: =60
+            X: =Parent.TemplateWidth - Self.Width - 5
+            Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+            ZIndex: =4
+
+        Separator2 As rectangle:
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =Parent.TemplateWidth
+            Y: =Parent.TemplateHeight - 1
+            ZIndex: =5
+
+        Label9 As label:
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.EvidenceNOvalid
+            Width: =201
+            X: =287
+            Y: =4
+            ZIndex: =6
+
+        Label9_3 As label:
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Evidence NO Valid"
+            Width: =287
+            Y: =4
+            ZIndex: =7
+
+        Label9_4 As label:
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Evidence YES Valid"
+            Width: =287
+            Y: =34
+            ZIndex: =8
+
+        Label9_11 As label:
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.EvidenceYESvalid
+            Width: =201
+            X: =287
+            Y: =34
+            ZIndex: =9
+
+        Label9_22 As label:
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="S165 Valid"
+            Width: =287
+            Y: =65
+            ZIndex: =10
+
+        Label9_23 As label:
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.S165valid
+            Width: =201
+            X: =287
+            Y: =65
+            ZIndex: =11
+
+        Label9_24 As label:
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Person Valid"
+            Width: =287
+            Y: =100
+            ZIndex: =12
+
+        Label9_25 As label:
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Vehicle Valid"
+            Width: =287
+            Y: =136
+            ZIndex: =13
+
+        Label9_26 As label:
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Location Valid"
+            Width: =287
+            Y: =178
+            ZIndex: =14
+
+        Label9_27 As label:
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.PersonValidation
+            Width: =201
+            X: =287
+            Y: =100
+            ZIndex: =15
+
+        Label9_28 As label:
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.VehicleValidation
+            Width: =201
+            X: =287
+            Y: =136
+            ZIndex: =16
+
+        Label9_29 As label:
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.LocationValidation
+            Width: =201
+            X: =287
+            Y: =178
+            ZIndex: =17
+
+        Label9_34 As label:
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Evidence Required"
+            Width: =287
+            Y: =208
+            ZIndex: =18
+
+        Label9_35 As label:
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Vehicle Required"
+            Width: =287
+            Y: =278
+            ZIndex: =19
+
+        Label9_36 As label:
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Person Required"
+            Width: =287
+            Y: =245
+            ZIndex: =20
+
+        Label9_37 As label:
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.EvidenceRequired
+            Width: =201
+            X: =287
+            Y: =217
+            ZIndex: =21
+
+        Label9_38 As label:
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.PersonRequired
+            Width: =201
+            X: =287
+            Y: =248
+            ZIndex: =22
+
+        Label9_39 As label:
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.VehicleRequired
+            Width: =201
+            X: =287
+            Y: =283
+            ZIndex: =23
+
+    Button6 As button:
+        Height: =72
+        OnSelect: =Navigate(Scr_home);
+        Size: =24
+        Text: ="<"
+        Width: =82
+        X: =556
+        Y: =1064
+        ZIndex: =2
+

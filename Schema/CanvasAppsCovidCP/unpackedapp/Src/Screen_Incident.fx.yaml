@@ -1,0 +1,420 @@
+Screen_Incident As screen:
+    OnVisible: |
+        =Set(incidenta,LightGoldenRodYellow);UpdateContext({incidenta:LightGoldenRodYellow});
+        Set(incidentb,LightGoldenRodYellow);UpdateContext({incidentb:LightGoldenRodYellow});
+        Set(incidentc,LightGoldenRodYellow);UpdateContext({incidentc:LightGoldenRodYellow});
+        Set(incidentd,LightGoldenRodYellow);UpdateContext({incidentd:LightGoldenRodYellow});
+        Set(incidente,LightGoldenRodYellow);UpdateContext({incidente:LightGoldenRodYellow});
+        Set(incidentf,LightGoldenRodYellow);UpdateContext({incidentf:LightGoldenRodYellow});
+        Set(incidentg,LightGoldenRodYellow);UpdateContext({incidentg:LightGoldenRodYellow});
+        
+        If(!IsBlank(DatePicker_incident.SelectedDate),UpdateContext({incidenta:Transparent}),UpdateContext({incidenta:LightGoldenRodYellow}));
+        If(Len(Txt_incident_suffix.Text)>0,UpdateContext({incidentb:White}),UpdateContext({incidentb:LightGoldenRodYellow}));
+        
+        
+        
+
+    Label1_2 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Incident Details"
+        Width: =640
+        ZIndex: =1
+
+    "'exit icon 3' As icon.Cancel":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =576
+        Y: =11
+        ZIndex: =2
+
+    "'Back Icon 2' As icon.ArrowLeft":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Screen_home_screen,ScreenTransition.UnCover)
+        X: =28
+        Y: =11
+        ZIndex: =3
+
+    Btn_save_2 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |-
+            =Set(flagback,false);
+            UpdateContext({newKey: Txt_incident_no.Text & " No:" & Text(i)});
+            /*Set(
+                newKey,
+                Txt_incident_no.Text & " No:" & i
+            );*/
+            If(
+                Len(Txt_incident_suffix.Text) > 0,
+                If(
+                    CountRows(
+                        Filter(
+                            'Covid Offline',
+                            Key=newKey
+                         //   Key = Covid_Primary_key
+                        
+                        )
+                    ) > 0,
+                    UpdateIf(
+                        'Covid Offline',
+                        Key = Covid_Primary_key,
+                        {
+                          //  Key: Covid_Primary_key,
+                            'Incident suffix': Txt_incident_suffix.Text,
+                            'Incident number': Txt_incident_no.Text,
+                            'Incident date': DatePicker_incident.SelectedDate
+                            //,
+                            //'Entered by': LookUp(Usersalllocal,Lower(internalemailaddress) = User().Email).systemuserid
+                        }
+                    );
+                    
+                    SaveData(
+                        'Covid Offline',
+                        "Covid Offline"
+                    );
+                    Navigate(
+                        Screen_home_screen,
+                        ScreenTransition.UnCover
+                    ),
+                     Set(
+                        i,
+                        i + 1
+                    );
+                    UpdateContext({newKey: Txt_incident_no.Text & " No:" & Text(i)});
+                    Clear(colVerify);
+                    Collect(
+                        'Covid Offline',
+                        {
+                            //Incident 
+                            
+                          //   Key:  " " & Txt_incident_no.Text & " No:" & i,
+                          Key: newKey,
+                            'Incident suffix': Txt_incident_suffix.Text,
+                            'Incident number': Txt_incident_no.Text,
+                            'Incident date': DatePicker_incident.SelectedDate
+                            //,
+                            //'Entered by': LookUp(
+                            //    Usersalllocal,
+                            //    Lower(internalemailaddress) = Lower(officermail),
+                            //    systemuserid
+                            //)
+                            
+                            //Person
+                            ,
+                            'Person Title name': LookUp(Titleoffline,cp_name="").cp_name,
+                            'Person Title': LookUp(Titleoffline,cp_lookupvalueid="").cp_lookupvalueid,
+                            'Person Forename': "",
+                            'Person Surname': "",
+                            'Date of Birth': Date(Blank(),Blank(),Blank()),
+                            Age: Txt_Age.Text,
+                            'Self-defined Ethnicity name': LookUp(Selfdefinedethnicityoffline,cp_name="").cp_name,
+                            'Self-defined Ethnicity': LookUp(Selfdefinedethnicityoffline,cp_lookupvalueid="").cp_lookupvalueid,
+                            'Officer-defined ethnicity name': LookUp(Officerdefinedethnicityoffline,cp_name="").cp_name,
+                            'Officer-defined ethnicity': LookUp(Officerdefinedethnicityoffline,cp_lookupvalueid="").cp_lookupvalueid,
+                            'Gender name':LookUp(genderoffline,cp_name="").cp_name,
+                            Gender: "",
+                            'House Name': "",
+                            'House Number': "",
+                            Street: "",
+                            District: "",
+                            Town: "",
+                            PostCode: "",
+                            'PNC ID': "",
+                            'ID checks made name': "",
+                            'ID checks made': "",
+                            'Document ID': "",
+                            Telephone: "",
+                            Email: "",
+                            photo1: SampleImage,
+                            photo2: SampleImage,
+                            photo3: SampleImage,
+                            photo4: SampleImage,
+                            photo5: SampleImage,
+                              caption1: "",
+                            caption2: "",
+                            caption3: "",
+                            caption4: "",
+                            caption5: "",
+                            //Location
+                            GPS: "" && "",
+                            Longitude: "",
+                            Latitude: "",
+                            Description: "",
+                            'Location Street': "",
+                            'Location Town': "",
+                            'Location County': "",
+                            Force: "Cumbria",
+                            'TPA name': LookUp(TPA,cp_name="").cp_name,
+                            TPAId: LookUp(TPA,cp_territorialpolicingareaid="").cp_territorialpolicingareaid,
+                            //Offence
+                             'Offence Date':Date(Blank(),Blank(),Blank()) ,
+                'Offence Time': Time(
+                                Value(Blank()),
+                                Value(Blank()),
+                                0
+                            ),
+                           'Offence D & T': "",
+                           // 'Record Use of Powers or Issue Fine name': Dropdown_Record_use_of_powers.Selected.cp_name,
+                            //'Record Use of Powers or Issue Fine': Dropdown_Record_use_of_powers.Selected.cp_lookupvalueid,
+                            'Offence Code name': "",
+                            'Offence Code': "",
+                            'Reply to caution': "",
+                            Circumstances: "",
+                            'Offence Description': "",
+                            'Offence Act': "",
+                            'BMV Used': "",
+                            'Has force been used': "",
+                            Verified: colVerify
+                        }
+                    );
+             Set(
+                        Covid_Primary_key,
+                        newKey
+                    );
+                    SaveData(
+                        'Covid Offline',
+                        "Covid Offline"
+                    );
+                   Set(AllReset, true);
+                   UpdateContext({AllReset: true});
+                   
+                    Navigate(
+                        Screen_home_screen,
+                        ScreenTransition.UnCover
+                    );
+                    UpdateContext({mandatory_inc_det: false}),
+                    UpdateContext({mandatory_inc_det: false})
+                );
+                ,
+                UpdateContext({mandatory_inc_det: true})
+            );
+            //Reset(Txt_incident_suffix);
+                Set(NEREsult, Blank());
+                Clear(NEResultPossibles);
+        Size: =24
+        Text: ="Save & Continue"
+        Width: =553
+        X: =40
+        Y: =1025
+        ZIndex: =4
+
+    DatePicker_incident As datepicker:
+        BorderColor: =RGBA(128, 128, 128, 1)
+        BorderThickness: =4
+        DefaultDate: =Now()
+        Fill: =incidenta
+        Height: =60
+        IconBackground: =RGBA(128, 128, 128, 1)
+        InputTextPlaceholder: ="DD/MM/YYYY"
+        IsEditable: =true
+        OnChange: |
+            =If(
+                !IsBlank(DatePicker_incident.SelectedDate),
+                UpdateContext({incidenta: Transparent}),
+                UpdateContext({incidenta: LightGoldenRodYellow})
+            );
+            If(
+                DatePicker_incident.SelectedDate > Today(),
+                Reset(DatePicker_incident)
+            );
+        OnSelect: |-
+            =If(!IsBlank(DatePicker_incident.SelectedDate),UpdateContext({incidenta:Transparent}),UpdateContext({incidenta:LightGoldenRodYellow}));
+            If(DatePicker_incident.SelectedDate > Today(), Reset(DatePicker_incident));
+        Size: =21
+        Width: =545
+        X: =40
+        Y: =186
+        ZIndex: =5
+
+    Txt_incident_suffix As text:
+        BorderColor: =RGBA(128, 128, 128, 1)
+        Default: =Txt_incident_suffixvar
+        Fill: =incidentb
+        Format: =TextFormat.Number
+        Height: =60
+        HintText: ="Incident suffix"
+        MaxLength: =4
+        OnChange: |-
+            =If(Len(Txt_incident_suffix.Text)>0,UpdateContext({incidentb:White}),UpdateContext({incidentb:LightGoldenRodYellow}));
+            //This is to make the field will not accept any value under or equal to zero
+            If(Value(Txt_incident_suffix.Text) <=0,Reset(Txt_incident_suffix));
+            //This is to make sure all 4 numbers are digits and no symbols or letters are accepted into the field. If they are it will reset the field
+            If(
+            IsMatch(
+            Txt_incident_suffix.Text,
+            Digit & Digit & Digit & Digit), UpdateContext({madcol: White}),
+                UpdateContext({madcol:White}),Reset(Txt_incident_suffix));
+            
+                UpdateContext(
+                {
+                    incidentnumbervar: IncidentNumberPrefix & Text(
+                        DateAdd(
+                            DatePicker_incident.SelectedDate,
+                            0
+                        ),
+                        "[$-en-GB]yyyymmdd"
+                    ) & "-" & Txt_incident_suffix
+                }
+            )
+        OnSelect: |-
+            =If(Len(Txt_incident_suffix.Text)>0,UpdateContext({incidentb:White}),UpdateContext({incidentb:LightGoldenRodYellow}));
+            //This is to make the field will not accept any value under or equal to zero
+            If(Value(Txt_incident_suffix.Text) <=0,Reset(Txt_incident_suffix));
+            //This is to make sure all 4 numbers are digits and no symbols or letters are accepted into the field. If they are it will reset the field
+            If(
+            IsMatch(
+            Txt_incident_suffix.Text,
+            Digit & Digit & Digit & Digit), UpdateContext({madcol: Transparent}),
+                UpdateContext({madcol:Transparent}),Reset(Txt_incident_suffix));
+            
+                UpdateContext(
+                {
+                    incidentnumbervar: IncidentNumberPrefix & Text(
+                        DateAdd(
+                            DatePicker_incident.SelectedDate,
+                            0
+                        ),
+                        "[$-en-GB]yyyymmdd"
+                    ) & "-" & Txt_incident_suffix
+                }
+            )
+        Reset: = resetsuffix
+        Size: =21
+        VirtualKeyboardMode: =VirtualKeyboardMode.Numeric
+        Width: =545
+        X: =40
+        Y: =301
+        ZIndex: =6
+
+    Txt_incident_no As text:
+        BorderColor: =RGBA(128, 128, 128, 1)
+        Default: |
+            =incidentnumbervar
+        Fill: =LightGoldenRodYellow
+        Height: =60
+        HintText: ="Incident number"
+        Reset: =AllReset
+        Size: =21
+        Width: =545
+        X: =40
+        Y: =422
+        ZIndex: =7
+
+    Txt_entered_by As text:
+        BorderColor: =RGBA(128, 128, 128, 1)
+        Default: |
+            =First(Userlocal).Collarnumber  & " - " & First(Userlocal).Name
+        DisabledColor: =RGBA(0, 0, 0, 1)
+        DisplayMode: =DisplayMode.Disabled
+        Height: =60
+        HintText: =""
+        Size: =21
+        Width: =545
+        X: =40
+        Y: =549
+        ZIndex: =8
+
+    Label_Entered_by As label:
+        Height: =60
+        Size: =21
+        Text: |-
+            ="Entered by:"
+        Width: =545
+        X: =40
+        Y: =490
+        ZIndex: =9
+
+    Label1 As label:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Height: =70
+        Size: =21
+        Text: ="Incident Date "
+        Width: =545
+        X: =40
+        Y: =116
+        ZIndex: =10
+
+    Label_asterisk As label:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =32
+        Size: =21
+        Text: ="*"
+        Width: =32
+        X: =556
+        Y: =135
+        ZIndex: =11
+
+    Label_error_suffix_0000 As label:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =49
+        Size: =16
+        Text: ="Incident Suffix cannot be 0000"
+        Visible: =If(Txt_incident_suffix.Text="0000",true,false) Or If(Value(Txt_incident_suffix.Text) <-0,true,false)
+        Width: =380
+        X: =208
+        Y: =274
+        ZIndex: =12
+
+    Label_Incident_Number As label:
+        Height: =60
+        Size: =21
+        Text: |-
+            ="Incident Number:"
+        Width: =545
+        X: =40
+        Y: =358
+        ZIndex: =13
+
+    Label1_1 As label:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Height: =70
+        Size: =21
+        Text: |-
+            ="Incident Suffix:"
+        Width: =545
+        X: =40
+        Y: =244
+        ZIndex: =15
+
+    Label_asterisk_1 As label:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =32
+        Size: =21
+        Text: ="*"
+        Width: =32
+        X: =556
+        Y: =266
+        ZIndex: =16
+
+    Label_asterisk_2 As label:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =32
+        Size: =21
+        Text: ="*"
+        Width: =32
+        X: =553
+        Y: =381
+        ZIndex: =17
+
+    Label_asterisk_3 As label:
+        Color: =RGBA(255, 0, 0, 1)
+        Height: =32
+        Size: =21
+        Text: ="*"
+        Width: =32
+        X: =556
+        Y: =517
+        ZIndex: =18
+

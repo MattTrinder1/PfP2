@@ -1,0 +1,111 @@
+"'524dac4f-dbbf-4c73-b7ea-a041421fb8a2' As TestSuite":
+    Description: =""
+    DisplayName: ="Suite"
+
+    "'be6c0742-5199-449a-adb0-9e841d8fdc8a' As TestCase":
+        Description: ="Enter an Incident"
+        DisplayName: ="Case"
+
+        Step1 As TestStep:
+            Description: ="Select 'Btn_incident_details'"
+            Screen: =Scr_home
+            Value: =Select(Btn_incident_details)
+
+        Step2 As TestStep:
+            Description: ="Set 'Txt_incident_suffix'.Text to ""1234"""
+            Screen: =Scr_incident details
+            Value: =SetProperty(Txt_incident_suffix.Text, "1234")
+
+        Step3 As TestStep:
+            Description: ="Select 'Icn_back'"
+            Screen: =Scr_incident details
+            Value: =Select(Icn_back)
+
+        Step4 As TestStep:
+            Description: ="Select 'Btn_add_into_1'"
+            Screen: =Scr_home
+            Value: =Select(Btn_add_into_1)
+
+        Step5 As TestStep:
+            Description: ="Select 'Btn_incident_details'"
+            Screen: =Scr_home
+            Value: =Select(Btn_incident_details)
+
+        Step6 As TestStep:
+            Description: |-
+                ="Set 'Dropdown_hour_start_1'.Selected to {'Value':""01""}"
+            Screen: =Scr_incident details
+            Value: |-
+                =SetProperty(Dropdown_hour_start_1.Selected, {Value:"01"})
+
+        Step7 As TestStep:
+            Description: |-
+                ="Set 'Dropdown_min_start_1'.Selected to {'Value':""02""}"
+            Screen: =Scr_incident details
+            Value: |-
+                =SetProperty(Dropdown_min_start_1.Selected, {Value:"02"})
+
+        Step8 As TestStep:
+            Description: ="Set 'Radio_reporting_officer'.Selected to ""Yes"""
+            Screen: =Scr_incident details
+            Value: =SetProperty(Radio_reporting_officer.Selected, "Yes")
+
+        Step9 As TestStep:
+            Description: ="Set 'Radio_single_officer'.Selected to ""Yes"""
+            Screen: =Scr_incident details
+            Value: =SetProperty(Radio_single_officer.Selected, "Yes")
+
+        Step10 As TestStep:
+            Description: ="Select 'Btn_save_exit'"
+            Screen: =Scr_incident details
+            Value: =Select(Btn_save_exit)
+
+        Step11 As TestStep:
+            Description: ="Set 'Txt_incident_suffix'.Text to ""4444"""
+            Screen: =Scr_incident details
+            Value: =SetProperty(Txt_incident_suffix.Text, "4444")
+
+        Step12 As TestStep:
+            Description: ="Select 'Btn_save_exit'"
+            Screen: =Scr_incident details
+            Value: =Select(Btn_save_exit)
+
+        Step13 As TestStep:
+            Description: ="Select 'Btn_save_exit'"
+            Screen: =Scr_incident details
+            Value: =Select(Btn_save_exit)
+
+        Step14 As TestStep:
+            Description: ="Select 'Btn_save_exit'"
+            Screen: =Scr_incident details
+            Value: =Select(Btn_save_exit)
+
+        Step15 As TestStep:
+            Description: ="Select 'Btn_save_exit'"
+            Screen: =Scr_incident details
+            Value: =Select(Btn_save_exit)
+
+        Step16 As TestStep:
+            Description: ="Select 'Btn_save_exit'"
+            Screen: =Scr_incident details
+            Value: =Select(Btn_save_exit)
+
+        Step17 As TestStep:
+            Description: ="Select 'Btn_save_exit'"
+            Screen: =Scr_incident details
+            Value: =Select(Btn_save_exit)
+
+        Step18 As TestStep:
+            Description: ="Select 'Btn_save_exit'"
+            Screen: =Scr_incident details
+            Value: =Select(Btn_save_exit)
+
+        Step19 As TestStep:
+            Description: ="Select 'Btn_save_exit'"
+            Screen: =Scr_incident details
+            Value: =Select(Btn_save_exit)
+
+        Step20 As TestStep:
+            Description: ="Trace"
+            Value: =Trace()
+

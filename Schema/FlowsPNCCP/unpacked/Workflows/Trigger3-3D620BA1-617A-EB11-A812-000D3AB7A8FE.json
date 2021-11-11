@@ -1,0 +1,172 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedcommondataserviceforapps_3a446"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "PowerApp",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Addanewrow_FirstName": {
+                  "type": "string",
+                  "description": "",
+                  "x-ms-powerflows-param-ispartial": false
+                },
+                "Addanewrow_LastName": {
+                  "type": "string",
+                  "description": "",
+                  "x-ms-powerflows-param-ispartial": false
+                }
+              },
+              "required": [
+                "Addanewrow_FirstName",
+                "Addanewrow_LastName"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Add_a_new_row": {
+          "runAfter": {
+            
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "CreateRecord",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_pncsearchs",
+              "item/cp_searchtype": 778230000,
+            "item/cp_firstname": "@triggerBody()[\u0027Addanewrow_FirstName\u0027]",
+              "item/cp_initiateddatetime": "@utcNow()",
+              "item/cp_initiatedtimestamp": "@formatDateTime(utcNow(),\u0027yyyy-MM-dd HH:mm:ss\u0027)",
+            "item/cp_lastname": "@triggerBody()[\u0027Addanewrow_LastName\u0027]"
+            },
+            "authentication": {
+              "type": "Raw",
+            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+            }
+          }
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "Apply_to_each": [
+              "Succeeded"
+            ]
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+            "pncid": "@outputs(\u0027Add_a_new_row\u0027)?[\u0027body/cp_pncsearchid\u0027]"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "pncid": {
+                  "title": "PNCId",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Run_a_Child_Flow": {
+          "runAfter": {
+            "Add_a_new_row": [
+              "Succeeded"
+            ]
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "c635c32e-7977-eb11-a812-000d3adc97fc"
+            },
+            "body": {
+            "text": "@triggerBody()[\u0027Addanewrow_FirstName\u0027]",
+            "text_1": "@triggerBody()[\u0027Addanewrow_LastName\u0027]"
+            }
+          }
+        },
+        "Apply_to_each": {
+        "foreach": "@xpath(xml(outputs(\u0027Run_a_Child_Flow\u0027)?[\u0027Body\u0027]?[\u0027searchresults\u0027]),\u0027/Results/Person\u0027)",
+          "actions": {
+            "Add_a_new_row_2": {
+              "runAfter": {
+                
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "CreateRecord",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "cp_pncsearchpersons",
+                "item/cp_pncsearch@odata.bind": "/cp_pncsearchs(@{outputs(\u0027Add_a_new_row\u0027)?[\u0027body/cp_pncsearchid\u0027]})",
+                  "item/cp_firstname": "@xpath(item(),\u0027string(Person/FirstName)\u0027)",
+                  "item/cp_lastname": "@xpath(item(),\u0027string(Person/LastName)\u0027)"
+                },
+                "authentication": {
+                  "type": "Raw",
+                "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Run_a_Child_Flow": [
+              "Succeeded"
+            ]
+          },
+          "type": "Foreach",
+          "runtimeConfiguration": {
+            "concurrency": {
+              "repetitions": 20
+            }
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

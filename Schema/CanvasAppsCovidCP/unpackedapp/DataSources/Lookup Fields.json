@@ -1,0 +1,126 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_lookupfields",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_lookupfield",
+    "MaxGetRowsCount": 2000,
+    "Name": "Lookup Fields",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "cp_displayname": "Label Display Name",
+      "cp_id": "Filter Id",
+      "cp_lookupfield_AsyncOperations": "System Jobs",
+      "cp_lookupfield_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_lookupfield_DuplicateBaseRecord": "Duplicate Records (cp_lookupfield_DuplicateBaseRecord)",
+      "cp_lookupfield_DuplicateMatchingRecord": "Duplicate Records (cp_lookupfield_DuplicateMatchingRecord)",
+      "cp_lookupfield_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_lookupfield_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_lookupfield_ProcessSession": "Process Sessions",
+      "cp_lookupfield_SyncErrors": "Sync Errors",
+      "cp_lookupfieldid": "Lookup Field",
+      "cp_lookupvalue_lookupfield": "Lookup Values",
+      "cp_name": "Label",
+      "cp_totalvalues": "Total Values",
+      "cp_totalvalues_date": "Total Values (Last Updated On)",
+      "cp_totalvalues_state": "Total Values (State)",
+      "cp_usedin": "Used In",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "organizationid": "Organization Id",
+      "overriddencreatedon": "Record Created On",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Lookup Fields",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Lookup Fields (Views)",
+    "Name": "_cp_lookupfield_views",
+    "RelatedEntityName": "Lookup Fields",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "02013ae7-089c-42d5-b425-f63978d0c223": "Inactive Lookup Fields",
+      "34f19803-8858-4c70-8547-8a96479ba3ec": "Lookup Field Advanced Find View",
+      "4dfd0ee9-2596-4bf4-97e7-67849c0a5210": "Lookup Field Lookup View",
+      "7a379172-2e95-4420-a687-1e55911899e4": "Lookup Field Associated View",
+      "b666cdd9-2eed-4604-898b-de51793d9a20": "Active Lookup Fields"
+    }
+  },
+  {
+    "DisplayName": "Application Used",
+    "Name": "cp_applicationused",
+    "OptionSetInfoNameMapping": {
+      "778230000": "Generic Use",
+      "778230001": "Sudden Death",
+      "778230002": "Use of Force",
+      "778230003": "Vehicle",
+      "778230004": "Statement",
+      "778230005": "Covid",
+      "778230006": "Its Your Choice"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": true,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "cp_usedin",
+        "OptionSetReferenceEntityName": "Lookup Fields"
+      }
+    },
+    "OptionSetTypeKey": "PicklistType",
+    "RelatedColumnInvariantName": "cp_usedin",
+    "RelatedEntityName": "Lookup Fields",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status (Lookup Fields)",
+    "Name": "cp_lookupfield_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Lookup Fields"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Lookup Fields",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Lookup Fields)",
+    "Name": "cp_lookupfield_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Lookup Fields"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Lookup Fields",
+    "Type": "OptionSetInfo"
+  }
+]

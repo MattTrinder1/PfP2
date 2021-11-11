@@ -1,0 +1,145 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_offencecodes",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_offencecode",
+    "MaxGetRowsCount": 2000,
+    "Name": "Offence codes",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "cp_name": "Code",
+      "cp_offencecategoryid": "Offence Category",
+      "cp_offencecode_AsyncOperations": "System Jobs",
+      "cp_offencecode_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_offencecode_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_offencecode_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_offencecode_ProcessSession": "Process Sessions",
+      "cp_offencecode_SyncErrors": "Sync Errors",
+      "cp_offencecodeid": "Offence Code",
+      "cp_offencedescription": "Offence Description",
+      "cp_personnotmandatory": "Person Not Mandatory",
+      "cp_tickettypetrafficoffence_cp_offencecod": "Ticket Type - Traffic Offences (cp_tickettypetrafficoffence_cp_offencecod)",
+      "cp_tickettypetrafficoffence_OffenceCode_c": "Ticket Type - Traffic Offences (cp_tickettypetrafficoffence_OffenceCode_c)",
+      "cp_tickettypetrafficoffenceoffencecode_of": "Ticket Type - Traffic Offence - Offence Codes",
+      "cp_tickettypevdrs_cp_offencecode_cp_offen": "Ticket Type - VDRS (cp_tickettypevdrs_cp_offencecode_cp_offen)",
+      "cp_tickettypevdrs_OffenceCode_cp_offencec": "Ticket Type - VDRS (cp_tickettypevdrs_OffenceCode_cp_offencec)",
+      "cp_type": "(DNU) Type",
+      "cp_VehicleTicketOffencesSTG_Offencecode": "Vehicle Ticket Offences STGS",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "organizationid": "Organization Id",
+      "overriddencreatedon": "Record Created On",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Offence codes",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Offence codes (Views)",
+    "Name": "_cp_offencecode_views",
+    "RelatedEntityName": "Offence codes",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "26348a78-6482-eb11-a812-000d3ade2967": "Offence Codes",
+      "4351d0f5-34df-405f-bcce-51038cc17925": "Active Offence codes",
+      "5523c27c-6ba2-4842-90a4-c1d849cff8af": "Offence code Advanced Find View",
+      "8cfa5892-0667-eb11-a812-000d3ab40f79": "Traffic Offence Codes View",
+      "a5c52fa6-4894-442b-a3d8-c40369341aa8": "Offence code Lookup View",
+      "b71e4cbc-0667-eb11-a812-000d3ab40f79": "VDRS Offence Codes View",
+      "bbc0dcf5-de0f-4d04-ad21-4a10e3d31ca5": "Inactive Offence codes",
+      "c77d4a7c-7b82-43d8-af5f-83843120c3b8": "Offence code Associated View"
+    }
+  },
+  {
+    "DisplayName": "Person Not Mandatory (Offence codes)",
+    "Name": "cp_offencecode_cp_personnotmandatory",
+    "OptionSetInfoNameMapping": {
+      "0": "No",
+      "1": "Yes"
+    },
+    "OptionSetIsBooleanValued": true,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "cp_personnotmandatory",
+        "OptionSetReferenceEntityName": "Offence codes"
+      }
+    },
+    "OptionSetTypeKey": "BooleanType",
+    "RelatedColumnInvariantName": "cp_personnotmandatory",
+    "RelatedEntityName": "Offence codes",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status (Offence codes)",
+    "Name": "cp_offencecode_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Offence codes"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Offence codes",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Offence codes)",
+    "Name": "cp_offencecode_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Offence codes"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Offence codes",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Type",
+    "Name": "cp_type",
+    "OptionSetInfoNameMapping": {
+      "778230000": "Traffic Offence",
+      "778230001": "VDRS"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": true,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "cp_type",
+        "OptionSetReferenceEntityName": "Offence codes"
+      }
+    },
+    "OptionSetTypeKey": "PicklistType",
+    "RelatedColumnInvariantName": "cp_type",
+    "RelatedEntityName": "Offence codes",
+    "Type": "OptionSetInfo"
+  }
+]

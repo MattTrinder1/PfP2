@@ -1,0 +1,663 @@
+Scr_vdrs As screen:
+    OnHidden: =Reset(PenInput_VDRS_Sign)
+    OnVisible: |-
+        =Set(
+            madcolVDRS,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolVDRS: LightGoldenRodYellow});
+        Set(
+            madcolVDRS1,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolVDRS1: LightGoldenRodYellow});
+        Set(
+            madcolVDRS2,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolVDRS2: LightGoldenRodYellow});
+        Set(
+            madcolVDRS3,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolVDRS3: LightGoldenRodYellow});
+        Set(
+            madcolVDRS4,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolVDRS4: LightGoldenRodYellow});
+        
+        UpdateContext({hasBeenSigned:true});
+        If(LookUp(TrOffOffline,TicketTypename = "VDRS" And OffenceKey=Dropdown_VDRS_key.Selected.Key).VDRSsign <> Blank() ,UpdateContext({hasBeenSigned:true}),UpdateContext({hasBeenSigned:false}));
+        
+        UpdateContext({BlankImage2 : PenInput_VDRS_Sign.Image, locSigDateTime2: Now()});
+        Set(ymultivdrs,LookUp('Vdrs codes', 
+               OffenceKey= Dropdown_VDRS_key.Selected.Key).vdrsorder);
+        If(LookUp('Vdrs codes', 
+               OffenceKey= Dropdown_VDRS_key.Selected.Key).vdrsorder>0,UpdateContext({yaddvdrsoffence:416*ymultivdrs}),UpdateContext({yaddvdrsoffence:0}))
+
+    Label_header_VDRS As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="VDRS"
+        VerticalAlign: =VerticalAlign.Top
+        Width: =640
+        ZIndex: =1
+
+    Icon_back8 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home,UnCoverRight)
+        X: =27
+        Y: =17
+        ZIndex: =15
+
+    Canvas_VDRS As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1049
+        Width: =Parent.Width
+        Y: =87
+        ZIndex: =16
+
+        DataCard_VDRS As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =2461
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Dropdown_VDRS_key As dropdown:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                Default: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).Key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                Items: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =21
+                ZIndex: =1
+
+            Label_VDRS_OffenceCategory As label:
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Offence Category"
+                Width: =545
+                X: =40
+                Y: =118
+                ZIndex: =2
+
+            ComboBox_VDRS_OffenceNamely As combobox:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
+                DefaultSelectedItems: =LookUp(OffenceCodeOffline,LookUp(TrOffOffline, OffenceKey=Dropdown_VDRS_key.Selected.Key And TicketTypename ="VDRS").'VDRS Offence Name name'=cp_name)
+                DisplayFields: =["cp_offencedescription","cp_name"]
+                DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled, DisplayMode.Edit)
+                Fill: =madcolVDRS1
+                Height: =70
+                InputTextPlaceholder: =
+                Items: =Filter(OffenceCodeOffline,cp_offencecategoryid.'Offence Category'=ComboBox_VDRS_offencecategory.Selected.cp_offencecategoryid)
+                OnChange: |-
+                    =If(!IsBlank(ComboBox_VDRS_OffenceNamely.Selected.cp_name),UpdateContext({madcolVDRS1:White}),UpdateContext({madcolVDRS1:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(!IsBlank(ComboBox_VDRS_OffenceNamely.Selected.cp_name),UpdateContext({madcolVDRS1:White}),UpdateContext({madcolVDRS1:LightGoldenRodYellow}));
+                PressedFill: =RGBA(116, 116, 116, 1)
+                Reset: =resetall
+                SearchFields: =["cp_name"]
+                SearchItems: =Search(Filter(OffenceCodeOffline,cp_offencecategoryid.'Offence Category'=ComboBox_VDRS_offencecategory.Selected.cp_offencecategoryid),ComboBox_VDRS_OffenceNamely.SearchText,"cp_name")
+                SelectMultiple: =false
+                Size: =21
+                Template: =ListItemTemplate.Double
+                Width: =545
+                X: =40
+                Y: =304
+                ZIndex: =3
+
+            ComboBox_VDRS_OffenceCode As combobox:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
+                Default: =LookUp(OffenceCodeOffline,ComboBox_VDRS_OffenceNamely.Selected.cp_name=cp_name)
+                DefaultSelectedItems: =LookUp(OffenceCodeOffline,ComboBox_VDRS_OffenceNamely.Selected.cp_name=cp_name)
+                DisplayFields: =["cp_name"]
+                DisplayMode: =DisplayMode.Disabled
+                Fill: =madcolVDRS2
+                Height: =70
+                InputTextPlaceholder: =
+                IsSearchable: =false
+                Items: =LookUp(OffenceCodeOffline,ComboBox_VDRS_OffenceNamely.Selected.cp_name=cp_name)
+                OnChange: |-
+                    =If(!IsBlank(ComboBox_VDRS_OffenceCode.Selected.cp_name),UpdateContext({madcolVDRS2:White}),UpdateContext({madcolVDRS2:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(!IsBlank(ComboBox_VDRS_OffenceCode.Selected.cp_name),UpdateContext({madcolVDRS2:White}),UpdateContext({madcolVDRS2:LightGoldenRodYellow}));
+                PressedFill: =RGBA(116, 116, 116, 1)
+                Reset: =resetall
+                SearchFields: =["cp_name"]
+                SearchItems: =[]
+                SelectMultiple: =false
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =665
+                ZIndex: =4
+
+            Label_VDRS_OffenceNamely As label:
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Offence Description"
+                Width: =545
+                X: =40
+                Y: =252
+                ZIndex: =5
+
+            Label_VDRS_OffenceCode As label:
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Code"
+                Width: =545
+                X: =40
+                Y: =563
+                ZIndex: =6
+
+            Label_asterik_OffenceCategory As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =563
+                Y: =143
+                ZIndex: =7
+
+            Label_asterik_OffenceNamely As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =563
+                Y: =272
+                ZIndex: =8
+
+            Label_asterik_Code As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =40
+                Y: =584
+                ZIndex: =9
+
+            ComboBox_VDRS_offencecategory As combobox:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
+                DefaultSelectedItems: =LookUp(OffenceCatOffline, LookUp(TrOffOffline, OffenceKey=Dropdown_VDRS_key.Selected.Key And TicketTypename ="VDRS").'VDRS Offence Category name'=cp_name)
+                DisplayFields: =["cp_name"]
+                DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled, DisplayMode.Edit)
+                Fill: =madcolVDRS2
+                Height: =70
+                InputTextPlaceholder: =
+                Items: =Filter(OffenceCatOffline,cp_tickettypeid.cp_tickettypeid=LookUp(OffencesOffline,cp_name="VDRS").cp_tickettypeid)
+                OnChange: |-
+                    =If(Len(ComboBox_VDRS_offencecategory.Selected.cp_name)>0,UpdateContext({madcolVDRS:White}),UpdateContext({madcolVDRS:LightGoldenRodYellow}));Set(offenceidvdrs,LookUp(OffenceCatOffline,cp_offencecategoryid=ComboBox_VDRS_offencecategory.Selected.cp_offencecategoryid).cp_offencecategoryid)
+                OnSelect: |-
+                    =If(Len(ComboBox_VDRS_offencecategory.Selected.cp_name)>0,UpdateContext({madcolVDRS:White}),UpdateContext({madcolVDRS:LightGoldenRodYellow}));Set(offenceidvdrs,LookUp(OffenceCatOffline,cp_offencecategoryid=ComboBox_VDRS_offencecategory.Selected.cp_offencecategoryid).cp_offencecategoryid)
+                PressedFill: =RGBA(116, 116, 116, 1)
+                Reset: =resetall
+                SearchFields: =["cp_name"]
+                SearchItems: =Search(Filter(OffenceCatOffline,cp_tickettypeid.cp_tickettypeid=LookUp(OffencesOffline,cp_name="VDRS").cp_tickettypeid),ComboBox_VDRS_offencecategory.SearchText,"cp_name")
+                SelectMultiple: =false
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =175
+                ZIndex: =10
+
+            Radio_VDRS_Printed As radio:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_VDRS_key.Selected.Key And TicketTypename ="VDRS").'VDRS printed'
+                DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled, DisplayMode.Edit)
+                Height: =98
+                Items: =["Yes", "No"]
+                Layout: =Layout.Horizontal
+                OnSelect: =
+                RadioBorderColor: =RGBA(116, 116, 116, 1)
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1169+yaddvdrsoffence
+                ZIndex: =11
+
+            label_VDRS_Printed As label:
+                Height: =80
+                OnSelect: =
+                Size: =21
+                Text: ="VDRS Printed"
+                Width: =545
+                X: =40
+                Y: =1087+yaddvdrsoffence
+                ZIndex: =12
+
+            TextInput_VDRS_SerialNumber As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_Vehicle_Ticket_part_2.Selected.Key And TicketTypename ="VDRS").'VDRS Serial Number'
+                DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled, DisplayMode.Edit)
+                Height: =70
+                HintText: ="VDRS Serial No."
+                OnSelect: =
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1030+yaddvdrsoffence
+                ZIndex: =13
+
+            label_VDRSPrinted As label:
+                Height: =43
+                OnSelect: =
+                Size: =21
+                Text: ="VDRS Serial No"
+                Width: =545
+                X: =40
+                Y: =987+yaddvdrsoffence
+                ZIndex: =14
+
+            Label_VDRS_Details As label:
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Details"
+                Width: =545
+                X: =40
+                Y: =1251+yaddvdrsoffence
+                ZIndex: =15
+
+            TextInput_VDRS_Details As text:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                Default: =LookUp(TrOffOffline,OffenceKey=Dropdown_Vehicle_Ticket_part_2.Selected.Key And TicketTypename ="VDRS").'VDRS details'
+                DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled, DisplayMode.Edit)
+                EnableSpellCheck: =true
+                Height: =353
+                Mode: =TextMode.MultiLine
+                OnSelect: =
+                Reset: =resetall
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1301+yaddvdrsoffence
+                ZIndex: =16
+
+            Button_save_continue_VDRS As button:
+                DisplayMode: |-
+                    =
+                    If(LookUp(TrOffOffline,TicketTypename = "VDRS" And OffenceKey=Dropdown_VDRS_key.Selected.Key).VDRSsign <> Blank(),DisplayMode.Disabled, DisplayMode.Edit)
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =72
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =UpdateIf(
+                        TrOffOffline,
+                        OffenceKey = Dropdown_VDRS_key.Selected.Key And TicketTypename = "VDRS",
+                        {
+                            TicketTypeTrafficOffence: LookUp(
+                                OffencesOffline,
+                                cp_name = "VDRS"
+                            ).cp_tickettypeid,
+                            TicketTypename: "VDRS",
+                            'VDRS Offence Category name': Concat(
+                                Gallery_multipleoffences_2.AllItems.'VDRS Offence Category name',
+                                'VDRS Offence Category name' & ","
+                            ),
+                            'VDRS Offence Category': Concat(
+                                Gallery_multipleoffences_2.AllItems.'VDRS Offence Category',
+                                'VDRS Offence Category' & ","
+                            ),
+                            'VDRS Offence Name name': Concat(
+                                Gallery_multipleoffences_2.AllItems.'VDRS Offence Name name',
+                                'VDRS Offence Name name' & ","
+                            ),
+                            'VDRS Offence Name': Concat(
+                                Gallery_multipleoffences_2.AllItems.'VDRS Offence Name',
+                                'VDRS Offence Name' & ","
+                            ),
+                            'VDRS Offence Code name': Left(
+                                Concat(
+                                    Gallery_multipleoffences_2.AllItems.'VDRS Offence Code name',
+                                    'VDRS Offence Code name' & ","
+                                ),
+                                Len(
+                                    Concat(
+                                        Gallery_multipleoffences_2.AllItems.'VDRS Offence Code name',
+                                        'VDRS Offence Code name' & ","
+                                    )
+                                ) - 1
+                            ),
+                            'VDRS Offence Code': Left(
+                                Concat(
+                                    Gallery_multipleoffences_2.AllItems.'VDRS Offence Code',
+                                    'VDRS Offence Code' & ","
+                                ),
+                                Len(
+                                    Concat(
+                                        Gallery_multipleoffences_2.AllItems.'VDRS Offence Code',
+                                        'VDRS Offence Code' & ","
+                                    )
+                                ) - 1
+                            ),
+                            'VDRS details': TextInput_VDRS_Details.Text,
+                            'VDRS printed': Radio_VDRS_Printed.Selected.Value,
+                            vdrsorder: CountRows(TrOffOffline) + 1,
+                            'VDRS Serial Number': TextInput_VDRS_SerialNumber.Text,
+                            VDRSsign: If(hasBeenSigned, PenInput_VDRS_Sign.Image,Blank())
+                        }
+                    );
+                    UpdateContext(
+                        {
+                            rec: LookUp(
+                                TrOffOffline,
+                                TicketTypename = "VDRS" And OffenceKey = Dropdown_VDRS_key.Selected.Key
+                            )
+                        }
+                    );
+                    UpdateIf(
+                        'Vehicle Offline',
+                        Key = Dropdown_VDRS_key.Selected.Key,
+                        {
+                            VDRSvalid: And(
+                                !IsBlank(
+                                    Filter(
+                                        'Vdrs codes',
+                                        TicketTypename = "VDRS" And OffenceKey = Dropdown_VDRS_key.Selected.Key
+                                    )
+                                ),
+                                !IsBlank(rec.VDRSsign)
+                            )
+                        }
+                    );
+                    If(hasBeenSigned,Set(
+                        VDRSsigndis,
+                        DisplayMode.Disabled
+                    ));
+                    SaveData(
+                        TrOffOffline,
+                        "TrOffOffline"
+                    );
+                    Navigate(
+                        Scr_home,
+                        ScreenTransition.CoverRight
+                    )
+                Size: =24
+                Text: ="Save & Continue"
+                Width: =545
+                X: =40
+                Y: =2342+yaddvdrsoffence
+                ZIndex: =17
+
+            Label_desc_1 As label:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                BorderThickness: =1
+                Fill: =RGBA(245, 245, 245, 1)
+                Height: =208
+                Size: =21
+                Text: =ComboBox_VDRS_OffenceNamely.Selected.cp_offencedescription
+                Width: =545
+                X: =40
+                Y: =424
+                ZIndex: =18
+
+            Label_TrafficOffence_offence_category_4 As label:
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Detailed Description"
+                Width: =545
+                X: =40
+                Y: =374
+                ZIndex: =19
+
+            Gallery_multipleoffences_2 As gallery.galleryVertical:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('Vdrs codes',TicketTypename="VDRS" And OffenceKey= Dropdown_VDRS_key.Selected.Key)
+                DisplayMode: =If(hasBeenSigned, DisplayMode.Disabled, DisplayMode.Edit)
+                Height: =yaddvdrsoffence
+                Items: =Filter('Vdrs codes',TicketTypename="VDRS" And OffenceKey= Dropdown_VDRS_key.Selected.Key)
+                Layout: =Layout.Vertical
+                ShowNavigation: =true
+                TemplateSize: =427
+                Width: =619
+                Y: =934
+                ZIndex: =20
+
+                TxtInput_TrafficOffence_OffenceCategory_2 As text:
+                    BorderStyle: =BorderStyle.None
+                    Default: =ThisItem.'VDRS Offence Category name'
+                    Fill: =LightGoldenRodYellow
+                    Height: =50
+                    OnSelect: =Select(Parent)
+                    Size: =21
+                    Width: =466
+                    X: =35
+                    Y: =54
+                    ZIndex: =1
+
+                Label_TrafficOffence_OffenceCat_2 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Height: =35
+                    OnSelect: =Select(Parent)
+                    Size: =21
+                    Text: ="Offence Category"
+                    Underline: =true
+                    Width: =330
+                    X: =35
+                    ZIndex: =2
+
+                Icon_TrafficOffence_deletecategory_2 As icon.Cancel:
+                    Color: =RGBA(0, 0, 0, 1)
+                    Height: =68
+                    Icon: =Icon.Cancel
+                    OnSelect: |-
+                        =RemoveIf('Vdrs codes',vdrsorder=ThisItem.vdrsorder);UpdateContext({yaddvdrsoffence:yaddvdrsoffence-416})
+                    Width: =80
+                    X: =529
+                    Y: =185
+                    ZIndex: =8
+
+                TextInput_TrafficOffence_OffenceName_2 As text:
+                    BorderStyle: =BorderStyle.None
+                    Default: =ThisItem.'VDRS Offence Name name'
+                    Fill: =LightGoldenRodYellow
+                    Height: =129
+                    Mode: =TextMode.MultiLine
+                    OnSelect: =Select(Parent)
+                    Size: =21
+                    Width: =466
+                    X: =35
+                    Y: =164
+                    ZIndex: =9
+
+                Label_TrafficOffence_OffeneName_2 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Height: =35
+                    OnSelect: =Select(Parent)
+                    Size: =21
+                    Text: ="Offence Description"
+                    Underline: =true
+                    Width: =330
+                    X: =35
+                    Y: =123
+                    ZIndex: =10
+
+                TextInput_TrafficOffence_Offence_code_2 As text:
+                    BorderStyle: =BorderStyle.None
+                    Default: =ThisItem.'VDRS Offence Code name'
+                    Fill: =LightGoldenRodYellow
+                    Height: =50
+                    OnSelect: =Select(Parent)
+                    Size: =21
+                    Width: =466
+                    X: =35
+                    Y: =345
+                    ZIndex: =14
+
+                Label_TrafficOffence_Offence_code_2 As label:
+                    FontWeight: =FontWeight.Semibold
+                    Height: =35
+                    OnSelect: =Select(Parent)
+                    Size: =21
+                    Text: ="Offence Code"
+                    Underline: =true
+                    Width: =330
+                    X: =35
+                    Y: =299
+                    ZIndex: =15
+
+                Rectangle1_3 As rectangle:
+                    BorderColor: =RGBA(230, 230, 230, 1)
+                    Fill: =RGBA(204, 204, 204, 1)
+                    Height: =2
+                    OnSelect: =Select(Parent)
+                    Width: =609
+                    Y: =425
+                    ZIndex: =16
+
+            Label_VDRS_Details_1 As label:
+                Height: =50
+                OnSelect: =
+                Size: =21
+                Text: ="Details"
+                Width: =545
+                X: =37
+                Y: =623
+                ZIndex: =21
+
+            TextInput_Sign_and_Submit_SignatureDateTime_3 As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: |-
+                    =Text(locSigDateTime2, "[$-en-GB]dd/mm/yyyy hh:mm:ss")
+                DisplayMode: =DisplayMode.Disabled
+                Height: =67
+                HintText: ="Date/time of signature"
+                OnSelect: =
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =2241+yaddvdrsoffence
+                ZIndex: =22
+
+            Label_Sign_and_Submit_TFOffenderSignature_3 As label:
+                Height: =68
+                OnSelect: =
+                Size: =21
+                Text: ="Offender Signature"
+                Width: =545
+                X: =40
+                Y: =1845+yaddvdrsoffence
+                ZIndex: =23
+
+            PenInput_VDRS_Sign As inkControl:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                DisplayMode: |-
+                    =If(!IsEmpty(Filter('Vdrs codes',TicketTypename="VDRS" And OffenceKey= Dropdown_VDRS_key.Selected.Key)),
+                    DisplayMode.Edit,DisplayMode.Disabled)
+                Height: =255
+                OnSelect: |-
+                    =UpdateContext({hasBeenSigned:true});
+                Reset: =true
+                Visible: =If(IsBlank(LookUp(TrOffOffline,TicketTypename = "VDRS" And OffenceKey=Dropdown_VDRS_key.Selected.Key).VDRSsign),true,false)
+                Width: =545
+                X: =40
+                Y: =1938+yaddvdrsoffence
+                ZIndex: =24
+
+            Image_VDRS_sign As image:
+                Height: =255
+                Image: |
+                    =LookUp(TrOffOffline,TicketTypename = "VDRS" And OffenceKey=Dropdown_VDRS_key.Selected.Key).VDRSsign 
+                Visible: |-
+                    =/*If(LookUp(TrOffOffline,TicketTypename = "VDRS" And OffenceKey=Dropdown_VDRS_key.Selected.Key).VDRSsign = SampleImage,false,true)*/
+                    If(LookUp(TrOffOffline,TicketTypename = "VDRS" And OffenceKey=Dropdown_VDRS_key.Selected.Key).VDRSsign = Blank(),false,true)
+                    /* 
+                    =Blank(),false,true
+                    If(LookUp(TrOffOffline,Key=Dropdown_Evidence_no.Selected.Key). 'Officer Signature'=Blank(),false,true)*/
+                Width: =545
+                X: =40
+                Y: =1938+yaddvdrsoffence
+                ZIndex: =25
+
+            Label1_17 As label:
+                Fill: =LightGoldenRodYellow
+                Height: =135
+                Size: =21
+                Text: ="I acknowledge the above statement is correct and I have understood the caution"
+                Width: =545
+                X: =40
+                Y: =1687+yaddvdrsoffence
+                ZIndex: =26
+
+            Button_save_continue_VDRS_1 As button:
+                DisplayMode: =If (IsBlank(ComboBox_VDRS_OffenceCode.Selected.cp_name),DisplayMode.Disabled,DisplayMode.Edit)  
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =72
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |
+                    =Collect(
+                        'Vdrs codes',
+                        {
+                            OffenceKey: Dropdown_VDRS_key.Selected.Key,
+                            TicketTypeTrafficOffence: LookUp(
+                                OffencesOffline,
+                                cp_name = "VDRS"
+                            ).cp_tickettypeid,
+                            TicketTypename: "VDRS",
+                            'VDRS Offence Category name': ComboBox_VDRS_offencecategory.Selected.cp_name,
+                            'VDRS Offence Category': ComboBox_VDRS_offencecategory.Selected.cp_offencecategoryid,
+                            'VDRS Offence Name name': ComboBox_VDRS_OffenceNamely.Selected.cp_name,
+                            'VDRS Offence Name': ComboBox_VDRS_OffenceNamely.Selected.cp_offencecodeid,
+                            'VDRS Offence Code name': ComboBox_VDRS_OffenceCode.Selected.cp_name,
+                            'VDRS Offence Code': ComboBox_VDRS_OffenceCode.Selected.cp_offencecodeid,
+                            vdrsorder: CountRows('Vdrs codes') + 1
+                        }
+                    );
+                    SaveData('Vdrs codes',"Vdrs codes");
+                    UpdateContext({yaddvdrsoffence: yaddvdrsoffence + 416});
+                    UpdateContext({madcoladdoffence: White});
+                    Reset(ComboBox_VDRS_offencecategory);
+                    Reset(ComboBox_VDRS_OffenceNamely);
+                Size: =24
+                Text: ="Add Selected Offence"
+                Width: =545
+                X: =40
+                Y: =756
+                ZIndex: =27
+
+    Label1_8 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =42
+        Size: =21
+        Text: =Vehicle_Primary_key
+        Width: =440
+        X: =100
+        Y: =45
+        ZIndex: =17
+

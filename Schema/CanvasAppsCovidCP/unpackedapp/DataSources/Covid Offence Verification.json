@@ -1,0 +1,120 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_covidoffenceverifications",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_covidoffenceverification",
+    "MaxGetRowsCount": 2000,
+    "Name": "Covid Offence Verification",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "cp_covid": "Covid",
+      "cp_covidoffenceverification_AsyncOperations": "System Jobs",
+      "cp_covidoffenceverification_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_covidoffenceverification_DuplicateBaseRecord": "Duplicate Records (cp_covidoffenceverification_DuplicateBaseRecord)",
+      "cp_covidoffenceverification_DuplicateMatchingRecord": "Duplicate Records (cp_covidoffenceverification_DuplicateMatchingRecord)",
+      "cp_covidoffenceverification_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_covidoffenceverification_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_covidoffenceverification_ProcessSession": "Process Sessions",
+      "cp_covidoffenceverification_SyncErrors": "Sync Errors",
+      "cp_covidoffenceverificationid": "Covid Offence Verification",
+      "cp_LabelText": "Label Text",
+      "cp_name": "Name",
+      "cp_verified": "Verified",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Covid Offence Verification",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Covid Offence Verification (Views)",
+    "Name": "_cp_covidoffenceverification_views",
+    "RelatedEntityName": "Covid Offence Verification",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "2933cc55-ccd0-4ef1-a396-b8c18d0fd940": "Covid Offence Verification Lookup View",
+      "3e6202ae-04ec-4f4b-b36a-fef91cd65cad": "Covid Offence Verification Advanced Find View",
+      "5d2fc760-92f0-4adc-a64b-19cc25e0b1fa": "Active Covid Offence Verification",
+      "83ad1751-a3d0-46d2-b6f0-dca7ac97e42a": "Inactive Covid Offence Verification",
+      "cd648b76-4df0-4743-9196-e5ea606eb6f6": "Covid Offence Verification Associated View"
+    }
+  },
+  {
+    "DisplayName": "Status (Covid Offence Verification)",
+    "Name": "cp_covidoffenceverification_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Covid Offence Verification"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Covid Offence Verification",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Covid Offence Verification)",
+    "Name": "cp_covidoffenceverification_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Covid Offence Verification"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Covid Offence Verification",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Verified (Covid Offence Verification)",
+    "Name": "cp_cp_covidoffenceverification_verified",
+    "OptionSetInfoNameMapping": {
+      "0": "No",
+      "1": "Yes"
+    },
+    "OptionSetIsBooleanValued": true,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "cp_verified",
+        "OptionSetReferenceEntityName": "Covid Offence Verification"
+      }
+    },
+    "OptionSetTypeKey": "BooleanType",
+    "RelatedColumnInvariantName": "cp_verified",
+    "RelatedEntityName": "Covid Offence Verification",
+    "Type": "OptionSetInfo"
+  }
+]

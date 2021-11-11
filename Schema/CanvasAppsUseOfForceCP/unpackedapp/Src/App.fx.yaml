@@ -1,0 +1,381 @@
+App As appinfo:
+    BackEnabled: =false
+    OnStart: |
+        =Set(
+            glbAppVersion,
+            1
+        );
+        Set(gblLoading1,false);
+        //this value is a placeholder which is updated by the build pipeline, don't edit it manually
+        //its commented it out to avoid it being formatted, which prevents the pipeline from finding it
+        //Basically - leave it alone !
+        //Set(glbAppVersion,1);
+        Set(
+            connectionstatus,
+            ""
+        );
+        Set(
+            Green,
+            "Cannot be numbers"
+        );
+        If(
+            Radio_specially_trained.Selected.Value = "Yes",
+            Set(
+                Carryingcedvis,
+                true
+            );
+            Set(
+                ycarryingced,
+                ycarryingced + 150
+            )
+        );
+        If(
+            Radio_specially_trained.Selected.Value = "No",
+            Set(
+                Carryingcedvis,
+                false
+            );
+            Set(
+                ycarryingced,
+                0
+            )
+        );
+        Set(
+            ytasertactics,
+            0
+        );
+        Set(
+            Injury1,
+            0
+        );
+        Set(
+            agecalc,
+            If(
+                Month(Now()) < Month(DatePicker_person_involved.SelectedDate) Or ((Month(Now()) = Month(DatePicker_person_involved.SelectedDate) && Day(Now()) < Day(DatePicker_person_involved.SelectedDate))),
+                Year(Now()) - Year(DatePicker_person_involved.SelectedDate) - 1,
+                Year(Now()) - Year(DatePicker_person_involved.SelectedDate)
+            )
+        );
+        Set(
+            Personinvolved1,
+            0
+        );
+        Set(
+            Personinvolved2,
+            0
+        );
+        Set(
+            Injury2,
+            0
+        );
+        Set(
+            ytaseruse,
+            0
+        );
+        Set(
+            ytasertimes,
+            0
+        );
+        Set(
+            ystaff,
+            0
+        );
+        Set(
+            z,
+            0
+        );
+        Set(
+            i,
+            0
+        );
+        Set(
+            ceddevicevis,
+            false
+        );
+        Set(
+            cedusetaservis,
+            false
+        );
+        Set(
+            cedtimesusedvis,
+            false
+        );
+        Set(
+            weaponassault,
+            false
+        );
+        Set(
+            yincedentchar,
+            0
+        );
+        Set(
+            Carryingcedvis,
+            false
+        );
+        Set(
+            ycarryingced,
+            0
+        );
+        Set(
+            ysingleofficer,
+            0
+        );
+        Set(
+            validationwarning,
+            false
+        );
+        Set(
+            incidentnumbervar,
+            "CP" & "-" & Text(
+                DateAdd(
+                    DatePicker_incident.SelectedDate,
+                    0
+                ),
+                "[$-en-GB]yyyymmdd"
+            ) & "-" & Txt_incident_suffix
+        );
+        Set(
+            officermail,
+            Lower(User().Email)
+        );
+        LoadData(
+            'Use of force offline',
+            "Use of force offline",
+            true
+        );
+        LoadData(
+            Tactictsoffline,
+            "Tactictsoffline",
+            true
+        );
+        
+        LoadData(
+            Ageoffline,
+            "Ageoffline",
+            true
+        );
+        LoadData(
+            ActiveCustomerSettingsOffline,
+            "ActiveCustomerSettingsOffline",
+            true
+        );
+        LoadData(
+            LengthOffserviceoffline,
+            "LengthOffserviceoffline",
+            true
+        );
+        LoadData(
+            Lengthofpsafetytrainigoffline,
+            "Lengthofpsafetytrainigoffline",
+            true
+        );
+        LoadData(
+            LengthPSUoffline,
+            "LengthPSUoffline",
+            true
+        );
+        LoadData(
+            Placeoffline,
+            "Placeoffline",
+            true
+        );
+        LoadData(
+            SubjectBehaviouroffline,
+            "SubjectBehaviouroffline",
+            true
+        );
+        LoadData(
+            OfficerThreatenedoffline,
+            "OfficerThreatenedoffline",
+            true
+        );
+        LoadData(
+            ImpactFactoroffline,
+            "ImpactFactoroffline",
+            true
+        );
+        LoadData(
+            OfficerDutyoffline,
+            "OfficerDutyoffline",
+            true
+        );
+        LoadData(
+            AssaultDetailsoffline,
+            "AssaultDetailsoffline",
+            true
+        );
+        LoadData(
+            Genderoffline,
+            "Genderoffline",
+            true
+        );
+        LoadData(
+            TaserDeviceoffline,
+            "TaserDeviceoffline",
+            true
+        );
+        LoadData(
+            TaserUseoffline,
+            "TaserUseoffline",
+            true
+        );
+        LoadData(
+            TaserBodyAreaUseoffline,
+            "TaserBodyAreaUseoffline",
+            true
+        );
+        LoadData(
+            TaserAreaUsedFrontoffline,
+            "TaserAreaUsedFrontoffline",
+            true
+        );
+        LoadData(
+            TaserAreaUsedBackoffline,
+            "TaserAreaUsedBackoffline",
+            true
+        );
+        LoadData(
+            FirearmUseoffline,
+            "FirearmUseoffline",
+            true
+        );
+        LoadData(
+            InjuryDetailoffline,
+            "InjuryDetailoffline",
+            true
+        );
+        LoadData(
+            AdditionalNameTypeoffline,
+            "AdditionalNameTypeoffline",
+            true
+        );
+        LoadData(
+            PerceivedAgeoffline,
+            "PerceivedAgeoffline",
+            true
+        );
+        LoadData(
+            PerceivedEthnicityoffline,
+            "PerceivedEthnicityoffline",
+            true
+        );
+        LoadData(
+            SubjectRoleoffline,
+            "SubjectRoleoffline",
+            true
+        );
+        LoadData(
+            StaffTitleoffline,
+            "StaffTitleoffline",
+            true
+        );
+        LoadData(
+            officerpresentoffline,
+            "officerpresentoffline",
+            true
+        );
+        LoadData(
+            useofforcereasonoffline,
+            "useofforcereasonoffline",
+            true
+        );
+        LoadData(
+            useofforceoutcomeoffline,
+            "useofforceoutcomeoffline",
+            true
+        );
+        If(
+            CountRows('Use of force offline') > 0,
+            Set(
+               Use_of_force_Primary_key,
+                Last('Use of force offline').Key
+            )
+        );
+        Set(
+            i,
+            Value(
+                Right(
+                    Use_of_force_Primary_key,
+                    1
+                )
+            )
+        );
+        LoadData(
+            tactictypeoffline,
+            "tactictypeoffline",
+            true
+        );
+        LoadData(
+            TPA,
+            "TPA",
+            true
+        );
+        LoadData(
+            Usersalllocal,
+            "Usersalllocal",
+            true
+        );
+        LoadData(
+            officerranklocal,
+            "officerranklocal",
+            true
+        );
+        LoadData(
+            Userlocal,
+            "Userlocal",
+            true
+        );
+        Reset(Txt_incident_suffix);
+        Reset(Txt_incident_no);
+        Set(
+            Txt_incident_suffixvar,
+            ""
+        );
+        ClearCollect(
+            PNCSearchReasonCode,
+            {
+                Reason: "Vehicle and/or person stopped",
+                ReasonCode: 01
+            },
+            {
+                Reason: "Moving vehicle",
+                ReasonCode: 02
+            },
+            {
+                Reason: "Abandoned or parked and unattended vehicle",
+                ReasonCode: 03
+            },
+            {
+                Reason: "Vehicle involved in a road accident",
+                ReasonCode: 04
+            },
+            {
+                Reason: "Subject of process or investigation",
+                ReasonCode: 5
+            },
+            {
+                Reason: "Administration",
+                ReasonCode: 06
+            },
+            {
+                Reason: "Enquiries relating to family protection issues",
+                ReasonCode: 07
+            },
+            {
+                Reason: "On behalf of an authorised agency",
+                ReasonCode: 08
+            },
+            {
+                Reason: "Record creation, updates, confirmation, broadcasts, etc",
+                ReasonCode: 09
+            },
+            {
+                Reason: "Transaction log and other audit checks",
+                ReasonCode: 00
+            }
+        );
+        Set(
+            PNCselection,
+            false
+        );
+

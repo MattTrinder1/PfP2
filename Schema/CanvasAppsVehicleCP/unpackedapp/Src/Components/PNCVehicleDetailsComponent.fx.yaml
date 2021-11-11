@@ -1,0 +1,330 @@
+PNCVehicleDetailsComponent As CanvasComponent:
+    DLCheckVariable: =true
+    Fill: =RGBA(0, 0, 0, 0)
+    Height: =896
+    tableValue: |-
+        = Table({
+          markers: [{text: ""}],
+          make: "FORD(EUROPE)",
+          model: "MONDEO TITANIUM X BS ED T",
+          colour: "SILVER",
+          style: "5 DOOR SALOON",
+          registered: "JUL13",
+          cc: "1997",
+          vrnReg: "MM13YKW",
+          chassisNo: "WF0EXXGBBEDA54877",
+          engineNo: "DA54877",
+          velNumber: "NOT HELD",
+          velDate: "Y",
+          vroLit: "",
+          keeperNotify: "",
+          previousVRNReg: "",
+          motExpiry: "25/03/2000",
+          insuranceText: "INS: HELD",
+          hazardsFlag: "",
+          tagNumber: "VEL: NOT HELD",
+          noOfReports: 0,
+          reports: [],
+          keepers: [
+            {
+              regKeeper: "MR MATTHEW TRINDER",
+              ad1: "100 WOLVERTON ROAD",
+              ad2: "STONY STRATFORD",
+              ad3: "MILTON KEYNES BUCKS. MK11 1DW",
+              ad4: "",
+              ad5: "",
+              ad6: "",
+              keeperSince: "29/03/19"
+            }]}
+        
+        )
+    Width: =640
+    X: =0
+    Y: =0
+    ZIndex: =1
+
+    Canvas3_1 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =896
+        Width: =Parent.Width
+        Y: =
+        ZIndex: =1
+
+        DataCard7_1 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =1110
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            lbl_txtcolour_2 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Colour"
+                Width: =630
+                Y: =221
+                ZIndex: =1
+
+            lbl_model_3 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =Concatenate(First(PNCVehicleDetailsComponent.tableValue).make," / ",First(PNCVehicleDetailsComponent.tableValue).model)
+                Width: =630
+                Y: =181
+                ZIndex: =2
+
+            lbl_txtmodel_7 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Make/Model"
+                Width: =630
+                Y: =141
+                ZIndex: =3
+
+            lbl_make_11 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =First(First(PNCVehicleDetailsComponent.tableValue.markers).markers).Value.text
+                Width: =630
+                Y: =21
+                ZIndex: =4
+
+            lbl_txtmake_6 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Markers"
+                Width: =576
+                ZIndex: =5
+
+            lbl_colour_3 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =First(PNCVehicleDetailsComponent.tableValue).colour
+                Width: =630
+                Y: =261
+                ZIndex: =6
+
+            lbl_txtcc_3 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Engine CC"
+                Width: =630
+                Y: =461
+                ZIndex: =7
+
+            lbl_registered_3 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =First(PNCVehicleDetailsComponent.tableValue).registered
+                Width: =630
+                Y: =421
+                ZIndex: =8
+
+            lbl_txtregistered_2 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Date Of Reg"
+                Width: =630
+                Y: =381
+                ZIndex: =9
+
+            lbl_style_3 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =First(PNCVehicleDetailsComponent.tableValue).style
+                Width: =630
+                Y: =341
+                ZIndex: =10
+
+            lbl_txtstyle_2 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Style"
+                Width: =630
+                Y: =301
+                ZIndex: =11
+
+            lbl_cc_3 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =First(PNCVehicleDetailsComponent.tableValue).cc
+                Width: =630
+                Y: =501
+                ZIndex: =12
+
+            lbl_txtregkeeper_2 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Registered Keeper"
+                Width: =630
+                Y: =701
+                ZIndex: =13
+
+            lbl_txtengineno_2 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="EngineNo"
+                Width: =630
+                Y: =621
+                ZIndex: =14
+
+            lbl_chassisno_2 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =First(PNCVehicleDetailsComponent.tableValue).chassisNo
+                Width: =630
+                Y: =579
+                ZIndex: =15
+
+            lbl_txt_chassisno_2 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Chassis No"
+                Width: =630
+                Y: =541
+                ZIndex: =16
+
+            lbl_regkeeper_2 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: |
+                    =First(First(PNCVehicleDetailsComponent.tableValue.keepers).keepers).Value.regKeeper
+                Width: =630
+                Y: =741
+                ZIndex: =17
+
+            lbl_engineno_2 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =First(PNCVehicleDetailsComponent.tableValue).engineNo
+                Width: =630
+                X: =1
+                Y: =661
+                ZIndex: =18
+
+            lbl_txtkeepersince_6 As label:
+                Color: |-
+                    =If(First(PNCVehicleDetailsComponent.tableValue).insuranceText <> "INS: HELD", Red, RGBA(0, 0, 0, 1))
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Insurance Held"
+                Width: =630
+                Y: =781
+                ZIndex: =19
+
+            lbl_keepersince_6 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: |
+                    =First(PNCVehicleDetailsComponent.tableValue).insuranceText
+                Width: =630
+                Y: =821
+                ZIndex: =20
+
+            lbl_txtkeepersince_7 As label:
+                Color: =If(DateTimeValue(First(PNCVehicleDetailsComponent.tableValue).motExpiry) < Today(), Red, RGBA(0, 0, 0, 1))
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="MOT Expiry"
+                Width: =630
+                Y: =861
+                ZIndex: =21
+
+            lbl_keepersince_7 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =First(PNCVehicleDetailsComponent.tableValue).motExpiry
+                Width: =630
+                Y: =901
+                ZIndex: =22
+
+            lbl_txtkeepersince_8 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="VEL Serial No"
+                Width: =630
+                Y: =939
+                ZIndex: =23
+
+            lbl_keepersince_8 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =First(PNCVehicleDetailsComponent.tableValue).velNumber
+                Width: =630
+                Y: =979
+                ZIndex: =24
+
+            Rectangle4_6 As rectangle:
+                Fill: =RGBA(153, 153, 153, 0.51)
+                Height: =6
+                Visible: =false
+                Width: =640
+                Y: =1013
+                ZIndex: =25
+
+            lbl_make_12 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =First(PNCVehicleDetailsComponent.tableValue).vrnReg
+                Width: =630
+                Y: =101
+                ZIndex: =27
+
+            lbl_txtmake_7 As label:
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="VRM"
+                Width: =576
+                Y: =61
+                ZIndex: =28
+
+            lbl_txtkeepersince_12 As label:
+                Color: =If(First(PNCVehicleDetailsComponent.tableValue).velDate <> "Y",Red, RGBA(0, 0, 0, 1))
+                FontWeight: =Semibold
+                OnSelect: =
+                Size: =16
+                Text: ="Vehicle Excise Licence (Road Tax) Expiry Date "
+                Width: =630
+                Y: =1030
+                ZIndex: =29
+
+            lbl_keepersince_12 As label:
+                OnSelect: =
+                PaddingLeft: =20
+                Size: =16
+                Text: =First(PNCVehicleDetailsComponent.tableValue).velDate
+                Width: =630
+                Y: =1070
+                ZIndex: =30
+

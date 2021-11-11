@@ -1,0 +1,98 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_useforceoutcomes",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_useforceoutcome",
+    "MaxGetRowsCount": 2000,
+    "Name": "Use Force Outcomes",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "cp_name": "Name",
+      "cp_useforceoutcome_AsyncOperations": "System Jobs",
+      "cp_useforceoutcome_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_UseForceOutcome_cp_UseofForce_cp_Useof": "Uses of Force",
+      "cp_useforceoutcome_DuplicateBaseRecord": "Duplicate Records (cp_useforceoutcome_DuplicateBaseRecord)",
+      "cp_useforceoutcome_DuplicateMatchingRecord": "Duplicate Records (cp_useforceoutcome_DuplicateMatchingRecord)",
+      "cp_useforceoutcome_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_useforceoutcome_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_useforceoutcome_ProcessSession": "Process Sessions",
+      "cp_useforceoutcome_SyncErrors": "Sync Errors",
+      "cp_useforceoutcomeid": "Use Force Outcome",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Use Force Outcomes",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Use Force Outcomes (Views)",
+    "Name": "_cp_useforceoutcome_views",
+    "RelatedEntityName": "Use Force Outcomes",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "10ea7136-b87f-43c6-975d-bd81cf716e86": "Inactive Use Force Outcomes",
+      "5d225924-f0c7-4a9a-8de3-ca08f7747fb5": "Use Force Outcome Associated View",
+      "8e08264d-cdfc-40ad-9a93-3576f5090624": "Use Force Outcome Lookup View",
+      "9b4a11b4-1b47-43e1-bf1d-21255a893d82": "Active Use Force Outcomes",
+      "b7ac1612-1652-41e2-b6b2-62fe45246983": "Use Force Outcome Advanced Find View"
+    }
+  },
+  {
+    "DisplayName": "Status (Use Force Outcomes)",
+    "Name": "cp_useforceoutcome_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Use Force Outcomes"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Use Force Outcomes",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Use Force Outcomes)",
+    "Name": "cp_useforceoutcome_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Use Force Outcomes"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Use Force Outcomes",
+    "Type": "OptionSetInfo"
+  }
+]

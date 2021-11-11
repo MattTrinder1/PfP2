@@ -1,0 +1,1288 @@
+Scr_Counter_Signer_New As screen:
+    LoadingSpinnerColor: =RGBA(100, 118, 132, 1)
+    OnHidden: |-
+        =UpdateContext({resetCan:false})
+    OnVisible: |
+        =UpdateContext({resetCan:true});
+        If(Len(Dropdown_Witness_title.Selected.cp_name)>0,UpdateContext({madcolBA:White}),UpdateContext({madcolBA:LightGoldenRodYellow}));
+        If(Len(Txt_witnessforename.Text)>0,UpdateContext({madcolBB:Transparent}),UpdateContext({madcolBB:LightGoldenRodYellow}));
+        If(Len(Txt_witness_surname.Text)>0,UpdateContext({madcolBC:Transparent}),UpdateContext({madcolBC:LightGoldenRodYellow}));
+        If(Len(Radio_Counter_same_address.Selected.Value)>0,UpdateContext({madcolBD:Transparent}),UpdateContext({madcolBD:LightGoldenRodYellow}));
+        /*If(Len(Txt_Witness_housename.Text)>0,UpdateContext({madcolBE:Transparent}),UpdateContext({madcolBE:LightGoldenRodYellow}));
+        If(Len(Txt_Witness_houseno.Text)>0,UpdateContext({madcolBF:Transparent}),UpdateContext({madcolBF:LightGoldenRodYellow}));*/
+        If(Len(Txt_Witness_address.Text)>0,UpdateContext({madcolBG:Transparent}),UpdateContext({madcolBG:LightGoldenRodYellow}));
+        If(Len(Txt_Witness_houseno.Text)=0 And Len(Txt_Witness_housename.Text)=0 ,UpdateContext({madcolBF:LightGoldenRodYellow});UpdateContext({madcolBE:LightGoldenRodYellow});,UpdateContext({madcolBF:White});UpdateContext({madcolBE:White}));
+        If(Len(TextInput_Witness_Postcode.Text)>0,UpdateContext({madcolBH:Transparent}),UpdateContext({madcolBH:LightGoldenRodYellow}));
+        If(Len(Dropdown_CounterSigner_Relationship.Selected.cp_name)>0,UpdateContext({madcolBI:White}),UpdateContext({madcolBI:LightGoldenRodYellow}));
+        
+        
+        /*Set(madcolBA,LightGoldenRodYellow);UpdateContext({madcolBA:LightGoldenRodYellow});
+        Set(madcolBB,LightGoldenRodYellow);UpdateContext({madcolBB:LightGoldenRodYellow});
+        Set(madcolBC,LightGoldenRodYellow);UpdateContext({madcolBC:LightGoldenRodYellow});
+        Set(madcolBD,LightGoldenRodYellow);UpdateContext({madcolBD:LightGoldenRodYellow});
+        Set(madcolBE,LightGoldenRodYellow);UpdateContext({madcolBE:LightGoldenRodYellow});
+        Set(madcolBF,LightGoldenRodYellow);UpdateContext({madcolBF:LightGoldenRodYellow});
+        Set(madcolBG,LightGoldenRodYellow);UpdateContext({madcolBG:LightGoldenRodYellow});
+        Set(madcolBH,LightGoldenRodYellow);UpdateContext({madcolBH:LightGoldenRodYellow});
+        Set(madcolBI,LightGoldenRodYellow);UpdateContext({madcolBI:LightGoldenRodYellow});
+        Set(madcolBJ,LightGoldenRodYellow);UpdateContext({madcolBJ:LightGoldenRodYellow});
+        Set(madcolBK,LightGoldenRodYellow);UpdateContext({madcolBK:LightGoldenRodYellow});
+        Set(madcolBL,LightGoldenRodYellow);UpdateContext({madcolBL:LightGoldenRodYellow});
+        Set(madcolBM,LightGoldenRodYellow);UpdateContext({madcolBM:LightGoldenRodYellow});
+        Set(madcolBN,LightGoldenRodYellow);UpdateContext({madcolBN:LightGoldenRodYellow});
+        Set(madcolBO,LightGoldenRodYellow);UpdateContext({madcolBO:LightGoldenRodYellow});
+        Set(madcolBP,LightGoldenRodYellow);UpdateContext({madcolBP:LightGoldenRodYellow});*/
+        If(
+            Radio_Witness_Additional_name.Selected.Value = "Yes" ,
+            UpdateContext({countersigneradditionalname: true});Set(y7,250);UpdateContext({y7:250}));
+            If(
+            Radio_Witness_Additional_name.Selected.Value = "No",
+            UpdateContext({countersigneradditionalname: false});Set(y7,0);UpdateContext({y7:0}));
+        
+            If(Len(Radio_Witness_Additional_name.Selected.Value) = 0 , 
+                UpdateContext({countersigneradditionalname: false});Set(y7,0);UpdateContext({y7:0}));
+        If(IsBlank(LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).WitnessSigCounterConsent) Or IsBlank(LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).WitnessSignatureCounter) ,Set(CounterRO,DisplayMode.Edit),Set(CounterRO,DisplayMode.Disabled));
+        
+        
+        
+               
+        
+        
+        
+        
+        
+        
+        
+        
+        /*If(IsBlank(LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).'WitnessSigCounterConsent') And IsBlank(LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).'WitnessSignatureCounter'),Set(CounterRO,*/
+        
+        If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value ="Yes" And 
+        Len(Dropdown_Witness_title.Selected.cp_name)>0 And
+         Len(Txt_witnessforename.Text)>0 And
+          Len(Txt_witness_surname.Text)>0 And
+           Len(Radio_Counter_same_address.Selected.Value)>0 And
+            Len(Txt_Witness_housename.Text)>0 And
+             (!IsBlank(Txt_Witness_houseno.Text) Or !IsBlank(Txt_Witness_housename.Text)) And
+              Len(Txt_Witness_address.Text)>0 And
+               Len(TextInput_Witness_Postcode.Text)>0 And 
+               Len(Dropdown_CounterSigner_Relationship.Selected.cp_name)>0, Set(countvis1,true); UpdateContext({countvis1:true});Set(ysandscount,820);UpdateContext({ysandscount:820});,Set(ysandscount,0);UpdateContext({ysandscount:0});Set(countvis1,false); UpdateContext({countvis1:false}););
+        
+        
+        
+        
+        
+        
+        If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value= "Yes" And ycounts = 0, Set(ysandscount,820);UpdateContext({ysandscount:820}); Set(countvis,true);UpdateContext({countvis:true}); Set(ycounts, 2200); UpdateContext({ycounts:2200}));
+        If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value= "No" , Set(ysandscount,0);UpdateContext({ysandscount:0});Set(countvis,false);UpdateContext({countvis:false}); Set(ycounts, 0); UpdateContext({ycounts:0}));
+        If(Len(Radio_Yes_No_Counter_signer_reuqired.Selected.Value) =0,Set(ysandscount,0);UpdateContext({ysandscount:0}); Set(ycounts, 0); UpdateContext({ycounts:0});Set(countvis,false);UpdateContext({countvis:false}););
+        If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value ="Yes" And Radio_Witness_Additional_name.Selected.Value="Yes",Set(countersigneradditionalname,true);UpdateContext({countersigneradditionalname:true}););
+        If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value ="Yes" And Radio_Witness_Additional_name.Selected.Value="No",Set(countersigneradditionalname,false);UpdateContext({countersigneradditionalname:false}););
+        If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value ="Yes" And Len(Radio_Witness_Additional_name.Selected.Value) =0,Set(countersigneradditionalname,false);UpdateContext({countersigneradditionalname:false}););
+        If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value ="No",Set(countersigneradditionalname,false);UpdateContext({countersigneradditionalname:false}););
+        
+        
+        If(Len(Radio_Yes_No_Counter_signer_reuqired.Selected.Value)>0,UpdateContext({madcolBBD:Transparent}),UpdateContext({madcolBBD:LightGoldenRodYellow}));
+        
+        
+        If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value="No",Reset(Dropdown_Witness_title);Reset(Txt_witnessforename);Reset(Txt_witness_surname);Reset(Dropdown_Witness_additional_name_type);Reset('Txt_witness_additional name');Reset(Radio_Witness_Additional_name);Reset(Radio_Counter_same_address);Reset(Txt_Witness_housename);Reset(Txt_Witness_houseno);Reset(Txt_Witness_address);Reset(TextInput_Witness_District);Reset(TextInput_Witness_Town);Reset(TextInput_Witness_County);Reset(TextInput_Witness_Postcode);Reset(Dropdown_CS_country);Reset(Dropdown_CounterSigner_Relationship);Reset(TextInput_Witness_Phone_Number);Reset(TextInput_Witness_Work_Telelphone);Reset(TextInput_Witness_Email);Reset(TextInput_Witness_Evening_Telephone););
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+
+    "'exit icon 3_18' As icon.Cancel":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =563
+        Y: =11
+        ZIndex: =2
+
+    "'Back Icon 2_18' As icon.ArrowLeft":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_Statements_Home_screen,ScreenTransition.UnCover)
+        X: =32
+        Y: =11
+        ZIndex: =3
+
+    "'Canvas_Witness Details_2' As fluidGrid.fluidGridWithBlankCard":
+        BorderThickness: =0
+        Height: =1048
+        Width: =Parent.Width
+        Y: =RectQuickActionBar2_9.Y + RectQuickActionBar2_9.Height
+        ZIndex: =4
+
+        "'DataCard_Witness Details_3' As dataCard":
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =383
+            Visible: =resetCan
+            Width: =Parent.Width
+            X: =0
+            Y: =0+ycounts+y7
+            ZIndex: =1
+
+            Dropdown_CounterSigner_key As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+                ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                Default: =Statement_Primary_key /*LookUp('Statement offline',Key=Statement_Primary_key).Key*/
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                Items: ='Statement offline'.Key
+                OnChange: |-
+                    =/*If(LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).WitnessSignature =SampleImage,Set(signreadonly,DisplayMode.Edit),Set(signreadonly,DisplayMode.Disabled));*/
+                    
+                    /*If(IsBlank(LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).WitnessSigCounterConsent) Or IsBlank(LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).WitnessSignatureCounter) ,Set(CounterRO,DisplayMode.Edit),Set(CounterRO,DisplayMode.Disabled));*/
+                    
+                    
+                    If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value= "Yes" And ycounts = 0, Set(ysandscount,820);UpdateContext({ysandscount:820}); Set(countvis,true);UpdateContext({countvis:true}); Set(ycounts, 2200); UpdateContext({ycounts:2200}));
+                    If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value= "No" , Set(ysandscount,0);UpdateContext({ysandscount:0});Set(countvis,false);UpdateContext({countvis:false}); Set(ycounts, 0); UpdateContext({ycounts:0}));
+                    If(Len(Radio_Yes_No_Counter_signer_reuqired.Selected.Value) =0,Set(ysandscount,0);UpdateContext({ysandscount:0}); Set(ycounts, 0); UpdateContext({ycounts:0});Set(countvis,false);UpdateContext({countvis:false}););
+                    If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value ="Yes" And Radio_Witness_Additional_name.Selected.Value="Yes",Set(countersigneradditionalname,true);UpdateContext({countersigneradditionalname:true}););
+                    If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value ="Yes" And Radio_Witness_Additional_name.Selected.Value="No",Set(countersigneradditionalname,false);UpdateContext({countersigneradditionalname:false}););
+                    If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value ="Yes" And Len(Radio_Witness_Additional_name.Selected.Value) =0,Set(countersigneradditionalname,false);UpdateContext({countersigneradditionalname:false}););
+                    If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value ="No",Set(countersigneradditionalname,false);UpdateContext({countersigneradditionalname:false}););
+                PressedColor: =RGBA(255, 255, 255, 1)
+                PressedFill: =RGBA(0, 18, 107, 1)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =30
+                ZIndex: =7
+
+            Dropdown_Witness_title As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+                ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).CSignerTitlename
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =CounterRO
+                Fill: =madcolBA
+                Height: =70
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                Items: =Titleoffline
+                OnChange: |-
+                    =If(Len(Dropdown_Witness_title.Selected.cp_name)>0,UpdateContext({madcolBA:White}),UpdateContext({madcolBA:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Dropdown_Witness_title.Selected.cp_name)>0,UpdateContext({madcolBA:White}),UpdateContext({madcolBA:LightGoldenRodYellow}))
+                PressedColor: =RGBA(255, 255, 255, 1)
+                PressedFill: =RGBA(0, 18, 107, 1)
+                Reset: =Allreset
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Visible: =countvis
+                Width: =545
+                X: =40
+                Y: =274
+                ZIndex: =8
+
+            Txt_witnessforename As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).CSignerForename
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =CounterRO
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,Transparent)
+                FocusedBorderThickness: =4
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                OnChange: =
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Visible: =countvis
+                Width: =545
+                X: =39
+                Y: =388
+                ZIndex: =9
+
+            Txt_witness_surname As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).CSignerSurname
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =CounterRO
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,Transparent)
+                FocusedBorderThickness: =4
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                OnChange: =
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Visible: =countvis
+                Width: =545
+                X: =39
+                Y: =502
+                ZIndex: =10
+
+            Label_asterik_title_2 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Visible: =countvis
+                Width: =22
+                X: =564
+                Y: =245
+                ZIndex: =11
+
+            Label_asterik_forename_1 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Visible: =countvis
+                Width: =22
+                X: =564
+                Y: =352
+                ZIndex: =12
+
+            Label_asterik_surname_13 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Visible: =countvis
+                Width: =22
+                X: =564
+                Y: =466
+                ZIndex: =13
+
+            Radio_Witness_Additional_name As radio:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                BorderStyle: =BorderStyle.None
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).CSignerHaveAdditionalNames
+                DisplayMode: =CounterRO
+                Height: =97
+                HoverColor: =RGBA(32, 54, 71, 1)
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(
+                        Radio_Witness_Additional_name.Selected.Value = "Yes" And y7=0,
+                        UpdateContext({countersigneradditionalname: true});UpdateContext({y7:y7+250}));
+                        If(
+                        Radio_Witness_Additional_name.Selected.Value = "No",
+                        UpdateContext({countersigneradditionalname: false});UpdateContext({y7:0}));
+                OnSelect: |-
+                    =If(
+                        Radio_Witness_Additional_name.Selected.Value = "Yes" And y7=0,
+                        UpdateContext({countersigneradditionalname: true});UpdateContext({y7:y7+250}));
+                        If(
+                        Radio_Witness_Additional_name.Selected.Value = "No",
+                        UpdateContext({countersigneradditionalname: false});UpdateContext({y7:0}));
+                       
+                RadioBorderColor: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                Size: =21
+                Visible: =countvis
+                Width: =546
+                X: =40
+                Y: =637
+                ZIndex: =14
+
+            Label_Witness_details_additonal_names_1 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =70
+                Size: =21
+                Text: ="Does the witness have additional names?"
+                Visible: =countvis
+                Width: =546
+                X: =39
+                Y: =581
+                ZIndex: =15
+
+            "'Txt_witness_additional name' As text":
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Statement_Primary_key=Dropdown_CounterSigner_key.Selected.Key).CSAdditionalName
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =CounterRO
+                FocusedBorderThickness: =4
+                Height: =70
+                HintText: ="Additional Name"
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                Reset: =Allreset
+                Size: =21
+                Visible: =countersigneradditionalname
+                Width: =545
+                X: =39
+                Y: =898
+                ZIndex: =16
+
+            Dropdown_Witness_additional_name_type As dropdown:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                ChevronBackground: =RGBA(116, 116, 116, 1)
+                ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+                ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).CSAdditionalNameType
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =CounterRO
+                Height: =80
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(205, 209, 213, 1)
+                Items: =Additionalnameoffline
+                PressedColor: =RGBA(255, 255, 255, 1)
+                PressedFill: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                SelectionFill: =RGBA(100, 118, 132, 1)
+                Size: =21
+                Visible: =countersigneradditionalname
+                Width: =546
+                X: =39
+                Y: =791
+                ZIndex: =17
+
+            Label_witness_details_additonal_name_type_1 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisplayMode: =CounterRO
+                Height: =70
+                Size: =21
+                Text: ="Additonal name type"
+                Visible: =countersigneradditionalname
+                Width: =546
+                X: =39
+                Y: =721
+                ZIndex: =18
+
+            Radio_Counter_same_address As radio:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                BorderStyle: =BorderStyle.None
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =//LookUp('Statement offline',Key=Dropdown_CounterSigner_details_key.Selected.Key).CounterSignerWitnessSameAddress
+                DisplayMode: =CounterRO
+                Fill: =madcolBD
+                Height: =97
+                HoverColor: =RGBA(32, 54, 71, 1)
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_Counter_same_address.Selected.Value)>0,UpdateContext({madcolBD:Transparent}),UpdateContext({madcolBD:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Radio_Counter_same_address.Selected.Value)>0,UpdateContext({madcolBD:Transparent}),UpdateContext({madcolBD:LightGoldenRodYellow}))
+                RadioBorderColor: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                Size: =21
+                Visible: =countvis
+                Width: =546
+                X: =38
+                Y: =768+y7
+                ZIndex: =19
+
+            Label_Counter_Signers_Same_address_as_witnesses As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =36
+                Size: =21
+                Text: ="Same address as witnesses ?"
+                Visible: =countvis
+                Width: =546
+                X: =38
+                Y: =721+y7
+                ZIndex: =20
+
+            Lbl_asteriks_78 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Visible: =countvis
+                Width: =22
+                X: =561
+                Y: =721+y7
+                ZIndex: =21
+
+            Txt_Witness_housename As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =If(Radio_Counter_same_address.Selected.Value="Yes",LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WHousename,LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).CSHousename)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(232, 244, 217, 1)
+                DisplayMode: =CounterRO
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,Transparent)
+                FocusedBorderThickness: =4
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                OnChange: |-
+                    =If(Len(Txt_Witness_houseno.Text)=0 And Len(Txt_Witness_housename.Text)=0 ,UpdateContext({madcolBF:LightGoldenRodYellow});UpdateContext({madcolBE:LightGoldenRodYellow});,UpdateContext({madcolBF:White});UpdateContext({madcolBE:White}));
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Visible: =countvis
+                Width: =545
+                X: =40
+                Y: =906+y7
+                ZIndex: =22
+
+            Txt_Witness_houseno As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: |
+                    =If(Radio_Counter_same_address.Selected.Value="Yes",LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WHouseNumber,LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).CSHouseNumber)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =CounterRO
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,Transparent)
+                FocusedBorderThickness: =4
+                Format: =TextFormat.Number
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                OnChange: |-
+                    =If(Len(Txt_Witness_houseno.Text)=0 And Len(Txt_Witness_housename.Text)=0 ,UpdateContext({madcolBF:LightGoldenRodYellow});UpdateContext({madcolBE:LightGoldenRodYellow});,UpdateContext({madcolBF:White});UpdateContext({madcolBE:White}));
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Visible: =countvis
+                Width: =545
+                X: =40
+                Y: =1023+y7
+                ZIndex: =23
+
+            Txt_Witness_address As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: |-
+                    =/*If(Radio_Counter_same_address.Selected.Value="Yes",ThisItem.WitnessStreet,ThisItem.CounterSignerStreet)*/
+                    If(Radio_Counter_same_address.Selected.Value="Yes",LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WStreet,LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).CSStreet)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =CounterRO
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,Transparent)
+                FocusedBorderThickness: =4
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                OnChange: =
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Visible: =countvis
+                Width: =545
+                X: =40
+                Y: =1136+y7
+                ZIndex: =24
+
+            TextInput_Witness_District As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: |-
+                    =/*If(Radio_Counter_same_address.Selected.Value="Yes",ThisItem.WitnessDistrict,ThisItem.CounterSignerDistrict)*/
+                    If(Radio_Counter_same_address.Selected.Value="Yes",LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WDistrict,LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).CSDistrict)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =CounterRO
+                FocusedBorderThickness: =4
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                OnChange: =
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Visible: =countvis
+                Width: =545
+                X: =40
+                Y: =1247+y7
+                ZIndex: =25
+
+            TextInput_Witness_Town As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: |-
+                    =/*If(Radio_Counter_same_address.Selected.Value="Yes",ThisItem.WitnessTown,ThisItem.CounterSignerTown)*/
+                    If(Radio_Counter_same_address.Selected.Value="Yes",LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WTown,LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).CSTown)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =CounterRO
+                FocusedBorderThickness: =4
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                Reset: =Allreset
+                Size: =21
+                Visible: =countvis
+                Width: =545
+                X: =40
+                Y: =1351+y7
+                ZIndex: =26
+
+            TextInput_Witness_County As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: |-
+                    =/*If(Radio_Counter_same_address.Selected.Value="Yes",ThisItem.WitnessCounty,ThisItem.CounterSignerCounty)*/
+                    If(Radio_Counter_same_address.Selected.Value="Yes",LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WCounty,LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).CSCounty)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =CounterRO
+                FocusedBorderThickness: =4
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                Reset: =Allreset
+                Size: =21
+                Visible: =countvis
+                Width: =545
+                X: =40
+                Y: =1461+y7
+                ZIndex: =27
+
+            TextInput_Witness_Postcode As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: |-
+                    =/*If(Radio_Counter_same_address.Selected.Value="Yes",ThisItem.WitnessPostCode,ThisItem.CounterSignerPostCode)*/
+                    If(Radio_Counter_same_address.Selected.Value="Yes",LookUp('Statement offline',Key=Dropdown_Witness_details_key.Selected.Key).WPostCode,LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).CSPostCode)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =CounterRO
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,Transparent)
+                FocusedBorderThickness: =4
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                OnChange: =
+                OnSelect: =
+                Reset: =Allreset
+                Size: =21
+                Visible: =countvis
+                Width: =545
+                X: =40
+                Y: =1576+y7
+                ZIndex: =28
+
+            Lbl_asteriks_76 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Visible: =countvis
+                Width: =22
+                X: =561
+                Y: =994+y7
+                ZIndex: =30
+
+            Lbl_asteriks_75 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Visible: =countvis
+                Width: =22
+                X: =561
+                Y: =868+y7
+                ZIndex: =31
+
+            Label_asterik_surname_16 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Visible: =countvis
+                Width: =22
+                X: =561
+                Y: =1101+y7
+                ZIndex: =32
+
+            Lbl_asteriks_77 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Visible: =countvis
+                Width: =22
+                X: =561
+                Y: =1545+y7
+                ZIndex: =33
+
+            Label_CounterSigner_Relationship_to_witness_1 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =70
+                Size: =21
+                Text: ="Relationship to the witness"
+                Visible: =countvis
+                Width: =521
+                X: =40
+                Y: =1769+y7
+                ZIndex: =34
+
+            Dropdown_CounterSigner_Relationship As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(32, 54, 71, 1)
+                ChevronBackground: =RGBA(116, 116, 116, 1)
+                ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+                ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).CSRelationname
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =CounterRO
+                Fill: =madcolBI
+                Height: =70
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(205, 209, 213, 1)
+                Items: =Relationshiptowitnessoffline
+                OnChange: |-
+                    =If(Len(Dropdown_CounterSigner_Relationship.Selected.cp_name)>0,UpdateContext({madcolBI:White}),UpdateContext({madcolBI:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Dropdown_CounterSigner_Relationship.Selected.cp_name)>0,UpdateContext({madcolBI:White}),UpdateContext({madcolBI:LightGoldenRodYellow}))
+                PressedColor: =RGBA(255, 255, 255, 1)
+                PressedFill: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                SelectionFill: =RGBA(100, 118, 132, 1)
+                Size: =21
+                Visible: =countvis
+                Width: =545
+                X: =40
+                Y: =1839+y7
+                ZIndex: =35
+
+            Label_asterisk_21 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =59
+                Size: =21
+                Text: ="*"
+                Visible: =countvis
+                Width: =25
+                X: =565
+                Y: =1780+y7
+                ZIndex: =36
+
+            TextInput_Witness_Phone_Number As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).CSPhoneNumber
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =CounterRO
+                FocusedBorderThickness: =4
+                Format: =TextFormat.Number
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                Reset: =Allreset
+                Size: =21
+                Visible: =countvis
+                Width: =545
+                X: =40
+                Y: =1960+y7
+                ZIndex: =37
+
+            TextInput_Witness_Email As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).CSEmail
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =CounterRO
+                FocusedBorderThickness: =4
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(0, 18, 107, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(186, 202, 226, 1)
+                Reset: =Allreset
+                Size: =21
+                Visible: =countvis
+                Width: =545
+                X: =40
+                Y: =2189+y7
+                ZIndex: =38
+
+            TextInput_Witness_Evening_Telephone As text:
+                BorderColor: =RGBA(166, 166, 166, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).CSEveningNumber
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =CounterRO
+                FocusedBorderThickness: =4
+                Format: =TextFormat.Number
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(32, 54, 71, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(205, 209, 213, 1)
+                Reset: =Allreset
+                Size: =21
+                Visible: =countvis
+                Width: =545
+                X: =40
+                Y: =2303+y7
+                ZIndex: =39
+
+            TextInput_Witness_Work_Telelphone As text:
+                BorderColor: =RGBA(166, 166, 166, 1)
+                BorderThickness: =2
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).CSWorkNumber
+                DisabledBorderColor: =RGBA(205, 209, 213, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =CounterRO
+                FocusedBorderThickness: =4
+                Format: =TextFormat.Number
+                Height: =70
+                HintText: =""
+                HoverBorderColor: =RGBA(32, 54, 71, 1)
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(205, 209, 213, 1)
+                OnSelect: =//Collect(Incident_Details, 'DataCard_Witness Details'.Update)
+                Reset: =Allreset
+                Size: =21
+                Visible: =countvis
+                Width: =545
+                X: =40
+                Y: =2081+y7
+                ZIndex: =40
+
+            Btn_save_28 As button:
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =CounterRO
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Semibold
+                Height: =72
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |
+                    =UpdateIf(
+                        'Statement offline',
+                        Key = Dropdown_CounterSigner_key.Selected.Key,
+                        {
+                            Countersingerneeded: Radio_Yes_No_Counter_signer_reuqired.Selected.Value,
+                            CSignerTitlename: Dropdown_Witness_title.Selected.cp_name,
+                            CSignerTitle: Dropdown_Witness_title.Selected.cp_lookupvalueid,
+                            CSignerForename: Txt_witnessforename.Text,
+                            CSignerSurname: Txt_witness_surname.Text,
+                            CSignerHaveAdditionalNames: Radio_Witness_Additional_name.Selected.Value,
+                            CSAddNmeTypename: Dropdown_Witness_additional_name_type.Selected.cp_name,
+                            CSAdditionalNameType: Dropdown_Witness_additional_name_type.Selected.cp_lookupvalueid,
+                            CSAdditionalName: 'Txt_witness_additional name'.Text,
+                            CSSameAddress: Radio_Counter_same_address.Selected.Value,
+                            CSHousename: Txt_Witness_housename.Text,
+                            CSHouseNumber: Txt_Witness_houseno.Text,
+                            CSStreet: Txt_Witness_address.Text,
+                            CSDistrict: TextInput_Witness_District.Text,
+                            CSTown: TextInput_Witness_Town.Text,
+                            CSCounty: TextInput_Witness_County.Text,
+                            CSPostCode: TextInput_Witness_Postcode.Text,
+                            CSCountryname: Dropdown_CS_country.Selected.cp_name,
+                            CSCountry: Dropdown_CS_country.Selected.cp_lookupvalueid,
+                            CSPhoneNumber: TextInput_Witness_Phone_Number.Text,
+                            CSWorkNumber: TextInput_Witness_Work_Telelphone.Text,
+                            CSEveningNumber: TextInput_Witness_Evening_Telephone.Text,
+                            CSEmail: TextInput_Witness_Email.Text,
+                            CSRelationname: Dropdown_CounterSigner_Relationship.Selected.cp_name,
+                            CSRelationship: Dropdown_CounterSigner_Relationship.Selected.cp_lookupvalueid
+                        }
+                    );
+                    UpdateContext(
+                        {
+                            rec: LookUp(
+                                'Statement offline',
+                                Key = Dropdown_CounterSigner_key.Selected.Key
+                            )
+                        }
+                    );
+                    UpdateIf(
+                        'Statement offline',
+                        Key = Dropdown_CounterSigner_key.Selected.Key,
+                        {
+                            counterSignerValid: Or(
+                                rec.Countersingerneeded = "No",
+                                And(
+                                    rec.Countersingerneeded = "Yes",
+                                    !IsBlank(rec.CSignerTitle),
+                                    !IsBlank(rec.CSignerForename),
+                                    !IsBlank(rec.CSignerSurname),
+                                    !IsBlank(rec.CSSameAddress),
+                                    Or(
+                                        !IsBlank(rec.CSHouseNumber),
+                                        !IsBlank(rec.CSHousename)
+                                    ),
+                                    !IsBlank(rec.CSStreet),
+                                    !IsBlank(rec.CSPostCode),
+                                    !IsBlank(rec.CSRelationname)
+                                )
+                            )
+                        }
+                    );
+                    SaveData(
+                        'Statement offline',
+                        "Statement offline"
+                    );
+                    Navigate(
+                        Scr_Statements_Home_screen,
+                        ScreenTransition.UnCover
+                    );
+                Size: =24
+                Text: ="Save and Continue"
+                Tooltip: =
+                Width: =550
+                X: =38
+                Y: =257+ycounts+y7
+                ZIndex: =41
+
+            Label_Counter_Signers_Same_address_as_witnesses_1 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =43
+                Size: =21
+                Text: ="Title"
+                Visible: =countvis
+                Width: =525
+                X: =40
+                Y: =231
+                ZIndex: =42
+
+            Label_Counter_Signers_Same_address_as_witnesses_2 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =38
+                Size: =21
+                Text: ="Street"
+                Visible: =countvis
+                Width: =523
+                X: =38
+                Y: =1095+y7
+                ZIndex: =43
+
+            Label_address As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =36
+                Size: =21
+                Text: ="House Name"
+                Visible: =countvis
+                Width: =527
+                X: =37
+                Y: =870+y7
+                ZIndex: =44
+
+            Label_Counter_Signers_Same_address_as_witnesses_4 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =42
+                Size: =21
+                Text: ="House Number"
+                Visible: =countvis
+                Width: =521
+                X: =40
+                Y: =981+y7
+                ZIndex: =45
+
+            Label_Counter_Signers_Same_address_as_witnesses_3 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =36
+                Size: =21
+                Text: ="County"
+                Visible: =countvis
+                Width: =546
+                X: =37
+                Y: =1421+y7
+                ZIndex: =46
+
+            Label_Counter_Signers_Same_address_as_witnesses_5 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =36
+                Size: =21
+                Text: ="Town"
+                Visible: =countvis
+                Width: =546
+                X: =37
+                Y: =1315+y7
+                ZIndex: =47
+
+            Label_Counter_Signers_Same_address_as_witnesses_6 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =36
+                Size: =21
+                Text: ="District"
+                Visible: =countvis
+                Width: =546
+                X: =40
+                Y: =1206+y7
+                ZIndex: =48
+
+            Label_Counter_Signers_Same_address_as_witnesses_7 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =29
+                Size: =21
+                Text: ="Post Code (CAPITALS ONLY)"
+                Visible: =countvis
+                Width: =521
+                X: =40
+                Y: =1540+y7
+                ZIndex: =49
+
+            Label_Counter_Signers_Same_address_as_witnesses_8 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =36
+                Size: =21
+                Text: ="Country"
+                Visible: =countvis
+                Width: =546
+                X: =40
+                Y: =1652+y7
+                ZIndex: =50
+
+            Label_Counter_Signers_Same_address_as_witnesses_9 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =36
+                Size: =21
+                Text: ="Phone Number"
+                Visible: =countvis
+                Width: =546
+                X: =40
+                Y: =1917+y7
+                ZIndex: =51
+
+            Label_Counter_Signers_Same_address_as_witnesses_10 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =36
+                Size: =21
+                Text: ="Work Telephone"
+                Visible: =countvis
+                Width: =546
+                X: =40
+                Y: =2037+y7
+                ZIndex: =52
+
+            Label_Counter_Signers_Same_address_as_witnesses_11 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =36
+                Size: =21
+                Text: ="Forename"
+                Visible: =countvis
+                Width: =528
+                X: =37
+                Y: =348
+                ZIndex: =53
+
+            Label_Counter_Signers_Same_address_as_witnesses_12 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =37
+                Size: =21
+                Text: ="Surname"
+                Visible: =countvis
+                Width: =527
+                X: =38
+                Y: =461
+                ZIndex: =54
+
+            Label_Counter_Signers_Same_address_as_witnesses_13 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =36
+                Size: =21
+                Text: ="Evening Telephone"
+                Visible: =countvis
+                Width: =546
+                X: =40
+                Y: =2260+y7
+                ZIndex: =55
+
+            Label_Counter_Signers_Same_address_as_witnesses_14 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =36
+                Size: =21
+                Text: ="Email"
+                Visible: =countvis
+                Width: =546
+                X: =40
+                Y: =2152+y7
+                ZIndex: =56
+
+            Label_Counter_Signers_Same_address_as_witnesses_15 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =59
+                Size: =21
+                Text: ="Do you require a counter signer?"
+                Width: =586
+                X: =40
+                Y: =100
+                ZIndex: =57
+
+            Label_asterik_title_5 As label:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =561
+                Y: =105
+                ZIndex: =58
+
+            Radio_Yes_No_Counter_signer_reuqired As radio:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                BorderStyle: =BorderStyle.None
+                Color: =RGBA(0, 0, 0, 1)
+                Default: =LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).Countersingerneeded
+                DisplayMode: =CounterRO
+                Height: =97
+                HoverColor: =RGBA(32, 54, 71, 1)
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |
+                    =If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value= "Yes" And ycounts = 0, Set(ysandscount,820);UpdateContext({ysandscount:820}); Set(countvis,true);UpdateContext({countvis:true}); Set(ycounts, 2200); UpdateContext({ycounts:2200}));
+                    If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value= "No" , Set(ysandscount,0);UpdateContext({ysandscount:0});Set(countvis,false);UpdateContext({countvis:false}); Set(ycounts, 0); UpdateContext({ycounts:0}));
+                    If(Len(Radio_Yes_No_Counter_signer_reuqired.Selected.Value) =0,Set(ysandscount,0);UpdateContext({ysandscount:0}); Set(ycounts, 0); UpdateContext({ycounts:0});Set(countvis,false);UpdateContext({countvis:false}););
+                    If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value ="Yes" And Radio_Witness_Additional_name.Selected.Value="Yes",Set(countersigneradditionalname,true);UpdateContext({countersigneradditionalname:true}););
+                    If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value ="Yes" And Radio_Witness_Additional_name.Selected.Value="No",Set(countersigneradditionalname,false);UpdateContext({countersigneradditionalname:false}););
+                    If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value ="Yes" And Len(Radio_Witness_Additional_name.Selected.Value) =0,Set(countersigneradditionalname,false);UpdateContext({countersigneradditionalname:false}););
+                    If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value ="No",Set(countersigneradditionalname,false);UpdateContext({countersigneradditionalname:false}););
+                    
+                    
+                    If(Len(Radio_Yes_No_Counter_signer_reuqired.Selected.Value)>0,UpdateContext({madcolBBD:Transparent}),UpdateContext({madcolBBD:LightGoldenRodYellow}));
+                    
+                    
+                    If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value="No",Reset(Dropdown_Witness_title);Reset(Txt_witnessforename);Reset(Txt_witness_surname);Reset(Dropdown_Witness_additional_name_type);Reset('Txt_witness_additional name');Reset(Radio_Witness_Additional_name);Reset(Radio_Counter_same_address);Reset(Txt_Witness_housename);Reset(Txt_Witness_houseno);Reset(Txt_Witness_address);Reset(TextInput_Witness_District);Reset(TextInput_Witness_Town);Reset(TextInput_Witness_County);Reset(TextInput_Witness_Postcode);Reset(Dropdown_CS_country);Reset(Dropdown_CounterSigner_Relationship);Reset(TextInput_Witness_Phone_Number);Reset(TextInput_Witness_Work_Telelphone);Reset(TextInput_Witness_Email);Reset(TextInput_Witness_Evening_Telephone););
+                OnSelect: |-
+                    =If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value= "Yes" And ycounts = 0, Set(ysandscount,820);UpdateContext({ysandscount:820}); Set(countvis,true);UpdateContext({countvis:true}); Set(ycounts, 2200); UpdateContext({ycounts:2200}));
+                    If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value= "No" , Set(ysandscount,0);UpdateContext({ysandscount:0});Set(countvis,false);UpdateContext({countvis:false}); Set(ycounts, 0); UpdateContext({ycounts:0}));
+                    If(Len(Radio_Yes_No_Counter_signer_reuqired.Selected.Value) =0,Set(ysandscount,0);UpdateContext({ysandscount:0}); Set(ycounts, 0); UpdateContext({ycounts:0});Set(countvis,false);UpdateContext({countvis:false}););
+                    If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value ="Yes" And Radio_Witness_Additional_name.Selected.Value="Yes",Set(countersigneradditionalname,true);UpdateContext({countersigneradditionalname:true}););
+                    If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value ="Yes" And Radio_Witness_Additional_name.Selected.Value="No",Set(countersigneradditionalname,false);UpdateContext({countersigneradditionalname:false}););
+                    If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value ="Yes" And Len(Radio_Witness_Additional_name.Selected.Value) =0,Set(countersigneradditionalname,false);UpdateContext({countersigneradditionalname:false}););
+                    /*If(Radio_Yes_No_Counter_signer_reuqired.Selected.Value ="No",Set(countersigneradditionalname,false);UpdateContext({countersigneradditionalname:false}););
+                    
+                    */
+                RadioBorderColor: =RGBA(32, 54, 71, 1)
+                Reset: =Allreset
+                Size: =21
+                Width: =546
+                X: =38
+                Y: =137
+                ZIndex: =59
+
+            Dropdown_CS_country As combobox:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronDisabledBackground: =RGBA(166, 166, 166, 1)
+                ChevronDisabledFill: =RGBA(244, 244, 244, 1)
+                ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
+                ChevronHoverFill: =RGBA(255, 255, 255, 1)
+                Default: =LookUp(countriesoffline,LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).CSCountryname=cp_name)
+                DefaultSelectedItems: =LookUp(countriesoffline,LookUp('Statement offline',Key=Dropdown_CounterSigner_key.Selected.Key).CSCountryname=cp_name)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayFields: =["cp_name"]
+                DisplayMode: =CounterRO
+                Fill: =White
+                Height: =70
+                HoverColor: =RGBA(0, 0, 0, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                InputTextPlaceholder: ="Find Country"
+                Items: =SortByColumns(countriesoffline,"cp_displaysequenceno",Ascending,"cp_name",Descending)
+                OnChange: =
+                PressedColor: =RGBA(255, 255, 255, 1)
+                PressedFill: =RGBA(230, 230, 230, 1)
+                Reset: =Allreset
+                SearchFields: =["cp_name"]
+                SearchItems: =Search(SortByColumns(countriesoffline,"cp_displaysequenceno",Ascending,"cp_name",Descending),Dropdown_CS_country.SearchText,"cp_name")
+                SelectionFill: =RGBA(153, 153, 153, 1)
+                SelectMultiple: =false
+                Size: =21
+                Visible: =countvis
+                Width: =545
+                X: =41
+                Y: =1699+y7
+                ZIndex: =60
+
+    RectQuickActionBar2_9 As rectangle:
+        BorderColor: =RGBA(0, 18, 107, 1)
+        Fill: =RGBA(56, 96, 178, 1)
+        Height: =88
+        Width: =Parent.Width
+        ZIndex: =5
+
+    Lbl_Person_2 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =88
+        Size: =21
+        Text: ="Counter Signer"
+        Width: =Parent.Width
+        ZIndex: =6
+
+    "'exit icon 3_19' As icon.Cancel":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =563
+        Y: =11
+        ZIndex: =7
+
+    "'Back Icon 2_19' As icon.ArrowLeft":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_Statements_Home_screen,ScreenTransition.UnCover)
+        X: =19
+        Y: =12
+        ZIndex: =8
+

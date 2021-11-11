@@ -1,0 +1,104 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_photos",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_photo",
+    "MaxGetRowsCount": 2000,
+    "Name": "Photos_1",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "cp_Covid": "Covid",
+      "cp_image": "Image",
+      "cp_imageid": "cp_ImageId",
+      "cp_photo_AsyncOperations": "System Jobs",
+      "cp_photo_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_photo_DuplicateBaseRecord": "Duplicate Records (cp_photo_DuplicateBaseRecord)",
+      "cp_photo_DuplicateMatchingRecord": "Duplicate Records (cp_photo_DuplicateMatchingRecord)",
+      "cp_photo_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_photo_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_photo_ProcessSession": "Process Sessions",
+      "cp_photo_SyncErrors": "Sync Errors",
+      "cp_photoid": "Photo",
+      "cp_phototitle": "Photo Title",
+      "cp_PocketNotebook": "Pocket Notebook",
+      "cp_suddendeath": "Sudden Death",
+      "cp_UseofForce": "Use of Force",
+      "cp_vehicleticket": "Vehicle Ticket",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Photos_1",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Photos_1 (Views)",
+    "Name": "_cp_photo_views",
+    "RelatedEntityName": "Photos_1",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "209a62a1-6fc6-4439-8304-12f69c1c20e9": "Photo Advanced Find View",
+      "b0c82ef2-cdbf-43d8-b99b-980c94c8bab2": "Photo Lookup View",
+      "b719937a-7f43-47ab-864d-6459305c091a": "Inactive Photos",
+      "e0a5ffc0-2311-43aa-a494-123901cdadb8": "Active Photos",
+      "e1154296-168d-4502-b022-cbcba92cc457": "Photo Associated View"
+    }
+  },
+  {
+    "DisplayName": "Status (Photos_1)",
+    "Name": "cp_photo_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Photos_1"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Photos_1",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Photos_1)",
+    "Name": "cp_photo_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Photos_1"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Photos_1",
+    "Type": "OptionSetInfo"
+  }
+]

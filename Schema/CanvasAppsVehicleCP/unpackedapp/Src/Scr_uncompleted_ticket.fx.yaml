@@ -1,0 +1,1544 @@
+Scr_uncompleted_ticket As screen:
+    OnVisible: |
+        =Set(checkclr,RGBA(128, 128, 128, 1));
+        Set(mandatoryfieldsvs,false);
+        
+        
+        Set(
+            AdditionalNames,
+            false
+        );
+        UpdateContext({AdditionalNames: false});
+        Set(
+            WitnessAge,
+            false
+        );
+        UpdateContext({WitnessAge: false});
+        Set(
+            y,
+            0
+        );
+        UpdateContext({y: 0});
+        Set(
+            y1,
+            0
+        );
+        UpdateContext({y1: 0});
+        Set(
+            y2,
+            0
+        );
+        UpdateContext({y2: 0});
+        Set(madcoldd,LightGoldenRodYellow);UpdateContext({madcoldd:LightGoldenRodYellow});
+        Set(madcolA,LightGoldenRodYellow);UpdateContext({madcolA:LightGoldenRodYellow});
+        Set(madcolB,LightGoldenRodYellow);UpdateContext({madcolB:LightGoldenRodYellow});
+        Set(madcolC,LightGoldenRodYellow);UpdateContext({madcolC:LightGoldenRodYellow});
+        Set(madcolD,LightGoldenRodYellow);UpdateContext({madcolD:LightGoldenRodYellow});
+        Set(madcolE,LightGoldenRodYellow);UpdateContext({madcolE:LightGoldenRodYellow});
+        Set(madcolF,LightGoldenRodYellow);UpdateContext({madcolF:LightGoldenRodYellow});
+        Set(madcolF,LightGoldenRodYellow);UpdateContext({madcolF:LightGoldenRodYellow});
+        Set(madcolG,LightGoldenRodYellow);UpdateContext({madcolG:LightGoldenRodYellow});
+        Set(madcolH,LightGoldenRodYellow);UpdateContext({madcolH:LightGoldenRodYellow});
+        Set(madcolI,LightGoldenRodYellow);UpdateContext({madcolI:LightGoldenRodYellow});
+        Set(madcolJ,LightGoldenRodYellow);UpdateContext({madcolJ:LightGoldenRodYellow});
+        Set(madcolK,LightGoldenRodYellow);UpdateContext({madcolK:LightGoldenRodYellow});
+        Set(madcolL,LightGoldenRodYellow);UpdateContext({madcolL:LightGoldenRodYellow});
+        Set(madcolM,LightGoldenRodYellow);UpdateContext({madcolM:LightGoldenRodYellow});
+        Set(madcolM,LightGoldenRodYellow);UpdateContext({madcolM:LightGoldenRodYellow});
+        Set(madcolN,LightGoldenRodYellow);UpdateContext({madcolN:LightGoldenRodYellow});
+        Set(madcolO,LightGoldenRodYellow);UpdateContext({madcolO:LightGoldenRodYellow});
+        Set(madcolP,LightGoldenRodYellow);UpdateContext({madcolP:LightGoldenRodYellow});
+        Set(madcolQ,LightGoldenRodYellow);UpdateContext({madcolQ:LightGoldenRodYellow});
+        Set(madcolR,LightGoldenRodYellow);UpdateContext({madcolR:LightGoldenRodYellow});
+        Set(madcolS,LightGoldenRodYellow);UpdateContext({madcolS:LightGoldenRodYellow});
+        Set(madcolT,LightGoldenRodYellow);UpdateContext({madcolT:LightGoldenRodYellow});
+        Set(madcolU,LightGoldenRodYellow);UpdateContext({madcolU:LightGoldenRodYellow});
+        Set(madcolV,LightGoldenRodYellow);UpdateContext({madcolV:LightGoldenRodYellow});
+        Set(madcolW,LightGoldenRodYellow);UpdateContext({madcolW:LightGoldenRodYellow});
+        Set(madcolX,LightGoldenRodYellow);UpdateContext({madcolX:LightGoldenRodYellow});
+        Set(madcolY,LightGoldenRodYellow);UpdateContext({madcolY:LightGoldenRodYellow});
+        Set(madcolZ,LightGoldenRodYellow);UpdateContext({madcolZ:LightGoldenRodYellow});
+
+    Lbl_header_5 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =27
+        Text: ="Unsubmitted Tickets"
+        Width: =640
+        ZIndex: =1
+
+    Icon3_11 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home,UnCover)
+        X: =13
+        Y: =11
+        ZIndex: =4
+
+    Gallery_unsubmitted As gallery.galleryVertical:
+        Height: =945
+        Items: ='Vehicle Offline'
+        Layout: =Layout.Vertical
+        TemplateSize: =411
+        Y: =87
+        ZIndex: =5
+
+        Label6_3 As label:
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.'Incident date'
+            Width: =252
+            X: =90
+            ZIndex: =1
+
+        Label_date_lbl As label:
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =
+            Width: =165
+            X: =6
+            Y: =40
+            ZIndex: =2
+
+        Label_surname_forename As label:
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.'Person Forename' & " "& ThisItem.'Person Surname' 
+            Width: =384
+            X: =116
+            Y: =60
+            ZIndex: =4
+
+        Icon_edit_incidents As icon.Edit:
+            Color: =RGBA(153, 153, 153, 1)
+            Icon: =Icon.Edit
+            OnSelect: |-
+                =Set(
+                    Txt_incident_suffixvar,
+                    ThisItem.'Incident suffix'
+                );
+                Set(
+                    Vehicle_Primary_key,
+                    ThisItem.Key
+                );
+                Set(
+                    incidentnumbervar,
+                    ThisItem.'Incident number'
+                );
+                
+                Navigate(
+                    Scr_home,
+                    ScreenTransition.UnCover
+                )
+            X: =555
+            Y: =16
+            ZIndex: =5
+
+        Label_date_unsub_incident As label:
+            FontWeight: =FontWeight.Semibold
+            Height: =60
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Date" //& Date(Year(ThisItem.'Vehicle MOT expiry'),Month(ThisItem.'Vehicle MOT expiry'),Day(ThisItem.'Vehicle MOT expiry')) & Year(ThisItem.'Vehicle MOT expiry') & IsBlank(ThisItem.'Vehicle MOT expiry')
+            Underline: =true
+            Width: =303
+            X: =6
+            ZIndex: =6
+
+        Label_inc_num_unsub_inc As label:
+            FontWeight: =FontWeight.Semibold
+            Height: =42
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: |-
+                ="Incident number:"
+            Underline: =true
+            Width: =250
+            Y: =298
+            ZIndex: =7
+
+        Label_Incident_key_1 As label:
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: |-
+                ="Incident Key:"
+            Underline: =true
+            Width: =233
+            X: =6
+            Y: =246
+            ZIndex: =8
+
+        Rectangle1 As rectangle:
+            BorderColor: =RGBA(230, 230, 230, 1)
+            Fill: =RGBA(204, 204, 204, 1)
+            Height: =2
+            OnSelect: =Select(Parent)
+            Width: =619
+            X: =6
+            Y: =401
+            ZIndex: =9
+
+        Icon_delete_incident As icon.Cancel:
+            BorderColor: =RGBA(153, 153, 153, 1)
+            Color: =RGBA(128, 128, 128, 1)
+            Icon: =Icon.Cancel
+            OnSelect: |
+                =/* Validation for Incident screen
+                If(Len(ThisItem.'Incident number')>0 
+                And Len(ThisItem.'Incident suffix')>0 
+                And Len(Text(ThisItem.'Incident date'))>0 
+                And Len(Radio_reporting_officer.Selected.Value) > 0 
+                And Len(Radio_single_officer.Selected.Value) > 0
+                //Validation for Vehicle Ticket part 1 screen
+                And Len(Text(ThisItem.'Vehicle Ticket pt 1 Offence Date'))>0 
+                And Len(Text(ThisItem.'Vehicle Ticket pt 1 Offence Time'))>0
+                And Len(ThisItem.'Vehicle Ticket pt 1 Issued to name')>0 
+                // Ticket type validation needs to be done.
+                And Len(ThisItem.'Reason for stop name')>0 
+                //Validation for Person screen
+                And Len(ThisItem.'Title name')>0 
+                And Len(ThisItem.'Person Forename')>0 
+                And Len(ThisItem.'Person Surname')>0 
+                And Len(ThisItem.'Date of Birth Known')>0 
+                And Len(Text(ThisItem.'Date of Birth'))>0
+                And Len(ThisItem.'House Name')>0 
+                And Len(ThisItem.'House Number')>0 
+                And Len(ThisItem.Street)>0 
+                And Len(ThisItem.District)>0 
+                And Len(ThisItem.PostCode)>0 
+                And Len(ThisItem.Country)>0 
+                And Len(ThisItem.'Preferred mean of contact name')>0 
+                And Len(ThisItem.'Preferred Contact Time')>0 
+                And Len(ThisItem.'Occupation Name')>0 
+                And Len(ThisItem.'Driving Licence Details')>0 
+                And Len(ThisItem.'Driving Licence Number ')>0 
+                And Len(ThisItem.'Foreign Licence Number')>0 
+                //Validation for Vehicle screen
+                And Len(ThisItem.VRM)>0 
+                And Len(ThisItem.'Vehicle Make name')>0 
+                And Len(ThisItem.'Vehicle Model')>0 
+                And Len(ThisItem.'Vehicle Colour name')>0 
+                And Len(ThisItem.'Restricted Vehicle')>0 
+                And Len(ThisItem.'Manual transmission')>0
+                And Len(Text(ThisItem.'Date of Registration'))>0 
+                And Len(ThisItem.'Up to date excise duty')>0 
+                //Validation for Location screen
+                And Len(ThisItem.'Location Description')>0
+                And Len(ThisItem.'Location street')>0 
+                And Len(ThisItem.'Location Town')>0 
+                And Len(ThisItem.'Location TPA name')>0
+                And Len(ThisItem.'Longitude & Latitude')>0 
+                And Len(ThisItem.'Officer Training Name')>0 
+                And Len(ThisItem.'Speed Limit name')>0
+                And Len(ThisItem.'Speed Detection method name')>0  ,*/
+                UpdateContext(
+                    {
+                        Vehiclepk: Patch(
+                            'Vehicle Ticket STGS',
+                            Defaults('Vehicle Ticket STGS'),
+                            {
+                                /*Incident Number Starts here */
+                                'Incident Number': ThisItem.'Incident number',
+                                'Incident Suffix': ThisItem.'Incident suffix',
+                                'Incident Date': ThisItem.'Incident date',
+                                'Entered By': ThisItem.'Entered by',
+                                /*Incident Number ends here */
+                         /*Vehicle Ticket Starts here */
+                'Offence Date/Time': ThisItem.'Vehicle Ticket pt 1 Offence Date' + ThisItem.'Vehicle Ticket pt 1 Offence Time',
+                                'Issued To': ThisItem.'Vehicle Ticket pt 1 Issued to',
+                                /*cp_tickettype:ThisItem.'Ticket Type Traffic Offence',
+                            'Ticket Type HORT1':Checkbox_HORT1.Value,
+                            'Ticket Type VDRS':Checkbox_VDRS.Value,
+                            'Ticket Type SECTION 165':Checkbox_Sec165.Value,
+                            'Ticket Type SECTION 59':Checkbox_Sec59.Value,
+                            'Ticket Type SECTION 163':Checkbox_163.Value,*/
+                                'Reason for Stopping': ThisItem.'Reason for stop',
+                                Photo1: ThisItem.'Vehicle Ticket pt 1 photo1',
+                                Photo2: ThisItem.'Vehicle Ticket pt 1 photo2',
+                                Photo3: ThisItem.'Vehicle Ticket pt 1 photo3',
+                                Photo4: ThisItem.'Vehicle Ticket pt 1 photo4',
+                                Photo5: ThisItem.'Vehicle Ticket pt 1 photo5',
+                                /*Vehicle Ticket ends here */
+                        /*Person Section starts here */
+                'Offender Title': ThisItem.Title,
+                                'Offender Forname': ThisItem.'Person Forename',
+                                'Offender Surname': ThisItem.'Person Surname',
+                                'Has additional names': If(
+                                    ThisItem.'Additonal Names' = "Yes",
+                                    'Has additional names (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Additonal Names' = "No",
+                                    'Has additional names (Vehicle Ticket STGS)'.No
+                                ),
+                                'Offender Additional Name Type': ThisItem.'Additional Name dropdown',
+                                'Offender Additional Name': ThisItem.'Additonal Name',
+                                'Offender Date Of Birth Known': If(
+                                    ThisItem.'Date of Birth Known' = "Yes",
+                                    'Offender Date Of Birth Known (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Date of Birth Known' = "No",
+                                    'Offender Date Of Birth Known (Vehicle Ticket STGS)'.No
+                                ),
+                                'Offender Birth Date': ThisItem.'Date of Birth',
+                                'Offender House Name': ThisItem.'House Name',
+                                'Offender House Number': ThisItem.'House Number',
+                                'Offender Street': ThisItem.Street,
+                                District: ThisItem.District,
+                                'Offender Town': ThisItem.Town,
+                                'Offender County': ThisItem.County,
+                                'Offender Postcode': ThisItem.PostCode,
+                                'Offender Country': ThisItem.Country,
+                                'Offender Preferred Contact Method': ThisItem.'Preferred mean of contact',
+                                ' Offender Home Phone': ThisItem.'Home phone',
+                                'Offender Work Phone': ThisItem.'Work Phone',
+                                'Offender Mobile Phone': ThisItem.'Mobile Phone',
+                                'Home Email': ThisItem.'Home Email',
+                                /*cp_ NEED TO ADD WORK EMAIL AND HOME EMAIL*/
+                                cp_newoffenderoccupation: TextInput_occupation.Text,
+                                'Offender Gender': ThisItem.Gender,
+                                'Offender Self Defined Ethnicity': ThisItem.'Self-defined Ethnicity',
+                                'Offender Officer Defined Ethnicity': ThisItem.'Officer-defined ethnicity',
+                                'Offender Driving Licence Known': If(
+                                    ThisItem.'Driving Licence Details' = "Yes",
+                                    'Offender Driving Licence Known (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Driving Licence Details' = "No",
+                                    'Offender Driving Licence Known (Vehicle Ticket STGS)'.No
+                                ),
+                                'Offender Driving Licence Number': ThisItem.'Driving Licence Number ',
+                                'Offender Licence Type': ThisItem.'Driving Licence Type',
+                                'Offender Licence Category': ThisItem.'Driving Licence Category',
+                                'Offender Licence Valid From': ThisItem.'Drving Licence Valid From',
+                                'Offender Licence Expiry': ThisItem.'Drving Licence expiry',
+                                'Offender Issue Number': ThisItem.'Driving Licence Issue Number',
+                                'Offender Penalty Points': ThisItem.'Driving Licence Penalty Points',
+                                'Offender Foreign Licence': If(
+                                    ThisItem.'Foreign Licence Details' = "Yes",
+                                    'Offender Foreign Licence (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Foreign Licence Details' = "No",
+                                    'Offender Foreign Licence (Vehicle Ticket STGS)'.No
+                                ),
+                                'Offender Foreign Licence Number': ThisItem.'Foreign Licence Number',
+                                'Offender Foreign Licence Country': ThisItem.'Foreign Licence Country',
+                                'Offender Alternative ID': ThisItem.'Alternative Foreign ID',
+                                /*Person Section ends here */
+                         /*Vehicle Section Starts here */
+                VRM: ThisItem.VRM,
+                                'Vehicle Make': ThisItem.'Vehicle Make',
+                                'Vehicle Make Other': ThisItem.'Vehicle Make other',
+                                'Vehicle Model': ThisItem.'Vehicle Model',
+                                'Vehicle Colour': ThisItem.'Vehicle Colour',
+                                'Engine Number': ThisItem.'Vehicle Engine Number',
+                                'Chassis Number': ThisItem.'Vehicle Chasis Number',
+                                'MOT Expiry': ThisItem.'Vehicle MOT expiry',
+                                'Engine CC': ThisItem.'Vehicle Engine CC',
+                                'Insurance Details Available': If(
+                                    ThisItem.'Insurance Details available ?' = "Yes",
+                                    'Insurance Details Available (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Insurance Details available ?' = "No",
+                                    'Insurance Details Available (Vehicle Ticket STGS)'.No
+                                ),
+                                'Insured By': ThisItem.'Insured by',
+                                'Insurance Number': ThisItem.'Insurance number',
+                                'Insurance Valid From': ThisItem.'Valid from',
+                                'Insurance Valid To': ThisItem.'Valid To',
+                                'Vehicle Notes': ThisItem.Notes,
+                                'Vehicle Role': ThisItem.'Vehicle Roles',
+                                'Restricted Vehicle': If(
+                                    ThisItem.'Restricted Vehicle' = "Yes",
+                                    'Restricted Vehicle (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Restricted Vehicle' = "No",
+                                    'Restricted Vehicle (Vehicle Ticket STGS)'.No
+                                ),
+                                'Manual Transmission': If(
+                                    ThisItem.'Manual transmission' = "Yes",
+                                    'Manual Transmission (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Manual transmission' = "No",
+                                    'Manual Transmission (Vehicle Ticket STGS)'.No
+                                ),
+                                'Date Of Registation': ThisItem.'Date of Registration',
+                                'Excise Duty Current': If(
+                                    ThisItem.'Up to date excise duty' = "Yes",
+                                    'Excise Duty Current (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Up to date excise duty' = "No",
+                                    'Excise Duty Current (Vehicle Ticket STGS)'.No
+                                ),
+                                /*Vehicle Section Ends here */
+                         /*Location Section */
+                Longitude: Value(ThisItem.Longitude),
+                                Latitude: Value(ThisItem.Latitude),
+                                'Location Description': ThisItem.'Location Description',
+                                'Location Street': ThisItem.'Location street',
+                                'Location Town': ThisItem.'Location Town',
+                                TPA: ThisItem.'Location TPA',
+                                /*Vehicle Ticket Pt2 Section */
+                                'Has MOT': If(
+                                    ThisItem.'Has valid MOT' = "Yes",
+                                    'Has MOT (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Has valid MOT' = "No",
+                                    'Has MOT (Vehicle Ticket STGS)'.No
+                                ),
+                                'Has Valid Insurance': If(
+                                    ThisItem.'Has valid Insurance' = "Yes",
+                                    'Has Valid Insurance (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Has valid Insurance' = "No",
+                                    'Has Valid Insurance (Vehicle Ticket STGS)'.No
+                                ),
+                                'Is Driver Keeper': If(
+                                    ThisItem.'Is driver Keeper' = "Yes",
+                                    'Is Driver Keeper (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Is driver Keeper' = "No",
+                                    'Is Driver Keeper (Vehicle Ticket STGS)'.No
+                                ),
+                                'Is Driver Supervised': If(
+                                    ThisItem.'Is driver supervised' = "Yes",
+                                    'Is Driver Supervised (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Is driver supervised' = "No",
+                                    'Is Driver Supervised (Vehicle Ticket STGS)'.No
+                                ),
+                                'Has L Plates': If(
+                                    ThisItem.'Has L plates' = "Yes",
+                                    'Has L Plates (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Has L plates' = "No",
+                                    'Has L Plates (Vehicle Ticket STGS)'.No
+                                ),
+                                'Has Passengers': If(
+                                    ThisItem.'Has Passengers' = "Yes",
+                                    'Has Passengers (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Has Passengers' = "No",
+                                    'Has Passengers (Vehicle Ticket STGS)'.No
+                                ),
+                                'On Motorway': If(
+                                    ThisItem.'On motorway' = "Yes",
+                                    'On Motorway (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'On motorway' = "No",
+                                    'On Motorway (Vehicle Ticket STGS)'.No
+                                ),
+                                'Use of Vehicle': ThisItem.'Use of vehicle',
+                                /*Vehicle Ticket Pt2 Section End */
+                              /*Sign and Submit Section */
+                          /*Sign and Submit Section End */
+                          /*Evidence Section */
+                          /*Required on all evidence(Yes) selections*/
+                'Statement Of': ThisItem.'Statement of',
+                                'Officer Training': ThisItem.'Officer Training',
+                                'Speed Limit': ThisItem.'Speed Limit',
+                                'Speed Detection Method': ThisItem.'Speed Detection method',
+                                /*Required on Following check/PolicePilot/Puma/VASCAR selections */
+                                'Driver/Observer': ThisItem.'Driver/Observer',
+                                'Marked/unmarked Car?': ThisItem.'Mark/Unmarked car',
+                                'Police Vehicle Number': ThisItem.'Police vehicle number',
+                                /*Required on Following Check*/
+                                'Distance Followed': ThisItem.'Distance followed (Miles)',
+                                'From Reference Point (FC)': ThisItem.'From reference point',
+                                'To Reference Check (FC)': ThisItem.'To reference point',
+                                'Recorded Speed (mph) (FC)': ThisItem.'Recorded speed (mph)',
+                                'Distance Behind': ThisItem.'Distance behind (metres)',
+                                'Speedometer Check': ThisItem.'Speedometer check date/time',
+                                /*Required on HandHeldRadar/Laser*/
+                                'Device Serial Number (Laser)': ThisItem.'Device serial number',
+                                'First Check (Laser)': ThisItem.' 1st device check date/time',
+                                'First Check Location (Laser)': ThisItem.'1st device check location',
+                                'Second Check (Laser)': ThisItem.'2nd device check date.time',
+                                'Second Check Location (Laser)': ThisItem.'2nd device check location',
+                                'Device Serial Number (Radar)': ThisItem.'Device serial number',
+                                'Recorded Speed (Laser)': ThisItem.'Recorded Speed',
+                                /*Required on PolicePilot/VASCAR/PUMA-SPEED-METER*/
+                                'Vehicle Was Seen': ThisItem.'Vehicle was seen',
+                                'From Reference Point': ThisItem.'Police pilot reference point A ',
+                                'To Reference Point': ThisItem.'Police pilot reference point B',
+                                'First Check (Radar)': ThisItem.'Police Pilot 1st device check/date time',
+                                'Second Check Location (Radar)': ThisItem.'Police Pilot 2nd device check/date time',
+                                /*needs recorded speed(MPH) */
+                                'Recorded Speed': ThisItem.'Police pilot recorded speed',
+                                /*and recording distance(Miles) */
+                                'Recording Distance (miles)': ThisItem.'Police pilot recording distance',
+                                /*Required on all evidence selections*/
+                                'Information From': ThisItem.'Information from',
+                                Officer: ThisItem.'Officer Name',
+                                'Vehicle Stopped': If(
+                                    ThisItem.'Vehicle Stopped ?' = "Yes",
+                                    'Vehicle Stopped (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Vehicle Stopped ?' = "No",
+                                    'Vehicle Stopped (Vehicle Ticket STGS)'.No
+                                ),
+                                'Driver Shown Reading': If(
+                                    ThisItem.'Driver Shown Reading ?' = "Yes",
+                                    'Driver Shown Reading (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Driver Shown Reading ?' = "No",
+                                    'Driver Shown Reading (Vehicle Ticket STGS)'.No
+                                ),
+                                Daylight: ThisItem.Daylight,
+                                'Street Lighting': ThisItem.'Street Lighting ',
+                                Weather: ThisItem.Weather,
+                                Visibility: ThisItem.Visibility,
+                                'Speed Limit Signs Present & Clear': If(
+                                    ThisItem.'Speed Limit signs present & clear' = "Yes",
+                                    'Speed Limit Signs Present & Clear (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Speed Limit signs present & clear' = "No",
+                                    'Speed Limit Signs Present & Clear (Vehicle Ticket STGS)'.No
+                                ),
+                                'Officer Statement': ThisItem.'Officer Statement',
+                                /*p_dateofoffendersignature:ThisItem.'Date/time of signature',*/
+                                'Officer Signature': ThisItem.'Officer Signature',
+                                /*Evidence No screen*/
+                                'Officer Signature (No Screen)': ThisItem.'Officer Signature ev:no '
+                            }
+                        ).'Vehicle Ticket STG'
+                    }
+                );
+                /*needs finishing after sunitha has added the fields. */
+                 /*Evidence Section End */ 
+                ForAll(
+                    TrOffOffline,
+                    Patch(
+                        'Vehicle Ticket Offences STGS',
+                        Defaults('Vehicle Ticket Offences STGS'),
+                        {
+                            'Vehicle Ticket STG': LookUp(
+                                'Vehicle Ticket STGS',
+                                'Vehicle Ticket STG' = Vehiclepk
+                            ),
+                            'Ticket Type': TicketTypeTrafficOffence,
+                            'Offence Code': OffenceCodeID,
+                            'Contains Speed Limit': If(
+                                ContainsSpeedLimitOffence = "Yes",
+                                'Contains Speed Limit (Vehicle Ticket Offences STGS)'.Yes,
+                                ContainsSpeedLimitOffence = "No",
+                                'Contains Speed Limit (Vehicle Ticket Offences STGS)'.No
+                            ),
+                            'NIP Given': If(
+                                NIPGiven = "Yes",
+                                'NIP Given (Vehicle Ticket Offences STGS)'.Yes,
+                                NIPGiven = "No",
+                                'NIP Given (Vehicle Ticket Offences STGS)'.No
+                            ),
+                            'NIP Not Required': If(
+                                NIPNotRequired = "Yes",
+                                'NIP Not Required (Vehicle Ticket Offences STGS)'.Yes,
+                                NIPNotRequired = "No",
+                                'NIP Not Required (Vehicle Ticket Offences STGS)'.No
+                            ),
+                            'Offender Reply': OffenderReply,
+                            'Traffic Offence Serial Number': TOSerialNo,
+                            'Traffic Offence Printed': If(
+                                TOPrinted = "Yes",
+                                'Traffic Offence Printed (Vehicle Ticket Offences STGS)'.Yes,
+                                TOPrinted = "No",
+                                'Traffic Offence Printed (Vehicle Ticket Offences STGS)'.No
+                            )
+                /*Traffic Offence section ends here */
+                ,
+                            'Document Type': Documents,
+                            'Check Or Record': 'Check or Record',
+                            'Produce Station': 'Produce Station',
+                            'HORT1 Serial Number': 'HORT1 Serial Number',
+                            'HORT1 Printed': If(
+                                'HORT1 Printed' = "Yes",
+                                'HORT1 Printed (Vehicle Ticket Offences STGS)'.Yes,
+                                'HORT1 Printed' = "No",
+                                'HORT1 Printed (Vehicle Ticket Offences STGS)'.No
+                            ),
+                            /*HORT1 ends here */
+                            'Reason For Using S163 Power': 'Reason for using s163 power',
+                            'Outcome Description': 'Description: Outcome of stop / reason for outcome',
+                            'Outcome of Stop': 'Outcome of stop / Reason for outcome',
+                            'Link Between Reason For Stop And Outcome': If(
+                                ThisItem.'Is there a link between the reason for the stop and the outcome' = "Yes",
+                                'Link Between Reason For Stop And Outcome (Vehicle Ticket Offences STGS)'.Yes,
+                                ThisItem.'Is there a link between the reason for the stop and the outcome' = "No",
+                                'Link Between Reason For Stop And Outcome (Vehicle Ticket Offences STGS)'.No
+                            ),
+                            /*S163 ends her*/
+                            Section: 'Section 3 or 34',
+                            'Warning or Seizure?': 'Warning or Seizure',
+                            'You - Wording1': 'You wording 1',
+                            'You - Wording3': 'You wording 3',
+                            'Driving Vehicle In': 'Driving the above vehicle in',
+                            'Driving Manner': 'and that driving was in a manner which',
+                            'S59 Recovery Garage': 'Recovery Garage',
+                            /*'Recovery Garage Company',*/
+                                /*'Recovery Telephone',*/
+                               /* 'Recovery Garage Address',*/
+                'Section 59 Printed': If(
+                                'Section 59 printed' = "Yes",
+                                'Section 59 Printed (Vehicle Ticket Offences STGS)'.Yes,
+                                'Section 59 printed' = "No",
+                                'Section 59 Printed (Vehicle Ticket Offences STGS)'.No
+                            ),
+                            /*S59 ends here*/
+                            Without: 'Without (Valid certificate or licence)',
+                            'Designated Station': 'Designated Station',
+                            'S165 Recovery Garage': 'Recovery Garage section 165',
+                            /*'Recovery Garage Address section 165',*/
+                    /*'Recovery Garage Telephone',*/
+                'Section 165 Printed': If(
+                                'Section 165 printed' = "Yes",
+                                'Section 165 Printed (Vehicle Ticket Offences STGS)'.Yes,
+                                'Section 165 printed' = "No",
+                                'Section 165 Printed (Vehicle Ticket Offences STGS)'.No
+                            ),
+                            /*s164 ends here*/
+                            'VDRS Offence Code': 'VDRS Offence Code',
+                            //'VDRS Offence Name',
+                    //'VDRS Offence Code',
+                'VDRS Details': 'VDRS details',
+                            'VDRS Printed': If(
+                                'VDRS printed' = "Yes",
+                                'VDRS Printed (Vehicle Ticket Offences STGS)'.Yes,
+                                'VDRS printed' = "No",
+                                'VDRS Printed (Vehicle Ticket Offences STGS)'.No
+                            ),
+                            'VDRS Serial Number': 'VDRS Serial Number'
+                        }
+                    )
+                );
+                UpdateContext(
+                    {
+                        stgkey: LookUp(
+                            Choices('Staging Entry Status'),
+                            Value = 'Staging Entry Status'.Invalid
+                        ).Value
+                    }
+                );
+                UpdateIf(
+                    'Vehicle Ticket STGS',
+                    Vehiclepk = 'Vehicle Ticket STG',
+                    {'Staging Entry Status': stgkey}
+                );
+                RemoveIf(
+                    'Vehicle Offline',
+                    Key = ThisItem.Key
+                );
+                RemoveIf(
+                    TrOffOffline,
+                    OffenceKey = ThisItem.Key
+                );
+                RemoveIf(
+                    Photos,
+                    Photokey = ThisItem.Key
+                );
+                RemoveIf(
+                    'Traffic Offence codes',
+                    OffenceKey = ThisItem.Key
+                );
+                RemoveIf(
+                    'Vdrs codes',
+                    OffenceKey = ThisItem.Key
+                );
+                /*UpdateContext({validationwarning:false});,UpdateContext({validationwarning:true}));*/
+                SaveData(
+                    'Vehicle Offline',
+                    "Vehicle Offline"
+                );
+                SaveData(
+                    TrOffOffline,
+                    "TrOffOffline"
+                );
+                SaveData(
+                    'Vdrs codes',
+                    "Vdrs codes"
+                );
+                SaveData(
+                    'Traffic Offence codes',
+                    "Traffic Offence codes"
+                );
+                SaveData(
+                    Photos,
+                    "PhotosCache"
+                );
+            X: =555
+            Y: =269
+            ZIndex: =10
+
+        Label_ticket_type As label:
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Ticket Type(s)"
+            Underline: =true
+            Width: =233
+            X: =6
+            Y: =120
+            ZIndex: =11
+
+        Label_Name As label:
+            FontWeight: =FontWeight.Semibold
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Name"
+            Underline: =true
+            Width: =233
+            X: =6
+            Y: =60
+            ZIndex: =12
+
+        Icon_Submit As icon.Cancel:
+            BorderColor: =RGBA(153, 153, 153, 1)
+            Color: =checkclr
+            DisplayMode: |-
+                =If(
+                    CountRows(
+                        Filter(
+                            TrOffOffline,
+                            TicketTypename = "Traffic Offence" And OffenceKey = ThisItem.Key
+                        )
+                    ) > 0 And CountRows(
+                        Filter(
+                            'Traffic Offence codes',
+                            TicketTypename = "Traffic Offence" And OffenceKey = ThisItem.Key
+                        )
+                    ) = 0 Or (Label12.Visible),
+                    DisplayMode.Disabled,
+                    DisplayMode.Edit
+                )
+            Icon: =Icon.Check
+            OnSelect: |
+                =/*If(
+                    And(
+                        ThisItem.PersonValidation = true,
+                        ThisItem.VehicleValidation = true,
+                        ThisItem.LocationValidation = true,
+                        Or(
+                            ThisItem.EvidenceYESvalid = true,
+                            ThisItem.EvidenceNOvalid = true
+                        ),
+                        If(Btn_vehiclept1.DisplayMode = DisplayMode.Disabled,true,ThisItem.'VT-PT1 validation'),
+                        If(Btn_save_55.DisplayMode = DisplayMode.Disabled,true,ThisItem.S165valid),
+                        If(Btn_save_62.DisplayMode = DisplayMode.Disabled,true,ThisItem.S163valid),
+                        If(Btn_Hort_1.DisplayMode = DisplayMode.Disabled,true,ThisItem.HORT1valid),
+                        If(Btn_save_53.DisplayMode = DisplayMode.Disabled,true,ThisItem.VDRSvalid),
+                        If(Btn_save_54.DisplayMode = DisplayMode.Disabled,true,ThisItem.S59valid),
+                        If(Btn_save_46.DisplayMode = DisplayMode.Disabled,true,ThisItem.TOvalid)
+                    ),
+                    Set(
+                        checkclr,
+                        Green
+                    );
+                    Set(
+                        mandatoryfieldsvs,
+                        false
+                    );
+                    */
+                Clear(AllErrors);
+                Clear(AllOffenceErrors);
+                Set(
+                    gblLoading,
+                    true
+                );
+                UpdateContext(
+                    {
+                        Vehiclepk: Patch(
+                            'Vehicle Ticket STGS',
+                            Defaults('Vehicle Ticket STGS'),
+                            {
+                                /*Incident Number Starts here */
+                                'Incident Number': ThisItem.'Incident number',
+                                'Incident Suffix': ThisItem.'Incident suffix',
+                                'Incident Date': ThisItem.'Incident date',
+                                'Entered By': ThisItem.'Entered by',
+                                //this will be overwritten by the flow, but needs an entry as the field is required (you are from another planet)
+                                /*Incident Number ends here */
+                         /*Vehicle Ticket Starts here */
+                'Offence Date/Time': ThisItem.'Vehicle Ticket pt 1 Offence Date' + ThisItem.'Vehicle Ticket pt 1 Offence Time',
+                                cp_issuedto: ThisItem.'Vehicle Ticket pt 1 Issued to',
+                                cp_reasonforstopping: ThisItem.'Reason for stop',
+                                /*Vehicle Ticket ends here */
+                                cp_photo1: If(
+                                    CountRows(
+                                        Filter(
+                                            Photos,
+                                            Photokey = ThisItem.Key
+                                        )
+                                    ) >= 1,
+                                    First(
+                                        Filter(
+                                            Photos,
+                                            Photokey = ThisItem.Key
+                                        )
+                                    ).photo1
+                                ),
+                                cp_photo2: If(
+                                    CountRows(
+                                        Filter(
+                                            Photos,
+                                            Photokey = ThisItem.Key
+                                        )
+                                    ) >= 2,
+                                    Last(
+                                        FirstN(
+                                            Filter(
+                                                Photos,
+                                                Photokey = ThisItem.Key
+                                            ),
+                                            2
+                                        )
+                                    ).photo1
+                                ),
+                                cp_photo3: If(
+                                    CountRows(
+                                        Filter(
+                                            Photos,
+                                            Photokey = ThisItem.Key
+                                        )
+                                    ) >= 3,
+                                    Last(
+                                        FirstN(
+                                            Filter(
+                                                Photos,
+                                                Photokey = ThisItem.Key
+                                            ),
+                                            3
+                                        )
+                                    ).photo1
+                                ),
+                                cp_photo4: If(
+                                    CountRows(
+                                        Filter(
+                                            Photos,
+                                            Photokey = ThisItem.Key
+                                        )
+                                    ) >= 4,
+                                    Last(
+                                        FirstN(
+                                            Filter(
+                                                Photos,
+                                                Photokey = ThisItem.Key
+                                            ),
+                                            4
+                                        )
+                                    ).photo1
+                                ),
+                                cp_photo5: If(
+                                    CountRows(
+                                        Filter(
+                                            Photos,
+                                            Photokey = ThisItem.Key
+                                        )
+                                    ) >= 5,
+                                    Last(
+                                        FirstN(
+                                            Filter(
+                                                Photos,
+                                                Photokey = ThisItem.Key
+                                            ),
+                                            5
+                                        )
+                                    ).photo1
+                                ),
+                                cp_photocaption1: If(
+                                    CountRows(
+                                        Filter(
+                                            Photos,
+                                            Photokey = ThisItem.Key
+                                        )
+                                    ) >= 1,
+                                    First(
+                                        Filter(
+                                            Photos,
+                                            Photokey = ThisItem.Key
+                                        )
+                                    ).Caption1
+                                ),
+                                cp_photocaption2: If(
+                                    CountRows(
+                                        Filter(
+                                            Photos,
+                                            Photokey = ThisItem.Key
+                                        )
+                                    ) >= 2,
+                                    Last(
+                                        FirstN(
+                                            Filter(
+                                                Photos,
+                                                Photokey = ThisItem.Key
+                                            ),
+                                            2
+                                        )
+                                    ).Caption1
+                                ),
+                                cp_photocaption3: If(
+                                    CountRows(
+                                        Filter(
+                                            Photos,
+                                            Photokey = ThisItem.Key
+                                        )
+                                    ) >= 3,
+                                    Last(
+                                        FirstN(
+                                            Filter(
+                                                Photos,
+                                                Photokey = ThisItem.Key
+                                            ),
+                                            3
+                                        )
+                                    ).Caption1
+                                ),
+                                cp_photocaption4: If(
+                                    CountRows(
+                                        Filter(
+                                            Photos,
+                                            Photokey = ThisItem.Key
+                                        )
+                                    ) >= 4,
+                                    Last(
+                                        FirstN(
+                                            Filter(
+                                                Photos,
+                                                Photokey = ThisItem.Key
+                                            ),
+                                            4
+                                        )
+                                    ).Caption1
+                                ),
+                                cp_photocaption5: If(
+                                    CountRows(
+                                        Filter(
+                                            Photos,
+                                            Photokey = ThisItem.Key
+                                        )
+                                    ) >= 5,
+                                    Last(
+                                        FirstN(
+                                            Filter(
+                                                Photos,
+                                                Photokey = ThisItem.Key
+                                            ),
+                                            5
+                                        )
+                                    ).Caption1
+                                ),
+                                /*Person Section starts here */
+                                'Offender Title': ThisItem.Title,
+                                'Offender Forname': ThisItem.'Person Forename',
+                                'Offender Surname': ThisItem.'Person Surname',
+                                'Has additional names': If(
+                                    ThisItem.'Additonal Names' = "Yes",
+                                    'Has additional names (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Additonal Names' = "No",
+                                    'Has additional names (Vehicle Ticket STGS)'.No
+                                ),
+                                'Offender Additional Name Type': ThisItem.'Additional Name dropdown',
+                                'Offender Additional Name': ThisItem.'Additonal Name',
+                                'Offender Date Of Birth Known': If(
+                                    ThisItem.'Date of Birth Known' = "Yes",
+                                    'Offender Date Of Birth Known (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Date of Birth Known' = "No",
+                                    'Offender Date Of Birth Known (Vehicle Ticket STGS)'.No
+                                ),
+                                'Offender Birth Date': ThisItem.'Date of Birth',
+                                'Offender House Name': ThisItem.'House Name',
+                                'Offender House Number': ThisItem.'House Number',
+                                'Offender Street': ThisItem.Street,
+                                District: ThisItem.District,
+                                'Offender Town': ThisItem.Town,
+                                'Offender County': ThisItem.County,
+                                cp_newoffenderoccupation: ThisItem.Occupation,
+                                // 'Offender Occupation Value':ThisItem.'Occupation Name',
+                                'Offender Postcode': ThisItem.PostCode,
+                                'Offender Country': ThisItem.Country,
+                                'Offender Preferred Contact Method': ThisItem.'Preferred mean of contact',
+                                ' Offender Home Phone': ThisItem.'Home phone',
+                                'Offender Work Phone': ThisItem.'Work Phone',
+                                'Offender Mobile Phone': ThisItem.'Mobile Phone',
+                                cp_email: ThisItem.'Home Email',
+                                /*cp_ NEED TO ADD WORK EMAIL AND HOME EMAIL*/
+                                'Offender Gender': ThisItem.Gender,
+                                cp_selfdefinedethnicity: ThisItem.'Self-defined Ethnicity',
+                                'Offender Officer Defined Ethnicity': ThisItem.'Officer-defined ethnicity',
+                                'Offender Driving Licence Known': If(
+                                    ThisItem.'Driving Licence Details' = "Yes",
+                                    'Offender Driving Licence Known (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Driving Licence Details' = "No",
+                                    'Offender Driving Licence Known (Vehicle Ticket STGS)'.No
+                                ),
+                                'Offender Driving Licence Number': ThisItem.'Driving Licence Number ',
+                                'Offender Licence Type': ThisItem.'Driving Licence Type',
+                                cp_licencecategory: ThisItem.'Driving Licence Category',
+                                'Offender Licence Valid From': ThisItem.'Drving Licence Valid From',
+                                'Offender Licence Expiry': ThisItem.'Drving Licence expiry',
+                                'Offender Issue Number': ThisItem.'Driving Licence Issue Number',
+                                'Offender Penalty Points': ThisItem.'Driving Licence Penalty Points',
+                                'Offender Foreign Licence': If(
+                                    ThisItem.'Foreign Licence Details' = "Yes",
+                                    'Offender Foreign Licence (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Foreign Licence Details' = "No",
+                                    'Offender Foreign Licence (Vehicle Ticket STGS)'.No
+                                ),
+                                'Offender Foreign Licence Number': ThisItem.'Foreign Licence Number',
+                                'Offender Foreign Licence Country': ThisItem.'Foreign Licence Country',
+                                'Offender Alternative ID': ThisItem.'Alternative Foreign ID',
+                                /*Person Section ends here */
+                         /*Vehicle Section Starts here */
+                VRM: ThisItem.VRM,
+                                'Vehicle Make': ThisItem.'Vehicle Make',
+                                'Vehicle Make Other': ThisItem.'Vehicle Make other',
+                                'Vehicle Model': ThisItem.'Vehicle Model',
+                                'Vehicle Colour': ThisItem.'Vehicle Colour',
+                                'Engine Number': ThisItem.'Vehicle Engine Number',
+                                'Chassis Number': ThisItem.'Vehicle Chasis Number',
+                                'MOT Expiry': ThisItem.'Vehicle MOT expiry',
+                                'Engine CC': ThisItem.'Vehicle Engine CC',
+                                'Insurance Details Available': If(
+                                    ThisItem.'Insurance Details available ?' = "Yes",
+                                    'Insurance Details Available (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Insurance Details available ?' = "No",
+                                    'Insurance Details Available (Vehicle Ticket STGS)'.No
+                                ),
+                                'Insured By': ThisItem.'Insured by',
+                                'Insurance Number': ThisItem.'Insurance number',
+                                'Insurance Valid From': ThisItem.'Valid from',
+                                'Insurance Valid To': ThisItem.'Valid To',
+                                'Vehicle Notes': ThisItem.Notes,
+                                'Vehicle Role': ThisItem.'Vehicle Roles',
+                                'Restricted Vehicle': If(
+                                    ThisItem.'Restricted Vehicle' = "Yes",
+                                    'Restricted Vehicle (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Restricted Vehicle' = "No",
+                                    'Restricted Vehicle (Vehicle Ticket STGS)'.No
+                                ),
+                                'Manual Transmission': If(
+                                    ThisItem.'Manual transmission' = "Yes",
+                                    'Manual Transmission (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Manual transmission' = "No",
+                                    'Manual Transmission (Vehicle Ticket STGS)'.No
+                                ),
+                                'Date Of Registation': ThisItem.'Date of Registration',
+                                'Excise Duty Current': If(
+                                    ThisItem.'Up to date excise duty' = "Yes",
+                                    'Excise Duty Current (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Up to date excise duty' = "No",
+                                    'Excise Duty Current (Vehicle Ticket STGS)'.No
+                                ),
+                                /*Vehicle Section Ends here */
+                         /*Location Section */
+                Longitude: Value(ThisItem.Longitude),
+                                Latitude: Value(ThisItem.Latitude),
+                                'Location Description': ThisItem.'Location Description',
+                                'Location Street': ThisItem.'Location street',
+                                'Location Town': ThisItem.'Location Town',
+                                TPA: ThisItem.'Location TPA',
+                                /*Vehicle Ticket Pt2 Section */
+                                'Has MOT': If(
+                                    ThisItem.'Has valid MOT' = "Yes",
+                                    'Has MOT (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Has valid MOT' = "No",
+                                    'Has MOT (Vehicle Ticket STGS)'.No
+                                ),
+                                'Has Valid Insurance': If(
+                                    ThisItem.'Has valid Insurance' = "Yes",
+                                    'Has Valid Insurance (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Has valid Insurance' = "No",
+                                    'Has Valid Insurance (Vehicle Ticket STGS)'.No
+                                ),
+                                'Is Driver Keeper': If(
+                                    ThisItem.'Is driver Keeper' = "Yes",
+                                    'Is Driver Keeper (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Is driver Keeper' = "No",
+                                    'Is Driver Keeper (Vehicle Ticket STGS)'.No
+                                ),
+                                'Is Driver Supervised': If(
+                                    ThisItem.'Is driver supervised' = "Yes",
+                                    'Is Driver Supervised (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Is driver supervised' = "No",
+                                    'Is Driver Supervised (Vehicle Ticket STGS)'.No
+                                ),
+                                'Has L Plates': If(
+                                    ThisItem.'Has L plates' = "Yes",
+                                    'Has L Plates (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Has L plates' = "No",
+                                    'Has L Plates (Vehicle Ticket STGS)'.No
+                                ),
+                                'Has Passengers': If(
+                                    ThisItem.'Has Passengers' = "Yes",
+                                    'Has Passengers (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Has Passengers' = "No",
+                                    'Has Passengers (Vehicle Ticket STGS)'.No
+                                ),
+                                'On Motorway': If(
+                                    ThisItem.'On motorway' = "Yes",
+                                    'On Motorway (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'On motorway' = "No",
+                                    'On Motorway (Vehicle Ticket STGS)'.No
+                                ),
+                                'Use of Vehicle': ThisItem.'Use of vehicle',
+                                /*Vehicle Ticket Pt2 Section End */
+                              /*Sign and Submit Section */
+                          /*Sign and Submit Section End */
+                          /*Evidence Section */
+                          /*Required on all evidence(Yes) selections*/
+                cp_statementof: ThisItem.'Statement of',
+                                'Officer Training': ThisItem.'Officer Training',
+                                'Speed Limit': ThisItem.'Speed Limit',
+                                'Speed Detection Method': ThisItem.'Speed Detection method',
+                                /*Required on Following check/PolicePilot/Puma/VASCAR selections */
+                                'Driver/Observer': ThisItem.'Driver/Observer',
+                                'Marked/unmarked Car?': ThisItem.'Mark/Unmarked car',
+                                'Police Vehicle Number': ThisItem.'Police vehicle number',
+                                /*Required on Following Check*/
+                                'Distance Followed': ThisItem.'Distance followed (Miles)',
+                                'From Reference Point (FC)': ThisItem.'From reference point',
+                                'To Reference Check (FC)': ThisItem.'To reference point',
+                                'Recorded Speed (mph) (FC)': ThisItem.'Recorded speed (mph)',
+                                'Distance Behind': ThisItem.'Distance behind (metres)',
+                                'Speedometer Check': ThisItem.'Speedometer check date/time',
+                                /*Required on HandHeldRadar/Laser*/
+                                'Device Serial Number (Laser)': ThisItem.'Device serial number',
+                                'First Check (Laser)': ThisItem.' 1st device check date/time',
+                                'First Check Location (Laser)': ThisItem.'1st device check location',
+                                'Second Check (Laser)': ThisItem.'2nd device check date.time',
+                                'Second Check Location (Laser)': ThisItem.'2nd device check location',
+                                'Device Serial Number (Radar)': ThisItem.'Device serial number',
+                                'Recorded Speed (Laser)': ThisItem.'Recorded Speed',
+                                /*Required on PolicePilot/VASCAR/PUMA-SPEED-METER*/
+                                'Vehicle Was Seen': ThisItem.'Vehicle was seen',
+                                'From Reference Point': ThisItem.'Police pilot reference point A ',
+                                'To Reference Point': ThisItem.'Police pilot reference point B',
+                                'First Check (Radar)': ThisItem.'Police Pilot 1st device check/date time',
+                                'Second Check (Radar)': ThisItem.'Police Pilot 2nd device check/date time',
+                                'First Check Location (Radar)': ThisItem.'1st device check location',
+                                'Second Check Location (Radar)': ThisItem.'2nd device check location',
+                                /*needs recorded speed(MPH) */
+                                'Recorded Speed': ThisItem.'Police pilot recorded speed',
+                                /*and recording distance(Miles) */
+                                'Recording Distance (miles)': ThisItem.'Police pilot recording distance',
+                                /*Required on all evidence selections*/
+                                'Information From': ThisItem.'Information from',
+                                Officer: ThisItem.'Officer Name',
+                                'Vehicle Stopped': If(
+                                    ThisItem.'Vehicle Stopped ?' = "Yes",
+                                    'Vehicle Stopped (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Vehicle Stopped ?' = "No",
+                                    'Vehicle Stopped (Vehicle Ticket STGS)'.No
+                                ),
+                                'Driver Shown Reading': If(
+                                    ThisItem.'Driver Shown Reading ?' = "Yes",
+                                    'Driver Shown Reading (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Driver Shown Reading ?' = "No",
+                                    'Driver Shown Reading (Vehicle Ticket STGS)'.No
+                                ),
+                                Daylight: ThisItem.Daylight,
+                                'Street Lighting': ThisItem.'Street Lighting ',
+                                Weather: ThisItem.Weather,
+                                Visibility: ThisItem.Visibility,
+                                'Speed Limit Signs Present & Clear': If(
+                                    ThisItem.'Speed Limit signs present & clear' = "Yes",
+                                    'Speed Limit Signs Present & Clear (Vehicle Ticket STGS)'.Yes,
+                                    ThisItem.'Speed Limit signs present & clear' = "No",
+                                    'Speed Limit Signs Present & Clear (Vehicle Ticket STGS)'.No
+                                ),
+                                'Officer Statement': ThisItem.'Officer Statement',
+                                /*p_dateofoffendersignature:ThisItem.'Date/time of signature',*/
+                                'Officer Signature': ThisItem.'Officer Signature',
+                                /*Evidence No screen*/
+                                'Officer Signature (No Screen)': ThisItem.'Officer Signature ev:no '
+                            }
+                        ).'Vehicle Ticket STG'
+                    }
+                );
+                If(
+                    !IsEmpty(Errors('Vehicle Ticket STGS')),
+                    Collect(
+                        AllErrors,
+                        Errors('Vehicle Ticket STGS')
+                    );
+                    
+                );
+                 /*Evidence Section End */ 
+                ForAll(
+                    Filter(
+                        TrOffOffline,
+                        OffenceKey = ThisItem.Key
+                    ),
+                    Patch(
+                        'Vehicle Ticket Offences STGS',
+                        Defaults('Vehicle Ticket Offences STGS'),
+                        {
+                            'Vehicle Ticket STG': LookUp(
+                                'Vehicle Ticket STGS',
+                                'Vehicle Ticket STG' = Vehiclepk
+                            ),
+                            'Ticket Type': TicketTypeTrafficOffence,
+                            'Offence Code': OffenceCodeID,
+                            'Contains Speed Limit': If(
+                                ContainsSpeedLimitOffence = "Yes",
+                                'Contains Speed Limit (Vehicle Ticket Offences STGS)'.Yes,
+                                ContainsSpeedLimitOffence = "No",
+                                'Contains Speed Limit (Vehicle Ticket Offences STGS)'.No
+                            ),
+                            'NIP Given': If(
+                                NIPGiven = "Yes",
+                                'NIP Given (Vehicle Ticket Offences STGS)'.Yes,
+                                NIPGiven = "No",
+                                'NIP Given (Vehicle Ticket Offences STGS)'.No
+                            ),
+                            'NIP Not Required': If(
+                                NIPNotRequired = "Yes",
+                                'NIP Not Required (Vehicle Ticket Offences STGS)'.Yes,
+                                NIPNotRequired = "No",
+                                'NIP Not Required (Vehicle Ticket Offences STGS)'.No
+                            ),
+                            'Offender Reply': OffenderReply,
+                            'Traffic Offence Serial Number': TOSerialNo,
+                            'Traffic Offence Printed': If(
+                                TOPrinted = "Yes",
+                                'Traffic Offence Printed (Vehicle Ticket Offences STGS)'.Yes,
+                                TOPrinted = "No",
+                                'Traffic Offence Printed (Vehicle Ticket Offences STGS)'.No
+                            )
+                /*Traffic Offence section ends here */
+                ,
+                            'Document Type': Documents,
+                            'Check Or Record': 'Check or Record',
+                            'Produce Station': 'Produce Station',
+                            'HORT1 Serial Number': 'HORT1 Serial Number',
+                            'HORT1 Printed': If(
+                                'HORT1 Printed' = "Yes",
+                                'HORT1 Printed (Vehicle Ticket Offences STGS)'.Yes,
+                                'HORT1 Printed' = "No",
+                                'HORT1 Printed (Vehicle Ticket Offences STGS)'.No
+                            ),
+                            cp_trafficoffencesignature: TrafficOffenceSigned,
+                            /*HORT1 ends here */
+                            'Reason For Using S163 Power': 'Reason for using s163 power',
+                            'Outcome Description': 'Description: Outcome of stop / reason for outcome',
+                            'Outcome of Stop': 'Outcome of stop / Reason for outcome',
+                            'Link Between Reason For Stop And Outcome': If(
+                                linkreasonstopoutcome = "Yes",
+                                'Link Between Reason For Stop And Outcome (Vehicle Ticket Offences STGS)'.Yes,
+                                linkreasonstopoutcome = "No",
+                                'Link Between Reason For Stop And Outcome (Vehicle Ticket Offences STGS)'.No
+                            ),
+                            cp_hort1signature: Hort1sign,
+                            /*S163 ends her*/
+                            Section: 'Section 3 or 34',
+                            'Warning or Seizure?': 'Warning or Seizure',
+                            'You - Wording1': 'You wording 1',
+                            'You - Wording3': 'You wording 3',
+                            'Driving Vehicle In': 'Driving the above vehicle in',
+                            'Driving Manner': 'and that driving was in a manner which',
+                            'S59 Recovery Garage': 'Recovery Garage',
+                            /*'Recovery Garage Company',*/
+                                /*'Recovery Telephone',*/
+                               /* 'Recovery Garage Address',*/
+                'Section 59 Printed': If(
+                                'Section 59 printed' = "Yes",
+                                'Section 59 Printed (Vehicle Ticket Offences STGS)'.Yes,
+                                'Section 59 printed' = "No",
+                                'Section 59 Printed (Vehicle Ticket Offences STGS)'.No
+                            ),
+                            cp_section59signature: Section59sign,
+                            /*S59 ends here*/
+                            Without: 'Without (Valid certificate or licence)',
+                            'Designated Station': 'Designated Station',
+                            'S165 Recovery Garage': 'Recovery Garage section 165',
+                            /*'Recovery Garage Address section 165',*/
+                    /*'Recovery Garage Telephone',*/
+                'Section 165 Printed': If(
+                                'Section 165 printed' = "Yes",
+                                'Section 165 Printed (Vehicle Ticket Offences STGS)'.Yes,
+                                'Section 165 printed' = "No",
+                                'Section 165 Printed (Vehicle Ticket Offences STGS)'.No
+                            ),
+                            cp_section165signature: Section165sign,
+                            /*s164 ends here*/
+                            'VDRS Offence Code': 'VDRS Offence Code',
+                            //'VDRS Offence Name',
+                    //'VDRS Offence Code',
+                'VDRS Details': 'VDRS details',
+                            'VDRS Printed': If(
+                                'VDRS printed' = "Yes",
+                                'VDRS Printed (Vehicle Ticket Offences STGS)'.Yes,
+                                'VDRS printed' = "No",
+                                'VDRS Printed (Vehicle Ticket Offences STGS)'.No
+                            ),
+                            'VDRS Serial Number': 'VDRS Serial Number',
+                            cp_vdrssignature: VDRSsign
+                        }
+                    );
+                    If(
+                        !IsEmpty(Errors('Vehicle Ticket Offences STGS')),
+                        Collect(
+                            AllOffenceErrors,
+                            Errors('Vehicle Ticket Offences STGS')
+                        );
+                    );
+                    
+                );
+                If (
+                    !(IsEmpty(AllErrors) And IsEmpty(AllOffenceErrors)),
+                    //then--------------------------------------------
+                    ForAll(
+                        AllErrors,
+                        Notify(
+                            "There was an error submitting your request: " & ThisRecord.Message & "  (" & ThisRecord.Column & ")",
+                            NotificationType.Error
+                        )
+                    );
+                    ForAll(
+                        AllErrors,
+                        Notify(
+                            "There was an error submitting your request: " & ThisRecord.Message & "  (" & ThisRecord.Column & ")",
+                            NotificationType.Error
+                        )
+                    ),
+                    //else--------------------------------------------
+                    UpdateContext(
+                        {
+                            stgkey: LookUp(
+                                Choices('Staging Entry Status'),
+                                Value = 'Staging Entry Status'.'Ready for Submission'
+                            ).Value
+                        }
+                    );
+                    UpdateIf(
+                        'Vehicle Ticket STGS',
+                        Vehiclepk = 'Vehicle Ticket STG',
+                        {'Staging Entry Status': stgkey}
+                    );
+                
+                    RemoveIf(
+                        'Vehicle Offline',
+                        Key = ThisItem.Key
+                    );
+                
+                    RemoveIf(
+                        Photos,
+                        Photokey = ThisItem.Key
+                    );
+                
+                    RemoveIf(
+                        TrOffOffline,
+                        OffenceKey = ThisItem.Key
+                    );
+                
+                    RemoveIf(
+                        'Traffic Offence codes',
+                        OffenceKey = ThisItem.Key
+                    );
+                    
+                    RemoveIf(
+                        'Vdrs codes',
+                        OffenceKey = ThisItem.Key
+                    );
+                    //reset the PNC lookup so that it doesn't retain the details
+                Set(
+                        UseDetails,
+                        false
+                    );
+                    
+                /*UpdateContext({validationwarning:false});,UpdateContext({validationwarning:true}));*/
+                SaveData(
+                        'Vehicle Offline',
+                        "Vehicle Offline"
+                    );
+                    SaveData(
+                        TrOffOffline,
+                        "TrOffOffline"
+                    )
+                );
+                SaveData(
+                    'Vdrs codes',
+                    "Vdrs codes"
+                );
+                SaveData(
+                    'Traffic Offence codes',
+                    "Traffic Offence codes"
+                );
+                SaveData(
+                    Photos,
+                    "PhotosCache"
+                );
+                Set(
+                    gblLoading,
+                    false
+                );
+                  /*  ,
+                    Set(
+                        checkclr,
+                        Red
+                    );
+                    Set(
+                        mandatoryfieldsvs,
+                        true
+                    )
+                );*/
+            X: =555
+            Y: =133
+            ZIndex: =13
+
+        Label_unsubmitted_key As label:
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.'Incident number'
+            Width: =361
+            X: =258
+            Y: =308
+            ZIndex: =14
+
+        Label_unsubmitted_key_1 As label:
+            Height: =30
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.Key
+            Width: =361
+            X: =227
+            Y: =256
+            ZIndex: =15
+
+        Label2 As label:
+            Height: =81
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: =ThisItem.VehicleTicketTypes
+            VerticalAlign: =VerticalAlign.Top
+            Width: =555
+            Y: =165
+            ZIndex: =16
+
+        Label6 As label:
+            Color: =RGBA(255, 0, 0, 1)
+            Height: =165
+            OnSelect: =Select(Parent)
+            Size: =18
+            Text: ="AN OFFENCE CODE MUST BE ADDED TO PROCEED"
+            Visible: |-
+                =If(
+                    CountRows(
+                        Filter(
+                            TrOffOffline,
+                            TicketTypename = "Traffic Offence" And OffenceKey = ThisItem.Key
+                        )
+                    ) > 0 And CountRows(
+                        Filter(
+                            'Traffic Offence codes',
+                            TicketTypename = "Traffic Offence" And OffenceKey = ThisItem.Key
+                        )
+                    ) = 0,
+                    true,
+                    false
+                )
+            Width: =271
+            X: =303
+            Y: =47
+            ZIndex: =17
+
+        Label12 As label:
+            Color: =RGBA(255, 0, 0, 1)
+            Height: =49
+            OnSelect: =Select(Parent)
+            Size: =21
+            Text: ="Please fill in all mandatory fields!"
+            Visible: |-
+                =//mandatoryfieldsvs
+                Not(
+                    And(
+                        ThisItem.PersonValidation = true,
+                        ThisItem.VehicleValidation = true,
+                        ThisItem.LocationValidation = true,
+                        If(ThisItem.EvidenceRequired,Or(
+                                ThisItem.EvidenceYESvalid = true,
+                                ThisItem.EvidenceNOvalid = true
+                            ),true)
+                        //And(
+                            //ThisItem.EvidenceRequired,
+                            //Or(
+                                //ThisItem.EvidenceYESvalid = true,
+                                //ThisItem.EvidenceNOvalid = true
+                            //)
+                        //)
+                        ,
+                        If(
+                            Btn_vehiclept1.DisplayMode = DisplayMode.Disabled,
+                            true,
+                            ThisItem.'VT-PT1 validation'
+                        ),
+                        If(
+                            Btn_save_55.DisplayMode = DisplayMode.Disabled,
+                            true,
+                            ThisItem.S165valid
+                        ),
+                        If(
+                            Btn_save_62.DisplayMode = DisplayMode.Disabled,
+                            true,
+                            ThisItem.S163valid
+                        ),
+                        If(
+                            Btn_Hort_1.DisplayMode = DisplayMode.Disabled,
+                            true,
+                            ThisItem.HORT1valid
+                        ),
+                        If(
+                            Btn_save_53.DisplayMode = DisplayMode.Disabled,
+                            true,
+                            ThisItem.VDRSvalid
+                        ),
+                        If(
+                            Btn_save_54.DisplayMode = DisplayMode.Disabled,
+                            true,
+                            ThisItem.S59valid
+                        ),
+                        If(
+                            Btn_save_46.DisplayMode = DisplayMode.Disabled,
+                            true,
+                            ThisItem.TOvalid
+                        )
+                    )
+                )
+            Width: =459
+            X: =78
+            Y: =362
+            ZIndex: =18
+
+    Button3 As button:
+        DisplayMode: =DisplayMode.Disabled
+        Height: =70
+        OnSelect: =Clear('Vehicle Offline');Clear(TrOffOffline);
+        Size: =24
+        Text: ="Button"
+        Visible: =false
+        Width: =280
+        X: =348
+        Y: =1062
+        ZIndex: =6
+
+    Group14 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =10
+
+        Rectangle2_1 As rectangle:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Fill: =RGBA(255, 255, 255, 0.89)
+            Height: =1136
+            Visible: =gblLoading
+            Width: =640
+            ZIndex: =7
+
+        Image1 As image:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Height: =107
+            Image: ='loading-buffering'
+            Visible: =gblLoading
+            Width: =107
+            X: =266
+            Y: =459
+            ZIndex: =8
+
+        Label5_5 As label:
+            Align: =Align.Center
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Height: =70
+            Size: =21
+            Text: ="submitting..."
+            Visible: =gblLoading
+            Width: =560
+            X: =39
+            Y: =366
+            ZIndex: =9
+

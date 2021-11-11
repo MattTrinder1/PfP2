@@ -1,0 +1,99 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_statementtypes",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_statementtype",
+    "MaxGetRowsCount": 1500,
+    "Name": "Statement Types",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "cp_name": "Name",
+      "cp_statement_StatementType_cp_StatementTy": "Statements",
+      "cp_statementstg_StatementTypeValue_cp_Sta": "Statement STGS",
+      "cp_statementtype_AsyncOperations": "System Jobs",
+      "cp_statementtype_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_statementtype_DuplicateBaseRecord": "Duplicate Records (cp_statementtype_DuplicateBaseRecord)",
+      "cp_statementtype_DuplicateMatchingRecord": "Duplicate Records (cp_statementtype_DuplicateMatchingRecord)",
+      "cp_statementtype_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_statementtype_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_statementtype_ProcessSession": "Process Sessions",
+      "cp_statementtype_SyncErrors": "Sync Errors",
+      "cp_statementtypeid": "Statement Type",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Statement Types",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Statement Types (Views)",
+    "Name": "_cp_statementtype_views",
+    "RelatedEntityName": "Statement Types",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "377a91a9-77d4-48cd-87c2-d68ffbaebe2c": "Statement Type Advanced Find View",
+      "52408399-0e03-4c84-b195-d02114b36470": "Statement Type Lookup View",
+      "7bd7da1a-699c-41ab-b096-5d853c83b07d": "Statement Type Associated View",
+      "89fa53b9-be5c-4448-984b-fd16761eb4e0": "Inactive Statement Types",
+      "f4f4ffc3-45f1-4785-9dce-a5604ee8e897": "Active Statement Types"
+    }
+  },
+  {
+    "DisplayName": "Status (Statement Types)",
+    "Name": "cp_statementtype_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Statement Types"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Statement Types",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Statement Types)",
+    "Name": "cp_statementtype_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Statement Types"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Statement Types",
+    "Type": "OptionSetInfo"
+  }
+]

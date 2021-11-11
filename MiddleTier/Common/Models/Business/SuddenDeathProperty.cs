@@ -4,6 +4,7 @@ namespace Common.Models.Business
 {
     public class SuddenDeathProperty : IncidentRelatedEntityBase
     {
+
         public string IsDisposedOrRetained { get; set; }
         public string PersonAuthorisingProperty { get; set; }
         public string PhotoProperty{ get; set; }

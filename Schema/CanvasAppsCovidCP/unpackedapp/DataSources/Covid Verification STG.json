@@ -1,0 +1,120 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_covidoffenceverificationstgs",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_covidoffenceverificationstg",
+    "MaxGetRowsCount": 2000,
+    "Name": "Covid Verification STG",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "cp_covidoffenceverificationstg_AsyncOperations": "System Jobs",
+      "cp_covidoffenceverificationstg_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_covidoffenceverificationstg_DuplicateBaseRecord": "Duplicate Records (cp_covidoffenceverificationstg_DuplicateBaseRecord)",
+      "cp_covidoffenceverificationstg_DuplicateMatchingRecord": "Duplicate Records (cp_covidoffenceverificationstg_DuplicateMatchingRecord)",
+      "cp_covidoffenceverificationstg_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_covidoffenceverificationstg_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_covidoffenceverificationstg_ProcessSession": "Process Sessions",
+      "cp_covidoffenceverificationstg_SyncErrors": "Sync Errors",
+      "cp_covidoffenceverificationstgid": "Covid Offence Verification STG",
+      "cp_covidstg": "Covid STG",
+      "cp_LabelText": "Label Text",
+      "cp_name": "Name",
+      "cp_verified": "Verified",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Covid Verification STG",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Covid Verification STG (Views)",
+    "Name": "_cp_covidoffenceverificationstg_views",
+    "RelatedEntityName": "Covid Verification STG",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "04308c8e-c753-4e9f-8067-bd8e99b4f9f5": "Covid Offence Verification STG Advanced Find View",
+      "1d09f8e1-d443-4d22-8b81-e97d273c7d11": "Active Covid Verification STG",
+      "54397307-e37b-4236-a559-55da5c99198e": "Inactive Covid Verification STG",
+      "c7f9b1e3-94f3-44a6-8605-67e9d4d530b7": "Covid Offence Verification STG Associated View",
+      "d4b779e9-46ef-41c5-8b46-0728808d71d4": "Covid Offence Verification STG Lookup View"
+    }
+  },
+  {
+    "DisplayName": "Status (Covid Verification STG)",
+    "Name": "cp_covidoffenceverificationstg_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Covid Verification STG"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Covid Verification STG",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Covid Verification STG)",
+    "Name": "cp_covidoffenceverificationstg_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Covid Verification STG"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Covid Verification STG",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Verified (Covid Verification STG)",
+    "Name": "cp_cp_covidoffenceverificationstg_verified",
+    "OptionSetInfoNameMapping": {
+      "0": "No",
+      "1": "Yes"
+    },
+    "OptionSetIsBooleanValued": true,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "cp_verified",
+        "OptionSetReferenceEntityName": "Covid Verification STG"
+      }
+    },
+    "OptionSetTypeKey": "BooleanType",
+    "RelatedColumnInvariantName": "cp_verified",
+    "RelatedEntityName": "Covid Verification STG",
+    "Type": "OptionSetInfo"
+  }
+]

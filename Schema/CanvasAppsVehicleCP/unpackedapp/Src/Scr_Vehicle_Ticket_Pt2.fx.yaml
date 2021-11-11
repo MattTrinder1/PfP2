@@ -1,0 +1,316 @@
+Scr_Vehicle_Ticket_Pt2 As screen:
+    OnVisible: |-
+        =UpdateContext({Warnunsubmit: false});
+        UpdateContext({timerstart: false});
+        UpdateContext({timerreset: true});
+        Set(
+            checkicon,
+            false
+        );
+        Set(
+            checkicon2,
+            false
+        );
+        
+        /*
+        If(
+            !IsEmpty(Gallery2.AllItems),
+            UpdateContext({checkicon: true});
+            UpdateContext({checkicon2: false})
+        );
+        If(
+            IsEmpty(Gallery2.AllItems),
+            UpdateContext({checkicon2: true});
+            UpdateContext({checkicon: false})
+        );If(Len(Radio_single_officer.Selected.Value)=0,UpdateContext({checkicon2: true});UpdateContext({checkicon: false}))     */
+
+    Label_header_Vehicle_Ticket_Pt2 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Vehicle Ticket Part 2"
+        VerticalAlign: =VerticalAlign.Top
+        Width: =640
+        ZIndex: =3
+
+    Canvas_Vehicle_Ticket_Pt2 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1049
+        Width: =Parent.Width
+        Y: =87
+        ZIndex: =5
+
+        DataCard_Vehicle_Ticket_Pt2 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =1433
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Dropdown_Vehicle_Ticket_part_2 As dropdown:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                Default: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).Key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                Items: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =22
+                ZIndex: =4
+
+            Dropdown_Vehicle_Ticket_Pt2_VehicleUse As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
+                Default: =LookUp('Vehicle Offline',Key=Dropdown_Vehicle_Ticket_part_2.Selected.Key).'Use of vehicle name'
+                Height: =70
+                Items: =VehicleRoleoffline
+                OnSelect: =
+                Reset: |
+                    =resetall
+                SelectionFill: =RGBA(116, 116, 116, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1236
+                ZIndex: =9
+
+            Label_Vehicle_Ticket_Pt2_VehicleUse As label:
+                Height: =59
+                Size: =21
+                Text: ="Use of vehicle"
+                Width: =545
+                X: =40
+                Y: =1177
+                ZIndex: =10
+
+            Btn_save_continue_Vehicle_Ticket_Pt2 As button:
+                DisplayMode: =signreadonly
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =72
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =UpdateIf('Vehicle Offline',Key=Dropdown_Vehicle_Ticket_part_2.Selected.Key,{
+                        'Has valid MOT': Radio_Vehicle_Ticket_Pt2_HasMOT.Selected.Value,
+                        'Has valid Insurance': Radio_Vehicle_Ticket_Pt2_HasInsurance.Selected.Value,
+                        'Is driver Keeper': Radio_Vehicle_Ticket_Pt2_IsDriverKeeper.Selected.Value,
+                        'Is driver supervised':Radio_Vehicle_Ticket_Pt2_IsDriverSupervised.Selected.Value,
+                        'Has L plates': Radio_Vehicle_Ticket_Pt2_HasLPlates.Selected.Value,
+                        'Has Passengers': Radio_Vehicle_Ticket_Pt2_HasPassengers.Selected.Value,
+                        'On motorway': Radio_Vehicle_Ticket_Pt2_IsMotorway.Selected.Value,
+                        'Use of vehicle name': Dropdown_Vehicle_Ticket_Pt2_VehicleUse.Selected.cp_name,
+                        'Use of vehicle': Dropdown_Vehicle_Ticket_Pt2_VehicleUse.Selected.cp_lookupvalueid
+                    
+                    
+                        }
+                    );
+                    SaveData('Vehicle Offline',"Vehicle Offline");Navigate(Scr_home,ScreenTransition.Cover)
+                Size: =24
+                Text: ="Save & Continue"
+                Width: =545
+                X: =40
+                Y: =1384
+                ZIndex: =11
+
+            Radio_Vehicle_Ticket_Pt2_HasMOT As radio:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('Vehicle Offline',Key=Dropdown_Vehicle_Ticket_part_2.Selected.Key).'Restricted Vehicle'
+                Height: =97
+                Items: =["Yes","No"] 
+                Layout: |
+                    =Layout.Horizontal
+                RadioBorderColor: =RGBA(116, 116, 116, 1)
+                Reset: =resetall
+                Size: =25
+                Width: =545
+                X: =40
+                Y: =178
+                ZIndex: =12
+
+            Label_Vehicle_Ticket_Pt2_HasMOT As label:
+                Height: =41
+                Size: =25
+                Text: ="Has valid MOT?"
+                Width: =545
+                X: =40
+                Y: =137
+                ZIndex: =13
+
+            Radio_Vehicle_Ticket_Pt2_IsDriverSupervised As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('Vehicle Offline',Key=Dropdown_Vehicle_Ticket_part_2.Selected.Key).'Is driver supervised'
+                Items: =["Yes","No"] 
+                Layout: |
+                    =Layout.Horizontal
+                RadioBorderColor: =RGBA(116, 116, 116, 1)
+                Reset: =resetall
+                Size: =25
+                Width: =545
+                X: =40
+                Y: =600
+                ZIndex: =14
+
+            Label_Vehicle_Ticket_Pt2_IsDriverSupervised As label:
+                Height: =45
+                Size: =25
+                Text: ="Is driver supervised?"
+                Width: =545
+                X: =40
+                Y: =550
+                ZIndex: =15
+
+            Radio_Vehicle_Ticket_Pt2_IsDriverKeeper As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('Vehicle Offline',Key=Dropdown_Vehicle_Ticket_part_2.Selected.Key).'Is driver Keeper'
+                Height: =97
+                Items: =["Yes","No"] 
+                Layout: |
+                    =Layout.Horizontal
+                RadioBorderColor: =RGBA(116, 116, 116, 1)
+                Reset: =resetall
+                Size: =25
+                Width: =545
+                X: =40
+                Y: =455
+                ZIndex: =16
+
+            Label_Vehicle_Ticket_Pt2_IsDriverKeeper As label:
+                Size: =25
+                Text: ="Is driver keeper?"
+                Width: =545
+                X: =40
+                Y: =415
+                ZIndex: =17
+
+            Radio_Vehicle_Ticket_Pt2_HasInsurance As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('Vehicle Offline',Key=Dropdown_Vehicle_Ticket_part_2.Selected.Key).'Has valid Insurance'
+                Height: =97
+                Items: =["Yes","No"] 
+                Layout: |
+                    =Layout.Horizontal
+                RadioBorderColor: =RGBA(116, 116, 116, 1)
+                Reset: =resetall
+                Size: =25
+                Width: =545
+                X: =40
+                Y: =318
+                ZIndex: =18
+
+            Label_Vehicle_Ticket_Pt2_HasInsurance As label:
+                Height: =62
+                Size: =25
+                Text: ="Has valid insurance?"
+                Width: =545
+                X: =40
+                Y: =266
+                ZIndex: =19
+
+            Radio_Vehicle_Ticket_Pt2_HasLPlates As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('Vehicle Offline',Key=Dropdown_Vehicle_Ticket_part_2.Selected.Key).'Has L plates'
+                Items: =["Yes","No"] 
+                Layout: |
+                    =Layout.Horizontal
+                RadioBorderColor: =RGBA(116, 116, 116, 1)
+                Reset: |
+                    =resetall
+                Size: =25
+                Width: =545
+                X: =40
+                Y: =739
+                ZIndex: =20
+
+            Label_Vehicle_Ticket_Pt2_HasLPlates As label:
+                Height: =46
+                Size: =25
+                Text: ="Has L plates?"
+                Width: =545
+                X: =40
+                Y: =693
+                ZIndex: =21
+
+            Radio_Vehicle_Ticket_Pt2_HasPassengers As radio:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('Vehicle Offline',Key=Dropdown_Vehicle_Ticket_part_2.Selected.Key).'Has Passengers'
+                Items: =["Yes","No"] 
+                Layout: |
+                    =Layout.Horizontal
+                RadioBorderColor: =RGBA(116, 116, 116, 1)
+                Reset: |
+                    =resetall
+                Size: =25
+                Width: =545
+                X: =40
+                Y: =876
+                ZIndex: =22
+
+            Label_Vehicle_Ticket_Pt2_HasPassengers As label:
+                Height: =56
+                Size: =25
+                Text: ="Has passengers?"
+                Width: =545
+                X: =40
+                Y: =835
+                ZIndex: =23
+
+            Radio_Vehicle_Ticket_Pt2_IsMotorway As radio:
+                BorderColor: =RGBA(116, 116, 116, 1)
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('Vehicle Offline',Key=Dropdown_Vehicle_Ticket_part_2.Selected.Key).'On motorway'
+                Items: =["Yes","No"] 
+                Layout: |
+                    =Layout.Horizontal
+                RadioBorderColor: =RGBA(116, 116, 116, 1)
+                Reset: |
+                    =resetall
+                Size: =25
+                Width: =545
+                X: =40
+                Y: =1032
+                ZIndex: =24
+
+            Label_Vehicle_Ticket_Pt2_IsMotorway As label:
+                Height: =59
+                Size: =25
+                Text: ="On motorway?"
+                Width: =545
+                X: =40
+                Y: =973
+                ZIndex: =25
+
+    Icon_back16 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home,UnCoverRight)
+        X: =21
+        Y: =11
+        ZIndex: =6
+
+    Label1_12 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =42
+        Size: =21
+        Text: =Vehicle_Primary_key
+        Width: =440
+        X: =100
+        Y: =45
+        ZIndex: =7
+

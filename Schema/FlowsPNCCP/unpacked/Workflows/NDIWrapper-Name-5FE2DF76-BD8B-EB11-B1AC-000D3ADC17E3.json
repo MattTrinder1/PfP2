@@ -1,0 +1,324 @@
+{
+  "properties": {
+    "connectionReferences": {
+      
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "PowerApp",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "Initializevariable_Value": {
+                  "type": "string",
+                  "description": "Enter initial value",
+                  "x-ms-powerflows-param-ispartial": false
+                },
+                "Initializevariable2_Value": {
+                  "type": "string",
+                  "description": "Enter initial value",
+                  "x-ms-powerflows-param-ispartial": false
+                },
+                "Initializevariable3_Value": {
+                  "type": "string",
+                  "description": "Enter initial value",
+                  "x-ms-powerflows-param-ispartial": false
+                },
+                "Initializevariable4_Value": {
+                  "type": "string",
+                  "description": "Enter initial value",
+                  "x-ms-powerflows-param-ispartial": false
+                },
+                "Initializevariable5_Value": {
+                  "type": "string",
+                  "description": "Enter initial value",
+                  "x-ms-powerflows-param-ispartial": false
+                },
+                "Initializevariable6_Value": {
+                  "type": "string",
+                  "description": "Enter initial value",
+                  "x-ms-powerflows-param-ispartial": false
+                },
+                "Initializevariable7_Value": {
+                  "type": "string",
+                  "description": "Enter initial value",
+                  "x-ms-powerflows-param-ispartial": false
+                }
+              },
+              "required": [
+                "Initializevariable_Value",
+                "Initializevariable2_Value",
+                "Initializevariable3_Value",
+                "Initializevariable4_Value",
+                "Initializevariable5_Value",
+                "Initializevariable6_Value",
+                "Initializevariable7_Value"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Initialize_variable": {
+          "runAfter": {
+            
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Name",
+                "type": "string",
+              "value": "@{triggerBody()[\u0027Initializevariable_Value\u0027]}"
+              }
+            ]
+          }
+        },
+        "Compose": {
+          "runAfter": {
+            "Initialize_variable_7": [
+              "Succeeded"
+            ]
+          },
+          "type": "Compose",
+          "inputs": {
+          "Name": "@{variables(\u0027Name\u0027)}",
+          "ReasonCode": "@{variables(\u0027ReasonCode\u0027)}",
+          "DOB": "@{variables(\u0027DOB\u0027)}",
+          "Gender": "@{variables(\u0027Gender\u0027)}",
+          "Ethnicity": "@{variables(\u0027Ethnicity\u0027)}",
+          "IsNominal": "@{variables(\u0027IsNominal\u0027)}",
+          "IsDrivingLicense": "@{variables(\u0027IsDrivingLicense\u0027)}"
+          }
+        },
+        "HTTP": {
+          "runAfter": {
+            "Compose": [
+              "Succeeded"
+            ]
+          },
+          "type": "Http",
+          "inputs": {
+            "method": "POST",
+            "uri": "https://prod-22.uksouth.logic.azure.com:443/workflows/9eac4ec72b9f46cc9d09e2f700a3e9c2/triggers/manual/paths/invoke?api-version=2016-06-01\u0026sp=%2Ftriggers%2Fmanual%2Frun\u0026sv=1.0\u0026sig=cbufYFZ8yZZS3IIe4lGfOY0Zjrsr73oOmjSKfa0C5hU",
+            "body": "@outputs(\u0027Compose\u0027)"
+          }
+        },
+        "Response": {
+          "runAfter": {
+            "Compose_2": [
+              "Succeeded"
+            ]
+          },
+          "type": "Response",
+          "kind": "Http",
+          "inputs": {
+            "statusCode": 200,
+            "body": "@body(\u0027HTTP\u0027)",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "records": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "name": {
+                        "type": "string"
+                      },
+                      "dateOfBirth": {
+                        "type": "string"
+                      },
+                      "pncId": {
+                        "type": "string"
+                      },
+                      "gender": {
+                        "type": "string"
+                      },
+                      "ethnicity": {
+                        "type": "string"
+                      },
+                      "placeOfBirth": {
+                        "type": "string"
+                      },
+                      "address1": {
+                        "type": "string"
+                      },
+                      "address2": {
+                        "type": "string"
+                      },
+                      "address3": {
+                        "type": "string"
+                      },
+                      "driverNumber": {
+                        "type": "string"
+                      },
+                      "forenames": {
+                        "type": "string"
+                      },
+                      "surname": {
+                        "type": "string"
+                      },
+                      "resultFrom": {
+                        "type": "string"
+                      },
+                      "selected": {
+                        "type": "boolean"
+                      }
+                    },
+                    "required": [
+                      "name",
+                      "dateOfBirth",
+                      "pncId",
+                      "gender",
+                      "ethnicity",
+                      "placeOfBirth",
+                      "address1",
+                      "address2",
+                      "address3",
+                      "driverNumber",
+                      "forenames",
+                      "surname",
+                      "selected"
+                    ]
+                  },
+                  "required": [
+                    "records"
+                  ]
+                }
+              }
+            }
+          }
+        },
+        "Compose_2": {
+          "runAfter": {
+            "HTTP": [
+              "Succeeded"
+            ]
+          },
+          "type": "Compose",
+        "inputs": "@replace(replace(string(body(\u0027HTTP\u0027)),\u0027]\u0027,\u0027\u0027),\u0027[\u0027,\u0027\u0027)"
+        },
+        "Initialize_variable_2": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ReasonCode",
+                "type": "string",
+              "value": "@{triggerBody()[\u0027Initializevariable2_Value\u0027]}"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_3": {
+          "runAfter": {
+            "Initialize_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "DOB",
+                "type": "string",
+              "value": "@{triggerBody()[\u0027Initializevariable3_Value\u0027]}"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_4": {
+          "runAfter": {
+            "Initialize_variable_3": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Gender",
+                "type": "string",
+              "value": "@{triggerBody()[\u0027Initializevariable4_Value\u0027]}"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_5": {
+          "runAfter": {
+            "Initialize_variable_4": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Ethnicity",
+                "type": "string",
+              "value": "@{triggerBody()[\u0027Initializevariable5_Value\u0027]}"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_6": {
+          "runAfter": {
+            "Initialize_variable_5": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "IsNominal",
+                "type": "string",
+              "value": "@{triggerBody()[\u0027Initializevariable6_Value\u0027]}"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_7": {
+          "runAfter": {
+            "Initialize_variable_6": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "IsDrivingLicense",
+                "type": "string",
+              "value": "@{triggerBody()[\u0027Initializevariable7_Value\u0027]}"
+              }
+            ]
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

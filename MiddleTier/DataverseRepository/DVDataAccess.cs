@@ -72,10 +72,22 @@ namespace API.DataverseAccess
 
                 switch (transReq.ReqType)
                 {
+                    case RequestType.SetState:
+                        var req = new SetStateRequest();
+                        req.EntityMoniker = transReq.TargetReference;
+                        req.State = new OptionSetValue( transReq.State);
+                        req.Status = new OptionSetValue( transReq.Status);
+                        transaction.Requests.Add(req);
+                        break;
                     case RequestType.Create:
                         var createReq = new CreateRequest();
                         createReq.Target = transReq.Target;
                         transaction.Requests.Add(createReq);
+                        break;
+                    case RequestType.Upsert:
+                        var upsertReq = new UpsertRequest();
+                        upsertReq.Target = transReq.Target;
+                        transaction.Requests.Add(upsertReq);
                         break;
                     case RequestType.CreateImage:
 
@@ -103,6 +115,12 @@ namespace API.DataverseAccess
                         transaction.Requests.Add(updateReq);
 
                         break;
+                    case RequestType.Delete:
+                        var deleteReq = new DeleteRequest();
+                        deleteReq.Target  = transReq.TargetReference;
+                        transaction.Requests.Add(deleteReq);
+
+                        break;
                     case RequestType.Associate:
                         var associateReq = new AssociateEntitiesRequest();
                         associateReq.Moniker1 = transReq.Id1;
@@ -111,12 +129,24 @@ namespace API.DataverseAccess
                         transaction.Requests.Add(associateReq);
 
                         break;
+
+                    case RequestType.Disassociate:
+                        var disassociateReq = new DisassociateEntitiesRequest();
+                        disassociateReq.Moniker1 = transReq.Id1;
+                        disassociateReq.Moniker2 = transReq.Id2;
+                        disassociateReq.RelationshipName = transReq.RelationshipName;
+                        transaction.Requests.Add(disassociateReq);
+
+                        break;
                 }
 
 
 
             }
-            return (ExecuteTransactionResponse)_dvService.Execute(transaction);
+
+            transaction.ReturnResponses = true;
+            var resp = (ExecuteTransactionResponse)_dvService.Execute(transaction);
+            return resp;
         }
 
         public OptionSetValue GetOptionSetValue(string optionSetName, string optionSetText)

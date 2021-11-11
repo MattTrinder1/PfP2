@@ -1,0 +1,1109 @@
+Scr_Vehicle_Ticket_Pt1 As screen:
+    OnVisible: |
+        =Set(resetall,true);Set(
+            madcolVt,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolVt: LightGoldenRodYellow});
+        
+        Set(
+            madcolVt1,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolVt1: LightGoldenRodYellow});
+        
+        Set(
+            madcolVt2,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolVt2: LightGoldenRodYellow});
+        
+        Set(
+            madcolVt3,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolVt3: LightGoldenRodYellow});
+        
+        Set(
+            madcolVt4,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolVt4: LightGoldenRodYellow});
+        
+        Set(
+            madcolVt5,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolVt5: LightGoldenRodYellow});
+        
+        Set(
+           madcolHort9,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolHort9: LightGoldenRodYellow});
+        Set(
+            madcoldte,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcoldte: LightGoldenRodYellow});
+        
+        Set(
+            madcoltimehre,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcoltimehre: LightGoldenRodYellow});
+        
+        Set(
+            madcoltimemin,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcoltimemin: LightGoldenRodYellow});
+        
+        UpdateContext({Warnunsubmit: false});
+        UpdateContext({timerstart: false});
+        UpdateContext({timerreset: true});
+        /*
+        Set(
+            checkicon,
+            false
+        );
+        Set(
+            checkicon2,
+            false
+        );
+        If(
+            Len(Radio_single_officer.Selected.Value) = 0,
+            UpdateContext({checkicon: false})
+        );
+        If(
+            !IsEmpty(Gallery.AllItems),
+            UpdateContext({checkicon: true});
+            UpdateContext({checkicon2: false})
+        );
+        If(
+            IsEmpty(Gallery2.AllItems),
+            UpdateContext({checkicon2: true});
+            UpdateContext({checkicon: false})
+        );If(Len(Radio_single_officer.Selected.Value)=0,UpdateContext({checkicon2: true});UpdateContext({checkicon: false}));
+        */
+        Set(
+            madcolcbto,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolcbto: LightGoldenRodYellow});
+        
+        Set(
+            madcolcbh1,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolcbh1: LightGoldenRodYellow});
+        
+        Set(
+            madcolcbs165,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolcbs59: LightGoldenRodYellow});
+        
+        UpdateContext ({galHeight: CountIf(Photos,Photokey=Vehicle_Ticket_pt1_Key.Selected.Key) * (Gallery1.TemplateHeight)});
+        
+
+    Label_header_Vehicle_Ticket_pt1 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Vehicle Ticket pt 1"
+        VerticalAlign: =VerticalAlign.Top
+        Width: =640
+        ZIndex: =1
+
+    Canvas_Vehicle_Ticket_pt1 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1049
+        Width: =Parent.Width
+        Y: =87
+        ZIndex: =3
+
+        DataCard_Vehicle_Ticket_pt1 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =1533
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Vehicle_Ticket_pt1_Key As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =RGBA(128, 128, 128, 1)
+                Default: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).Key
+                DisabledBorderColor: =RGBA(116, 116, 116, 1)
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                HoverFill: =RGBA(255, 255, 255, 1)
+                Items: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key)
+                OnChange: =true
+                OnSelect: =true
+                PressedFill: =RGBA(0, 13, 75, 1)
+                Reset: =resetall
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =47
+                Y: =25
+                ZIndex: =2
+
+            Label_Offence_datetime As label:
+                Height: =70
+                Size: =21
+                Text: ="Offence date/time"
+                Width: =545
+                X: =47
+                Y: =128
+                ZIndex: =5
+
+            Label_issued_to As label:
+                Height: =70
+                Size: =21
+                Text: ="Issued to"
+                Width: =545
+                X: =50
+                Y: =357
+                ZIndex: =6
+
+            Label_Reason_for_Stop As label:
+                Height: =70
+                Size: =21
+                Text: ="Reason for stop"
+                Width: =545
+                X: =50
+                Y: =508
+                ZIndex: =7
+
+            dropdown_reason_for_stop As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =RGBA(128, 128, 128, 1)
+                Default: =LookUp('Vehicle Offline',Key=Vehicle_Ticket_pt1_Key.Selected.Key).'Reason for stop name'
+                Fill: =If(IsBlank(Self.SelectedText.Value),LightGoldenRodYellow,White)
+                Height: =70
+                Items: =Reasonforstopoffline
+                OnChange: |-
+                    =If(Len(dropdown_reason_for_stop.Selected.cp_name)>0,UpdateContext({madcolVt3:White}),UpdateContext({madcolVt3:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(dropdown_reason_for_stop.Selected.cp_name)>0,UpdateContext({madcolVt3:White}),UpdateContext({madcolVt3:LightGoldenRodYellow}))
+                Reset: =resetall
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =50
+                Y: =578
+                ZIndex: =8
+
+            dropdown_issued_to As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =RGBA(128, 128, 128, 1)
+                Default: =LookUp('Vehicle Offline',Key=Vehicle_Ticket_pt1_Key.Selected.Key).'Vehicle Ticket pt 1 Issued to name'
+                DisabledBorderColor: =RGBA(116, 116, 116, 1)
+                Fill: =If(IsBlank(Self.SelectedText.Value),LightGoldenRodYellow,White)
+                Height: =70
+                HoverFill: =RGBA(255, 255, 255, 1)
+                Items: =IssueTooffline
+                OnChange: |-
+                    =If(Len(dropdown_issued_to.Selected.cp_name)>0,UpdateContext({madcolVt1:White}),UpdateContext({madcolVt1:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(dropdown_issued_to.Selected.cp_name)>0,UpdateContext({madcolVt1:White}),UpdateContext({madcolVt1:LightGoldenRodYellow}))
+                PressedFill: =RGBA(0, 13, 75, 1)
+                Reset: =resetall
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =50
+                Y: =438
+                ZIndex: =9
+
+            Label_issued_to_Asterik As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =61
+                Size: =21
+                Text: ="*"
+                Width: =31
+                X: =564
+                Y: =366
+                ZIndex: =10
+
+            Label_reasonforstop_asterik As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =59
+                Size: =21
+                Text: ="*"
+                Width: =28
+                X: =575
+                Y: =508
+                ZIndex: =11
+
+            Dropdown_hours As dropdown:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                Default: =Text(Hour(LookUp('Vehicle Offline',Key=Vehicle_Ticket_pt1_Key.Selected.Key).'Vehicle Ticket pt 1 Offence Time'),"[$-en-US]00")
+                Fill: =If(IsBlank(Self.SelectedText.Value),LightGoldenRodYellow,White)
+                FocusedBorderColor: =Dropdown_hours.BorderColor
+                Height: =70
+                HoverBorderColor: =ColorFade(Dropdown_hours.BorderColor, 15%)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =["","00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"]
+                OnChange: |-
+                    =If(Time(Value(Dropdown_hours.Selected.Value), Value(Dropdown_minuites.Selected.Value), 0)< Time(08,00,0),UpdateContext({starttime:true}),UpdateContext({starttime:false}));If(Len(Dropdown_hours.Selected.Value)>0,UpdateContext({madcoltimehre:White}),UpdateContext({madcoltimehre:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Dropdown_hours.Selected.Value)>0,UpdateContext({madcoltimehre:White}),UpdateContext({madcoltimehre:LightGoldenRodYellow}));
+                PressedBorderColor: =Dropdown_hours.HoverBorderColor
+                PressedFill: =RGBA(153, 153, 153, 1)
+                Reset: =resetall
+                SelectionFill: =RGBA(230, 230, 230, 1)
+                Size: =21
+                Width: =135
+                X: =73
+                Y: =294
+                ZIndex: =12
+
+            Dropdown_minuites As dropdown:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                Default: =Text(Minute(LookUp('Vehicle Offline',Key=Vehicle_Ticket_pt1_Key.Selected.Key).'Vehicle Ticket pt 1 Offence Time'),"[$-en-US]00")
+                Fill: =If(IsBlank(Self.SelectedText.Value),LightGoldenRodYellow,White)
+                FocusedBorderColor: =Dropdown_minuites.BorderColor
+                Height: =70
+                HoverBorderColor: =ColorFade(Dropdown_minuites.BorderColor, 15%)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: |
+                    =["","00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59"]
+                OnChange: |-
+                    =If(Len(Dropdown_hours.Selected.Value)>0,UpdateContext({madcolHort9:White}),UpdateContext({madcolHort9:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(Dropdown_hours.Selected.Value)>0,UpdateContext({madcolHort9:White}),UpdateContext({madcolHort9:LightGoldenRodYellow}));
+                PressedBorderColor: =Dropdown_minuites.HoverBorderColor
+                PressedFill: =RGBA(153, 153, 153, 1)
+                Reset: =resetall
+                SelectionFill: =RGBA(204, 204, 204, 1)
+                Size: =21
+                Width: =135
+                X: =384
+                Y: =294
+                ZIndex: =13
+
+            Label_hour As label:
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="Hrs"
+                Width: =77
+                X: =208
+                Y: =294
+                ZIndex: =14
+
+            Label_min As label:
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="Min"
+                Width: =77
+                X: =523
+                Y: =294
+                ZIndex: =15
+
+            DatePicker_vehicleticket_pt1 As datepicker:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                DefaultDate: =If(LookUp('Vehicle Offline',Key=Vehicle_Ticket_pt1_Key.Selected.Key).'Vehicle Ticket pt 1 Offence Date'=Date(Blank(),Blank(),Blank()),Now(),LookUp('Vehicle Offline',Key=Vehicle_Ticket_pt1_Key.Selected.Key).'Vehicle Ticket pt 1 Offence Date')
+                EndYear: =2100
+                Fill: =If(IsBlank(Self.SelectedDate),LightGoldenRodYellow,White)
+                Format: =
+                Height: =70
+                IconBackground: =RGBA(153, 153, 153, 1)
+                InputTextPlaceholder: =
+                IsEditable: =true
+                OnChange: |
+                    =If(IsBlank(DatePicker_vehicleticket_pt1),
+                        UpdateContext({madcoldte: LightGoldenRodYellow}),
+                        UpdateContext({madcoldte: Transparent })
+                    );
+                OnSelect: |
+                    =If(IsBlank(DatePicker_vehicleticket_pt1),
+                        UpdateContext({madcoldte: LightGoldenRodYellow}),
+                        UpdateContext({madcoldte: Transparent })
+                    );
+                Reset: =resetall
+                Size: =24
+                StartYear: =1900
+                Width: =545
+                X: =50
+                Y: =198
+                ZIndex: =16
+
+            "'Label_date/time_asterik' As label":
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =51
+                Size: =21
+                Text: ="*"
+                Width: =24
+                X: =575
+                Y: =128
+                ZIndex: =17
+
+            Gallery_vehicle_ticket_types As gallery.galleryVertical:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Height: =480
+                Items: |-
+                    =If(
+                        dropdown_issued_to.Selected.cp_name = "Unattended vehicle",
+                        Filter(
+                            SortByColumns(
+                                OffencesOffline,
+                                "cp_displaysequenceno"
+                            ),
+                           cp_name = "Traffic Offence"
+                        ),
+                        SortByColumns(
+                            OffencesOffline,
+                            "cp_displaysequenceno"
+                        )
+                    )
+                Layout: =Layout.Vertical
+                TemplateSize: =73
+                Width: =607
+                X: =3
+                Y: =709
+                ZIndex: =18
+
+                Checkbox_ticket_type As checkbox:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    CheckboxBorderColor: =RGBA(32, 54, 71, 1)
+                    Default: |-
+                        =If(ThisItem.cp_name in Split(
+                                First(
+                                    Filter('Vehicle Offline',Key=Vehicle_Ticket_pt1_Key.Selected.Key)).VehicleTicketTypes,","),true,false)
+                    Fill: =madcolcbto
+                    Height: =73
+                    HoverColor: =RGBA(32, 54, 71, 1)
+                    OnCheck: |-
+                        =If(
+                            Gallery_vehicle_ticket_types.Selected.cp_name = "HORT1",
+                            Set(
+                                displayhort1,
+                                DisplayMode.Edit
+                            )
+                        );
+                        If(
+                            Gallery_vehicle_ticket_types.Selected.cp_name = "VDRS",
+                            Set(
+                                displayvdrs,
+                                DisplayMode.Edit
+                            )
+                        );
+                        If(
+                            Gallery_vehicle_ticket_types.Selected.cp_name = "Section 59",
+                            Set(
+                                displaysection59,
+                                DisplayMode.Edit
+                            )
+                        );
+                        If(
+                            Gallery_vehicle_ticket_types.Selected.cp_name = "Traffic Offence",
+                            Set(
+                                displaytrafficoffence,
+                                DisplayMode.Edit
+                            )
+                        );
+                        If(
+                            Gallery_vehicle_ticket_types.Selected.cp_name = "S165 (No Ins/DL)",
+                            Set(
+                                displays165noinsdl,
+                                DisplayMode.Edit
+                            )
+                        );
+                        If(
+                            Gallery_vehicle_ticket_types.Selected.cp_name = "S163 (Vehicle Stop)",
+                            Set(
+                                displays163vs,
+                                DisplayMode.Edit
+                            )
+                        );
+                        If(
+                            Gallery_vehicle_ticket_types.Selected.Checkbox_ticket_type.Value = true,
+                            UpdateContext({madcolcbto: Transparent}),
+                            UpdateContext({madcolcbto: LightGoldenRodYellow})
+                        );
+                        If(
+                            CountRows(
+                                Filter(
+                                    TrOffOffline,
+                                    TicketTypename = "HORT1" And OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                                )
+                            ) = 0 And Gallery_vehicle_ticket_types.Selected.Checkbox_ticket_type.Text = "HORT1",
+                            Collect(
+                                TrOffOffline,
+                                {
+                                    OffenceKey: Vehicle_Ticket_pt1_Key.Selected.Key,
+                                    TicketTypeTrafficOffence: LookUp(
+                                        OffencesOffline,
+                                        cp_name = "HORT1"
+                                    ).cp_tickettypeid,
+                                    TicketTypename: "HORT1",
+                                    'Documents Name': "",
+                                    Documents: "",
+                                    'Other Documents': "",
+                                    'Check or Record Name': "",
+                                    'Check or Record': "",
+                                    'Produce Station Name': "",
+                                    'Produce Station': "",
+                                    'Out of force station': "",
+                                    'HORT1 Printed': "",
+                                    'HORT1 Serial Number': "",
+                                    Hort1sign: SampleImage
+                                }
+                            );
+                            UpdateIf(
+                                TrOffOffline,
+                                OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key And TicketTypename = "HORT1",
+                                {Hort1sign: Blank()}
+                            );
+                            
+                        );
+                        If(
+                            CountRows(
+                                Filter(
+                                    TrOffOffline,
+                                    TicketTypename = "S165 (No Ins/DL)" And OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                                )
+                            ) = 0 And Gallery_vehicle_ticket_types.Selected.Checkbox_ticket_type.Text = "S165 (No Ins/DL)",
+                            Collect(
+                                TrOffOffline,
+                                {
+                                    OffenceKey: Vehicle_Ticket_pt1_Key.Selected.Key,
+                                    TicketTypeTrafficOffence: LookUp(
+                                        OffencesOffline,
+                                        cp_name = "S165 (No Ins/DL)"
+                                    ).cp_tickettypeid,
+                                    TicketTypename: "S165 (No Ins/DL)",
+                                    'Without (Valid certificate or licence) name': "",
+                                    'Without (Valid certificate or licence)': "",
+                                    'Designated Station name': "",
+                                    'Designated Station': "",
+                                    'Recovery Garage section 165 name': "",
+                                    'Recovery Garage section 165': "",
+                                    'Recovery Garage Company Section 165 name': "",
+                                    'Recovery Garage Company Section 165': "",
+                                    'Recovery Garage Address section 165': "",
+                                    'Recovery Garage Telephone': "",
+                                    'Section 165 printed': "",
+                                    Section165sign: SampleImage
+                                }
+                            );
+                            UpdateIf(
+                                TrOffOffline,
+                                OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key And TicketTypename = "S165 (No Ins/DL)",
+                                {Section165sign: Blank()}
+                            );
+                            
+                        );
+                        If(
+                            CountRows(
+                                Filter(
+                                    TrOffOffline,
+                                    TicketTypename = "VDRS" And OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                                )
+                            ) = 0 And Gallery_vehicle_ticket_types.Selected.Checkbox_ticket_type.Text = "VDRS",
+                            Collect(
+                                TrOffOffline,
+                                {
+                                    OffenceKey: Vehicle_Ticket_pt1_Key.Selected.Key,
+                                    TicketTypeTrafficOffence: LookUp(
+                                        OffencesOffline,
+                                        cp_name = "VDRS"
+                                    ).cp_tickettypeid,
+                                    TicketTypename: "VDRS",
+                                    'VDRS Offence Category name': "",
+                                    'VDRS Offence Category': "",
+                                    'VDRS Offence Name name': "",
+                                    'VDRS Offence Name': "",
+                                    'VDRS Offence Code name': "",
+                                    'VDRS Offence Code': "",
+                                    'VDRS details': "",
+                                    'VDRS printed': "",
+                                    vdrsorder: "",
+                                    'VDRS Serial Number': "",
+                                    VDRSsign: SampleImage
+                                }
+                            );
+                            UpdateIf(
+                                TrOffOffline,
+                                OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key And TicketTypename = "VDRS",
+                                {VDRSsign: Blank()}
+                            );
+                            
+                        );
+                        If(
+                            CountRows(
+                                Filter(
+                                    TrOffOffline,
+                                    TicketTypename = "Section 59" And OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                                )
+                            ) = 0 And Gallery_vehicle_ticket_types.Selected.Checkbox_ticket_type.Text = "Section 59",
+                            Collect(
+                                TrOffOffline,
+                                {
+                                    OffenceKey: Vehicle_Ticket_pt1_Key.Selected.Key,
+                                    TicketTypeTrafficOffence: LookUp(
+                                        OffencesOffline,
+                                        cp_name = "Section 59"
+                                    ).cp_tickettypeid,
+                                    TicketTypename: "Section 59",
+                                    'Section 3 or 34 name': "",
+                                    'Section 3 or 34': "",
+                                    'Warning or Seizure name ': "",
+                                    'Warning or Seizure': "",
+                                    'You wording 1 name': "",
+                                    'You wording 1': "",
+                                    'You wording 3name': "",
+                                    'You wording 3': "",
+                                    'Driving the above vehicle in name': "",
+                                    'Driving the above vehicle in': "",
+                                    'and that driving was in a manner which name': "",
+                                    'and that driving was in a manner which': "",
+                                    'Recovery Garage name': "",
+                                    'Recovery Garage': "",
+                                    'Recovery Garage Company name': "",
+                                    'Recovery Garage Company': "",
+                                    'Recovery Telephone': "",
+                                    'Recovery Garage Address': "",
+                                    'Section 59 printed': "",
+                                    Section59sign: SampleImage
+                                }
+                            );
+                            UpdateIf(
+                                TrOffOffline,
+                                OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key And TicketTypename = "Section 59",
+                                {Section59sign: Blank()}
+                            );
+                            
+                        );
+                        If(
+                            CountRows(
+                                Filter(
+                                    TrOffOffline,
+                                    TicketTypename = "Traffic Offence" And OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                                )
+                            ) = 0 And Gallery_vehicle_ticket_types.Selected.Checkbox_ticket_type.Text = "Traffic Offence",
+                            Collect(
+                                TrOffOffline,
+                                {
+                                    OffenceKey: Vehicle_Ticket_pt1_Key.Selected.Key,
+                                    TicketTypeTrafficOffence: LookUp(
+                                        OffencesOffline,
+                                        cp_name = "Traffic Offence"
+                                    ).cp_tickettypeid,
+                                    TicketTypename: "Traffic Offence",
+                                    OffenceCategory: "",
+                                    OffenceCategoryID: "",
+                                    OffenceName: "",
+                                    OffenceNameID: "",
+                                    OffenceCode: "",
+                                    OffenceCodeID: "",
+                                    MultipleOffences: "",
+                                    ContainsSpeedLimitOffence: "",
+                                    AcknowledgedTrafficOffence: "",
+                                    NIPGiven: "",
+                                    OffenderReply: "",
+                                    TOSerialNo: "",
+                                    TOPrinted: "",
+                                    NIPNotRequired: "",
+                                    Offenceorder: "",
+                                    TrafficOffenceSigned: SampleImage
+                                }
+                            );
+                            UpdateIf(
+                                TrOffOffline,
+                                OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key And TicketTypename = "Traffic Offence",
+                                {TrafficOffenceSigned: Blank()}
+                            );
+                            
+                        );
+                        If(
+                            CountRows(
+                                Filter(
+                                    TrOffOffline,
+                                    TicketTypename = "S163 (Vehicle Stop)" And OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                                )
+                            ) = 0 And Gallery_vehicle_ticket_types.Selected.Checkbox_ticket_type.Text = "S163 (Vehicle Stop)",
+                            Collect(
+                                TrOffOffline,
+                                {
+                                    OffenceKey: Vehicle_Ticket_pt1_Key.Selected.Key,
+                                    TicketTypeTrafficOffence: LookUp(
+                                        OffencesOffline,
+                                        cp_name = "S163 (Vehicle Stop)"
+                                    ).cp_tickettypeid,
+                                    TicketTypename: "S163 (Vehicle Stop)",
+                                    'Reason for using s163 power name': "",
+                                    'Reason for using s163 power': "",
+                                    'Other reason for using s163': "",
+                                    'Outcome of stop / Reason for outcome name': "",
+                                    'Outcome of stop / Reason for outcome': "",
+                                    'Description: Outcome of stop / reason for outcome': "",
+                                    linkreasonstopoutcome: ""
+                                }
+                            )
+                        );
+                        SaveData(
+                            TrOffOffline,
+                            "TrOffOffline"
+                        )
+                    OnSelect: |-
+                        =If(
+                            Checkbox_ticket_type.Value = true,
+                            Collect(CheckboxTextValues,{name:Gallery_vehicle_ticket_types.Selected.cp_name,ticketId:Gallery_vehicle_ticket_types.Selected.cp_tickettypeid}),
+                            Remove(CheckboxTextValues, LookUp(CheckboxTextValues, name = Checkbox_ticket_type.Text))
+                        )
+                    OnUncheck: |
+                        =If(
+                            Gallery_vehicle_ticket_types.Selected.cp_name = "HORT1" And LookUp(TrOffOffline,OffenceKey=Vehicle_Ticket_pt1_Key.Selected.Key).OffenceKey=Vehicle_Ticket_pt1_Key.Selected.Key,
+                            Set(
+                                displayhort1,
+                                DisplayMode.Disabled
+                            );
+                            RemoveIf(
+                                TrOffOffline,
+                                TicketTypename = "HORT1" And OffenceKey=Vehicle_Ticket_pt1_Key.Selected.Key
+                            )
+                        );
+                        If(
+                            Gallery_vehicle_ticket_types.Selected.cp_name = "VDRS" And LookUp(TrOffOffline,OffenceKey=Vehicle_Ticket_pt1_Key.Selected.Key).OffenceKey=Vehicle_Ticket_pt1_Key.Selected.Key,
+                            Set(
+                                displayvdrs,
+                                DisplayMode.Disabled
+                            );
+                            RemoveIf(
+                                TrOffOffline,
+                                TicketTypename = "VDRS" And OffenceKey=Vehicle_Ticket_pt1_Key.Selected.Key
+                            );RemoveIf('Vdrs codes', OffenceKey=Vehicle_Ticket_pt1_Key.Selected.Key);
+                        );
+                        If(
+                            Gallery_vehicle_ticket_types.Selected.cp_name = "Section 59" And LookUp(TrOffOffline,OffenceKey=Vehicle_Ticket_pt1_Key.Selected.Key).OffenceKey=Vehicle_Ticket_pt1_Key.Selected.Key,
+                            Set(
+                                displaysection59,
+                                DisplayMode.Disabled
+                            );
+                            RemoveIf(
+                                TrOffOffline,
+                                TicketTypename = "Section 59" And OffenceKey=Vehicle_Ticket_pt1_Key.Selected.Key
+                            )
+                        );
+                        If(
+                            Gallery_vehicle_ticket_types.Selected.cp_name = "Traffic Offence" And LookUp(TrOffOffline,OffenceKey=Vehicle_Ticket_pt1_Key.Selected.Key).OffenceKey=Vehicle_Ticket_pt1_Key.Selected.Key,
+                            Set(
+                                displaytrafficoffence,
+                                DisplayMode.Disabled
+                            );
+                            RemoveIf(
+                                TrOffOffline,
+                                TicketTypename = "Traffic Offence" And OffenceKey=Vehicle_Ticket_pt1_Key.Selected.Key
+                            );RemoveIf('Traffic Offence codes', OffenceKey=Vehicle_Ticket_pt1_Key.Selected.Key);
+                        );
+                        If(
+                            Gallery_vehicle_ticket_types.Selected.cp_name = "S165 (No Ins/DL)" And LookUp(TrOffOffline,OffenceKey=Vehicle_Ticket_pt1_Key.Selected.Key).OffenceKey=Vehicle_Ticket_pt1_Key.Selected.Key,
+                            Set(
+                                displays165noinsdl,
+                                DisplayMode.Disabled
+                            );
+                            RemoveIf(
+                                TrOffOffline,
+                                TicketTypename = "S165 (No Ins/DL)" And OffenceKey=Vehicle_Ticket_pt1_Key.Selected.Key
+                            )
+                        );
+                        If(
+                            Gallery_vehicle_ticket_types.Selected.cp_name = "S163 (Vehicle Stop)" And LookUp(TrOffOffline,OffenceKey=Vehicle_Ticket_pt1_Key.Selected.Key).OffenceKey=Vehicle_Ticket_pt1_Key.Selected.Key,
+                            Set(
+                                displays163vs,
+                                DisplayMode.Disabled
+                            );
+                            RemoveIf(
+                                TrOffOffline,
+                                TicketTypename = "S163 (Vehicle Stop)" And OffenceKey=Vehicle_Ticket_pt1_Key.Selected.Key
+                            )
+                        );SaveData(
+                            TrOffOffline,
+                            "TrOffOffline"
+                        )
+                    Reset: =true
+                    Size: =21
+                    Text: =ThisItem.cp_name
+                    Width: =545
+                    X: =40
+                    ZIndex: =1
+
+            Document_photos_group As group:
+                Height: =5
+                Width: =5
+                X: =16
+                Y: =60
+                ZIndex: =22
+
+                Photo As image:
+                    Height: =240
+                    Image: |-
+                        =//If(IsBlank(LookUp(Photos, Photokey=Vehicle_Primary_key)), SampleImage, AddPhoto.Media)
+                        
+                        If(IsBlank(AddPhoto.Media), SampleImage, AddPhoto.Media)
+                    ImagePosition: =ImagePosition.Fill
+                    OnSelect: =
+                    Visible: =false
+                    Width: =535
+                    X: =52
+                    Y: =1189
+                    ZIndex: =20
+
+                AddPhoto As addMedia:
+                    ChangePictureText: ="Tap or click to add a picture"
+                    Color: =RGBA(255, 255, 255, 1)
+                    Fill: =RGBA(116, 116, 116, 1)
+                    Height: =88
+                    OnSelect: |
+                        =If(
+                            CountRows(
+                                Filter(
+                                    Photos,
+                                    Photokey = Vehicle_Primary_key
+                                )
+                            ) < 5,
+                            Collect(
+                                Photos,
+                                {
+                                    Photokey: Vehicle_Primary_key,
+                                    photo1: Photo.Image,
+                                    Caption1:TextInput_picture_Caption.Text,
+                                    Row: CountRows(Photos) + 1
+                                }
+                            );
+                            UpdateContext({yphotoadd: yphotoadd + 132})
+                        );
+                        /*UpdateContext ({galHeight: CountRows(Gallery1.AllItems) * (Gallery1.TemplateHeight)});*/
+                        UpdateContext ({galHeight: CountIf(Photos,Photokey=Vehicle_Ticket_pt1_Key.Selected.Key) * (Gallery1.TemplateHeight)});
+                        SaveData(
+                            Photos,
+                            "PhotosCache"
+                        );
+                    Size: =27
+                    UseMobileCamera: =true
+                    Width: =538
+                    X: =47
+                    Y: =1278
+                    ZIndex: =21
+
+            Label_photo_limit_is_5 As label:
+                Color: =RGBA(255, 255, 255, 1)
+                Fill: =RGBA(255, 0, 0, 1)
+                Height: =32
+                OnSelect: =
+                Size: =21
+                Text: ="CANNOT TAKE MORE THAN 5 PHOTOS"
+                Visible: =If(CountRows(Filter(Photos,Photokey = Vehicle_Primary_key)) >= 5,true,false)
+                Width: =535
+                X: =59
+                Y: =1567+galHeight
+                ZIndex: =23
+
+            "Gallery1 As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+                Default: =LookUp(Photos,Photokey = Vehicle_Primary_key)
+                Height: =galHeight
+                Items: =Filter(Photos,Photokey=Vehicle_Primary_key)
+                Layout: =Layout.Vertical
+                ShowScrollbar: =false
+                TemplatePadding: =0
+                TemplateSize: =140
+                Width: =633
+                Y: =1366
+                ZIndex: =24
+
+                Image1_3 As image:
+                    Height: =128
+                    Image: =ThisItem.photo1
+                    OnSelect: =Select(Parent)
+                    Width: =128
+                    Y: =5
+                    ZIndex: =1
+
+                Separator1 As rectangle:
+                    Height: =1
+                    OnSelect: =Select(Parent)
+                    Width: =Parent.TemplateWidth
+                    Y: =Parent.TemplateHeight - 1
+                    ZIndex: =5
+
+                TextInput_picture_Caption As text:
+                    BorderColor: =RGBA(116, 116, 116, 1)
+                    Clear: =true
+                    Default: =ThisItem.Caption1
+                    EnableSpellCheck: =true
+                    Height: =87
+                    HintText: ="Input Caption about the picture"
+                    OnChange: |-
+                        =UpdateIf(Photos, Row = ThisItem.Row, {Caption1:TextInput_picture_Caption.Text});SaveData(Photos,"PhotosCache");
+                    OnSelect: =
+                    Reset: =true
+                    Size: =16
+                    Width: =379
+                    X: =157
+                    Y: =26
+                    ZIndex: =6
+
+                Icon10 As icon.Cancel:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =104
+                    Icon: =Icon.Cancel
+                    OnSelect: |
+                        =Remove(
+                            Photos,
+                            ThisItem
+                        );
+                        
+                        UpdateContext ({galHeight: CountIf(Photos,Photokey=Vehicle_Ticket_pt1_Key.Selected.Key) * (Gallery1.TemplateHeight)});
+                        SaveData(
+                            Photos,
+                            "PhotosCache"
+                        );
+                    Width: =78
+                    X: =536
+                    Y: =18
+                    ZIndex: =7
+
+        DataCard4 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =100
+            Width: =640
+            X: =0
+            Y: =1
+            ZIndex: =2
+
+            "'Btn_Vehiclept1_save&continue' As button":
+                DisplayMode: =signreadonly
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =70
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |
+                    =UpdateIf(
+                        'Vehicle Offline',
+                        Key = Vehicle_Ticket_pt1_Key.Selected.Key,
+                        {
+                            'Vehicle Ticket pt 1 Offence Date': DatePicker_vehicleticket_pt1.SelectedDate,
+                            'Vehicle Ticket pt 1 Offence Time': Time(
+                                Value(Dropdown_hours.Selected.Value),
+                                Value(Dropdown_minuites.Selected.Value),
+                                0
+                            ),
+                            VehicleTicketTypes: Left(
+                                Concat(
+                                    Filter(
+                                        TrOffOffline,
+                                        OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                                    ),
+                                    TicketTypename & ","
+                                ),
+                                Len(
+                                    Concat(
+                                        Filter(
+                                            TrOffOffline,
+                                            OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                                        ),
+                                        TicketTypename & ","
+                                    )
+                                ) - 1
+                            ),
+                            VehicleTicketTypesid: Left(
+                                Concat(
+                                    Filter(
+                                        TrOffOffline,
+                                        OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                                    ),
+                                    TicketTypeTrafficOffence & ","
+                                ),
+                                Len(
+                                    Concat(
+                                        Filter(
+                                            TrOffOffline,
+                                            OffenceKey = Vehicle_Ticket_pt1_Key.Selected.Key
+                                        ),
+                                        TicketTypeTrafficOffence & ","
+                                    )
+                                ) - 1
+                            ),
+                            'Vehicle Ticket pt 1 Issued to name': dropdown_issued_to.Selected.cp_name,
+                            'Vehicle Ticket pt 1 Issued to': dropdown_issued_to.Selected.cp_lookupvalueid,
+                            'Reason for stop name': dropdown_reason_for_stop.Selected.cp_name,
+                            'Reason for stop': dropdown_reason_for_stop.Selected.cp_lookupvalueid,
+                            'Vehicle Ticket pt 1 photo1': LookUp(
+                                Photos,
+                                Row = 1,
+                                photo1
+                            ),
+                            'Vehicle Ticket pt 1 photo2': LookUp(
+                                Photos,
+                                Row = 2,
+                                photo1
+                            ),
+                            'Vehicle Ticket pt 1 photo3': LookUp(
+                                Photos,
+                                Row = 3,
+                                photo1
+                            ),
+                            'Vehicle Ticket pt 1 photo4': LookUp(
+                                Photos,
+                                Row = 4,
+                                photo1
+                            ),
+                            'Vehicle Ticket pt 1 photo5': LookUp(
+                                Photos,
+                                Row = 5,
+                                photo1
+                            ),
+                            'Vehicle Ticket pt 1 Caption1': LookUp(
+                                Photos,
+                                Row = 1,
+                                Caption1
+                            ),
+                            'Vehicle Ticket pt 1 Caption2': LookUp(
+                                Photos,
+                                Row = 2,
+                                Caption1
+                            ),
+                            'Vehicle Ticket pt 1 Caption3': LookUp(
+                                Photos,
+                                Row = 3,
+                                Caption1
+                            ),
+                            'Vehicle Ticket pt 1 Caption4': LookUp(
+                                Photos,
+                                Row = 4,
+                                Caption1
+                            ),
+                            'Vehicle Ticket pt 1 Caption5': LookUp(
+                                Photos,
+                                Row = 5,
+                                Caption1
+                            )
+                        }
+                    );
+                    UpdateContext(
+                        {
+                            rec: LookUp(
+                                'Vehicle Offline',
+                                Key = Vehicle_Ticket_pt1_Key.Selected.Key
+                            )
+                        }
+                    );
+                    UpdateIf(
+                        'Vehicle Offline',
+                        Key = Vehicle_Ticket_pt1_Key.Selected.Key,
+                        {
+                            'VT-PT1 validation': And(
+                                !IsBlank(rec.'Vehicle Ticket pt 1 Offence Date'),
+                                !IsBlank(rec.'Reason for stop name'),
+                                !IsBlank(rec.'Vehicle Ticket pt 1 Offence Time'),
+                                !IsBlank(rec.VehicleTicketTypes),
+                                !IsBlank(rec.'Vehicle Ticket pt 1 Issued to name'),
+                                !IsBlank(rec.'Reason for stop name')
+                            )
+                        }
+                    );
+                    UpdateIf(
+                        'Vehicle Offline',
+                        Key = Vehicle_Ticket_pt1_Key.Selected.Key,
+                        {
+                            EvidenceRequired: IsMatch(
+                                Lower(
+                                    LookUp(
+                                        'Vehicle Offline',
+                                        Key = Vehicle_Ticket_pt1_Key.Selected.Key
+                                    ).VehicleTicketTypes
+                                ),
+                                "traffic offence",
+                                MatchOptions.Contains
+                            ),
+                            PersonRequired: Not(
+                                IsMatch(
+                                    Lower(
+                                        LookUp(
+                                            'Vehicle Offline',
+                                            Key = Vehicle_Ticket_pt1_Key.Selected.Key
+                                        ).'Vehicle Ticket pt 1 Issued to name'
+                                    ),
+                                    "unattended",
+                                    MatchOptions.Contains
+                                )
+                            ),
+                            VehicleRequired: Not(
+                                IsMatch(
+                                    Lower(
+                                        LookUp(
+                                            'Vehicle Offline',
+                                            Key = Vehicle_Ticket_pt1_Key.Selected.Key
+                                        ).'Vehicle Ticket pt 1 Issued to name'
+                                    ),
+                                    "bicycle",
+                                    MatchOptions.Contains
+                                )
+                            )
+                        }
+                    );
+                    SaveData(
+                        'Vehicle Offline',
+                        "Vehicle Offline"
+                    );
+                    SaveData(
+                        Photos,
+                        "PhotosCache"
+                    );
+                    Navigate(
+                        Scr_home,
+                        ScreenTransition.UnCover
+                    );
+                Size: =24
+                Text: ="Save and Continue"
+                Width: =545
+                X: =40
+                Y: =30
+                ZIndex: =1
+
+    Label1_2 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =42
+        Size: =21
+        Text: =Vehicle_Primary_key
+        Width: =440
+        X: =100
+        Y: =45
+        ZIndex: =4
+
+    Icon_back_2 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home, UnCoverRight, Gallery_vehicle_ticket_types.Selected)
+        X: =27
+        Y: =17
+        ZIndex: =5
+

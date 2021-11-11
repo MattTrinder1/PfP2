@@ -1,0 +1,361 @@
+"Scr_photos As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    OnVisible: |-
+        =Set(AllReset, true);
+               UpdateContext({AllReset: true});
+        
+        Set(
+            addcontactmethod,
+            false
+        );
+        UpdateContext({addcontactmethod: false});
+        Set(
+            contactworkphone,
+            false
+        );
+        UpdateContext({contactworkphone: false});
+        Set(
+            contactmail,
+            false
+        );
+        UpdateContext({contactmail: false});
+        Set(
+            contacthomephone,
+            false
+        );
+        UpdateContext({contacthomephone: false});
+        Set(
+            contactmobile,
+            false
+        );
+        UpdateContext({contactmobile: false});
+        Set(
+            occupation,
+            false
+        );
+        UpdateContext({occupation: false});
+        Set(
+            ycontactmethodid,
+            0
+        );
+        Set(
+            yretiredid,
+            0
+        );
+        UpdateContext({y1: 0});Set(madcol,LightGoldenRodYellow);UpdateContext({madcol:LightGoldenRodYellow});Set(madcolA,LightGoldenRodYellow);UpdateContext({madcolA:LightGoldenRodYellow});
+        
+        Set(madcolB,LightGoldenRodYellow);UpdateContext({madcolB:LightGoldenRodYellow});
+        
+        Set(madcolC,LightGoldenRodYellow);UpdateContext({madcolC:LightGoldenRodYellow});
+        
+        Set(madcolD,LightGoldenRodYellow);UpdateContext({madcolD:LightGoldenRodYellow});
+        
+        Set(madcolE,LightGoldenRodYellow);UpdateContext({madcolE:LightGoldenRodYellow});
+        
+        
+        Set(madcolF,LightGoldenRodYellow);UpdateContext({madcolF:LightGoldenRodYellow});
+        
+        Set(madcolF,LightGoldenRodYellow);UpdateContext({madcolF:LightGoldenRodYellow});
+        Set(madcolG,LightGoldenRodYellow);UpdateContext({madcolG:LightGoldenRodYellow});
+        Set(madcolH,LightGoldenRodYellow);UpdateContext({madcolH:LightGoldenRodYellow});
+        Set(madcolI,LightGoldenRodYellow);UpdateContext({madcolI:LightGoldenRodYellow});
+        Set(madcolJ,LightGoldenRodYellow);UpdateContext({madcolJ:LightGoldenRodYellow});
+        Set(madcolK,LightGoldenRodYellow);UpdateContext({madcolK:LightGoldenRodYellow});
+        Set(madcolL,LightGoldenRodYellow);UpdateContext({madcolL:LightGoldenRodYellow});
+        Set(madcolM,LightGoldenRodYellow);UpdateContext({madcolM:LightGoldenRodYellow});
+        Set(madcolM,LightGoldenRodYellow);UpdateContext({madcolM:LightGoldenRodYellow});
+        Set(madcolN,LightGoldenRodYellow);UpdateContext({madcolN:LightGoldenRodYellow});
+        Set(madcolO,LightGoldenRodYellow);UpdateContext({madcolO:LightGoldenRodYellow});
+
+    RectQuickActionBar_header_12 As rectangle:
+        Height: =88
+        Width: =Parent.Width
+        ZIndex: =1
+
+    Lbl_header_details_12 As label:
+        Align: =Align.Center
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =88
+        Size: =27
+        Text: ="Photos"
+        Width: =Parent.Width
+        ZIndex: =2
+
+    Canvas_details_12 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =900
+        Width: =Parent.Width
+        Y: =RectQuickActionBar_header_12.Y + RectQuickActionBar_header_12.Height
+        ZIndex: =3
+
+        DataCard_details_scroll_12 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =Btn_add_details_17.Y + 100
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Drpdn_incident_key_12 As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =Use_of_force_Primary_key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: ='Use of force offline'.Key
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =35
+                Y: =40
+                ZIndex: =2
+
+            Gallery_contact_details_12 As gallery.galleryVertical:
+                BorderStyle: =BorderStyle.None
+                Height: =CountRows(Photos) * 160  + 340
+                Items: =Filter('Use of force offline',Key=Drpdn_incident_key_12.Selected.Key)
+                Layout: =Layout.Vertical
+                Selectable: =false
+                ShowScrollbar: =false
+                TemplatePadding: =0
+                TemplateSize: =CountRows(Photos) * 160  + 340
+                Width: =624
+                Y: =132
+                ZIndex: =3
+
+                Label_IncludePhotos As label:
+                    Height: =59
+                    Size: =21
+                    Text: ="Include Photo(s)?"
+                    Width: =560
+                    X: =29
+                    Y: =20
+                    ZIndex: =13
+
+                Radio_IncludePhotos As radio:
+                    BorderStyle: =BorderStyle.None
+                    Default: |-
+                        =
+                        LookUp('Use of force offline',Key=Drpdn_incident_key_12.Selected.Key).IncludePhoto
+                    Height: =97
+                    Items: =["Yes","No"]
+                    Layout: =Layout.Horizontal
+                    OnChange: |-
+                        =If(
+                            Radio_IncludePhotos.Selected.Value = "Yes",
+                            UpdateContext({occupation: true});UpdateContext({y1:y1+100}));
+                            If(
+                            Radio_IncludePhotos.Selected.Value = "No",
+                            UpdateContext({occupation: false});UpdateContext({y1:0}));
+                    OnSelect: |-
+                        =If(
+                            Radio_IncludePhotos.Selected.Value = "Yes",
+                            UpdateContext({occupation: true});UpdateContext({y1:y1+100}));
+                            If(
+                            Radio_IncludePhotos.Selected.Value = "No",
+                            UpdateContext({occupation: false});UpdateContext({y1:0}));
+                    RadioBorderColor: =RGBA(128, 128, 128, 1)
+                    Reset: =AllReset
+                    Size: =21
+                    Width: =335
+                    X: =29
+                    Y: =88
+                    ZIndex: =14
+
+                AddMediaWithImage1 As group:
+                    Height: =5
+                    Width: =5
+                    X: =40
+                    Y: =40
+                    ZIndex: =36
+
+                    UploadedImage1 As image:
+                        Height: =95
+                        Image: =If(IsBlank(AddMediaButton1.Media), SampleImage, AddMediaButton1.Media)
+                        ImagePosition: =ImagePosition.Fill
+                        OnSelect: =Select(Parent)
+                        Visible: =false
+                        Width: =447
+                        X: =87
+                        Y: =189
+                        ZIndex: =37
+
+                    AddMediaButton1 As addMedia:
+                        ChangePictureText: ="Add another"
+                        Height: =99
+                        OnSelect: |-
+                            =If(CountRows(Photos)<5,Collect(Photos,{photo1:UploadedImage1.Image,
+                            Photokey: Use_of_force_Primary_key,
+                            Caption1: TextInput_picture_Caption.Text,
+                            Row:CountRows(Photos)+1}));
+                            
+                            UpdateContext
+                            ({galHeight:CountRows(Gallery_photos.AllItems)*(Gallery_photos.TemplateHeight)});
+                              
+                        Reset: =true
+                        Size: =25
+                        Visible: =If(Radio_IncludePhotos.Selected.Value="Yes",true,false)
+                        Width: =447
+                        X: =87
+                        Y: =185
+                        ZIndex: =38
+
+                "Gallery_photos As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+                    Height: =CountRows(Photos) * 160
+                    Items: =Photos
+                    Layout: =Layout.Vertical
+                    ShowScrollbar: =false
+                    TemplatePadding: =0
+                    TemplateSize: =160
+                    Visible: =If(Radio_IncludePhotos.Selected.Value="Yes",true,false)
+                    Width: =622
+                    Y: =337
+                    ZIndex: =39
+
+                    Image1 As image:
+                        Height: =128
+                        Image: =ThisItem.photo1
+                        OnSelect: =Select(Parent)
+                        Width: =128
+                        X: =16
+                        Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+                        ZIndex: =1
+
+                    Title1 As label:
+                        Height: =Self.Size * 1.8
+                        OnSelect: =Select(Parent)
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Text: =ThisItem.Row
+                        VerticalAlign: =VerticalAlign.Top
+                        Visible: =false
+                        Width: =Parent.TemplateWidth - Image1.Width - 104
+                        X: =Image1.X + Image1.Width + 24
+                        Y: =44
+                        ZIndex: =2
+
+                    Subtitle1 As label:
+                        Height: =Self.Size * 1.8
+                        OnSelect: =Select(Parent)
+                        PaddingBottom: =0
+                        PaddingLeft: =0
+                        PaddingRight: =0
+                        PaddingTop: =0
+                        Text: =ThisItem.photo1
+                        VerticalAlign: =VerticalAlign.Top
+                        Visible: =false
+                        Width: =Title1.Width
+                        X: =Title1.X
+                        Y: =93
+                        ZIndex: =3
+
+                    Separator1 As rectangle:
+                        Height: =1
+                        OnSelect: =Select(Parent)
+                        Width: =Parent.TemplateWidth
+                        Y: =Parent.TemplateHeight - 1
+                        ZIndex: =5
+
+                    Icon9 As icon.Cancel:
+                        Color: =RGBA(255, 0, 0, 1)
+                        Height: =72
+                        Icon: =Icon.Cancel
+                        OnSelect: |-
+                            =Remove(Photos, ThisItem); 
+                            Set(galHeight,CountRows(Gallery_photos.AllItems)*(Gallery_photos.TemplateHeight));
+                        Width: =84
+                        X: =538
+                        Y: =44
+                        ZIndex: =6
+
+                    TextInput_picture_Caption As text:
+                        Default: =ThisItem.Caption1
+                        Height: =61
+                        HintText: ="Input Caption for image"
+                        OnChange: |-
+                            =UpdateIf(Photos, Row = ThisItem.Row, {Caption1:TextInput_picture_Caption.Text})
+                        OnSelect: |-
+                            =UpdateIf(Photos, Row = ThisItem.Row, {Caption1:TextInput_picture_Caption.Text})
+                        Size: =21
+                        Width: =376
+                        X: =162
+                        Y: =44
+                        ZIndex: =7
+
+            Btn_add_details_17 As button:
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =70
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =UpdateIf('Use of force offline',Key=Drpdn_incident_key_12.Selected.Key,{
+                    
+                      IncludePhoto: Radio_IncludePhotos.Selected.Value,
+                     
+                    photo1:LookUp(Photos,Row=1,photo1),
+                    photo2:LookUp(Photos,Row=2,photo1),
+                    photo3:LookUp(Photos,Row=3,photo1),
+                    photo4:LookUp(Photos,Row=4,photo1),
+                    photo5:LookUp(Photos,Row=4,photo1),
+                    
+                    caption1: LookUp(
+                                Photos,
+                                Row = 1,
+                                Caption1
+                            ),
+                            caption2: LookUp(
+                                Photos,
+                                Row = 2,
+                                Caption1
+                            ),
+                            caption3: LookUp(
+                                Photos,
+                                Row = 3,
+                                Caption1
+                            ),
+                            caption4: LookUp(
+                                Photos,
+                                Row = 4,
+                                Caption1
+                            ),
+                            caption5: LookUp(
+                                Photos,
+                                Row = 5,
+                                Caption1
+                            )
+                      
+                       
+                    }
+                    );
+                    SaveData('Use of force offline',"Use of force offline");Navigate(Scr_home,UnCoverRight)
+                Size: =24
+                Text: ="Save and Continue"
+                Width: =545
+                X: =54
+                Y: =Gallery_contact_details_12.Y + Gallery_contact_details_12.Height + 20
+                ZIndex: =4
+
+    Icon_back_details_home_12 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Back()
+        X: =31
+        Y: =13
+        ZIndex: =4
+
+    Icn_exit_Home_12 As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =576
+        Y: =13
+        ZIndex: =5
+

@@ -1,0 +1,1 @@
+& $PSScriptRoot\exportandextract.ps1 -folderName "CanvasAppsCovid" -canvas $True -appName covidnew2_9950c -prefix "CP"

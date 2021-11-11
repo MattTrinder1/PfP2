@@ -1,0 +1,811 @@
+"Scr_iyc_pt2 As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    OnHidden: =//Reset(AddMediaButton1);
+    OnVisible: =
+
+    Label1_16 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Its Your Choice Pt.2" //& LookUp('IYC offline',Key=Dropdown_Care_key_1.Selected.Key).Photochanged 
+        Width: =640
+        Y: =1
+        ZIndex: =1
+
+    "'exit icon 3_17' As icon.Cancel":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =576
+        Y: =12
+        ZIndex: =2
+
+    "'Back Icon 2_17' As icon.ArrowLeft":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home,ScreenTransition.UnCover)
+        X: =24
+        Y: =12
+        ZIndex: =3
+
+    Canvas_Care_2 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1048
+        Width: =Parent.Width
+        Y: =88
+        ZIndex: =4
+
+        DataCard_Care_2 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =If(IsBlank(Dropdown_Care_key_1.Selected.Key),DisplayMode.Disabled, DisplayMode.Edit)
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =186
+            Width: =Parent.Width
+            X: =0
+            Y: =1
+            ZIndex: =1
+
+            Label_remedy_leaflet As label:
+                Height: =70
+                Size: =18
+                Text: ="Community remedy leaflet given and discussed with victim?"
+                Width: =512
+                X: =40
+                Y: =17
+                ZIndex: =36
+
+            rb_remedy_leaflet As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('IYC offline',Key=Dropdown_Care_key_1.Selected.Key).RemedyLeaflet
+                Fill: =If(IsBlank(Self.SelectedText.Value),LightGoldenRodYellow,White)
+                Height: =80
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(rb_remedy_leaflet.Selected.Value)>0,UpdateContext({madcolpt:White}),UpdateContext({madcolpt:LightGoldenRodYellow}));
+                    
+                    If(
+                        rb_remedy_leaflet.Selected.Value = "No" And yleaf=0,
+                        Set(leafvis,true);UpdateContext({leafvis: true});Set(yleaf,150);UpdateContext({yleaf:150})
+                    );
+                    If(
+                        rb_remedy_leaflet.Selected.Value = "Yes",
+                        Set(leafvis,false);UpdateContext({leafvis: false});Set(yleaf,0);UpdateContext({yleaf:0})
+                    );
+                    
+                     If(Len(rb_remedy_leaflet.Selected.Value) = 0 , 
+                     Set(leafvis,false);UpdateContext({leafvis: false});Set(yleaf,0);UpdateContext({yleaf:0}));
+                    
+                     
+                     If(rb_remedy_leaflet.Selected.Value = "No",Reset(txt_offered));
+                OnSelect: |-
+                    =If(Len(rb_remedy_leaflet.Selected.Value)>0,UpdateContext({madcolpt:White}),UpdateContext({madcolpt:LightGoldenRodYellow}));
+                    If(
+                        rb_remedy_leaflet.Selected.Value = "No" And yleaf=0,
+                        Set(leafvis,true);UpdateContext({leafvis: true});Set(yleaf,150);UpdateContext({yleaf:150})
+                    );
+                    If(
+                        rb_remedy_leaflet.Selected.Value = "Yes",
+                        Set(leafvis,false);UpdateContext({leafvis: false});Set(yleaf,0);UpdateContext({yleaf:0})
+                    );
+                    
+                     If(Len(rb_remedy_leaflet.Selected.Value) = 0 , 
+                     Set(leafvis,false);UpdateContext({leafvis: false});Set(yleaf,0);UpdateContext({yleaf:0}));
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                RadioSize: =60
+                Reset: =Allreset
+                Size: =18
+                Width: =300
+                X: =40
+                Y: =97
+                ZIndex: =37
+
+            Lbl_asteriks_36 As label:
+                Align: =Align.Center
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =30
+                Size: =18
+                Text: ="*"
+                Width: =30
+                X: =310
+                Y: =47
+                ZIndex: =41
+
+        DataCard5 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =If(IsBlank(Dropdown_Care_key_1.Selected.Key),DisplayMode.Disabled, DisplayMode.Edit)
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =852
+            Width: =640
+            X: =0
+            Y: =8
+            ZIndex: =2
+
+            Label_intel As label:
+                Height: =70
+                Size: =18
+                Text: ="Intel submitted?"
+                Width: =547
+                X: =40
+                Y: =424
+                ZIndex: =1
+
+            rb_Intel_submitted As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('IYC offline',Key=Dropdown_Care_key_1.Selected.Key).IntelSubmited
+                Fill: =If(IsBlank(Self.SelectedText.Value),LightGoldenRodYellow,White)
+                Height: =80
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(rb_Intel_submitted.Selected.Value)> 0,UpdateContext({madcolptF:White}),UpdateContext({madcolptF:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(rb_Intel_submitted.Selected.Value)>0,UpdateContext({madcolptF:White}),UpdateContext({madcolptF:LightGoldenRodYellow}))
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                RadioSize: =60
+                Reset: =Allreset
+                Size: =18
+                Width: =300
+                X: =40
+                Y: =494
+                ZIndex: =2
+
+            Label_stop_search As label:
+                Height: =70
+                Size: =18
+                Text: ="Stop search submitted?"
+                Width: =480
+                X: =40
+                Y: =587
+                ZIndex: =3
+
+            rb_stop_search As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('IYC offline',Key=Dropdown_Care_key_1.Selected.Key).Stopnsearch
+                Fill: =If(IsBlank(Self.SelectedText.Value),LightGoldenRodYellow,White)
+                Height: =80
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(rb_stop_search.Selected.Value)>0,UpdateContext({madcolptG:White}),UpdateContext({madcolptG:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(rb_stop_search.Selected.Value)>0,UpdateContext({madcolptG:White}),UpdateContext({madcolptG:LightGoldenRodYellow}))
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                RadioSize: =60
+                Reset: =Allreset
+                Size: =18
+                Width: =300
+                X: =40
+                Y: =657
+                ZIndex: =4
+
+            AddMediaWithImage1 As group:
+                Height: =5
+                Width: =5
+                X: =7
+                Y: =80
+                ZIndex: =5
+
+                UploadedImage1 As image:
+                    Height: =AddMediaButton1.Height
+                    Image: =If(LookUp('IYC offline',Key=Dropdown_Care_key_1.Selected.Key).Photochanged, AddMediaButton1.Media,LookUp('IYC offline',Key=Dropdown_Care_key_1.Selected.Key).Photoseized)
+                    ImagePosition: =ImagePosition.Fill
+                    Width: =AddMediaButton1.Width
+                    X: =40
+                    ZIndex: =6
+
+                AddMediaButton1 As addMedia:
+                    Height: =432
+                    OnChange: |
+                        =UpdateIf('IYC offline',Key=Dropdown_Care_key_1.Selected.Key,{Photochanged:true});
+                    Size: =18
+                    Width: =575
+                    X: =40
+                    ZIndex: =7
+
+            Btn_save_exit_4 As button:
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Bold
+                Height: =65
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |
+                    =UpdateIf(
+                        'IYC offline',
+                        Key = Dropdown_Care_key_1.Selected.Key,
+                        {
+                            RemedyLeaflet: rb_remedy_leaflet.Selected.Value,
+                            Victimwishes: txt_victim_wishes.Text,
+                            Offered: txt_offered.Text,
+                            youthdetail: rb_youth_detail.Selected.Value,
+                            youthdetails: txt_youth_detail_log.Text,
+                            alcoholrelated: rb_alcohol_related.Selected.Value,
+                            alcoholseized: rb_alcohol_seized.Selected.Value,
+                            alcoholdescription: txt_alcohol_description.Text,
+                            Photoseized: UploadedImage1.Image,
+                            IntelSubmited: rb_Intel_submitted.Selected.Value,
+                            Stopnsearch: rb_stop_search.Selected.Value,
+                            Photochanged:false
+                        }
+                    );
+                    UpdateIf(
+                        'IYC offline',
+                        Key = Dropdown_Care_key_1.Selected.Key,
+                        {
+                            iycPt2Valid: And(
+                                Or(
+                                    LookUp(
+                                        'IYC offline',
+                                        Key = Dropdown_Care_key_1.Selected.Key
+                                    ).RemedyLeaflet = "Yes",
+                                    And(
+                                        LookUp(
+                                            'IYC offline',
+                                            Key = Dropdown_Care_key_1.Selected.Key
+                                        ).RemedyLeaflet = "No",
+                                        !IsBlank(
+                                            LookUp(
+                                                'IYC offline',
+                                                Key = Dropdown_Care_key_1.Selected.Key
+                                            ).Offered
+                                        )
+                                    )
+                                ),
+                                Or(
+                                    LookUp(
+                                        'IYC offline',
+                                        Key = Dropdown_Care_key_1.Selected.Key
+                                    ).youthdetail = "Yes",
+                                    And(
+                                        LookUp(
+                                            'IYC offline',
+                                            Key = Dropdown_Care_key_1.Selected.Key
+                                        ).youthdetail = "No",
+                                        !IsBlank(
+                                            LookUp(
+                                                'IYC offline',
+                                                Key = Dropdown_Care_key_1.Selected.Key
+                                            ).youthdetails
+                                        )
+                                    )
+                                ),
+                                Or(
+                                    LookUp(
+                                        'IYC offline',
+                                        Key = Dropdown_Care_key_1.Selected.Key
+                                    ).alcoholrelated = "No",
+                                    And(
+                                        LookUp(
+                                            'IYC offline',
+                                            Key = Dropdown_Care_key_1.Selected.Key
+                                        ).alcoholrelated = "Yes",
+                                        Or(
+                                            LookUp(
+                                                'IYC offline',
+                                                Key = Dropdown_Care_key_1.Selected.Key
+                                            ).alcoholseized = "No",
+                                            And(
+                                                LookUp(
+                                                    'IYC offline',
+                                                    Key = Dropdown_Care_key_1.Selected.Key
+                                                ).alcoholseized = "Yes",
+                                                !IsBlank(
+                                                    LookUp(
+                                                        'IYC offline',
+                                                        Key = Dropdown_Care_key_1.Selected.Key
+                                                    ).alcoholdescription
+                                                )
+                                            )
+                                        )
+                                    )
+                                ),
+                                !IsBlank(rb_Intel_submitted.SelectedText.Value),
+                                !IsBlank(rb_stop_search.SelectedText.Value)
+                            )
+                        }
+                    );
+                    /*And(
+                        Or(
+                            rb_remedy_leaflet.SelectedText.Value = "Yes",
+                            And(
+                                rb_remedy_leaflet.SelectedText.Value = "No",
+                                !IsBlank(txt_offered.Text)
+                            )
+                        ),
+                        Or(
+                            rb_youth_detail.SelectedText.Value = "Yes",
+                            And(
+                                rb_youth_detail.SelectedText.Value = "No",
+                                !IsBlank(txt_youth_detail_log.Text)
+                            )
+                        ),
+                        Or(
+                            rb_alcohol_related.SelectedText.Value = "No",
+                            And(
+                                rb_alcohol_related.SelectedText.Value = "Yes",
+                                Or(
+                                    rb_alcohol_seized.SelectedText.Value = "No",
+                                    And(
+                                        rb_alcohol_seized.SelectedText.Value = "Yes",
+                                        !IsBlank(txt_alcohol_description.Text)
+                                    )
+                                )
+                            )
+                        ),
+                        !IsBlank(rb_Intel_submitted.SelectedText.Value),
+                        !IsBlank(rb_stop_search.SelectedText.Value)
+                    )*/
+                    SaveData(
+                        'IYC offline',
+                        "IYC offline"
+                    );
+                    Navigate(
+                        Scr_home,
+                        ScreenTransition.UnCover
+                    );
+                Size: =24
+                Text: ="Save & Continue"
+                Width: =545
+                X: =40
+                Y: =767
+                ZIndex: =8
+
+            Lbl_asteriks_43 As label:
+                Align: =Align.Center
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =30
+                Size: =18
+                Text: ="*"
+                Width: =30
+                X: =282
+                Y: =464
+                ZIndex: =9
+
+            Lbl_asteriks_44 As label:
+                Align: =Align.Center
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =30
+                Size: =18
+                Text: ="*"
+                Width: =30
+                X: =282
+                Y: =640
+                ZIndex: =10
+
+        DataCard6 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =147
+            Visible: =rb_alcohol_seized.SelectedText.Value = "Yes"
+            Width: =640
+            X: =0
+            Y: =7
+            ZIndex: =3
+
+            Lbl_asteriks_41 As label:
+                Align: =Align.Center
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =30
+                Size: =18
+                Text: ="*"
+                Width: =30
+                X: =574
+                Y: =12
+                ZIndex: =1
+
+            txt_alcohol_description As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Dropdown_Care_key_1.Selected.Key).alcoholdescription
+                Fill: =If(IsBlank(txt_alcohol_description.Text),Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =60
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |-
+                    =If(Len(txt_alcohol_description.Text)>0,UpdateContext({madcolptF:White}),UpdateContext({madcolptF:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(txt_alcohol_description.Text)>0,UpdateContext({madcolptF:White}),UpdateContext({madcolptF:LightGoldenRodYellow}))
+                Reset: =Allreset
+                Size: =18
+                Width: =545
+                X: =40
+                Y: =55
+                ZIndex: =2
+
+            Label2_37 As label:
+                Height: =70
+                Size: =18
+                Text: ="Alcohol description and quantity"
+                Width: =545
+                X: =40
+                ZIndex: =3
+
+        DataCard7 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =174
+            Visible: =rb_alcohol_related.SelectedText.Value="Yes"
+            Width: =640
+            X: =0
+            Y: =6
+            ZIndex: =4
+
+            Label2_36 As label:
+                Height: =70
+                Size: =18
+                Text: ="Alcohol seized?"
+                Width: =545
+                X: =40
+                Y: =8
+                ZIndex: =1
+
+            rb_alcohol_seized As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('IYC offline',Key=Dropdown_Care_key_1.Selected.Key).alcoholseized
+                Fill: =If(IsBlank(Self.SelectedText.Value),LightGoldenRodYellow,White)
+                Height: =80
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(rb_alcohol_seized.Selected.Value)>0,UpdateContext({madcolptE:White}),UpdateContext({madcolptE:LightGoldenRodYellow}));
+                    If(
+                     rb_alcohol_seized.Selected.Value = "Yes" And a2 = 0,
+                     UpdateContext({alcohol: true});Set(a2,100);UpdateContext({a2:100}));
+                     If(
+                     rb_alcohol_seized.Selected.Value = "No",
+                     UpdateContext({alcohol: false});Set(a2,0);UpdateContext({a2:0}));
+                     If(
+                     rb_alcohol_seized.Selected.Value = "No",Reset(txt_alcohol_description));
+                OnSelect: |
+                    =If(Len(rb_alcohol_seized.Selected.Value)>0,UpdateContext({madcolptE:White}),UpdateContext({madcolptE:LightGoldenRodYellow}));
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    If(
+                     rb_alcohol_seized.Selected.Value = "Yes" And a2 = 0,
+                     UpdateContext({alcohol: true});Set(a2,100);UpdateContext({a2:100}));
+                     If(
+                     rb_alcohol_seized.Selected.Value = "No",
+                     UpdateContext({alcohol: false});Set(a2,0);UpdateContext({a2:0}));
+                    
+                     If(
+                     rb_alcohol_seized.Selected.Value = "No",Reset(txt_alcohol_description));
+                    
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                RadioSize: =60
+                Reset: =Allreset
+                Size: =18
+                Width: =300
+                X: =40
+                Y: =67
+                ZIndex: =2
+
+            Lbl_asteriks_40 As label:
+                Align: =Align.Center
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =30
+                Size: =18
+                Text: ="*"
+                Width: =30
+                X: =232
+                Y: =22
+                ZIndex: =3
+
+        DataCard8 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =If(IsBlank(Dropdown_Care_key_1.Selected.Key),DisplayMode.Disabled, DisplayMode.Edit)
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =133
+            Width: =640
+            X: =0
+            Y: =5
+            ZIndex: =5
+
+            Label_alcohol_related As label:
+                Height: =48
+                Size: =18
+                Text: ="Alcohol related?"
+                Width: =252
+                X: =40
+                Y: =2
+                ZIndex: =1
+
+            rb_alcohol_related As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('IYC offline',Key=Dropdown_Care_key_1.Selected.Key).alcoholrelated
+                Fill: =If(IsBlank(Self.SelectedText.Value),LightGoldenRodYellow,White)
+                Height: =80
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(rb_alcohol_related.Selected.Value)>0,UpdateContext({madcolptD:White}),UpdateContext({madcolptD:LightGoldenRodYellow}));
+                    
+                    
+                     If(
+                     rb_alcohol_related.Selected.Value = "Yes" And a3 = 0,
+                     Set(alcohol2,true);UpdateContext({alcohol2: true});Set(a3,100);UpdateContext({a3:100}));
+                     If(
+                     rb_alcohol_related.Selected.Value = "No",
+                     Set(alcohol2,false);UpdateContext({alcohol2: false});Set(a3,0);UpdateContext({a3:0});UpdateContext({alcohol: false});Set(a2,0);UpdateContext({a2:0}));
+                    
+                    
+                    If(Len(rb_alcohol_related.Selected.Value) = 0 , 
+                     UpdateContext({alcohol2: false});Set(a3,0);UpdateContext({a3:0}));
+                    
+                     If(rb_alcohol_related.Selected.Value = "No",Reset(rb_alcohol_seized));
+                    
+                     
+                     If(rb_alcohol_seized.Selected.Value = "No",Reset(txt_alcohol_description));
+                OnSelect: |
+                    =If(Len(rb_alcohol_related.Selected.Value)>0,UpdateContext({madcolptD:White}),UpdateContext({madcolptD:LightGoldenRodYellow}));
+                    
+                    If(
+                     rb_alcohol_related.Selected.Value = "Yes" And a3 = 0,
+                     Set(alcohol2,true);UpdateContext({alcohol2: true});Set(a3,100);UpdateContext({a3:100}));
+                     If(
+                     rb_alcohol_related.Selected.Value = "No",
+                     Set(alcohol2,false);UpdateContext({alcohol2: false});Set(a3,0);UpdateContext({a3:0});UpdateContext({alcohol: false});Set(a2,0);UpdateContext({a2:0}));
+                    
+                      If(Len(rb_alcohol_related.Selected.Value) = 0 , 
+                     UpdateContext({alcohol2: false});Set(a3,0);UpdateContext({a3:0}));
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                RadioSize: =60
+                Reset: =Allreset
+                Size: =18
+                Width: =300
+                X: =40
+                Y: =46
+                ZIndex: =2
+
+            Lbl_asteriks_38 As label:
+                Align: =Align.Center
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =30
+                Size: =18
+                Text: ="*"
+                Width: =30
+                X: =278
+                Y: =20
+                ZIndex: =3
+
+        DataCard9 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =187
+            Visible: =rb_youth_detail.SelectedText.Value = "No"
+            Width: =640
+            X: =0
+            Y: =4
+            ZIndex: =6
+
+            Lbl_asteriks_39 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =30
+                Size: =18
+                Text: ="*"
+                Visible: =ylogvis
+                Width: =30
+                X: =564
+                ZIndex: =1
+
+            txt_youth_detail_log As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Dropdown_Care_key_1.Selected.Key).youthdetail
+                Fill: =If(IsBlank(txt_youth_detail_log.Text),Color.LightGoldenRodYellow,Color.Transparent)
+                Height: =116
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Mode: =TextMode.MultiLine
+                OnChange: |-
+                    =If(Len(txt_youth_detail_log.Text)>0,UpdateContext({madcolptC:White}),UpdateContext({madcolptC:LightGoldenRodYellow}));
+                OnSelect: |-
+                    =If(Len(txt_youth_detail_log.Text)>0,UpdateContext({madcolptC:White}),UpdateContext({madcolptC:LightGoldenRodYellow}))
+                Reset: =Allreset
+                Size: =18
+                Width: =545
+                X: =40
+                Y: =63
+                ZIndex: =2
+
+            Label_youth_detail_1 As label:
+                Height: =70
+                Size: =18
+                Text: ="Reason for no youth details on incident log"
+                Width: =524
+                X: =40
+                ZIndex: =3
+
+        DataCard10 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =If(IsBlank(Dropdown_Care_key_1.Selected.Key),DisplayMode.Disabled, DisplayMode.Edit)
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =267
+            Width: =640
+            X: =0
+            Y: =3
+            ZIndex: =7
+
+            Lbl_asteriks_35 As label:
+                Align: =Align.Center
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =30
+                Size: =18
+                Text: ="*"
+                Width: =30
+                X: =297
+                Y: =147
+                ZIndex: =1
+
+            txt_victim_wishes As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Dropdown_Care_key_1.Selected.Key).Victimwishes
+                Fill: =White
+                Height: =60
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Mode: =TextMode.MultiLine
+                Reset: =Allreset
+                Size: =18
+                Width: =545
+                X: =40
+                Y: =45
+                ZIndex: =2
+
+            Label_youth_detail As label:
+                Height: =70
+                Size: =18
+                Text: ="Youth details on log?"
+                Width: =262
+                X: =40
+                Y: =114
+                ZIndex: =3
+
+            rb_youth_detail As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('IYC offline',Key=Dropdown_Care_key_1.Selected.Key).youthdetail
+                Fill: =If(IsBlank(Self.SelectedText.Value),LightGoldenRodYellow,White)
+                Height: =80
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(rb_youth_detail.Selected.Value)>0,UpdateContext({madcolptB:White}),UpdateContext({madcolptB:LightGoldenRodYellow}));
+                    If(
+                        rb_youth_detail.Selected.Value = "No" And ylog=0,
+                        UpdateContext({ylogvis: true});UpdateContext({ylog:100})
+                    );
+                    If(
+                        rb_youth_detail.Selected.Value = "Yes",
+                        UpdateContext({ylogvis: false}); UpdateContext({ylog:0})
+                    );
+                    
+                     If(Len(rb_youth_detail.Selected.Value) = 0 , 
+                     UpdateContext({ylogvis: false});Set(ylog,0);UpdateContext({ylog:0}));
+                OnSelect: |-
+                    =If(Len(rb_youth_detail.Selected.Value)>0,UpdateContext({madcolptB:White}),UpdateContext({madcolptB:LightGoldenRodYellow}));
+                    If(
+                        rb_youth_detail.Selected.Value = "No" And ylog=0,
+                        Set(ylogvis,true);UpdateContext({ylogvis: true});Set(ylog,100);UpdateContext({ylog:100})
+                    );
+                    If(
+                        rb_youth_detail.Selected.Value = "Yes",
+                        Set(ylogvis,false);UpdateContext({ylogvis: false});Set(ylog,0);UpdateContext({ylog:0})
+                    );
+                    
+                     If(Len(rb_youth_detail.Selected.Value) = 0 , 
+                     Set(ylogvis,false);UpdateContext({ylogvis: false});Set(ylog,0);UpdateContext({ylog:0}));
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                RadioSize: =60
+                Reset: =Allreset
+                Size: =18
+                Width: =300
+                X: =40
+                Y: =177
+                ZIndex: =4
+
+            Label_youth_detail_2 As label:
+                Height: =46
+                Size: =18
+                Text: ="Victim wishes"
+                Width: =262
+                X: =40
+                ZIndex: =5
+
+        DataCard11 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =201
+            Visible: =rb_remedy_leaflet.SelectedText.Value = "No"
+            Width: =640
+            X: =0
+            Y: =2
+            ZIndex: =8
+
+            Lbl_asteriks_37 As label:
+                Align: =Align.Center
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =30
+                Size: =18
+                Text: ="*"
+                Visible: =leafvis
+                Width: =30
+                X: =562
+                Y: =25
+                ZIndex: =1
+
+            txt_offered As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('IYC offline',Key=Drpdn_incident_key.Selected.Key).Offered
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                Height: =116
+                HintText: =""
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Mode: =TextMode.MultiLine
+                OnChange: |-
+                    =If(Len(txt_offered.Text)>0,UpdateContext({madcolptA:White}),UpdateContext({madcolptA:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(txt_offered.Text)>0,UpdateContext({madcolptA:White}),UpdateContext({madcolptA:LightGoldenRodYellow}))
+                Size: =18
+                Width: =545
+                X: =40
+                Y: =75
+                ZIndex: =2
+
+            Label_remedy_leaflet_1 As label:
+                Height: =70
+                Size: =18
+                Text: ="Why was the leaflet not offered ?"
+                Width: =512
+                X: =40
+                Y: =5
+                ZIndex: =3
+
+        DataCard13 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =82
+            Width: =640
+            X: =0
+            Y: =0
+            ZIndex: =9
+
+            Dropdown_Care_key_1 As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                Default: =IYC_Primary_key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =60
+                Items: ='IYC offline'.Key
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =18
+                Width: =545
+                X: =40
+                Y: =12
+                ZIndex: =1
+

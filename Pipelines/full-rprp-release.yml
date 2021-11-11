@@ -23,6 +23,12 @@ parameters:
 - name: ModelDrivenAppsSolutionName
   type: string
   default: ModelDrivenApps
+- name: FlowsVehicleSolutionName
+  type: string
+  default: FlowsVehicle
+- name: FlowsPNCSolutionName
+  type: string
+  default: FlowsPNC
 
 - name: Release
   values:
@@ -55,6 +61,7 @@ variables:
 - name: solution.prefix
   value: ${{parameters.release}}
 - template: connectionStrings.yml
+
 
 name: $(Build.DefinitionName) - $(Build.BuildId) 
 
@@ -140,7 +147,7 @@ stages:
       - name: configExists
       - name: currentConfigVersion  
       - name: newConfigVersion  
-
+      
       strategy:
         runOnce:
           deploy:
@@ -148,7 +155,9 @@ stages:
               - template : config-data-template.yml
                 parameters :
                   connectionString: $(pfpsystemtest.connection.string)
-              
+                  suffix: $(solution.prefix)
+
+      
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 #----------------------------------End Stage-------------------------------------------------------------------
@@ -206,6 +215,7 @@ stages:
               - template : config-data-template.yml
                 parameters :
                   connectionString: $(Cumbriapfpuat.connection.string)
+                  suffix: $(solution.prefix)
               
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -263,6 +273,7 @@ stages:
               - template : config-data-template.yml
                 parameters :
                   connectionString: $(Tisskipfpuat.connection.string)
+                  suffix: $(solution.prefix)
               
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #----------------------------------End Stage-------------------------------------------------------------------

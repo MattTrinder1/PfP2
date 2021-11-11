@@ -1,0 +1,78 @@
+{
+  "properties": {
+    "connectionReferences": {
+      
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "First Name",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "Last Name",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+            "searchresults": "\u003cResults\u003e\u003cPerson\u003e\u003cFirstName\u003e@{triggerBody()[\u0027text\u0027]}Matt\u003c/FirstName\u003e\u003cLastName\u003e@{triggerBody()[\u0027text_1\u0027]}Trinder\u003c/LastName\u003e\u003c/Person\u003e\u003cPerson\u003e\u003cFirstName\u003e@{triggerBody()[\u0027text\u0027]}y\u003c/FirstName\u003e\u003cLastName\u003e@{triggerBody()[\u0027text_1\u0027]}y\u003c/LastName\u003e\u003c/Person\u003e\u003cPerson\u003e\u003cFirstName\u003e@{triggerBody()[\u0027text\u0027]}eus\u003c/FirstName\u003e\u003cLastName\u003e@{triggerBody()[\u0027text_1\u0027]}s\u003c/LastName\u003e\u003c/Person\u003e\u003c/Results\u003e"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "searchresults": {
+                  "title": "SearchResults",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

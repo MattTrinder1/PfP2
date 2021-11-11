@@ -1,0 +1,547 @@
+Scr_Incident_Details As screen:
+    LoadingSpinnerColor: =RGBA(100, 118, 132, 1)
+    OnVisible: |
+        =Set(madcol,LightGoldenRodYellow);UpdateContext({madcol:LightGoldenRodYellow});Set(madcolre,LightGoldenRodYellow);UpdateContext({madcolre:LightGoldenRodYellow});Set(madcolse,LightGoldenRodYellow);UpdateContext({madcolse:LightGoldenRodYellow});
+        
+
+    Label1_2 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Incident Details"
+        Width: =640
+        ZIndex: =1
+
+    "'exit icon 3' As icon.Cancel":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Exit()
+        X: =563
+        Y: =11
+        ZIndex: =2
+
+    "'Back Icon 2' As icon.ArrowLeft":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: |-
+            =/*If(flagback=false,Set(i, i - 1);Set(flagback,true);)
+            ;
+            Navigate(Scr_Statements_Home_screen,ScreenTransition.UnCover);Set(flagback,true);*/
+            If(
+                flagback = true,
+                Set(
+                    i,
+                    i - 1
+                );
+                Set(
+                    flagback,
+                    false
+                );
+                );
+            
+            
+            Navigate(Scr_Statements_Home_screen,ScreenTransition.UnCover);
+        X: =20
+        Y: =11
+        ZIndex: =3
+
+    Btn_save_2 As button:
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =89
+        HoverColor: =RGBA(255, 255, 255, 1)
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |
+            =Set(
+                flagback,
+                false
+            );
+                 
+               UpdateContext({newKey:Txt_incident_no.Text & " No:" & Text(i)});
+             
+            
+                If(
+                    CountRows(
+                        Filter(
+                            'Statement offline',
+                            Key = newKey
+                        )
+                    ) > 0,
+                    UpdateIf(
+                        'Statement offline',
+                        Key = Statement_Primary_key,
+                        {
+                            //Key: Statement_Primary_key,
+                            Name: Txt_incident_suffix.Text,
+                            'Unique Random Number': Txt_incident_autogen_number,
+                            'Incident suffix': Txt_incident_suffix.Text,
+                            'Incident number': Txt_incident_no.Text,
+                            'Incident date': DatePicker_incident.SelectedDate
+            
+                        }
+                    );
+                    SaveData(
+                        'Statement offline',
+                        "Statement offline"
+                    );
+                    Navigate(
+                        Scr_Statements_Home_screen,
+                        ScreenTransition.UnCover
+                    )
+                        ,
+                
+               UpdateContext({newKey: Txt_incident_no.Text & " No:" & Text(i)});
+               Set(i,
+                i + 1)
+                ;
+                    Collect(
+                        'Statement offline',
+                        {   enteredby:LookUp(Usersalllocal,Lower(internalemailaddress)=Lower(officermail),systemuserid),
+                            Key: newKey,
+                            Name: Txt_incident_suffix.Text,
+                            witnessDetailsValid:false,
+                            witnessStatementValid:false,
+                            careValid:false,
+                            consentValid:false,
+                            counterSignerValid:false,
+                            signaturesValid:false,
+                            'Unique Random Number': Txt_incident_autogen_number,
+                            'Incident suffix': Txt_incident_suffix.Text,
+                            'Incident number': Txt_incident_no.Text,
+                            'Incident date':DatePicker_incident.SelectedDate,
+                             Incidenttime: Text(Now(),"HH:mm AM/PM"),
+                            /*Witness Contact Details Section and fields*/
+                            WTitlename: LookUp(Titleoffline,cp_name="").cp_name,
+                             WitnessTitle:"",
+                            WForename: "",
+                            WSurname: "",
+                            WHaveAdditionalNames: "",
+                            WAdditionalNameTypename: LookUp(Additionalnameoffline,cp_name="").cp_name,
+                            WAdditionalNameType: "",
+                            WitnessAdditionalName: "",
+                            WDateofBirthKnown: "",
+                            WDateofBirth:Date(Blank(),Blank(),Blank()),
+                            WAge:"",
+                            WPercievedAge:"",
+                            WGendername:"",
+                            WGender:"",
+                            WPlaceofBirth: "",
+                           /* WOccupationname:LookUp(Occupationoffline,cp_name="").cp_name,
+                            WOccupation: "",*/
+                            WOccupation:"",
+                            WHousename: "",
+                            WHouseNumber: "",
+                            WStreet: "",
+                            WDistrict: "",
+                            WTown: "",
+                            WCounty: "",
+                            WPostCode: "",
+                           WCountryname: LookUp(countriesoffline,cp_name="").cp_name,
+                            WCountry:"",
+                            WPhoneNumber: "",
+                            WWorkNumber: "",
+                            WEveningNumber: "",
+                            WEmail: "",
+                            WMeansofContactname: LookUp(Prefferedmeanofcontactoffline,cp_name="").cp_name,
+                            WMeansofContact: "",
+                            WEthnicityname:LookUp(ethnicityoffline,cp_name="").cp_name,
+                             WEthnicity: "",
+                            WPreferredContactTime: "",
+                                 WDatesNotAvailablefrom:"",
+                             WDatesNotAvailable1from:"",
+                             WDatesNotAvailable2from:"",
+                             WDatesNotAvailable3from:"",
+            
+            
+                            /*Witness Statement Section and fields*/
+                            WSProformaTmp: "",
+                            WStatement: "",
+                              WstatementPatch:"",
+                               WitnessStatementReadtoWitness:"",
+                                 'WitnessConsent signature': SampleImage,
+                            WitnessSignature:SampleImage,
+                            WitnessSignatureCounter: SampleImage,
+                             WitnessSigCounterConsent:SampleImage,
+                            WitnessSignatureSignerName: "",
+                            WitnessSignatureSectionComplete: "",
+                              
+                            /*Care Section and fields*/
+                       WitnessCareattendingCourt:"",
+                    WitnessCareEnsuringAttendance:"",
+                    WitnessCareSpecialRequired: "",
+                    WitnessCareReasonforSpecial: "",
+                  Witenessneeds: "",
+                     Witnessneedsid: "",
+                     Whaveotherneed:"",
+                    Wotherneed:"",
+                            /*Consent Section and fields*/
+                    ConsentVictimLeaflet:"",
+                    ConsentVictimProvided:"",
+                    ConsentWitnessLeaflet: "",
+                    ConsentPoliceAccess:"",
+                    ConsentMedicalRecordDisclosed: "",
+                    ConsentStatementDisclosure:"",
+                    ConsentChildWitness:"",
+                    ConsentCPS:"",
+                    ConsentAbleRead:"",
+                            /*Statement Type Section and fields*/
+                        StatementTypename:Dropdown_Statement_Type_1.Selected.cp_name,
+                   StatementType:Dropdown_Statement_Type_1.Selected.cp_statementtypeid,
+                   StatementSaved:TextInput2_1.Text,
+                   StatementTemplatename:Dropdown_Statement_Template_1.Selected.cp_name,
+                   StatementTemplate:Dropdown_Statement_Template_1.Selected.cp_lookupvalueid,
+            /*Counter Signer Section and fields*/
+            Countersingerneeded: "",
+                     CSignerTitlename: "",
+                    CSignerTitle: LookUp(Titleoffline,cp_name="").cp_name,
+                    CSignerForename: "",
+                    CSignerSurname: "",
+                    CSignerHaveAdditionalNames: "",
+                    CSAddNmeTypename: LookUp(Additionalnameoffline,cp_name="").cp_name,
+                    CSAdditionalNameType: "",
+                    CSAdditionalName: "",
+                    CSSameAddress:"",
+                    CSHousename: "",
+                    CSHouseNumber: "",
+                    CSStreet: "",
+                    CSDistrict: "",
+                    CSTown: "",
+                    CSCounty: "",
+                    CSPostCode: "",
+                       CSCountryname: LookUp(countriesoffline,cp_name="").cp_name,
+                    CSCountry: "",
+                    CSPhoneNumber:"",
+                    CSWorkNumber: "",
+                    CSEveningNumber: "",
+                    CSEmail: "",
+                    CSRelationname: LookUp(Relationshiptowitnessoffline,cp_name="").cp_name,
+                     CSRelationship:"",
+                    Timesignature:""
+                     
+                        }
+                    );
+                      UpdateIf('Statement offline',Key=newKey,{ WitnessSignature:Blank(),WitnessSignatureCounter:Blank(), 'WitnessConsent signature':Blank(),WitnessSigCounterConsent:Blank()}); 
+            
+                       Set(
+                        Statement_Primary_key,
+                        newKey
+                    );
+                    SaveData(
+                        'Statement offline',
+                        "Statement offline"
+                    );
+                  /*  Reset(PenInput_Witness_Signature_Statement_Signature);
+            Reset(PenInput_Witness_Signature_Consent_Signature);
+            Reset(PenInput_CounterSigner_Signatuer_Evidence);Reset(PenInput_CounterSigner_Signature_Consent);*/
+            
+            Set(stmttime, "");
+                    Navigate(
+                        Scr_Statements_Home_screen,
+                        ScreenTransition.UnCover
+                    );
+                    Set(
+                    Allreset,
+                    true
+                );
+                UpdateContext({Allreset: true});
+                    
+                    UpdateContext({mandatory_inc_det: false})
+                );
+                
+        Size: =24
+        Text: ="Create Statement"
+        Width: =285
+        X: =32
+        Y: =1029
+        ZIndex: =5
+
+    DatePicker_incident As datepicker:
+        BorderColor: =RGBA(128, 128, 128, 1)
+        BorderThickness: =4
+        CalendarHeaderFill: =RGBA(56, 96, 178, 1)
+        Color: =RGBA(0, 0, 0, 1)
+        DefaultDate: =
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Height: =60
+        HoverDateFill: =RGBA(186, 202, 226, 1)
+        IconBackground: =RGBA(128, 128, 128, 1)
+        InputTextPlaceholder: ="DD/MM/YYYY"
+        IsEditable: =true
+        OnChange: |-
+            =UpdateContext(
+                {
+                    incidentnumbervar: "CP" & "-" & Text(
+                        DateAdd(
+                            DatePicker_incident.SelectedDate,
+                            0
+                        ),
+                        "[$-en-GB]yyyymmdd"
+                    ) & "-" & Txt_incident_suffix
+                }
+            )
+        OnSelect: |-
+            =If(DatePicker_incident.SelectedDate > Today(), Reset(DatePicker_incident));
+            
+            UpdateContext(
+                {
+                    incidentnumbervar: "CP" & "-" & Text(
+                        DateAdd(
+                            DatePicker_incident.SelectedDate,
+                            0
+                        ),
+                        "[$-en-GB]yyyymmdd"
+                    ) & "-" & Txt_incident_suffix
+                }
+            );
+        SelectedDateFill: =RGBA(56, 96, 178, 1)
+        Size: =24
+        Width: =545
+        X: =40
+        Y: =163
+        ZIndex: =8
+
+    Txt_incident_suffix As text:
+        BorderColor: =RGBA(128, 128, 128, 1)
+        BorderThickness: =2
+        Color: =RGBA(0, 0, 0, 1)
+        Default: =Txt_incident_suffixvar
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        FocusedBorderThickness: =4
+        Format: =TextFormat.Number
+        Height: =60
+        HintText: ="Incident suffix"
+        HoverBorderColor: =RGBA(0, 18, 107, 1)
+        HoverColor: =RGBA(0, 0, 0, 1)
+        HoverFill: =RGBA(186, 202, 226, 1)
+        MaxLength: =4
+        OnChange: |-
+            =//This is to make the field will not accept any value under or equal to zero
+            If(Value(Txt_incident_suffix.Text) <=0,Reset(Txt_incident_suffix));
+            //This is to make sure all 4 numbers are digits and no symbols or letters are accepted into the field. If they are it will reset the field
+            If(
+            IsMatch(
+            Txt_incident_suffix.Text,
+            Digit & Digit & Digit & Digit), UpdateContext({madcol: Transparent}),
+                UpdateContext({madcol:Transparent}),Reset(Txt_incident_suffix));
+            
+            UpdateContext(
+                {
+                    incidentnumbervar: IncidentNumberPrefix & Text(
+                        DateAdd(
+                            DatePicker_incident.SelectedDate,
+                            0
+                        ),
+                        "[$-en-GB]yyyymmdd"
+                    ) & "-" & Txt_incident_suffix
+                }
+            );
+            
+            If(Len(Txt_incident_suffix.Text) <> 4,Reset(Txt_incident_no);UpdateContext({incidentnumbervar:""});)
+        OnSelect: |-
+            =If(Len(Txt_incident_suffix.Text)>0,UpdateContext({madcol:Transparent}),UpdateContext({madcol:LightGoldenRodYellow}));
+            
+            UpdateContext(
+                {
+                    incidentnumbervar: IncidentNumberPrefix & Text(
+                        DateAdd(
+                            DatePicker_incident.SelectedDate,
+                            0
+                        ),
+                        "[$-en-GB]yyyymmdd"
+                    ) & "-" & Txt_incident_suffix
+                }
+            );
+        Size: =21
+        VirtualKeyboardMode: =VirtualKeyboardMode.Numeric
+        Width: =545
+        X: =40
+        Y: =280
+        ZIndex: =9
+
+    Txt_incident_no As text:
+        BorderColor: =RGBA(128, 128, 128, 1)
+        BorderThickness: =2
+        Color: =RGBA(0, 0, 0, 1)
+        Default: =incidentnumbervar
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(0, 0, 0, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        DisplayMode: =DisplayMode.Disabled
+        FocusedBorderThickness: =4
+        Height: =60
+        HintText: ="Incident number"
+        HoverBorderColor: =RGBA(0, 18, 107, 1)
+        HoverColor: =RGBA(0, 0, 0, 1)
+        HoverFill: =RGBA(186, 202, 226, 1)
+        OnChange: =
+        Reset: =true
+        Size: =21
+        Width: =545
+        X: =40
+        Y: =401
+        ZIndex: =10
+
+    Txt_entered_by As text:
+        BorderColor: =RGBA(128, 128, 128, 1)
+        BorderThickness: =2
+        Color: =RGBA(0, 0, 0, 1)
+        Default: =First(Userlocal).Collarnumber  & " - " & Lower(First(Userlocal).Name)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(0, 0, 0, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        DisplayMode: =DisplayMode.Disabled
+        FocusedBorderThickness: =4
+        Height: =60
+        HintText: =""
+        HoverBorderColor: =RGBA(0, 18, 107, 1)
+        HoverColor: =RGBA(0, 0, 0, 1)
+        HoverFill: =RGBA(186, 202, 226, 1)
+        Size: =21
+        Width: =545
+        X: =40
+        Y: =528
+        ZIndex: =11
+
+    Label_Entered_by As label:
+        BorderColor: =RGBA(0, 18, 107, 1)
+        Color: =RGBA(0, 0, 0, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Height: =60
+        Size: =21
+        Text: |-
+            ="Entered by:"
+        Width: =545
+        X: =40
+        Y: =469
+        ZIndex: =12
+
+    Label1 As label:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(0, 0, 0, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Height: =70
+        Size: =21
+        Text: ="Incident Date "
+        Width: =560
+        X: =40
+        Y: =97
+        ZIndex: =18
+
+    Label_error_suffix_0000 As label:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 0, 0, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Height: =49
+        Size: =16
+        Text: ="Incident Suffix cannot be 0000"
+        Visible: =If(Txt_incident_suffix.Text="0000",true,false) Or If(Value(Txt_incident_suffix.Text) <-0,true,false)
+        Width: =380
+        X: =260
+        Y: =253
+        ZIndex: =23
+
+    Label_Incident_Number As label:
+        BorderColor: =RGBA(0, 18, 107, 1)
+        Color: =RGBA(0, 0, 0, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Height: =60
+        Size: =21
+        Text: |-
+            ="Incident Number:"
+        Width: =545
+        X: =40
+        Y: =337
+        ZIndex: =24
+
+    Txt_incident_autogen_number As text:
+        AccessibleLabel: ="Auto generated number"
+        BorderColor: =RGBA(128, 128, 128, 1)
+        BorderThickness: =2
+        Color: =RGBA(0, 0, 0, 1)
+        Default: |
+            =User().FullName &"-"&Round(Rand()*1000000000,0)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        DisplayMode: =DisplayMode.Disabled
+        FocusedBorderThickness: =4
+        Height: =60
+        HintText: ="Auto Generated Number"
+        HoverBorderColor: =RGBA(0, 18, 107, 1)
+        HoverColor: =RGBA(0, 0, 0, 1)
+        HoverFill: =RGBA(186, 202, 226, 1)
+        MaxLength: =1000
+        OnChange: =
+        OnSelect: =
+        Reset: =true
+        Size: =21
+        Tooltip: ="Only 4 digits allowed"
+        VirtualKeyboardMode: =VirtualKeyboardMode.Numeric
+        Visible: =false
+        Width: =545
+        X: =52
+        Y: =239
+        ZIndex: =25
+
+    Label1_1 As label:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(0, 0, 0, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Height: =70
+        Size: =21
+        Text: |-
+            ="Incident Suffix:"
+        Width: =545
+        X: =40
+        Y: =223
+        ZIndex: =26
+
+    Btn_save_3 As button:
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =90
+        HoverColor: =RGBA(255, 255, 255, 1)
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |
+            =If(
+                flagback = true,
+                Set(
+                    i,
+                    i - 1
+                );
+                Set(
+                    flagback,
+                    false
+                );
+                );
+            
+            
+            Navigate(Scr_Statements_Home_screen,ScreenTransition.UnCover);
+        Size: =24
+        Text: ="Exit"
+        Width: =288
+        X: =339
+        Y: =1029
+        ZIndex: =27
+

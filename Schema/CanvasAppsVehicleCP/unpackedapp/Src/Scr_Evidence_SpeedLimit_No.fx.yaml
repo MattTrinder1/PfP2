@@ -1,0 +1,328 @@
+"Scr_Evidence_SpeedLimit_No As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    OnHidden: =Reset(PenInput_EvidenceNo_OfficerSignature);
+    OnVisible: |
+        =UpdateContext({hasBeenSigned: true});
+        UpdateContext({currentSignatureImage: PenInput_EvidenceNo_OfficerSignature.Image});
+        If(
+            LookUp(
+                'Vehicle Offline',
+                Key = Dropdown_Evidence_no.Selected.Key
+            ).'Officer Signature' = Blank(),
+            UpdateContext({hasBeenSigned: false});
+            
+        );
+
+    LblAppName1 As label:
+        Align: =Align.Center
+        Height: =88
+        Size: =27
+        Text: ="Person"
+        Width: =Parent.Width
+        Y: =146
+        ZIndex: =2
+
+    Icon3_5 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home,UnCoverRight)
+        X: =27
+        Y: =17
+        ZIndex: =4
+
+    Lbl_header_21 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =21
+        Text: ="Evidence"// & hasBeenSigned
+        VerticalAlign: =VerticalAlign.Top
+        Width: =640
+        ZIndex: =5
+
+    Icon_back17 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home,ScreenTransition.UnCoverRight)
+        X: =21
+        Y: =11
+        ZIndex: =7
+
+    Canvas_Evidence_speed_limit_no As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1049
+        Width: =Parent.Width
+        Y: =87
+        ZIndex: =8
+
+        DataCard_Evidence_speed_limit_no As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =1830
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Dropdown_Evidence_no As dropdown:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                Default: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).Key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                Items: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =22
+                ZIndex: =4
+
+            TextInput_EvidenceNo_OfficerStatment As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Vehicle Offline',Key=Vehicle_Primary_key).'Officer Statement'
+                DisplayMode: |-
+                    =If(
+                       Or( LookUp(
+                            'Vehicle Offline',
+                            Key = Dropdown_Evidence_no.Selected.Key
+                        ).'Officer Signature' <> Blank(), hasBeenSigned),
+                        //this has been signed so disable
+                        DisplayMode.Disabled,
+                        DisplayMode.Edit
+                    )
+                EnableSpellCheck: =true
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                Height: =245
+                Mode: =TextMode.MultiLine
+                OnSelect: =
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =716
+                ZIndex: =16
+
+            Label_EvidenceNo_OfficerStatement As label:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Height: =55
+                OnSelect: =
+                Size: =21
+                Text: ="Officer statement"
+                Width: =465
+                X: =42
+                Y: =661
+                ZIndex: =17
+
+            Label_EvidenceNo_VehicleDescribed As label:
+                DisplayMode: =DisplayMode.View
+                Fill: =RGBA(232, 244, 217, 1)
+                Height: =137
+                Italic: =true
+                OnSelect: =
+                Size: =20
+                Text: ="The vehicle described in this ticket was seen by me at the time, date and location indicated. The alleged offender was the driver of the vehicle and was reported."
+                Width: =545
+                X: =42
+                Y: =495
+                ZIndex: =18
+
+            Label_EvidenceNo_StatementSigned As label:
+                DisplayMode: =DisplayMode.View
+                Fill: =RGBA(232, 244, 217, 1)
+                Height: =209
+                Italic: =true
+                OnSelect: =
+                Size: =20
+                Text: ="This statement signed by me, is true to the best of my knowledge and belief and I make it knowing that, if it is tendered in evidence, I shall be liable to prosecution if I have wilfully stated in it anything which I know to be false or do not believe to be true"
+                Width: =545
+                X: =42
+                Y: =995
+                ZIndex: =19
+
+            TextInput_EvidenceNo_EvidenceSignatureDateTime As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Vehicle Offline',Key=Drpdn_person_key.Selected.Key).'Date/time of signature'
+                DisplayMode: =DisplayMode.View
+                Height: =55
+                HintText: ="Date/time of signature"
+                OnSelect: =
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =1563
+                ZIndex: =20
+
+            PenInput_EvidenceNo_OfficerSignature As inkControl:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                DisplayMode: =If(IsBlank(TextInput_EvidenceNo_OfficerStatment.Text),DisplayMode.Disabled,DisplayMode.Edit)
+                Height: =241
+                OnSelect: |-
+                    =UpdateContext({hasBeenSigned:true});
+                    LookUp('Vehicle Offline',Key=Drpdn_person_key.Selected.Key).'Officer Signature ev:no '
+                Reset: =true
+                Width: =545
+                X: =46
+                Y: =1313
+                ZIndex: =21
+
+            Label_EvidenceNo_OfficerSignature As label:
+                Height: =66
+                OnSelect: =
+                Size: =21
+                Text: ="Officer Signature" //& (currentSignatureImage = PenInput_EvidenceNo_OfficerSignature.Image)
+                Width: =545
+                X: =42
+                Y: =1245
+                ZIndex: =22
+
+            Btn_save_continue_Evidence_speed_limit_no As button:
+                DisplayMode: |-
+                    =If(
+                        LookUp(
+                            'Vehicle Offline',
+                            Key = Dropdown_Evidence_no.Selected.Key
+                        ).'Officer Signature' <> Blank(),
+                        //this has been signed so disable the button
+                        DisplayMode.Disabled,
+                        DisplayMode.Edit
+                        
+                    )
+                Fill: =RGBA(153, 153, 153, 1)
+                Height: =70
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =UpdateIf(
+                        'Vehicle Offline',
+                        Key = Dropdown_Evidence_no.Selected.Key,
+                        {
+                            'Statement of name': First(Userlocal).Name,
+                            'Statement of': First(Userlocal).UserId,
+                            'Officer Statement': TextInput_EvidenceNo_OfficerStatment.Text
+                        }
+                    );
+                    If(
+                        hasBeenSigned,
+                        
+                        UpdateIf(
+                            'Vehicle Offline',
+                            Key = Dropdown_Evidence_no.Selected.Key,
+                            {
+                                'Officer Signature': If(hasBeenSigned = true, PenInput_EvidenceNo_OfficerSignature.Image, Blank()),
+                                'Date/time of signature': Now()
+                            }
+                        );
+                        Reset(PenInput_EvidenceNo_OfficerSignature);
+                    );
+                    
+                    
+                    UpdateContext(
+                        {
+                            rec: LookUp(
+                                'Vehicle Offline',
+                                Key = Dropdown_Evidence_no.Selected.Key
+                            )
+                        }
+                    );
+                    UpdateIf(
+                        'Vehicle Offline',
+                        Key = Dropdown_Evidence_no.Selected.Key,
+                        {
+                            EvidenceNOvalid: And(
+                                !IsBlank(rec.'Officer Statement'),
+                                !IsBlank(rec.'Officer Signature'),
+                                !IsBlank(rec.'Date/time of signature')
+                            )
+                        }
+                    );
+                    SaveData(
+                        'Vehicle Offline',
+                        "Vehicle Offline"
+                    );
+                    Navigate(
+                        Scr_home,
+                        ScreenTransition.Cover
+                    )
+                Size: =24
+                Text: ="Save & Continue" //& currentSignatureImage
+                Width: =541
+                X: =46
+                Y: =1659
+                ZIndex: =23
+
+            Label_EvidenceNo_WitnessStatementtext As label:
+                Fill: =RGBA(232, 244, 217, 1)
+                Height: =136
+                OnSelect: =
+                Size: =21
+                Text: ="Witness Statement Criminal Procedure Rules, r27.2; Criminal Justice Act 1967, s.9; Magistrates' Courts Act 1980,s.5b"
+                Width: =545
+                X: =42
+                Y: =148
+                ZIndex: =24
+
+            Label_EvidenceNo_StatementOf As label:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="Statement of"
+                Width: =545
+                X: =42
+                Y: =311
+                ZIndex: =26
+
+            Image1_1 As image:
+                BorderColor: =RGBA(149, 149, 149, 1)
+                BorderThickness: =1
+                Fill: =RGBA(255, 255, 255, 1)
+                Height: =252
+                Image: =LookUp('Vehicle Offline',Key=Dropdown_Evidence_no.Selected.Key).'Officer Signature'
+                ImagePosition: =ImagePosition.Stretch
+                Visible: =If(LookUp('Vehicle Offline',Key=Dropdown_Evidence_no.Selected.Key). 'Officer Signature'=Blank(),false,true)
+                Width: =546
+                X: =46
+                Y: =1311
+                ZIndex: =28
+
+            TextInput_entered_by_2 As text:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                Default: =First(Userlocal).Collarnumber  & " - " & First(Userlocal).Name
+                DisabledColor: =RGBA(0, 0, 0, 1)
+                DisplayMode: =DisplayMode.Disabled
+                Height: =60
+                HintText: =""
+                Size: =21
+                Width: =545
+                X: =42
+                Y: =381
+                ZIndex: =29
+
+            Label_EvidenceNo_OfficerStatement_2 As label:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =55
+                OnSelect: =
+                Size: =21
+                Text: ="*"
+                Width: =27
+                X: =560
+                Y: =660
+                ZIndex: =31
+
+    Label1_15 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =42
+        Size: =21
+        Text: =Vehicle_Primary_key
+        Width: =440
+        X: =100
+        Y: =45
+        ZIndex: =9
+

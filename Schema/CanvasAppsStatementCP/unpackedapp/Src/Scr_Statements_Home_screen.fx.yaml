@@ -1,0 +1,1398 @@
+"Scr_Statements_Home_screen As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    LoadingSpinnerColor: =RGBA(100, 118, 132, 1)
+    OnVisible: |
+        =//Set(vrblMobileDevice, If(Acceleration.X > 0, true, false));
+        
+        
+        
+        //If(!vrblMobileDevice And !browserSynced,Select(Btn_add_into_1);Set(browserSynced,true);Select(btnFocus));
+        
+        
+        
+        Set(
+            checkicon,
+            false
+        );
+        UpdateContext({Warnunsubmit: false});
+        UpdateContext({timerstart: false});
+        UpdateContext({timerreset: true});
+        If(
+            CountRows(Gallery_unsubmitted.AllItems) > 0,
+            UpdateContext({timerstart: true})
+        );
+        //Mantatory fields  staff injuries warning icon
+        UpdateContext({Staffinjuriestimerstart: false});
+        UpdateContext({Staffinjuriestimerreset: true});
+        UpdateContext({WarningStaffinjuries: false});
+        If(
+            CountRows(Gallery_unsubmitted.AllItems) > 0 And Len(Dropdown_Witness_title.Selected.cp_name) > 0,
+            UpdateContext({Staffinjuriestimerstart: false}),
+            UpdateContext({Staffinjuriestimerstart: true})
+        );
+        //Mantatory fields  outcome warning icon
+        UpdateContext({Outcometimerstart: false});
+        UpdateContext({Outcometimerreset: true});
+        UpdateContext({WarningOutcome: false});
+        If(
+            CountRows(Gallery_unsubmitted.AllItems) > 0 And Len(Radio_Witness_read_statement.Selected.Value) > 0 And Len(Radio_Witness_Signatures_Complete.Selected.Value) > 0 And Len(PenInput_Witness_Signature_Statement_Signature.Image) > 0,
+            UpdateContext({Outcometimerstart: false}),
+            UpdateContext({Outcometimerstart: true})
+        );
+        //Mantatory fields  involved warning icon
+        UpdateContext({Involvedtimerstart: false});
+        UpdateContext({Involvedimerreset: true});
+        UpdateContext({WarningInvolved: false});
+        If(
+            CountRows(Gallery_unsubmitted.AllItems) > 0 And Len(Dropdown_Statement_Type_1.Selected.cp_name) > 0,
+            UpdateContext({Involvedtimerstart: false}),
+            UpdateContext({Involvedtimerstart: true})
+        );
+        //Mantatory fields  incident characteristics warning icon
+        UpdateContext({Warnincidenttimerstart1: false});
+        UpdateContext({Warnincidenttimerreset1: true});
+        UpdateContext({Warnincidentchar1: false});
+        If(
+            CountRows(Gallery_unsubmitted.AllItems) > 0 And Len(Dropdown_Statement_Type_1.Selected.cp_name) > 0 And Len(Dropdown_Statement_Template_1.Selected.cp_name) > 0,
+            UpdateContext({Warnincidenttimerstart1: false}),
+            UpdateContext({Warnincidenttimerstart1: true})
+        );
+
+    Canvas_Statements_Home_Screen As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =1004
+        Width: =Parent.Width
+        Y: =Label1_6.Y + Label1_6.Height
+        ZIndex: =3
+
+        DataCard_Statements_Home_Screen As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =1000
+            Visible: =true
+            Width: =Parent.Width
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            "'Exit Icon_2' As icon.Cancel":
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(255, 255, 255, 1)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(244, 244, 244, 1)
+                Icon: =Icon.Cancel
+                OnSelect: =Exit()
+                X: =558
+                Y: =11
+                ZIndex: =1
+
+            "'Exit Icon_3' As icon.Cancel":
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(255, 255, 255, 1)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(244, 244, 244, 1)
+                Icon: =Icon.Cancel
+                OnSelect: =Exit()
+                X: =563
+                Y: =17
+                ZIndex: =2
+
+            Icon6 As icon.DocumentwithContent:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 255, 255, 1)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(244, 244, 244, 1)
+                Icon: =Icon.DocumentWithContent
+                OnSelect: =
+                X: =520
+                Y: =100
+                ZIndex: =3
+
+            Timer1_1 As timer:
+                AutoStart: =true
+                Duration: =1000
+                Fill: =RGBA(56, 96, 178, 1)
+                Height: =50
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                OnTimerEnd: |-
+                    =If(Connection.Connected,UpdateContext({connectionstatus:"Online"}),UpdateContext({connectionstatus:"Offline"}))
+                Repeat: =true
+                Reset: =true
+                Start: =true
+                Visible: =false
+                Width: =129
+                X: =487
+                Y: =799
+                ZIndex: =4
+
+            Timer1 As timer:
+                BorderColor: =ColorFade(Timer1.Fill, -15%)
+                DisabledBorderColor: =ColorFade(Timer1.BorderColor, 70%)
+                DisabledColor: =ColorFade(Timer1.Fill, 90%)
+                DisabledFill: =ColorFade(Timer1.Fill, 70%)
+                Duration: =1000
+                Fill: =RGBA(56, 96, 178, 1)
+                FocusedBorderColor: =Timer1.BorderColor
+                Height: =31
+                HoverBorderColor: =ColorFade(Timer1.BorderColor, 20%)
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(RGBA(56, 96, 178, 1), -20%)
+                OnTimerEnd: =
+                OnTimerStart: |-
+                    =UpdateContext({Warnunsubmit:!Warnunsubmit})
+                PressedBorderColor: =Timer1.Fill
+                PressedColor: =Timer1.Fill
+                PressedFill: =Timer1.Color
+                Repeat: =true
+                Reset: =timerreset
+                Start: =timerstart
+                Text: |-
+                    =Text(Time(0, 0, Timer1.Value/1000), "hh:mm:ss")
+                Visible: =false
+                Width: =97
+                X: =395
+                ZIndex: =5
+
+            lblCareValid As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =30
+                Size: =21
+                Text: =LookUp('Statement offline',Key=Statement_Primary_key).careValid
+                Visible: =false
+                Width: =91
+                X: =174
+                ZIndex: =6
+
+            lblConsentValid As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =30
+                Size: =21
+                Text: =LookUp('Statement offline',Key=Statement_Primary_key).consentValid
+                Visible: =false
+                Width: =91
+                X: =258
+                Y: =1
+                ZIndex: =7
+
+            lblCounterSignerValid As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =30
+                Size: =21
+                Text: =LookUp('Statement offline',Key=Statement_Primary_key).counterSignerValid
+                Visible: =false
+                Width: =91
+                X: =335
+                ZIndex: =8
+
+            lblSignaturesValid As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =30
+                Size: =21
+                Text: =LookUp('Statement offline',Key=Statement_Primary_key).signaturesValid
+                Visible: =false
+                Width: =91
+                X: =419
+                ZIndex: =9
+
+            Label3 As label:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(0, 0, 0, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                Height: =70
+                Size: =21
+                Text: ="Text"
+                Visible: =false
+                Width: =560
+                X: =40
+                Y: =40
+                ZIndex: =10
+
+            Btn_Witness_App As button:
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                DisplayMode: =If(CountRows('Statement offline')= 0 ,DisplayMode.Disabled,DisplayMode.Edit)
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Semibold
+                Height: =72
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: =Navigate(Scr_Witness_Details_New,ScreenTransition.Cover)
+                Size: =24
+                Text: ="Witness Details"
+                Width: =552
+                X: =39
+                Y: =184
+                ZIndex: =23
+
+            Btn_Incident_Details As button:
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Semibold
+                Height: =72
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: |-
+                    =/*If(flagback=true,Set(i, i + 1);Set(flagback,false);
+                            Set(
+                                
+                                    Statement_Primary_key,Txt_incident_no.Text & " No:" & i
+                                
+                            ));*/  Navigate(Scr_Incident_Details,ScreenTransition.Cover); Set(flagback,true);
+                Size: =24
+                Text: ="Incident Details"
+                Width: =552
+                X: =39
+                Y: =95
+                ZIndex: =24
+
+            Btn_Unfinished_Statements As button:
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(166, 166, 166, 1)
+                DisabledFill: =RGBA(244, 244, 244, 1)
+                Fill: =RGBA(153, 153, 153, 1)
+                FontWeight: =FontWeight.Semibold
+                Height: =72
+                HoverColor: =RGBA(255, 255, 255, 1)
+                HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                OnSelect: =Navigate(Scr_Unfinished_Statements)
+                Size: =24
+                Text: ="Unfinished Statements"
+                Width: =552
+                X: =39
+                Y: =6
+                ZIndex: =28
+
+            Icon_witness_details As icon.Warning:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(244, 244, 244, 1)
+                Height: =60
+                Icon: =Icon.Warning
+                Visible: =CountRows(Gallery_unsubmitted.AllItems) >0 And lblPersonValid.Text <> "true"
+                Width: =60
+                X: =65
+                Y: =184
+                ZIndex: =30
+
+            Icon_witness_statement As icon.Warning:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(244, 244, 244, 1)
+                Height: =60
+                Icon: =Icon.Warning
+                Visible: =CountRows(Gallery_unsubmitted.AllItems) >0 And lblWitnessStatementValid.Text <> "true"
+                Width: =60
+                X: =60
+                Y: =278
+                ZIndex: =31
+
+            Icon_warning_incident_involved_1 As icon.Warning:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(244, 244, 244, 1)
+                Height: =60
+                Icon: =Icon.Warning
+                Visible: =CountRows(Gallery_unsubmitted.AllItems) >0 And lblCareValid.Text <> "true"
+                Width: =60
+                X: =60
+                Y: =369
+                ZIndex: =32
+
+            iconSignatureInvalid As icon.Warning:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(244, 244, 244, 1)
+                Height: =60
+                Icon: =Icon.Warning
+                Visible: =CountRows(Gallery_unsubmitted.AllItems) >0 And lblSignaturesValid.Text<>"true"
+                Width: =60
+                X: =60
+                Y: =639
+                ZIndex: =33
+
+            Icon_warning_subject_injuries As icon.Warning:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(244, 244, 244, 1)
+                Height: =60
+                Icon: =Icon.Warning
+                Visible: =CountRows(Gallery_unsubmitted.AllItems) >0 And lblConsentValid.Text <> "true"
+                Width: =60
+                X: =60
+                Y: =547
+                ZIndex: =34
+
+            Icon1 As icon.ListWatchlistRemind:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(255, 255, 255, 1)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(244, 244, 244, 1)
+                Icon: =Icon.ListWatchlistRemind
+                OnSelect: =
+                X: =520
+                Y: =14
+                ZIndex: =35
+
+            Icon2 As icon.Message:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(255, 255, 255, 1)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(244, 244, 244, 1)
+                Icon: =Icon.Message
+                OnSelect: =
+                X: =519
+                Y: =101
+                ZIndex: =36
+
+            Icon_witness_statement_2 As icon.Warning:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(244, 244, 244, 1)
+                Height: =60
+                Icon: =Icon.Warning
+                Visible: =CountRows(Gallery_unsubmitted.AllItems) >0 And lblCounterSignerValid.Text <> "true"
+                Width: =60
+                X: =60
+                Y: =456
+                ZIndex: =37
+
+            iconWitnessValid As icon.Add:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(187, 221, 140, 1)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(244, 244, 244, 1)
+                Height: =60
+                Icon: =Icon.Check
+                Visible: =lblPersonValid.Text = "true"
+                Width: =60
+                X: =60
+                Y: =189
+                ZIndex: =38
+
+            Icon2_1 As icon.Warning:
+                BorderColor: =RGBA(0, 18, 107, 1)
+                Color: =RGBA(255, 0, 0, 1)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(244, 244, 244, 1)
+                Height: =60
+                Icon: =Icon.Warning
+                Visible: =Warnunsubmit
+                Width: =60
+                X: =60
+                Y: =13
+                ZIndex: =39
+
+            iconWitnessStatementValid As icon.Add:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(187, 221, 140, 1)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(244, 244, 244, 1)
+                Height: =60
+                Icon: =Icon.Check
+                Visible: =lblWitnessStatementValid.Text = "true"
+                Width: =60
+                X: =60
+                Y: =278
+                ZIndex: =40
+
+            iconCareValid As icon.Add:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(187, 221, 140, 1)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(244, 244, 244, 1)
+                Height: =60
+                Icon: =Icon.Check
+                Visible: =lblCareValid.Text = "true"
+                Width: =60
+                X: =60
+                Y: =367
+                ZIndex: =41
+
+            iconCounterSignerValid As icon.Add:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(187, 221, 140, 1)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(244, 244, 244, 1)
+                Height: =60
+                Icon: =Icon.Check
+                Visible: =lblCounterSignerValid.Text = "true"
+                Width: =60
+                X: =60
+                Y: =458
+                ZIndex: =42
+
+            iconConsentValid As icon.Add:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(187, 221, 140, 1)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(244, 244, 244, 1)
+                Height: =60
+                Icon: =Icon.Check
+                Visible: =lblConsentValid.Text = "true"
+                Width: =60
+                X: =60
+                Y: =546
+                ZIndex: =43
+
+            iconWitnessValid_1 As icon.Add:
+                BorderColor: =RGBA(32, 54, 71, 1)
+                Color: =RGBA(187, 221, 140, 1)
+                DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                DisabledColor: =RGBA(244, 244, 244, 1)
+                Height: =60
+                Icon: =Icon.Check
+                Visible: =lblSignaturesValid.Text = "true"
+                Width: =60
+                X: =60
+                Y: =641
+                ZIndex: =44
+
+            Group13 As group:
+                Height: =5
+                Width: =5
+                X: =28
+                Y: =-60
+                ZIndex: =64
+
+                Btn_Copy_Into As button:
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =If(CountRows('Statement offline')= 0 ,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =RGBA(153, 153, 153, 1)
+                    FontWeight: =FontWeight.Semibold
+                    Height: =72
+                    HoverColor: =RGBA(255, 255, 255, 1)
+                    HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                    OnSelect: =Navigate('Scr_Copy to',ScreenTransition.Cover)
+                    Size: =24
+                    Text: ="Copy Into"
+                    Width: =552
+                    X: =40
+                    Y: =900
+                    ZIndex: =11
+
+                Icon4 As icon.Copy:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(244, 244, 244, 1)
+                    Height: =40
+                    Icon: =Icon.Copy
+                    OnSelect: =
+                    X: =523
+                    Y: =922
+                    ZIndex: =12
+
+            Group9 As group:
+                Height: =5
+                Width: =5
+                X: =28
+                Y: =-60
+                ZIndex: =73
+
+                Btn_Consent As button:
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =If(CountRows('Statement offline')= 0 ,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =RGBA(153, 153, 153, 1)
+                    FontWeight: =FontWeight.Semibold
+                    Height: =72
+                    HoverColor: =RGBA(255, 255, 255, 1)
+                    HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                    OnSelect: =Navigate(Scr_Consent_new,ScreenTransition.Cover)
+                    Size: =24
+                    Text: ="Consent"
+                    Width: =552
+                    X: =39
+                    Y: =540
+                    ZIndex: =14
+
+                Icon10 As icon.LogJournal:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(244, 244, 244, 1)
+                    Icon: =Icon.LogJournal
+                    OnSelect: =
+                    X: =519
+                    Y: =552
+                    ZIndex: =17
+
+            Group11 As group:
+                Height: =5
+                Width: =5
+                X: =28
+                Y: =-60
+                ZIndex: =75
+
+                Btn_Statement_Information As button:
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =If(CountRows('Statement offline')= 0 ,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =RGBA(153, 153, 153, 1)
+                    FontWeight: =FontWeight.Semibold
+                    Height: =72
+                    HoverColor: =RGBA(255, 255, 255, 1)
+                    HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                    OnSelect: =Navigate(Scr_Statement_Information_New,ScreenTransition.Cover)
+                    Size: =24
+                    Text: ="Statement Information"
+                    Width: =552
+                    X: =39
+                    Y: =722
+                    ZIndex: =15
+
+                Icon11 As icon.Post:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(244, 244, 244, 1)
+                    Icon: =Icon.Post
+                    OnSelect: =
+                    X: =515
+                    Y: =726
+                    ZIndex: =18
+
+            Group10 As group:
+                Height: =5
+                Width: =5
+                X: =28
+                Y: =-60
+                ZIndex: =78
+
+                Btn_Witness_Signatures As button:
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: |-
+                        =If(
+                            And(
+                                lblCounterSignerValid.Text = "true",
+                                lblWitnessStatementValid.Text = "true",
+                                lblPersonValid.Text = "true",
+                                lblCareValid.Text = "true",
+                                lblConsentValid.Text = "true"
+                            ),
+                            DisplayMode.Edit,
+                            DisplayMode.Disabled
+                        )
+                    Fill: =RGBA(153, 153, 153, 1)
+                    FontWeight: =FontWeight.Semibold
+                    Height: =72
+                    HoverColor: =RGBA(255, 255, 255, 1)
+                    HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                    OnSelect: =Navigate(Scr_Sign_and_Submit,ScreenTransition.Cover)
+                    Size: =24
+                    Text: ="Signatures"
+                    Width: =552
+                    X: =39
+                    Y: =633
+                    ZIndex: =13
+
+                Icon13 As icon.DockCheckProperties:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(244, 244, 244, 1)
+                    Icon: =Icon.DockCheckProperties
+                    OnSelect: =
+                    X: =515
+                    Y: =637
+                    ZIndex: =19
+
+            Group12 As group:
+                Height: =5
+                Width: =5
+                X: =28
+                Y: =-60
+                ZIndex: =80
+
+                Btn_5_Point_Guideline As button:
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    Fill: =RGBA(153, 153, 153, 1)
+                    FontWeight: =FontWeight.Semibold
+                    Height: =72
+                    HoverColor: =RGBA(255, 255, 255, 1)
+                    HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                    OnSelect: =Navigate(Scr_5PointGuideLine,ScreenTransition.Cover)
+                    Size: =24
+                    Text: ="5 Point Guide Line"
+                    Width: =552
+                    X: =39
+                    Y: =811
+                    ZIndex: =16
+
+                Icon15 As icon.Add:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(244, 244, 244, 1)
+                    Icon: =Icon.Add
+                    OnSelect: =
+                    X: =515
+                    Y: =815
+                    ZIndex: =20
+
+            Group7 As group:
+                Height: =5
+                Width: =5
+                X: =28
+                Y: =-60
+                ZIndex: =86
+
+                Btn_Care As button:
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =If(CountRows('Statement offline')= 0 ,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =RGBA(153, 153, 153, 1)
+                    FontWeight: =FontWeight.Semibold
+                    Height: =72
+                    HoverColor: =RGBA(255, 255, 255, 1)
+                    HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                    OnSelect: =Navigate(Scr_Care_New,ScreenTransition.Cover)
+                    Size: =24
+                    Text: ="Care"
+                    Width: =552
+                    X: =39
+                    Y: =362
+                    ZIndex: =22
+
+                Icon3 As icon.People:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(244, 244, 244, 1)
+                    Icon: =Icon.People
+                    OnSelect: =
+                    X: =515
+                    Y: =366
+                    ZIndex: =26
+
+            Group8 As group:
+                Height: =5
+                Width: =5
+                X: =28
+                Y: =-60
+                ZIndex: =87
+
+                Btn_Counter_Signers As button:
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =If(CountRows('Statement offline')= 0 ,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =RGBA(153, 153, 153, 1)
+                    FontWeight: =FontWeight.Semibold
+                    Height: =72
+                    HoverColor: =RGBA(255, 255, 255, 1)
+                    HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                    OnSelect: =Navigate(Scr_Counter_Signer_New,ScreenTransition.Cover)
+                    Size: =24
+                    Text: ="Counter Signers"
+                    Width: =552
+                    X: =39
+                    Y: =451
+                    ZIndex: =25
+
+                Icon7 As icon.Draw:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(244, 244, 244, 1)
+                    Icon: =Icon.Draw
+                    OnSelect: =
+                    X: =515
+                    Y: =457
+                    ZIndex: =27
+
+            Group6 As group:
+                Height: =5
+                Width: =5
+                X: =28
+                Y: =-60
+                ZIndex: =88
+
+                "'Btn_Witness Statement' As button":
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(166, 166, 166, 1)
+                    DisabledFill: =RGBA(244, 244, 244, 1)
+                    DisplayMode: =If(CountRows('Statement offline')= 0 ,DisplayMode.Disabled,DisplayMode.Edit)
+                    Fill: =RGBA(153, 153, 153, 1)
+                    FontWeight: =FontWeight.Semibold
+                    Height: =72
+                    HoverColor: =RGBA(255, 255, 255, 1)
+                    HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+                    OnSelect: =Navigate(Scr_Witness_Statement_New,ScreenTransition.Cover)
+                    Size: =24
+                    Text: ="Witness Statement"
+                    Width: =552
+                    X: =39
+                    Y: =273
+                    ZIndex: =21
+
+                Icon5 As icon.Person:
+                    BorderColor: =RGBA(32, 54, 71, 1)
+                    Color: =RGBA(255, 255, 255, 1)
+                    DisabledBorderColor: =RGBA(166, 166, 166, 1)
+                    DisabledColor: =RGBA(244, 244, 244, 1)
+                    Icon: =Icon.Person
+                    OnSelect: =
+                    X: =515
+                    Y: =277
+                    ZIndex: =29
+
+    Label1_6 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =82
+        Size: =21
+        Text: =If(IsBlank(Statement_Primary_key),"Statements","Statements"& Char(10) & "("&Statement_Primary_key & " )")
+        Width: =640
+        ZIndex: =4
+
+    "'Exit Icon_4' As icon.Cancel":
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Launch("/providers/Microsoft.PowerApps/apps/d3cb1738-531a-4d16-9353-7633f141149f")
+        X: =571
+        Y: =18
+        ZIndex: =5
+
+    lblPersonValid As label:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(0, 0, 0, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Height: =30
+        Size: =21
+        Text: =LookUp('Statement offline',Key=Statement_Primary_key).witnessDetailsValid
+        Visible: =false
+        Width: =91
+        Y: =82
+        ZIndex: =6
+
+    lblWitnessStatementValid As label:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(0, 0, 0, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Height: =30
+        Size: =21
+        Text: =LookUp('Statement offline',Key=Statement_Primary_key).witnessStatementValid
+        Visible: =false
+        Width: =91
+        Y: =52
+        ZIndex: =7
+
+    btnFocus As button:
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        Fill: =RGBA(100, 118, 132, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =46
+        HoverColor: =RGBA(255, 255, 255, 1)
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        Size: =24
+        Text: ="Focus"
+        Visible: =false
+        Width: =128
+        X: =492
+        Y: =82
+        ZIndex: =8
+
+    Btn_add_into_1 As button:
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        DisabledFill: =RGBA(244, 244, 244, 1)
+        DisplayMode: |-
+            =/* This code will disable button if no connection but due to client VPN issues, so can be uncommented once that has been fixed
+            If(connectionstatus="Offline",DisplayMode.Disabled,DisplayMode.Edit)
+            
+            */
+            
+            DisplayMode.Edit
+        Fill: =RGBA(149, 149, 149, 1)
+        FontWeight: =FontWeight.Semibold
+        Height: =50
+        HoverColor: =RGBA(255, 255, 255, 1)
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |
+            =Set(gblLoading1,true);
+            Refresh('Statement STGS');
+            Refresh('Statement Witness Needs');
+            Refresh(Contacts);
+            Refresh('Statement Types');
+            Refresh('Lookup Fields');
+            Refresh('Lookup Values');
+            Refresh(Users);
+            Refresh('Territorial Policing Areas');
+            Refresh('Customer Settings');
+            
+            Set(
+                officername,
+                User().FullName
+            );
+            Set(
+                officermail,
+                User().Email
+            );
+            Set(
+                countriesid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "30"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                countriesoffline,
+                {
+                    cp_name: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.'Filter Id' = countriesid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            SortByColumns(
+                countriesoffline,
+                "cp_displaysequenceno",
+                Ascending,
+                "cp_name",
+                Descending
+            );
+            SaveData(
+                countriesoffline,
+                "countriesoffline"
+            );
+            Set(
+                Titleid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "24"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                Titleoffline,
+                {
+                    cp_name: "",
+                    cp_lookupvalueid: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        cp_lookupfield.'Filter Id' = Titleid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                Titleoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                Titleoffline,
+                "Titleoffline"
+            );
+            Set(
+                Additionalnameid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "20"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                Additionalnameoffline,
+                {
+                    cp_name: "",
+                    cp_lookupvalueid: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        cp_lookupfield.'Filter Id' = Additionalnameid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                Additionalnameoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                Additionalnameoffline,
+                "Additionalnameoffline"
+            );
+            Set(
+                Genderid,
+                LookUp(
+                    'Lookup Fields',
+                    cp_id = "12"
+                ).cp_id
+            );
+            ClearCollect(
+                Genderoffline,
+                {
+                    cp_name: "",
+                    cp_lookupvalueid: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        'Lookup Field'.cp_id = Genderid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                Genderoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                Genderoffline,
+                "Genderoffline"
+            );
+            Set(
+                Occupationid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "35"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                Occupationoffline,
+                {
+                    cp_name: "",
+                    cp_lookupvalueid: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        cp_lookupfield.'Filter Id' = Occupationid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                Occupationoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                Occupationoffline,
+                "Occupationoffline"
+            );
+            Set(
+                ethnicitycodeid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "22"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                ethnicityoffline,
+                {
+                    cp_name: "",
+                    cp_lookupvalueid: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        cp_lookupfield.'Filter Id' = ethnicitycodeid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                ethnicityoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                ethnicityoffline,
+                "ethnicityoffline"
+            );
+            Set(
+                Prefferedmeanofcontactid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "34"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                Prefferedmeanofcontactoffline,
+                {
+                    cp_name: "",
+                    cp_lookupvalueid: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        cp_lookupfield.'Filter Id' = Prefferedmeanofcontactid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                Prefferedmeanofcontactoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                Prefferedmeanofcontactoffline,
+                "Prefferedmeanofcontactoffline"
+            );
+            Set(
+                Relationshiptowitnessid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "66"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                Relationshiptowitnessoffline,
+                {
+                    cp_name: "",
+                    cp_lookupvalueid: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        cp_lookupfield.'Filter Id' = Relationshiptowitnessid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                Relationshiptowitnessoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                Relationshiptowitnessoffline,
+                "Relationshiptowitnessoffline"
+            );
+            Set(
+                statementtemplateid,
+                LookUp(
+                    'Lookup Fields',
+                    'Filter Id' = "75"
+                ).'Filter Id'
+            );
+            ClearCollect(
+                statementtemplateoffline,
+                ShowColumns(
+                    Filter(
+                        'Lookup Values',
+                        cp_lookupfield.'Filter Id' = statementtemplateid
+                    ),
+                    "cp_name",
+                    "cp_lookupfield",
+                    "cp_lookupvalueid",
+                    "cp_displaysequenceno"
+                )
+            );
+            Sort(
+                statementtemplateoffline,
+                "cp_displaysequenceno"
+            );
+            SaveData(
+                statementtemplateoffline,
+                "statementtemplateoffline"
+            );
+            ClearCollect(
+                witnessneedsoffline,
+                ShowColumns(
+                    'Statement Witness Needs',
+                    "cp_name",
+                    "cp_statementwitnessneedid",
+                    "cp_displaysequenceno"
+                )
+            );
+            SaveData(
+                witnessneedsoffline,
+                "witnessneedsoffline"
+            );
+            ClearCollect(
+                StatementType,
+                    /*{
+                        cp_name: "",
+                        cp_lookupvalueid: "",
+                        cp_displaysequenceno: 0
+                    },*/
+                ShowColumns(
+                    'Statement Types',
+                    "cp_name",
+                    "cp_statementtypeid"
+                )
+            );
+            SaveData(
+                StatementType,
+                "StatementType"
+            );
+            /*ClearCollect(
+                test,
+                Choices('Preferred Method of Contact (Contacts)')
+            );*/
+            Set(
+                officermail,
+                User().Email
+            );
+            ClearCollect(
+                Userlocal,
+                {
+                    Usermaillocal: User().Email,
+                    Collarnumber: LookUp(
+                        Users,
+                        'Primary Email' = officermail
+                    ).'Collar Number',
+                    Name: LookUp(
+                        Users,
+                        'Primary Email' = officermail
+                    ).'Full Name'
+                }
+            );
+            SaveData(
+                Userlocal,
+                "Userlocal"
+            );
+            ClearCollect(
+                Usersalllocal,
+                ShowColumns(
+                    Users,
+                    "cp_StaffTitle",
+                    "cp_badgenumber",
+                    "firstname",
+                    "lastname",
+                    "cp_birthdate",
+                    "internalemailaddress",
+                    "cp_officerrank",
+                    "cp_officeryype",
+                    "cp_detective",
+                    "cp_PSUTraining",
+                    "cp_SafetyTraining",
+                    "cp_ServiceLength",
+                    "cp_Gender",
+                    "systemuserid"
+                )
+            );
+            SaveData(
+                Usersalllocal,
+                "Usersalllocal"
+            );
+            Set(gblLoading1,false);
+            ClearCollect(
+                ActiveCustomerSettingsOffline,
+                ShowColumns(
+                    Filter(
+                        'Customer Settings',
+                        Active = 'Active (Customer Settings)'.Yes
+                    ),
+                    "cp_incidentprefix",
+                    "cp_policingareatext",
+                    "cp_customersettingid",
+                    "cp_areacode"
+                )
+            );
+            Set (
+                IncidentNumberPrefix,
+                First(ActiveCustomerSettingsOffline).cp_incidentprefix
+            );
+            SaveData(
+                ActiveCustomerSettingsOffline,
+                "ActiveCustomerSettingsOffline"
+            );
+            ClearCollect(
+                TPA,
+                {
+                    cp_name: "",
+                    cp_territorialpolicingareaid: "",
+                    cp_displaysequenceno: 0
+                },
+                ShowColumns(
+                    Filter(
+                        'Territorial Policing Areas',
+                        Customer.'Customer Setting' = First(ActiveCustomerSettingsOffline).cp_customersettingid
+                    ),
+                    "cp_name",
+                    "cp_territorialpolicingareaid"
+                )
+            );
+            SaveData(
+                TPA,
+                "TPA"
+            );
+            /*SaveData(
+                'Statement offline',
+                "Statement offline"
+            );
+               ClearCollect(
+                    Userlocal,
+                    {
+                        Usermaillocal: User().Email,
+                        Collarnumber: LookUp(
+                            Users,
+                            'Primary Email' = officermail
+                        ).'Collar Number'
+                    }
+                );*/
+        RadiusBottomLeft: =0
+        RadiusBottomRight: =0
+        RadiusTopLeft: =0
+        RadiusTopRight: =0
+        Size: =21
+        Text: ="Sync"
+        Width: =227
+        Y: =1086
+        ZIndex: =9
+
+    Label5_2 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(179, 179, 179, 1)
+        BorderThickness: =2
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Fill: =RGBA(179, 179, 179, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =50
+        OnSelect: =connectionstatus
+        Size: =21
+        Text: =connectionstatus
+        Width: =164
+        X: =213
+        Y: =1086
+        ZIndex: =10
+
+    Label5_3 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(179, 179, 179, 1)
+        BorderThickness: =2
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledColor: =RGBA(166, 166, 166, 1)
+        Fill: =RGBA(179, 179, 179, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =50
+        OnSelect: =connectionstatus
+        Size: =21
+        Text: |-
+            ="App Version: " & glbAppVersion
+        Width: =280
+        X: =360
+        Y: =1086
+        ZIndex: =11
+
+    Icon9 As icon.Reload:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        DisabledBorderColor: =RGBA(166, 166, 166, 1)
+        DisabledColor: =RGBA(244, 244, 244, 1)
+        Height: =34
+        Icon: =Icon.Reload
+        OnSelect: =Select(Btn_add_into_1)
+        Width: =35
+        X: =15
+        Y: =1094
+        ZIndex: =12
+
+    Group14_1 As group:
+        Height: =5
+        Width: =5
+        X: =40
+        Y: =40
+        ZIndex: =16
+
+        Rectangle2_1 As rectangle:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Fill: =RGBA(255, 255, 255, 0.89)
+            Height: =1136
+            Visible: =gblLoading1
+            Width: =640
+            ZIndex: =13
+
+        Image1_1 As image:
+            BorderColor: =RGBA(32, 54, 71, 1)
+            DisabledBorderColor: =RGBA(166, 166, 166, 1)
+            DisabledFill: =RGBA(244, 244, 244, 1)
+            Height: =107
+            Image: =syncinggif
+            Visible: =gblLoading1
+            Width: =107
+            X: =266
+            Y: =419
+            ZIndex: =14
+
+        Label5_1 As label:
+            Align: =Align.Center
+            BorderColor: =RGBA(32, 54, 71, 1)
+            Color: =RGBA(0, 0, 0, 1)
+            DisabledColor: =RGBA(166, 166, 166, 1)
+            Height: =70
+            Size: =21
+            Text: ="Syncing ..."
+            Visible: =gblLoading1
+            Width: =560
+            X: =39
+            Y: =326
+            ZIndex: =15
+

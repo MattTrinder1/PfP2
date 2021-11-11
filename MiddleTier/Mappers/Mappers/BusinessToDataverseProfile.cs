@@ -82,7 +82,6 @@ namespace API.Mappers
             ;
 
             CreateMap<SuddenDeath, DVAccount>()
-                .IncludeBase<IncidentRelatedEntityBase, DVEntityBase>()
                 .ForMember(dest => dest.name, map => map.MapFrom(src => src.GPName))
                 .ForMember(dest => dest.cp_surgery, map => map.MapFrom(src => src.GPSurgery))
                 .ForMember(dest => dest.cp_isgp, map => map.MapFrom(src => true))
@@ -97,7 +96,6 @@ namespace API.Mappers
                 ;
 
             CreateMap<SuddenDeath, DVMedicalHistory>()
-                .IncludeBase<IncidentRelatedEntityBase, DVEntityBase>()
                 .ForMember(dest => dest.cp_diagnosismedicationprescribed, map => map.MapFrom(src => src.MedicalHistoryDiagnosisAnMedication))
                 .ForMember(dest => dest.cp_gpvisitdate, map => map.MapFrom(src => src.MedicalHistoryLastVisitDate))
                 .ForMember(dest => dest.cp_knownriskfactors, map => map.MapFrom(src => src.MedicalHistoryRiskFactors))

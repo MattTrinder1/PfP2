@@ -1,0 +1,98 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_useforcereasons",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_useforcereason",
+    "MaxGetRowsCount": 2000,
+    "Name": "Use Force Reasons",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "_ownerid_value": "Owner",
+      "cp_name": "Name",
+      "cp_useforcereason_AsyncOperations": "System Jobs",
+      "cp_useforcereason_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_useforcereason_DuplicateBaseRecord": "Duplicate Records (cp_useforcereason_DuplicateBaseRecord)",
+      "cp_useforcereason_DuplicateMatchingRecord": "Duplicate Records (cp_useforcereason_DuplicateMatchingRecord)",
+      "cp_useforcereason_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_useforcereason_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_useforcereason_ProcessSession": "Process Sessions",
+      "cp_useforcereason_SyncErrors": "Sync Errors",
+      "cp_useforcereasonid": "Use Force Reason",
+      "cp_UseofForce_cp_UseForceReason_cp_UseFor": "Uses of Force",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "overriddencreatedon": "Record Created On",
+      "owningbusinessunit": "Owning Business Unit",
+      "owningteam": "Owning Team",
+      "owninguser": "Owning User",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Use Force Reasons",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Use Force Reasons (Views)",
+    "Name": "_cp_useforcereason_views",
+    "RelatedEntityName": "Use Force Reasons",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "3d48ab73-ba92-4250-aefe-0a5611a0dcd2": "Inactive Use Force Reasons",
+      "5b2eaaeb-722d-4e6c-b1a3-aa93c8f807d4": "Active Use Force Reasons",
+      "8e546b98-039c-42c7-a415-ffe8652193ae": "Use Force Reason Lookup View",
+      "9fc143a0-762c-48c2-895b-6784f21d5e66": "Use Force Reason Associated View",
+      "ee83c47b-551b-42a7-9f96-220c999bda36": "Use Force Reason Advanced Find View"
+    }
+  },
+  {
+    "DisplayName": "Status (Use Force Reasons)",
+    "Name": "cp_useforcereason_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Use Force Reasons"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Use Force Reasons",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Use Force Reasons)",
+    "Name": "cp_useforcereason_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Use Force Reasons"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Use Force Reasons",
+    "Type": "OptionSetInfo"
+  }
+]

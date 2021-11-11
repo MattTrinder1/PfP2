@@ -1,0 +1,202 @@
+App As appinfo:
+    BackEnabled: =false
+    OnStart: |
+        =Set(glbAppVersion,1);
+        //this value is a placeholder which is updated by the build pipeline, don't edit it manually
+        //its commented it out to avoid it being formatted, which prevents the pipeline from finding it
+        //Basically - leave it alone !
+        //Set(glbAppVersion,1);
+        Set(gblLoading1,false);
+        Set(
+            i,
+            1
+        );
+        Set(
+            ypnc,
+            0
+        );
+        Set(
+            y1,
+            0
+        );
+        Set(
+            addcontactmethod,
+            false
+        );
+        Set(
+            contactworkphone,
+            false
+        );
+        Set(
+            contactmail,
+            false
+        );
+        Set(
+            contacthomephone,
+            false
+        );
+        Set(
+            contactmobile,
+            false
+        );
+        Set(
+            ycontactmethod,
+            0
+        );
+        Set(
+            i,
+            0
+        );
+        Set(
+            y,
+            0
+        );
+        
+        Set(
+            incidentnumbervar,
+            IncidentNumberPrefix & Text(
+                DateAdd(
+                    DatePicker_incident.SelectedDate,
+                    0
+                ),
+                "[$-en-GB]yyyymmdd"
+            ) & "-" & Txt_incident_suffix
+        );
+        Set(
+            agecalc,
+            If(
+                Month(Now()) < Month(DatePicker_dob.SelectedDate) Or ((Month(Now()) = Month(DatePicker_dob.SelectedDate) && Day(Now()) < Day(DatePicker_dob.SelectedDate))),
+                Year(Now()) - Year(DatePicker_dob.SelectedDate) - 1,
+                Year(Now()) - Year(DatePicker_dob.SelectedDate)
+            )
+        );
+        LoadData(
+            'IYC offline',
+            "IYC offline",
+            true
+        );
+        LoadData(
+            Userlocal,
+            "Userlocal"
+        );
+        
+        LoadData(
+            Usersalllocal,
+            "Usersalllocal"
+        );
+        LoadData(
+            TPA,
+            "TPA"
+        );
+        LoadData(
+            powerutilisedoffline,
+            "powerutilisedoffline"
+        );
+        LoadData(
+            youthrelationshipoffline,
+            "youthrelationshipoffline"
+        );
+        LoadData(
+            schoolcolegeoffline,
+            "schoolcolegeoffline"
+        );
+        LoadData(
+            Housesecureoffline,
+            "Housesecureoffline"
+        );
+        LoadData(
+            Housetemperatureoffline,
+            "Housetemperatureoffline"
+        );
+        If(
+            CountRows('IYC offline') > 0,
+            Set(
+                IYC_Primary_key,
+                Last('IYC offline').Key
+            )
+        );
+        Set(
+            i,
+            Value(
+                Right(
+                    IYC_Primary_key,
+                    1
+                )
+            )
+        );
+        LoadData(
+            selfEthnicityoffline,
+            "selfEthnicityoffline"
+        );
+        LoadData(
+            PerceivedEthnicityoffline,
+            "PerceivedEthnicityoffline"
+        );
+        LoadData(
+            Genderoffline,
+            "Genderoffline"
+        );
+        LoadData(
+            Maritaloffline,
+            "Maritaloffline"
+        );
+        LoadData(
+            Burialorcremationoffline,
+            "Burialorcremationoffline"
+        );
+        
+        LoadData(
+            StaffTitleoffline,
+            "StaffTitleoffline"
+        );
+        
+        
+        
+        ClearCollect(
+            PNCSearchReasonCode,
+            {
+                Reason: "Vehicle and/or person stopped",
+                ReasonCode: 01
+            },
+            {
+                Reason: "Moving vehicle",
+                ReasonCode: 02
+            },
+            {
+                Reason: "Abandoned or parked and unattended vehicle",
+                ReasonCode: 03
+            },
+            {
+                Reason: "Vehicle involved in a road accident",
+                ReasonCode: 04
+            },
+            {
+                Reason: "Subject of process or investigation",
+                ReasonCode: 5
+            },
+            {
+                Reason: "Administration",
+                ReasonCode: 06
+            },
+            {
+                Reason: "Enquiries relating to family protection issues",
+                ReasonCode: 07
+            },
+            {
+                Reason: "On behalf of an authorised agency",
+                ReasonCode: 08
+            },
+            {
+                Reason: "Record creation, updates, confirmation, broadcasts, etc",
+                ReasonCode: 09
+            },
+            {
+                Reason: "Transaction log and other audit checks",
+                ReasonCode: 00
+            }
+        );
+        Set(
+            PNCselection,
+            false
+        );
+
