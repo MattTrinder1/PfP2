@@ -133,12 +133,10 @@ stages:
             
             - ${{ each parameter in parameters }}:
               - ${{ if contains(parameter.Key, 'SolutionName') }}:
-                - template: deployBaseSolution.yml
+                - template: install-mamaged-solution.yml
                   parameters:
-                    minorversion : $(minor.version)
-                    releaseversion : $(release.version)
-                    solutionprefix : $(solution.prefix)
-                    solutionName: ${{parameter.Value}}
+                    SolutionFileName : $(${{parameter.Value}}SolutionFileName)
+                    pipelineworkspace: $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
                     connectionString: $(pfpsystemtest.connection.string)
 
 
