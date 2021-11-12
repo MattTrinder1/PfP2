@@ -29,7 +29,7 @@ steps:
     inputs:
       displayName: Copy to System Test folder
       sourceFolder: '$(Build.SourcesDirectory)\RewrittenFlows\${{parameters.customerName}}\${{parameters.environmentName}}\Schema'
-      contents: ** 
+      contents: '**' 
       targetFolder: '$(Build.SourcesDirectory)\Schema'
       overWrite: true 
     condition: and(eq(variables['FolderExists'], True),ne('${{parameters.customerName}}', 'Base'))
