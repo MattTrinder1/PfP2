@@ -50,6 +50,19 @@ parameters:
   type: string
   default: Durham
 
+- name: SystemTestEnvironmentName
+  type: string
+  default: SystemTest
+
+- name: UATEnvironmentName
+  type: string
+  default: UAT
+
+- name: LiveEnvironmentName
+  type: string
+  default: Live
+
+
 - name: Release
   values:
   - CP
@@ -150,15 +163,18 @@ stages:
         - ${{ if contains(parameter.Key, 'SolutionName') }}:
           - ${{ each parameter2 in parameters }}:
             - ${{ if contains(parameter2.Key, 'CustomerName') }}:
-              - template: assembleAndCheck.yml
-                parameters:
-                  customerName: ${{parameter2.Value}}
-                  solutionName: ${{parameter.Value}}
-                  folderNames: CanvasApps,Other
-                  managed: Managed
-                  solutionprefix: $(solution.prefix)
-                  minorversion: $(minor.version)
-                  releaseversion: $(release.version)
+              - ${{ each parameter3 in parameters }}:
+                - ${{ if contains(parameter3.Key, 'EnvironmentName') }}:
+                  - template: assembleAndCheck.yml
+                    parameters:
+                      environmentName: ${{parameter3.Value}}
+                      customerName: ${{parameter2.Value}}
+                      solutionName: ${{parameter.Value}}
+                      folderNames: CanvasApps,Other
+                      managed: Managed
+                      solutionprefix: $(solution.prefix)
+                      minorversion: $(minor.version)
+                      releaseversion: $(release.version)
 
 
       - publish: '$(build.binariesdirectory)/SystemTest'
