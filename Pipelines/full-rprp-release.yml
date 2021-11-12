@@ -227,6 +227,8 @@ stages:
                 minorversion : $(minor.version)
                 releaseversion : $(release.version)
                 solutionprefix : $(solution.prefix)
+                customerName : Cumbria
+                environmentName : SystemTest
             
             - ${{ each parameter in parameters }}:
               - ${{ if contains(parameter.Key, 'SolutionName') }}:
@@ -293,6 +295,8 @@ stages:
                 minorversion : $(minor.version)
                 releaseversion : $(release.version)
                 solutionprefix : $(solution.prefix)
+                customerName : Cumbria
+                environmentName : SystemTest
             
             - ${{ each parameter in parameters }}:
               - ${{ if contains(parameter.Key, 'SolutionName') }}:
