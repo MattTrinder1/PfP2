@@ -1,0 +1,344 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_ce4a8"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "11ed94ae-c578-4318-9d6f-475b2f18e246"
+          },
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "First Name",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "Last Name",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_2": {
+                  "title": "Perceived Age",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_3": {
+                  "title": "Perceived Ethnicity",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_4": {
+                  "title": "Perceived Mental Impairement",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_5": {
+                  "title": "Perceived Physical Impairement",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_6": {
+                  "title": "Gender",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_7": {
+                  "title": "Additional Name Type",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_8": {
+                  "title": "Additional Name",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_9": {
+                  "title": "BirthDate",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_10": {
+                  "title": "Title",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_11": {
+                  "title": "PNCNumber",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_12": {
+                  "title": "Contact HouseName",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_13": {
+                  "title": "Contact HouseNumber",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_14": {
+                  "title": "Contact District",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_15": {
+                  "title": "Contact Role Type",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_17": {
+                  "title": "Contact County",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_18": {
+                  "title": "Contact Country",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_19": {
+                  "title": "Contact PostCode",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "location": {
+                  "type": "object",
+                  "properties": {
+                    "address": {
+                      "type": "object",
+                      "properties": {
+                        "street": {
+                          "title": "Street",
+                          "type": "string",
+                          "x-ms-dynamically-added": false
+                        },
+                        "city": {
+                          "title": "City",
+                          "type": "string",
+                          "x-ms-dynamically-added": false
+                        }
+                      },
+                      "required": [
+                        "street",
+                        "city"
+                      ]
+                    }
+                  }
+                },
+                "text_16": {
+                  "title": "Penalty Points",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text",
+                "text_1",
+                "location"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Create_a_new_Contact_record": {
+          "runAfter": {
+            "Run_a_Child_Flow_(Get_Choice_Id_for_Perceived_Physical_Impairement)": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "1e67715d-95b0-466a-baf6-d13895beee05"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "CreateRecord",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "contacts",
+            "item/cp_contactroletype@odata.bind": "@if(empty(triggerBody()?[\u0027text_15\u0027]),\u0027\u0027,concat(\u0027/cp_contactroletypes(\u0027,triggerBody()?[\u0027text_15\u0027],\u0027)\u0027))",
+            "item/lastname": "@triggerBody()[\u0027text_1\u0027]",
+            "item/address1_city": "@triggerBody()[\u0027location\u0027][\u0027address\u0027][\u0027city\u0027]",
+            "item/address1_county": "@triggerBody()?[\u0027text_17\u0027]",
+            "item/address1_line1": "@triggerBody()[\u0027location\u0027][\u0027address\u0027][\u0027street\u0027]",
+            "item/address1_postalcode": "@triggerBody()?[\u0027text_19\u0027]",
+              "item/birthdate": "@outputs(\u0027Compose_BirthDate\u0027)",
+            "item/cp_Gender@odata.bind": "@if(empty(triggerBody()?[\u0027text_6\u0027]),\u0027\u0027,concat(\u0027/cp_lookupvalues(\u0027,triggerBody()?[\u0027text_6\u0027],\u0027)\u0027))",
+            "item/cp_district": "@triggerBody()?[\u0027text_14\u0027]",
+            "item/firstname": "@triggerBody()[\u0027text\u0027]",
+            "item/cp_housename": "@triggerBody()?[\u0027text_12\u0027]",
+            "item/cp_housenumber": "@triggerBody()?[\u0027text_13\u0027]",
+            "item/cp_additionalname": "@triggerBody()?[\u0027text_8\u0027]",
+            "item/cp_AdditionalNameType@odata.bind": "@if(empty(triggerBody()?[\u0027text_7\u0027]),\u0027\u0027,concat(\u0027/cp_lookupvalues(\u0027,triggerBody()?[\u0027text_7\u0027],\u0027)\u0027))",
+            "item/address1_country": "@triggerBody()?[\u0027text_18\u0027]",
+            "item/cp_ContactTitle@odata.bind": "@if(empty(triggerBody()?[\u0027text_10\u0027]),\u0027\u0027,concat(\u0027/cp_lookupvalues(\u0027,triggerBody()?[\u0027text_10\u0027],\u0027)\u0027))",
+            "item/cp_penaltypoints": "@triggerBody()?[\u0027text_16\u0027]",
+            "item/cp_PerceivedAge@odata.bind": "@if(empty(triggerBody()?[\u0027text_2\u0027]),\u0027\u0027,concat(\u0027/cp_lookupvalues(\u0027,triggerBody()?[\u0027text_2\u0027],\u0027)\u0027))",
+            "item/cp_PerceivedEthnicity@odata.bind": "@if(empty(triggerBody()?[\u0027text_3\u0027]),\u0027\u0027,concat(\u0027/cp_lookupvalues(\u0027,triggerBody()?[\u0027text_3\u0027],\u0027)\u0027))",
+            "item/cp_perceivedmentalimpairment": "@outputs(\u0027Run_a_Child_Flow_(Get_Choice_Id_for_Perceived_Mental_Impairement)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]",
+            "item/cp_perceivedphysicalimpairment": "@outputs(\u0027Run_a_Child_Flow_(Get_Choice_Id_for_Perceived_Physical_Impairement)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]",
+            "item/cp_pncno": "@triggerBody()?[\u0027text_11\u0027]"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "Create_a_new_Contact_record": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "4c3646c5-1d7c-4219-8b4a-a56e539d822c"
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+            "contactid": "@outputs(\u0027Create_a_new_Contact_record\u0027)?[\u0027body/contactid\u0027]"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "contactid": {
+                  "title": "ContactId",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Run_a_Child_Flow_(Get_Choice_Id_for_Perceived_Mental_Impairement)": {
+          "runAfter": {
+            "Compose_BirthDate": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "327b7405-bbf5-402c-b599-f24489d5b5f7"
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "37c9a41c-8359-eb11-a812-000d3a654f72"
+            },
+            "body": {
+            "text": "@triggerBody()?[\u0027text_4\u0027]"
+            }
+          }
+        },
+        "Run_a_Child_Flow_(Get_Choice_Id_for_Perceived_Physical_Impairement)": {
+          "runAfter": {
+            "Run_a_Child_Flow_(Get_Choice_Id_for_Perceived_Mental_Impairement)": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "127c5b49-1e97-4e5b-a658-dd784a368d38"
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "37c9a41c-8359-eb11-a812-000d3a654f72"
+            },
+            "body": {
+            "text": "@triggerBody()?[\u0027text_5\u0027]"
+            }
+          }
+        },
+        "Compose_BirthDate": {
+          "runAfter": {
+            
+          },
+          "metadata": {
+            "operationMetadataId": "a2ef9031-9bf8-47e1-80bf-0b9d370a822b"
+          },
+          "type": "Compose",
+        "inputs": "@if(empty(triggerBody()?[\u0027text_9\u0027]),null,triggerBody()?[\u0027text_9\u0027])"
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

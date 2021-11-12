@@ -1,0 +1,830 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_37dad"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_37dad"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_commondataserviceforapps_2": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedcommondataserviceforapps_3a446"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "48eab869-4f29-4ff5-a267-825edea48d0b"
+          },
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "Sudden Death STG Id",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_1": {
+                  "title": "Sudden Death",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                },
+                "text_2": {
+                  "title": "Incident Number",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text",
+                "text_1"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "Apply_to_each": [
+              "Failed",
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "4e2c1d75-c386-4c87-8e3c-56d10ce2a18b"
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "status": "OK"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "title": "Status",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "List_rows_(Get_Related_Contacts_from_Staging_Area)": {
+          "runAfter": {
+            "Apply_to_each_3": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "935541c4-439c-4d9d-b732-108f3b9a6d49"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_suddendeathinvolvedcontactstgs",
+            "$filter": "(_cp_suddendeathstg_value eq @{triggerBody()[\u0027text\u0027]} and cp_contactrole ne \u0027dfa31529-8035-eb11-a813-0022489ba6ad\u0027)"
+            },
+            "authentication": {
+              "type": "Raw",
+            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+            }
+          }
+        },
+        "Apply_to_each": {
+        "foreach": "@outputs(\u0027List_rows_(Get_Related_Contacts_from_Staging_Area)\u0027)?[\u0027body/value\u0027]",
+          "actions": {
+            "Run_a_Child_Flow_(Create_Contact)_2": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "d6653db3-fed0-470f-9e16-901d4d1f023d"
+              },
+              "type": "Workflow",
+              "inputs": {
+                "host": {
+                  "workflowReferenceName": "0cd014f7-3e5a-eb11-a812-0022489ba6ad"
+                },
+                "body": {
+                "text": "@items(\u0027Apply_to_each\u0027)?[\u0027cp_firstname\u0027]",
+                "text_1": "@items(\u0027Apply_to_each\u0027)?[\u0027cp_lastname\u0027]",
+                "text_6": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_gender\u0027]), \u0027\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_gender\u0027])",
+                "text_7": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_additionalnametype\u0027]), \u0027\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_additionalnametype\u0027])",
+                "text_8": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_additionalname\u0027]), \u0027\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_additionalname\u0027])",
+                "text_9": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_birthday\u0027]), \u0027\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_birthday\u0027])",
+                "text_10": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_contacttitle\u0027]), \u0027\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_contacttitle\u0027])",
+                "text_11": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_pncnumber\u0027]), \u0027\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_pncnumber\u0027])",
+                "text_12": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_housename\u0027]), \u0027\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_housename\u0027])",
+                "text_13": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_housenumber\u0027]), \u0027\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_housenumber\u0027])",
+                "text_14": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_district\u0027]), \u0027\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_district\u0027])",
+                "text_17": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_county\u0027]), \u0027\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_county\u0027])",
+                "text_18": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_country\u0027]), \u0027\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_country\u0027])",
+                "text_19": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_postofficebox\u0027]), \u0027\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_postofficebox\u0027])",
+                  "location": {
+                    "address": {
+                    "street": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_address\u0027]), \u0027\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_address\u0027])",
+                    "city": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_city\u0027]), \u0027\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_city\u0027])"
+                    }
+                  }
+                }
+              }
+            },
+            "Run_a_Child_Flow_(Update_Contact_Additional_Fields)_2": {
+              "runAfter": {
+                "Run_a_Child_Flow_(Create_Contact)_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "c5b7e3d1-3fbd-483c-b195-5a13adf9c557"
+              },
+              "type": "Workflow",
+              "inputs": {
+                "host": {
+                  "workflowReferenceName": "ac004de4-6061-eb11-a812-0022489c7676"
+                },
+                "body": {
+                "text": "@outputs(\u0027Run_a_Child_Flow_(Create_Contact)_2\u0027)?[\u0027Body\u0027]?[\u0027contactid\u0027]",
+                "text_1": "@string(items(\u0027Apply_to_each\u0027)?[\u0027cp_retired\u0027])",
+                "text_3": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_maritalstatus\u0027]), \u0027\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_maritalstatus\u0027])",
+                "text_5": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_preferredcontactmethod\u0027]), \u0027\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_preferredcontactmethod\u0027])",
+                "text_6": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_phone\u0027]), \u0027\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_phone\u0027])",
+                "text_7": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_email\u0027]), \u0027\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_email\u0027])",
+                "text_9": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_mobilephone\u0027]), \u0027\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_mobilephone\u0027])",
+                "text_10": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_workhome\u0027]), \u0027\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_workhome\u0027])",
+                "text_12": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_placeofbirth\u0027]), \u0027\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_placeofbirth\u0027])",
+                "text_14": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_occupation\u0027]), \u0027\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_occupation\u0027])",
+                "text_15": "@string(items(\u0027Apply_to_each\u0027)?[\u0027cp_selfdefinedethnicity\u0027])",
+                "text_16": "@string(items(\u0027Apply_to_each\u0027)?[\u0027cp_officerdefinedethnicity\u0027])"
+                }
+              }
+            },
+            "If_Ethnicity_Provided_2": {
+              "actions": {
+                "Update_Contact_(Ethnicity)_2": {
+                  "runAfter": {
+                    
+                  },
+                  "metadata": {
+                    "operationMetadataId": "fbbd9630-d6b6-41f3-823b-08aa7c490b41"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_commondataserviceforapps",
+                      "operationId": "UpdateRecord",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                    },
+                    "parameters": {
+                      "entityName": "contacts",
+                    "recordId": "@outputs(\u0027Run_a_Child_Flow_(Create_Contact)_2\u0027)?[\u0027Body\u0027]?[\u0027contactid\u0027]",
+                    "item/cp_OfficerDefinedEthnicity@odata.bind": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_officerdefinedethnicity\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_officerdefinedethnicity\u0027], \u0027)\u0027))",
+                    "item/cp_SelfDefinedEthnicity@odata.bind": "@if(empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_selfdefinedethnicity\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027Apply_to_each\u0027)?[\u0027cp_selfdefinedethnicity\u0027], \u0027)\u0027))"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                    "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                    }
+                  }
+                }
+              },
+              "runAfter": {
+                "Run_a_Child_Flow_(Update_Contact_Additional_Fields)_2": [
+                  "Succeeded"
+                ]
+              },
+              "expression": {
+                "or": [
+                  {
+                    "not": {
+                      "equals": [
+                      "@empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_officerdefinedethnicity\u0027])",
+                        "@true"
+                      ]
+                    }
+                  },
+                  {
+                    "equals": [
+                    "@empty(items(\u0027Apply_to_each\u0027)?[\u0027cp_selfdefinedethnicity\u0027])",
+                      "@true"
+                    ]
+                  }
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "82ff45c7-8930-4ce5-abfc-2de17e161dfb"
+              },
+              "type": "If"
+            },
+            "Split_Contact_Roles_2": {
+              "runAfter": {
+                "If_Ethnicity_Provided_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "d9e45291-964c-4445-bc69-aaac3a5ff7c9"
+              },
+              "type": "Compose",
+            "inputs": "@split(items(\u0027Apply_to_each\u0027)?[\u0027cp_contactrole\u0027], \u0027,\u0027)"
+            },
+            "Apply_to_each_2": {
+              "foreach": "@outputs(\u0027Split_Contact_Roles_2\u0027)",
+              "actions": {
+                "Create_a_new_row_in_Sudden_Death_Involved_Contacts_3": {
+                  "runAfter": {
+                    
+                  },
+                  "metadata": {
+                    "operationMetadataId": "9c3039e4-8068-4ffb-8b96-7ab6fd4c7132"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_commondataserviceforapps",
+                      "operationId": "CreateRecord",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                    },
+                    "parameters": {
+                      "entityName": "cp_suddendeathinvolvedcontacts",
+                    "item/cp_Contact@odata.bind": "/contacts(@{outputs(\u0027Run_a_Child_Flow_(Create_Contact)_2\u0027)?[\u0027Body\u0027]?[\u0027contactid\u0027]})",
+                    "item/cp_contactroletype@odata.bind": "/cp_contactroletypes(@{items(\u0027Apply_to_each_2\u0027)})",
+                    "item/cp_involvedcontactname": "Involved Contact for Sudden Death, Incident @{triggerBody()[\u0027text_2\u0027]}",
+                    "item/cp_suddendeath@odata.bind": "/cp_suddendeaths(@{triggerBody()[\u0027text_1\u0027]})",
+                    "item/cp_relationshiptodeceased": "@items(\u0027Apply_to_each\u0027)?[\u0027cp_relationshiptodeceased\u0027]",
+                    "item/cp_relationshiptodeceasedduration": "@items(\u0027Apply_to_each\u0027)?[\u0027cp_relationshiptodeceasedduration\u0027]"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                    "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                    }
+                  }
+                },
+                "Condition": {
+                  "actions": {
+                    "Apply_to_each_4": {
+                    "foreach": "@outputs(\u0027List_rows_(Get_Deceased_from_Staging_Area)\u0027)?[\u0027body/value\u0027]",
+                      "actions": {
+                        "Download_Identification_Signature": {
+                          "runAfter": {
+                            
+                          },
+                          "metadata": {
+                            "operationMetadataId": "82e88b1e-7489-48ab-8e00-a56f8d9a7e33"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps_2",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_suddendeathinvolvedcontactstgs",
+                            "recordId": "@items(\u0027Apply_to_each\u0027)?[\u0027cp_suddendeathinvolvedcontactstgid\u0027]",
+                              "fileImageFieldName": "cp_identificationsignature",
+                              "size": "full"
+                            },
+                            "authentication": {
+                              "type": "Raw",
+                            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                            }
+                          }
+                        },
+                        "Upload_a_file_or_an_image": {
+                          "runAfter": {
+                            "Download_Identification_Signature": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "7d386c00-b0d0-4271-9fd8-2a5e3ec93b37"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps_2",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_suddendeaths",
+                            "recordId": "@triggerBody()[\u0027text_1\u0027]",
+                              "fileImageFieldName": "cp_identificationsignature",
+                            "item": "@outputs(\u0027Download_Identification_Signature\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": {
+                              "type": "Raw",
+                            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                            }
+                          }
+                        },
+                        "Update_a_row": {
+                          "runAfter": {
+                            "Upload_a_file_or_an_image": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "2e249cbe-9655-480c-a30c-07472eecd6ba"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps_2",
+                              "operationId": "UpdateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_suddendeaths",
+                            "recordId": "@triggerBody()[\u0027text_1\u0027]",
+                            "item/cp_identificationlocation": "@items(\u0027Apply_to_each\u0027)?[\u0027cp_identificationsignloc\u0027]",
+                            "item/cp_identificationsignedon": "@items(\u0027Apply_to_each\u0027)?[\u0027cp_identificationsignedon\u0027]",
+                            "item/cp_IdentifiedBy@odata.bind": "/contacts(@{outputs(\u0027Run_a_Child_Flow_(Create_Contact)_2\u0027)?[\u0027Body\u0027]?[\u0027contactid\u0027]})"
+                            },
+                            "authentication": {
+                              "type": "Raw",
+                            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                            }
+                          }
+                        }
+                      },
+                      "runAfter": {
+                        
+                      },
+                      "metadata": {
+                        "operationMetadataId": "26296e30-0c28-43e2-9504-3a3fca1afde1"
+                      },
+                      "type": "Foreach"
+                    }
+                  },
+                  "runAfter": {
+                    "Create_a_new_row_in_Sudden_Death_Involved_Contacts_3": [
+                      "Succeeded"
+                    ]
+                  },
+                  "expression": {
+                    "equals": [
+                      "@items(\u0027Apply_to_each_2\u0027)",
+                      "c9971be9-b43f-eb11-a813-000d3a654f72"
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "0350848a-6e0b-47e0-8599-11cea7180a49"
+                  },
+                  "type": "If"
+                }
+              },
+              "runAfter": {
+                "Split_Contact_Roles_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "ca00e010-7be8-4be2-bd45-8e8b65bb6e05"
+              },
+              "type": "Foreach"
+            }
+          },
+          "runAfter": {
+            "List_rows_(Get_Related_Contacts_from_Staging_Area)": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5392deef-7f83-4ccd-bb41-9a601ff702e2"
+          },
+          "type": "Foreach"
+        },
+        "List_rows_(Get_Deceased_from_Staging_Area)": {
+          "runAfter": {
+            
+          },
+          "metadata": {
+            "operationMetadataId": "cac4159a-55be-4a2d-b077-0fb88725a865"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_suddendeathinvolvedcontactstgs",
+            "$filter": "(_cp_suddendeathstg_value eq @{triggerBody()[\u0027text\u0027]} and cp_contactrole eq \u0027dfa31529-8035-eb11-a813-0022489ba6ad\u0027)"
+            },
+            "authentication": {
+              "type": "Raw",
+            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+            }
+          }
+        },
+        "Apply_to_each_3": {
+        "foreach": "@outputs(\u0027List_rows_(Get_Deceased_from_Staging_Area)\u0027)?[\u0027body/value\u0027]",
+          "actions": {
+            "Run_a_Child_Flow_(Create_Contact)_3": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "a0386ea3-7734-4a81-9400-2a2197d2b149"
+              },
+              "type": "Workflow",
+              "inputs": {
+                "host": {
+                  "workflowReferenceName": "0cd014f7-3e5a-eb11-a812-0022489ba6ad"
+                },
+                "body": {
+                "text": "@items(\u0027Apply_to_each_3\u0027)?[\u0027cp_firstname\u0027]",
+                "text_1": "@items(\u0027Apply_to_each_3\u0027)?[\u0027cp_lastname\u0027]",
+                "text_6": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_gender\u0027]), \u0027\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_gender\u0027])",
+                "text_7": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_additionalnametype\u0027]), \u0027\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_additionalnametype\u0027])",
+                "text_8": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_additionalname\u0027]), \u0027\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_additionalname\u0027])",
+                "text_9": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_birthday\u0027]), \u0027\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_birthday\u0027])",
+                "text_10": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_contacttitle\u0027]), \u0027\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_contacttitle\u0027])",
+                "text_11": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_pncnumber\u0027]), \u0027\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_pncnumber\u0027])",
+                "text_12": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_housename\u0027]), \u0027\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_housename\u0027])",
+                "text_13": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_housenumber\u0027]), \u0027\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_housenumber\u0027])",
+                "text_14": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_district\u0027]), \u0027\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_district\u0027])",
+                "text_17": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_county\u0027]), \u0027\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_county\u0027])",
+                "text_18": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_country\u0027]), \u0027\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_country\u0027])",
+                "text_19": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_postofficebox\u0027]), \u0027\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_postofficebox\u0027])",
+                  "location": {
+                    "address": {
+                    "street": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_address\u0027]), \u0027\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_address\u0027])",
+                    "city": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_city\u0027]), \u0027\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_city\u0027])"
+                    }
+                  }
+                }
+              }
+            },
+            "Run_a_Child_Flow_(Update_Contact_Additional_Fields)_3": {
+              "runAfter": {
+                "Run_a_Child_Flow_(Create_Contact)_3": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "9b3f03d6-0691-4424-b3d9-091c8bcaa694"
+              },
+              "type": "Workflow",
+              "inputs": {
+                "host": {
+                  "workflowReferenceName": "ac004de4-6061-eb11-a812-0022489c7676"
+                },
+                "body": {
+                "text": "@outputs(\u0027Run_a_Child_Flow_(Create_Contact)_3\u0027)?[\u0027Body\u0027]?[\u0027contactid\u0027]",
+                "text_1": "@string(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_retired\u0027])",
+                "text_3": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_maritalstatus\u0027]), \u0027\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_maritalstatus\u0027])",
+                "text_5": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_preferredcontactmethod\u0027]), \u0027\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_preferredcontactmethod\u0027])",
+                "text_6": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_phone\u0027]), \u0027\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_phone\u0027])",
+                "text_7": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_email\u0027]), \u0027\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_email\u0027])",
+                "text_9": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_mobilephone\u0027]), \u0027\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_mobilephone\u0027])",
+                "text_10": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_workhome\u0027]), \u0027\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_workhome\u0027])",
+                "text_12": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_placeofbirth\u0027]), \u0027\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_placeofbirth\u0027])",
+                "text_14": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_occupation\u0027]), \u0027\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_occupation\u0027])",
+                "text_15": "@string(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_selfdefinedethnicity\u0027])",
+                "text_16": "@string(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_officerdefinedethnicity\u0027])"
+                }
+              }
+            },
+            "If_Ethnicity_Provided_3": {
+              "actions": {
+                "Update_Contact_(Ethnicity)_3": {
+                  "runAfter": {
+                    
+                  },
+                  "metadata": {
+                    "operationMetadataId": "8eae59f3-3d3a-4c73-9ec5-52cffffc8e18"
+                  },
+                  "type": "OpenApiConnection",
+                  "inputs": {
+                    "host": {
+                      "connectionName": "shared_commondataserviceforapps",
+                      "operationId": "UpdateRecord",
+                      "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                    },
+                    "parameters": {
+                      "entityName": "contacts",
+                    "recordId": "@outputs(\u0027Run_a_Child_Flow_(Create_Contact)_3\u0027)?[\u0027Body\u0027]?[\u0027contactid\u0027]",
+                    "item/cp_OfficerDefinedEthnicity@odata.bind": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_officerdefinedethnicity\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_officerdefinedethnicity\u0027], \u0027)\u0027))",
+                    "item/cp_SelfDefinedEthnicity@odata.bind": "@if(empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_selfdefinedethnicity\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027Apply_to_each_3\u0027)?[\u0027cp_selfdefinedethnicity\u0027], \u0027)\u0027))"
+                    },
+                    "authentication": {
+                      "type": "Raw",
+                    "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                    }
+                  }
+                }
+              },
+              "runAfter": {
+                "Run_a_Child_Flow_(Update_Contact_Additional_Fields)_3": [
+                  "Succeeded"
+                ]
+              },
+              "expression": {
+                "or": [
+                  {
+                    "not": {
+                      "equals": [
+                      "@empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_officerdefinedethnicity\u0027])",
+                        "@true"
+                      ]
+                    }
+                  },
+                  {
+                    "equals": [
+                    "@empty(items(\u0027Apply_to_each_3\u0027)?[\u0027cp_selfdefinedethnicity\u0027])",
+                      "@true"
+                    ]
+                  }
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "442edcee-3feb-4145-87ee-ed471d21650f"
+              },
+              "type": "If"
+            },
+            "Update_Sudden_Death_Deceased_2": {
+              "runAfter": {
+                "If_Ethnicity_Provided_3": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "fbdd75d8-112a-422a-a1a0-19b636cc1de8"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "UpdateRecord",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "cp_suddendeaths",
+                "recordId": "@triggerBody()[\u0027text_1\u0027]",
+                "item/cp_bodylabel": "@items(\u0027Apply_to_each_3\u0027)?[\u0027cp_bodylabel\u0027]",
+                "item/cp_Deceased@odata.bind": "/contacts(@{outputs(\u0027Run_a_Child_Flow_(Create_Contact)_3\u0027)?[\u0027Body\u0027]?[\u0027contactid\u0027]})",
+                "item/cp_deceasedage": "@items(\u0027Apply_to_each_3\u0027)?[\u0027cp_age\u0027]"
+                },
+                "authentication": {
+                  "type": "Raw",
+                "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                }
+              }
+            },
+            "Get_Sudden_Death_STG_row_2": {
+              "runAfter": {
+                "Update_Sudden_Death_Deceased_2": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "8dabb7e8-774e-4f94-a48a-095621c1def4"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "GetItem",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "cp_suddendeathstgs",
+                "recordId": "@triggerBody()[\u0027text\u0027]"
+                },
+                "authentication": {
+                  "type": "Raw",
+                "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                }
+              }
+            },
+            "Update_Deceased_Medical_History_if_Exists_2": {
+              "actions": {
+                "Check_for_name_or_address": {
+                  "actions": {
+                    "Create_a_new_Account_2": {
+                      "runAfter": {
+                        
+                      },
+                      "metadata": {
+                        "operationMetadataId": "07e37a7c-82d5-4be2-94cf-f56f8bcff4c4"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "CreateRecord",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "accounts",
+                        "item/name": "@outputs(\u0027Get_Sudden_Death_STG_row_2\u0027)?[\u0027body/cp_gpname\u0027]",
+                        "item/address1_city": "@outputs(\u0027Get_Sudden_Death_STG_row_2\u0027)?[\u0027body/cp_gpcity\u0027]",
+                        "item/address1_line1": "@outputs(\u0027Get_Sudden_Death_STG_row_2\u0027)?[\u0027body/cp_gpaddress\u0027]",
+                        "item/address1_postalcode": "@outputs(\u0027Get_Sudden_Death_STG_row_2\u0027)?[\u0027body/cp_gppostofficebox\u0027]",
+                        "item/telephone1": "@outputs(\u0027Get_Sudden_Death_STG_row_2\u0027)?[\u0027body/cp_gptelephone\u0027]",
+                        "item/address1_country": "@outputs(\u0027Get_Sudden_Death_STG_row_2\u0027)?[\u0027body/cp_gpcountry\u0027]",
+                        "item/address1_county": "@outputs(\u0027Get_Sudden_Death_STG_row_2\u0027)?[\u0027body/cp_gpcounty\u0027]",
+                          "item/cp_isgp": true,
+                        "item/cp_surgery": "@outputs(\u0027Get_Sudden_Death_STG_row_2\u0027)?[\u0027body/cp_gpsurgery\u0027]"
+                        },
+                        "authentication": {
+                          "type": "Raw",
+                        "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                        }
+                      }
+                    },
+                    "Create_Medical_History_row": {
+                      "runAfter": {
+                        "Create_a_new_Account_2": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "3c5a68a8-b8c9-4c05-8b81-ed38b5e33240"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "CreateRecord",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_medicalhistories",
+                        "item/cp_Contact@odata.bind": "/contacts(@{outputs(\u0027Run_a_Child_Flow_(Create_Contact)_3\u0027)?[\u0027Body\u0027]?[\u0027contactid\u0027]})",
+                        "item/cp_medicalhistoryname": "Medical History Deceased: @{items(\u0027Apply_to_each_3\u0027)?[\u0027cp_firstname\u0027]} @{items(\u0027Apply_to_each_3\u0027)?[\u0027cp_lastname\u0027]}",
+                        "item/cp_diagnosismedicationprescribed": "@outputs(\u0027Get_Sudden_Death_STG_row_2\u0027)?[\u0027body/cp_diagnosismedicationprescribed\u0027]",
+                        "item/cp_GP@odata.bind": "/accounts(@{outputs(\u0027Create_a_new_Account_2\u0027)?[\u0027body/accountid\u0027]})",
+                        "item/cp_gpvisitdate": "@outputs(\u0027Get_Sudden_Death_STG_row_2\u0027)?[\u0027body/cp_gpvisitdate\u0027]",
+                        "item/cp_knownriskfactors": "@outputs(\u0027Get_Sudden_Death_STG_row_2\u0027)?[\u0027body/cp_knownriskfactors\u0027]",
+                        "item/ownerid@odata.bind": "/systemusers(@{outputs(\u0027Get_Sudden_Death_STG_row_2\u0027)?[\u0027body/cp_enteredby\u0027]})",
+                        "item/cp_pastmedicalhistory": "@outputs(\u0027Get_Sudden_Death_STG_row_2\u0027)?[\u0027body/cp_pastmedicalhistory\u0027]",
+                        "item/cp_reasonforvisit": "@outputs(\u0027Get_Sudden_Death_STG_row_2\u0027)?[\u0027body/cp_gpreasonforvisit\u0027]"
+                        },
+                        "authentication": {
+                          "type": "Raw",
+                        "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                        }
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    
+                  },
+                  "expression": {
+                    "or": [
+                      {
+                        "not": {
+                          "equals": [
+                          "@empty(outputs(\u0027Get_Sudden_Death_STG_row_2\u0027)?[\u0027body/cp_gpname\u0027])",
+                            "@true"
+                          ]
+                        }
+                      },
+                      {
+                        "not": {
+                          "equals": [
+                          "@empty(outputs(\u0027Get_Sudden_Death_STG_row_2\u0027)?[\u0027body/cp_gpaddress\u0027])",
+                            "@true"
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "f26acced-d0cb-4c79-8f6e-3ec892b5676b"
+                  },
+                  "type": "If"
+                }
+              },
+              "runAfter": {
+                "Get_Sudden_Death_STG_row_2": [
+                  "Succeeded"
+                ]
+              },
+              "expression": {
+                "or": [
+                  {
+                    "not": {
+                      "equals": [
+                      "@empty(outputs(\u0027Get_Sudden_Death_STG_row_2\u0027)?[\u0027body/cp_gpvisitdate\u0027])",
+                        "@true"
+                      ]
+                    }
+                  },
+                  {
+                    "not": {
+                      "equals": [
+                      "@empty(outputs(\u0027Get_Sudden_Death_STG_row_2\u0027)?[\u0027body/cp_gpreasonforvisit\u0027])",
+                        "@true"
+                      ]
+                    }
+                  },
+                  {
+                    "not": {
+                      "equals": [
+                      "@empty(outputs(\u0027Get_Sudden_Death_STG_row_2\u0027)?[\u0027body/cp_diagnosismedicationprescribed\u0027])",
+                        "@true"
+                      ]
+                    }
+                  },
+                  {
+                    "not": {
+                      "equals": [
+                      "@empty(outputs(\u0027Get_Sudden_Death_STG_row_2\u0027)?[\u0027body/cp_pastmedicalhistory\u0027])",
+                        "@true"
+                      ]
+                    }
+                  },
+                  {
+                    "not": {
+                      "equals": [
+                      "@empty(outputs(\u0027Get_Sudden_Death_STG_row_2\u0027)?[\u0027body/cp_knownriskfactors\u0027])",
+                        "@true"
+                      ]
+                    }
+                  }
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "e825ef8d-806b-4239-a9ef-a7c8e805a3a5"
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {
+            "List_rows_(Get_Deceased_from_Staging_Area)": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d33e5ef2-e09d-4025-a9c2-e789674bfe3c"
+          },
+          "type": "Foreach"
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

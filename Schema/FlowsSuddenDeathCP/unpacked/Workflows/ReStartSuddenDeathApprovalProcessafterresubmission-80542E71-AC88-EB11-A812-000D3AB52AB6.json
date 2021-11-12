@@ -1,0 +1,194 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_a_row_is_added,_modified_or_deleted": {
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "cp_suddendeath",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filterexpression": "(cp_approvalstatus eq 778230003)"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        }
+      },
+      "actions": {
+        "Get_a_row_by_ID_(TPA)": {
+          "runAfter": {
+            
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_territorialpolicingareas",
+            "recordId": "@triggerOutputs()?[\u0027body/_cp_tpa_value\u0027]"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Initialize_variable_(strTPA)": {
+          "runAfter": {
+            "Get_a_row_by_ID_(TPA)": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "strTPA",
+                "type": "string",
+              "value": "@triggerOutputs()?[\u0027body/_cp_tpa_value\u0027]"
+              }
+            ]
+          }
+        },
+        "List_rows_(Queue_for_Sudden_Death_TPA)": {
+          "runAfter": {
+            "Initialize_variable_(strTPA)": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "queues",
+            "$filter": "(name eq \u0027@{outputs(\u0027Get_a_row_by_ID_(TPA)\u0027)?[\u0027body/cp_name\u0027]}\u0027)"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Apply_to_each": {
+        "foreach": "@outputs(\u0027List_rows_(Queue_for_Sudden_Death_TPA)\u0027)?[\u0027body/value\u0027]",
+          "actions": {
+            "Add_a_new_row_(Queue_Item_Per_TPA)": {
+              "runAfter": {
+                
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "CreateRecord",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "queueitems",
+                "item/queueid@odata.bind": "/queues/@{items(\u0027Apply_to_each\u0027)?[\u0027queueid\u0027]}",
+                "item/objectid_cp_suddendeath@odata.bind": "/cp_suddendeaths/@{triggerOutputs()?[\u0027body/cp_suddendeathid\u0027]}",
+                  "item/statuscode": 1,
+                "item/sender": "@triggerOutputs()?[\u0027body/_ownerid_value\u0027]"
+                },
+                "authentication": "@parameters(\u0027$authentication\u0027)"
+              }
+            }
+          },
+          "runAfter": {
+            "Apply_to_each_2": [
+              "Succeeded"
+            ]
+          },
+          "type": "Foreach"
+        },
+        "List_rows_(find_if_a_queue_item_already_exists": {
+          "runAfter": {
+            "List_rows_(Queue_for_Sudden_Death_TPA)": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "queueitems",
+            "$filter": "(title eq \u0027@{triggerOutputs()?[\u0027body/cp_name\u0027]}\u0027)"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Apply_to_each_2": {
+        "foreach": "@outputs(\u0027List_rows_(find_if_a_queue_item_already_exists\u0027)?[\u0027body/value\u0027]",
+          "actions": {
+            "Delete_a_row_(delete_existing_queue_items_for_sudden_death_record)": {
+              "runAfter": {
+                
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "DeleteRecord",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "queueitems",
+                "recordId": "@items(\u0027Apply_to_each_2\u0027)?[\u0027queueitemid\u0027]"
+                },
+                "authentication": "@parameters(\u0027$authentication\u0027)"
+              }
+            }
+          },
+          "runAfter": {
+            "List_rows_(find_if_a_queue_item_already_exists": [
+              "Succeeded"
+            ]
+          },
+          "type": "Foreach"
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

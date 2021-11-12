@@ -1,0 +1,140 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_onedriveforbusiness": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedonedriveforbusiness_b61ca"
+        },
+        "api": {
+          "name": "shared_onedriveforbusiness"
+        }
+      },
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedcommondataserviceforapps_3a446"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "Http",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "recordId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "actions": {
+        "Run_a_Child_Flow": {
+          "runAfter": {
+            
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "9de7b140-61b2-eb11-8236-000d3ad7eb5d"
+            },
+            "body": {
+            "text": "@triggerBody()?[\u0027recordId\u0027]"
+            }
+          }
+        },
+        "Get_file_content": {
+          "runAfter": {
+            "Run_a_Child_Flow": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_onedriveforbusiness",
+              "operationId": "GetFileContent",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+            },
+            "parameters": {
+            "id": "@outputs(\u0027Run_a_Child_Flow\u0027)?[\u0027Body\u0027]?[\u0027generatedpdf\u0027]",
+              "inferContentType": true
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Add_a_new_row": {
+          "runAfter": {
+            "Get_a_row_by_ID": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "CreateRecord",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "annotations",
+              "item/subject": "Sudden Death Generated PDF",
+              "item/isdocument": true,
+            "item/documentbody": "@outputs(\u0027Get_file_content\u0027)?[\u0027body/$content\u0027]",
+              "item/filename": "Sudden Death Generated PDF.pdf",
+            "item/ownerid@odata.bind": "/systemusers(@{outputs(\u0027Get_a_row_by_ID\u0027)?[\u0027body/_ownerid_value\u0027]})",
+            "item/objectid_cp_suddendeath@odata.bind": "cp_suddendeaths(@{triggerBody()?[\u0027recordId\u0027]})"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Get_a_row_by_ID": {
+          "runAfter": {
+            "Get_file_content": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_suddendeaths",
+            "recordId": "@triggerBody()?[\u0027recordId\u0027]"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        }
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

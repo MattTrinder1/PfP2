@@ -1,0 +1,198 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_ce4a8"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "5bf7c7eb-bc59-4873-99bb-f15a8652fc5e"
+          },
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "Staging Table Id.",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Initialize_Error_Variable": {
+          "runAfter": {
+            
+          },
+          "metadata": {
+            "operationMetadataId": "c618bace-f585-445c-b19c-1577c6ee8db2"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Error Message",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Get_a_record": {
+          "runAfter": {
+            "Initialize_Error_Variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "adf88e08-6d2e-4163-8528-cda319ffc216"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_suddendeathstgs",
+            "recordId": "@triggerBody()[\u0027text\u0027]"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Check_Incident_Suffix_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "be3a51f4-0c95-4eeb-9591-e5facd974c0b"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Incident Suffix cannot be blank\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Get_a_record": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_a_record\u0027)?[\u0027body/cp_incidentsuffix\u0027]",
+              "@null"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "67d8fe43-ce52-4746-8f08-c0fe72d5ae41"
+          },
+          "type": "If"
+        },
+        "Check_Incident_Date_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_2": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "3afaf82d-5336-4bf4-b17a-c3ac60ccb21e"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Incident Date cannot be blank\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_Incident_Suffix_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_a_record\u0027)?[\u0027body/cp_incidentdate\u0027]",
+              "@null"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "fc7c49a6-2705-4e18-a3be-82163621a8e1"
+          },
+          "type": "If"
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "Check_Incident_Date_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "1ed6dc80-b40e-4227-b650-d1deac141ae7"
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "incidentcheckerrors": "@variables(\u0027Error Message\u0027)"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "incidentcheckerrors": {
+                  "title": "IncidentCheckErrors",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

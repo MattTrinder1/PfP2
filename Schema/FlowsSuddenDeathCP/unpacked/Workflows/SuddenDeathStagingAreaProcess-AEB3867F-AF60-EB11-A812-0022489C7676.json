@@ -1,0 +1,1575 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_ce4a8"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_dbcd7"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_commondataserviceforapps_2": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedcommondataserviceforapps_3a446"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_a_record_is_created,_updated_or_deleted": {
+          "metadata": {
+            "operationMetadataId": "86360490-6ead-4be5-b87e-98633da604ac"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "cp_suddendeathstg",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filteringattributes": "cp_stagingentrystatus",
+              "subscriptionRequest/filterexpression": "cp_stagingentrystatus eq 778230001",
+              "subscriptionRequest/name": "aeb3867f-af60-eb11-a812-0022489c7676"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        }
+      },
+      "actions": {
+        "Initialize_Contact_Id_variable": {
+          "runAfter": {
+            
+          },
+          "metadata": {
+            "operationMetadataId": "360d0ef2-e638-4366-9adb-46c7e56560f5"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ContactId",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Initialize_Error_Message_variable": {
+          "runAfter": {
+            "Initialize_Contact_Id_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a600cefc-ce92-4809-bc72-b831b7901cdf"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Error Message",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Run_a_Child_Flow_(Incident_Prerequisites_check)": {
+          "runAfter": {
+            "Initialize_Error_Message_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "530b9b3b-8f18-488e-ab18-a28936d7aac1"
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "856a01f6-b160-eb11-a812-0022489c7676"
+            },
+            "body": {
+            "text": "@triggerOutputs()?[\u0027body/cp_suddendeathstgid\u0027]"
+            }
+          }
+        },
+        "Append_Incident_Errors_in_Error_Message_variable": {
+          "actions": {
+            "Append_to_Error_Message_variable": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "278a6214-b21a-4673-b9a1-50f8c3c10361"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+              "value": "@{outputs(\u0027Run_a_Child_Flow_(Incident_Prerequisites_check)\u0027)?[\u0027Body\u0027]?[\u0027incidentcheckerrors\u0027]}\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Run_a_Child_Flow_(Incident_Prerequisites_check)": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "not": {
+              "equals": [
+              "@empty(outputs(\u0027Run_a_Child_Flow_(Incident_Prerequisites_check)\u0027)?[\u0027Body\u0027]?[\u0027incidentcheckerrors\u0027])",
+                "@true"
+              ]
+            }
+          },
+          "metadata": {
+            "operationMetadataId": "0f7800e2-82ed-47f4-aae5-1faf8377ebe1"
+          },
+          "type": "If"
+        },
+        "Run_a_Child_Flow_(Sudden_Death_Prerequisites_check)": {
+          "runAfter": {
+            "Append_Incident_Errors_in_Error_Message_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "38960460-5339-4944-9ac4-354a328ba564"
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "17859806-b360-eb11-a812-0022489c79d7"
+            },
+            "body": {
+            "text": "@triggerOutputs()?[\u0027body/cp_suddendeathstgid\u0027]"
+            }
+          }
+        },
+        "Append_Sudden_Death_Errors_in_Error_Message_variable": {
+          "actions": {
+            "Append_to_Error_Message_variable_2": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "34c4b895-42fb-4ac7-b7f2-f2b68311bad3"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+              "value": "@{outputs(\u0027Run_a_Child_Flow_(Sudden_Death_Prerequisites_check)\u0027)?[\u0027Body\u0027]?[\u0027suddendeatherrors\u0027]}\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Run_a_Child_Flow_(Sudden_Death_Prerequisites_check)": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "not": {
+              "equals": [
+              "@empty(outputs(\u0027Run_a_Child_Flow_(Sudden_Death_Prerequisites_check)\u0027)?[\u0027Body\u0027]?[\u0027suddendeatherrors\u0027])",
+                "@true"
+              ]
+            }
+          },
+          "metadata": {
+            "operationMetadataId": "34e2d75a-5311-494f-8380-9e5ef725e108"
+          },
+          "type": "If"
+        },
+        "If_Errors_found_proceed_accordingly": {
+          "actions": {
+            "Update_Sudden_Death_Staging_record_(Status,Submission_Error)": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "b6d37bc3-797a-426d-b64a-ef3c84062cf9"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "UpdateRecord",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "cp_suddendeathstgs",
+                "recordId": "@triggerOutputs()?[\u0027body/cp_suddendeathstgid\u0027]",
+                  "item/cp_stagingentrystatus": 778230002,
+                  "item/cp_submissionerror": "@variables(\u0027Error Message\u0027)"
+                },
+                "authentication": "@parameters(\u0027$authentication\u0027)"
+              }
+            }
+          },
+          "runAfter": {
+            "Append_Sudden_Death_Errors_in_Error_Message_variable": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Try_(Execute_Transactions)": {
+                "actions": {
+                  "Run_a_Child_Flow_(Create_Incident)": {
+                    "runAfter": {
+                      
+                    },
+                    "metadata": {
+                      "operationMetadataId": "20958992-112e-47e1-be01-897785eb5d91"
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "71ab4fd1-7959-eb11-a812-000d3a654f72"
+                      },
+                      "body": {
+                      "text": "@triggerOutputs()?[\u0027body/cp_incidentnumber\u0027]",
+                        "text_2": "52d6cd9c-8855-eb11-a812-000d3a654f72",
+                      "text_4": "@triggerOutputs()?[\u0027body/_createdby_value\u0027]",
+                      "text_1": "@triggerOutputs()?[\u0027body/cp_incidentsuffix\u0027]",
+                      "text_3": "@if(empty(triggerOutputs()?[\u0027body/cp_additionalofficer\u0027]),\u0027\u0027,triggerOutputs()?[\u0027body/cp_additionalofficer\u0027])",
+                      "text_5": "@triggerOutputs()?[\u0027body/cp_incidentdate\u0027]",
+                      "text_6": "@string(triggerOutputs()?[\u0027body/cp_singleofficerevent\u0027])",
+                      "text_7": "@string(triggerOutputs()?[\u0027body/cp_reportingofficer\u0027])"
+                      }
+                    }
+                  },
+                  "Create_Sudden_Death_row": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(ChoiceId_for_Suicide_Note_left)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "e0cd1c1a-dc88-4cdc-bc42-79f5c6864080"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps_1",
+                        "operationId": "CreateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_suddendeaths",
+                      "item/cp_bodyfoundby": "@triggerOutputs()?[\u0027body/cp_bodyfoundby\u0027]",
+                      "item/cp_bodyphysicalposition": "@triggerOutputs()?[\u0027body/cp_bodyphysicalposition\u0027]",
+                      "item/cp_cidcsiattended": "@triggerOutputs()?[\u0027body/cp_cidcsiattended\u0027]",
+                      "item/cp_cidcsiphotostaken": "@triggerOutputs()?[\u0027body/cp_csiphotostaken\u0027]",
+                      "item/cp_clothinggeneralcondition": "@triggerOutputs()?[\u0027body/cp_clothinggeneralcondition\u0027]",
+                      "item/cp_datetimebodyfound": "@triggerOutputs()?[\u0027body/cp_datetimebodyfound\u0027]",
+                      "item/cp_datetimedeathconfirmed": "@triggerOutputs()?[\u0027body/cp_datetimedeathconfirmed\u0027]",
+                      "item/cp_datetimelastseenalive": "@triggerOutputs()?[\u0027body/cp_datetimelastseenalive\u0027]",
+                      "item/cp_deathdiagnosedby": "@triggerOutputs()?[\u0027body/cp_diagnosedby\u0027]",
+                      "item/cp_deathincustody": "@outputs(\u0027Run_a_Child_Flow_(ChoiceId_for_Death_In_Custody)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]",
+                      "item/cp_deathinhealthcare": "@outputs(\u0027Run_a_Child_Flow_(ChoiceId_for_Death_In_Healthcare)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]",
+                      "item/cp_deathinhospital": "@outputs(\u0027Run_a_Child_Flow_(ChoiceId_for_Death_In_Hospital)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]",
+                      "item/cp_dols": "@outputs(\u0027Run_a_Child_Flow_(ChoiceId_for_DOLS)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]",
+                      "item/cp_formalidentification": "@triggerOutputs()?[\u0027body/cp_formalidentification\u0027]",
+                      "item/cp_HouseSecure@odata.bind": "/cp_lookupvalues(@{triggerOutputs()?[\u0027body/cp_housesecure\u0027]})",
+                      "item/cp_HouseTemperature@odata.bind": "/cp_lookupvalues(@{triggerOutputs()?[\u0027body/cp_housetemperature\u0027]})",
+                      "item/cp_incident@odata.bind": "/cp_incidents(@{outputs(\u0027Run_a_Child_Flow_(Create_Incident)\u0027)?[\u0027Body\u0027]?[\u0027incidentid\u0027]})",
+                      "item/cp_sdlastseenaliveby": "@triggerOutputs()?[\u0027body/cp_lastseenaliveby\u0027]",
+                      "item/cp_markbruises": "@triggerOutputs()?[\u0027body/cp_marksorbruises\u0027]",
+                      "item/cp_nextofkininformed": "@triggerOutputs()?[\u0027body/cp_nextofkininformed\u0027]",
+                      "item/cp_placeofdeath": "@triggerOutputs()?[\u0027body/cp_placeofdeath\u0027]",
+                      "item/cp_smoker": "@outputs(\u0027Run_a_Child_Flow_(ChoiceId_for_Smoker)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]",
+                      "item/cp_name": "Sudden Death for Incident @{triggerOutputs()?[\u0027body/cp_incidentnumber\u0027]}",
+                      "item/cp_suspectsuicide": "@triggerOutputs()?[\u0027body/cp_suspectsuicide\u0027]",
+                      "item/cp_workrelateddeath": "@outputs(\u0027Run_a_Child_Flow_(ChoiceId_for_Work_Related_Death)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]",
+                      "item/cp_additionaldetails": "@triggerOutputs()?[\u0027body/cp_additionaldetails\u0027]",
+                      "item/cp_allpropertiessignedon": "@triggerOutputs()?[\u0027body/cp_allpropertiessignedon\u0027]",
+                      "item/cp_arealastseenalive": "@triggerOutputs()?[\u0027body/cp_arealastseenalive\u0027]",
+                      "item/cp_bodyremovedto": "@triggerOutputs()?[\u0027body/cp_bodyremovedto\u0027]",
+                      "item/cp_BurialCremation@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_burialcremation\u0027]), \u0027\u0027, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_burialcremation\u0027], \u0027)\u0027))",
+                      "item/cp_circumstances": "@triggerOutputs()?[\u0027body/cp_circumstances\u0027]",
+                      "item/cp_sdfamilylaisonofficer": "@triggerOutputs()?[\u0027body/cp_familyliaisonofficer\u0027]",
+                      "item/cp_formalidentificationsteps": "@triggerOutputs()?[\u0027body/cp_formalidentificationsteps\u0027]",
+                      "item/cp_nextofkinactiontoinform": "@triggerOutputs()?[\u0027body/cp_nextofkinactioninsteadinform\u0027]",
+                      "item/cp_nextofkininformedmethod": "@triggerOutputs()?[\u0027body/cp_nextofkininformedmethod\u0027]",
+                      "item/ownerid@odata.bind": "/systemusers(@{triggerOutputs()?[\u0027body/_createdby_value\u0027]})",
+                      "item/cp_policeinvolvementpriordeath": "@outputs(\u0027Run_a_Child_Flow_(ChoiceId_for_Police_Involvement_Prior_Death)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]",
+                      "item/cp_suicidenoteleft_new": "@outputs(\u0027Run_a_Child_Flow_(ChoiceId_for_Suicide_Note_left)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]",
+                      "item/cp_TPA@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_tpa\u0027]), \u0027\u0027, concat(\u0027/cp_territorialpolicingareas(\u0027, triggerOutputs()?[\u0027body/cp_tpa\u0027], \u0027)\u0027))\r\n\r\n",
+                      "item/cp_undertakerarrangingfuneral": "@triggerOutputs()?[\u0027body/cp_undertakerarrangingfuneral\u0027]",
+                      "item/cp_undertakerremovebody": "@triggerOutputs()?[\u0027body/cp_undertakerremovebody\u0027]"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  },
+                  "Run_a_Child_Flow_(ChoiceId_for_DOLS)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Create_Location)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "e367f37d-0f13-486a-bece-3d23382ab513"
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "37c9a41c-8359-eb11-a812-000d3a654f72"
+                      },
+                      "body": {
+                      "text": "@if(empty(triggerOutputs()?[\u0027body/cp_dols\u0027]),\u0027\u0027,triggerOutputs()?[\u0027body/cp_dols\u0027])"
+                      }
+                    }
+                  },
+                  "Run_a_Child_Flow_(ChoiceId_for_Death_In_Custody)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(ChoiceId_for_DOLS)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "eaa09d58-2d49-4332-9482-1d952e233697"
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "37c9a41c-8359-eb11-a812-000d3a654f72"
+                      },
+                      "body": {
+                      "text": "@if(empty(triggerOutputs()?[\u0027body/cp_deathincustody\u0027]),\u0027\u0027,triggerOutputs()?[\u0027body/cp_deathincustody\u0027])"
+                      }
+                    }
+                  },
+                  "Run_a_Child_Flow_(ChoiceId_for_Death_In_Healthcare)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(ChoiceId_for_Death_In_Custody)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "318af16d-530d-4911-b41c-fb1620ab0635"
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "37c9a41c-8359-eb11-a812-000d3a654f72"
+                      },
+                      "body": {
+                      "text": "@if(empty(triggerOutputs()?[\u0027body/cp_deathinhealthcare\u0027]),\u0027\u0027,triggerOutputs()?[\u0027body/cp_deathinhealthcare\u0027])"
+                      }
+                    }
+                  },
+                  "Run_a_Child_Flow_(ChoiceId_for_Death_In_Hospital)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(ChoiceId_for_Death_In_Healthcare)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "15f74fa9-316d-4b3a-b0f9-e94bd72a2595"
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "37c9a41c-8359-eb11-a812-000d3a654f72"
+                      },
+                      "body": {
+                      "text": "@if(empty(triggerOutputs()?[\u0027body/cp_deathinhospital\u0027]),\u0027\u0027,triggerOutputs()?[\u0027body/cp_deathinhospital\u0027])"
+                      }
+                    }
+                  },
+                  "Run_a_Child_Flow_(ChoiceId_for_Police_Involvement_Prior_Death)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(ChoiceId_for_Death_In_Hospital)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "e5775845-29cb-43bd-a345-3fa25a9d7f9b"
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "37c9a41c-8359-eb11-a812-000d3a654f72"
+                      },
+                      "body": {
+                      "text": "@if(empty(triggerOutputs()?[\u0027body/cp_policeinvolvementpriordeath\u0027]),\u0027\u0027,triggerOutputs()?[\u0027body/cp_policeinvolvementpriordeath\u0027])"
+                      }
+                    }
+                  },
+                  "Run_a_Child_Flow_(ChoiceId_for_Work_Related_Death)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(ChoiceId_for_Police_Involvement_Prior_Death)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "73439944-c736-42f0-8d58-cf302be64afa"
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "37c9a41c-8359-eb11-a812-000d3a654f72"
+                      },
+                      "body": {
+                      "text": "@if(empty(triggerOutputs()?[\u0027body/cp_workrelateddeath\u0027]),\u0027\u0027,triggerOutputs()?[\u0027body/cp_workrelateddeath\u0027])"
+                      }
+                    }
+                  },
+                  "Run_a_Child_Flow_(ChoiceId_for_Smoker)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(ChoiceId_for_Work_Related_Death)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "91650a83-49b1-469a-b65c-a42e710b83ee"
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "37c9a41c-8359-eb11-a812-000d3a654f72"
+                      },
+                      "body": {
+                      "text": "@if(empty(triggerOutputs()?[\u0027body/cp_smoker\u0027]),\u0027\u0027,triggerOutputs()?[\u0027body/cp_smoker\u0027])"
+                      }
+                    }
+                  },
+                  "Run_a_Child_Flow_(ChoiceId_for_Suicide_Note_left)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(ChoiceId_for_Smoker)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "ee2e0b43-8b41-4c88-ab3f-01f34aa5393a"
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "37c9a41c-8359-eb11-a812-000d3a654f72"
+                      },
+                      "body": {
+                      "text": "@string(triggerOutputs()?[\u0027body/cp_suicidenoteleft\u0027])"
+                      }
+                    }
+                  },
+                  "Process_All_Properties_Signature_Photo_if_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Process_Involved_Contacts_STG)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Get_All_Properties_Signature_image_content_from_Sudden_Deart_STG": {
+                          "runAfter": {
+                            
+                          },
+                          "metadata": {
+                            "operationMetadataId": "acc444e8-84ff-48d6-8d27-785053c42593"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_suddendeathstgs",
+                            "recordId": "@triggerOutputs()?[\u0027body/cp_suddendeathstgid\u0027]",
+                              "fileImageFieldName": "cp_allpropertiessignature",
+                              "size": "full"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Upload_All_Properties_Signature_image_content_on_Sudden_Death": {
+                          "runAfter": {
+                            "Get_All_Properties_Signature_image_content_from_Sudden_Deart_STG": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "d885d4db-f890-41bd-9e94-0f9da4d11158"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_suddendeaths",
+                            "recordId": "@outputs(\u0027Create_Sudden_Death_row\u0027)?[\u0027body/cp_suddendeathid\u0027]",
+                              "fileImageFieldName": "cp_allpropertiessignature",
+                            "item": "@outputs(\u0027Get_All_Properties_Signature_image_content_from_Sudden_Deart_STG\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_allpropertiessignature\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "545a6517-e4a8-4f26-af37-834d45303363"
+                    },
+                    "type": "If"
+                  },
+                  "Run_a_Child_Flow_(Create_Location)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Create_Incident)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "7a04b36e-a906-473d-a91f-9e79c02ea3af"
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "b11a6067-a363-eb11-a812-000d3ab40f79"
+                      },
+                      "body": {
+                      "text": "Location, Incident @{triggerOutputs()?[\u0027body/cp_incidentnumber\u0027]}",
+                      "text_1": "@if(empty(triggerOutputs()?[\u0027body/cp_housename\u0027]),\u0027\u0027,triggerOutputs()?[\u0027body/cp_housename\u0027])",
+                      "text_2": "@if(empty(triggerOutputs()?[\u0027body/cp_housenumber\u0027]),\u0027\u0027,triggerOutputs()?[\u0027body/cp_housenumber\u0027])",
+                      "text_4": "@outputs(\u0027Run_a_Child_Flow_(Create_Incident)\u0027)?[\u0027Body\u0027]?[\u0027incidentid\u0027]",
+                        "location": {
+                          "address": {
+                          "city": "@if(empty(triggerOutputs()?[\u0027body/cp_city\u0027]),\u0027\u0027,triggerOutputs()?[\u0027body/cp_city\u0027])",
+                          "countryOrRegion": "@if(empty(triggerOutputs()?[\u0027body/cp_country\u0027]),\u0027\u0027,triggerOutputs()?[\u0027body/cp_country\u0027])",
+                          "street": "@if(empty(triggerOutputs()?[\u0027body/cp_street\u0027]),\u0027\u0027,triggerOutputs()?[\u0027body/cp_street\u0027])"
+                          }
+                        },
+                      "text_5": "@if(empty(triggerOutputs()?[\u0027body/cp_county\u0027]),\u0027\u0027,triggerOutputs()?[\u0027body/cp_county\u0027])",
+                      "number": "@triggerOutputs()?[\u0027body/cp_latitude\u0027]",
+                      "number_1": "@triggerOutputs()?[\u0027body/cp_longitude\u0027]",
+                      "text_6": "@if(empty(triggerOutputs()?[\u0027body/cp_district\u0027]),\u0027\u0027,triggerOutputs()?[\u0027body/cp_district\u0027])",
+                      "text_7": "@string(triggerOutputs()?[\u0027body/cp_placeofdeath\u0027])"
+                      }
+                    }
+                  },
+                  "Process_Photo_1_if_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Process_All_Properties_Signature_Photo_if_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Get_Photo_1_content_from_Sudden_Death_STG": {
+                          "runAfter": {
+                            
+                          },
+                          "metadata": {
+                            "operationMetadataId": "860f0a02-1db2-4c9a-916a-1c919c423e11"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_suddendeathstgs",
+                            "recordId": "@triggerOutputs()?[\u0027body/cp_suddendeathstgid\u0027]",
+                              "fileImageFieldName": "cp_suddendeathphoto1",
+                              "size": "full"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Upload_file_or_image_content_Photo_1": {
+                          "runAfter": {
+                            "Create_a_new_record_in_Photos_for_Photo_1": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "92ce3ca5-aaff-49c5-9859-d85cb5509f99"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "recordId": "@outputs(\u0027Create_a_new_record_in_Photos_for_Photo_1\u0027)?[\u0027body/cp_photoid\u0027]",
+                              "fileImageFieldName": "cp_image",
+                            "item": "@outputs(\u0027Get_Photo_1_content_from_Sudden_Death_STG\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Create_a_new_record_in_Photos_for_Photo_1": {
+                          "runAfter": {
+                            "Get_Photo_1_content_from_Sudden_Death_STG": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "fe91cc3d-00d9-4916-a924-9d65d3669f8e"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "CreateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "item/cp_phototitle": "Photo 1, @{outputs(\u0027Create_Sudden_Death_row\u0027)?[\u0027body/cp_name\u0027]}",
+                            "item/cp_suddendeath@odata.bind": "/cp_suddendeaths(@{outputs(\u0027Create_Sudden_Death_row\u0027)?[\u0027body/cp_suddendeathid\u0027]})"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_suddendeathphoto1id\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "7816d223-2e1f-411c-8b77-c5cc750719cc"
+                    },
+                    "type": "If"
+                  },
+                  "Process_Photo_2_if_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Process_Photo_1_if_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Get_Photo_2_content_from_Sudden_Death_STG_2": {
+                          "runAfter": {
+                            
+                          },
+                          "metadata": {
+                            "operationMetadataId": "778b427f-6dbd-4f1d-a534-efa87d808f06"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_suddendeathstgs",
+                            "recordId": "@triggerOutputs()?[\u0027body/cp_suddendeathstgid\u0027]",
+                              "fileImageFieldName": "cp_suddendeathphoto2",
+                              "size": "full"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Upload_file_or_image_content_Photo_2": {
+                          "runAfter": {
+                            "Create_a_new_record_in_Photos_for_Photo_2": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "aee76101-fab4-4013-aee4-4e84e3211269"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "recordId": "@outputs(\u0027Create_a_new_record_in_Photos_for_Photo_2\u0027)?[\u0027body/cp_photoid\u0027]",
+                              "fileImageFieldName": "cp_image",
+                            "item": "@outputs(\u0027Get_Photo_2_content_from_Sudden_Death_STG_2\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Create_a_new_record_in_Photos_for_Photo_2": {
+                          "runAfter": {
+                            "Get_Photo_2_content_from_Sudden_Death_STG_2": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "7bc2a6f3-37a9-496a-a654-0d3c20b9305e"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "CreateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "item/cp_phototitle": "Photo 2, @{outputs(\u0027Create_Sudden_Death_row\u0027)?[\u0027body/cp_name\u0027]}",
+                            "item/cp_suddendeath@odata.bind": "/cp_suddendeaths(@{outputs(\u0027Create_Sudden_Death_row\u0027)?[\u0027body/cp_suddendeathid\u0027]})"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_suddendeathphoto2id\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "c6d3752d-991a-47c0-9fda-419a35ce551e"
+                    },
+                    "type": "If"
+                  },
+                  "Process_Photo_3_if_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Process_Photo_2_if_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Get_Photo_3_content_from_Sudden_Death_STG": {
+                          "runAfter": {
+                            
+                          },
+                          "metadata": {
+                            "operationMetadataId": "c00de4e1-8250-4e4d-a879-8e63ce694596"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_suddendeathstgs",
+                            "recordId": "@triggerOutputs()?[\u0027body/cp_suddendeathstgid\u0027]",
+                              "fileImageFieldName": "cp_suddendeathphoto3",
+                              "size": "full"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Upload_file_or_image_content_Photo_3": {
+                          "runAfter": {
+                            "Create_a_new_record_in_Photos_for_Photo_3": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "54093d4c-c305-4b5d-af47-f49f1fc7bdc6"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "recordId": "@outputs(\u0027Create_a_new_record_in_Photos_for_Photo_3\u0027)?[\u0027body/cp_photoid\u0027]",
+                              "fileImageFieldName": "cp_image",
+                            "item": "@outputs(\u0027Get_Photo_3_content_from_Sudden_Death_STG\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Create_a_new_record_in_Photos_for_Photo_3": {
+                          "runAfter": {
+                            "Get_Photo_3_content_from_Sudden_Death_STG": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "3709816e-4d21-495e-a631-9b708f9ed33f"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "CreateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "item/cp_phototitle": "Photo 3, @{outputs(\u0027Create_Sudden_Death_row\u0027)?[\u0027body/cp_name\u0027]}",
+                            "item/cp_suddendeath@odata.bind": "/cp_suddendeaths(@{outputs(\u0027Create_Sudden_Death_row\u0027)?[\u0027body/cp_suddendeathid\u0027]})"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_suddendeathphoto3id\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "3fbdf5b9-c696-4bbd-adf9-107bf2d5e3e0"
+                    },
+                    "type": "If"
+                  },
+                  "Process_Photo_4_if_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Process_Photo_3_if_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Get_Photo_4_content_from_Sudden_Death_STG": {
+                          "runAfter": {
+                            
+                          },
+                          "metadata": {
+                            "operationMetadataId": "5d57d314-665c-4967-aca5-ecb82bc57edc"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_suddendeathstgs",
+                            "recordId": "@triggerOutputs()?[\u0027body/cp_suddendeathstgid\u0027]",
+                              "fileImageFieldName": "cp_suddendeathphoto4",
+                              "size": "full"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Upload_file_or_image_content_Photo_4": {
+                          "runAfter": {
+                            "Create_a_new_record_in_Photos_for_Photo_4": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "81197b6d-09e3-4adf-861b-ad24bb5fa5e5"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "recordId": "@outputs(\u0027Create_a_new_record_in_Photos_for_Photo_4\u0027)?[\u0027body/cp_photoid\u0027]",
+                              "fileImageFieldName": "cp_image",
+                            "item": "@outputs(\u0027Get_Photo_4_content_from_Sudden_Death_STG\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Create_a_new_record_in_Photos_for_Photo_4": {
+                          "runAfter": {
+                            "Get_Photo_4_content_from_Sudden_Death_STG": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "2d65d09c-af74-4558-a692-85bd5671fad3"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "CreateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "item/cp_phototitle": "Photo 4, @{outputs(\u0027Create_Sudden_Death_row\u0027)?[\u0027body/cp_name\u0027]}",
+                            "item/cp_suddendeath@odata.bind": "/cp_suddendeaths(@{outputs(\u0027Create_Sudden_Death_row\u0027)?[\u0027body/cp_suddendeathid\u0027]})"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_suddendeathphoto4id\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "db4fdb1b-ea24-4ad6-ac9d-ac1e79623d17"
+                    },
+                    "type": "If"
+                  },
+                  "Process_Photo_5_if_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Process_Photo_4_if_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Get_Photo_5_content_from_Sudden_Death_STG": {
+                          "runAfter": {
+                            
+                          },
+                          "metadata": {
+                            "operationMetadataId": "1c06109c-dca3-4f93-b8ef-de645455f22c"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_suddendeathstgs",
+                            "recordId": "@triggerOutputs()?[\u0027body/cp_suddendeathstgid\u0027]",
+                              "fileImageFieldName": "cp_suddendeathphoto5",
+                              "size": "full"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Upload_file_or_image_content_Photo_5": {
+                          "runAfter": {
+                            "Create_a_new_record_in_Photos_for_Photo_5": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "f1f0fda8-a724-4700-bc05-85fad142eda5"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "recordId": "@outputs(\u0027Create_a_new_record_in_Photos_for_Photo_5\u0027)?[\u0027body/cp_photoid\u0027]",
+                              "fileImageFieldName": "cp_image",
+                            "item": "@outputs(\u0027Get_Photo_5_content_from_Sudden_Death_STG\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Create_a_new_record_in_Photos_for_Photo_5": {
+                          "runAfter": {
+                            "Get_Photo_5_content_from_Sudden_Death_STG": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "acd35642-044d-4970-8c35-74e2e89d65b8"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "CreateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "item/cp_phototitle": "Photo 5, @{outputs(\u0027Create_Sudden_Death_row\u0027)?[\u0027body/cp_name\u0027]}",
+                            "item/cp_suddendeath@odata.bind": "/cp_suddendeaths(@{outputs(\u0027Create_Sudden_Death_row\u0027)?[\u0027body/cp_suddendeathid\u0027]})"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_suddendeathphoto3id\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "d0645f34-c1eb-4b0b-b4fc-ae5ae9d81df1"
+                    },
+                    "type": "If"
+                  },
+                  "Parse_CID_Additional_Officers_if_exist": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Create_Sudden_Death_row": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Split_CID_Additional_Officers": {
+                          "runAfter": {
+                            
+                          },
+                          "metadata": {
+                            "operationMetadataId": "303175a0-32a2-4269-87c2-d3dad31aed02"
+                          },
+                          "type": "Compose",
+                        "inputs": "@split(triggerOutputs()?[\u0027body/cp_cidcsiattendingdetails\u0027], \u0027,\u0027)"
+                        },
+                        "Apply_to_each": {
+                          "foreach": "@outputs(\u0027Split_CID_Additional_Officers\u0027)",
+                          "actions": {
+                            "Relate_records_(Add_to_many-many_relationships_User)": {
+                              "runAfter": {
+                                
+                              },
+                              "metadata": {
+                                "operationMetadataId": "4a16cf2e-f8eb-41aa-9849-24fa5ec150cd"
+                              },
+                              "type": "OpenApiConnection",
+                              "inputs": {
+                                "host": {
+                                  "connectionName": "shared_commondataserviceforapps",
+                                  "operationId": "AssociateEntities",
+                                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                },
+                                "parameters": {
+                                  "entityName": "systemusers",
+                                  "recordId": "@items(\u0027Apply_to_each\u0027)",
+                                  "associationEntityRelationship": "cp_suddendeath_SystemUser_SystemUser",
+                                "item/@odata.id": "@outputs(\u0027Create_Sudden_Death_row\u0027)?[\u0027body/@odata.id\u0027]"
+                                },
+                                "authentication": "@parameters(\u0027$authentication\u0027)"
+                              }
+                            }
+                          },
+                          "runAfter": {
+                            "Split_CID_Additional_Officers": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "839a119e-235c-4881-b78f-132cd05d91b3"
+                          },
+                          "type": "Foreach"
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_cidcsiattendingdetails\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "20701535-05d5-4744-a29e-500e585fcd9d"
+                    },
+                    "type": "If"
+                  },
+                  "List_Sudden_Death_Properties_STG": {
+                    "runAfter": {
+                      "Process_Suicide_Note_if_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "fb825227-4fa1-4614-b09a-84f342dd3876"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps",
+                        "operationId": "ListRecords",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_suddendeathpropertystgs",
+                      "$filter": "(_cp_suddendeathstg_value eq @{triggerOutputs()?[\u0027body/cp_suddendeathstgid\u0027]})"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  },
+                  "If_Sudden_Death_Properties_Exist": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "List_Sudden_Death_Properties_STG": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Apply_to_each_2": {
+                        "foreach": "@outputs(\u0027List_Sudden_Death_Properties_STG\u0027)?[\u0027body/value\u0027]",
+                          "actions": {
+                            "Create_a_new_Sudden_Death_Properties_row": {
+                              "runAfter": {
+                                
+                              },
+                              "metadata": {
+                                "operationMetadataId": "1628708b-10d9-4c6f-99cd-5a23a3cdfbef"
+                              },
+                              "type": "OpenApiConnection",
+                              "inputs": {
+                                "host": {
+                                  "connectionName": "shared_commondataserviceforapps",
+                                  "operationId": "CreateRecord",
+                                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                },
+                                "parameters": {
+                                  "entityName": "cp_suddendeathproperties",
+                                "item/cp_actiontaken": "@items(\u0027Apply_to_each_2\u0027)?[\u0027cp_actiontaken\u0027]",
+                                "item/cp_propertyname": "@items(\u0027Apply_to_each_2\u0027)?[\u0027cp_propertyname\u0027]",
+                                "item/cp_suddendeath@odata.bind": "/cp_suddendeaths(@{outputs(\u0027Create_Sudden_Death_row\u0027)?[\u0027body/cp_suddendeathid\u0027]})",
+                                "item/cp_actionrelatedwith": "@items(\u0027Apply_to_each_2\u0027)?[\u0027cp_actionrelatedwith\u0027]",
+                                "item/cp_location": "@items(\u0027Apply_to_each_2\u0027)?[\u0027cp_propertylocation\u0027]",
+                                "item/ownerid@odata.bind": "/systemusers(@{triggerOutputs()?[\u0027body/_createdby_value\u0027]})",
+                                "item/cp_relationshiptodeceased": "@items(\u0027Apply_to_each_2\u0027)?[\u0027cp_propertyrelationshiptodeceased\u0027]",
+                                "item/cp_signedon": "@items(\u0027Apply_to_each_2\u0027)?[\u0027cp_propertysignedon\u0027]"
+                                },
+                                "authentication": "@parameters(\u0027$authentication\u0027)"
+                              }
+                            },
+                            "If_Property_Photo_Exists": {
+                              "actions": {
+                                
+                              },
+                              "runAfter": {
+                                "Create_a_new_Sudden_Death_Properties_row": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "else": {
+                                "actions": {
+                                  "Get_file_or_image_content": {
+                                    "runAfter": {
+                                      
+                                    },
+                                    "metadata": {
+                                      "operationMetadataId": "95f2ad93-cb16-419b-8de2-0a8ec1ea8d0d"
+                                    },
+                                    "type": "OpenApiConnection",
+                                    "inputs": {
+                                      "host": {
+                                        "connectionName": "shared_commondataserviceforapps",
+                                        "operationId": "GetEntityFileImageFieldContent",
+                                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                      },
+                                      "parameters": {
+                                        "entityName": "cp_suddendeathpropertystgs",
+                                      "recordId": "@items(\u0027Apply_to_each_2\u0027)?[\u0027cp_suddendeathpropertystgid\u0027]",
+                                        "fileImageFieldName": "cp_propertyphoto",
+                                        "size": "full"
+                                      },
+                                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                                    }
+                                  },
+                                  "Upload_file_or_image_content": {
+                                    "runAfter": {
+                                      "Get_file_or_image_content": [
+                                        "Succeeded"
+                                      ]
+                                    },
+                                    "metadata": {
+                                      "operationMetadataId": "ab00002e-60b2-48b4-bbee-e3aa8cd21ab4"
+                                    },
+                                    "type": "OpenApiConnection",
+                                    "inputs": {
+                                      "host": {
+                                        "connectionName": "shared_commondataserviceforapps",
+                                        "operationId": "UpdateEntityFileImageFieldContent",
+                                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                      },
+                                      "parameters": {
+                                        "entityName": "cp_suddendeathproperties",
+                                      "recordId": "@outputs(\u0027Create_a_new_Sudden_Death_Properties_row\u0027)?[\u0027body/cp_suddendeathpropertyid\u0027]",
+                                        "fileImageFieldName": "cp_propertyphoto",
+                                      "item": "@outputs(\u0027Get_file_or_image_content\u0027)?[\u0027body\u0027]",
+                                        "x-ms-file-name": "Untitled"
+                                      },
+                                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                                    }
+                                  }
+                                }
+                              },
+                              "expression": {
+                                "equals": [
+                                "@empty(items(\u0027Apply_to_each_2\u0027)?[\u0027cp_propertyphotoid\u0027])",
+                                  "@true"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "027f5ee2-f74d-4dcb-a7ba-c5f0c606e8b4"
+                              },
+                              "type": "If"
+                            },
+                            "If_Property_Signature_Exists": {
+                              "actions": {
+                                
+                              },
+                              "runAfter": {
+                                "If_Property_Photo_Exists": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "else": {
+                                "actions": {
+                                  "Get_file_or_image_content_2": {
+                                    "runAfter": {
+                                      
+                                    },
+                                    "metadata": {
+                                      "operationMetadataId": "70740611-9055-40ca-95b9-9cd96c8a70dc"
+                                    },
+                                    "type": "OpenApiConnection",
+                                    "inputs": {
+                                      "host": {
+                                        "connectionName": "shared_commondataserviceforapps",
+                                        "operationId": "GetEntityFileImageFieldContent",
+                                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                      },
+                                      "parameters": {
+                                        "entityName": "cp_suddendeathpropertystgs",
+                                      "recordId": "@items(\u0027Apply_to_each_2\u0027)?[\u0027cp_suddendeathpropertystgid\u0027]",
+                                        "fileImageFieldName": "cp_propertysignature",
+                                        "size": "full"
+                                      },
+                                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                                    }
+                                  },
+                                  "Upload_file_or_image_content_2": {
+                                    "runAfter": {
+                                      "Get_file_or_image_content_2": [
+                                        "Succeeded"
+                                      ]
+                                    },
+                                    "metadata": {
+                                      "operationMetadataId": "e16c1db9-dd68-4f95-88b9-282f1a1b57b7"
+                                    },
+                                    "type": "OpenApiConnection",
+                                    "inputs": {
+                                      "host": {
+                                        "connectionName": "shared_commondataserviceforapps",
+                                        "operationId": "UpdateEntityFileImageFieldContent",
+                                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                      },
+                                      "parameters": {
+                                        "entityName": "cp_suddendeathproperties",
+                                      "recordId": "@outputs(\u0027Create_a_new_Sudden_Death_Properties_row\u0027)?[\u0027body/cp_suddendeathpropertyid\u0027]",
+                                        "fileImageFieldName": "cp_signature",
+                                      "item": "@outputs(\u0027Get_file_or_image_content_2\u0027)?[\u0027body\u0027]",
+                                        "x-ms-file-name": "Untitled"
+                                      },
+                                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                                    }
+                                  }
+                                }
+                              },
+                              "expression": {
+                                "equals": [
+                                "@empty(items(\u0027Apply_to_each_2\u0027)?[\u0027cp_propertysignatureid\u0027])",
+                                  "@true"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "1e60bd20-bd06-49e0-9531-2a96986176a9"
+                              },
+                              "type": "If"
+                            }
+                          },
+                          "runAfter": {
+                            
+                          },
+                          "metadata": {
+                            "operationMetadataId": "6cf6b415-2251-4bea-989f-30e329f3c597"
+                          },
+                          "type": "Foreach"
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(outputs(\u0027List_Sudden_Death_Properties_STG\u0027)?[\u0027body/value\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "a087ba13-cd40-4ff7-aaa1-81d9fb237c2e"
+                    },
+                    "type": "If"
+                  },
+                  "Run_a_Child_Flow_(Process_Involved_Contacts_STG)": {
+                    "runAfter": {
+                      "Parse_CID_Additional_Officers_if_exist": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "78362e5f-0d2d-4753-8266-f5d45e48a9ca"
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "77be556d-eb63-eb11-a812-000d3ab403cd"
+                      },
+                      "body": {
+                      "text": "@triggerOutputs()?[\u0027body/cp_suddendeathstgid\u0027]",
+                      "text_1": "@outputs(\u0027Create_Sudden_Death_row\u0027)?[\u0027body/cp_suddendeathid\u0027]",
+                      "text_2": "@triggerOutputs()?[\u0027body/cp_incidentnumber\u0027]"
+                      }
+                    }
+                  },
+                  "Process_Suicide_Note_if_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Process_Photo_5_if_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Get_Suicide_Note_content_from_Sudden_Death_STG": {
+                          "runAfter": {
+                            
+                          },
+                          "metadata": {
+                            "operationMetadataId": "bddcf6fe-2a4b-4de0-b90c-b649c4437c6b"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_suddendeathstgs",
+                            "recordId": "@triggerOutputs()?[\u0027body/cp_suddendeathstgid\u0027]",
+                              "fileImageFieldName": "cp_suicidenotephoto",
+                              "size": "full"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Upload_file_or_image_content_Suicide_Note": {
+                          "runAfter": {
+                            "Get_Suicide_Note_content_from_Sudden_Death_STG": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "97ff3b2f-a9f3-4180-915a-cd7083b90f60"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_suddendeaths",
+                            "recordId": "@outputs(\u0027Create_Sudden_Death_row\u0027)?[\u0027body/cp_suddendeathid\u0027]",
+                              "fileImageFieldName": "cp_suicidenotepicture",
+                            "item": "@outputs(\u0027Get_Suicide_Note_content_from_Sudden_Death_STG\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_suicidenotephotoid\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "01979d9d-6106-4a07-a035-5a16f01ef88c"
+                    },
+                    "type": "If"
+                  }
+                },
+                "runAfter": {
+                  
+                },
+                "metadata": {
+                  "operationMetadataId": "6cdf6856-6f56-4a5f-9186-c6fe525b165d"
+                },
+                "type": "Scope"
+              },
+              "Catch_(Clear_Staging_Area)": {
+                "actions": {
+                  "Update_Sudden_Death__IsSubmitted_(Initiate_Approvals_Flow)": {
+                    "runAfter": {
+                      "Update_a_row": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "b288e114-b2f9-4065-ac7a-647c30e10753"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps_1",
+                        "operationId": "UpdateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_suddendeaths",
+                      "recordId": "@outputs(\u0027Create_Sudden_Death_row\u0027)?[\u0027body/cp_suddendeathid\u0027]",
+                        "item/cp_issubmitted": 778230001
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  },
+                  "Update_a_row": {
+                    "runAfter": {
+                      
+                    },
+                    "metadata": {
+                      "operationMetadataId": "d1444868-e917-4562-9fee-5ade92e2ef3b"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps_2",
+                        "operationId": "UpdateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_suddendeathstgs",
+                      "recordId": "@triggerOutputs()?[\u0027body/cp_suddendeathstgid\u0027]",
+                        "item/cp_stagingentrystatus": 778230004,
+                        "item/statecode": 1,
+                        "item/statuscode": 2,
+                      "item/cp_submissionerror": "@string(outputs(\u0027Create_Sudden_Death_row\u0027)?[\u0027body/cp_suddendeathid\u0027])"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  }
+                },
+                "runAfter": {
+                  "Try_(Execute_Transactions)": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "adf3e625-c9b5-4497-ae99-4a7a3a5cd4b3"
+                },
+                "type": "Scope"
+              }
+            }
+          },
+          "expression": {
+            "not": {
+              "equals": [
+                "@empty(variables(\u0027Error Message\u0027))",
+                "@true"
+              ]
+            }
+          },
+          "metadata": {
+            "operationMetadataId": "65cff583-e9de-4975-b4f5-7b0a7d21519a"
+          },
+          "type": "If"
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

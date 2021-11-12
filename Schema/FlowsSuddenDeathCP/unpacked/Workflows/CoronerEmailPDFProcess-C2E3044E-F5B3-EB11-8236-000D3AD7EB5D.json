@@ -1,0 +1,421 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_36190"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_office365_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedoffice365_3401b"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      },
+      "shared_onedriveforbusiness": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedonedriveforbusiness_fc480"
+        },
+        "api": {
+          "name": "shared_onedriveforbusiness"
+        }
+      },
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_36190"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_a_row_is_added,_modified_or_deleted": {
+          "metadata": {
+            "operationMetadataId": "1c925780-ddbf-4186-953d-ae1105862496"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "cp_suddendeath",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filteringattributes": "cp_approvalstatus",
+              "subscriptionRequest/filterexpression": "(cp_approvalstatus eq 778230001)"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        }
+      },
+      "actions": {
+        "List_rows_(coroners)": {
+          "runAfter": {
+            "Run_a_Child_Flow": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "c31885da-fea6-48b5-b425-b6db68db5144"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_coroners",
+              "$filter": "(cp_name eq \u0027Internal Coroner\u0027) or (cp_name eq \u0027External Coroner\u0027)"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Apply_to_each_(Pass_coroners\u0027_emails)": {
+        "foreach": "@outputs(\u0027List_rows_(coroners)\u0027)?[\u0027body/value\u0027]",
+          "actions": {
+            "Switch": {
+              "runAfter": {
+                
+              },
+              "cases": {
+                "Case_External": {
+                  "case": "External Coroner",
+                  "actions": {
+                    "Set_variable_external_coroner": {
+                      "runAfter": {
+                        
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "externalCoronerEmail",
+                      "value": "@items(\u0027Apply_to_each_(Pass_coroners\u0027\u0027_emails)\u0027)?[\u0027cp_email\u0027]"
+                      }
+                    }
+                  }
+                },
+                "Case_Internal": {
+                  "case": "Internal Coroner",
+                  "actions": {
+                    "Set_variable_internal_Coroner": {
+                      "runAfter": {
+                        
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "internalCoronerEmail",
+                      "value": "@items(\u0027Apply_to_each_(Pass_coroners\u0027\u0027_emails)\u0027)?[\u0027cp_email\u0027]"
+                      }
+                    }
+                  }
+                }
+              },
+              "default": {
+                "actions": {
+                  
+                }
+              },
+            "expression": "@items(\u0027Apply_to_each_(Pass_coroners\u0027\u0027_emails)\u0027)?[\u0027cp_name\u0027]",
+              "metadata": {
+                "operationMetadataId": "d98d20b8-12e4-4215-b3fa-2e74f9991a08"
+              },
+              "type": "Switch"
+            }
+          },
+          "runAfter": {
+            "Initialize_variable_(internalCoronerEmail)": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "7c99a06b-3740-44a5-a86e-92bd3705203c"
+          },
+          "type": "Foreach"
+        },
+        "Initialize_variable_(externalCoronerEmail)": {
+          "runAfter": {
+            "List_rows_(coroners)": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "59c65437-b9cf-469d-951b-232ca1fef623"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "externalCoronerEmail",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_(internalCoronerEmail)": {
+          "runAfter": {
+            "Initialize_variable_(externalCoronerEmail)": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6dc24d15-90b0-459e-98ab-3d42f0114b1f"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "internalCoronerEmail",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Run_a_Child_Flow": {
+          "runAfter": {
+            
+          },
+          "metadata": {
+            "operationMetadataId": "d63ce4d9-1ffe-4b5e-827e-3d709bd3539c"
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "9de7b140-61b2-eb11-8236-000d3ad7eb5d"
+            },
+            "body": {
+            "text": "@triggerOutputs()?[\u0027body/cp_suddendeathid\u0027]"
+            }
+          }
+        },
+        "Send_an_email_(V2)_(External_Coroner)_2": {
+          "runAfter": {
+            "Get_file_metadata": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "36549c03-4dd5-4a08-b9b5-b7b6e5c26f70"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_office365_1",
+              "operationId": "SendEmailV2",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+            },
+            "parameters": {
+              "emailMessage/To": "@variables(\u0027externalCoronerEmail\u0027)",
+            "emailMessage/Subject": "Sudden death form -  @{outputs(\u0027Get_Deceased\u0027)?[\u0027body/fullname\u0027]}, @{if(empty(triggerOutputs()?[\u0027body/cp_datetimedeathconfirmed\u0027]),\u0027\u0027,formatDateTime(convertTimeZone(triggerOutputs()?[\u0027body/cp_datetimedeathconfirmed\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy HH:mm:ss\u0027))} and )TPA – @{triggerOutputs()?[\u0027body/_cp_tpa_value@OData.Community.Display.V1.FormattedValue\u0027]}",
+            "emailMessage/Body": "\u003cp\u003eDear Coroner\u003cbr\u003e\n\u003cbr\u003e\nA sudden death form has been submitted for @{outputs(\u0027Get_Deceased\u0027)?[\u0027body/fullname\u0027]},@{triggerOutputs()?[\u0027body/cp_name\u0027]} @{if(empty(outputs(\u0027Get_Deceased\u0027)?[\u0027body/birthdate\u0027]),\u0027\u0027,formatDateTime(convertTimeZone(outputs(\u0027Get_Deceased\u0027)?[\u0027body/birthdate\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy\u0027))} \u0026nbsp;TPA- @{triggerOutputs()?[\u0027body/_cp_tpa_value@OData.Community.Display.V1.FormattedValue\u0027]}\u003cbr\u003e\n\u003cbr\u003e\n\u003cbr\u003e\nPlease review the attached PDF.\u003cbr\u003e\nThis e-mail contains confidential information (which may also be legally privileged) and is intended solely for the use of the intended named recipient. If you are not the intended recipient you may not disclose, copy, distribute or retain any part of this message or its attachments. If you have received this message in error please notify the originator immediately by using the reply facility in your e-mail software. Incoming and outgoing emails may be monitored in line with current legislation. All copies of the message received in error should be destroyed. Any views or opinions expressed are solely those of the original author. This email message has been scanned for viruses, and declared to be virus free at the point of exit from Cumbria County Council\u0027s network. http://www.cumbria.gov.uk\u0026nbsp;\u003c/p\u003e",
+              "emailMessage/Attachments": [
+                {
+                "Name": "@outputs(\u0027Get_file_metadata\u0027)?[\u0027body/Name\u0027]",
+                "ContentBytes": "@outputs(\u0027Get_file_content\u0027)?[\u0027body\u0027]"
+                }
+              ]
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Get_file_content": {
+          "runAfter": {
+            "Get_Officer": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5c9d10b4-8747-4d9d-ba68-a8be6b9f9c27"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_onedriveforbusiness",
+              "operationId": "GetFileContent",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+            },
+            "parameters": {
+            "id": "@outputs(\u0027Run_a_Child_Flow\u0027)?[\u0027Body\u0027]?[\u0027generatedpdf\u0027]",
+              "inferContentType": true
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Get_file_metadata": {
+          "runAfter": {
+            "Get_file_content": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8e7cd270-61ff-412a-a019-a79491e3eadf"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_onedriveforbusiness",
+              "operationId": "GetFileMetadata",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+            },
+            "parameters": {
+            "id": "@outputs(\u0027Run_a_Child_Flow\u0027)?[\u0027Body\u0027]?[\u0027generatedpdf\u0027]"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Compose_Organisation_uri": {
+          "runAfter": {
+            "Get_Deceased": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "be108c79-1e35-4335-8ffe-aa73f165be90"
+          },
+          "type": "Compose",
+        "inputs": "@urihost( outputs(\u0027Get_Deceased\u0027)?[\u0027body/@odata.context\u0027])"
+        },
+        "Send_an_email_(V2)_(Police_Coroner\u0027s_officers)_2": {
+          "runAfter": {
+            "Send_an_email_(V2)_(External_Coroner)_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "595547fd-d0a6-4014-82b7-3bbbc0465add"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_office365_1",
+              "operationId": "SendEmailV2",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+            },
+            "parameters": {
+              "emailMessage/To": "@variables(\u0027internalCoronerEmail\u0027)",
+            "emailMessage/Subject": "Sudden death form -  @{outputs(\u0027Get_Deceased\u0027)?[\u0027body/fullname\u0027]}, @{if(empty(triggerOutputs()?[\u0027body/cp_datetimedeathconfirmed\u0027]),\u0027\u0027,formatDateTime(convertTimeZone(triggerOutputs()?[\u0027body/cp_datetimedeathconfirmed\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy HH:mm:ss\u0027))} and )TPA – @{triggerOutputs()?[\u0027body/_cp_tpa_value@OData.Community.Display.V1.FormattedValue\u0027]}",
+            "emailMessage/Body": "\u003cp\u003eDear Colleague\u003cbr\u003e\n\u003cbr\u003e\nA sudden death form has been submitted for @{outputs(\u0027Get_Deceased\u0027)?[\u0027body/fullname\u0027]},@{triggerOutputs()?[\u0027body/cp_name\u0027]} @{if(empty(outputs(\u0027Get_Deceased\u0027)?[\u0027body/birthdate\u0027]),\u0027\u0027,formatDateTime(convertTimeZone(outputs(\u0027Get_Deceased\u0027)?[\u0027body/birthdate\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy\u0027))} \u0026nbsp;TPA- @{triggerOutputs()?[\u0027body/_cp_tpa_value@OData.Community.Display.V1.FormattedValue\u0027]}\u003cbr\u003e\n\u003cbr\u003e\n\u003cbr\u003e\nPlease review on COPS via link\u003cbr\u003e\nhttps://@{outputs(\u0027Compose_Organisation_uri\u0027)}/main.aspx?appid=@{outputs(\u0027Get_Deceased\u0027)?[\u0027appmoduleid\u0027]}\u0026amp;pagetype=entityrecord\u0026amp;etn=cp_suddendeath\u0026amp;id=@{triggerOutputs()?[\u0027body/cp_suddendeathid\u0027]}\u003c/p\u003e",
+            "emailMessage/Cc": "@outputs(\u0027Get_Officer\u0027)?[\u0027body/internalemailaddress\u0027]",
+              "emailMessage/Attachments": [
+                {
+                "Name": "@outputs(\u0027Get_file_metadata\u0027)?[\u0027body/Name\u0027]",
+                "ContentBytes": "@outputs(\u0027Get_file_content\u0027)?[\u0027body\u0027]"
+                }
+              ]
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Get_Officer": {
+          "runAfter": {
+            "Compose_Organisation_uri": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "07966197-222f-4347-8781-e9b7a15f0182"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "systemusers",
+            "recordId": "@triggerOutputs()?[\u0027body/_ownerid_value\u0027]"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Get_Deceased": {
+          "runAfter": {
+            "Apply_to_each_(Pass_coroners\u0027_emails)": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5abc958c-3785-47b2-8a3f-68b3701b3b30"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "contacts",
+            "recordId": "@triggerOutputs()?[\u0027body/_cp_deceased_value\u0027]"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Add_a_new_row": {
+          "runAfter": {
+            "Send_an_email_(V2)_(Police_Coroner\u0027s_officers)_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f2265bf4-c973-434b-a20a-2b4c05c03fc1"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "CreateRecord",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "annotations",
+              "item/subject": "Sudden Death Generated PDF",
+              "item/isdocument": true,
+            "item/documentbody": "@outputs(\u0027Get_file_content\u0027)?[\u0027body/content\u0027]",
+              "item/filename": "Sudden Death Generated PDF.pdf",
+              "item/mimetype": "application/pdf",
+            "item/ownerid@odata.bind": "/systemusers(@{triggerOutputs()?[\u0027body/_ownerid_value\u0027]})",
+            "item/objectid_cp_suddendeath@odata.bind": "/cp_suddendeaths(@{triggerOutputs()?[\u0027body/cp_suddendeathid\u0027]})"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

@@ -1,0 +1,174 @@
+{
+  "properties": {
+    "connectionReferences": {
+      
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "Input Parameter",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Initialize_Choice_Id_variable": {
+          "runAfter": {
+            
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ChoiceId",
+                "type": "integer",
+                "value": 778230002
+              }
+            ]
+          }
+        },
+        "If_Input_is_Not_Empty": {
+          "actions": {
+            "If_Input_Text_is_Yes": {
+              "actions": {
+                "Set_Choice_Id_variable_3": {
+                  "runAfter": {
+                    
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "ChoiceId",
+                    "value": 778230001
+                  }
+                }
+              },
+              "runAfter": {
+                
+              },
+              "expression": {
+                "or": [
+                  {
+                    "equals": [
+                    "@triggerBody()[\u0027text\u0027]",
+                      "Yes"
+                    ]
+                  },
+                  {
+                    "equals": [
+                    "@triggerBody()?[\u0027text\u0027]",
+                      "True"
+                    ]
+                  }
+                ]
+              },
+              "type": "If"
+            },
+            "If_Input_Text_is_No": {
+              "actions": {
+                "Set_Choice_Id_variable_2": {
+                  "runAfter": {
+                    
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "ChoiceId",
+                    "value": 778230000
+                  }
+                }
+              },
+              "runAfter": {
+                "If_Input_Text_is_Yes": [
+                  "Succeeded"
+                ]
+              },
+              "expression": {
+                "or": [
+                  {
+                    "equals": [
+                    "@triggerBody()[\u0027text\u0027]",
+                      "No"
+                    ]
+                  },
+                  {
+                    "equals": [
+                    "@triggerBody()?[\u0027text\u0027]",
+                      "False"
+                    ]
+                  }
+                ]
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {
+            "Initialize_Choice_Id_variable": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@empty(triggerBody()?[\u0027text\u0027])",
+              "@false"
+            ]
+          },
+          "type": "If"
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "If_Input_is_Not_Empty": [
+              "Succeeded"
+            ]
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+            "choice_id": "@{variables(\u0027ChoiceId\u0027)}"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "choice_id": {
+                  "title": "Choice Id",
+                  "x-ms-dynamically-added": true,
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

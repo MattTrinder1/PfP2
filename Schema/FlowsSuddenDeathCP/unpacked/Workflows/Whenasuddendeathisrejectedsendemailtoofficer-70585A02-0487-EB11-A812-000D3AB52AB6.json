@@ -1,0 +1,738 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedcommondataserviceforapps_f6c43"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_office365": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedoffice365_820e1"
+        },
+        "api": {
+          "name": "shared_office365"
+        }
+      },
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_36190"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_a_row_is_added,_modified_or_deleted": {
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "cp_suddendeath",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filterexpression": "(cp_approvalstatus eq 778230003)"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        }
+      },
+      "actions": {
+        "Get_a_row_by_ID_(officer_from_Users)": {
+          "runAfter": {
+            
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "systemusers",
+            "recordId": "@triggerOutputs()?[\u0027body/_ownerid_value\u0027]"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Get_a_row_by_ID_(deceased_person_from_Contacts)": {
+          "runAfter": {
+            "Set_variable_officerEmail": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "contacts",
+            "recordId": "@triggerOutputs()?[\u0027body/_cp_deceased_value\u0027]"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Compose_Organisation_uri": {
+          "runAfter": {
+            "Get_a_row_by_ID_(deceased_person_from_Contacts)": [
+              "Succeeded"
+            ]
+          },
+          "type": "Compose",
+        "inputs": "@uriHost(outputs(\u0027Get_a_row_by_ID_(deceased_person_from_Contacts)\u0027)?[\u0027body/@odata.id\u0027])"
+        },
+        "List_rows_Model_Driven_App_for_Police_manager": {
+          "runAfter": {
+            "Compose_Organisation_uri": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "appmodules",
+              "$filter": "(uniquename eq \u0027cp_policemanager\u0027)"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Parse_JSON": {
+          "runAfter": {
+            "List_rows_Model_Driven_App_for_Police_manager": [
+              "Succeeded"
+            ]
+          },
+          "type": "ParseJson",
+          "inputs": {
+          "content": "@outputs(\u0027List_rows_Model_Driven_App_for_Police_manager\u0027)?[\u0027body\u0027]",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statusCode": {
+                  "type": "integer"
+                },
+                "headers": {
+                  "type": "object",
+                  "properties": {
+                    "Vary": {
+                      "type": "string"
+                    },
+                    "x-ms-service-request-id": {
+                      "type": "string"
+                    },
+                    "Cache-Control": {
+                      "type": "string"
+                    },
+                    "Set-Cookie": {
+                      "type": "string"
+                    },
+                    "Strict-Transport-Security": {
+                      "type": "string"
+                    },
+                    "REQ_ID": {
+                      "type": "string"
+                    },
+                    "AuthActivityId": {
+                      "type": "string"
+                    },
+                    "x-ms-ratelimit-burst-remaining-xrm-requests": {
+                      "type": "string"
+                    },
+                    "x-ms-ratelimit-time-remaining-xrm-requests": {
+                      "type": "string"
+                    },
+                    "OData-Version": {
+                      "type": "string"
+                    },
+                    "Preference-Applied": {
+                      "type": "string"
+                    },
+                    "X-Source": {
+                      "type": "string"
+                    },
+                    "Public": {
+                      "type": "string"
+                    },
+                    "Timing-Allow-Origin": {
+                      "type": "string"
+                    },
+                    "Date": {
+                      "type": "string"
+                    },
+                    "Allow": {
+                      "type": "string"
+                    },
+                    "Content-Type": {
+                      "type": "string"
+                    },
+                    "Expires": {
+                      "type": "string"
+                    },
+                    "Content-Length": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "body": {
+                  "type": "object",
+                  "properties": {
+                    "@@odata.context": {
+                      "type": "string"
+                    },
+                    "#Microsoft.Dynamics.CRM.RetrieveUnpublishedMultiple": {
+                      "type": "object",
+                      "properties": {
+                        "title": {
+                          "type": "string"
+                        },
+                        "target": {
+                          "type": "string"
+                        }
+                      }
+                    },
+                    "@@Microsoft.Dynamics.CRM.totalrecordcount": {
+                      "type": "integer"
+                    },
+                    "@@Microsoft.Dynamics.CRM.totalrecordcountlimitexceeded": {
+                      "type": "boolean"
+                    },
+                    "value": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "@@odata.type": {
+                            "type": "string"
+                          },
+                          "@@odata.id": {
+                            "type": "string"
+                          },
+                          "@@odata.etag": {
+                            "type": "string"
+                          },
+                          "@@odata.editLink": {
+                            "type": "string"
+                          },
+                          "clienttype@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "clienttype": {
+                            "type": "integer"
+                          },
+                          "isfeatured@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "isfeatured": {
+                            "type": "boolean"
+                          },
+                          "_organizationid_value@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "_organizationid_value@Microsoft.Dynamics.CRM.associatednavigationproperty": {
+                            "type": "string"
+                          },
+                          "_organizationid_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+                            "type": "string"
+                          },
+                          "_organizationid_value@odata.type": {
+                            "type": "string"
+                          },
+                          "_organizationid_value": {
+                            "type": "string"
+                          },
+                          "publishedon@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "publishedon@odata.type": {
+                            "type": "string"
+                          },
+                          "publishedon": {
+                            "type": "string"
+                          },
+                          "descriptor": {
+                            "type": "string"
+                          },
+                          "welcomepageid@odata.type": {
+                            "type": "string"
+                          },
+                          "welcomepageid": {
+                            "type": "string"
+                          },
+                          "solutionid@odata.type": {
+                            "type": "string"
+                          },
+                          "solutionid": {
+                            "type": "string"
+                          },
+                          "introducedversion": {
+                            "type": "string"
+                          },
+                          "uniquename": {
+                            "type": "string"
+                          },
+                          "statecode@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "statecode": {
+                            "type": "integer"
+                          },
+                          "statuscode@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "statuscode": {
+                            "type": "integer"
+                          },
+                          "formfactor@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "formfactor": {
+                            "type": "integer"
+                          },
+                          "ismanaged@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "ismanaged": {
+                            "type": "boolean"
+                          },
+                          "_publisherid_value@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "_publisherid_value@Microsoft.Dynamics.CRM.associatednavigationproperty": {
+                            "type": "string"
+                          },
+                          "_publisherid_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+                            "type": "string"
+                          },
+                          "_publisherid_value@odata.type": {
+                            "type": "string"
+                          },
+                          "_publisherid_value": {
+                            "type": "string"
+                          },
+                          "appmoduleidunique@odata.type": {
+                            "type": "string"
+                          },
+                          "appmoduleidunique": {
+                            "type": "string"
+                          },
+                          "overwritetime@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "overwritetime@odata.type": {
+                            "type": "string"
+                          },
+                          "overwritetime": {
+                            "type": "string"
+                          },
+                          "navigationtype@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "navigationtype": {
+                            "type": "integer"
+                          },
+                          "appmoduleid@odata.type": {
+                            "type": "string"
+                          },
+                          "appmoduleid": {
+                            "type": "string"
+                          },
+                          "componentstate@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "componentstate": {
+                            "type": "integer"
+                          },
+                          "modifiedon@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "modifiedon@odata.type": {
+                            "type": "string"
+                          },
+                          "modifiedon": {
+                            "type": "string"
+                          },
+                          "_modifiedby_value@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "_modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+                            "type": "string"
+                          },
+                          "_modifiedby_value@odata.type": {
+                            "type": "string"
+                          },
+                          "_modifiedby_value": {
+                            "type": "string"
+                          },
+                          "createdon@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "createdon@odata.type": {
+                            "type": "string"
+                          },
+                          "createdon": {
+                            "type": "string"
+                          },
+                          "versionnumber@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "versionnumber@odata.type": {
+                            "type": "string"
+                          },
+                          "versionnumber": {
+                            "type": "integer"
+                          },
+                          "webresourceid@odata.type": {
+                            "type": "string"
+                          },
+                          "webresourceid": {
+                            "type": "string"
+                          },
+                          "isdefault@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "isdefault": {
+                            "type": "boolean"
+                          },
+                          "name": {
+                            "type": "string"
+                          },
+                          "_createdby_value@OData.Community.Display.V1.FormattedValue": {
+                            "type": "string"
+                          },
+                          "_createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname": {
+                            "type": "string"
+                          },
+                          "_createdby_value@odata.type": {
+                            "type": "string"
+                          },
+                          "_createdby_value": {
+                            "type": "string"
+                          },
+                          "organization_appmodule_appmodule@odata.associationLink": {
+                            "type": "string"
+                          },
+                          "organization_appmodule_appmodule@odata.navigationLink": {
+                            "type": "string"
+                          },
+                          "publisher_appmodule_appmodule@odata.associationLink": {
+                            "type": "string"
+                          },
+                          "publisher_appmodule_appmodule@odata.navigationLink": {
+                            "type": "string"
+                          },
+                          "appmoduleroles_association@odata.associationLink": {
+                            "type": "string"
+                          },
+                          "appmoduleroles_association@odata.navigationLink": {
+                            "type": "string"
+                          },
+                          "appmodule_modifiedonbehalfby@odata.associationLink": {
+                            "type": "string"
+                          },
+                          "appmodule_modifiedonbehalfby@odata.navigationLink": {
+                            "type": "string"
+                          },
+                          "appmodule_appconfig@odata.associationLink": {
+                            "type": "string"
+                          },
+                          "appmodule_appconfig@odata.navigationLink": {
+                            "type": "string"
+                          },
+                          "appmodule_createdby@odata.associationLink": {
+                            "type": "string"
+                          },
+                          "appmodule_createdby@odata.navigationLink": {
+                            "type": "string"
+                          },
+                          "appmodule_appmodulecomponent@odata.associationLink": {
+                            "type": "string"
+                          },
+                          "appmodule_appmodulecomponent@odata.navigationLink": {
+                            "type": "string"
+                          },
+                          "appmodule_modifiedby@odata.associationLink": {
+                            "type": "string"
+                          },
+                          "appmodule_modifiedby@odata.navigationLink": {
+                            "type": "string"
+                          },
+                          "appmodule_createdonbehalfby@odata.associationLink": {
+                            "type": "string"
+                          },
+                          "appmodule_createdonbehalfby@odata.navigationLink": {
+                            "type": "string"
+                          },
+                          "serviceplan_appmodule_association@odata.associationLink": {
+                            "type": "string"
+                          },
+                          "serviceplan_appmodule_association@odata.navigationLink": {
+                            "type": "string"
+                          },
+                          "appmodule_appnotification_app@odata.associationLink": {
+                            "type": "string"
+                          },
+                          "appmodule_appnotification_app@odata.navigationLink": {
+                            "type": "string"
+                          },
+                          "appmodule_appsetting_parentappmoduleid@odata.associationLink": {
+                            "type": "string"
+                          },
+                          "appmodule_appsetting_parentappmoduleid@odata.navigationLink": {
+                            "type": "string"
+                          },
+                          "appmodule_appusersetting_parentappmoduleid@odata.associationLink": {
+                            "type": "string"
+                          },
+                          "appmodule_appusersetting_parentappmoduleid@odata.navigationLink": {
+                            "type": "string"
+                          },
+                          "appmodule_appelement_parentappmoduleid@odata.associationLink": {
+                            "type": "string"
+                          },
+                          "appmodule_appelement_parentappmoduleid@odata.navigationLink": {
+                            "type": "string"
+                          },
+                          "#Microsoft.Dynamics.CRM.RetrieveUnpublished()": {
+                            "type": "object",
+                            "properties": {
+                              "title": {
+                                "type": "string"
+                              },
+                              "target": {
+                                "type": "string"
+                              }
+                            }
+                          }
+                        },
+                        "required": [
+                          "@@odata.type",
+                          "@@odata.id",
+                          "@@odata.etag",
+                          "@@odata.editLink",
+                          "clienttype@OData.Community.Display.V1.FormattedValue",
+                          "clienttype",
+                          "isfeatured@OData.Community.Display.V1.FormattedValue",
+                          "isfeatured",
+                          "_organizationid_value@OData.Community.Display.V1.FormattedValue",
+                          "_organizationid_value@Microsoft.Dynamics.CRM.associatednavigationproperty",
+                          "_organizationid_value@Microsoft.Dynamics.CRM.lookuplogicalname",
+                          "_organizationid_value@odata.type",
+                          "_organizationid_value",
+                          "publishedon@OData.Community.Display.V1.FormattedValue",
+                          "publishedon@odata.type",
+                          "publishedon",
+                          "descriptor",
+                          "welcomepageid@odata.type",
+                          "welcomepageid",
+                          "solutionid@odata.type",
+                          "solutionid",
+                          "introducedversion",
+                          "uniquename",
+                          "statecode@OData.Community.Display.V1.FormattedValue",
+                          "statecode",
+                          "statuscode@OData.Community.Display.V1.FormattedValue",
+                          "statuscode",
+                          "formfactor@OData.Community.Display.V1.FormattedValue",
+                          "formfactor",
+                          "ismanaged@OData.Community.Display.V1.FormattedValue",
+                          "ismanaged",
+                          "_publisherid_value@OData.Community.Display.V1.FormattedValue",
+                          "_publisherid_value@Microsoft.Dynamics.CRM.associatednavigationproperty",
+                          "_publisherid_value@Microsoft.Dynamics.CRM.lookuplogicalname",
+                          "_publisherid_value@odata.type",
+                          "_publisherid_value",
+                          "appmoduleidunique@odata.type",
+                          "appmoduleidunique",
+                          "overwritetime@OData.Community.Display.V1.FormattedValue",
+                          "overwritetime@odata.type",
+                          "overwritetime",
+                          "navigationtype@OData.Community.Display.V1.FormattedValue",
+                          "navigationtype",
+                          "appmoduleid@odata.type",
+                          "appmoduleid",
+                          "componentstate@OData.Community.Display.V1.FormattedValue",
+                          "componentstate",
+                          "modifiedon@OData.Community.Display.V1.FormattedValue",
+                          "modifiedon@odata.type",
+                          "modifiedon",
+                          "_modifiedby_value@OData.Community.Display.V1.FormattedValue",
+                          "_modifiedby_value@Microsoft.Dynamics.CRM.lookuplogicalname",
+                          "_modifiedby_value@odata.type",
+                          "_modifiedby_value",
+                          "createdon@OData.Community.Display.V1.FormattedValue",
+                          "createdon@odata.type",
+                          "createdon",
+                          "versionnumber@OData.Community.Display.V1.FormattedValue",
+                          "versionnumber@odata.type",
+                          "versionnumber",
+                          "webresourceid@odata.type",
+                          "webresourceid",
+                          "isdefault@OData.Community.Display.V1.FormattedValue",
+                          "isdefault",
+                          "name",
+                          "_createdby_value@OData.Community.Display.V1.FormattedValue",
+                          "_createdby_value@Microsoft.Dynamics.CRM.lookuplogicalname",
+                          "_createdby_value@odata.type",
+                          "_createdby_value",
+                          "organization_appmodule_appmodule@odata.associationLink",
+                          "organization_appmodule_appmodule@odata.navigationLink",
+                          "publisher_appmodule_appmodule@odata.associationLink",
+                          "publisher_appmodule_appmodule@odata.navigationLink",
+                          "appmoduleroles_association@odata.associationLink",
+                          "appmoduleroles_association@odata.navigationLink",
+                          "appmodule_modifiedonbehalfby@odata.associationLink",
+                          "appmodule_modifiedonbehalfby@odata.navigationLink",
+                          "appmodule_appconfig@odata.associationLink",
+                          "appmodule_appconfig@odata.navigationLink",
+                          "appmodule_createdby@odata.associationLink",
+                          "appmodule_createdby@odata.navigationLink",
+                          "appmodule_appmodulecomponent@odata.associationLink",
+                          "appmodule_appmodulecomponent@odata.navigationLink",
+                          "appmodule_modifiedby@odata.associationLink",
+                          "appmodule_modifiedby@odata.navigationLink",
+                          "appmodule_createdonbehalfby@odata.associationLink",
+                          "appmodule_createdonbehalfby@odata.navigationLink",
+                          "serviceplan_appmodule_association@odata.associationLink",
+                          "serviceplan_appmodule_association@odata.navigationLink",
+                          "appmodule_appnotification_app@odata.associationLink",
+                          "appmodule_appnotification_app@odata.navigationLink",
+                          "appmodule_appsetting_parentappmoduleid@odata.associationLink",
+                          "appmodule_appsetting_parentappmoduleid@odata.navigationLink",
+                          "appmodule_appusersetting_parentappmoduleid@odata.associationLink",
+                          "appmodule_appusersetting_parentappmoduleid@odata.navigationLink",
+                          "appmodule_appelement_parentappmoduleid@odata.associationLink",
+                          "appmodule_appelement_parentappmoduleid@odata.navigationLink",
+                          "#Microsoft.Dynamics.CRM.RetrieveUnpublished()"
+                        ]
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "Apply_to_each_2": {
+        "foreach": "@outputs(\u0027List_rows_Model_Driven_App_for_Police_manager\u0027)?[\u0027body/value\u0027]",
+          "actions": {
+            "Send_an_email_(V2)_3": {
+              "runAfter": {
+                
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_office365",
+                  "operationId": "SendEmailV2",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_office365"
+                },
+                "parameters": {
+                  "emailMessage/To": "@variables(\u0027officerEmail\u0027)",
+                "emailMessage/Subject": "Returned sudden death form relating to @{triggerOutputs()?[\u0027body/cp_name\u0027]}, @{outputs(\u0027Get_a_row_by_ID_(Incident)\u0027)?[\u0027body/cp_incidentnumber\u0027]}",
+                "emailMessage/Body": "\u003cp\u003eDear officer\u003cbr\u003e\n\u003cbr\u003e\nA supervisor has returned the sudden death form relating to \u0026nbsp;@{outputs(\u0027Get_a_row_by_ID_(deceased_person_from_Contacts)\u0027)?[\u0027body/firstname\u0027]} @{outputs(\u0027Get_a_row_by_ID_(deceased_person_from_Contacts)\u0027)?[\u0027body/lastname\u0027]}, \u0026nbsp;Datetime Death Confirmed @{triggerOutputs()?[\u0027body/cp_datetimedeathconfirmed\u0027]}\u003cbr\u003e\nWith the following rationale: @{triggerOutputs()?[\u0027body/cp_supervisornotes\u0027]}\u003cbr\u003e\n\u003cbr\u003e\nPlease follow link to resubmit\u003cbr\u003e\nhttps://@{outputs(\u0027Compose_Organisation_uri\u0027)}/main.aspx?appid=@{items(\u0027Apply_to_each_2\u0027)?[\u0027appmoduleid\u0027]}\u0026amp;pagetype=entityrecord\u0026amp;etn=cp_suddendeath\u0026amp;id=@{triggerOutputs()?[\u0027body/cp_suddendeathid\u0027]}\u003cbr\u003e\n\u003cspan style=\"color: rgb(226,80,65)\"\u003eThis is a priority action: The coroner will not receive the sudden death from until you respond and submit.\u003cbr\u003e\n\u003c/span\u003e\u003c/p\u003e",
+                  "emailMessage/Bcc": "Alexandros@tisski.com"
+                },
+                "authentication": "@parameters(\u0027$authentication\u0027)"
+              }
+            }
+          },
+          "runAfter": {
+            "Get_a_row_by_ID_(Incident)": [
+              "Succeeded"
+            ]
+          },
+          "type": "Foreach"
+        },
+        "Get_a_row_by_ID_(Incident)": {
+          "runAfter": {
+            "Parse_JSON": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_incidents",
+            "recordId": "@triggerOutputs()?[\u0027body/_cp_incident_value\u0027]"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Initialize_variable_officerEmail": {
+          "runAfter": {
+            "Get_a_row_by_ID_(officer_from_Users)": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "officerEmail",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Set_variable_officerEmail": {
+          "runAfter": {
+            "Initialize_variable_officerEmail": [
+              "Succeeded"
+            ]
+          },
+          "type": "SetVariable",
+          "inputs": {
+            "name": "officerEmail",
+          "value": "@outputs(\u0027Get_a_row_by_ID_(officer_from_Users)\u0027)?[\u0027body/internalemailaddress\u0027]"
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

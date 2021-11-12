@@ -1,0 +1,518 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_ce4a8"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "6a995bb6-5343-48ed-85c4-f63e0b07889f"
+          },
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "Staging Table Entry Id.",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Initialize_Error_Message_variable": {
+          "runAfter": {
+            
+          },
+          "metadata": {
+            "operationMetadataId": "06657256-4395-4ce8-b7d2-ecf07ef6b666"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Error Message",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Get_Sudden_Death_STG_record": {
+          "runAfter": {
+            "Initialize_Error_Message_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8f117263-35c6-40e2-85c5-369865d7237f"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_suddendeathstgs",
+            "recordId": "@triggerBody()[\u0027text\u0027]"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Check_if_Place_of_Death_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_variable": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "55374603-8297-4993-a87e-9e9d0fa373ae"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Place of Death could not be Empty.\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Get_Sudden_Death_STG_record": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Sudden_Death_STG_record\u0027)?[\u0027body/cp_placeofdeath\u0027]",
+              "@null"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f0cfd914-2629-42be-aa2c-d79647456849"
+          },
+          "type": "If"
+        },
+        "Check_if_Datetime_Body_Found_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_variable_2": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "04745db1-f87e-4640-8d10-a030516a7767"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Date Time Body Found could not be Empty.\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_Place_of_Death_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Sudden_Death_STG_record\u0027)?[\u0027body/cp_datetimebodyfound\u0027]",
+              "@null"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "9ac3196c-0454-4f16-9e14-d74ee3abed8d"
+          },
+          "type": "If"
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "Check_if_Suspect_Suicide_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ff7969f1-abfa-406b-bf4b-66d9f57a1137"
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "suddendeatherrors": "@variables(\u0027Error Message\u0027)"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "suddendeatherrors": {
+                  "title": "SuddenDeathErrors",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Check_if_Body_Found_By_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_variable_3": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "f9c02a5a-d2a9-4a89-97bc-6ba4e0853fa0"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Body Found By could not be Empty.\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_Datetime_Body_Found_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Sudden_Death_STG_record\u0027)?[\u0027body/cp_bodyfoundby\u0027]",
+              "@null"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "27449335-ccec-4ee1-92f8-f7ac2f8c87a2"
+          },
+          "type": "If"
+        },
+        "Check_if_Datetime_Death_Confirmed_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_variable_4": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "be19494f-55aa-4fa5-85bb-e8926bb803f6"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Datetime Death Confirmed could not be Empty.\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_Body_Found_By_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Sudden_Death_STG_record\u0027)?[\u0027body/cp_datetimedeathconfirmed\u0027]",
+              "@null"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "aac81cf1-a7a1-41f8-bade-4823c91cfc1a"
+          },
+          "type": "If"
+        },
+        "Check_if_Diagnosed_By_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_variable_5": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "0990a142-2afc-4d3b-99ee-0e0cd06c0b88"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Diagnosed By could not be Empty.\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_Datetime_Death_Confirmed_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Sudden_Death_STG_record\u0027)?[\u0027body/cp_diagnosedby\u0027]",
+              "@null"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ea5dfaf3-20dc-426f-adcd-20d9f9c153cc"
+          },
+          "type": "If"
+        },
+        "Check_if_Undertaker_Remove_Body_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_variable_6": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "d20a5ec8-edb6-4a59-869b-5047d5c41518"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Undertaker Remove Body could not be Empty.\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_Diagnosed_By_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Sudden_Death_STG_record\u0027)?[\u0027body/cp_undertakerremovebody\u0027]",
+              "@null"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "54edc5fc-c57a-49f0-b407-92eb8a7b630f"
+          },
+          "type": "If"
+        },
+        "Check_if_NextofKin_Informed_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_variable_7": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "2a881166-f1cb-4393-bea2-078dd4741b0f"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Next of Kin Informed could not be Empty.\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_Undertaker_Remove_Body_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Sudden_Death_STG_record\u0027)?[\u0027body/cp_nextofkininformed\u0027]",
+              "@null"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "67117a7a-bbfe-4591-af48-859b30dec713"
+          },
+          "type": "If"
+        },
+        "Check_if_Formal_Identification_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_variable_8": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "ea11928a-02b2-4526-a02b-62b5add62cec"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Formal Identification could not be Empty.\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_NextofKin_Informed_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Sudden_Death_STG_record\u0027)?[\u0027body/cp_formalidentification\u0027]",
+              "@null"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "aca9b646-d311-49a2-8fda-0ce54b24986d"
+          },
+          "type": "If"
+        },
+        "Check_if_House_Secure_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_variable_9": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "843b12ae-da50-4708-b7e3-b398b1925305"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "House Secure could not be Empty.\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_Formal_Identification_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Sudden_Death_STG_record\u0027)?[\u0027body/cp_housesecure\u0027]",
+              "@null"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0e467548-c4b7-44f4-bef1-e0fb4bfc186e"
+          },
+          "type": "If"
+        },
+        "Check_if_HouseTemperature_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_variable_10": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "1b9e5ee2-8d3c-4c6f-883f-9bb9a73304f0"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "House Temperature could not be Empty.\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_House_Secure_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Sudden_Death_STG_record\u0027)?[\u0027body/cp_housetemperature\u0027]",
+              "@null"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d5adf63e-9994-4141-8ef6-349727890461"
+          },
+          "type": "If"
+        },
+        "Check_if_MarkOrBruises_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_variable_12": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "f42fb337-1104-4c24-af54-c226ad3a8ddb"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Mark or Bruises could not be Empty.\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_HouseTemperature_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Sudden_Death_STG_record\u0027)?[\u0027body/cp_marksorbruises\u0027]",
+              "@null"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2c9d3f78-3cf5-4460-bded-d705d4322f87"
+          },
+          "type": "If"
+        },
+        "Check_if_Suspect_Suicide_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_variable_13": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "1c9388f1-7521-4a0e-bcdb-0d8b33ffda66"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Suspect Suicide could not be Empty.\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_MarkOrBruises_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Sudden_Death_STG_record\u0027)?[\u0027body/cp_suspectsuicide\u0027]",
+              "@null"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "cdcbb7a5-1527-4289-b38d-6c83089af44a"
+          },
+          "type": "If"
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}
