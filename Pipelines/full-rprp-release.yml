@@ -87,6 +87,8 @@ pool:
   name: MOD Pool
 
 variables:
+- name: artifact.name
+  value: PowerAppsForPolicing
 - name: minor.version
   value: 0
 - name: release.version
@@ -191,7 +193,7 @@ stages:
 
 
       - publish: '$(build.binariesdirectory)'
-        artifact: PowerAppsForPolicing
+        artifact: $(artifact.name)
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -221,7 +223,7 @@ stages:
 
             - template: get-solution-filenames.yml
               parameters:
-                pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
+                pipelineworkspace : $(pipeline.workspace)\$(artifact.name)
                 minorversion : $(minor.version)
                 releaseversion : $(release.version)
                 solutionprefix : $(solution.prefix)
@@ -231,7 +233,7 @@ stages:
                 - template: install-managed-solution.yml
                   parameters:
                     SolutionFileName : $(${{parameter.Value}}SolutionFileName)
-                    pipelineworkspace: $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
+                    pipelineworkspace: $(pipeline.workspace)\$(artifact.name)
                     connectionString: $(pfpsystemtest.connection.string)
 
 
@@ -287,7 +289,7 @@ stages:
 
             - template: get-solution-filenames.yml
               parameters:
-                pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
+                pipelineworkspace : $(pipeline.workspace)\$(artifact.name)
                 minorversion : $(minor.version)
                 releaseversion : $(release.version)
                 solutionprefix : $(solution.prefix)
@@ -297,7 +299,7 @@ stages:
                 - template: install-managed-solution.yml
                   parameters:
                     SolutionFileName : $(${{parameter.Value}}SolutionFileName)
-                    pipelineworkspace: $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
+                    pipelineworkspace: $(pipeline.workspace)\$(artifact.name)
                     connectionString: $(cumbriasystemtest.connection.string)
 
 
@@ -353,7 +355,7 @@ stages:
 
             - template: get-solution-filenames.yml
               parameters:
-                pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
+                pipelineworkspace : $(pipeline.workspace)\$(artifact.name)
                 minorversion : $(minor.version)
                 releaseversion : $(release.version)
                 solutionprefix : $(solution.prefix)
@@ -363,7 +365,7 @@ stages:
                 - template: install-managed-solution.yml
                   parameters:
                     SolutionFileName : $(${{parameter.Value}}SolutionFileName)
-                    pipelineworkspace: $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
+                    pipelineworkspace: $(pipeline.workspace)\$(artifact.name)
                     connectionString: $(durhamsystemtest.connection.string)
 
 
@@ -422,7 +424,7 @@ stages:
                 - template: install-managed-solution.yml
                   parameters:
                     SolutionFileName : $(${{parameter.Value}}SolutionFileName)
-                    pipelineworkspace: $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
+                    pipelineworkspace: $(pipeline.workspace)\$(artifact.name)
                     connectionString: $(Cumbriapfpuat.connection.string)
 
 
@@ -480,7 +482,7 @@ stages:
                 - template: install-managed-solution.yml
                   parameters:
                     SolutionFileName : $(${{parameter.Value}}SolutionFileName)
-                    pipelineworkspace: $(pipeline.workspace)\CumbriaBuild-Managed-RPRP
+                    pipelineworkspace: $(pipeline.workspace)\$(artifact.name)
                     connectionString: $(Tisskipfpuat.connection.string)
 
 
