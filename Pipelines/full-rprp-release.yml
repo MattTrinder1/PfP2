@@ -133,6 +133,10 @@ stages:
         inputs:
           SourceFolder: '$(build.binariesdirectory)'
           Contents: '**'
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          artifact: 'RewrittenFlows'
+          path: $(Build.SourcesDirectory)/RewrittenFlows
 
       - ${{ each parameter in parameters }}:
         - ${{ if contains(parameter.Key, 'SolutionName') }}:
