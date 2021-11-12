@@ -23,6 +23,18 @@ steps:
                 $folderExists = Test-Path -Path 'Schema/${{parameters.solutionName}}${{parameters.solutionprefix}}/unpacked'
                 Write-Output "##vso[task.setvariable variable=FolderExists]$folderExists"
 
+#if this is not a base level solution, copy in the environment specific folder generated in the rewrite step
+
+  - task: CopyFiles@2
+    inputs:
+      displayName: Copy to System Test folder
+      sourceFolder: '$(Build.SourcesDirectory)\RewrittenFlows\${{parameters.customerName}}\${{parameters.environmentName}}\Schema'
+      contents: ** 
+      targetFolder: '$(Build.SourcesDirectory)\Schema'
+      overWrite: true 
+    condition: and(eq(variables['FolderExists'], True),ne('${{parameters.customerName}}', 'Base'))
+
+
   - task: MSCRMPackSolution@10
     displayName: 'Pack - ${{parameters.solutionName}}'
     inputs:
