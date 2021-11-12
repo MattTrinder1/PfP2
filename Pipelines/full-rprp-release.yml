@@ -42,6 +42,14 @@ parameters:
   type: string
   default: FlowsPDF
 
+- name: CumbriaCustomerName
+  type: string
+  default: Cumbria
+
+- name: DurhamCustomerName
+  type: string
+  default: Durham
+
 - name: Release
   values:
   - CP
@@ -140,14 +148,17 @@ stages:
 
       - ${{ each parameter in parameters }}:
         - ${{ if contains(parameter.Key, 'SolutionName') }}:
-          - template: assembleAndCheck.yml
-            parameters:
-              solutionName: ${{parameter.Value}}
-              folderNames: CanvasApps,Other
-              managed: Managed
-              solutionprefix: $(solution.prefix)
-              minorversion: $(minor.version)
-              releaseversion: $(release.version)
+          - ${{ each parameter2 in parameters }}:
+            - ${{ if contains(parameter2.Key, 'CustomerName') }}:
+              - template: assembleAndCheck.yml
+                parameters:
+                  customerName: ${{parameter2.Value}}
+                  solutionName: ${{parameter.Value}}
+                  folderNames: CanvasApps,Other
+                  managed: Managed
+                  solutionprefix: $(solution.prefix)
+                  minorversion: $(minor.version)
+                  releaseversion: $(release.version)
 
 
       - publish: '$(build.binariesdirectory)/SystemTest'
