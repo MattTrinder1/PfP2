@@ -1,1 +1,0 @@
-& $PSScriptRoot\exportandextract.ps1 -folderName "OptionSets" -prefix "RP"
