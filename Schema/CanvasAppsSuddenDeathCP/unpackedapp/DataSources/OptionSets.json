@@ -1,0 +1,51 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "optionsets",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "optionset",
+    "MaxGetRowsCount": 500,
+    "Name": "OptionSets",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "componentstate": "Component State",
+      "name": "Name",
+      "optionsetid": "OptionSet",
+      "overwritetime": "Record Overwrite Time",
+      "solutionid": "Solution"
+    },
+    "PreferredName": "OptionSets",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "OptionSets (Views)",
+    "Name": "_optionset_views",
+    "RelatedEntityName": "OptionSets",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {}
+  },
+  {
+    "DisplayName": "Component State",
+    "Name": "componentstate",
+    "OptionSetInfoNameMapping": {
+      "0": "Published",
+      "1": "Unpublished",
+      "2": "Deleted",
+      "3": "Deleted Unpublished"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": true,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "componentstate",
+        "OptionSetReferenceEntityName": "OptionSets"
+      }
+    },
+    "OptionSetTypeKey": "PicklistType",
+    "RelatedColumnInvariantName": "componentstate",
+    "RelatedEntityName": "OptionSets",
+    "Type": "OptionSetInfo"
+  }
+]

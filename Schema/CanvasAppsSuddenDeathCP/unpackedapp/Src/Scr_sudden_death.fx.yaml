@@ -1,0 +1,1082 @@
+"Scr_sudden_death As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    OnVisible: |
+        =Set(
+            madcolsisd,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolsisd: LightGoldenRodYellow});
+        Set(
+            madcolsjdd,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolsjsd: LightGoldenRodYellow});
+        Set(
+            madcolsksd,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolsksd: LightGoldenRodYellow});
+        Set(
+            madcolslsd,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolslsd: LightGoldenRodYellow});
+        Set(
+            madcolsmsd,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolsmsd: LightGoldenRodYellow});
+        Set(
+            madcolsnsd,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolsnsd: LightGoldenRodYellow});
+        Set(
+            madcolsosd,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolsosd: LightGoldenRodYellow});
+        Set(
+            madcolspsd,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolspsd: LightGoldenRodYellow});
+        Set(
+            madcolsqsd,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolsqsd: LightGoldenRodYellow});
+        Set(
+            madcolsrsd,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolsrsd: LightGoldenRodYellow});
+        Set(
+            madcolsxsd,
+            LightGoldenRodYellow
+        );
+        UpdateContext({madcolsxsd: LightGoldenRodYellow});Set(howinformed,false);Set(actioninformed,false);Set(y10,0);
+        If(Len(Txt_Description.Text)>0,UpdateContext({madcolsisd:Transparent}),UpdateContext({madcolsisd:LightGoldenRodYellow}));If(Len(Text(DatePicker_datetime_body_found.SelectedDate))>0,UpdateContext({madcolslsd:Transparent}),UpdateContext({madcolslsd:LightGoldenRodYellow}));If(Len(Txt_body_found_by.Text)>0,UpdateContext({madcolsmsd:Transparent}),UpdateContext({madcolsmsd:LightGoldenRodYellow}));If(Len(Text(DatePicker_date_time_confirmed.SelectedDate))>0,UpdateContext({madcolsnsd:Transparent}),UpdateContext({madcolsnsd:LightGoldenRodYellow})); If(DatePicker_date_time_confirmed.SelectedDate<DatePicker_datetime_body_found.SelectedDate,Reset(DatePicker_date_time_confirmed));If(Len(TextInput_death_diagnosed_by.Text)>0,UpdateContext({madcolsqsd:White}),UpdateContext({madcolsqsd:LightGoldenRodYellow}));If(Len(Radio_next_of_kin.Selected.Value)>0,UpdateContext({madcolspsd:White}),UpdateContext({madcolspsd:LightGoldenRodYellow}));If(Radio_next_of_kin.Selected.Value="Yes",UpdateContext({howinformed:true,actioninformed:false}));If(Radio_next_of_kin.Selected.Value="No",UpdateContext({howinformed:false,actioninformed:true}));If(Len(Txt_next_of_kin_informed.Text)>0,({ madcolsqsd:Transparent}),UpdateContext({ madcolsqsd:LightGoldenRodYellow}));If(Len(Drpdn_Npt_sudden_death.Selected.cp_name
+         )>0,UpdateContext({madcolsksd:White}),UpdateContext({madcolsksd:LightGoldenRodYellow}));
+
+    RectQuickActionBar2_7 As rectangle:
+        Height: =88
+        Width: =Parent.Width
+        ZIndex: =1
+
+    LblAppName2_7 As label:
+        Align: =Align.Center
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =88
+        Size: =27
+        Text: ="Sudden death"
+        Width: =Parent.Width
+        ZIndex: =2
+
+    Canvas2_7 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: =955
+        Width: =Parent.Width
+        Y: =RectQuickActionBar2_7.Y + RectQuickActionBar2_7.Height
+        ZIndex: =3
+
+        DataCard2_7 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =3286
+            Width: =Parent.Width
+            WidthFit: =true
+            X: =0
+            Y: =0
+            ZIndex: =1
+
+            Dropdown_sydden_death_key As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                Default: =Sudden_Primary_key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                Items: =Filter('Sudden death offline',Key=Sudden_Primary_key).Key
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =20
+                ZIndex: =97
+
+            Txt_Description As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key).'Place of death desc'
+                EnableSpellCheck: =true
+                Fill: =madcolsisd
+                Height: =174
+                HintText: ="Description"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Mode: =TextMode.MultiLine
+                OnChange: |-
+                    =If(Len(Txt_Description.Text)>0,UpdateContext({madcolsisd:Transparent}),UpdateContext({madcolsisd:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Txt_Description.Text)>0,UpdateContext({madcolsisd:Transparent}),UpdateContext({madcolsisd:LightGoldenRodYellow}))
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =169
+                ZIndex: =98
+
+            Label2_15 As label:
+                Height: =66
+                Size: =21
+                Text: |-
+                    ="Place of death
+                    "
+                Width: =545
+                X: =40
+                Y: =120
+                ZIndex: =99
+
+            Lbl_asteriks_13 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =562
+                Y: =140
+                ZIndex: =100
+
+            Txt_housename_sudden_death As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key).'Housename sudden death'
+                Height: =70
+                HintText: ="House Name"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =420
+                ZIndex: =101
+
+            Txt_houseno_sudden_death As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key).'Houseno Sudden death'
+                Height: =70
+                HintText: ="House Number"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =520
+                ZIndex: =102
+
+            Txt_address_sudden_death As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key).'Address sudden death'
+                Height: =70
+                HintText: ="Street"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =620
+                ZIndex: =103
+
+            Txt_district_sudden_death As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key).'District sudden death'
+                Height: =70
+                HintText: ="District"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =720
+                ZIndex: =104
+
+            Text_town_sudden_death As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key).'Town sudden death'
+                Height: =70
+                HintText: ="Town"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =820
+                ZIndex: =105
+
+            Txt_county_sudden_death As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key).'County sudden death'
+                Height: =70
+                HintText: ="County"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =920
+                ZIndex: =106
+
+            Text_pcode_sudden_death As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key).'pcode sudden death'
+                Height: =70
+                HintText: ="Post Code (Capitals only)"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1020
+                ZIndex: =107
+
+            Label2_17 As label:
+                Height: =66
+                Size: =21
+                Text: ="Location"
+                Width: =560
+                X: =40
+                Y: =371
+                ZIndex: =112
+
+            Label4_7 As label:
+                Height: =70
+                Size: =21
+                Text: ="GPS"
+                Width: =560
+                X: =34
+                Y: =1212
+                ZIndex: =113
+
+            Txt_longtitude_sudden_death As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =Location.Longitude
+                Height: =70
+                HintText: ="Grid reference"
+                Size: =21
+                Width: =196
+                X: =34
+                Y: =1262
+                ZIndex: =114
+
+            Drpdn_Npt_sudden_death As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                Default: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key).'NPT sudden death name'
+                Fill: = madcolsksd
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =TPA
+                OnChange: |-
+                    =If(Len(Drpdn_Npt_sudden_death.Selected.cp_name
+                     )>0,UpdateContext({madcolsksd:White}),UpdateContext({madcolsksd:LightGoldenRodYellow}))
+                OnSelect: =
+                Reset: =ResetAll
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =34
+                Y: =1412
+                ZIndex: =115
+
+            DatePicker_datetime_body_found As datepicker:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                DefaultDate: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key).'Date body found'
+                Fill: = madcolslsd
+                Height: =70
+                IconBackground: =RGBA(153, 153, 153, 1)
+                InputTextPlaceholder: ="DD/MM/YYYY"
+                IsEditable: =true
+                OnChange: |-
+                    =If(Len(Text(DatePicker_datetime_body_found.SelectedDate))>0,UpdateContext({madcolslsd:Transparent}),UpdateContext({madcolslsd:LightGoldenRodYellow}))
+                OnSelect: =
+                Size: =24
+                Width: =545
+                X: =34
+                Y: =1562
+                ZIndex: =116
+
+            Label3_8 As label:
+                Height: =70
+                Size: =21
+                Text: ="Date and time body found"
+                Width: =521
+                X: =34
+                Y: =1512
+                ZIndex: =117
+
+            Txt_Day_of_death As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =Text(DatePicker_date_time_confirmed.SelectedDate,"dddd")
+                Height: =70
+                HintText: ="Day Of death"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Size: =21
+                Width: =545
+                X: =34
+                Y: =2098
+                ZIndex: =118
+
+            Label3_6 As label:
+                Height: =70
+                Size: =21
+                Text: =Proper(First(ActiveCustomerSettingsOffline).cp_policingareatext)
+                Width: =545
+                X: =33
+                Y: =1346
+                ZIndex: =119
+
+            Dropdown_hour_start As dropdown:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(166, 166, 266, 100), -20%)
+                Default: ="00"
+                FocusedBorderColor: =Dropdown_hour_start.BorderColor
+                Height: =70
+                HoverBorderColor: =ColorFade(Dropdown_hour_start.BorderColor, 15%)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"]
+                OnChange: |-
+                    =If(Time(Value(Dropdown_hour_start.Selected.Value), Value(Dropdown_min_start.Selected.Value), 0)< Time(08,00,0),UpdateContext({starttime:true}),UpdateContext({starttime:false}));If(Value(Dropdown_hour_start_1.Selected.Value)<Value(Dropdown_hour_start.Selected.Value),Reset(Dropdown_hour_start_1));
+                PressedBorderColor: =Dropdown_hour_start.HoverBorderColor
+                PressedFill: =RGBA(153, 153, 153, 1)
+                Reset: =true
+                SelectionFill: =RGBA(230, 230, 230, 1)
+                Size: =21
+                Width: =135
+                X: =34
+                Y: =1662
+                ZIndex: =120
+
+            Dropdown_min_start As dropdown:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                Default: ="00"
+                FocusedBorderColor: =Dropdown_min_start.BorderColor
+                Height: =70
+                HoverBorderColor: =ColorFade(Dropdown_min_start.BorderColor, 15%)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: |
+                    =["00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59"]
+                OnChange: =If(Value(Dropdown_min_start_1.Selected.Value)<Value(Dropdown_min_start.Selected.Value),Reset(Dropdown_hour_start_1));
+                PressedBorderColor: =Dropdown_min_start.HoverBorderColor
+                PressedFill: =RGBA(153, 153, 153, 1)
+                Reset: =true
+                SelectionFill: =RGBA(204, 204, 204, 1)
+                Size: =21
+                Width: =135
+                X: =315
+                Y: =1662
+                ZIndex: =121
+
+            Lbl_asteriks_14 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =561
+                Y: =1383
+                ZIndex: =122
+
+            Txt_body_found_by As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key).'Body found By'
+                Fill: = madcolsmsd
+                Height: =70
+                HintText: ="Body found by"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |-
+                    =If(Len(Txt_body_found_by.Text)>0,UpdateContext({madcolsmsd:Transparent}),UpdateContext({madcolsmsd:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Txt_body_found_by.Text)>0,UpdateContext({madcolsmsd:Transparent}),UpdateContext({madcolsmsd:LightGoldenRodYellow}))
+                Size: =21
+                Width: =545
+                X: =34
+                Y: =1762
+                ZIndex: =123
+
+            DatePicker_date_time_confirmed As datepicker:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                DefaultDate: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key).'Date fact confirmed'
+                Fill: = madcolsnsd
+                Height: =70
+                IconBackground: =RGBA(153, 153, 153, 1)
+                InputTextPlaceholder: ="DD/MM/YYYY"
+                IsEditable: =true
+                OnChange: |
+                    =Set(
+                         DateTimeconfirmed, 
+                         DateTimeValue(
+                              DatePicker_date_time_confirmed.SelectedDate
+                            /*  & " " &  
+                              Time(
+                                Value(Dropdown_hour_start_1.Selected.Value),
+                                Value(Dropdown_min_start_1.Selected.Value),
+                                0
+                         )*/
+                    ));
+                    Set(
+                         DateTimefound, 
+                         DateTimeValue(
+                              DatePicker_datetime_body_found.SelectedDate
+                             /* & " " &  
+                              Time(
+                                Value(Dropdown_hour_start.Selected.Value),
+                                Value(Dropdown_min_start.Selected.Value),
+                                0
+                         )*/
+                    ));
+                    
+                    
+                    /* Resetting fields validation 01/11/2021-Shaf
+                    If(
+                        DateTimefound > DateTimeconfirmed ,
+                        Reset(DatePicker_date_time_confirmed)
+                    );*/
+                    
+                    If(
+                        Len(Text(DatePicker_date_time_confirmed.SelectedDate)) > 0,
+                        UpdateContext({madcolsnsd: Transparent}),
+                        UpdateContext({madcolsnsd: LightGoldenRodYellow})
+                    );
+                    
+                    
+                    /*If(
+                        DatePicker_date_time_confirmed.SelectedDate  < DatePicker_datetime_body_found.SelectedDate,
+                        Reset(DatePicker_date_time_confirmed)
+                    );*/
+                OnSelect: =
+                Size: =24
+                Width: =545
+                X: =34
+                Y: =1911
+                ZIndex: =124
+
+            Label3_12 As label:
+                Height: =70
+                Size: =21
+                Text: ="Declared deceased by medical practitioner"
+                Width: =545
+                X: =34
+                Y: =1841
+                ZIndex: =125
+
+            Dropdown_hour_start_1 As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                ContentLanguage: =true
+                Default: ="00"
+                FocusedBorderColor: =Dropdown_hour_start_1.BorderColor
+                Height: =70
+                HoverBorderColor: =ColorFade(Dropdown_hour_start_1.BorderColor, 15%)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =["","00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23"]
+                OnChange: |+
+                    =/* Old Resetting fields validation 
+                    
+                    If(
+                        Time(
+                            Value(Dropdown_hour_start_1.Selected.Value),
+                            Value(Dropdown_min_start_1.Selected.Value),
+                            0
+                        ) < Time(
+                            08,
+                            00,
+                            0
+                        ),
+                        UpdateContext({starttime: true}),
+                        UpdateContext({starttime: false})
+                    );
+                    If(
+                        Value(Dropdown_hour_start_1.Selected.Value) < Value(Dropdown_hour_start.Selected.Value),
+                        Reset(Dropdown_hour_start_1)
+                    );*/
+                    
+                    Set(
+                         DateTimeconfirmed, 
+                         DateTimeValue(
+                              DatePicker_date_time_confirmed.SelectedDate
+                              & " " &  
+                              Time(
+                                Value(Dropdown_hour_start_1.Selected.Value),
+                                Value(Dropdown_min_start_1.Selected.Value),
+                                0
+                         )
+                    ));
+                    Set(
+                         DateTimefound, 
+                         DateTimeValue(
+                              DatePicker_datetime_body_found.SelectedDate
+                              & " " &  
+                              Time(
+                                Value(Dropdown_hour_start.Selected.Value),
+                                Value(Dropdown_min_start.Selected.Value),
+                                0
+                         )
+                    ));
+                    
+                    
+                    
+                    /*Resetting fields validation 01/11/2021-Shaf
+                    
+                    If(
+                        DateTimefound > DateTimeconfirmed  ,
+                         Reset(Dropdown_hour_start_1);
+                    );*/
+                    
+                PressedBorderColor: =Dropdown_hour_start_1.HoverBorderColor
+                PressedFill: =RGBA(153, 153, 153, 1)
+                Reset: =true
+                SelectionFill: =RGBA(230, 230, 230, 1)
+                Size: =21
+                Width: =135
+                X: =34
+                Y: =1998
+                ZIndex: =126
+
+            Dropdown_min_start_1 As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                Default: ="00"
+                FocusedBorderColor: =Dropdown_min_start_1.BorderColor
+                Height: =70
+                HoverBorderColor: =ColorFade(Dropdown_min_start_1.BorderColor, 15%)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: |
+                    =["","00","01","02","03","04","05","06","07","08","09","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59"]
+                OnChange: |-
+                    =/*Old validation
+                    If(
+                        Value(Dropdown_min_start_1.Selected.Value) < Value(Dropdown_min_start.Selected.Value),
+                        Reset(Dropdown_hour_start_1)
+                    );*/
+                    
+                    Set(
+                         DateTimeconfirmed, 
+                         DateTimeValue(
+                              DatePicker_date_time_confirmed.SelectedDate
+                              & " " &  
+                              Time(
+                                Value(Dropdown_hour_start_1.Selected.Value),
+                                Value(Dropdown_min_start_1.Selected.Value),
+                                0
+                         )
+                    ));
+                    Set(
+                         DateTimefound, 
+                         DateTimeValue(
+                              DatePicker_datetime_body_found.SelectedDate
+                              & " " &  
+                              Time(
+                                Value(Dropdown_hour_start.Selected.Value),
+                                Value(Dropdown_min_start.Selected.Value),
+                                0
+                         )
+                    ));
+                    
+                    
+                    /*/*Resetting fields validation 01/11/2021-Shaf-not used anymore
+                    
+                    If(
+                        DateTimefound > DateTimeconfirmed ,
+                         Reset(Dropdown_min_start_1)
+                    );*/
+                PressedBorderColor: =Dropdown_min_start_1.HoverBorderColor
+                PressedFill: =RGBA(153, 153, 153, 1)
+                Reset: =true
+                SelectionFill: =RGBA(204, 204, 204, 1)
+                Size: =21
+                Width: =135
+                X: =315
+                Y: =1998
+                ZIndex: =127
+
+            Lbl_asteriks_15 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =561
+                Y: =1533
+                ZIndex: =128
+
+            Lbl_asteriks_16 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =561
+                Y: =1733
+                ZIndex: =129
+
+            Lbl_asteriks_17 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =561
+                Y: =1869
+                ZIndex: =130
+
+            Lbl_asteriks_18 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =561
+                Y: =2169
+                ZIndex: =131
+
+            Txt_latitude_sudden_death As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =Location.Latitude
+                Height: =70
+                HintText: ="Grid reference"
+                Size: =21
+                Width: =196
+                X: =379
+                Y: =1264
+                ZIndex: =132
+
+            Label_hr As label:
+                Height: =70
+                OnSelect: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key)
+                Size: =21
+                Text: |-
+                    =
+                    "Hr"
+                Width: =77
+                X: =184
+                Y: =1662
+                ZIndex: =133
+
+            Label_hr_1 As label:
+                Height: =70
+                OnSelect: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key)
+                Size: =21
+                Text: ="Min"
+                Width: =77
+                X: =462
+                Y: =1998
+                ZIndex: =134
+
+            Label_hr_2 As label:
+                Height: =70
+                OnSelect: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key)
+                Size: =21
+                Text: ="Hr"
+                Width: =77
+                X: =184
+                Y: =1995
+                ZIndex: =135
+
+            Label_hr_3 As label:
+                Height: =70
+                OnSelect: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key)
+                Size: =21
+                Text: ="Min"
+                Width: =77
+                X: =453
+                Y: =1662
+                ZIndex: =136
+
+            TextInput_death_diagnosed_by As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key).'Death diagnosed by'
+                Fill: =madcolsqsd
+                Height: =70
+                HintText: ="Death diagnosed by"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |-
+                    =If(Len(TextInput_death_diagnosed_by.Text)>0,UpdateContext({madcolsqsd:White}),UpdateContext({madcolsqsd:LightGoldenRodYellow}))
+                OnSelect: =
+                Size: =21
+                Width: =545
+                X: =34
+                Y: =2204
+                ZIndex: =137
+
+            Label3_9 As label:
+                Height: =70
+                Size: =21
+                Text: ="Burial or cremation "
+                Width: =545
+                X: =34
+                Y: =2622
+                ZIndex: =138
+
+            Txt_removed_to As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key).'Removed to'
+                Height: =70
+                HintText: ="Removed to"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Size: =21
+                Width: =545
+                X: =34
+                Y: =2435
+                ZIndex: =139
+
+            Txt_arranging_funeral As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key).'Undertaker funeral'
+                Height: =70
+                HintText: ="Undertaker arranging funeral"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =34
+                Y: =2535
+                ZIndex: =140
+
+            Txt_liasion_telephone As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key).'Liasion officer phone'
+                Height: =70
+                HintText: ="Telephone"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Size: =21
+                Width: =545
+                X: =34
+                Y: =2932
+                ZIndex: =141
+
+            Drpdn_burial_cremation As dropdown:
+                AllowEmptySelection: =true
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(166, 166, 166, 100), -20%)
+                Default: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key).'Burial Or Cremation name'
+                Height: =70
+                Items: =Burialorcremationoffline
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =34
+                Y: =2672
+                ZIndex: =142
+
+            Label3_13 As label:
+                Height: =70
+                Size: =21
+                Text: ="Family liasion officer"
+                Width: =545
+                X: =34
+                Y: =2772
+                ZIndex: =143
+
+            Txt_family_liasion_officer As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key).'Family Liasion officer'
+                Height: =70
+                HintText: ="Name"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Size: =21
+                Width: =545
+                X: =34
+                Y: =2832
+                ZIndex: =144
+
+            Label_retired_deceased_2 As label:
+                Height: =50
+                Size: =21
+                Text: |-
+                    ="Undertaker removing body?
+                    "
+                Width: =560
+                X: =34
+                Y: =2311
+                ZIndex: =145
+
+            Radio_undertaker_removing_body As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key).'Undertaker removing body'
+                Height: =97
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =UpdateContext({visibletag:true})
+                OnSelect: |-
+                    =If(
+                        Radio_undertaker_removing_body.Selected.Value = "Yes",
+                        UpdateContext({occupation: true});UpdateContext({y1:y1+100}));
+                        If(
+                        Radio_undertaker_removing_body.Selected.Value = "No",
+                        UpdateContext({occupation: false});UpdateContext({y1:0}));
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =335
+                X: =34
+                Y: =2348
+                ZIndex: =146
+
+            Label2_20 As label:
+                Height: =66
+                Size: =21
+                Text: |-
+                    ="Next of kin informed?
+                    "
+                Width: =560
+                X: =34
+                Y: =3045
+                ZIndex: =148
+
+            Radio_next_of_kin As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('Sudden death offline',Key=Drpdn_incident_key_2.Selected.Key).'Next of kin informed'
+                Fill: =madcolspsd
+                Height: =97
+                Items: =["Yes","No"]
+                Layout: =Layout.Horizontal
+                OnChange: |-
+                    =If(Len(Radio_next_of_kin.Selected.Value)>0,UpdateContext({madcolspsd:White}),UpdateContext({madcolspsd:LightGoldenRodYellow}));If(Radio_next_of_kin.Selected.Value="Yes",UpdateContext({howinformed:true,actioninformed:false}));If(Radio_next_of_kin.Selected.Value="No",UpdateContext({howinformed:false,actioninformed:true}));
+                OnSelect: |-
+                    =If(Len(Radio_next_of_kin.Selected.Value)>0,UpdateContext({madcolspsd:White}),UpdateContext({madcolspsd:LightGoldenRodYellow}));If(Radio_next_of_kin.Selected.Value="Yes",UpdateContext({howinformed:true,actioninformed:false}));If(Radio_next_of_kin.Selected.Value="No",UpdateContext({howinformed:false,actioninformed:true}));UpdateContext({y10:150})
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =336
+                X: =34
+                Y: =3095
+                ZIndex: =149
+
+            Txt_next_of_kin_informed As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Sudden death offline',Key=Drpdn_incident_key_2.Selected.Key).'Next of kin way of info'
+                Fill: =madcolsqsd
+                Height: =70
+                HintText: ="How have the next of kin been informed?"
+                OnChange: |-
+                    =If(Len(Txt_next_of_kin_informed.Text)>0,({ madcolsqsd:Transparent}),UpdateContext({ madcolsqsd:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Txt_next_of_kin_informed.Text)>0,({ madcolsqsd:Transparent}),UpdateContext({ madcolsqsd:LightGoldenRodYellow}))
+                Size: =21
+                Visible: =howinformed
+                Width: =545
+                X: =30
+                Y: =3203
+                ZIndex: =152
+
+            Txt_action_next_of_kin As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Sudden death offline',Key=Drpdn_incident_key_2.Selected.Key).'Action of next of Kin'
+                Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
+                Height: =70
+                HintText: ="What action are in place to inform?"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                OnChange: |-
+                    =If(Len(Txt_action_next_of_kin.Text)>0,({ madcolsrsd:Transparent}),UpdateContext({ madcolsrsd:LightGoldenRodYellow}))
+                OnSelect: |-
+                    =If(Len(Txt_action_next_of_kin.Text)>0,({ madcolsrsd:Transparent}),UpdateContext({ madcolsrsd:LightGoldenRodYellow}))
+                Size: =21
+                Visible: =actioninformed
+                Width: =545
+                X: =34
+                Y: =3203
+                ZIndex: =153
+
+            Lbl_asteriks_19 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =319
+                Y: =3036
+                ZIndex: =155
+
+            Lbl_asteriks_21 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Visible: =actioninformed
+                Width: =22
+                X: =556
+                Y: =3174
+                ZIndex: =156
+
+            Lbl_asteriks_20 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Visible: =howinformed
+                Width: =22
+                X: =556
+                Y: =3174
+                ZIndex: =157
+
+            Coombobox_country_4 As combobox:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                ChevronBackground: =RGBA(153, 153, 153, 1)
+                ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
+                DefaultSelectedItems: =LookUp(countriesoffline,LookUp('Sudden death offline',Key=Dropdown_sydden_death_key.Selected.Key).'Country sudden death'=cp_name)
+                DisplayFields: =["cp_name"]
+                Height: =70
+                HoverFill: =RGBA(230, 230, 230, 1)
+                InputTextPlaceholder: ="Select country"
+                Items: =SortByColumns( countriesoffline,"cp_displaysequenceno",Ascending,"cp_name",Descending)  
+                OnChange: |-
+                    =If(Len(Text(Coombobox_country_4.Selected.cp_name))>0,UpdateContext({madcolH:White}),UpdateContext({madcolH:LightGoldenRodYellow}));
+                PressedFill: =RGBA(230, 230, 230, 1)
+                SearchFields: =["cp_name"]
+                SearchItems: =Search(SortByColumns( countriesoffline,"cp_displaysequenceno",Ascending,"cp_name",Descending)  ,Coombobox_country_4.SearchText,"cp_name")
+                SelectionFill: =RGBA(153, 153, 153, 1)
+                SelectMultiple: =false
+                Size: =21
+                Width: =545
+                X: =40
+                Y: =1126
+                ZIndex: =161
+
+        DataCard7 As dataCard.blankCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =118
+            Width: =640
+            X: =0
+            Y: =1
+            ZIndex: =2
+
+    Icon3_11 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home,UnCover)
+        X: =31
+        Y: =13
+        ZIndex: =4
+
+    Icn_exit_12 As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Navigate(Scr_home,UnCover)
+        X: =576
+        Y: =13
+        ZIndex: =5
+
+    Btn_save_15 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =70
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |
+            =If(DateTimeconfirmed>DateTimefound,Navigate(
+                Scr_home,
+                UnCover
+            ),Notify("Death Confirmed cannot be less than Body Found",NotificationType.Error,10000));
+            UpdateIf(
+                'Sudden death offline',
+                Key = Dropdown_sydden_death_key.Selected.Key,
+                {
+                    'Place of death desc': Txt_Description.Text,
+                    'Housename sudden death': Txt_housename_sudden_death.Text,
+                    'Houseno Sudden death': Txt_houseno_sudden_death.Text,
+                    'Address sudden death': Txt_address_sudden_death.Text,
+                    'District sudden death': Txt_district_sudden_death.Text,
+                    'Town sudden death': Text_town_sudden_death.Text,
+                    'County sudden death': Txt_county_sudden_death.Text,
+                    'pcode sudden death': Text_pcode_sudden_death.Text,
+                    'Country sudden death': Coombobox_country_4.Selected.cp_name,
+                    'Longtitude Sudden Death': Txt_longtitude_sudden_death.Text,
+                    'Latitude Sudden Death': Txt_latitude_sudden_death.Text,
+                    'NPT sudden death': Drpdn_Npt_sudden_death.Selected.cp_territorialpolicingareaid,
+                    'NPT sudden death name': Drpdn_Npt_sudden_death.Selected.cp_name,
+                    'Date body found': DatePicker_datetime_body_found.SelectedDate,
+                    'Time Body Found': Time(
+                        Value(Dropdown_hour_start.Selected.Value),
+                        Value(Dropdown_min_start.Selected.Value),
+                        0
+                    ),
+                    'Body found By': Txt_body_found_by.Text,
+                    'Date fact confirmed': DatePicker_date_time_confirmed.SelectedDate,
+                    'Time fact confirmed': Time(
+                        Value(Dropdown_hour_start_1.Selected.Value),
+                        Value(Dropdown_min_start_1.Selected.Value),
+                        0
+                    ),
+                    'Day of Death': Txt_Day_of_death.Text,
+                    'Death diagnosed by': TextInput_death_diagnosed_by.Text,
+                    'Removed to': Txt_removed_to.Text,
+                    'Undertaker removing body': Radio_undertaker_removing_body.Selected.Value,
+                    'Undertaker funeral': Txt_arranging_funeral.Text,
+                    'Burial Or Cremation name': Drpdn_burial_cremation.Selected.cp_name,
+                    'Burial Or Cremation': Drpdn_burial_cremation.Selected.cp_lookupvalueid,
+                    'Family Liasion officer': Txt_family_liasion_officer.Text,
+                    'Liasion officer phone': Txt_liasion_telephone.Text,
+                    'Next of kin informed': Radio_next_of_kin.Selected.Value,
+                    'Next of kin way of info': Txt_next_of_kin_informed.Text,
+                    'Action of next of Kin': Txt_action_next_of_kin.Text
+                }
+            );
+            UpdateContext(
+                {
+                    rec: LookUp(
+                        'Sudden death offline',
+                        Key = Sudden_Primary_key
+                    )
+                }
+            );
+            UpdateIf(
+                'Sudden death offline',
+                Key = Dropdown_sydden_death_key.Selected.Key,
+                {
+                    suddenDeathValid: And(
+                        !IsBlank(rec.'Place of death desc'),
+                        !IsBlank(rec.'NPT sudden death name'),
+                        !IsBlank(rec.'Date body found'),
+                        !IsBlank(rec.'Date fact confirmed'),
+                        !IsBlank(rec.'Death diagnosed by'),
+                        !IsBlank(rec.'Body found By'),
+                        Or(
+                            And(
+                                rec.'Next of kin informed' = "Yes",
+                                !IsBlank(rec.'Next of kin way of info')
+                            ),
+                            And(
+                                rec.'Next of kin informed' = "No",
+                                !IsBlank(rec.'Action of next of Kin')
+                            )
+                        )
+                    )
+                }
+            );
+            SaveData(
+                'Sudden death offline',
+                "Sudden death offline"
+            );
+        Size: =24
+        Text: ="Save and continue"
+        Width: =545
+        X: =31
+        Y: =1050
+        ZIndex: =6
+

@@ -1,0 +1,124 @@
+[
+  {
+    "CdsFCBContext": "{\"FileType\":true,\"ImageExternalStorage\":true}",
+    "EntitySetName": "cp_contactroletypes",
+    "IsHidden": false,
+    "IsSampleData": false,
+    "IsWritable": true,
+    "LogicalName": "cp_contactroletype",
+    "MaxGetRowsCount": 500,
+    "Name": "Contact Role Types",
+    "NativeCDSDataSourceInfoNameMapping": {
+      "cp_applicationused": "Application Used",
+      "cp_Contact_cp_contactroletype_cp_contactrole": "Contacts",
+      "cp_contactroletype_AsyncOperations": "System Jobs",
+      "cp_contactroletype_BulkDeleteFailures": "Bulk Delete Failures",
+      "cp_contactroletype_cp_contactroletype_cp_": "Sudden Death Involved Contacts",
+      "cp_contactroletype_MailboxTrackingFolders": "Mailbox Auto Tracking Folders",
+      "cp_contactroletype_PrincipalObjectAttributeAccesses": "Field Sharing",
+      "cp_contactroletype_ProcessSession": "Process Sessions",
+      "cp_contactroletype_SyncErrors": "Sync Errors",
+      "cp_contactroletypeid": "Contact Role Type",
+      "cp_name": "Name",
+      "createdby": "Created By",
+      "createdon": "Created On",
+      "createdonbehalfby": "Created By (Delegate)",
+      "importsequencenumber": "Import Sequence Number",
+      "modifiedby": "Modified By",
+      "modifiedon": "Modified On",
+      "modifiedonbehalfby": "Modified By (Delegate)",
+      "organizationid": "Organization Id",
+      "overriddencreatedon": "Record Created On",
+      "statecode": "Status",
+      "statuscode": "Status Reason",
+      "timezoneruleversionnumber": "Time Zone Rule Version Number",
+      "utcconversiontimezonecode": "UTC Conversion Time Zone Code",
+      "versionnumber": "Version Number"
+    },
+    "PreferredName": "Contact Role Types",
+    "Type": "NativeCDSDataSourceInfo"
+  },
+  {
+    "DisplayName": "Contact Role Types (Views)",
+    "Name": "_cp_contactroletype_views",
+    "RelatedEntityName": "Contact Role Types",
+    "TrimmedViewName": true,
+    "Type": "ViewInfo",
+    "ViewInfoNameMapping": {
+      "68edec37-4bad-497d-805f-26f3dad66902": "Contact Role Type Advanced Find View",
+      "69cbb1d0-e287-44b2-a4de-83c37f74b25f": "Inactive Contact Role Types",
+      "be8616f3-35ed-4607-b298-52b379d912ea": "Contact Role Type Associated View",
+      "eae7500f-bf88-4ffe-83bc-1664bce2e986": "Active Contact Role Types",
+      "f543dfc1-ccfe-429b-8ec8-fac9d17a95f3": "Contact Role Type Lookup View"
+    }
+  },
+  {
+    "DisplayName": "Application Used",
+    "Name": "cp_applicationused",
+    "OptionSetInfoNameMapping": {
+      "778230000": "Generic Use",
+      "778230001": "Sudden Death",
+      "778230002": "Use of Force",
+      "778230003": "Vehicle",
+      "778230004": "Statement",
+      "778230005": "Covid",
+      "778230006": "Its Your Choice"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": true,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "cp_applicationused",
+        "OptionSetReferenceEntityName": "Contact Role Types"
+      },
+      "OptionSetReferenceItem1": {
+        "OptionSetReferenceColumnName": "cp_usedin",
+        "OptionSetReferenceEntityName": "Lookup Fields"
+      }
+    },
+    "OptionSetTypeKey": "PicklistType",
+    "RelatedColumnInvariantName": "cp_applicationused",
+    "RelatedEntityName": "Contact Role Types",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status (Contact Role Types)",
+    "Name": "cp_contactroletype_statecode",
+    "OptionSetInfoNameMapping": {
+      "0": "Active",
+      "1": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statecode",
+        "OptionSetReferenceEntityName": "Contact Role Types"
+      }
+    },
+    "OptionSetTypeKey": "StateType",
+    "RelatedColumnInvariantName": "statecode",
+    "RelatedEntityName": "Contact Role Types",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Status Reason (Contact Role Types)",
+    "Name": "cp_contactroletype_statuscode",
+    "OptionSetInfoNameMapping": {
+      "1": "Active",
+      "2": "Inactive"
+    },
+    "OptionSetIsBooleanValued": false,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "statuscode",
+        "OptionSetReferenceEntityName": "Contact Role Types"
+      }
+    },
+    "OptionSetTypeKey": "StatusType",
+    "RelatedColumnInvariantName": "statuscode",
+    "RelatedEntityName": "Contact Role Types",
+    "Type": "OptionSetInfo"
+  }
+]

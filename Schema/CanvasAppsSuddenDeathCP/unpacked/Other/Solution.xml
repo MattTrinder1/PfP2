@@ -6,7 +6,7 @@
       <LocalizedName description="124 - Canvas Apps - Sudden Death" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.0.0.118</Version>
+    <Version>1.0.0.120</Version>
     <Managed>1</Managed>
     <Publisher>
       <UniqueName>cumbriapolicepublisher</UniqueName>
@@ -80,6 +80,39 @@
     <RootComponents>
       <RootComponent type="300" schemaName="cp_suddendeathnew_1923b" behavior="0" />
     </RootComponents>
-    <MissingDependencies />
+    <MissingDependencies>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_contactroletype" displayName="Contact Role Type" solution="Active" />
+        <Dependent type="300" schemaName="cp_suddendeathnew_1923b" displayName="Sudden Death (New)" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_customersetting" displayName="Customer Setting" solution="Active" />
+        <Dependent type="300" schemaName="cp_suddendeathnew_1923b" displayName="Sudden Death (New)" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_lookupfield" displayName="Lookup Field" solution="Active" />
+        <Dependent type="300" schemaName="cp_suddendeathnew_1923b" displayName="Sudden Death (New)" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_lookupvalue" displayName="Lookup Value" solution="Active" />
+        <Dependent type="300" schemaName="cp_suddendeathnew_1923b" displayName="Sudden Death (New)" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_suddendeathinvolvedcontactstg" displayName="Sudden Death Involved Contact STG" solution="Active" />
+        <Dependent type="300" schemaName="cp_suddendeathnew_1923b" displayName="Sudden Death (New)" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_suddendeathpropertystg" displayName="Sudden Death Property STG" solution="Active" />
+        <Dependent type="300" schemaName="cp_suddendeathnew_1923b" displayName="Sudden Death (New)" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_suddendeathstg" displayName="Sudden Death STG" solution="Active" />
+        <Dependent type="300" schemaName="cp_suddendeathnew_1923b" displayName="Sudden Death (New)" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_territorialpolicingarea" displayName="Territorial Policing Area" solution="Active" />
+        <Dependent type="300" schemaName="cp_suddendeathnew_1923b" displayName="Sudden Death (New)" />
+      </MissingDependency>
+    </MissingDependencies>
   </SolutionManifest>
 </ImportExportXml>

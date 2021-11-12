@@ -1,0 +1,202 @@
+Scr_properties As screen:
+    OnVisible: =
+
+    Lbl_header_5 As label:
+        Align: =Align.Center
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =87
+        Size: =27
+        Text: ="Properties"
+        Width: =640
+        ZIndex: =1
+
+    Icn_exit_5 As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Navigate(Scr_home,UnCover)
+        X: =576
+        Y: =13
+        ZIndex: =2
+
+    Icon3_4 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: =Navigate(Scr_home,UnCover)
+        X: =31
+        Y: =13
+        ZIndex: =8
+
+    Btn_save_17 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |-
+            =UpdateContext({pk: pk + 1});
+            Set (Property_Key,pk);
+            UpdateContext({Property_Key: pk});
+            Collect(
+                'Property offline',
+                
+                    {SuddenDeathKey:ddl_property_incident_key_1.Selected.Key,
+                    PropertyKey: Property_Key ,
+                    PhotoProperty: SampleImage,
+                    PropertyDescription: "",
+                    IsDisposedOrRetained: "",
+                    PropertyLocation:"",
+                    PersonAuthorisingProperty: "",
+                    PropertyRelationshipToDeceased: "",
+                    PropertyDate: Date(Blank(),Blank(),Blank()),
+                    PropertySignature: SampleImage,
+                       Subjecttoinvestigation:"",
+                             seizedby:"",
+                    exhibitnumber:"",
+                     Propertynumber:""
+            
+                }
+            );Reset(Photo_property_media);SaveData('Property offline',"Property offline");
+            Navigate(
+                Scr_property,
+                UnCoverRight
+            )
+        Size: =24
+        Text: ="Add a property"
+        Width: =255
+        X: =47
+        Y: =1032
+        ZIndex: =9
+
+    "Gallery3 As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
+        Height: =406
+        Items: =Filter('Property offline',SuddenDeathKey=ddl_property_incident_key_1.Selected.Key)
+        Layout: =Layout.Vertical
+        TemplatePadding: =0
+        TemplateSize: =184
+        Y: =176
+        ZIndex: =10
+
+        Image2 As image:
+            Height: =128
+            Image: =ThisItem.PhotoProperty
+            OnSelect: =Select(Parent)
+            Width: =128
+            X: =16
+            Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
+            ZIndex: =1
+
+        tx_property_number As label:
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Text: =ThisItem.PropertyKey
+            VerticalAlign: =VerticalAlign.Top
+            Width: =81
+            X: =Image2.X + Image2.Width + 24
+            Y: =10
+            ZIndex: =2
+
+        tx_property_description As label:
+            Height: =80
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Text: =ThisItem.PropertyDescription
+            VerticalAlign: =VerticalAlign.Top
+            Width: =361
+            X: =tx_property_number.X
+            Y: =39
+            ZIndex: =3
+
+        NextArrow2 As icon.ChevronRight:
+            AccessibleLabel: =Self.Tooltip
+            Icon: =Icon.ChevronRight
+            OnSelect: |-
+                =
+                
+                
+                Set(Property_Key,ThisItem.PropertyKey);
+                Navigate(Scr_property)
+            PaddingBottom: =10
+            PaddingLeft: =10
+            PaddingRight: =10
+            PaddingTop: =10
+            TabIndex: =0
+            Tooltip: ="View item details"
+            X: =574
+            Y: =118
+            ZIndex: =4
+
+        Separator2 As rectangle:
+            Height: =1
+            OnSelect: =Select(Parent)
+            Width: =Parent.TemplateWidth
+            Y: =Parent.TemplateHeight - 1
+            ZIndex: =5
+
+        txt_disposed_or_retained As text:
+            BorderStyle: =BorderStyle.None
+            BorderThickness: =0
+            Default: =ThisItem.IsDisposedOrRetained
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Size: =18
+            Width: =396
+            X: =168
+            Y: =114
+            ZIndex: =6
+
+        Icon3 As icon.Cancel:
+            Icon: =Icon.Cancel
+            OnSelect: =Remove('Property offline',ThisItem)
+            PaddingBottom: =10
+            PaddingLeft: =10
+            PaddingRight: =10
+            PaddingTop: =10
+            X: =576
+            ZIndex: =7
+
+    ddl_property_incident_key_1 As dropdown:
+        BorderColor: =RGBA(128, 128, 128, 1)
+        ChevronBackground: =RGBA(128, 128, 128, 1)
+        ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+        Default: =Sudden_Primary_key
+        DisplayMode: =DisplayMode.Disabled
+        Height: =70
+        HoverColor: =RGBA(128, 128, 128, 1)
+        HoverFill: =RGBA(230, 230, 230, 1)
+        Items: =Filter('Sudden death offline',Key=Sudden_Primary_key).Key
+        PressedFill: =RGBA(128, 128, 128, 1)
+        SelectionFill: =RGBA(128, 128, 128, 1)
+        Size: =21
+        Width: =545
+        X: =47
+        Y: =96
+        ZIndex: =11
+
+    Btn_save_18 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =72
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |-
+            =
+            Navigate(
+               Scr_home,
+                UnCoverRight
+            )
+        Size: =24
+        Text: ="Exit"
+        Width: =255
+        X: =337
+        Y: =1032
+        ZIndex: =14
+

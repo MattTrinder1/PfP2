@@ -1,0 +1,695 @@
+"Scr_property As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
+    OnHidden: =Reset(pen_property_signature)
+    OnVisible: |-
+        =Set(madcolA,LightGoldenRodYellow);
+        UpdateContext({madcolA:LightGoldenRodYellow});
+        
+        Set(madcolB,LightGoldenRodYellow);
+        UpdateContext({madcolB:LightGoldenRodYellow});
+        
+        Set(madcolC,LightGoldenRodYellow);
+        UpdateContext({madcolC:LightGoldenRodYellow});
+        
+        Set(madcolD,LightGoldenRodYellow);
+        UpdateContext({madcolD:LightGoldenRodYellow});
+        
+        Set(madcolE,LightGoldenRodYellow);
+        UpdateContext({madcolE:LightGoldenRodYellow});
+        
+        If(rb_disposed_retained.Selected.Value<>"",UpdateContext({madcolB:Transparent}),UpdateContext({madcolB:Red}));
+        
+        If(rb_disposed_retained.Selected.Value= "To be retained by next of kin",Set(personauthoring,"Retained by"),Set(personauthoring,"Person authorising disposal"));
+        
+        If(rb_disposed_retained.Selected.Value= "To be retained by next of kin",Set(disposeretainvis,true);UpdateContext({disposeretainvis:true});Set(disposeretainvisloc,true);UpdateContext({disposeretainvisloc:true});Set(seizedvis,false);UpdateContext({seizedvis:false});Set(ysubject,0);UpdateContext({ysubject:0});Reset(txt_PersonAuthorisingProperty);Reset(txt_RelationshipToDeceased);Reset(dt_propertydate);Reset(pen_property_signature);Reset(Radio_subjecttoinvestigation););
+        
+        If(rb_disposed_retained.Selected.Value= "To be disposed of",Set(disposeretainvis,true);UpdateContext({disposeretainvis:true});Set(disposeretainvisloc,true);UpdateContext({disposeretainvisloc:true});Set(seizedvis,false);UpdateContext({seizedvis:false});Set(ysubject,0);UpdateContext({ysubject:0});Reset(txt_PersonAuthorisingProperty);Reset(txt_RelationshipToDeceased);Reset(dt_propertydate);Reset(pen_property_signature);Reset(Radio_subjecttoinvestigation););
+        
+        If(rb_disposed_retained.Selected.Value= "Seized",Set(disposeretainvis,false);UpdateContext({disposeretainvis:false});Set(disposeretainvisloc,true);UpdateContext({disposeretainvisloc:false});Set(seizedvis,true);UpdateContext({seizedvis:true});Set(ysubject,0);UpdateContext({ysubject:0}););
+        
+        If(Len(rb_disposed_retained.Selected.Value)= 0 ,Set(disposeretainvis,false);UpdateContext({disposeretainvis:false});Set(disposeretainvisloc,true);UpdateContext({disposeretainvisloc:false});Set(seizedvis,false);UpdateContext({seizedvis:false});Set(personauthoring,"Person authorising disposal"););
+        
+        If(Radio_subjecttoinvestigation.Selected.Value="Yes" And ysubject=0,Set(disposeretainvis,true);UpdateContext({disposeretainvis:true});Set(seizedvis,true);UpdateContext({seizedvis:true});Set(ysubject,390);UpdateContext({ysubject:390}););
+        If(rb_disposed_retained.Selected.Value="Seized" And Radio_subjecttoinvestigation.Selected.Value="No",Set(disposeretainvis,false);UpdateContext({disposeretainvis:false});Set(seizedvis,true);UpdateContext({seizedvis:true});Set(ysubject,0);UpdateContext({ysubject:0}););
+        If(Len(Radio_subjecttoinvestigation.Selected.Value)=0,Set(ysubject,0);UpdateContext({ysubject:0});Set(ysubject,0);UpdateContext({ysubject:0}););
+        If(Radio_subjecttoinvestigation.Selected.Value="No", Reset(txt_PersonAuthorisingProperty);Reset(txt_RelationshipToDeceased);Reset(dt_propertydate);Reset(pen_property_signature););
+
+    RectQuickActionBar2_8 As rectangle:
+        Height: =88
+        Width: =Parent.Width
+        ZIndex: =1
+
+    LblAppName2_8 As label:
+        Align: =Align.Center
+        Fill: =RGBA(153, 153, 153, 1)
+        FontWeight: =FontWeight.Bold
+        Height: =88
+        Size: =27
+        Text: ="Property"
+        Width: =Parent.Width
+        ZIndex: =2
+
+    Canvas2_8 As fluidGrid.fluidGridWithBlankCard:
+        BorderThickness: =0
+        Height: |
+            =939 
+        Width: =Parent.Width
+        Y: =88
+        ZIndex: =3
+
+        DataCard2_8 As dataCard:
+            BorderColor: =RGBA(0, 0, 0, 1)
+            BorderStyle: =BorderStyle.Solid
+            BorderThickness: =0
+            DisplayMode: =DisplayMode.Edit
+            Fill: =RGBA(0, 0, 0, 0)
+            Height: =1789
+            Width: =Parent.Width
+            WidthFit: =true
+            X: =0
+            Y: =0+ysubject
+            ZIndex: =1
+
+            ddl_property_incident_key_2 As dropdown:
+                BorderColor: =RGBA(128, 128, 128, 1)
+                ChevronBackground: =RGBA(128, 128, 128, 1)
+                ChevronHoverBackground: =ColorFade(RGBA(230, 230, 230, 100), -20%)
+                Default: =Sudden_Primary_key
+                DisplayMode: =DisplayMode.Disabled
+                Height: =70
+                HoverColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Items: =Filter('Sudden death offline',Key=Sudden_Primary_key).Key
+                PressedFill: =RGBA(128, 128, 128, 1)
+                SelectionFill: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =48
+                Y: =40
+                ZIndex: =1
+
+            txt_property_description As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Property offline',PropertyKey=Property_Key And SuddenDeathKey=ddl_property_incident_key_2.Selected.Key).PropertyDescription
+                Fill: =madcolA
+                Height: =123
+                HintText: ="Description"
+                HoverBorderColor: =RGBA(128, 128, 128, 1)
+                HoverFill: =RGBA(230, 230, 230, 1)
+                Mode: =TextMode.MultiLine
+                OnChange: |-
+                    =If(
+                        Len(txt_property_description.Text) > 0,
+                        UpdateContext({madcolA: Transparent}),
+                        UpdateContext({madcolA: LightGoldenRodYellow})
+                    );
+                     
+                OnSelect: |-
+                    =If(
+                        Len(txt_property_description.Text) > 0,
+                        UpdateContext({madcolA: Transparent}),
+                        UpdateContext({madcolA: LightGoldenRodYellow})
+                    );
+                Size: =21
+                Width: =545
+                X: =38
+                Y: =198
+                ZIndex: =2
+
+            txt_property_number As text:
+                BorderColor: =RGBA(153, 153, 153, 1)
+                Default: =LookUp('Property offline',Property_Key=PropertyKey And SuddenDeathKey=Drpdn_incident_key_2.Selected.Key).PropertyKey
+                DisplayMode: =DisplayMode.View
+                Format: =TextFormat.Number
+                Height: =70
+                HintText: ="Property Number"
+                Size: =21
+                Width: =245
+                X: =289
+                Y: =855
+                ZIndex: =3
+
+            Label2_39 As label:
+                Height: =66
+                Size: =21
+                Text: ="Property Details"
+                Width: =560
+                X: =38
+                Y: =132
+                ZIndex: =5
+
+            Lbl_asteriks_29 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =563
+                Y: =146
+                ZIndex: =8
+
+            Photo_property_group As group:
+                Height: =5
+                Width: =5
+                X: =31
+                Y: =51
+                ZIndex: =9
+
+                Photo_property_image As image:
+                    Height: =265
+                    Image: =If(IsBlank(Photo_property_media.Media), SampleImage, Photo_property_media.Media)
+                    ImagePosition: =ImagePosition.Fill
+                    Width: =545
+                    X: =46
+                    Y: =599
+                    ZIndex: =6
+
+                Photo_property_media As addMedia:
+                    Height: =272
+                    Size: =25
+                    Text: ="Add a photo"
+                    Width: =545
+                    X: =41
+                    Y: =610
+                    ZIndex: =7
+
+            Lbl_asteriks_49 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =38
+                Size: =21
+                Text: ="*"
+                Width: =22
+                X: =557
+                Y: =335
+                ZIndex: =10
+
+            Label5 As label:
+                Height: =70
+                OnSelect: =
+                Size: =21
+                Text: ="Property Number"
+                Width: =260
+                X: =46
+                Y: =855
+                ZIndex: =11
+
+            rb_disposed_retained As radio:
+                BorderStyle: =BorderStyle.None
+                Default: =LookUp('Property offline',PropertyKey=Property_Key And SuddenDeathKey=Drpdn_incident_key_2.Selected.Key).IsDisposedOrRetained
+                Fill: =madcolB
+                Height: =242
+                Items: =["To be disposed of","To be retained by next of kin","Seized"]
+                OnChange: |-
+                    =If(rb_disposed_retained.Selected.Value<>"",UpdateContext({madcolB:Transparent}),UpdateContext({madcolB:Red}));
+                    
+                    If(rb_disposed_retained.Selected.Value= "To be retained by next of kin",Set(personauthoring,"Retained by"),Set(personauthoring,"Person authorising disposal"));
+                    
+                    If(rb_disposed_retained.Selected.Value= "To be retained by next of kin",Set(disposeretainvis,true);UpdateContext({disposeretainvis:true});UpdateContext({disposeretainvisloc:true});Set(seizedvis,false);UpdateContext({seizedvis:false});Set(ysubject,0);UpdateContext({ysubject:0});Reset(txt_PersonAuthorisingProperty);Reset(txt_RelationshipToDeceased);Reset(dt_propertydate);Reset(pen_property_signature);Reset(Radio_subjecttoinvestigation););
+                    
+                    If(rb_disposed_retained.Selected.Value= "To be disposed of",Set(disposeretainvis,true);UpdateContext({disposeretainvis:true});UpdateContext({disposeretainvisloc:true});Set(seizedvis,false);UpdateContext({seizedvis:false});Set(ysubject,0);UpdateContext({ysubject:0});Reset(txt_PersonAuthorisingProperty);Reset(txt_RelationshipToDeceased);Reset(dt_propertydate);Reset(pen_property_signature);Reset(Radio_subjecttoinvestigation););
+                    
+                    If(rb_disposed_retained.Selected.Value= "Seized",Set(disposeretainvis,false);UpdateContext({disposeretainvis:false});UpdateContext({disposeretainvisloc:false});Set(seizedvis,true);UpdateContext({seizedvis:true});Set(ysubject,0);UpdateContext({ysubject:0}););
+                    
+                    If(Len(rb_disposed_retained.Selected.Value)= 0 ,Set(disposeretainvis,false);UpdateContext({disposeretainvis:false});UpdateContext({disposeretainvisloc:false});Set(seizedvis,false);UpdateContext({seizedvis:false});Set(personauthoring,"Person authorising disposal"););
+                    
+                    
+                    Reset(Radio_subjecttoinvestigation);
+                OnSelect: |-
+                    =If(rb_disposed_retained.Selected.Value<>"",UpdateContext({madcolB:Transparent}),UpdateContext({madcolB:Red}));
+                    
+                    If(rb_disposed_retained.Selected.Value= "To be retained by next of kin",Set(personauthoring,"Retained by"),Set(personauthoring,"Person authorising disposal"));
+                    
+                    If(rb_disposed_retained.Selected.Value= "To be retained by next of kin",Set(disposeretainvis,true);UpdateContext({disposeretainvis:true});UpdateContext({disposeretainvisloc:true});Set(seizedvis,false);UpdateContext({seizedvis:false});Set(ysubject,0);UpdateContext({ysubject:0});Reset(txt_PersonAuthorisingProperty);Reset(txt_RelationshipToDeceased);Reset(dt_propertydate);Reset(pen_property_signature);Reset(Radio_subjecttoinvestigation););
+                    
+                    If(rb_disposed_retained.Selected.Value= "To be disposed of",Set(disposeretainvis,true);UpdateContext({disposeretainvis:true});UpdateContext({disposeretainvisloc:true});Set(seizedvis,false);UpdateContext({seizedvis:false});Set(ysubject,0);UpdateContext({ysubject:0});Reset(txt_PersonAuthorisingProperty);Reset(txt_RelationshipToDeceased);Reset(dt_propertydate);Reset(pen_property_signature);Reset(Radio_subjecttoinvestigation););
+                    
+                    If(rb_disposed_retained.Selected.Value= "Seized",Set(disposeretainvis,false);UpdateContext({disposeretainvis:false});UpdateContext({disposeretainvisloc:false});Set(seizedvis,true);UpdateContext({seizedvis:true});Set(ysubject,0);UpdateContext({ysubject:0}););
+                    
+                    If(Len(rb_disposed_retained.Selected.Value)= 0 ,Set(disposeretainvis,false);UpdateContext({disposeretainvis:false});UpdateContext({disposeretainvisloc:false});Set(seizedvis,false);UpdateContext({seizedvis:false});Set(personauthoring,"Person authorising disposal"););
+                    
+                    
+                    Reset(Radio_subjecttoinvestigation);
+                RadioBorderColor: =RGBA(128, 128, 128, 1)
+                Size: =21
+                Width: =545
+                X: =34
+                Y: =335
+                ZIndex: =12
+
+            Image1 As image:
+                Fill: =RGBA(255, 255, 255, 1)
+                Height: =348
+                Image: =LookUp('Property offline',Property_Key=PropertyKey And SuddenDeathKey=ddl_property_incident_key_2.Selected.Key).PropertySignature
+                ImagePosition: =ImagePosition.Stretch
+                Visible: =If(LookUp('Property offline',Property_Key=PropertyKey And SuddenDeathKey=Drpdn_incident_key_2.Selected.Key).PropertySignature=SampleImage,false,true)
+                Width: =576
+                X: =38
+                Y: =1330+ysubject
+                ZIndex: =27
+
+            Group4 As group:
+                Height: =5
+                Width: =5
+                X: =60
+                Y: =60
+                ZIndex: =30
+
+                txt_Property_Location As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Property offline',PropertyKey=Property_Key And SuddenDeathKey=Drpdn_incident_key_2.Selected.Key).PropertyLocation
+                    Fill: =madcolC
+                    Height: =70
+                    HintText: ="Location"
+                    HoverBorderColor: =RGBA(128, 128, 128, 1)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    OnChange: |-
+                        =If(
+                            Len(txt_Property_Location.Text) > 0,
+                            UpdateContext({madcolC: Transparent}),
+                            UpdateContext({madcolC: LightGoldenRodYellow})
+                        );
+                         
+                    OnSelect: |-
+                        =If(
+                            Len(txt_Property_Location.Text) > 0,
+                            UpdateContext({madcolC: Transparent}),
+                            UpdateContext({madcolC: LightGoldenRodYellow})
+                        );
+                         
+                    Size: =21
+                    Visible: =disposeretainvisloc
+                    Width: =545
+                    X: =48
+                    Y: =948+ysubject
+                    ZIndex: =4
+
+                Lbl_asteriks_32 As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =38
+                    Size: =21
+                    Text: ="*"
+                    Visible: =If(Radio_subjecttoinvestigation.Selected.Value="Yes",false,disposeretainvis)
+                    Width: =22
+                    X: =573
+                    Y: =910+ysubject
+                    ZIndex: =9
+
+                txt_PersonAuthorisingProperty As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Property offline',PropertyKey=Property_Key And SuddenDeathKey=Drpdn_incident_key_2.Selected.Key).PersonAuthorisingProperty
+                    Fill: =madcolD
+                    Height: =70
+                    HintText: =personauthoring
+                    HoverBorderColor: =RGBA(128, 128, 128, 1)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    OnChange: |-
+                        =If(
+                            Len(txt_PersonAuthorisingProperty.Text) > 0,
+                            UpdateContext({madcolD: Transparent}),
+                            UpdateContext({madcolD: LightGoldenRodYellow})
+                        );
+                         
+                    OnSelect: |-
+                        =If(
+                            Len(txt_PersonAuthorisingProperty.Text) > 0,
+                            UpdateContext({madcolD: Transparent}),
+                            UpdateContext({madcolD: LightGoldenRodYellow})
+                        );
+                         
+                    Size: =21
+                    Visible: =disposeretainvis
+                    Width: =545
+                    X: =50
+                    Y: =1049+ysubject
+                    ZIndex: =14
+
+                txt_RelationshipToDeceased As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Property offline',PropertyKey=Property_Key And SuddenDeathKey=Drpdn_incident_key_2.Selected.Key).PropertyRelationshipToDeceased
+                    Fill: =madcolE
+                    Height: =70
+                    HintText: ="Relationship to deceased"
+                    HoverBorderColor: =RGBA(128, 128, 128, 1)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    OnChange: |-
+                        =If(
+                            Len(txt_RelationshipToDeceased.Text) > 0,
+                            UpdateContext({madcolE: Transparent}),
+                            UpdateContext({madcolE: LightGoldenRodYellow})
+                        );
+                         
+                    OnSelect: |-
+                        =If(
+                            Len(txt_RelationshipToDeceased.Text) > 0,
+                            UpdateContext({madcolE: Transparent}),
+                            UpdateContext({madcolE: LightGoldenRodYellow})
+                        );
+                         
+                    Size: =21
+                    Visible: =disposeretainvis
+                    Width: =545
+                    X: =50
+                    Y: =1147+ysubject
+                    ZIndex: =15
+
+                Label2_31 As label:
+                    Height: =66
+                    Size: =21
+                    Text: ="Signature"
+                    Visible: =disposeretainvis
+                    Width: =560
+                    X: =50
+                    Y: =1276+ysubject
+                    ZIndex: =16
+
+                pen_property_signature As inkControl:
+                    Height: =306
+                    Reset: =true
+                    Visible: =disposeretainvis
+                    Width: =545
+                    X: =50
+                    Y: =1335+ysubject
+                    ZIndex: =17
+
+                Lbl_asteriks_30 As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =38
+                    Size: =21
+                    Text: ="*"
+                    Visible: =disposeretainvis
+                    Width: =22
+                    X: =573
+                    Y: =1119+ysubject
+                    ZIndex: =18
+
+                Lbl_asteriks_31 As label:
+                    Color: =RGBA(255, 0, 0, 1)
+                    Height: =38
+                    Size: =21
+                    Text: ="*"
+                    Visible: =disposeretainvis
+                    Width: =22
+                    X: =573
+                    Y: =1018+ysubject
+                    ZIndex: =19
+
+                dt_propertydate As datepicker:
+                    BorderColor: =RGBA(128, 128, 128, 1)
+                    DefaultDate: =LookUp('Property offline',PropertyKey=Property_Key And SuddenDeathKey=Drpdn_incident_key_2.Selected.Key).PropertyDate
+                    Height: =60
+                    IconBackground: =RGBA(128, 128, 128, 1)
+                    InputTextPlaceholder: ="DD/MM/YYYY"
+                    IsEditable: =true
+                    OnChange: =
+                    Size: =24
+                    Visible: =disposeretainvis
+                    Width: =545
+                    X: =50
+                    Y: =1228+ysubject
+                    ZIndex: =20
+
+            Group5 As group:
+                Height: =5
+                Width: =5
+                X: =60
+                Y: =60
+                ZIndex: =32
+
+                txt_seizedby As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Property offline',PropertyKey=Property_Key And SuddenDeathKey=Drpdn_incident_key_2.Selected.Key).seizedby
+                    Fill: =White
+                    Height: =70
+                    HintText: ="Seized by"
+                    HoverBorderColor: =RGBA(128, 128, 128, 1)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    OnChange: =
+                    OnSelect: =
+                    Size: =21
+                    Visible: =seizedvis
+                    Width: =545
+                    X: =34
+                    Y: =971
+                    ZIndex: =21
+
+                txt_PersonAuthorisingProperty_1 As text:
+                    BorderColor: =RGBA(153, 153, 153, 1)
+                    Default: =LookUp('Property offline',PropertyKey=Property_Key And SuddenDeathKey=Drpdn_incident_key_2.Selected.Key).seizedby
+                    Fill: =White
+                    Height: =70
+                    HintText: ="Exhibit number"
+                    HoverBorderColor: =RGBA(128, 128, 128, 1)
+                    HoverFill: =RGBA(230, 230, 230, 1)
+                    OnChange: =
+                    OnSelect: =
+                    Size: =21
+                    Visible: =seizedvis
+                    Width: =545
+                    X: =40
+                    Y: =1102
+                    ZIndex: =22
+
+                Label5_3 As label:
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Seized by"
+                    Visible: =seizedvis
+                    Width: =260
+                    X: =34
+                    Y: =910
+                    ZIndex: =23
+
+                Label5_4 As label:
+                    Height: =70
+                    OnSelect: =
+                    Size: =21
+                    Text: ="Exhibit number"
+                    Visible: =seizedvis
+                    Width: =260
+                    X: =38
+                    Y: =1032
+                    ZIndex: =24
+
+                Label_retired_3 As label:
+                    Height: =66
+                    Size: =21
+                    Text: |-
+                        ="Subject to investigation being complete: is authorisation for destruction required ?"
+                    Visible: =seizedvis
+                    Width: =560
+                    X: =38
+                    Y: =1172
+                    ZIndex: =25
+
+                Radio_subjecttoinvestigation As radio:
+                    BorderStyle: =BorderStyle.None
+                    Default: =LookUp('Property offline',PropertyKey=Property_Key And SuddenDeathKey=Drpdn_incident_key_2.Selected.Key).Subjecttoinvestigation
+                    Height: =97
+                    Items: =["Yes","No"]
+                    Layout: =Layout.Horizontal
+                    OnChange: |
+                        =If(
+                            Radio_subjecttoinvestigation.Selected.Value = "Yes" And ysubject = 0,
+                            Set(
+                                disposeretainvis,
+                                true
+                            );
+                            UpdateContext({disposeretainvis: true});
+                            Set(
+                                seizedvis,
+                                true
+                            );
+                            UpdateContext({seizedvis: true});
+                            Set(
+                                ysubject,
+                                390
+                            );
+                            UpdateContext({ysubject: 390});
+                            
+                        );
+                        If(
+                            rb_disposed_retained.Selected.Value = "Seized" And Radio_subjecttoinvestigation.Selected.Value = "No",
+                            Set(
+                                disposeretainvis,
+                                false
+                            );
+                            UpdateContext({disposeretainvis: false});
+                            Set(
+                                seizedvis,
+                                true
+                            );
+                            UpdateContext({seizedvis: true});
+                            Set(
+                                ysubject,
+                                0
+                            );
+                            UpdateContext({ysubject: 0});
+                            
+                        );
+                        If(
+                            Len(Radio_subjecttoinvestigation.Selected.Value) = 0,
+                            Set(
+                                disposeretainvis,
+                                false
+                            );
+                            UpdateContext({disposeretainvis: false});
+                            Set(
+                                ysubject,
+                                0
+                            );
+                            UpdateContext({ysubject: 0});
+                            Set(
+                                ysubject,
+                                0
+                            );
+                            UpdateContext({ysubject: 0});
+                            
+                        );
+                        If(
+                            Radio_subjecttoinvestigation.Selected.Value = "No",
+                            Reset(txt_PersonAuthorisingProperty);
+                            Reset(txt_RelationshipToDeceased);
+                            Reset(dt_propertydate);
+                            Reset(pen_property_signature);
+                            
+                        );
+                    OnSelect: |
+                        =If(
+                            Radio_subjecttoinvestigation.Selected.Value = "Yes" And ysubject = 0,
+                            Set(
+                                disposeretainvis,
+                                true
+                            );
+                            UpdateContext({disposeretainvis: true});
+                            Set(
+                                seizedvis,
+                                true
+                            );
+                            UpdateContext({seizedvis: true});
+                            Set(
+                                ysubject,
+                                390
+                            );
+                            UpdateContext({ysubject: 390});
+                            
+                        );
+                        If(
+                            rb_disposed_retained.Selected.Value = "Seized" And Radio_subjecttoinvestigation.Selected.Value = "No",
+                            Set(
+                                disposeretainvis,
+                                false
+                            );
+                            UpdateContext({disposeretainvis: false});
+                            Set(
+                                seizedvis,
+                                true
+                            );
+                            UpdateContext({seizedvis: true});
+                            Set(
+                                ysubject,
+                                0
+                            );
+                            UpdateContext({ysubject: 0});
+                            
+                        );
+                        If(
+                            Len(Radio_subjecttoinvestigation.Selected.Value) = 0,
+                            Set(
+                                disposeretainvis,
+                                false
+                            );
+                            UpdateContext({disposeretainvis: false});
+                            Set(
+                                ysubject,
+                                0
+                            );
+                            UpdateContext({ysubject: 0});
+                            Set(
+                                ysubject,
+                                0
+                            );
+                            UpdateContext({ysubject: 0});
+                            
+                        );
+                        If(
+                            Radio_subjecttoinvestigation.Selected.Value = "No",
+                            Reset(txt_PersonAuthorisingProperty);
+                            Reset(txt_RelationshipToDeceased);
+                            Reset(dt_propertydate);
+                            Reset(pen_property_signature);
+                            
+                        );
+                    RadioBorderColor: =RGBA(128, 128, 128, 1)
+                    Size: =21
+                    Visible: =seizedvis
+                    Width: =335
+                    X: =46
+                    Y: =1253
+                    ZIndex: =26
+
+    Icon3_12 As icon.ArrowLeft:
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.ArrowLeft
+        OnSelect: |-
+            =Back();
+            
+            Reset(rb_disposed_retained);
+            Reset(Radio_subjecttoinvestigation);
+            Set(ysubject,0);
+        X: =22
+        Y: =13
+        ZIndex: =4
+
+    Icn_exit_13 As icon.Cancel:
+        BorderColor: =RGBA(32, 54, 71, 1)
+        Color: =RGBA(255, 255, 255, 1)
+        Icon: =Icon.Cancel
+        OnSelect: =Navigate(Scr_home,UnCover)
+        X: =576
+        Y: =13
+        ZIndex: =5
+
+    Btn_save_16 As button:
+        Fill: =RGBA(153, 153, 153, 1)
+        Height: =70
+        HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
+        OnSelect: |-
+            =If(Image1.Image=SampleImage,
+            UpdateIf(
+                'Property offline',
+               PropertyKey = Property_Key And SuddenDeathKey=ddl_property_incident_key_1.Selected.Key,
+                {   
+                    PhotoProperty: Photo_property_image.Image,
+                    PropertyDescription: txt_property_description.Text,
+                    IsDisposedOrRetained: rb_disposed_retained.Selected.Value,
+                    PropertyLocation: txt_Property_Location.Text,
+                    PersonAuthorisingProperty: txt_PersonAuthorisingProperty.Text,
+                    PropertyRelationshipToDeceased: txt_RelationshipToDeceased.Text,
+                    PropertyDate: dt_propertydate.SelectedDate,
+                    PropertySignature: pen_property_signature.Image,
+                    Subjecttoinvestigation:Radio_subjecttoinvestigation.Selected.Value,
+                    seizedby:txt_seizedby.Text,
+                    exhibitnumber:txt_PersonAuthorisingProperty_1.Text,
+                    Propertynumber:txt_property_number.Text
+                    
+                    
+                    
+                }
+            );SaveData('Property offline',"Property offline");
+            Navigate(
+                Scr_properties,
+                UnCoverRight
+            );
+            Reset(rb_disposed_retained);
+            Reset(Radio_subjecttoinvestigation);
+            Set(ysubject,0);,Navigate(
+                Scr_properties,
+                UnCoverRight
+            );)
+        Size: =24
+        Text: ="Save and continue"
+        Width: =545
+        X: =47
+        Y: =1046
+        ZIndex: =6
+
