@@ -359,6 +359,8 @@ stages:
                 minorversion : $(minor.version)
                 releaseversion : $(release.version)
                 solutionprefix : $(solution.prefix)
+                customerName : Durham
+                environmentName : SystemTest
             
             - ${{ each parameter in parameters }}:
               - ${{ if contains(parameter.Key, 'SolutionName') }}:
