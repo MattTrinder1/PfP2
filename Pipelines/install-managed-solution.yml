@@ -14,7 +14,7 @@ steps:
 
 
   - task: MSCRMImportSolution@11
-    displayName: '${{parameter.Value}}'
+    displayName: 'Install ${{parameters.SolutionFileName}}'
     inputs:
         crmConnectionString: ${{parameters.connectionstring}}
         solutionFile: '${{parameters.SolutionFileName}}'
