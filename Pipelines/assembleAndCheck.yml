@@ -13,6 +13,8 @@ parameters:
   type: string
 - name: customerName
   type: string
+- name: environmentName
+  type: string
 
 
 steps:
@@ -50,7 +52,7 @@ steps:
       displayName: Copy to System Test folder
       sourceFolder: '$(Build.BinariesDirectory)'
       contents: '$(GeneratedSolutionFileName)' 
-      targetFolder: '$(Build.BinariesDirectory)\SystemTest'
+      targetFolder: '$(Build.BinariesDirectory)\${{parameters.customerName}}\${{parameters.environmentName}}'
       overWrite: true 
       flattenFolders: true
     condition: eq(variables['FolderExists'], True)
