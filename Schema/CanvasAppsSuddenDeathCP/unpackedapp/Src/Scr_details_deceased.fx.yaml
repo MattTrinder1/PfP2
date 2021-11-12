@@ -1,7 +1,7 @@
 "Scr_details_deceased As screen.'phoneLayout_FluidGridWithHeaderPageLayout_ver3.0'":
     OnHidden: |-
         =UpdateContext({canvasVisible:false})
-    OnVisible: |
+    OnVisible: |-
         =UpdateContext({canvasVisible: true});
         If(
             Radio_deceased_details_known.Selected.Value = "No",
@@ -148,100 +148,6 @@
             UpdateContext({madcolredddd: Transparent}),
             UpdateContext({madcolredddd: LightGoldenRodYellow})
         );
-        If(
-            And(
-                CountRows(
-                    Filter(
-                        Contactoffline,
-                        Key = Drpdn_incident_key_2.Selected.Key
-                    )
-                ) > 0,
-                Not(
-                    Or(
-                        CountRows(
-                            Filter(
-                                Filter(
-                                    Contactoffline,
-                                    Key = Drpdn_incident_key_2.Selected.Key And Contactrolename = "Deceased"
-                                ),
-                                identificationsignature = Blank()
-                            )
-                        ) > 0,
-                        CountRows(
-                            Filter(
-                                Search(
-                                    Filter(
-                                        Contactoffline,
-                                        Key = Drpdn_incident_key_2.Selected.Key
-                                    ),
-                                    "Identifier",
-                                    "Contactrolename"
-                                ),
-                                identificationsignature = Blank()
-                            )
-                        ) > 0
-                    )
-                )
-            ),
-            Set(
-                didetidisable,
-                DisplayMode.Disabled
-            )
-        );
-        If(
-            CountRows(
-                Filter(
-                    Contactoffline,
-                    Key = Drpdn_incident_key_2.Selected.Key
-                )
-            ) > 0,
-            If(
-                Or(
-                    CountRows(
-                        Filter(
-                            Filter(
-                                Contactoffline,
-                                Key = Drpdn_incident_key_2.Selected.Key And Contactrolename = "Deceased"
-                            ),
-                            identificationsignature = Blank()
-                        )
-                    ) > 0,
-                    CountRows(
-                        Filter(
-                            Search(
-                                Filter(
-                                    Contactoffline,
-                                    Key = Drpdn_incident_key_2.Selected.Key
-                                ),
-                                "Identifier",
-                                "Contactrolename"
-                            ),
-                            identificationsignature = Blank()
-                        )
-                    ) > 0
-                ),
-                Set(
-                    didetidisable,
-                    DisplayMode.Edit
-                )
-            ),
-            Set(
-                didetidisable,
-                DisplayMode.Edit
-            )
-        );
-        /*If(
-            IsBlank(
-                LookUp(
-                    Contactoffline,
-                    Key = Sudden_Primary_key And (Contactrolename = "Identifier")
-                ).identificationsignature
-            ),
-            Set(
-                didetidisable,
-                DisplayMode.Edit
-            )
-        );*/
 
     RectQuickActionBar2_6 As rectangle:
         Height: =88
@@ -270,7 +176,34 @@
             BorderColor: =RGBA(0, 0, 0, 1)
             BorderStyle: =BorderStyle.Solid
             BorderThickness: =0
-            DisplayMode: =DisplayMode.Edit
+            DisplayMode: |
+                =//DisplayMode.Edit
+                
+                If(
+                    And(
+                        CountRows(       
+                            Filter(
+                                Contactoffline,
+                                Key = Drpdn_incident_key_2.Selected.Key And Contactrolename = "Deceased"
+                            )
+                        ) > 0,
+                        CountRows(
+                            Filter(
+                                Search(
+                                    Filter(
+                                        Contactoffline,
+                                        Key = Drpdn_incident_key_2.Selected.Key
+                                    ),
+                                    "Identifier",
+                                    "Contactrolename"
+                                ),
+                                identificationsignature <> Blank()
+                            )
+                        ) > 0
+                    ),
+                    DisplayMode.Disabled,
+                    DisplayMode.Edit
+                )
             Fill: =RGBA(0, 0, 0, 0)
             Height: =3106
             Width: =Parent.Width
@@ -283,7 +216,7 @@
                 ChevronBackground: =RGBA(128, 128, 128, 1)
                 ChevronHoverBackground: =ColorFade(RGBA(128, 128, 128, 100), -20%)
                 Default: =Sudden_Primary_key
-                DisplayMode: =DisplayMode.Disabled
+                DisplayMode: =
                 Height: =70
                 Items: =Filter('Sudden death offline',Key=Sudden_Primary_key).Key
                 PressedFill: =RGBA(128, 128, 128, 1)
@@ -300,7 +233,7 @@
                 ChevronBackground: =RGBA(128, 128, 128, 1)
                 ChevronHoverBackground: =ColorFade(RGBA(128, 128, 128, 100), -20%)
                 Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").Titlename
-                DisplayMode: =didetidisable
+                DisplayMode: =
                 Fill: =madcoldd
                 Height: =70
                 HoverFill: =RGBA(230, 230, 230, 1)
@@ -322,7 +255,7 @@
                 BorderColor: =RGBA(153, 153, 153, 1)
                 Color: =Black
                 Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").Forename
-                DisplayMode: =didetidisable
+                DisplayMode: =
                 Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
                 Height: =70
                 HintText: =""
@@ -340,7 +273,7 @@
             Txt_Deceased_details_surname As text:
                 BorderColor: =RGBA(153, 153, 153, 1)
                 Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").Surname
-                DisplayMode: =didetidisable
+                DisplayMode: =
                 Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
                 Height: =70
                 HintText: =""
@@ -359,7 +292,7 @@
             Datepicker_Deceased_details_dob As datepicker:
                 BorderColor: =RGBA(153, 153, 153, 1)
                 DefaultDate: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").'Date of Birth'
-                DisplayMode: =didetidisable
+                DisplayMode: =
                 Fill: =madcolsddd
                 Height: =70
                 IconBackground: =RGBA(153, 153, 153, 1)
@@ -442,7 +375,7 @@
             Txt_Deceased_details_housename As text:
                 BorderColor: =RGBA(153, 153, 153, 1)
                 Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").Housename
-                DisplayMode: =didetidisable
+                DisplayMode: =
                 Fill: =If(IsBlank(Self.Text) And Radio_deceased_details_known.SelectedText.Value = "Yes" ,LightGoldenRodYellow,White)
                 Height: =70
                 HintText: =""
@@ -461,7 +394,7 @@
             Txt_Deceased_details_houseno As text:
                 BorderColor: =RGBA(153, 153, 153, 1)
                 Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").Housenumber
-                DisplayMode: =didetidisable
+                DisplayMode: =
                 Height: =70
                 HintText: =""
                 HoverBorderColor: =RGBA(128, 128, 128, 1)
@@ -476,7 +409,7 @@
             Txt_Deceased_details_address As text:
                 BorderColor: =RGBA(153, 153, 153, 1)
                 Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").Address1
-                DisplayMode: =didetidisable
+                DisplayMode: =
                 Fill: =If(IsBlank(Self.Text) And Radio_deceased_details_known.SelectedText.Value = "Yes" ,LightGoldenRodYellow,White)
                 Height: =70
                 HintText: =""
@@ -495,7 +428,7 @@
             Txt_Deceased_details_district As text:
                 BorderColor: =RGBA(153, 153, 153, 1)
                 Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").District
-                DisplayMode: =didetidisable
+                DisplayMode: =
                 Height: =70
                 HintText: =""
                 HoverBorderColor: =RGBA(128, 128, 128, 1)
@@ -510,7 +443,7 @@
             Txt_Deceased_details_town As text:
                 BorderColor: =RGBA(153, 153, 153, 1)
                 Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").Town
-                DisplayMode: =didetidisable
+                DisplayMode: =
                 Fill: =madcolshdd
                 Height: =70
                 HintText: =""
@@ -528,7 +461,7 @@
             Txt_Deceased_details_county As text:
                 BorderColor: =RGBA(153, 153, 153, 1)
                 Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").County
-                DisplayMode: =didetidisable
+                DisplayMode: =
                 Fill: =madcolsidd
                 Height: =70
                 HintText: =""
@@ -547,7 +480,7 @@
             Txt_Deceased_details_pobox As text:
                 BorderColor: =RGBA(153, 153, 153, 1)
                 Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").pcode
-                DisplayMode: =didetidisable
+                DisplayMode: =
                 Fill: =madcolskdd
                 Height: =70
                 HintText: =""
@@ -642,7 +575,7 @@
             Radio_Deceased_details_retired As radio:
                 BorderStyle: =BorderStyle.None
                 Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").Retired
-                DisplayMode: =didetidisable
+                DisplayMode: =
                 Height: =97
                 Items: =["Yes","No"]
                 Layout: =Layout.Horizontal
@@ -665,7 +598,7 @@
             Txt_place_of_birth As text:
                 BorderColor: =RGBA(153, 153, 153, 1)
                 Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").placeofbirth
-                DisplayMode: =didetidisable   
+                DisplayMode: =
                 Height: =70
                 HintText: =""
                 HoverBorderColor: =RGBA(128, 128, 128, 1)
@@ -690,7 +623,7 @@
             Txt_Body_label As text:
                 BorderColor: =RGBA(153, 153, 153, 1)
                 Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").DeceasedBodyLabel
-                DisplayMode: =didetidisable
+                DisplayMode: =
                 Height: =70
                 HintText: =""
                 HoverBorderColor: =RGBA(128, 128, 128, 1)
@@ -732,7 +665,7 @@
                 BorderColor: =RGBA(166, 166, 166, 1)
                 ChevronBackground: =RGBA(166, 166, 166, 1)
                 Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").MaritalStatus
-                DisplayMode: =didetidisable
+                DisplayMode: =
                 Fill: =If(IsBlank(Self.SelectedText.Value) And Radio_deceased_details_known.SelectedText.Value = "Yes",LightGoldenRodYellow,White)
                 Height: =70
                 Items: =Maritaloffline
@@ -758,7 +691,7 @@
                             Year(Now()) - Year(Datepicker_Deceased_details_dob.SelectedDate)
                         )
                     )
-                DisplayMode: =DisplayMode.Disabled
+                DisplayMode: =
                 Fill: = madcolsedd
                 Height: =70
                 HintText: ="Age"
@@ -800,7 +733,7 @@
                 BorderColor: =RGBA(166, 166, 166, 1)
                 ChevronBackground: =RGBA(166, 166, 166, 1)
                 Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And Contactrolename="Deceased").Gendername
-                DisplayMode: =didetidisable
+                DisplayMode: =
                 Fill: =If(IsBlank(Self.SelectedText.Value) And Radio_deceased_details_known.SelectedText.Value = "Yes",LightGoldenRodYellow,White)
                 Height: =70
                 Items: =Genderoffline
@@ -829,7 +762,7 @@
                 BorderColor: =RGBA(166, 166, 166, 1)
                 ChevronBackground: =RGBA(166, 166, 166, 1)
                 Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").OfficerDefinedEthnicityname
-                DisplayMode: =didetidisable
+                DisplayMode: =
                 Fill: =If(IsBlank(Self.SelectedText.Value) And Radio_deceased_details_known.SelectedText.Value = "Yes",LightGoldenRodYellow,White)
                 Height: =70
                 Items: =PerceivedEthnicityoffline
@@ -867,7 +800,7 @@
             Radio_addtional_name As radio:
                 BorderStyle: =BorderStyle.None
                 Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").HasAdditionalNames
-                DisplayMode: =didetidisable
+                DisplayMode: =
                 Height: =97
                 HoverColor: =RGBA(0, 0, 0, 1)
                 Items: =["Yes","No"]
@@ -895,6 +828,7 @@
             TextInput_additional_name As text:
                 BorderColor: =RGBA(128, 128, 128, 1)
                 Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").AdditionalNames
+                DisplayMode: =
                 Height: =70
                 HintText: =""
                 HoverBorderColor: =RGBA(128, 128, 128, 1)
@@ -913,7 +847,7 @@
                 ChevronHoverBackground: =ColorFade(Self.BorderColor, 15%)
                 DefaultSelectedItems: =LookUp(countriesoffline,cp_name=LookUp(Contactoffline,Key=Drpdn_incident_key_2.Selected.Key And Contactrolename="Deceased").Country)
                 DisplayFields: =["cp_name"]
-                DisplayMode: =didetidisable
+                DisplayMode: =
                 Fill: =If(IsBlank(Self.Selected) And Radio_deceased_details_known.SelectedText.Value = "Yes",LightGoldenRodYellow,White)
                 Height: =70
                 HoverFill: =RGBA(230, 230, 230, 1)
@@ -936,7 +870,7 @@
             txtDeceasedOccupation As text:
                 BorderColor: =RGBA(153, 153, 153, 1)
                 Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").Formeroccupationname
-                DisplayMode: =didetidisable
+                DisplayMode: =
                 Fill: =If(IsBlank(Self.Text) And Radio_deceased_details_known.SelectedText.Value = "Yes" ,LightGoldenRodYellow,White)
                 Height: =70
                 HintText: =""
@@ -964,7 +898,7 @@
             Radio_deceased_details_known As radio:
                 BorderStyle: =BorderStyle.None
                 Default: =LookUp(Contactoffline,Key=Dropdown_Deceased_details_key.Selected.Key And  Contactrolename="Deceased").Deceaseddetailsknown
-                DisplayMode: =didetidisable
+                DisplayMode: =
                 Fill: =madcolredddd
                 Items: =["Yes","No"]
                 Layout: =Layout.Horizontal
@@ -1241,6 +1175,7 @@
             Txt_steps_to_identify_2 As text:
                 BorderColor: =RGBA(153, 153, 153, 1)
                 Default: =LookUp('Sudden death offline',Key=Drpdn_incident_key_2.Selected.Key).'Formal Identification steps'
+                DisplayMode: =
                 Fill: =If(IsBlank(Self.Text) And Radio_deceased_details_known.SelectedText.Value = "No" ,LightGoldenRodYellow,White)
                 Height: =100
                 HoverBorderColor: =RGBA(128, 128, 128, 1)
@@ -1314,7 +1249,7 @@
         ZIndex: =5
 
     Btn_add_details_1 As button:
-        DisplayMode: =didetidisable   
+        DisplayMode: =
         Fill: =RGBA(153, 153, 153, 1)
         Height: =70
         HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)

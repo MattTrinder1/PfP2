@@ -555,10 +555,10 @@
                 ZIndex: =21
 
             Label_former_occupation_5 As label:
-                DisplayMode: =If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
+                DisplayMode: =//If(hasBeenSigned = true,DisplayMode.Disabled,DisplayMode.Edit)
                 Height: =68
                 Size: =21
-                Text: ="Occupation"
+                Text: =If(Radio_retired_1.SelectedText.Value = "Yes","Former occupation","Occupation")
                 Visible: =occupation1
                 Width: =545
                 X: =43
