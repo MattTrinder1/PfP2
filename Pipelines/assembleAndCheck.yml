@@ -25,7 +25,7 @@ steps:
 
 #if this is not a base level solution, copy in the environment specific folder generated in the rewrite step
 
-  - ${{ if ne(${{parameters.customerName}}, 'Base') }}:
+  - ${{ if ne(parameters.customerName, 'Base') }}:
     - task: CopyFiles@2
       inputs:
         displayName: Copy to System Test folder
@@ -49,7 +49,7 @@ steps:
  
 #if this is not a base level solution, copy it to the environemnt specific folder, and then delete the base version
 
-  - ${{ if ne(${{parameters.customerName}}, 'Base') }}:
+  - ${{ if ne(parameters.customerName, 'Base') }}:
 
     - powershell: |
                 $GeneratedSolutionFile = get-childitem -path "$(Build.BinariesDirectory)/${{parameters.solutionprefix}}${{parameters.solutionName}}_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
