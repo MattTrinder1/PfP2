@@ -235,7 +235,6 @@ stages:
                 - template: install-managed-solution.yml
                   parameters:
                     SolutionFileName : $(${{parameter.Value}}SolutionFileName)
-                    pipelineworkspace: $(pipeline.workspace)\$(artifact.name)
                     connectionString: $(pfpsystemtest.connection.string)
 
 
@@ -303,7 +302,6 @@ stages:
                 - template: install-managed-solution.yml
                   parameters:
                     SolutionFileName : $(${{parameter.Value}}SolutionFileName)
-                    pipelineworkspace: $(pipeline.workspace)\$(artifact.name)
                     connectionString: $(cumbriasystemtest.connection.string)
 
 
@@ -371,7 +369,6 @@ stages:
                 - template: install-managed-solution.yml
                   parameters:
                     SolutionFileName : $(${{parameter.Value}}SolutionFileName)
-                    pipelineworkspace: $(pipeline.workspace)\$(artifact.name)
                     connectionString: $(durhamsystemtest.connection.string)
 
 
@@ -430,7 +427,6 @@ stages:
                 - template: install-managed-solution.yml
                   parameters:
                     SolutionFileName : $(${{parameter.Value}}SolutionFileName)
-                    pipelineworkspace: $(pipeline.workspace)\$(artifact.name)
                     connectionString: $(Cumbriapfpuat.connection.string)
 
 
@@ -488,7 +484,6 @@ stages:
                 - template: install-managed-solution.yml
                   parameters:
                     SolutionFileName : $(${{parameter.Value}}SolutionFileName)
-                    pipelineworkspace: $(pipeline.workspace)\$(artifact.name)
                     connectionString: $(Tisskipfpuat.connection.string)
 
 
