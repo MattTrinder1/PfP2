@@ -176,9 +176,22 @@ stages:
                       minorversion: $(minor.version)
                       releaseversion: $(release.version)
 
+      - ${{ each parameter in parameters }}:
+        - ${{ if and(contains(parameter.Key, 'SolutionName'),not(endsWith(parameter.Key,'*'))) }}:
+          - template: assembleAndCheck.yml
+            parameters:
+              environmentName: Base
+              customerName: Base
+              solutionName: ${{parameter.Value}}
+              folderNames: CanvasApps,Other
+              managed: Managed
+              solutionprefix: $(solution.prefix)
+              minorversion: $(minor.version)
+              releaseversion: $(release.version)
 
-      - publish: '$(build.binariesdirectory)/SystemTest'
-        artifact: CumbriaBuild-Managed-RPRP
+
+      - publish: '$(build.binariesdirectory)'
+        artifact: PowerAppsForPolicing
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
