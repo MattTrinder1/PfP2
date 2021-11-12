@@ -1,30 +1,25 @@
 parameters:
 - name: connectionstring
   type: string
-- name: pipelineworkspace
-  type: string
 - name: SolutionFileName
   type: string
 
 steps:
 
-  - ${{ each parameter in parameters }}:
-    - ${{ if contains(parameter.Value, 'FileName') }}:
-
-      - powershell:
-              |
-              $fileExists = Test-Path -Path '${{parameters.pipelineworkspace}}/${{parameter.Value}}' -PathType leaf
-              Write-Output "##vso[task.setvariable variable=FileExists]$fileExists"
-        displayName: CheckFileExists
+  - powershell:
+          |
+          $fileExists = Test-Path -Path '${{parameters.SolutionFileName}}' -PathType leaf
+          Write-Output "##vso[task.setvariable variable=FileExists]$fileExists"
+    displayName: CheckFileExists
 
 
-      - task: MSCRMImportSolution@11
-        displayName: '${{parameter.Value}}'
-        inputs:
-            crmConnectionString: ${{parameters.connectionstring}}
-            solutionFile: '${{parameters.pipelineworkspace}}/${{parameter.Value}}'
-            overwriteUnmanagedCustomizations: true
-            publishWorkflows: true
-            useAsyncMode: false
-            asyncWaitTimeout: 3000
-        condition: eq(variables['FileExists'],true)
+  - task: MSCRMImportSolution@11
+    displayName: '${{parameter.Value}}'
+    inputs:
+        crmConnectionString: ${{parameters.connectionstring}}
+        solutionFile: '${{parameters.SolutionFileName}}'
+        overwriteUnmanagedCustomizations: true
+        publishWorkflows: true
+        useAsyncMode: false
+        asyncWaitTimeout: 3000
+    condition: eq(variables['FileExists'],true)
