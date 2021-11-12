@@ -7,6 +7,10 @@ parameters:
   type: string
 - name: solutionprefix
   type: string
+- name: customerName
+  type: string
+- name: envrionmentName
+  type: string
   
 steps:
   - powershell: |
@@ -132,5 +136,18 @@ steps:
 
                 $FlowsPDFSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}FlowsPDF_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
                 $FlowsPDFSolutionFileName = $FlowsPDFSolutionFile.Name
-                Write-Host "##vso[task.setvariable variable=FlowsPDFSolutionFileName]$FlowsPDFSolutionFileName"
+                if($FlowsPDFSolutionFileName)
+                {
+                  Write-Host "##vso[task.setvariable variable=FlowsPDFSolutionFileName]$FlowsPDFSolutionFileName"
+                }
+                else
+                {
+                  $FlowsPDFSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.customerName}}/${{parameters.environmentName}}/${{parameters.solutionprefix}}FlowsPDF_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
+                  $FlowsPDFSolutionFileName = $FlowsPDFSolutionFile.Name
+                  if($FlowsPDFSolutionFileName)
+                  {
+                    Write-Host "##vso[task.setvariable variable=FlowsPDFSolutionFileName]$FlowsPDFSolutionFileName"
+                  }
+                }
+                
     displayName: GetSolutionFileNames
