@@ -1,0 +1,172 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "impersonation": {
+          
+        },
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_dbcd7"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_a_row_is_added,_modified_or_deleted": {
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "SubscribeWebhookTrigger"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "cp_statementstg",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filteringattributes": "cp_stagingentrystatus",
+              "subscriptionRequest/filterexpression": "cp_stagingentrystatus eq 778230003",
+              "subscriptionRequest/name": "bbd28fb1-8e88-eb11-a812-000d3ab52ab6"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        }
+      },
+      "actions": {
+        "Update_Staging_Record_Lookup_Fields": {
+          "runAfter": {
+            
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "UpdateRecord"
+            },
+            "parameters": {
+              "entityName": "cp_statementstgs",
+            "recordId": "@triggerOutputs()?[\u0027body/cp_statementstgid\u0027]",
+            "item/cp_CounterAdditionalNameTypeValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_counteradditionalnametype\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_counteradditionalnametype\u0027], \u0027)\u0027))",
+            "item/cp_CounterTitleValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_countertitle\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_countertitle\u0027], \u0027)\u0027))",
+            "item/cp_CounterWitnessRelationshipValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_counterwitnessrelationship\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_counterwitnessrelationship\u0027], \u0027)\u0027))",
+            "item/cp_EnteredByValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_enteredby\u0027]), null, concat(\u0027/systemusers(\u0027, triggerOutputs()?[\u0027body/cp_enteredby\u0027], \u0027)\u0027))",
+            "item/cp_StatementTypeValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_statementtype\u0027]), null, concat(\u0027/cp_statementtypes(\u0027, triggerOutputs()?[\u0027body/cp_statementtype\u0027], \u0027)\u0027))",
+            "item/cp_TemplateValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_template\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_template\u0027], \u0027)\u0027))",
+            "item/cp_WitnessAdditionalNameTypeValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_witnessadditionalnametype\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_witnessadditionalnametype\u0027], \u0027)\u0027))",
+            "item/cp_WitnessCountryValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_witnesscountry\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_witnesscountry\u0027], \u0027)\u0027))",
+            "item/cp_WitnessEthnicityCodeValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_witnessethnicitycode\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_witnessethnicitycode\u0027], \u0027)\u0027))",
+            "item/cp_WitnessGenderValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_witnessgender\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_witnessgender\u0027], \u0027)\u0027))",
+            "item/cp_WitnessOccupationValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_witnessoccupation\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_witnessoccupation\u0027], \u0027)\u0027))",
+            "item/cp_WitnessPreferredContactMethodValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_witnesspreferredcontactmethod\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_witnesspreferredcontactmethod\u0027], \u0027)\u0027))",
+            "item/cp_WitnessTitleValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_witnesstitle\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_witnesstitle\u0027], \u0027)\u0027))"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Condition_Witness_Special_Needs_EXIST": {
+          "actions": {
+            
+          },
+          "runAfter": {
+            "Update_Staging_Record_Lookup_Fields": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Split_Witness_Needs_2": {
+                "runAfter": {
+                  
+                },
+                "type": "Compose",
+              "inputs": "@split(triggerOutputs()?[\u0027body/cp_witnessneeds\u0027], \u0027,\u0027)"
+              },
+              "Apply_to_each_2": {
+                "foreach": "@outputs(\u0027Split_Witness_Needs_2\u0027)",
+                "actions": {
+                  "If_Value_Exists_2": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      
+                    },
+                    "else": {
+                      "actions": {
+                        "Relate_rows_(Add_to_many-many_relationships)_2": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps",
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "AssociateEntities"
+                            },
+                            "parameters": {
+                              "entityName": "cp_statementwitnessneeds",
+                              "recordId": "@items(\u0027Apply_to_each_2\u0027)",
+                              "associationEntityRelationship": "cp_statementstg_cp_StatementWitnessNeed_c",
+                            "item/@odata.id": "@outputs(\u0027Update_Staging_Record_Lookup_Fields\u0027)?[\u0027body/@odata.id\u0027]"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                        "@empty(items(\u0027Apply_to_each_2\u0027))",
+                        "@true"
+                      ]
+                    },
+                    "type": "If"
+                  }
+                },
+                "runAfter": {
+                  "Split_Witness_Needs_2": [
+                    "Succeeded"
+                  ]
+                },
+                "type": "Foreach"
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+            "@empty(triggerOutputs()?[\u0027body/cp_witnessneeds\u0027])",
+              "@true"
+            ]
+          },
+          "type": "If"
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

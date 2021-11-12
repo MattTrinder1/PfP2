@@ -1,0 +1,223 @@
+{
+  "properties": {
+    "connectionReferences": {
+      
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "MaritalStatus",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Initialize_Choice_Id_variable": {
+          "runAfter": {
+            
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ChoiceId",
+                "type": "integer",
+                "value": 778230002
+              }
+            ]
+          }
+        },
+        "If_Input_is_Not_Empty": {
+          "actions": {
+            "If_Input_Text_is_Civil_PartnerShip": {
+              "actions": {
+                "Set_Choice_Id_variable": {
+                  "runAfter": {
+                    
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "ChoiceId",
+                    "value": 778230001
+                  }
+                }
+              },
+              "runAfter": {
+                "If_Input_Text_is_Single": [
+                  "Succeeded"
+                ]
+              },
+              "expression": {
+                "equals": [
+                  "@variables(\u0027Marital Status\u0027)",
+                  "Civil PartnerShip"
+                ]
+              },
+              "type": "If"
+            },
+            "If_Input_Text_is_Widowed": {
+              "actions": {
+                "Set_Choice_Id_variable_2": {
+                  "runAfter": {
+                    
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "ChoiceId",
+                    "value": 4
+                  }
+                }
+              },
+              "runAfter": {
+                "If_Input_Text_is_Civil_PartnerShip": [
+                  "Succeeded"
+                ]
+              },
+              "expression": {
+                "equals": [
+                  "@variables(\u0027Marital Status\u0027)",
+                  "Widowed"
+                ]
+              },
+              "type": "If"
+            },
+            "If_Input_Text_is_Married": {
+              "actions": {
+                "Set_Choice_Id_variable_4": {
+                  "runAfter": {
+                    
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "ChoiceId",
+                    "value": 2
+                  }
+                }
+              },
+              "runAfter": {
+                "If_Input_Text_is_Widowed": [
+                  "Succeeded"
+                ]
+              },
+              "expression": {
+                "equals": [
+                  "@variables(\u0027Marital Status\u0027)",
+                  "Married"
+                ]
+              },
+              "type": "If"
+            },
+            "If_Input_Text_is_Single": {
+              "actions": {
+                "Set_Choice_Id_variable_3": {
+                  "runAfter": {
+                    
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "ChoiceId",
+                    "value": 1
+                  }
+                }
+              },
+              "runAfter": {
+                
+              },
+              "expression": {
+                "equals": [
+                  "@variables(\u0027Marital Status\u0027)",
+                  "Single"
+                ]
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {
+            "Initialize_Marital_Status_variable": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@empty(triggerBody()?[\u0027text\u0027])",
+              "@false"
+            ]
+          },
+          "type": "If"
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "If_Input_is_Not_Empty": [
+              "Succeeded"
+            ]
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+            "marital_status_id": "@{variables(\u0027ChoiceId\u0027)}"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "marital_status_id": {
+                  "title": "Marital Status Id",
+                  "x-ms-dynamically-added": true,
+                  "type": "number"
+                }
+              }
+            }
+          }
+        },
+        "Initialize_Marital_Status_variable": {
+          "runAfter": {
+            "Initialize_Choice_Id_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Marital Status",
+                "type": "string",
+              "value": "@triggerBody()?[\u0027text\u0027]"
+              }
+            ]
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

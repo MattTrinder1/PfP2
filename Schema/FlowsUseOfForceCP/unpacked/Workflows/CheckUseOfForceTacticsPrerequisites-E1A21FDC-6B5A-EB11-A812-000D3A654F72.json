@@ -1,0 +1,271 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_ce4a8"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "Staging Table Entry Id.",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Initialize_Error_Message_variable": {
+          "runAfter": {
+            
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Error Message",
+                "type": "boolean",
+                "value": "@false"
+              }
+            ]
+          }
+        },
+        "List_Use_Of_Force_Tactics_STG": {
+          "runAfter": {
+            "Initialize_Line_Error_Message_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_useofforcetactics_stgs",
+            "$filter": "(_cp_useofforcestg_value eq @{triggerBody()[\u0027text\u0027]})"
+            },
+            "authentication": {
+              "type": "Raw",
+            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+            }
+          }
+        },
+        "Apply_to_each_Use_of_Force_Tactic_STG": {
+        "foreach": "@outputs(\u0027List_Use_Of_Force_Tactics_STG\u0027)?[\u0027body/value\u0027]",
+          "actions": {
+            "If_Line_Errors_found": {
+              "actions": {
+                
+              },
+              "runAfter": {
+                "Check_if_Sequence_ISNULL": [
+                  "Succeeded"
+                ]
+              },
+              "else": {
+                "actions": {
+                  "Update_Use_of_Force_Tactic_STG_record": {
+                    "runAfter": {
+                      
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps",
+                        "operationId": "UpdateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_useofforcetactics_stgs",
+                      "recordId": "@items(\u0027Apply_to_each_Use_of_Force_Tactic_STG\u0027)?[\u0027cp_useofforcetactics_stgid\u0027]",
+                        "item/cp_stagingentrystatus": 778230002,
+                        "item/cp_submissionerror": "@variables(\u0027Line Error Message\u0027)"
+                      },
+                      "authentication": {
+                        "type": "Raw",
+                      "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+                      }
+                    }
+                  }
+                }
+              },
+              "expression": {
+                "equals": [
+                  "@empty(variables(\u0027Line Error Message\u0027))",
+                  "@true"
+                ]
+              },
+              "type": "If"
+            },
+            "Set_variable": {
+              "runAfter": {
+                
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "Line Error Message",
+              "value": "@{null}"
+              }
+            },
+            "Check_if_Sequence_ISNULL": {
+              "actions": {
+                "Append_to_Line_Error_Message_variable": {
+                  "runAfter": {
+                    
+                  },
+                  "type": "AppendToStringVariable",
+                  "inputs": {
+                    "name": "Line Error Message",
+                    "value": "Sequence No. could not be Empty. \n"
+                  }
+                },
+                "Set_Error_Message_variable_TRUE": {
+                  "runAfter": {
+                    "Append_to_Line_Error_Message_variable": [
+                      "Succeeded"
+                    ]
+                  },
+                  "type": "SetVariable",
+                  "inputs": {
+                    "name": "Error Message",
+                    "value": "@true"
+                  }
+                }
+              },
+              "runAfter": {
+                "Set_variable": [
+                  "Succeeded"
+                ]
+              },
+              "expression": {
+                "equals": [
+                "@empty(items(\u0027Apply_to_each_Use_of_Force_Tactic_STG\u0027)?[\u0027cp_sequencenumber\u0027])",
+                  "@null"
+                ]
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {
+            "List_Use_Of_Force_Tactics_STG": [
+              "Succeeded"
+            ]
+          },
+          "type": "Foreach"
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "If_Error_Messages_found": [
+              "Succeeded"
+            ]
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "useofforcetacticserrors": "@variables(\u0027Line Error Message\u0027)"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "useofforcetacticserrors": {
+                  "title": "UseOfForceTacticsErrors",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "If_Error_Messages_found": {
+          "actions": {
+            "Amend_Error_Message_to_a_generic_message_": {
+              "runAfter": {
+                
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "Line Error Message",
+                "value": "Error in Use of Force Tactics found! Check the respective entries to identify the issues."
+              }
+            }
+          },
+          "runAfter": {
+            "Apply_to_each_Use_of_Force_Tactic_STG": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+              "@variables(\u0027Error Message\u0027)",
+              "@true"
+            ]
+          },
+          "type": "If"
+        },
+        "Initialize_Line_Error_Message_variable": {
+          "runAfter": {
+            "Initialize_Error_Message_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Line Error Message",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

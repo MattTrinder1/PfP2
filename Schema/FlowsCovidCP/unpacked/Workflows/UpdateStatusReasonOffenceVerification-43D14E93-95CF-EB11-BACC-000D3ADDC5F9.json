@@ -1,0 +1,185 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_e822c"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_a_row_is_updated": {
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "cp_covidoffenceverification",
+              "subscriptionRequest/scope": 4
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        }
+      },
+      "actions": {
+        "List_rows": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_covidoffenceverifications",
+            "$filter": "_cp_covid_value eq \u0027@{triggerOutputs()?[\u0027body/_cp_covid_value\u0027]}\u0027"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Add_Verification_Record_and_Increment_Verification_Variable": {
+        "foreach": "@outputs(\u0027List_rows\u0027)?[\u0027body/value\u0027]",
+          "actions": {
+            "Condition": {
+              "actions": {
+                "Increment_variable": {
+                  "runAfter": {
+                    
+                  },
+                  "type": "IncrementVariable",
+                  "inputs": {
+                    "name": "Verified",
+                    "value": 1
+                  }
+                }
+              },
+              "runAfter": {
+                
+              },
+              "expression": {
+                "equals": [
+                "@items(\u0027Add_Verification_Record_and_Increment_Verification_Variable\u0027)?[\u0027cp_verified\u0027]",
+                  "@false"
+                ]
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {
+            "List_rows": [
+              "Succeeded"
+            ]
+          },
+          "type": "Foreach"
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Verified",
+                "type": "integer",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "Check_if_the_record_is_not_verified": {
+          "actions": {
+            "Update_Status_Reason_to_Not_Verified": {
+              "runAfter": {
+                
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "UpdateRecord",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "cp_covids",
+                "recordId": "@triggerOutputs()?[\u0027body/_cp_covid_value\u0027]",
+                  "item/statuscode": 778230001
+                },
+                "authentication": "@parameters(\u0027$authentication\u0027)"
+              }
+            }
+          },
+          "runAfter": {
+            "Add_Verification_Record_and_Increment_Verification_Variable": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Update_Status_Reason_to_Verified": {
+                "runAfter": {
+                  
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "UpdateRecord",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cp_covids",
+                  "recordId": "@triggerOutputs()?[\u0027body/_cp_covid_value\u0027]",
+                    "item/statuscode": 778230000
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              }
+            }
+          },
+          "expression": {
+            "greater": [
+              "@variables(\u0027Verified\u0027)",
+              0
+            ]
+          },
+          "type": "If"
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

@@ -1,0 +1,169 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ImportExportXml version="9.2.21103.129" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <SolutionManifest>
+    <UniqueName>CPFlowsStatement</UniqueName>
+    <LocalizedNames>
+      <LocalizedName description="133 - Flows - Statement" languagecode="1033" />
+    </LocalizedNames>
+    <Descriptions />
+    <Version>1.0.0.32</Version>
+    <Managed>1</Managed>
+    <Publisher>
+      <UniqueName>cumbriapolicepublisher</UniqueName>
+      <LocalizedNames>
+        <LocalizedName description="Cumbria Police Publisher" languagecode="1033" />
+      </LocalizedNames>
+      <Descriptions />
+      <EMailAddress xsi:nil="true"></EMailAddress>
+      <SupportingWebsiteUrl xsi:nil="true"></SupportingWebsiteUrl>
+      <CustomizationPrefix>cp</CustomizationPrefix>
+      <CustomizationOptionValuePrefix>77823</CustomizationOptionValuePrefix>
+      <Addresses>
+        <Address>
+          <AddressNumber>1</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode>1</ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+        <Address>
+          <AddressNumber>2</AddressNumber>
+          <AddressTypeCode>1</AddressTypeCode>
+          <City xsi:nil="true"></City>
+          <County xsi:nil="true"></County>
+          <Country xsi:nil="true"></Country>
+          <Fax xsi:nil="true"></Fax>
+          <FreightTermsCode xsi:nil="true"></FreightTermsCode>
+          <ImportSequenceNumber xsi:nil="true"></ImportSequenceNumber>
+          <Latitude xsi:nil="true"></Latitude>
+          <Line1 xsi:nil="true"></Line1>
+          <Line2 xsi:nil="true"></Line2>
+          <Line3 xsi:nil="true"></Line3>
+          <Longitude xsi:nil="true"></Longitude>
+          <Name xsi:nil="true"></Name>
+          <PostalCode xsi:nil="true"></PostalCode>
+          <PostOfficeBox xsi:nil="true"></PostOfficeBox>
+          <PrimaryContactName xsi:nil="true"></PrimaryContactName>
+          <ShippingMethodCode>1</ShippingMethodCode>
+          <StateOrProvince xsi:nil="true"></StateOrProvince>
+          <Telephone1 xsi:nil="true"></Telephone1>
+          <Telephone2 xsi:nil="true"></Telephone2>
+          <Telephone3 xsi:nil="true"></Telephone3>
+          <TimeZoneRuleVersionNumber xsi:nil="true"></TimeZoneRuleVersionNumber>
+          <UPSZone xsi:nil="true"></UPSZone>
+          <UTCOffset xsi:nil="true"></UTCOffset>
+          <UTCConversionTimeZoneCode xsi:nil="true"></UTCConversionTimeZoneCode>
+        </Address>
+      </Addresses>
+    </Publisher>
+    <RootComponents>
+      <RootComponent type="29" id="{0cd014f7-3e5a-eb11-a812-0022489ba6ad}" behavior="0" />
+      <RootComponent type="29" id="{37c9a41c-8359-eb11-a812-000d3a654f72}" behavior="0" />
+      <RootComponent type="29" id="{4dedf6b7-956b-eb11-a812-0022489abb0c}" behavior="0" />
+      <RootComponent type="29" id="{71ab4fd1-7959-eb11-a812-000d3a654f72}" behavior="0" />
+      <RootComponent type="29" id="{a6555be1-946b-eb11-a812-0022489abff7}" behavior="0" />
+      <RootComponent type="29" id="{ac004de4-6061-eb11-a812-0022489c7676}" behavior="0" />
+      <RootComponent type="29" id="{bbd28fb1-8e88-eb11-a812-000d3ab52ab6}" behavior="0" />
+      <RootComponent type="29" id="{ccb264c3-3762-eb11-a812-0022489c79d7}" behavior="0" />
+    </RootComponents>
+    <MissingDependencies>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_incident" displayName="Incident" solution="Active" />
+        <Dependent type="29" displayName="Check if Incident exists AND-OR Create" id="{71ab4fd1-7959-eb11-a812-000d3a654f72}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_statement" displayName="Statement" solution="Active" />
+        <Dependent type="29" displayName="Statement Staging Area Process" id="{a6555be1-946b-eb11-a812-0022489abff7}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_statementstg" displayName="Statement STG" solution="Active" />
+        <Dependent type="29" displayName="Check Statement Prerequisites" id="{4dedf6b7-956b-eb11-a812-0022489abb0c}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_statementstg" displayName="Statement STG" solution="Active" />
+        <Dependent type="29" displayName="Statement Staging Area Process" id="{a6555be1-946b-eb11-a812-0022489abff7}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_statementstg" displayName="Statement STG" solution="Active" />
+        <Dependent type="29" displayName="Fill Lookup Values for Invalid Statement Submissions" id="{bbd28fb1-8e88-eb11-a812-000d3ab52ab6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_statementwitnessneed" displayName="Statement Witness Need" solution="Active" />
+        <Dependent type="29" displayName="Statement Staging Area Process" id="{a6555be1-946b-eb11-a812-0022489abff7}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_statementwitnessneed" displayName="Statement Witness Need" solution="Active" />
+        <Dependent type="29" displayName="Fill Lookup Values for Invalid Statement Submissions" id="{bbd28fb1-8e88-eb11-a812-000d3ab52ab6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="cp_stagingentrystatus" displayName="Staging Entry Status" parentSchemaName="cp_statementstg" parentDisplayName="Statement STG" solution="Active" />
+        <Dependent type="29" displayName="Statement Staging Area Process" id="{a6555be1-946b-eb11-a812-0022489abff7}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="2" schemaName="cp_stagingentrystatus" displayName="Staging Entry Status" parentSchemaName="cp_statementstg" parentDisplayName="Statement STG" solution="Active" />
+        <Dependent type="29" displayName="Fill Lookup Values for Invalid Statement Submissions" id="{bbd28fb1-8e88-eb11-a812-000d3ab52ab6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="29" displayName="Return Choice Id for Choice No, Yes, N/A" solution="Active" id="{79674c64-ee92-eb11-b1ac-000d3adb2fd2}" />
+        <Dependent type="29" displayName="Check if Incident exists AND-OR Create" id="{71ab4fd1-7959-eb11-a812-000d3a654f72}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="29" displayName="Return Choice Id for Choice No, Yes, N/A" solution="Active" id="{79674c64-ee92-eb11-b1ac-000d3adb2fd2}" />
+        <Dependent type="29" displayName="Statement Staging Area Process" id="{a6555be1-946b-eb11-a812-0022489abff7}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cp_sharedcommondataserviceforapps_37dad" solution="Active" id.connectionreferencelogicalname="cp_sharedcommondataserviceforapps_37dad" />
+        <Dependent type="29" displayName="Statement Staging Area Process" id="{a6555be1-946b-eb11-a812-0022489abff7}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cp_sharedcommondataserviceforapps_9993c" solution="Active" id.connectionreferencelogicalname="cp_sharedcommondataserviceforapps_9993c" />
+        <Dependent type="29" displayName="Check Statement Prerequisites" id="{4dedf6b7-956b-eb11-a812-0022489abb0c}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cp_sharedcommondataserviceforapps_9993c" solution="Active" id.connectionreferencelogicalname="cp_sharedcommondataserviceforapps_9993c" />
+        <Dependent type="29" displayName="Statement Staging Area Process" id="{a6555be1-946b-eb11-a812-0022489abff7}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cp_sharedcommondataserviceforapps_ce4a8" solution="Active" id.connectionreferencelogicalname="cp_sharedcommondataserviceforapps_ce4a8" />
+        <Dependent type="29" displayName="Create New Contact" id="{0cd014f7-3e5a-eb11-a812-0022489ba6ad}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cp_sharedcommondataserviceforapps_ce4a8" solution="Active" id.connectionreferencelogicalname="cp_sharedcommondataserviceforapps_ce4a8" />
+        <Dependent type="29" displayName="Check if Incident exists AND-OR Create" id="{71ab4fd1-7959-eb11-a812-000d3a654f72}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cp_sharedcommondataserviceforapps_ce4a8" solution="Active" id.connectionreferencelogicalname="cp_sharedcommondataserviceforapps_ce4a8" />
+        <Dependent type="29" displayName="Update Contact Additional Fields" id="{ac004de4-6061-eb11-a812-0022489c7676}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cp_sharedcommondataserviceforapps_dbcd7" solution="Active" id.connectionreferencelogicalname="cp_sharedcommondataserviceforapps_dbcd7" />
+        <Dependent type="29" displayName="Fill Lookup Values for Invalid Statement Submissions" id="{bbd28fb1-8e88-eb11-a812-000d3ab52ab6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="new_sharedcommondataserviceforapps_3a446" solution="Active" id.connectionreferencelogicalname="new_sharedcommondataserviceforapps_3a446" />
+        <Dependent type="29" displayName="Statement Staging Area Process" id="{a6555be1-946b-eb11-a812-0022489abff7}" />
+      </MissingDependency>
+    </MissingDependencies>
+  </SolutionManifest>
+</ImportExportXml>

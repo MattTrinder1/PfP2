@@ -1,0 +1,1962 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_2": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_36190"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_wordonlinebusiness": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedwordonlinebusiness_7a2a4"
+        },
+        "api": {
+          "name": "shared_wordonlinebusiness"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "0fe84a5c-2486-475a-bcd3-dfbf43092e64"
+          },
+          "type": "Request",
+          "kind": "Http",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "recordId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "actions": {
+        "Get_Youth_Involved_Details": {
+          "runAfter": {
+            "Initialize_Word_Template_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e075a53a-5251-4898-b0a9-a60ea28fb764"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_2",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "contacts",
+            "recordId": "@outputs(\u0027FetchedRecord\u0027)?[\u0027body/_cp_youthinvolved_value\u0027]"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Initialize_Error_variable": {
+          "runAfter": {
+            "Initialize_variable_-_EnvironmentConfigId": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "ba633fde-6844-47eb-9515-a00d73435637"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Error",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Get_Incident_Details": {
+          "runAfter": {
+            "Get_Youth_Involved_Details": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "889d5ae4-9ba0-4b1d-9238-88a5907c483a"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_2",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_incidents",
+            "recordId": "@outputs(\u0027FetchedRecord\u0027)?[\u0027body/_cp_incident_value\u0027]"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Is_ParentId_empty": {
+          "actions": {
+            "Append_to_Error_variable": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "0bf5e51c-f9ea-4971-a2c8-659a0dba72ca"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error",
+                "value": "Parent/Guardian is empty!\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Is_Location_empty": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Get_Parent_Details": {
+                "runAfter": {
+                  
+                },
+                "metadata": {
+                  "operationMetadataId": "0bfd62ae-ee20-4a52-8a27-86f91c8f6895"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps_2",
+                    "operationId": "GetItem",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "contacts",
+                  "recordId": "@outputs(\u0027FetchedRecord\u0027)?[\u0027body/_cp_parentguardian_value\u0027]"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              },
+              "Is_Parent_Street__empty": {
+                "actions": {
+                  "Append_to_Error_variable_4": {
+                    "runAfter": {
+                      
+                    },
+                    "metadata": {
+                      "operationMetadataId": "74cf75b6-c2e8-4062-af53-ee10a855221d"
+                    },
+                    "type": "AppendToStringVariable",
+                    "inputs": {
+                      "name": "Error",
+                      "value": "Parent/Guardian Street is empty!\n"
+                    }
+                  }
+                },
+                "runAfter": {
+                  "Get_Parent_Details": [
+                    "Succeeded"
+                  ]
+                },
+                "expression": {
+                  "equals": [
+                  "@empty(outputs(\u0027Get_Parent_Details\u0027)?[\u0027body/address1_line1\u0027])",
+                    "@true"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "8ed236c2-82c9-4a61-bbdf-c57741d817a1"
+                },
+                "type": "If"
+              },
+              "Is_Parent_City_empty": {
+                "actions": {
+                  "Append_to_Error_variable_5": {
+                    "runAfter": {
+                      
+                    },
+                    "metadata": {
+                      "operationMetadataId": "184df036-7a90-4f32-bc67-8a22104b4a60"
+                    },
+                    "type": "AppendToStringVariable",
+                    "inputs": {
+                      "name": "Error",
+                      "value": "Parent/Guardian City is empty!\n"
+                    }
+                  }
+                },
+                "runAfter": {
+                  "Is_Parent_Street__empty": [
+                    "Succeeded"
+                  ]
+                },
+                "expression": {
+                  "equals": [
+                  "@empty(outputs(\u0027Get_Parent_Details\u0027)?[\u0027body/address1_city\u0027])",
+                    "@true"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "030df453-4f13-44a0-ad42-3dbeabb749d0"
+                },
+                "type": "If"
+              },
+              "Is_Parent_Post_Code_empty": {
+                "actions": {
+                  "Append_to_Error_variable_6": {
+                    "runAfter": {
+                      
+                    },
+                    "metadata": {
+                      "operationMetadataId": "7bd365f3-e1a2-4a80-9934-e56609360d4f"
+                    },
+                    "type": "AppendToStringVariable",
+                    "inputs": {
+                      "name": "Error",
+                      "value": "Parent/Guardian Post Code is empty!\n"
+                    }
+                  }
+                },
+                "runAfter": {
+                  "Is_Parent_City_empty": [
+                    "Succeeded"
+                  ]
+                },
+                "expression": {
+                  "equals": [
+                  "@empty(outputs(\u0027Get_Parent_Details\u0027)?[\u0027body/address1_postalcode\u0027])",
+                    "@true"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "92fcb598-07f8-4fcd-a16a-70dd4f55b602"
+                },
+                "type": "If"
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+            "@empty(outputs(\u0027FetchedRecord\u0027)?[\u0027body/_cp_parentguardian_value\u0027])",
+              "@true"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "079ebcdc-7caa-4420-a1bd-3a77530bb4fd"
+          },
+          "type": "If"
+        },
+        "Is_Location_empty": {
+          "actions": {
+            "Append_to_string_variable": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "bcbf302c-8bf3-41dd-ba4a-4aeb4d07143c"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error",
+                "value": "Incident Location is empty!\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_1st_letter_is_not_equal_to_null": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Get_Location_Details": {
+                "runAfter": {
+                  
+                },
+                "metadata": {
+                  "operationMetadataId": "66ca7ce6-9458-4d06-a95a-21f0cdd421c0"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps_2",
+                    "operationId": "GetItem",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cp_locations",
+                  "recordId": "@outputs(\u0027Get_Incident_Details\u0027)?[\u0027body/_cp_incidentlocation_value\u0027]"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+            "@empty(outputs(\u0027Get_Incident_Details\u0027)?[\u0027body/_cp_incidentlocation_value\u0027])",
+              "@true"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "87c7a8bb-1b9e-4b67-9d70-25047216e18e"
+          },
+          "type": "If"
+        },
+        "Errors_Found": {
+          "actions": {
+            "Switch_Errors_Letter_Number": {
+              "runAfter": {
+                
+              },
+              "cases": {
+                "Case": {
+                  "case": 1,
+                  "actions": {
+                    "Update_IYC_row_(Genarate_Letter,_Issues)": {
+                      "runAfter": {
+                        
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps_2",
+                          "operationId": "UpdateRecord",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_itsyourchoices",
+                        "recordId": "@triggerBody()?[\u0027recordId\u0027]",
+                          "item/cp_stwarningletterissues": "@variables(\u0027Error\u0027)",
+                          "item/cp_generate1stwarningletter": false
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    }
+                  }
+                },
+                "Case_2": {
+                  "case": 2,
+                  "actions": {
+                    "Update_IYC_row_(Generate_Letter_2,_Issues)": {
+                      "runAfter": {
+                        
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps_2",
+                          "operationId": "UpdateRecord",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_itsyourchoices",
+                        "recordId": "@triggerBody()?[\u0027recordId\u0027]",
+                          "item/cp_ndwarningletterissues": "@variables(\u0027Error\u0027)"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    }
+                  }
+                },
+                "Case_3": {
+                  "case": 3,
+                  "actions": {
+                    "Update_IYC_row_(Generate_Letter_3,_Issues)": {
+                      "runAfter": {
+                        
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps_2",
+                          "operationId": "UpdateRecord",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_itsyourchoices",
+                        "recordId": "@triggerBody()?[\u0027recordId\u0027]",
+                          "item/cp_thirdwarningletterissues": "@variables(\u0027Error\u0027)"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    }
+                  }
+                }
+              },
+              "default": {
+                "actions": {
+                  
+                }
+              },
+              "expression": "@variables(\u0027varLetterNumber\u0027)",
+              "metadata": {
+                "operationMetadataId": "580b38fc-8672-4288-ba04-e6f699bae3b5"
+              },
+              "type": "Switch"
+            }
+          },
+          "runAfter": {
+            "Switch_TPA": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Try_-_Execute_Transactions": {
+                "actions": {
+                  "Letter_1": {
+                    "actions": {
+                      "Populate_a_Microsoft_Word_template_2": {
+                        "runAfter": {
+                          
+                        },
+                        "metadata": {
+                          "operationMetadataId": "4497b0a2-6de1-4a89-8e23-9975acc55a0b"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_wordonlinebusiness",
+                            "operationId": "CreateFileItem",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+                          },
+                          "parameters": {
+                            "source": "me",
+                            "drive": "@variables(\u0027DocumentLibraryId\u0027)",
+                            "file": "@variables(\u0027Word Template\u0027)",
+                            "dynamicFileSchema": {
+                            "145560835": "@if(empty(outputs(\u0027Get_Incident_Details\u0027)?[\u0027body/cp_incidentdate\u0027]),\u0027\u0027,formatDateTime(convertTimeZone( outputs(\u0027Get_Incident_Details\u0027)?[\u0027body/cp_incidentdate\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027), \u0027dd/MM/yyyy\u0027))",
+                            "202457109": "@outputs(\u0027Get_Youth_Involved_Details\u0027)?[\u0027body/lastname\u0027]",
+                            "680091617": "@outputs(\u0027FetchedRecord\u0027)?[\u0027body/cp_description\u0027]",
+                            "725725622": "@outputs(\u0027Get_Youth_Involved_Details\u0027)?[\u0027body/firstname\u0027]",
+                            "1657574224": "@outputs(\u0027Get_Youth_Involved_Details\u0027)?[\u0027body/firstname\u0027]",
+                            "1957520747": "@if(empty(outputs(\u0027Get_Incident_Details\u0027)?[\u0027body/cp_incidentdate\u0027]),\u0027\u0027,formatDateTime(convertTimeZone( outputs(\u0027Get_Incident_Details\u0027)?[\u0027body/cp_incidentdate\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027), \u0027t\u0027))",
+                            "2056038528": "@outputs(\u0027Get_Parent_Details\u0027)?[\u0027body/address1_postalcode\u0027]",
+                            "-348948974": "@outputs(\u0027Get_Youth_Involved_Details\u0027)?[\u0027body/firstname\u0027]",
+                            "-1048921100": "@{outputs(\u0027Get_Parent_Details\u0027)?[\u0027body/address1_line1\u0027]}, @{outputs(\u0027Get_Parent_Details\u0027)?[\u0027body/cp_district\u0027]}, @{outputs(\u0027Get_Parent_Details\u0027)?[\u0027body/address1_city\u0027]}",
+                              "-804087730": "@formatDateTime(convertTimeZone( utcNow(),\u0027UTC\u0027,\u0027GMT Standard Time\u0027), \u0027dd/MM/yyyy\u0027)",
+                            "-1588450253": "@outputs(\u0027Get_Location_Details\u0027)?[\u0027body/cp_name\u0027]",
+                            "-89313794": "@outputs(\u0027Get_Youth_Involved_Details\u0027)?[\u0027body/firstname\u0027]"
+                            }
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      },
+                      "Create_a_new_Notes_row_2": {
+                        "runAfter": {
+                          "Populate_a_Microsoft_Word_template_2": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "8efdc952-5661-49b7-b919-eac2ca3412fc"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps_2",
+                            "operationId": "CreateRecord",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "annotations",
+                          "item/subject": "Incident: @{outputs(\u0027Get_Incident_Details\u0027)?[\u0027body/cp_incidentnumber\u0027]}, IYC 1st Letter",
+                            "item/notetext": "Automatically generated 1st Warning Letter",
+                            "item/isdocument": true,
+                          "item/documentbody": "@body(\u0027Populate_a_Microsoft_Word_template_2\u0027)?[\u0027$content\u0027]",
+                          "item/filename": "Incident @{outputs(\u0027Get_Incident_Details\u0027)?[\u0027body/cp_incidentnumber\u0027]} -  Letter 1.docx",
+                          "item/mimetype": "@body(\u0027Populate_a_Microsoft_Word_template_2\u0027)?[\u0027$content-type\u0027]",
+                          "item/ownerid@odata.bind": "/systemusers(@{outputs(\u0027FetchedRecord\u0027)?[\u0027body/_ownerid_value\u0027]})",
+                          "item/objectid_cp_itsyourchoice@odata.bind": "/cp_itsyourchoices(@{outputs(\u0027FetchedRecord\u0027)?[\u0027body/cp_itsyourchoiceid\u0027]})"
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      },
+                      "Update_IYC_row_(Letter_Created_On)_4": {
+                        "runAfter": {
+                          "Create_a_new_Notes_row_2": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "60dbdb83-d4e0-4ec9-bab4-3ad91fd9e978"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps_2",
+                            "operationId": "UpdateRecord",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "cp_itsyourchoices",
+                          "recordId": "@triggerBody()?[\u0027recordId\u0027]",
+                            "item/cp_stwarninglettercreatedon": "@utcNow()",
+                            "item/cp_stwarningletterissues": "@null",
+                            "item/statuscode": 778230000
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      },
+                      "Add_to_letter_history_2": {
+                        "runAfter": {
+                          "Update_IYC_row_(Letter_Created_On)_4": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "f452e9fe-7ff4-4251-905f-bf065c7da019"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps_2",
+                            "operationId": "CreateRecord",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "cp_itsyourchoiceletterhistories",
+                          "item/cp_lettername": "@outputs(\u0027Create_a_new_Notes_row_2\u0027)?[\u0027body/subject\u0027]",
+                            "item/cp_letterstage": 1,
+                          "item/cp_itsyourchoicehistory@odata.bind": "/cp_itsyourchoices(@{outputs(\u0027Update_IYC_row_(Letter_Created_On)_4\u0027)?[\u0027body/cp_itsyourchoiceid\u0027]})"
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      }
+                    },
+                    "runAfter": {
+                      "If_not_within_90_days_reset_letter_2_and_3_createdon": [
+                        "Succeeded"
+                      ]
+                    },
+                    "expression": {
+                      "equals": [
+                        "@variables(\u0027varLetterNumber\u0027)",
+                        1
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "3d2379aa-d8f6-48d9-aa57-479045beee00"
+                    },
+                    "type": "If"
+                  },
+                  "Letter_2": {
+                    "actions": {
+                      "Populate_a_Microsoft_Word_template_3": {
+                        "runAfter": {
+                          
+                        },
+                        "metadata": {
+                          "operationMetadataId": "496bdf5e-6a93-4b5b-835d-2c0a5202d41e"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_wordonlinebusiness",
+                            "operationId": "CreateFileItem",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+                          },
+                          "parameters": {
+                            "source": "me",
+                            "drive": "@variables(\u0027DocumentLibraryId\u0027)",
+                            "file": "@variables(\u0027Word Template\u0027)",
+                            "dynamicFileSchema": {
+                            "145560835": "@if(empty(outputs(\u0027Get_Incident_Details\u0027)?[\u0027body/cp_incidentdate\u0027]),\u0027\u0027,formatDateTime(convertTimeZone( outputs(\u0027Get_Incident_Details\u0027)?[\u0027body/cp_incidentdate\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027), \u0027dd/MM/yyyy\u0027))",
+                            "239144388": "@outputs(\u0027Get_Youth_Involved_Details\u0027)?[\u0027body/lastname\u0027]",
+                            "406112360": "@{outputs(\u0027Get_Parent_Details\u0027)?[\u0027body/address1_line1\u0027]}, @{outputs(\u0027Get_Parent_Details\u0027)?[\u0027body/cp_district\u0027]}, @{outputs(\u0027Get_Parent_Details\u0027)?[\u0027body/address1_city\u0027]}",
+                              "499327280": "@formatDateTime(convertTimeZone( utcNow(),\u0027UTC\u0027,\u0027GMT Standard Time\u0027), \u0027dd/MM/yyyy\u0027)",
+                            "680091617": "@outputs(\u0027FetchedRecord\u0027)?[\u0027body/cp_description\u0027]",
+                            "702598497": "@outputs(\u0027Get_Youth_Involved_Details\u0027)?[\u0027body/firstname\u0027]",
+                            "1462924933": "@outputs(\u0027Get_Parent_Details\u0027)?[\u0027body/address1_postalcode\u0027]",
+                            "1657574224": "@outputs(\u0027Get_Youth_Involved_Details\u0027)?[\u0027body/firstname\u0027]",
+                            "1957520747": "@if(empty(outputs(\u0027Get_Incident_Details\u0027)?[\u0027body/cp_incidentdate\u0027]),\u0027\u0027,formatDateTime(convertTimeZone( outputs(\u0027Get_Incident_Details\u0027)?[\u0027body/cp_incidentdate\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027), \u0027t\u0027))",
+                            "2145999234": "@outputs(\u0027Get_Youth_Involved_Details\u0027)?[\u0027body/firstname\u0027]",
+                            "-1192142843": "@formatDateTime(convertTimeZone(outputs(\u0027FetchedRecord\u0027)?[\u0027body/cp_stwarninglettercreatedon\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027), \u0027dd/MM/yyyy\u0027)",
+                            "-1588450253": "@outputs(\u0027Get_Location_Details\u0027)?[\u0027body/cp_name\u0027]",
+                            "-89313794": "@outputs(\u0027Get_Youth_Involved_Details\u0027)?[\u0027body/firstname\u0027]",
+                            "-1878229873": "@outputs(\u0027Get_Youth_Involved_Details\u0027)?[\u0027body/firstname\u0027]",
+                            "-530185881": "@outputs(\u0027Get_Youth_Involved_Details\u0027)?[\u0027body/firstname\u0027]",
+                            "-259605363": "@outputs(\u0027Get_Youth_Involved_Details\u0027)?[\u0027body/firstname\u0027]"
+                            }
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      },
+                      "Create_a_new_Notes_row_3": {
+                        "runAfter": {
+                          "Populate_a_Microsoft_Word_template_3": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "04780c30-acaa-4b04-9978-4fd8b538c936"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps_2",
+                            "operationId": "CreateRecord",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "annotations",
+                          "item/subject": "Incident: @{outputs(\u0027Get_Incident_Details\u0027)?[\u0027body/cp_incidentnumber\u0027]}, IYC 2nd Letter",
+                            "item/notetext": "Automatically generated 2nd Warning Letter",
+                            "item/isdocument": true,
+                          "item/documentbody": "@body(\u0027Populate_a_Microsoft_Word_template_3\u0027)?[\u0027$content\u0027]",
+                          "item/filename": "Incident @{outputs(\u0027Get_Incident_Details\u0027)?[\u0027body/cp_incidentnumber\u0027]} -  Letter 2.docx",
+                          "item/mimetype": "@body(\u0027Populate_a_Microsoft_Word_template_3\u0027)?[\u0027$content-type\u0027]",
+                          "item/ownerid@odata.bind": "/systemusers(@{outputs(\u0027FetchedRecord\u0027)?[\u0027body/_ownerid_value\u0027]})",
+                          "item/objectid_cp_itsyourchoice@odata.bind": "/cp_itsyourchoices(@{outputs(\u0027FetchedRecord\u0027)?[\u0027body/cp_itsyourchoiceid\u0027]})"
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      },
+                      "Update_IYC_row_(Letter_Created_On)_3": {
+                        "runAfter": {
+                          "Create_a_new_Notes_row_3": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "f3a049d6-e118-4680-9ded-2ead28548ae6"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps_2",
+                            "operationId": "UpdateRecord",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "cp_itsyourchoices",
+                          "recordId": "@triggerBody()?[\u0027recordId\u0027]",
+                            "item/cp_secondwarninglettercreatedon": "@utcNow()",
+                            "item/cp_ndwarningletterissues": "@null",
+                            "item/statuscode": 778230001
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      },
+                      "Add_to_letter_history_3": {
+                        "runAfter": {
+                          "Update_IYC_row_(Letter_Created_On)_3": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "4534d1bd-0f77-4636-9d3b-5bc3294549b3"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps_2",
+                            "operationId": "CreateRecord",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "cp_itsyourchoiceletterhistories",
+                          "item/cp_lettername": "@outputs(\u0027Create_a_new_Notes_row_3\u0027)?[\u0027body/subject\u0027]",
+                            "item/cp_letterstage": 2,
+                          "item/cp_itsyourchoicehistory@odata.bind": "/cp_itsyourchoices(@{outputs(\u0027Update_IYC_row_(Letter_Created_On)_3\u0027)?[\u0027body/cp_itsyourchoiceid\u0027]})"
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      }
+                    },
+                    "runAfter": {
+                      "Letter_1": [
+                        "Succeeded"
+                      ]
+                    },
+                    "expression": {
+                      "equals": [
+                        "@variables(\u0027varLetterNumber\u0027)",
+                        2
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "a6f0d196-4710-4cde-a394-1163b5f47b44"
+                    },
+                    "type": "If"
+                  },
+                  "Letter_3": {
+                    "actions": {
+                      "Populate_a_Microsoft_Word_template_4": {
+                        "runAfter": {
+                          
+                        },
+                        "metadata": {
+                          "operationMetadataId": "bb11ade4-828b-43a0-9a46-31d912cdac46"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_wordonlinebusiness",
+                            "operationId": "CreateFileItem",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+                          },
+                          "parameters": {
+                            "source": "me",
+                            "drive": "@variables(\u0027DocumentLibraryId\u0027)",
+                            "file": "@variables(\u0027Word Template\u0027)",
+                            "dynamicFileSchema": {
+                            "145560835": "@if(empty(outputs(\u0027Get_Incident_Details\u0027)?[\u0027body/cp_incidentdate\u0027]),\u0027\u0027,formatDateTime(convertTimeZone( outputs(\u0027Get_Incident_Details\u0027)?[\u0027body/cp_incidentdate\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027), \u0027dd/MM/yyyy\u0027))",
+                            "202457109": "@outputs(\u0027Get_Youth_Involved_Details\u0027)?[\u0027body/lastname\u0027]",
+                              "499327280": "@formatDateTime(convertTimeZone( utcNow(),\u0027UTC\u0027,\u0027GMT Standard Time\u0027), \u0027dd/MM/yyyy\u0027)",
+                            "680091617": "@outputs(\u0027FetchedRecord\u0027)?[\u0027body/cp_description\u0027]",
+                            "725725622": "@outputs(\u0027Get_Youth_Involved_Details\u0027)?[\u0027body/firstname\u0027]",
+                            "1957520747": "@if(empty(outputs(\u0027Get_Incident_Details\u0027)?[\u0027body/cp_incidentdate\u0027]),\u0027\u0027,formatDateTime(convertTimeZone( outputs(\u0027Get_Incident_Details\u0027)?[\u0027body/cp_incidentdate\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027), \u0027t\u0027))",
+                            "2056038528": "@outputs(\u0027Get_Parent_Details\u0027)?[\u0027body/address1_postalcode\u0027]",
+                            "-348948974": "@outputs(\u0027Get_Youth_Involved_Details\u0027)?[\u0027body/firstname\u0027]",
+                            "-1048921100": "@{outputs(\u0027Get_Parent_Details\u0027)?[\u0027body/address1_line1\u0027]}, @{outputs(\u0027Get_Parent_Details\u0027)?[\u0027body/cp_district\u0027]}, @{outputs(\u0027Get_Parent_Details\u0027)?[\u0027body/address1_city\u0027]}",
+                            "-530185881": "@outputs(\u0027Get_Youth_Involved_Details\u0027)?[\u0027body/firstname\u0027]",
+                            "-1410767302": "@outputs(\u0027Get_Youth_Involved_Details\u0027)?[\u0027body/lastname\u0027]",
+                            "-177739609": "@outputs(\u0027Get_Youth_Involved_Details\u0027)?[\u0027body/firstname\u0027]",
+                            "-1588450253": "@outputs(\u0027Get_Location_Details\u0027)?[\u0027body/cp_name\u0027]",
+                            "-779253862": "@outputs(\u0027Get_Youth_Involved_Details\u0027)?[\u0027body/firstname\u0027]",
+                            "-884252372": "@formatDateTime(convertTimeZone(outputs(\u0027FetchedRecord\u0027)?[\u0027body/cp_secondwarninglettercreatedon\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027), \u0027dd/MM/yyyy\u0027)",
+                            "-294602389": "@outputs(\u0027Get_Youth_Involved_Details\u0027)?[\u0027body/firstname\u0027]"
+                            }
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      },
+                      "Create_a_new_Notes_row_4": {
+                        "runAfter": {
+                          "Populate_a_Microsoft_Word_template_4": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "b154fab8-94a4-40a7-8d6a-743967d33597"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps_2",
+                            "operationId": "CreateRecord",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "annotations",
+                          "item/subject": "Incident: @{outputs(\u0027Get_Incident_Details\u0027)?[\u0027body/cp_incidentnumber\u0027]}, IYC 3rd Letter",
+                            "item/notetext": "Automatically generated 3rd Warning Letter",
+                            "item/isdocument": true,
+                          "item/documentbody": "@body(\u0027Populate_a_Microsoft_Word_template_4\u0027)?[\u0027$content\u0027]",
+                          "item/filename": "Incident @{outputs(\u0027Get_Incident_Details\u0027)?[\u0027body/cp_incidentnumber\u0027]} -  Letter 3.docx",
+                          "item/mimetype": "@body(\u0027Populate_a_Microsoft_Word_template_4\u0027)?[\u0027$content-type\u0027]",
+                          "item/ownerid@odata.bind": "/systemusers(@{outputs(\u0027FetchedRecord\u0027)?[\u0027body/_ownerid_value\u0027]})",
+                          "item/objectid_cp_itsyourchoice@odata.bind": "/cp_itsyourchoices(@{outputs(\u0027FetchedRecord\u0027)?[\u0027body/cp_itsyourchoiceid\u0027]})"
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      },
+                      "Update_IYC_row_(Letter_Created_On)_2": {
+                        "runAfter": {
+                          "Create_a_new_Notes_row_4": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "845750a3-e5e8-40f3-be96-0a4066657c22"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps_2",
+                            "operationId": "UpdateRecord",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "cp_itsyourchoices",
+                          "recordId": "@triggerBody()?[\u0027recordId\u0027]",
+                            "item/cp_thirdwarninglettercreatedon": "@utcNow()",
+                            "item/cp_thirdwarningletterissues": "@null",
+                            "item/statuscode": 778230002
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      },
+                      "Add_to_letter_history_4": {
+                        "runAfter": {
+                          "Update_IYC_row_(Letter_Created_On)_2": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "aaebe51c-84db-46d4-9e7c-503fe501d321"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps_2",
+                            "operationId": "CreateRecord",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "cp_itsyourchoiceletterhistories",
+                          "item/cp_lettername": "@outputs(\u0027Create_a_new_Notes_row_4\u0027)?[\u0027body/subject\u0027]",
+                            "item/cp_letterstage": 3,
+                          "item/cp_itsyourchoicehistory@odata.bind": "/cp_itsyourchoices(@{outputs(\u0027Update_IYC_row_(Letter_Created_On)_2\u0027)?[\u0027body/cp_itsyourchoiceid\u0027]})"
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      }
+                    },
+                    "runAfter": {
+                      "Letter_2": [
+                        "Succeeded"
+                      ]
+                    },
+                    "expression": {
+                      "equals": [
+                        "@variables(\u0027varLetterNumber\u0027)",
+                        3
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "131d85f2-8893-44f5-9e86-624009c48050"
+                    },
+                    "type": "If"
+                  },
+                  "If_not_within_90_days_reset_letter_2_and_3_createdon": {
+                    "actions": {
+                      "Update_IYC_row_(Letter_Created_On)": {
+                        "runAfter": {
+                          
+                        },
+                        "metadata": {
+                          "operationMetadataId": "cabe7408-6299-4870-b6fb-7dbec2d55281"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps_2",
+                            "operationId": "UpdateRecord",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "cp_itsyourchoices",
+                          "recordId": "@triggerBody()?[\u0027recordId\u0027]",
+                            "item/cp_secondwarninglettercreatedon": "@null",
+                            "item/cp_thirdwarninglettercreatedon": "@null",
+                            "item/statuscode": 778230000
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      }
+                    },
+                    "runAfter": {
+                      
+                    },
+                    "expression": {
+                      "equals": [
+                        "@variables(\u0027varNotIn90Days\u0027)",
+                        true
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "3bbba5dc-5b86-4279-8a33-a58c2ac42afc"
+                    },
+                    "type": "If"
+                  }
+                },
+                "runAfter": {
+                  
+                },
+                "metadata": {
+                  "operationMetadataId": "b81e8564-7e8b-4c9e-ab7a-f83fcd02ddbc"
+                },
+                "type": "Scope"
+              },
+              "Catch_(Errors)": {
+                "actions": {
+                  "Switch_4": {
+                    "runAfter": {
+                      
+                    },
+                    "cases": {
+                      "Case": {
+                        "case": 1,
+                        "actions": {
+                          "Update_a_row": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "OpenApiConnection",
+                            "inputs": {
+                              "host": {
+                                "connectionName": "shared_commondataserviceforapps_2",
+                                "operationId": "UpdateRecord",
+                                "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                              },
+                              "parameters": {
+                                "entityName": "cp_itsyourchoices",
+                              "recordId": "@triggerBody()?[\u0027recordId\u0027]",
+                              "item/cp_stwarningletterissues": "Creation of 1st Warning Letter failed! Contact Administrator to check the History of IYC Generate 1st Warning Letter Flow.  Date/time attempted:@{utcNow()}"
+                              },
+                              "authentication": "@parameters(\u0027$authentication\u0027)"
+                            }
+                          }
+                        }
+                      },
+                      "Case_2": {
+                        "case": 2,
+                        "actions": {
+                          "Update_a_row_2": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "OpenApiConnection",
+                            "inputs": {
+                              "host": {
+                                "connectionName": "shared_commondataserviceforapps_2",
+                                "operationId": "UpdateRecord",
+                                "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                              },
+                              "parameters": {
+                                "entityName": "cp_itsyourchoices",
+                              "recordId": "@triggerBody()?[\u0027recordId\u0027]",
+                              "item/cp_ndwarningletterissues": "Creation of 2nd Warning Letter failed! Contact Administrator to check the History of IYC Generate 2nd Warning Letter Flow.  Date/time attempted:@{utcNow()}"
+                              },
+                              "authentication": "@parameters(\u0027$authentication\u0027)"
+                            }
+                          }
+                        }
+                      },
+                      "Case_3": {
+                        "case": 3,
+                        "actions": {
+                          "Update_a_row_3": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "OpenApiConnection",
+                            "inputs": {
+                              "host": {
+                                "connectionName": "shared_commondataserviceforapps_2",
+                                "operationId": "UpdateRecord",
+                                "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                              },
+                              "parameters": {
+                                "entityName": "cp_itsyourchoices",
+                              "recordId": "@triggerBody()?[\u0027recordId\u0027]",
+                              "item/cp_thirdwarninglettercreatedon": "Creation of 3rd Warning Letter failed! Contact Administrator to check the History of IYC Generate 3rd Warning Letter Flow.  Date/time attempted:@{utcNow()}"
+                              },
+                              "authentication": "@parameters(\u0027$authentication\u0027)"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "default": {
+                      "actions": {
+                        
+                      }
+                    },
+                    "expression": "@variables(\u0027varLetterNumber\u0027)",
+                    "metadata": {
+                      "operationMetadataId": "9a9336c0-1ed4-4a5e-bcfd-3be8643b1650"
+                    },
+                    "type": "Switch"
+                  }
+                },
+                "runAfter": {
+                  "Try_-_Execute_Transactions": [
+                    "Failed",
+                    "Skipped",
+                    "TimedOut"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "3923d217-dfb8-43e1-a4e9-eca317ebab8a"
+                },
+                "type": "Scope"
+              }
+            }
+          },
+          "expression": {
+            "not": {
+              "equals": [
+                "@empty(variables(\u0027Error\u0027))",
+                "@true"
+              ]
+            }
+          },
+          "metadata": {
+            "operationMetadataId": "f46c7969-60fd-4d10-b199-12ae34377f31"
+          },
+          "type": "If"
+        },
+        "Initialize_Word_Template_variable": {
+          "runAfter": {
+            "Initialize_Error_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "7d959b05-247c-472c-b24d-dbfe61d3b7be"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Word Template",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "List_IYC_Setup_rows": {
+          "runAfter": {
+            "Is_ParentId_empty": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "01c83968-96f7-4277-92c9-8a8a87486318"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_2",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_itsyourchoicesetups",
+            "$filter": "_cp_environment_value eq @{variables(\u0027EnvironmentConfigId\u0027)}",
+              "$top": 1
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Switch_TPA": {
+          "runAfter": {
+            "Initialize_variable_DocumentLibraryId": [
+              "Succeeded"
+            ]
+          },
+          "cases": {
+            "Case": {
+              "case": "a7c09666-245b-eb11-a812-0022489ba6ad",
+              "actions": {
+                "Set_The_Template_value_based_on_the_letter_number": {
+                  "actions": {
+                    "Set_variable_4": {
+                      "runAfter": {
+                        
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "varTemplateValue",
+                      "value": "@{first(body(\u0027List_IYC_Setup_rows\u0027)?[\u0027value\u0027])?[\u0027cp_northwarninglettertemplate1\u0027]}"
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    
+                  },
+                  "else": {
+                    "actions": {
+                      "Condition_2": {
+                        "actions": {
+                          "Set_variable_5": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "SetVariable",
+                            "inputs": {
+                              "name": "varTemplateValue",
+                            "value": "@{first(body(\u0027List_IYC_Setup_rows\u0027)?[\u0027value\u0027])?[\u0027cp_northwarninglettertemplate2\u0027]}"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          
+                        },
+                        "else": {
+                          "actions": {
+                            "Set_variable_6": {
+                              "runAfter": {
+                                
+                              },
+                              "type": "SetVariable",
+                              "inputs": {
+                                "name": "varTemplateValue",
+                              "value": "@{first(body(\u0027List_IYC_Setup_rows\u0027)?[\u0027value\u0027])?[\u0027cp_northwarninglettertemplate3\u0027]}"
+                              }
+                            }
+                          }
+                        },
+                        "expression": {
+                          "equals": [
+                            "@variables(\u0027varLetterNumber\u0027)",
+                            2
+                          ]
+                        },
+                        "type": "If"
+                      }
+                    }
+                  },
+                  "expression": {
+                    "equals": [
+                      "@variables(\u0027varLetterNumber\u0027)",
+                      1
+                    ]
+                  },
+                  "type": "If"
+                },
+                "If_North_Template_Exists": {
+                  "actions": {
+                    "Switch": {
+                      "runAfter": {
+                        
+                      },
+                      "cases": {
+                        "Case": {
+                          "case": 1,
+                          "actions": {
+                            "Append_to_string_variable_2": {
+                              "runAfter": {
+                                
+                              },
+                              "type": "AppendToStringVariable",
+                              "inputs": {
+                                "name": "Error",
+                                "value": "North 1st Warning Letter Template in Its Your Choice Setup is empty!\n"
+                              }
+                            }
+                          }
+                        },
+                        "Case_2": {
+                          "case": 2,
+                          "actions": {
+                            "Append_to_string_variable_6": {
+                              "runAfter": {
+                                
+                              },
+                              "type": "AppendToStringVariable",
+                              "inputs": {
+                                "name": "Error",
+                                "value": "North 2nd Warning Letter Template in Its Your Choice Setup is empty!"
+                              }
+                            }
+                          }
+                        },
+                        "Case_3": {
+                          "case": 3,
+                          "actions": {
+                            "Append_to_string_variable_7": {
+                              "runAfter": {
+                                
+                              },
+                              "type": "AppendToStringVariable",
+                              "inputs": {
+                                "name": "Error",
+                                "value": "North 3rd Warning Letter Template in Its Your Choice Setup is empty!"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "default": {
+                        "actions": {
+                          
+                        }
+                      },
+                      "expression": "@variables(\u0027varLetterNumber\u0027)",
+                      "type": "Switch"
+                    }
+                  },
+                  "runAfter": {
+                    "Set_The_Template_value_based_on_the_letter_number": [
+                      "Succeeded"
+                    ]
+                  },
+                  "else": {
+                    "actions": {
+                      "Set_variable": {
+                        "runAfter": {
+                          
+                        },
+                        "type": "SetVariable",
+                        "inputs": {
+                          "name": "Word Template",
+                          "value": "@variables(\u0027varTemplateValue\u0027)"
+                        }
+                      }
+                    }
+                  },
+                  "expression": {
+                    "equals": [
+                      "@empty(variables(\u0027varTemplateValue\u0027))",
+                      "@true"
+                    ]
+                  },
+                  "type": "If"
+                }
+              }
+            },
+            "Case_2": {
+              "case": "83f1595a-245b-eb11-a812-0022489ba6ad",
+              "actions": {
+                "If_South_Template_Exists": {
+                  "actions": {
+                    "Switch_2": {
+                      "runAfter": {
+                        
+                      },
+                      "cases": {
+                        "Case": {
+                          "case": 1,
+                          "actions": {
+                            "Append_to_string_variable_8": {
+                              "runAfter": {
+                                
+                              },
+                              "type": "AppendToStringVariable",
+                              "inputs": {
+                                "name": "Error",
+                                "value": "South 1st Warning Letter Template in Its Your Choice Setup is empty!\n"
+                              }
+                            }
+                          }
+                        },
+                        "Case_2": {
+                          "case": 2,
+                          "actions": {
+                            "Append_to_string_variable_9": {
+                              "runAfter": {
+                                
+                              },
+                              "type": "AppendToStringVariable",
+                              "inputs": {
+                                "name": "Error",
+                                "value": "South 2nd Warning Letter Template in Its Your Choice Setup is empty!"
+                              }
+                            }
+                          }
+                        },
+                        "Case_3": {
+                          "case": 3,
+                          "actions": {
+                            "Append_to_string_variable_10": {
+                              "runAfter": {
+                                
+                              },
+                              "type": "AppendToStringVariable",
+                              "inputs": {
+                                "name": "Error",
+                                "value": "South 3rd Warning Letter Template in Its Your Choice Setup is empty!"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "default": {
+                        "actions": {
+                          
+                        }
+                      },
+                      "expression": "@variables(\u0027varLetterNumber\u0027)",
+                      "type": "Switch"
+                    }
+                  },
+                  "runAfter": {
+                    "Set_The_Template_value_based_on_the_letter_number_2": [
+                      "Succeeded"
+                    ]
+                  },
+                  "else": {
+                    "actions": {
+                      "Set_variable_2": {
+                        "runAfter": {
+                          
+                        },
+                        "type": "SetVariable",
+                        "inputs": {
+                          "name": "Word Template",
+                          "value": "@variables(\u0027varTemplateValue\u0027)"
+                        }
+                      }
+                    }
+                  },
+                  "expression": {
+                    "equals": [
+                      "@empty(variables(\u0027varTemplateValue\u0027))",
+                      "@true"
+                    ]
+                  },
+                  "type": "If"
+                },
+                "Set_The_Template_value_based_on_the_letter_number_2": {
+                  "actions": {
+                    "Set_variable_7": {
+                      "runAfter": {
+                        
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "varTemplateValue",
+                      "value": "@{first(body(\u0027List_IYC_Setup_rows\u0027)?[\u0027value\u0027])?[\u0027cp_southwarninglettertemplate1\u0027]}"
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    
+                  },
+                  "else": {
+                    "actions": {
+                      "Condition_4": {
+                        "actions": {
+                          "Set_variable_9": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "SetVariable",
+                            "inputs": {
+                              "name": "varTemplateValue",
+                            "value": "@{first(body(\u0027List_IYC_Setup_rows\u0027)?[\u0027value\u0027])?[\u0027cp_southwarninglettertemplate2\u0027]}"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          
+                        },
+                        "else": {
+                          "actions": {
+                            "Set_variable_8": {
+                              "runAfter": {
+                                
+                              },
+                              "type": "SetVariable",
+                              "inputs": {
+                                "name": "varTemplateValue",
+                              "value": "@{first(body(\u0027List_IYC_Setup_rows\u0027)?[\u0027value\u0027])?[\u0027cp_southwarninglettertemplate3\u0027]}"
+                              }
+                            }
+                          }
+                        },
+                        "expression": {
+                          "equals": [
+                            "@variables(\u0027varLetterNumber\u0027)",
+                            2
+                          ]
+                        },
+                        "type": "If"
+                      }
+                    }
+                  },
+                  "expression": {
+                    "equals": [
+                      "@variables(\u0027varLetterNumber\u0027)",
+                      1
+                    ]
+                  },
+                  "type": "If"
+                }
+              }
+            },
+            "Case_3": {
+              "case": "d6957360-245b-eb11-a812-0022489ba6ad",
+              "actions": {
+                "If_West_Template_Exists": {
+                  "actions": {
+                    "Switch_3": {
+                      "runAfter": {
+                        
+                      },
+                      "cases": {
+                        "Case": {
+                          "case": 1,
+                          "actions": {
+                            "Append_to_string_variable_3": {
+                              "runAfter": {
+                                
+                              },
+                              "type": "AppendToStringVariable",
+                              "inputs": {
+                                "name": "Error",
+                                "value": "West 1st Warning Letter Template in Its Your Choice Setup is empty!\n"
+                              }
+                            }
+                          }
+                        },
+                        "Case_2": {
+                          "case": 2,
+                          "actions": {
+                            "Append_to_string_variable_4": {
+                              "runAfter": {
+                                
+                              },
+                              "type": "AppendToStringVariable",
+                              "inputs": {
+                                "name": "Error",
+                                "value": "West 2nd Warning Letter Template in Its Your Choice Setup is empty!"
+                              }
+                            }
+                          }
+                        },
+                        "Case_3": {
+                          "case": 3,
+                          "actions": {
+                            "Append_to_string_variable_11": {
+                              "runAfter": {
+                                
+                              },
+                              "type": "AppendToStringVariable",
+                              "inputs": {
+                                "name": "Error",
+                                "value": "West 3rd Warning Letter Template in Its Your Choice Setup is empty!"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "default": {
+                        "actions": {
+                          
+                        }
+                      },
+                      "expression": "@variables(\u0027varLetterNumber\u0027)",
+                      "type": "Switch"
+                    }
+                  },
+                  "runAfter": {
+                    "Set_The_Template_value_based_on_the_letter_number_3": [
+                      "Succeeded"
+                    ]
+                  },
+                  "else": {
+                    "actions": {
+                      "Set_variable_3": {
+                        "runAfter": {
+                          
+                        },
+                        "type": "SetVariable",
+                        "inputs": {
+                          "name": "Word Template",
+                          "value": "@variables(\u0027varTemplateValue\u0027)"
+                        }
+                      }
+                    }
+                  },
+                  "expression": {
+                    "equals": [
+                      "@empty(variables(\u0027varTemplateValue\u0027))",
+                      "@true"
+                    ]
+                  },
+                  "type": "If"
+                },
+                "Set_The_Template_value_based_on_the_letter_number_3": {
+                  "actions": {
+                    "Set_variable_10": {
+                      "runAfter": {
+                        
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "varTemplateValue",
+                      "value": "@{first(body(\u0027List_IYC_Setup_rows\u0027)?[\u0027value\u0027])?[\u0027cp_westwarninglettertemplate1\u0027]}"
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    
+                  },
+                  "else": {
+                    "actions": {
+                      "Condition_5": {
+                        "actions": {
+                          "Set_variable_12": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "SetVariable",
+                            "inputs": {
+                              "name": "varTemplateValue",
+                            "value": "@{first(body(\u0027List_IYC_Setup_rows\u0027)?[\u0027value\u0027])?[\u0027cp_westwarninglettertemplate2\u0027]}"
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          
+                        },
+                        "else": {
+                          "actions": {
+                            "Set_variable_11": {
+                              "runAfter": {
+                                
+                              },
+                              "type": "SetVariable",
+                              "inputs": {
+                                "name": "varTemplateValue",
+                              "value": "@{first(body(\u0027List_IYC_Setup_rows\u0027)?[\u0027value\u0027])?[\u0027cp_westwarninglettertemplate3\u0027]}"
+                              }
+                            }
+                          }
+                        },
+                        "expression": {
+                          "equals": [
+                            "@variables(\u0027varLetterNumber\u0027)",
+                            2
+                          ]
+                        },
+                        "type": "If"
+                      }
+                    }
+                  },
+                  "expression": {
+                    "equals": [
+                      "@variables(\u0027varLetterNumber\u0027)",
+                      1
+                    ]
+                  },
+                  "type": "If"
+                }
+              }
+            }
+          },
+          "default": {
+            "actions": {
+              "Append_to_string_variable_5": {
+                "runAfter": {
+                  
+                },
+                "type": "AppendToStringVariable",
+                "inputs": {
+                  "name": "Error",
+                  "value": "TPA is empty!\n"
+                }
+              }
+            }
+          },
+        "expression": "@outputs(\u0027FetchedRecord\u0027)?[\u0027body/_cp_tpa_value\u0027]",
+          "metadata": {
+            "operationMetadataId": "f5fac92f-a1f9-4714-9113-c041d0590e06"
+          },
+          "type": "Switch"
+        },
+        "FetchedRecord": {
+          "runAfter": {
+            
+          },
+          "metadata": {
+            "operationMetadataId": "467d63b7-630f-4ba0-a622-19cb3e5def6f"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_2",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_itsyourchoices",
+            "recordId": "@triggerBody()?[\u0027recordId\u0027]"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Initialize_variable_-_WorkflowEnvironmentId": {
+          "runAfter": {
+            "FetchedRecord": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0cc4c27f-748f-41f8-9c67-b6ab16674d16"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "WorkflowEnvironmentId",
+                "type": "string",
+              "value": "@{workflow()[\u0027tags\u0027][\u0027environmentName\u0027]}"
+              }
+            ]
+          }
+        },
+        "List_rows_Environement": {
+          "runAfter": {
+            "Initialize_variable_-_WorkflowEnvironmentId": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6f312117-a0ea-4b88-99f8-01c9137e2bef"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_2",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_environments",
+            "$filter": "cp_workflowenvironmentid eq \u0027@{variables(\u0027WorkflowEnvironmentId\u0027)}\u0027"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Initialize_variable_-_EnvironmentConfigId": {
+          "runAfter": {
+            "List_rows_Environement": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "dcae4ede-e49d-43a2-b1ed-30a2484197d7"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "EnvironmentConfigId",
+                "type": "string",
+              "value": "@{first(body(\u0027List_rows_Environement\u0027)?[\u0027value\u0027])?[\u0027cp_environmentid\u0027]}"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_DocumentLibraryId": {
+          "runAfter": {
+            "List_IYC_Setup_rows": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "bda97a40-b555-44a0-bf7d-a98bcb3c4cb0"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "DocumentLibraryId",
+                "type": "string",
+              "value": "@{first(body(\u0027List_IYC_Setup_rows\u0027)?[\u0027value\u0027])?[\u0027cp_templatesdocumentlibrary\u0027]}"
+              }
+            ]
+          }
+        },
+        "Check_if_1st_letter_is_not_equal_to_null": {
+          "actions": {
+            "Check_to_see_if_2nd_letter_is_not_equal_to_null": {
+              "actions": {
+                "If_third_letter_has_already_been_created._Cancel_flow_run": {
+                  "actions": {
+                    "Terminate": {
+                      "runAfter": {
+                        
+                      },
+                      "metadata": {
+                        "operationMetadataId": "7d53bab3-929e-4998-8bf5-8af3f1b69f7f"
+                      },
+                      "type": "Terminate",
+                      "inputs": {
+                        "runStatus": "Cancelled"
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    "Condition_3": [
+                      "Succeeded"
+                    ]
+                  },
+                  "expression": {
+                    "not": {
+                      "equals": [
+                      "@outputs(\u0027FetchedRecord\u0027)?[\u0027body/cp_thirdwarninglettercreatedon\u0027]",
+                        "@null"
+                      ]
+                    }
+                  },
+                  "metadata": {
+                    "operationMetadataId": "9664bbbe-8658-4e38-9621-850ed74a0ad9"
+                  },
+                  "type": "If"
+                },
+                "Condition_3": {
+                  "actions": {
+                    "If_first_letter_is_not_equal_to_null_set_varLetterNumber_3": {
+                      "runAfter": {
+                        
+                      },
+                      "metadata": {
+                        "operationMetadataId": "2b68e2e0-3ccb-4a93-a81c-3ff82c068305"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "varLetterNumber",
+                        "value": 3
+                      }
+                    }
+                  },
+                  "runAfter": {
+                    
+                  },
+                  "else": {
+                    "actions": {
+                      "If_not_within_90_days_start_again_(1)": {
+                        "runAfter": {
+                          
+                        },
+                        "metadata": {
+                          "operationMetadataId": "7b2af3ba-086e-4fbe-bb12-2c93449108d1"
+                        },
+                        "type": "SetVariable",
+                        "inputs": {
+                          "name": "varLetterNumber",
+                          "value": 1
+                        }
+                      },
+                      "not_in_90_days_2": {
+                        "runAfter": {
+                          "If_not_within_90_days_start_again_(1)": [
+                            "Succeeded"
+                          ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "8b81ef9a-0a47-4fdd-be1c-c8ac87830e54"
+                        },
+                        "type": "SetVariable",
+                        "inputs": {
+                          "name": "varNotIn90Days",
+                          "value": true
+                        }
+                      }
+                    }
+                  },
+                  "expression": {
+                    "lessOrEquals": [
+                    "@div(sub(ticks(formatDateTime(utcNow(), \u0027yyyy-MM-dd\u0027)), ticks(formatDateTime(outputs(\u0027FetchedRecord\u0027)?[\u0027body/cp_secondwarninglettercreatedon\u0027], \u0027yyyy-MM-dd\u0027))), 864000000000)",
+                      90
+                    ]
+                  },
+                  "metadata": {
+                    "operationMetadataId": "bf734f39-6d32-4efd-b4f5-50a700b9e8b2"
+                  },
+                  "type": "If"
+                }
+              },
+              "runAfter": {
+                
+              },
+              "else": {
+                "actions": {
+                  "Condition": {
+                    "actions": {
+                      "If_first_letter_is_not_equal_to_null_set_varLetterNumber_as_2": {
+                        "runAfter": {
+                          
+                        },
+                        "metadata": {
+                          "operationMetadataId": "b7b8390a-3160-4bd2-b821-9b579ff32d57"
+                        },
+                        "type": "SetVariable",
+                        "inputs": {
+                          "name": "varLetterNumber",
+                          "value": 2
+                        }
+                      }
+                    },
+                    "runAfter": {
+                      
+                    },
+                    "else": {
+                      "actions": {
+                        "If_not_within_90_days_start_again": {
+                          "runAfter": {
+                            
+                          },
+                          "metadata": {
+                            "operationMetadataId": "096b6540-0bd7-4ef5-8abb-c7673a8b2f7e"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "varLetterNumber",
+                            "value": 1
+                          }
+                        },
+                        "not_in_90_days": {
+                          "runAfter": {
+                            "If_not_within_90_days_start_again": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "4e7677fd-c359-46d1-97ab-3f5ff14c4d4a"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "varNotIn90Days",
+                            "value": true
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "lessOrEquals": [
+                      "@div(sub(ticks(formatDateTime(utcNow(), \u0027yyyy-MM-dd\u0027)\r\n),ticks(formatDateTime(outputs(\u0027FetchedRecord\u0027)?[\u0027body/cp_stwarninglettercreatedon\u0027],\u0027yyyy-MM-dd\u0027))),864000000000)",
+                        90
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "777f47bc-b059-41b7-81ed-dac41cfe6716"
+                    },
+                    "type": "If"
+                  }
+                }
+              },
+              "expression": {
+                "not": {
+                  "equals": [
+                  "@outputs(\u0027FetchedRecord\u0027)?[\u0027body/cp_secondwarninglettercreatedon\u0027]",
+                    "@null"
+                  ]
+                }
+              },
+              "metadata": {
+                "operationMetadataId": "54c051e6-ba4c-410e-91b4-bc03fbbfbe95"
+              },
+              "type": "If"
+            }
+          },
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "If_first_letter_is_equal_to_null_set_varLetterNumber_as_1": {
+                "runAfter": {
+                  
+                },
+                "metadata": {
+                  "operationMetadataId": "71dc3a01-d6a0-4413-8942-ece51f2473b8"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "varLetterNumber",
+                  "value": 1
+                }
+              }
+            }
+          },
+          "expression": {
+            "not": {
+              "equals": [
+              "@outputs(\u0027FetchedRecord\u0027)?[\u0027body/cp_stwarninglettercreatedon\u0027]",
+                "@null"
+              ]
+            }
+          },
+          "metadata": {
+            "operationMetadataId": "e912027f-12b0-4c36-8ce5-898bcf78dbea"
+          },
+          "type": "If"
+        },
+        "Initialize_variable_-_Letter_Number": {
+          "runAfter": {
+            "Get_Incident_Details": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b5b3ae13-3a2c-4ca2-83ca-4ad329e0bd00"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varLetterNumber",
+                "type": "integer"
+              }
+            ]
+          }
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            "Initialize_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "789a9d2f-d23e-4531-86b3-716f1f3a9698"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varTemplateValue",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_2": {
+          "runAfter": {
+            "Initialize_variable_-_Letter_Number": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "344a3e3a-7936-4031-9893-9650df493692"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "varNotIn90Days",
+                "type": "boolean",
+                "value": false
+              }
+            ]
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

@@ -1,0 +1,1 @@
+& $PSScriptRoot\exportandextract.ps1 -folderName "FlowsCovid" -flow $True -prefix "CP"

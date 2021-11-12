@@ -1,0 +1,317 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_9993c"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "Staging Table Entry Id.",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Initialize_Error_Message_variable": {
+          "runAfter": {
+            
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Error Message",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Get_IYC_STG_row": {
+          "runAfter": {
+            "Initialize_Error_Message_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_itsyourchoicestgs",
+            "recordId": "@triggerBody()[\u0027text\u0027]"
+            },
+            "authentication": {
+              "type": "Raw",
+            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+            }
+          }
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "Check_Youth_Involved_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "iyccheckerrors": "@variables(\u0027Error Message\u0027)"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "iyccheckerrors": {
+                  "title": "IYCCheckErrors",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Check_Alcohol_Related_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_5": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Alcohol Related cannot be blank\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Get_IYC_STG_row": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_IYC_STG_row\u0027)?[\u0027body/cp_alcoholrelated\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_Brief_Description_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_6": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Brief Description cannot be blank\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_Alcohol_Related_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_IYC_STG_row\u0027)?[\u0027body/cp_itsyourchoicedescription\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_Intel_Submitted_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_7": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Intel Submitted cannot be blank\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_Brief_Description_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_IYC_STG_row\u0027)?[\u0027body/cp_intelsubmitted\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_Leaflet_Given_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_8": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Leaflet Given cannot be blank\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_Intel_Submitted_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_IYC_STG_row\u0027)?[\u0027body/cp_leafletgiven\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_Stop_Search_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_9": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Stop Search Submitted cannot be blank\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_Leaflet_Given_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_IYC_STG_row\u0027)?[\u0027body/cp_stopsearchsubmitted\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_TPA_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_10": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "TPA cannot be blank\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_Stop_Search_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_IYC_STG_row\u0027)?[\u0027body/cp_tpa\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_Youth_Involved_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_11": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Involved Youth cannot be blank\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_TPA_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "or": [
+              {
+                "equals": [
+                "@outputs(\u0027Get_IYC_STG_row\u0027)?[\u0027body/cp_involvedforename\u0027]",
+                  "@null"
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_IYC_STG_row\u0027)?[\u0027body/cp_involvedsurname\u0027]",
+                  "@null"
+                ]
+              }
+            ]
+          },
+          "type": "If"
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

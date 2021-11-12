@@ -1,0 +1,402 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_b542f"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "Enter Staging ID",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Initialize_variable": {
+          "runAfter": {
+            "Initialize_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Error Message",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Get_a_row": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_covidstgs",
+            "recordId": "@triggerBody()[\u0027text\u0027]"
+            },
+            "authentication": {
+              "type": "Raw",
+            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+            }
+          }
+        },
+        "Check_if_Title_is_NULL": {
+          "actions": {
+            "Append_to_string_variable": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Title cannot be blank"
+              }
+            }
+          },
+          "runAfter": {
+            "Get_a_row": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_a_row\u0027)?[\u0027body/cp_title\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_if_Forename_is_NULL": {
+          "actions": {
+            "Append_to_string_variable_2": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Forname cannot be blank"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_Title_is_NULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_a_row\u0027)?[\u0027body/cp_forename\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_if_Surname_is_NULL": {
+          "actions": {
+            "Append_to_string_variable_3": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Surname cannot be blank"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_Forename_is_NULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_a_row\u0027)?[\u0027body/cp_surname\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_if_Date_of_Birth_is_NULL": {
+          "actions": {
+            "Append_to_string_variable_4": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Date of Birth cannot be blank"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_Surname_is_NULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_a_row\u0027)?[\u0027body/cp_newdateofbirth\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_if_Gender_is_NULL": {
+          "actions": {
+            "Append_to_string_variable_5": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Gender cannot be blank"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_Date_of_Birth_is_NULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_a_row\u0027)?[\u0027body/cp_gender\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_if_Self-Defined_Ethnicity_is_NULL": {
+          "actions": {
+            "Append_to_string_variable_6": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Self-defined ethnicity cannot be blank"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_Gender_is_NULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_a_row\u0027)?[\u0027body/cp_selfdefinedethnicity\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_if_Officer-Defined_Ethnicity_is_NULL": {
+          "actions": {
+            "Append_to_string_variable_7": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Officer-defined Ethnicity cannot be blank"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_Self-Defined_Ethnicity_is_NULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_a_row\u0027)?[\u0027body/cp_officerdefinedethnicity\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_if_PNC_Check_is_NULL": {
+          "actions": {
+            "Append_to_string_variable_8": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "PNC check cannot be blank"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_Officer-Defined_Ethnicity_is_NULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_a_row\u0027)?[\u0027body/cp_pnchheck\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_if_Document_Check_is_NULL": {
+          "actions": {
+            "Append_to_string_variable_9": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Document check cannot be blank"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_PNC_Check_is_NULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_a_row\u0027)?[\u0027body/cp_documentcheck\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_if_Offence_Code_ID_is_NULL": {
+          "actions": {
+            "Append_to_string_variable_10": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Offence Code ID cannot be blank"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_Document_Check_is_NULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_a_row\u0027)?[\u0027body/cp_offencecode\u0027]",
+              ""
+            ]
+          },
+          "type": "If"
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "Check_if_Offence_Code_ID_is_NULL": [
+              "Succeeded"
+            ]
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "covidprerequisite": "@variables(\u0027Error Message\u0027)"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "covidprerequisite": {
+                  "title": "CovidPrerequisite",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Initialize_variable_2": {
+          "runAfter": {
+            
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "numberofrows",
+                "type": "integer",
+                "value": 0
+              }
+            ]
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

@@ -1,0 +1,177 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_b542f"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "Staging Table ID",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Initialize_Error_variable": {
+          "runAfter": {
+            
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Error Message",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Get_Covid_STG_Record": {
+          "runAfter": {
+            "Initialize_Error_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_covidstgs",
+            "recordId": "@triggerBody()[\u0027text\u0027]"
+            },
+            "authentication": {
+              "type": "Raw",
+            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+            }
+          }
+        },
+        "Check_if_Incident_Suffix_is_NULL": {
+          "actions": {
+            "Append_to_string_variable": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Incident Suffix cannot be blank"
+              }
+            }
+          },
+          "runAfter": {
+            "Get_Covid_STG_Record": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Covid_STG_Record\u0027)?[\u0027body/cp_incidentsuffix\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_if_Incident_Date_is_NULL": {
+          "actions": {
+            "Append_to_string_variable_2": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Incident Date cannot be blank"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_Incident_Suffix_is_NULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Covid_STG_Record\u0027)?[\u0027body/cp_incidentdate\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "Check_if_Incident_Date_is_NULL": [
+              "Succeeded"
+            ]
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "incidentcheckerror": "@variables(\u0027Error Message\u0027)"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "incidentcheckerror": {
+                  "title": "IncidentCheckError",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

@@ -1,0 +1,1781 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_ef737"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_dbcd7"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_commondataserviceforapps_2": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedcommondataserviceforapps_3a446"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_a_record_is_created,_updated_or_deleted": {
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 4,
+              "subscriptionRequest/entityname": "cp_useofforce_stg",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filteringattributes": "cp_stagingentrystatus",
+              "subscriptionRequest/filterexpression": "cp_stagingentrystatus eq 778230001"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        }
+      },
+      "actions": {
+        "Initialize_Error_Message_variable": {
+          "runAfter": {
+            "Initialize_Contact_Id_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Error Message",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Run_a_Child_Flow_(Incident_Prerequisites_check)": {
+          "runAfter": {
+            "Initialize_Error_Message_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "c5bccf14-f358-eb11-a812-0022489ba6ad"
+            },
+            "body": {
+            "text": "@triggerOutputs()?[\u0027body/cp_useofforce_stgid\u0027]"
+            }
+          }
+        },
+        "Append_Incident_Errors_in_Error_Message_variable": {
+          "actions": {
+            "Append_to_Error_Message_variable": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+              "value": "@{outputs(\u0027Run_a_Child_Flow_(Incident_Prerequisites_check)\u0027)?[\u0027Body\u0027]?[\u0027incidentcheckerrors\u0027]}\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Run_a_Child_Flow_(Incident_Prerequisites_check)": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "not": {
+              "equals": [
+              "@empty(outputs(\u0027Run_a_Child_Flow_(Incident_Prerequisites_check)\u0027)?[\u0027Body\u0027]?[\u0027incidentcheckerrors\u0027])",
+                "@true"
+              ]
+            }
+          },
+          "type": "If"
+        },
+        "Run_a_Child_Flow_(Use_of_Force_Prerequisites_check)": {
+          "runAfter": {
+            "Append_Incident_Errors_in_Error_Message_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "a29eb483-6659-eb11-a812-0022489ba6ad"
+            },
+            "body": {
+            "text": "@triggerOutputs()?[\u0027body/cp_useofforce_stgid\u0027]"
+            }
+          }
+        },
+        "Append_Use_of_Force_Errors_in_Error_Message_variable": {
+          "actions": {
+            "Append_to_Error_Message_variable_2": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+              "value": "@{outputs(\u0027Run_a_Child_Flow_(Use_of_Force_Prerequisites_check)\u0027)?[\u0027Body\u0027]?[\u0027useofforceerrors\u0027]}\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Run_a_Child_Flow_(Use_of_Force_Prerequisites_check)": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "not": {
+              "equals": [
+              "@empty(outputs(\u0027Run_a_Child_Flow_(Use_of_Force_Prerequisites_check)\u0027)?[\u0027Body\u0027]?[\u0027useofforceerrors\u0027])",
+                "@true"
+              ]
+            }
+          },
+          "type": "If"
+        },
+        "If_Errors_found_proceed_accordingly": {
+          "actions": {
+            "Update_Use_of_Force_STG_record_(Status,Submission_Error)": {
+              "runAfter": {
+                
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "UpdateRecord",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "cp_useofforce_stgs",
+                "recordId": "@triggerOutputs()?[\u0027body/cp_useofforce_stgid\u0027]",
+                  "item/cp_stagingentrystatus": 778230002,
+                  "item/cp_submissionerror": "@variables(\u0027Error Message\u0027)"
+                },
+                "authentication": "@parameters(\u0027$authentication\u0027)"
+              }
+            }
+          },
+          "runAfter": {
+            "Append_Tactics_Errors_in_Error_Message_variable": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Try_(Execute_Transactions)": {
+                "actions": {
+                  "Run_a_Child_Flow_(Create_Incident)": {
+                    "runAfter": {
+                      
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "71ab4fd1-7959-eb11-a812-000d3a654f72"
+                      },
+                      "body": {
+                      "text": "@if(empty(triggerOutputs()?[\u0027body/cp_incidentnumber\u0027]), concat(\u0027Use of Force Without Incident Number submitted on \u0027, formatDateTime(triggerOutputs()?[\u0027body/createdon\u0027], \u0027dd/MM/yyyy h:mm tt\u0027)), triggerOutputs()?[\u0027body/cp_incidentnumber\u0027])",
+                        "text_2": "a381a396-8855-eb11-a812-000d3a654f72",
+                      "text_4": "@triggerOutputs()?[\u0027body/_createdby_value\u0027]",
+                      "text_1": "@if(empty(triggerOutputs()?[\u0027body/cp_incidentsuffix\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_incidentsuffix\u0027])",
+                      "text_5": "@if(empty(triggerOutputs()?[\u0027body/cp_incidentdate\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_incidentdate\u0027])"
+                      }
+                    }
+                  },
+                  "Create_a_new_Use_of_Force_record": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Create_Location)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps",
+                        "operationId": "CreateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_useofforces",
+                      "item/cp_bodycam": "@triggerOutputs()?[\u0027body/cp_bodycam\u0027]",
+                      "item/cp_carrytaser": "@triggerOutputs()?[\u0027body/cp_carryced\u0027]",
+                      "item/cp_Incident@odata.bind": "/cp_incidents(@{outputs(\u0027Run_a_Child_Flow_(Create_Incident)\u0027)?[\u0027Body\u0027]?[\u0027incidentid\u0027]})",
+                      "item/cp_injuredasaresultofthesubjectassaultingyou": "@triggerOutputs()?[\u0027body/cp_injuredasaresultofthesubjectassaultingyou\u0027]",
+                      "item/cp_name": "Use of Force for Incident @{triggerOutputs()?[\u0027body/cp_incidentnumber\u0027]}",
+                      "item/cp_Officer@odata.bind": "/systemusers(@{triggerOutputs()?[\u0027body/cp_officer\u0027]})",
+                      "item/cp_officerassaulted": "@triggerOutputs()?[\u0027body/cp_officerassaulted\u0027]",
+                      "item/cp_OfficerThreatDetails@odata.bind": "/cp_lookupvalues(@{triggerOutputs()?[\u0027body/cp_officerthreatened\u0027]})",
+                      "item/cp_Place@odata.bind": "/cp_lookupvalues(@{triggerOutputs()?[\u0027body/cp_place\u0027]})",
+                      "item/cp_singlecrew": "@triggerOutputs()?[\u0027body/cp_singlecrew\u0027]",
+                      "item/cp_spat": "@triggerOutputs()?[\u0027body/cp_spat\u0027]",
+                      "item/cp_SubjectBehaviour@odata.bind": "/cp_lookupvalues(@{triggerOutputs()?[\u0027body/cp_subjectbehaviour\u0027]})",
+                      "item/cp_subjectinjury": "@triggerOutputs()?[\u0027body/cp_subjectinjured\u0027]",
+                      "item/cp_crimereportsubmitted": "@triggerOutputs()?[\u0027body/cp_crimereportsubmitted\u0027]",
+                      "item/cp_custodynumber": "@triggerOutputs()?[\u0027body/cp_custodynumber\u0027]",
+                      "item/cp_howmanysubjectinvolved": "@triggerOutputs()?[\u0027body/cp_howmanysubjectswereinvolved\u0027]",
+                      "item/cp_injuryondutyformsubmitted": "@triggerOutputs()?[\u0027body/cp_injuryondutyformsubmitted\u0027]",
+                      "item/cp_AssaultDetails@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_assaultdetails\u0027]), \u0027\u0027, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_assaultdetails\u0027], \u0027)\u0027))",
+                      "item/cp_officerinjurycausedbysubject": "@triggerOutputs()?[\u0027body/cp_officerinjurycausedbysubject\u0027]",
+                      "item/cp_OfficerMainDuty@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_officerduty\u0027]), \u0027\u0027, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_officerduty\u0027], \u0027)\u0027))",
+                      "item/cp_officermedicalassistance": "@triggerOutputs()?[\u0027body/cp_officermedicalassistance\u0027]",
+                      "item/cp_OfficerPhysicallyInjured@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_officerphysicalinjurydetail\u0027]), \u0027\u0027, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_officerphysicalinjurydetail\u0027], \u0027)\u0027))",
+                      "item/cp_OfficersPresent@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_officerspresent\u0027]), \u0027\u0027, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_officerspresent\u0027], \u0027)\u0027))",
+                      "item/ownerid@odata.bind": "/systemusers(@{triggerOutputs()?[\u0027body/_createdby_value\u0027]})",
+                      "item/cp_trainedconductedenergydeviceced": "@triggerOutputs()?[\u0027body/cp_areyouaspeciallytrainedced\u0027]",
+                      "item/cp_SubjectInjuryLevel@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_subjectinjurydetail\u0027]), \u0027\u0027, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_subjectinjurydetail\u0027], \u0027)\u0027))",
+                      "item/cp_subjectknownmentalhealthcondition": "@if(equals(variables(\u0027subjectRole\u0027),true), if(equals(outputs(\u0027Get_Subject_Role\u0027)?[\u0027body/cp_name\u0027], \u0027Subject (Not Known)\u0027),if(equals(triggerOutputs()?[\u0027body/cp_subjectknownmentalhealthcondition\u0027],\u0027Yes\u0027),true,false), null), null)",
+                      "item/cp_subjectknownphysicallydisabled": "@if(equals(variables(\u0027subjectRole\u0027),true),if(equals(outputs(\u0027Get_Subject_Role\u0027)?[\u0027body/cp_name\u0027], \u0027Subject (Known)\u0027),if(equals(triggerOutputs()?[\u0027body/cp_subjectknownphysicallydisabled\u0027],\u0027Yes\u0027),true,false), null) , null)",
+                      "item/cp_subjectmedicalassistanceoffered": "@triggerOutputs()?[\u0027body/cp_subjectmedicalassistanceoffered\u0027]",
+                      "item/cp_subjectmedicalassistanceprovided": "@triggerOutputs()?[\u0027body/cp_subjectmedicalassistanceprovided\u0027]",
+                      "item/cp_SubjectRole@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_subjectrole\u0027]), \u0027\u0027, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_subjectrole\u0027], \u0027)\u0027))",
+                      "item/cp_subjectunknownmentalimpairement": "@if(equals(variables(\u0027subjectRole\u0027),true), if(equals(outputs(\u0027Get_Subject_Role\u0027)?[\u0027body/cp_name\u0027], \u0027Subject (Not Known)\u0027),if(equals(triggerOutputs()?[\u0027body/cp_subjectperceivedmentalimpairment\u0027],\u0027Yes\u0027),true,false), null), null)",
+                      "item/cp_subjectunknownphysicalimpairement": "@if(equals(variables(\u0027subjectRole\u0027),true),if(equals(outputs(\u0027Get_Subject_Role\u0027)?[\u0027body/cp_name\u0027], \u0027Subject (Not Known)\u0027),if(equals(triggerOutputs()?[\u0027body/cp_subjectperceivedphysicalimpairment\u0027],\u0027Yes\u0027),true,false), null) , null)",
+                      "item/cp_TPA@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_tpa\u0027]), \u0027\u0027, concat(\u0027/cp_territorialpolicingareas(\u0027, triggerOutputs()?[\u0027body/cp_tpa\u0027], \u0027)\u0027))"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  },
+                  "Condition_Reason_For_Force_ISNULL": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "If_Subject_Role_is_Known": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Split_Reason_for_Force": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "Compose",
+                        "inputs": "@split(triggerOutputs()?[\u0027body/cp_reasonforforce\u0027], \u0027,\u0027)"
+                        },
+                        "Apply_to_each": {
+                          "foreach": "@outputs(\u0027Split_Reason_for_Force\u0027)",
+                          "actions": {
+                            "If_Value_Exists": {
+                              "actions": {
+                                
+                              },
+                              "runAfter": {
+                                
+                              },
+                              "else": {
+                                "actions": {
+                                  "Relate_records_(Add_to_many-many_relationships)": {
+                                    "runAfter": {
+                                      
+                                    },
+                                    "type": "OpenApiConnection",
+                                    "inputs": {
+                                      "host": {
+                                        "connectionName": "shared_commondataserviceforapps",
+                                        "operationId": "AssociateEntities",
+                                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                      },
+                                      "parameters": {
+                                        "entityName": "cp_useforcereasons",
+                                        "recordId": "@item()",
+                                        "associationEntityRelationship": "cp_UseofForce_cp_UseForceReason_cp_UseFor",
+                                      "item/@odata.id": "@outputs(\u0027Create_a_new_Use_of_Force_record\u0027)?[\u0027body/@odata.id\u0027]"
+                                      },
+                                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                                    }
+                                  }
+                                }
+                              },
+                              "expression": {
+                                "equals": [
+                                  "@empty(items(\u0027Apply_to_each\u0027))",
+                                  "@true"
+                                ]
+                              },
+                              "type": "If"
+                            }
+                          },
+                          "runAfter": {
+                            "Split_Reason_for_Force": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "Foreach"
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_reasonforforce\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "Condition_Outcome_ISNULL": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Condition_Reason_For_Force_ISNULL": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Split_Outcomes": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "Compose",
+                        "inputs": "@split(triggerOutputs()?[\u0027body/cp_outcome\u0027], \u0027,\u0027)"
+                        },
+                        "Apply_to_each_Outcome": {
+                          "foreach": "@outputs(\u0027Split_Outcomes\u0027)",
+                          "actions": {
+                            "If_Value_Exists_2": {
+                              "actions": {
+                                
+                              },
+                              "runAfter": {
+                                
+                              },
+                              "else": {
+                                "actions": {
+                                  "Relate_records_(Add_to_many-many_relationships)_2": {
+                                    "runAfter": {
+                                      
+                                    },
+                                    "type": "OpenApiConnection",
+                                    "inputs": {
+                                      "host": {
+                                        "connectionName": "shared_commondataserviceforapps",
+                                        "operationId": "AssociateEntities",
+                                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                      },
+                                      "parameters": {
+                                        "entityName": "cp_useforceoutcomes",
+                                        "recordId": "@item()",
+                                        "associationEntityRelationship": "cp_UseForceOutcome_cp_UseofForce_cp_Useof",
+                                      "item/@odata.id": "@outputs(\u0027Create_a_new_Use_of_Force_record\u0027)?[\u0027body/@odata.id\u0027]"
+                                      },
+                                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                                    }
+                                  }
+                                }
+                              },
+                              "expression": {
+                                "equals": [
+                                  "@empty(items(\u0027Apply_to_each_Outcome\u0027))",
+                                  "@true"
+                                ]
+                              },
+                              "type": "If"
+                            }
+                          },
+                          "runAfter": {
+                            "Split_Outcomes": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "Foreach"
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_outcome\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "Process_Photo_1_if_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Condition_Impact_Factor_ISNULL_": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Get_file_or_image_content_from_Use_of_Force_STG": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_useofforce_stgs",
+                            "recordId": "@triggerOutputs()?[\u0027body/cp_useofforce_stgid\u0027]",
+                              "fileImageFieldName": "cp_photo1",
+                              "size": "full"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Upload_file_or_image_content_Photo_1": {
+                          "runAfter": {
+                            "Create_a_new_record_in_Photos_for_Photo_1": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "recordId": "@outputs(\u0027Create_a_new_record_in_Photos_for_Photo_1\u0027)?[\u0027body/cp_photoid\u0027]",
+                              "fileImageFieldName": "cp_image",
+                            "item": "@outputs(\u0027Get_file_or_image_content_from_Use_of_Force_STG\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Create_a_new_record_in_Photos_for_Photo_1": {
+                          "runAfter": {
+                            "Get_file_or_image_content_from_Use_of_Force_STG": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "CreateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "item/cp_phototitle": "Photo 1, @{outputs(\u0027Create_a_new_Use_of_Force_record\u0027)?[\u0027body/cp_name\u0027]}",
+                            "item/cp_UseofForce@odata.bind": "/cp_useofforces(@{outputs(\u0027Create_a_new_Use_of_Force_record\u0027)?[\u0027body/cp_useofforceid\u0027]})"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_photo1id\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "Process_Photo_2_if_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Process_Photo_1_if_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Get_file_or_image_content_from_Use_of_Force_STG_2": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_useofforce_stgs",
+                            "recordId": "@triggerOutputs()?[\u0027body/cp_useofforce_stgid\u0027]",
+                              "fileImageFieldName": "cp_photo2",
+                              "size": "full"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Upload_file_or_image_content_Photo": {
+                          "runAfter": {
+                            "Create_a_new_record_in_Photos_for_Photo": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "recordId": "@outputs(\u0027Create_a_new_record_in_Photos_for_Photo\u0027)?[\u0027body/cp_photoid\u0027]",
+                              "fileImageFieldName": "cp_image",
+                            "item": "@outputs(\u0027Get_file_or_image_content_from_Use_of_Force_STG_2\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Create_a_new_record_in_Photos_for_Photo": {
+                          "runAfter": {
+                            "Get_file_or_image_content_from_Use_of_Force_STG_2": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "CreateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "item/cp_phototitle": "Photo 2, @{outputs(\u0027Create_a_new_Use_of_Force_record\u0027)?[\u0027body/cp_name\u0027]}",
+                            "item/cp_UseofForce@odata.bind": "/cp_useofforces(@{outputs(\u0027Create_a_new_Use_of_Force_record\u0027)?[\u0027body/cp_useofforceid\u0027]})"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_photo2id\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "Process_Photo_3_if_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Process_Photo_2_if_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Get_file_or_image_content_from_Use_of_Force_STG_3": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_useofforce_stgs",
+                            "recordId": "@triggerOutputs()?[\u0027body/cp_useofforce_stgid\u0027]",
+                              "fileImageFieldName": "cp_photo3",
+                              "size": "full"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Upload_file_or_image_content_Photo_2": {
+                          "runAfter": {
+                            "Create_a_new_record_in_Photos_for_Photo_2": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "recordId": "@outputs(\u0027Create_a_new_record_in_Photos_for_Photo_2\u0027)?[\u0027body/cp_photoid\u0027]",
+                              "fileImageFieldName": "cp_image",
+                            "item": "@outputs(\u0027Get_file_or_image_content_from_Use_of_Force_STG_3\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Create_a_new_record_in_Photos_for_Photo_2": {
+                          "runAfter": {
+                            "Get_file_or_image_content_from_Use_of_Force_STG_3": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "CreateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "item/cp_phototitle": "Photo 3, @{outputs(\u0027Create_a_new_Use_of_Force_record\u0027)?[\u0027body/cp_name\u0027]}",
+                            "item/cp_UseofForce@odata.bind": "/cp_useofforces(@{outputs(\u0027Create_a_new_Use_of_Force_record\u0027)?[\u0027body/cp_useofforceid\u0027]})"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_photo3id\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "Process_Photo_4_if_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Process_Photo_3_if_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Get_file_or_image_content_from_Use_of_Force_STG_4": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_useofforce_stgs",
+                            "recordId": "@triggerOutputs()?[\u0027body/cp_useofforce_stgid\u0027]",
+                              "fileImageFieldName": "cp_photo4",
+                              "size": "full"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Upload_file_or_image_content_Photo_3": {
+                          "runAfter": {
+                            "Create_a_new_record_in_Photos_for_Photo_3": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "recordId": "@outputs(\u0027Create_a_new_record_in_Photos_for_Photo_3\u0027)?[\u0027body/cp_photoid\u0027]",
+                              "fileImageFieldName": "cp_image",
+                            "item": "@outputs(\u0027Get_file_or_image_content_from_Use_of_Force_STG_4\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Create_a_new_record_in_Photos_for_Photo_3": {
+                          "runAfter": {
+                            "Get_file_or_image_content_from_Use_of_Force_STG_4": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "CreateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "item/cp_phototitle": "Photo 4, @{outputs(\u0027Create_a_new_Use_of_Force_record\u0027)?[\u0027body/cp_name\u0027]}",
+                            "item/cp_UseofForce@odata.bind": "/cp_useofforces(@{outputs(\u0027Create_a_new_Use_of_Force_record\u0027)?[\u0027body/cp_useofforceid\u0027]})"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_photo4id\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "Process_Photo_5_if_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Process_Photo_4_if_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Get_file_or_image_content_from_Use_of_Force_STG_5": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_useofforce_stgs",
+                            "recordId": "@triggerOutputs()?[\u0027body/cp_useofforce_stgid\u0027]",
+                              "fileImageFieldName": "cp_photo5",
+                              "size": "full"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Upload_file_or_image_content_Photo_4": {
+                          "runAfter": {
+                            "Create_a_new_record_in_Photos_for_Photo_4": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "recordId": "@outputs(\u0027Create_a_new_record_in_Photos_for_Photo_4\u0027)?[\u0027body/cp_photoid\u0027]",
+                              "fileImageFieldName": "cp_image",
+                            "item": "@outputs(\u0027Get_file_or_image_content_from_Use_of_Force_STG_5\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Create_a_new_record_in_Photos_for_Photo_4": {
+                          "runAfter": {
+                            "Get_file_or_image_content_from_Use_of_Force_STG_5": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "CreateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "item/cp_phototitle": "Photo 5, @{outputs(\u0027Create_a_new_Use_of_Force_record\u0027)?[\u0027body/cp_name\u0027]}",
+                            "item/cp_UseofForce@odata.bind": "/cp_useofforces(@{outputs(\u0027Create_a_new_Use_of_Force_record\u0027)?[\u0027body/cp_useofforceid\u0027]})"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_photo5id\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "List_Use_Of_Force_Tactics_STG": {
+                    "runAfter": {
+                      "Process_Photo_5_if_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps",
+                        "operationId": "ListRecords",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_useofforcetactics_stgs",
+                      "$filter": "(_cp_useofforcestg_value eq @{triggerOutputs()?[\u0027body/cp_useofforce_stgid\u0027]})"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  },
+                  "For_Each_Tactic_in_Staging_Area": {
+                  "foreach": "@outputs(\u0027List_Use_Of_Force_Tactics_STG\u0027)?[\u0027body/value\u0027]",
+                    "actions": {
+                      "Create_a_new_Use_Of_Force_Tactic": {
+                        "runAfter": {
+                          
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps",
+                            "operationId": "CreateRecord",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "cp_tactics",
+                          "item/cp_effective": "@items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_effective\u0027]",
+                          "item/cp_name": "@{outputs(\u0027Create_a_new_Use_of_Force_record\u0027)?[\u0027body/cp_name\u0027]}, Tactic @{items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_sequencenumber\u0027]} ",
+                          "item/cp_sequenceno": "@items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_sequencenumber\u0027]",
+                          "item/cp_TacticType@odata.bind": "/cp_tactictypes(@{items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_tactictype\u0027]})",
+                          "item/cp_UseofForce@odata.bind": "/cp_useofforces(@{outputs(\u0027Create_a_new_Use_of_Force_record\u0027)?[\u0027body/cp_useofforceid\u0027]})",
+                          "item/cp_FirearmUseType@odata.bind": "@if(empty(items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_firearmusetype\u0027]), \u0027\u0027, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_firearmusetype\u0027], \u0027)\u0027))",
+                          "item/ownerid@odata.bind": "/systemusers(@{triggerOutputs()?[\u0027body/_createdby_value\u0027]})",
+                          "item/cp_TaserDevice@odata.bind": "@if(empty(items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taserdevicetype\u0027]), \u0027\u0027, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taserdevicetype\u0027], \u0027)\u0027))",
+                          "item/cp_taserdeviceserial": "@items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taserdeviceserial\u0027]",
+                          "item/cp_taserlabel": "@items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taserlabel\u0027]",
+                          "item/cp_TaserUse@odata.bind": "@if(empty(items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taseruse\u0027]), \u0027\u0027, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taseruse\u0027], \u0027)\u0027))"
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      },
+                      "Check_for_1st_Taser_Use": {
+                        "actions": {
+                          "Create_1st_Taser_Usage_record": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "OpenApiConnection",
+                            "inputs": {
+                              "host": {
+                                "connectionName": "shared_commondataserviceforapps",
+                                "operationId": "CreateRecord",
+                                "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                              },
+                              "parameters": {
+                                "entityName": "cp_taserusages",
+                              "item/cp_AreaUsed@odata.bind": "/cp_lookupvalues(@{items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser1areaused\u0027]})",
+                              "item/cp_barbsno": "@items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser1barbsno\u0027]",
+                              "item/cp_cartidgenumber": "@items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser1cartidgenumber\u0027]",
+                              "item/cp_extendedcycle": "@items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser1extendedcycle\u0027]",
+                              "item/cp_fivesecondscycle": "@items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser1fivesecondcycle\u0027]",
+                              "item/cp_name": "Taser Usage 1, @{outputs(\u0027Create_a_new_Use_Of_Force_Tactic\u0027)?[\u0027body/cp_name\u0027]}",
+                              "item/cp_repeatcycle": "@items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser1repeatcycle\u0027]",
+                                "item/cp_sequenceno": 1,
+                              "item/cp_Tactic@odata.bind": "/cp_tactics(@{outputs(\u0027Create_a_new_Use_Of_Force_Tactic\u0027)?[\u0027body/cp_tacticid\u0027]})",
+                              "item/cp_totalcyclesno": "@items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser1totalcycles\u0027]"
+                              },
+                              "authentication": "@parameters(\u0027$authentication\u0027)"
+                            }
+                          },
+                          "If_Back_Area_is_filled": {
+                            "actions": {
+                              
+                            },
+                            "runAfter": {
+                              "Create_1st_Taser_Usage_record": [
+                                "Succeeded"
+                              ]
+                            },
+                            "else": {
+                              "actions": {
+                                "Split_Back_Areas": {
+                                  "runAfter": {
+                                    
+                                  },
+                                  "type": "Compose",
+                                "inputs": "@split(items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser1backlocation\u0027], \u0027,\u0027)"
+                                },
+                                "Apply_to_each_Back_Area": {
+                                  "foreach": "@outputs(\u0027Split_Back_Areas\u0027)",
+                                  "actions": {
+                                    "Relate_rows_(Taser_Use_-_Taser_Area_Use_Back)": {
+                                      "runAfter": {
+                                        
+                                      },
+                                      "type": "OpenApiConnection",
+                                      "inputs": {
+                                        "host": {
+                                          "connectionName": "shared_commondataserviceforapps_1",
+                                          "operationId": "AssociateEntities",
+                                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                        },
+                                        "parameters": {
+                                          "entityName": "cp_taseruseareabacks",
+                                          "recordId": "@items(\u0027Apply_to_each_Back_Area\u0027)",
+                                          "associationEntityRelationship": "cp_TaserUsage_cp_TaserUseAreaBack",
+                                        "item/@odata.id": "@outputs(\u0027Create_1st_Taser_Usage_record\u0027)?[\u0027body/@odata.id\u0027]"
+                                        },
+                                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                                      }
+                                    }
+                                  },
+                                  "runAfter": {
+                                    "Split_Back_Areas": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "type": "Foreach"
+                                }
+                              }
+                            },
+                            "expression": {
+                              "equals": [
+                              "@empty(items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser1backlocation\u0027])",
+                                "@true"
+                              ]
+                            },
+                            "type": "If"
+                          },
+                          "If_Front_Area_is_filled": {
+                            "actions": {
+                              
+                            },
+                            "runAfter": {
+                              "If_Back_Area_is_filled": [
+                                "Succeeded"
+                              ]
+                            },
+                            "else": {
+                              "actions": {
+                                "Split_Front_Areas": {
+                                  "runAfter": {
+                                    
+                                  },
+                                  "type": "Compose",
+                                "inputs": "@split(items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser1frontlocation\u0027], \u0027,\u0027)"
+                                },
+                                "Apply_to_each_Front_Area": {
+                                  "foreach": "@outputs(\u0027Split_Front_Areas\u0027)",
+                                  "actions": {
+                                    "Relate_rows_(Taser_Use_-_Taser_Area_Use_Front)": {
+                                      "runAfter": {
+                                        
+                                      },
+                                      "type": "OpenApiConnection",
+                                      "inputs": {
+                                        "host": {
+                                          "connectionName": "shared_commondataserviceforapps_1",
+                                          "operationId": "AssociateEntities",
+                                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                        },
+                                        "parameters": {
+                                          "entityName": "cp_taseruseareafronts",
+                                          "recordId": "@items(\u0027Apply_to_each_Front_Area\u0027)",
+                                          "associationEntityRelationship": "cp_TaserUsage_cp_TaserUseAreaBack",
+                                        "item/@odata.id": "@outputs(\u0027Create_1st_Taser_Usage_record\u0027)?[\u0027body/@odata.id\u0027]"
+                                        },
+                                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                                      }
+                                    }
+                                  },
+                                  "runAfter": {
+                                    "Split_Front_Areas": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "type": "Foreach"
+                                }
+                              }
+                            },
+                            "expression": {
+                              "equals": [
+                              "@empty(items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser1frontlocation\u0027])",
+                                "@true"
+                              ]
+                            },
+                            "type": "If"
+                          }
+                        },
+                        "runAfter": {
+                          "Create_a_new_Use_Of_Force_Tactic": [
+                            "Succeeded"
+                          ]
+                        },
+                        "expression": {
+                          "not": {
+                            "equals": [
+                            "@empty(items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser1cartidgenumber\u0027])",
+                              "@true"
+                            ]
+                          }
+                        },
+                        "type": "If"
+                      },
+                      "Check_for_2nd_Taser_Use": {
+                        "actions": {
+                          "Create_2nd_Taser_Usage_record": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "OpenApiConnection",
+                            "inputs": {
+                              "host": {
+                                "connectionName": "shared_commondataserviceforapps",
+                                "operationId": "CreateRecord",
+                                "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                              },
+                              "parameters": {
+                                "entityName": "cp_taserusages",
+                              "item/cp_AreaUsed@odata.bind": "/cp_lookupvalues(@{items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser2areaused\u0027]})",
+                              "item/cp_barbsno": "@items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser2barbsno\u0027]",
+                              "item/cp_cartidgenumber": "@items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser2cartidgenumber\u0027]",
+                              "item/cp_extendedcycle": "@items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser2extendedcycle\u0027]",
+                              "item/cp_fivesecondscycle": "@items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser2fivesecondcycle\u0027]",
+                              "item/cp_name": "Taser Usage 2, @{outputs(\u0027Create_a_new_Use_Of_Force_Tactic\u0027)?[\u0027body/cp_name\u0027]}",
+                              "item/cp_repeatcycle": "@items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser2repeatcycle\u0027]",
+                                "item/cp_sequenceno": 2,
+                              "item/cp_Tactic@odata.bind": "/cp_tactics(@{outputs(\u0027Create_a_new_Use_Of_Force_Tactic\u0027)?[\u0027body/cp_tacticid\u0027]})",
+                              "item/cp_totalcyclesno": "@items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser2totalcycleno\u0027]",
+                              "item/cp_BackLocation@odata.bind": "@if(empty(items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser2backlocation\u0027]), \u0027\u0027, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser2backlocation\u0027], \u0027)\u0027))",
+                              "item/cp_FrontLocation@odata.bind": "@if(empty(items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser2fronlocation\u0027]), \u0027\u0027, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser2fronlocation\u0027], \u0027)\u0027))"
+                              },
+                              "authentication": "@parameters(\u0027$authentication\u0027)"
+                            }
+                          },
+                          "If_Back_Area_is_filled_2": {
+                            "actions": {
+                              
+                            },
+                            "runAfter": {
+                              "Create_2nd_Taser_Usage_record": [
+                                "Succeeded"
+                              ]
+                            },
+                            "else": {
+                              "actions": {
+                                "Split_Back_Areas_2": {
+                                  "runAfter": {
+                                    
+                                  },
+                                  "type": "Compose",
+                                "inputs": "@split(items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser2backlocation\u0027], \u0027,\u0027)"
+                                },
+                                "Apply_to_each_Back_Area_2": {
+                                  "foreach": "@outputs(\u0027Split_Back_Areas_2\u0027)",
+                                  "actions": {
+                                    "Relate_rows_(Taser_Use_-_Taser_Area_Use_Back)_2": {
+                                      "runAfter": {
+                                        
+                                      },
+                                      "type": "OpenApiConnection",
+                                      "inputs": {
+                                        "host": {
+                                          "connectionName": "shared_commondataserviceforapps_1",
+                                          "operationId": "AssociateEntities",
+                                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                        },
+                                        "parameters": {
+                                          "entityName": "cp_taseruseareabacks",
+                                          "recordId": "@items(\u0027Apply_to_each_Back_Area_2\u0027)",
+                                          "associationEntityRelationship": "cp_TaserUsage_cp_TaserUseAreaBack",
+                                        "item/@odata.id": "@outputs(\u0027Create_2nd_Taser_Usage_record\u0027)?[\u0027body/@odata.id\u0027]"
+                                        },
+                                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                                      }
+                                    }
+                                  },
+                                  "runAfter": {
+                                    "Split_Back_Areas_2": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "type": "Foreach"
+                                }
+                              }
+                            },
+                            "expression": {
+                              "equals": [
+                              "@empty(items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser2backlocation\u0027])",
+                                "@true"
+                              ]
+                            },
+                            "type": "If"
+                          },
+                          "If_Front_Area_is_filled_2": {
+                            "actions": {
+                              
+                            },
+                            "runAfter": {
+                              "If_Back_Area_is_filled_2": [
+                                "Succeeded"
+                              ]
+                            },
+                            "else": {
+                              "actions": {
+                                "Split_Front_Areas_2": {
+                                  "runAfter": {
+                                    
+                                  },
+                                  "type": "Compose",
+                                "inputs": "@split(items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser2fronlocation\u0027], \u0027,\u0027)"
+                                },
+                                "Apply_to_each_Front_Area_2": {
+                                  "foreach": "@outputs(\u0027Split_Front_Areas_2\u0027)",
+                                  "actions": {
+                                    "Relate_rows_(Taser_Use_-_Taser_Area_Use_Front)_2": {
+                                      "runAfter": {
+                                        
+                                      },
+                                      "type": "OpenApiConnection",
+                                      "inputs": {
+                                        "host": {
+                                          "connectionName": "shared_commondataserviceforapps_1",
+                                          "operationId": "AssociateEntities",
+                                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                        },
+                                        "parameters": {
+                                          "entityName": "cp_taseruseareafronts",
+                                          "recordId": "@items(\u0027Apply_to_each_Front_Area_2\u0027)",
+                                          "associationEntityRelationship": "cp_TaserUsage_cp_TaserUseAreaBack",
+                                        "item/@odata.id": "@outputs(\u0027Create_2nd_Taser_Usage_record\u0027)?[\u0027body/@odata.id\u0027]"
+                                        },
+                                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                                      }
+                                    }
+                                  },
+                                  "runAfter": {
+                                    "Split_Front_Areas_2": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "type": "Foreach"
+                                }
+                              }
+                            },
+                            "expression": {
+                              "equals": [
+                              "@empty(items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser2fronlocation\u0027])",
+                                "@true"
+                              ]
+                            },
+                            "type": "If"
+                          }
+                        },
+                        "runAfter": {
+                          "Check_for_1st_Taser_Use": [
+                            "Succeeded"
+                          ]
+                        },
+                        "expression": {
+                          "not": {
+                            "equals": [
+                            "@empty(items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser2cartidgenumber\u0027])",
+                              "@true"
+                            ]
+                          }
+                        },
+                        "type": "If"
+                      },
+                      "Check_for_3rd_Taser_Use": {
+                        "actions": {
+                          "Create_3rd_Taser_Usage_record": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "OpenApiConnection",
+                            "inputs": {
+                              "host": {
+                                "connectionName": "shared_commondataserviceforapps",
+                                "operationId": "CreateRecord",
+                                "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                              },
+                              "parameters": {
+                                "entityName": "cp_taserusages",
+                              "item/cp_AreaUsed@odata.bind": "/cp_lookupvalues(@{items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser3areaused\u0027]})",
+                              "item/cp_barbsno": "@items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser3barbsno\u0027]",
+                              "item/cp_cartidgenumber": "@items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser3cartidgenumber\u0027]",
+                              "item/cp_extendedcycle": "@items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser3extendedcycle\u0027]",
+                              "item/cp_fivesecondscycle": "@items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser3fivesecondcycle\u0027]",
+                              "item/cp_name": "Taser Usage 3, @{outputs(\u0027Create_a_new_Use_Of_Force_Tactic\u0027)?[\u0027body/cp_name\u0027]}",
+                              "item/cp_repeatcycle": "@items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser3repeatcycle\u0027]",
+                                "item/cp_sequenceno": 3,
+                              "item/cp_Tactic@odata.bind": "/cp_tactics(@{outputs(\u0027Create_a_new_Use_Of_Force_Tactic\u0027)?[\u0027body/cp_tacticid\u0027]})",
+                              "item/cp_totalcyclesno": "@items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser3totalcyclesno\u0027]",
+                              "item/cp_BackLocation@odata.bind": "@if(empty(items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser3backlocation\u0027]), \u0027\u0027, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser3backlocation\u0027], \u0027)\u0027))",
+                              "item/cp_FrontLocation@odata.bind": "@if(empty(items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser3frontlocation\u0027]), \u0027\u0027, concat(\u0027/cp_lookupvalues(\u0027, items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser3frontlocation\u0027], \u0027)\u0027))"
+                              },
+                              "authentication": "@parameters(\u0027$authentication\u0027)"
+                            }
+                          },
+                          "If_Back_Area_is_filled_3": {
+                            "actions": {
+                              
+                            },
+                            "runAfter": {
+                              "Create_3rd_Taser_Usage_record": [
+                                "Succeeded"
+                              ]
+                            },
+                            "else": {
+                              "actions": {
+                                "Split_Back_Areas_3": {
+                                  "runAfter": {
+                                    
+                                  },
+                                  "type": "Compose",
+                                "inputs": "@split(items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser3backlocation\u0027], \u0027,\u0027)"
+                                },
+                                "Apply_to_each_Back_Area_3": {
+                                  "foreach": "@outputs(\u0027Split_Back_Areas_3\u0027)",
+                                  "actions": {
+                                    "Relate_rows_(Taser_Use_-_Taser_Area_Use_Back)_3": {
+                                      "runAfter": {
+                                        
+                                      },
+                                      "type": "OpenApiConnection",
+                                      "inputs": {
+                                        "host": {
+                                          "connectionName": "shared_commondataserviceforapps_1",
+                                          "operationId": "AssociateEntities",
+                                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                        },
+                                        "parameters": {
+                                          "entityName": "cp_taseruseareabacks",
+                                          "recordId": "@items(\u0027Apply_to_each_Back_Area_3\u0027)",
+                                          "associationEntityRelationship": "cp_TaserUsage_cp_TaserUseAreaBack",
+                                        "item/@odata.id": "@outputs(\u0027Create_3rd_Taser_Usage_record\u0027)?[\u0027body/@odata.id\u0027]"
+                                        },
+                                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                                      }
+                                    }
+                                  },
+                                  "runAfter": {
+                                    "Split_Back_Areas_3": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "type": "Foreach"
+                                }
+                              }
+                            },
+                            "expression": {
+                              "equals": [
+                              "@empty(items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser3backlocation\u0027])",
+                                "@true"
+                              ]
+                            },
+                            "type": "If"
+                          },
+                          "If_Front_Area_is_filled_3": {
+                            "actions": {
+                              
+                            },
+                            "runAfter": {
+                              "If_Back_Area_is_filled_3": [
+                                "Succeeded"
+                              ]
+                            },
+                            "else": {
+                              "actions": {
+                                "Split_Front_Areas_3": {
+                                  "runAfter": {
+                                    
+                                  },
+                                  "type": "Compose",
+                                "inputs": "@split(items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser3frontlocation\u0027], \u0027,\u0027)"
+                                },
+                                "Apply_to_each_Front_Area_3": {
+                                  "foreach": "@outputs(\u0027Split_Front_Areas_3\u0027)",
+                                  "actions": {
+                                    "Relate_rows_(Taser_Use_-_Taser_Area_Use_Front)_3": {
+                                      "runAfter": {
+                                        
+                                      },
+                                      "type": "OpenApiConnection",
+                                      "inputs": {
+                                        "host": {
+                                          "connectionName": "shared_commondataserviceforapps_1",
+                                          "operationId": "AssociateEntities",
+                                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                        },
+                                        "parameters": {
+                                          "entityName": "cp_taseruseareafronts",
+                                          "recordId": "@items(\u0027Apply_to_each_Front_Area_3\u0027)",
+                                          "associationEntityRelationship": "cp_TaserUsage_cp_TaserUseAreaBack",
+                                        "item/@odata.id": "@outputs(\u0027Create_3rd_Taser_Usage_record\u0027)?[\u0027body/@odata.id\u0027]"
+                                        },
+                                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                                      }
+                                    }
+                                  },
+                                  "runAfter": {
+                                    "Split_Front_Areas_3": [
+                                      "Succeeded"
+                                    ]
+                                  },
+                                  "type": "Foreach"
+                                }
+                              }
+                            },
+                            "expression": {
+                              "equals": [
+                              "@empty(items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser3frontlocation\u0027])",
+                                "@true"
+                              ]
+                            },
+                            "type": "If"
+                          }
+                        },
+                        "runAfter": {
+                          "Check_for_2nd_Taser_Use": [
+                            "Succeeded"
+                          ]
+                        },
+                        "expression": {
+                          "not": {
+                            "equals": [
+                            "@empty(items(\u0027For_Each_Tactic_in_Staging_Area\u0027)?[\u0027cp_taser3cartidgenumber\u0027])",
+                              "@true"
+                            ]
+                          }
+                        },
+                        "type": "If"
+                      }
+                    },
+                    "runAfter": {
+                      "List_Use_Of_Force_Tactics_STG": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "Foreach"
+                  },
+                  "Run_a_Child_Flow_(Create_Location)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Create_Incident)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "b11a6067-a363-eb11-a812-000d3ab40f79"
+                      },
+                      "body": {
+                      "text": "Location for Incident: @{triggerOutputs()?[\u0027body/cp_incidentnumber\u0027]}",
+                      "text_4": "@outputs(\u0027Run_a_Child_Flow_(Create_Incident)\u0027)?[\u0027Body\u0027]?[\u0027incidentid\u0027]",
+                        "location": {
+                          "address": {
+                            "city": "@\u0027\u0027",
+                            "countryOrRegion": " ",
+                            "street": "@\u0027\u0027"
+                          }
+                        },
+                        "text_5": " ",
+                      "number": "@if(empty(string(triggerOutputs()?[\u0027body/cp_locationlatitude\u0027])), 0, triggerOutputs()?[\u0027body/cp_locationlatitude\u0027])",
+                      "number_1": "@if(empty(string(triggerOutputs()?[\u0027body/cp_locationlongitude\u0027])), 0, triggerOutputs()?[\u0027body/cp_locationlongitude\u0027])",
+                        "text_6": " ",
+                        "text_7": "Incident Location"
+                      }
+                    }
+                  },
+                  "Condition_Impact_Factor_ISNULL_": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Condition_Outcome_ISNULL": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Split_Impact_Factors": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "Compose",
+                        "inputs": "@split(triggerOutputs()?[\u0027body/cp_impactfactors\u0027], \u0027,\u0027)"
+                        },
+                        "Apply_to_each_Impact_Factor": {
+                          "foreach": "@outputs(\u0027Split_Impact_Factors\u0027)",
+                          "actions": {
+                            "Relate_records_(Add_to_many-many_relationships_UoF_Impact_Factors)_": {
+                              "runAfter": {
+                                
+                              },
+                              "type": "OpenApiConnection",
+                              "inputs": {
+                                "host": {
+                                  "connectionName": "shared_commondataserviceforapps",
+                                  "operationId": "AssociateEntities",
+                                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                },
+                                "parameters": {
+                                  "entityName": "cp_useofforceimpactfactors",
+                                  "recordId": "@item()",
+                                  "associationEntityRelationship": "cp_UseofForce_UoF_ImpactFactor",
+                                "item/@odata.id": "@outputs(\u0027Create_a_new_Use_of_Force_record\u0027)?[\u0027body/@odata.id\u0027]"
+                                },
+                                "authentication": "@parameters(\u0027$authentication\u0027)"
+                              }
+                            }
+                          },
+                          "runAfter": {
+                            "Split_Impact_Factors": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "Foreach"
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_impactfactors\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "If_Subject_Role_is_Known": {
+                    "actions": {
+                      "Run_a_Child_Flow_(Create_Subject)": {
+                        "runAfter": {
+                          
+                        },
+                        "type": "Workflow",
+                        "inputs": {
+                          "host": {
+                            "workflowReferenceName": "0cd014f7-3e5a-eb11-a812-0022489ba6ad"
+                          },
+                          "body": {
+                          "text": "@triggerOutputs()?[\u0027body/cp_subjectforename\u0027]",
+                          "text_1": "@triggerOutputs()?[\u0027body/cp_subjectsurename\u0027]",
+                          "text_2": "@if(empty(triggerOutputs()?[\u0027body/cp_subjectperceivedage\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_subjectperceivedage\u0027])",
+                          "text_3": "@if(empty(triggerOutputs()?[\u0027body/cp_subjectperceivedethnicity\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_subjectperceivedethnicity\u0027])",
+                          "text_4": "@if(empty(triggerOutputs()?[\u0027body/cp_subjectperceivedmentalimpairment\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_subjectperceivedmentalimpairment\u0027])",
+                          "text_5": "@if(empty(triggerOutputs()?[\u0027body/cp_subjectperceivedphysicalimpairment\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_subjectperceivedphysicalimpairment\u0027])",
+                          "text_6": "@if(empty(triggerOutputs()?[\u0027body/cp_subjectgender\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_subjectgender\u0027])",
+                          "text_7": "@if(empty(triggerOutputs()?[\u0027body/cp_subjectadditionalnametype\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_subjectadditionalnametype\u0027])",
+                          "text_8": "@if(empty(triggerOutputs()?[\u0027body/cp_subjectsadditionalnames\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_subjectsadditionalnames\u0027])",
+                          "text_9": "@if(empty(triggerOutputs()?[\u0027body/cp_subjectbirthdate\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_subjectbirthdate\u0027])",
+                            "text_10": "@\u0027\u0027",
+                            "text_11": "@\u0027\u0027",
+                            "text_12": "@\u0027\u0027",
+                            "text_13": "@\u0027\u0027",
+                            "text_14": "@\u0027\u0027",
+                            "text_15": "76bb9ea1-ac63-eb11-a812-000d3ab40f79",
+                            "text_17": "@\u0027\u0027",
+                            "text_18": "@\u0027\u0027",
+                            "text_19": "@\u0027\u0027",
+                            "location": {
+                              "address": {
+                              "street": "  @{\u0027\u0027}",
+                              "city": "  @{\u0027\u0027}"
+                              }
+                            }
+                          }
+                        }
+                      },
+                      "Update_Use_of_Force_Subject": {
+                        "runAfter": {
+                          "Run_a_Child_Flow_(Create_Subject)": [
+                            "Succeeded"
+                          ]
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps_1",
+                            "operationId": "UpdateRecord",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "cp_useofforces",
+                          "recordId": "@outputs(\u0027Create_a_new_Use_of_Force_record\u0027)?[\u0027body/cp_useofforceid\u0027]",
+                          "item/cp_Subject@odata.bind": "/contacts(@{outputs(\u0027Run_a_Child_Flow_(Create_Subject)\u0027)?[\u0027Body\u0027]?[\u0027contactid\u0027]})"
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      }
+                    },
+                    "runAfter": {
+                      "Create_a_new_Use_of_Force_record": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Update_Use_of_Force_Subject_Unknown_Fields": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps_1",
+                              "operationId": "UpdateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_useofforces",
+                            "recordId": "@outputs(\u0027Create_a_new_Use_of_Force_record\u0027)?[\u0027body/cp_useofforceid\u0027]",
+                            "item/cp_SubjectUnknownGender@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_subjectgender\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_subjectgender\u0027], \u0027)\u0027))",
+                            "item/cp_subjectunknownmentalimpairement": "@if (equals( toLower( string( triggerOutputs()?[\u0027body/cp_subjectperceivedmentalimpairment\u0027])) , \u0027yes\u0027) ,true,false)",
+                            "item/cp_SubjectUnknownOfficerDefinedEthnicity@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_subjectperceivedethnicity\u0027]), \u0027\u0027, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_subjectperceivedethnicity\u0027], \u0027)\u0027))",
+                            "item/cp_SubjectUnknownPerceivedAge@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_subjectperceivedage\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_subjectperceivedage\u0027], \u0027)\u0027))",
+                            "item/cp_subjectunknownphysicalimpairement": "@if (equals( toLower( string( triggerOutputs()?[\u0027body/cp_subjectperceivedphysicalimpairment\u0027])) , \u0027yes\u0027) ,true,false)"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@triggerOutputs()?[\u0027body/cp_subjectrole\u0027]",
+                        "5cb5308b-a258-eb11-a812-0022489ba6ad"
+                      ]
+                    },
+                    "type": "If"
+                  }
+                },
+                "runAfter": {
+                  
+                },
+                "type": "Scope"
+              },
+              "Catch_(Clear_Staging_Area)": {
+                "actions": {
+                  "Update_a_row": {
+                    "runAfter": {
+                      
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps_2",
+                        "operationId": "UpdateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_useofforce_stgs",
+                      "recordId": "@triggerOutputs()?[\u0027body/cp_useofforce_stgid\u0027]",
+                        "item/cp_stagingentrystatus": 778230004,
+                        "item/statecode": 1,
+                        "item/statuscode": 2,
+                      "item/cp_submissionerror": "@string(outputs(\u0027Create_a_new_Use_of_Force_record\u0027)?[\u0027body/cp_useofforceid\u0027])"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  }
+                },
+                "runAfter": {
+                  "Try_(Execute_Transactions)": [
+                    "Succeeded"
+                  ]
+                },
+                "type": "Scope"
+              }
+            }
+          },
+          "expression": {
+            "not": {
+              "equals": [
+                "@empty(variables(\u0027Error Message\u0027))",
+                "@true"
+              ]
+            }
+          },
+          "type": "If"
+        },
+        "Run_a_Child_Flow_(Tactics_Prerequisites_check)": {
+          "runAfter": {
+            "Append_Use_of_Force_Errors_in_Error_Message_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "e1a21fdc-6b5a-eb11-a812-000d3a654f72"
+            },
+            "body": {
+            "text": "@triggerOutputs()?[\u0027body/cp_useofforce_stgid\u0027]"
+            }
+          }
+        },
+        "Append_Tactics_Errors_in_Error_Message_variable": {
+          "actions": {
+            "Append_to_Error_Message_variable_3": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+              "value": "@{outputs(\u0027Run_a_Child_Flow_(Tactics_Prerequisites_check)\u0027)?[\u0027Body\u0027]?[\u0027useofforcetacticserrors\u0027]}\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Run_a_Child_Flow_(Tactics_Prerequisites_check)": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "not": {
+              "equals": [
+              "@empty(outputs(\u0027Run_a_Child_Flow_(Tactics_Prerequisites_check)\u0027)?[\u0027Body\u0027]?[\u0027useofforcetacticserrors\u0027])",
+                "@true"
+              ]
+            }
+          },
+          "type": "If"
+        },
+        "Initialize_Contact_Id_variable": {
+          "runAfter": {
+            "Condition": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "ContactId",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Condition": {
+          "actions": {
+            "Get_Subject_Role": {
+              "runAfter": {
+                
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps_2",
+                  "operationId": "GetItem",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "cp_lookupvalues",
+                "recordId": "@triggerOutputs()?[\u0027body/cp_subjectrole\u0027]"
+                },
+                "authentication": "@parameters(\u0027$authentication\u0027)"
+              }
+            },
+            "Set_variable": {
+              "runAfter": {
+                "Get_Subject_Role": [
+                  "Succeeded"
+                ]
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "subjectRole",
+                "value": "@true"
+              }
+            }
+          },
+          "runAfter": {
+            "Initialize_Subject_Role": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "not": {
+              "equals": [
+              "@triggerOutputs()?[\u0027body/cp_subjectrole\u0027]",
+                "@null"
+              ]
+            }
+          },
+          "type": "If"
+        },
+        "Initialize_Subject_Role": {
+          "runAfter": {
+            
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "subjectRole",
+                "type": "boolean"
+              }
+            ]
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

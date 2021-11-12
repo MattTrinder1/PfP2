@@ -1,0 +1,1161 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_2": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_37dad"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_9993c"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedcommondataserviceforapps_3a446"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_a_row_is_created,_updated_or_deleted": {
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_2",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "cp_statementstg",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filteringattributes": "cp_stagingentrystatus",
+              "subscriptionRequest/filterexpression": "cp_stagingentrystatus eq 778230001"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        }
+      },
+      "actions": {
+        "Initialize_Error_Message_variable": {
+          "runAfter": {
+            
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Error Message",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Run_a_Child_Flow_(Statement_Prerequisites_Check)": {
+          "runAfter": {
+            "Initialize_Witness_Statement_Not_Available_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "4dedf6b7-956b-eb11-a812-0022489abb0c"
+            },
+            "body": {
+            "text": "@triggerOutputs()?[\u0027body/cp_statementstgid\u0027]"
+            }
+          }
+        },
+        "Append_Incident_Errors_in_Error_Message_variable": {
+          "actions": {
+            "Append_to_Error_Message_variable": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+              "value": "@{outputs(\u0027Run_a_Child_Flow_(Statement_Prerequisites_Check)\u0027)?[\u0027Body\u0027]?[\u0027statementcheckerrors\u0027]}\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Run_a_Child_Flow_(Statement_Prerequisites_Check)": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "not": {
+              "equals": [
+              "@empty(outputs(\u0027Run_a_Child_Flow_(Statement_Prerequisites_Check)\u0027)?[\u0027Body\u0027]?[\u0027statementcheckerrors\u0027])",
+                "@true"
+              ]
+            }
+          },
+          "type": "If"
+        },
+        "If_Errors_found_proceed_accordingly": {
+          "actions": {
+            "Update_Statement_STG_record_(Status,Submission_Error)": {
+              "runAfter": {
+                
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps_2",
+                  "operationId": "UpdateRecord",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "cp_statementstgs",
+                "recordId": "@triggerOutputs()?[\u0027body/cp_statementstgid\u0027]",
+                  "item/cp_stagingentrystatus": 778230002,
+                  "item/cp_submissionerror": "@variables(\u0027Error Message\u0027)"
+                },
+                "authentication": "@parameters(\u0027$authentication\u0027)"
+              }
+            }
+          },
+          "runAfter": {
+            "Condition_Witness_Special_Needs_EXIST": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Try_(Execute_Transactions)": {
+                "actions": {
+                  "Run_a_Child_Flow_(Create_Incident)": {
+                    "runAfter": {
+                      
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "71ab4fd1-7959-eb11-a812-000d3a654f72"
+                      },
+                      "body": {
+                      "text": "@if(empty(triggerOutputs()?[\u0027body/cp_incidentnumber\u0027]), concat(\u0027Statement Without Incident Number submitted on \u0027, formatDateTime(utcNow(), \u0027dd/MM/yyyy\u0027)), triggerOutputs()?[\u0027body/cp_incidentnumber\u0027])",
+                        "text_2": "0b980aaf-8855-eb11-a812-000d3a654f72",
+                      "text_4": "@outputs(\u0027Update_Staging_Record_Lookup_Fields\u0027)?[\u0027body/_cp_enteredbyvalue_value\u0027]",
+                      "text_1": "@ if(empty(triggerOutputs()?[\u0027body/cp_incidentsuffix\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_incidentsuffix\u0027])",
+                      "text_5": "@if(empty(triggerOutputs()?[\u0027body/cp_incidentdate\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_incidentdate\u0027])"
+                      }
+                    }
+                  },
+                  "Run_a_Child_Flow_(Create_Witness_Contact)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Create_Incident)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "0cd014f7-3e5a-eb11-a812-0022489ba6ad"
+                      },
+                      "body": {
+                      "text": "@triggerOutputs()?[\u0027body/cp_witnessforename\u0027]",
+                      "text_1": "@triggerOutputs()?[\u0027body/cp_witnesssurname\u0027]",
+                      "text_6": "@if(empty(triggerOutputs()?[\u0027body/cp_witnessgender\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_witnessgender\u0027])",
+                      "text_7": "@if(empty(triggerOutputs()?[\u0027body/cp_witnessadditionalnametype\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_witnessadditionalnametype\u0027])",
+                      "text_8": "@if(empty(triggerOutputs()?[\u0027body/cp_witnessadditionalname\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_witnessadditionalname\u0027])",
+                      "text_9": "@if(empty(triggerOutputs()?[\u0027body/cp_witnessdateofbirth\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_witnessdateofbirth\u0027])",
+                      "text_10": "@if(empty(triggerOutputs()?[\u0027body/cp_witnesstitle\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_witnesstitle\u0027])",
+                      "text_12": "@if(empty(triggerOutputs()?[\u0027body/cp_witnesshousename\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_witnesshousename\u0027])",
+                      "text_13": "@if(empty(triggerOutputs()?[\u0027body/cp_witnesshousenumber\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_witnesshousenumber\u0027])",
+                      "text_14": "@if(empty(triggerOutputs()?[\u0027body/cp_witnessdistrict\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_witnessdistrict\u0027])",
+                        "text_15": "a0155d50-4762-eb11-a812-0022489c79d7",
+                      "text_18": "@if(empty(triggerOutputs()?[\u0027body/cp_witnesscountry\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_witnesscountry\u0027])",
+                      "text_19": "@if(empty(triggerOutputs()?[\u0027body/cp_witnesspostcode\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_witnesspostcode\u0027])",
+                        "location": {
+                          "address": {
+                          "street": "@if(empty(triggerOutputs()?[\u0027body/cp_witnessstreet\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_witnessstreet\u0027])",
+                          "city": "@if(empty(triggerOutputs()?[\u0027body/cp_witnesstown\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_witnesstown\u0027])"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Run_a_Child_Flow_(Update_Witness_Additional_Fields)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Create_Witness_Contact)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "ac004de4-6061-eb11-a812-0022489c7676"
+                      },
+                      "body": {
+                      "text": "@outputs(\u0027Run_a_Child_Flow_(Create_Witness_Contact)\u0027)?[\u0027Body\u0027]?[\u0027contactid\u0027]",
+                      "text_2": "@if(empty(triggerOutputs()?[\u0027body/cp_witnessoccupation\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_witnessoccupation\u0027])",
+                        "text_3": "@\u0027\u0027",
+                      "text_5": "@if(empty(triggerOutputs()?[\u0027body/cp_witnesspreferredcontactmethod\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_witnesspreferredcontactmethod\u0027])",
+                      "text_6": "@if(empty(triggerOutputs()?[\u0027body/cp_witnessphonenumber\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_witnessphonenumber\u0027])",
+                      "text_7": "@if(empty(triggerOutputs()?[\u0027body/cp_witnessemail\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_witnessemail\u0027])",
+                      "text_8": "@if(empty(triggerOutputs()?[\u0027body/cp_witnesspreferredcontacttime\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_witnesspreferredcontacttime\u0027])",
+                      "text_10": "@if(empty(triggerOutputs()?[\u0027body/cp_witnessworktelephone\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_witnessworktelephone\u0027])",
+                      "text_11": "@if(empty(triggerOutputs()?[\u0027body/cp_witnesseveningtelephone\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_witnesseveningtelephone\u0027])",
+                      "text_12": "@if(empty(triggerOutputs()?[\u0027body/cp_witnessplaceofbirth\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_witnessplaceofbirth\u0027])",
+                      "text_13": "@if(empty(triggerOutputs()?[\u0027body/cp_witnesscountry\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_witnesscountry\u0027])",
+                      "text_14": "@if(empty(triggerOutputs()?[\u0027body/cp_witnessotheroccupation\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_witnessotheroccupation\u0027])"
+                      }
+                    }
+                  },
+                  "Run_a_Child_Flow_(Child_Witness_Only)": {
+                    "runAfter": {
+                      "IF_Counter_Signer_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "79674c64-ee92-eb11-b1ac-000d3adb2fd2"
+                      },
+                      "body": {
+                      "text": "@if(empty(triggerOutputs()?[\u0027body/cp_consentchildwitness\u0027]),\u0027\u0027,triggerOutputs()?[\u0027body/cp_consentchildwitness\u0027])"
+                      }
+                    }
+                  },
+                  "Run_a_Child_Flow_(Read_To_Witness)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Child_Witness_Only)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "79674c64-ee92-eb11-b1ac-000d3adb2fd2"
+                      },
+                      "body": {
+                      "text": "@if(empty(string(triggerOutputs()?[\u0027body/cp_statementreadtowitness\u0027])),\u0027\u0027,string(triggerOutputs()?[\u0027body/cp_statementreadtowitness\u0027]))"
+                      }
+                    }
+                  },
+                  "Run_a_Child_Flow_(Witness_Able_to_Read)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Read_To_Witness)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "79674c64-ee92-eb11-b1ac-000d3adb2fd2"
+                      },
+                      "body": {
+                      "text": "@if(empty(triggerOutputs()?[\u0027body/cp_consentableread\u0027]),\u0027\u0027,triggerOutputs()?[\u0027body/cp_consentableread\u0027])"
+                      }
+                    }
+                  },
+                  "Run_a_Child_Flow_(CPS_Apply_Consent)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Witness_Able_to_Read)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "79674c64-ee92-eb11-b1ac-000d3adb2fd2"
+                      },
+                      "body": {
+                      "text": "@if(empty(triggerOutputs()?[\u0027body/cp_consentcps\u0027]),\u0027\u0027,triggerOutputs()?[\u0027body/cp_consentcps\u0027])"
+                      }
+                    }
+                  },
+                  "Create_a_new_Statement_row": {
+                    "runAfter": {
+                      "If_Witness_Statement_Not_Available_Date_Exists_4": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps_2",
+                        "operationId": "CreateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_statements",
+                      "item/cp_childwitnessonly": "@outputs(\u0027Run_a_Child_Flow_(Child_Witness_Only)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]",
+                      "item/cp_cpsapplyconsent": "@outputs(\u0027Run_a_Child_Flow_(CPS_Apply_Consent)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]",
+                      "item/cp_incident@odata.bind": "/cp_incidents(@{outputs(\u0027Run_a_Child_Flow_(Create_Incident)\u0027)?[\u0027Body\u0027]?[\u0027incidentid\u0027]})",
+                      "item/cp_name": "Statement, Incident Number: @{triggerOutputs()?[\u0027body/cp_incidentnumber\u0027]}",
+                      "item/cp_readtowitness": "@outputs(\u0027Run_a_Child_Flow_(Read_To_Witness)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]",
+                      "item/cp_victimleafletgiven": "@triggerOutputs()?[\u0027body/cp_consentvictimleaflet\u0027]",
+                      "item/cp_victimstatementprovided": "@triggerOutputs()?[\u0027body/cp_consentvictimprovided\u0027]",
+                      "item/cp_WItness@odata.bind": "/contacts(@{outputs(\u0027Run_a_Child_Flow_(Create_Witness_Contact)\u0027)?[\u0027Body\u0027]?[\u0027contactid\u0027]})",
+                      "item/cp_witnessreadstatementconsent": "@outputs(\u0027Run_a_Child_Flow_(Witness_Able_to_Read)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]",
+                      "item/cp_witnessleafletgiven": "@triggerOutputs()?[\u0027body/cp_consentwitnessleaflet\u0027]",
+                      "item/cp_witnessstatement": "@triggerOutputs()?[\u0027body/cp_witnessstatement\u0027]",
+                      "item/cp_witnesswillingtocourt": "@triggerOutputs()?[\u0027body/cp_witnesswillingattendcourt\u0027]",
+                      "item/cp_newcivildisclosureconsent": "@outputs(\u0027Run_a_Child_Flow_(Civil_Disclosure_Consent)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]",
+                      "item/cp_completiondateandtime": "@triggerOutputs()?[\u0027body/cp_signaturedatetime\u0027]",
+                      "item/cp_CounterRelationshipToWitness@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_counterwitnessrelationship\u0027]), \u0027\u0027, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_counterwitnessrelationship\u0027], \u0027)\u0027))",
+                      "item/cp_CounterSigner@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_countersurname\u0027]), \u0027\u0027, concat(\u0027/contacts(\u0027, outputs(\u0027Run_a_Child_Flow_(Create_Counter_Signer_Contact)\u0027)?[\u0027Body\u0027]?[\u0027contactid\u0027], \u0027)\u0027))",
+                      "item/cp_ensurewitnessattendance": "@triggerOutputs()?[\u0027body/cp_ensureattendance\u0027]",
+                      "item/cp_newmedicalrecorddefenceconsent": "@outputs(\u0027Run_a_Child_Flow_(Consent__Medical_Record_Disclosure)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]",
+                      "item/ownerid@odata.bind": "/systemusers(@{triggerOutputs()?[\u0027body/_createdby_value\u0027]})",
+                      "item/cp_newmedicalrecordconsent": "@outputs(\u0027Run_a_Child_Flow_(Police_Access_Medical_Record_Consent)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]",
+                      "item/cp_reasonforspecialmeasures": "@triggerOutputs()?[\u0027body/cp_reasonsspecialmeasures\u0027]",
+                      "item/cp_signaturedatetime": "@triggerOutputs()?[\u0027body/cp_signaturedatetime\u0027]",
+                      "item/cp_specialmeasuresrequired": "@triggerOutputs()?[\u0027body/cp_witnessrequirespecialmeasures\u0027]",
+                      "item/cp_StatementType@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/_cp_statementtypevalue_value\u0027]), \u0027\u0027,concat(\u0027/cp_statementtypes(\u0027,triggerOutputs()?[\u0027body/_cp_statementtypevalue_value\u0027],\u0027)\u0027))",
+                      "item/cp_Template@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_template\u0027]), \u0027\u0027,concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_template\u0027], \u0027)\u0027))",
+                        "item/cp_witnessdatesnotavailable": "@variables(\u0027Witness Dates Not Available\u0027)",
+                      "item/cp_witnessotherneeds": "@triggerOutputs()?[\u0027body/cp_witnessotherneeds\u0027]",
+                      "item/cp_witnessperceivedage": "@triggerOutputs()?[\u0027body/cp_witnessperceivedage\u0027]"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  },
+                  "Condition_Witness_Special_Needs_ISNULL": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Update_Staging_record_with_generated_statement": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Split_Witness_Needs": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "Compose",
+                        "inputs": "@split(triggerOutputs()?[\u0027body/cp_witnessneeds\u0027], \u0027,\u0027)"
+                        },
+                        "Apply_to_each": {
+                          "foreach": "@outputs(\u0027Split_Witness_Needs\u0027)",
+                          "actions": {
+                            "If_Value_Exists": {
+                              "actions": {
+                                
+                              },
+                              "runAfter": {
+                                
+                              },
+                              "else": {
+                                "actions": {
+                                  "Relate_rows_(Add_to_many-many_relationships)": {
+                                    "runAfter": {
+                                      
+                                    },
+                                    "type": "OpenApiConnection",
+                                    "inputs": {
+                                      "host": {
+                                        "connectionName": "shared_commondataserviceforapps",
+                                        "operationId": "AssociateEntities",
+                                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                      },
+                                      "parameters": {
+                                        "entityName": "cp_statementwitnessneeds",
+                                        "recordId": "@items(\u0027Apply_to_each\u0027)",
+                                        "associationEntityRelationship": "cp_statement_cp_StatementWitnessNeed_cp_S",
+                                      "item/@odata.id": "@outputs(\u0027Create_a_new_Statement_row\u0027)?[\u0027body/@odata.id\u0027]"
+                                      },
+                                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                                    }
+                                  }
+                                }
+                              },
+                              "expression": {
+                                "equals": [
+                                  "@empty(items(\u0027Apply_to_each\u0027))",
+                                  "@true"
+                                ]
+                              },
+                              "type": "If"
+                            }
+                          },
+                          "runAfter": {
+                            "Split_Witness_Needs": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "Foreach"
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_witnessneeds\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "If_Witness_Signature_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Condition_Witness_Special_Needs_ISNULL": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Get_file_or_image_content": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_statementstgs",
+                            "recordId": "@triggerOutputs()?[\u0027body/cp_statementstgid\u0027]",
+                              "fileImageFieldName": "cp_witnesssignature",
+                              "size": "full"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Upload_file_or_image_content": {
+                          "runAfter": {
+                            "Get_file_or_image_content": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_statements",
+                            "recordId": "@outputs(\u0027Create_a_new_Statement_row\u0027)?[\u0027body/cp_statementid\u0027]",
+                              "fileImageFieldName": "cp_witnesssignature",
+                            "item": "@outputs(\u0027Get_file_or_image_content\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_witnesssignatureid\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "If_Counter_Signer_Signature_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "If_Witness_Signature_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Get_file_or_image_content_2": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_statementstgs",
+                            "recordId": "@triggerOutputs()?[\u0027body/cp_statementstgid\u0027]",
+                              "fileImageFieldName": "cp_countersignature",
+                              "size": "full"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Upload_file_or_image_content_2": {
+                          "runAfter": {
+                            "Get_file_or_image_content_2": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_statements",
+                            "recordId": "@outputs(\u0027Create_a_new_Statement_row\u0027)?[\u0027body/cp_statementid\u0027]",
+                              "fileImageFieldName": "cp_countersignature",
+                            "item": "@outputs(\u0027Get_file_or_image_content_2\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_countersignatureid\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "If_Consent_Signature_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "If_Counter_Signer_Signature_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Get_file_or_image_content_3": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_statementstgs",
+                            "recordId": "@triggerOutputs()?[\u0027body/cp_statementstgid\u0027]",
+                              "fileImageFieldName": "cp_consentsignature",
+                              "size": "full"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Upload_file_or_image_content_3": {
+                          "runAfter": {
+                            "Get_file_or_image_content_3": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_statements",
+                            "recordId": "@outputs(\u0027Create_a_new_Statement_row\u0027)?[\u0027body/cp_statementid\u0027]",
+                              "fileImageFieldName": "cp_consentsignature",
+                            "item": "@outputs(\u0027Get_file_or_image_content_3\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_consentsignatureid\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "IF_Counter_Signer_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "If_Witness_Ethnicity_Provided": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Run_a_Child_Flow_(Create_Counter_Signer_Contact)": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "Workflow",
+                          "inputs": {
+                            "host": {
+                              "workflowReferenceName": "0cd014f7-3e5a-eb11-a812-0022489ba6ad"
+                            },
+                            "body": {
+                            "text": "@triggerOutputs()?[\u0027body/cp_counterforename\u0027]",
+                            "text_1": "@triggerOutputs()?[\u0027body/cp_countersurname\u0027]",
+                            "text_7": "@if(empty(triggerOutputs()?[\u0027body/cp_counteradditionalnametype\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_counteradditionalnametype\u0027])",
+                            "text_8": "@if(empty(triggerOutputs()?[\u0027body/cp_counteradditionalnames\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_counteradditionalnames\u0027])",
+                            "text_10": "@if(empty(triggerOutputs()?[\u0027body/cp_countertitle\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_countertitle\u0027])",
+                            "text_12": "@if(empty(triggerOutputs()?[\u0027body/cp_counterhousename\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_counterhousename\u0027])",
+                            "text_13": "@if(empty(triggerOutputs()?[\u0027body/cp_counterhousenumber\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_counterhousenumber\u0027])",
+                            "text_14": "@if(empty(triggerOutputs()?[\u0027body/cp_counterdistrict\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_counterdistrict\u0027])",
+                              "text_15": "e3060d6a-a06b-eb11-a812-0022489abb0c",
+                            "text_17": "@if(empty(triggerOutputs()?[\u0027body/cp_countercounty\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_countercounty\u0027])",
+                            "text_19": "@if(empty(triggerOutputs()?[\u0027body/cp_counterpostcode\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_counterpostcode\u0027])",
+                              "location": {
+                                "address": {
+                                "street": "@if(empty(triggerOutputs()?[\u0027body/cp_counterstreet\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_counterstreet\u0027])",
+                                "city": "@if(empty(triggerOutputs()?[\u0027body/cp_countertown\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_countertown\u0027])"
+                                }
+                              }
+                            }
+                          }
+                        },
+                        "Run_a_Child_Flow_(Update_Counter_Signer_Additional_Fields)": {
+                          "runAfter": {
+                            "Run_a_Child_Flow_(Create_Counter_Signer_Contact)": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "Workflow",
+                          "inputs": {
+                            "host": {
+                              "workflowReferenceName": "ac004de4-6061-eb11-a812-0022489c7676"
+                            },
+                            "body": {
+                            "text": "@outputs(\u0027Run_a_Child_Flow_(Create_Counter_Signer_Contact)\u0027)?[\u0027Body\u0027]?[\u0027contactid\u0027]",
+                              "text_3": "",
+                            "text_6": "@if(empty(triggerOutputs()?[\u0027body/cp_counterphonenumber\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_counterphonenumber\u0027])",
+                            "text_7": "@if(empty(triggerOutputs()?[\u0027body/cp_counteremail\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_counteremail\u0027])",
+                            "text_10": "@if(empty(triggerOutputs()?[\u0027body/cp_counterworkphone\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_counterworkphone\u0027])",
+                            "text_11": "@if(empty(triggerOutputs()?[\u0027body/cp_countereveningtelephone\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_countereveningtelephone\u0027])",
+                            "text_13": "@if(empty(triggerOutputs()?[\u0027body/cp_countercountry\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_countercountry\u0027])"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_countersurname\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "If_Witness_Statement_Not_Available_Date_Exists": {
+                    "actions": {
+                      "Append_to_Witness_Dates_Not_Available_variable": {
+                        "runAfter": {
+                          
+                        },
+                        "type": "AppendToStringVariable",
+                        "inputs": {
+                          "name": "Witness Dates Not Available",
+                        "value": "@{triggerOutputs()?[\u0027body/cp_witnessnotavailabledate1\u0027]}\n"
+                        }
+                      }
+                    },
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Civil_Disclosure_Consent)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "expression": {
+                      "not": {
+                        "equals": [
+                        "@triggerOutputs()?[\u0027body/cp_witnessnotavailabledate1\u0027]",
+                          "@null"
+                        ]
+                      }
+                    },
+                    "type": "If"
+                  },
+                  "If_Witness_Statement_Not_Available_Date_Exists_2": {
+                    "actions": {
+                      "Append_to_Witness_Dates_Not_Available_variable_2": {
+                        "runAfter": {
+                          
+                        },
+                        "type": "AppendToStringVariable",
+                        "inputs": {
+                          "name": "Witness Dates Not Available",
+                        "value": "@{triggerOutputs()?[\u0027body/cp_witnessnotavailabledate2\u0027]}\n"
+                        }
+                      }
+                    },
+                    "runAfter": {
+                      "If_Witness_Statement_Not_Available_Date_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "expression": {
+                      "not": {
+                        "equals": [
+                        "@triggerOutputs()?[\u0027body/cp_witnessnotavailabledate2\u0027]",
+                          "@null"
+                        ]
+                      }
+                    },
+                    "type": "If"
+                  },
+                  "If_Witness_Statement_Not_Available_Date_Exists_3": {
+                    "actions": {
+                      "Append_to_Witness_Dates_Not_Available_variable_3": {
+                        "runAfter": {
+                          
+                        },
+                        "type": "AppendToStringVariable",
+                        "inputs": {
+                          "name": "Witness Dates Not Available",
+                        "value": "\n@{triggerOutputs()?[\u0027body/cp_witnessnotavailabledate3\u0027]}"
+                        }
+                      }
+                    },
+                    "runAfter": {
+                      "If_Witness_Statement_Not_Available_Date_Exists_2": [
+                        "Succeeded"
+                      ]
+                    },
+                    "expression": {
+                      "not": {
+                        "equals": [
+                        "@triggerOutputs()?[\u0027body/cp_witnessnotavailabledate3\u0027]",
+                          "@null"
+                        ]
+                      }
+                    },
+                    "type": "If"
+                  },
+                  "If_Witness_Statement_Not_Available_Date_Exists_4": {
+                    "actions": {
+                      "Append_to_Witness_Dates_Not_Available_variable_4": {
+                        "runAfter": {
+                          
+                        },
+                        "type": "AppendToStringVariable",
+                        "inputs": {
+                          "name": "Witness Dates Not Available",
+                        "value": "@triggerOutputs()?[\u0027body/cp_witnessnotavailabledate4\u0027]"
+                        }
+                      }
+                    },
+                    "runAfter": {
+                      "If_Witness_Statement_Not_Available_Date_Exists_3": [
+                        "Succeeded"
+                      ]
+                    },
+                    "expression": {
+                      "not": {
+                        "equals": [
+                        "@triggerOutputs()?[\u0027body/cp_witnessnotavailabledate4\u0027]",
+                          "@null"
+                        ]
+                      }
+                    },
+                    "type": "If"
+                  },
+                  "If_Counter_Consent_Signature_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "If_Consent_Signature_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Get_file_or_image_content_4": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_statementstgs",
+                            "recordId": "@triggerOutputs()?[\u0027body/cp_statementstgid\u0027]",
+                              "fileImageFieldName": "cp_counterconsentsignature",
+                              "size": "full"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Upload_file_or_image_content_4": {
+                          "runAfter": {
+                            "Get_file_or_image_content_4": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_statements",
+                            "recordId": "@outputs(\u0027Create_a_new_Statement_row\u0027)?[\u0027body/cp_statementid\u0027]",
+                              "fileImageFieldName": "cp_counterconsentsignature",
+                            "item": "@outputs(\u0027Get_file_or_image_content_4\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_counterconsentsignatureid\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "Run_a_Child_Flow_(Consent__Medical_Record_Disclosure)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(CPS_Apply_Consent)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "79674c64-ee92-eb11-b1ac-000d3adb2fd2"
+                      },
+                      "body": {
+                      "text": "@if(empty(triggerOutputs()?[\u0027body/cp_newconsentmedicalrecorddisclosed\u0027]),\u0027\u0027,triggerOutputs()?[\u0027body/cp_newconsentmedicalrecorddisclosed\u0027])"
+                      }
+                    }
+                  },
+                  "Run_a_Child_Flow_(Police_Access_Medical_Record_Consent)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Consent__Medical_Record_Disclosure)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "79674c64-ee92-eb11-b1ac-000d3adb2fd2"
+                      },
+                      "body": {
+                      "text": "@if(empty(triggerOutputs()?[\u0027body/cp_newconsentpoliceaccessmedicalrecords\u0027]),\u0027\u0027,triggerOutputs()?[\u0027body/cp_newconsentpoliceaccessmedicalrecords\u0027])"
+                      }
+                    }
+                  },
+                  "Run_a_Child_Flow_(Civil_Disclosure_Consent)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Police_Access_Medical_Record_Consent)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "79674c64-ee92-eb11-b1ac-000d3adb2fd2"
+                      },
+                      "body": {
+                      "text": "@if(empty(triggerOutputs()?[\u0027body/cp_newconsentstatementdisclosure\u0027]),\u0027\u0027,triggerOutputs()?[\u0027body/cp_newconsentstatementdisclosure\u0027])"
+                      }
+                    }
+                  },
+                  "If_Witness_Ethnicity_Provided": {
+                    "actions": {
+                      "Update_Witness_Ethnicity": {
+                        "runAfter": {
+                          
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps_1",
+                            "operationId": "UpdateRecord",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "contacts",
+                          "recordId": "@outputs(\u0027Run_a_Child_Flow_(Create_Witness_Contact)\u0027)?[\u0027Body\u0027]?[\u0027contactid\u0027]",
+                          "item/cp_OfficerDefinedEthnicity@odata.bind": "/cp_lookupvalues(@{triggerOutputs()?[\u0027body/cp_witnessethnicitycode\u0027]})"
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      }
+                    },
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Update_Witness_Additional_Fields)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "expression": {
+                      "not": {
+                        "equals": [
+                        "@triggerOutputs()?[\u0027body/cp_witnessethnicitycode\u0027]",
+                          "@null"
+                        ]
+                      }
+                    },
+                    "type": "If"
+                  },
+                  "Update_Staging_record_with_generated_statement": {
+                    "runAfter": {
+                      "Create_a_new_Statement_row": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps_1",
+                        "operationId": "UpdateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_statementstgs",
+                      "recordId": "@triggerOutputs()?[\u0027body/cp_statementstgid\u0027]",
+                      "item/cp_statement@odata.bind": "/cp_statements(@{outputs(\u0027Create_a_new_Statement_row\u0027)?[\u0027body/cp_statementid\u0027]})"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  }
+                },
+                "runAfter": {
+                  
+                },
+                "type": "Scope"
+              },
+              "Catch_(Clear_Staging_Area)": {
+                "actions": {
+                  "Update_a_row": {
+                    "runAfter": {
+                      
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps_1",
+                        "operationId": "UpdateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_statementstgs",
+                      "recordId": "@triggerOutputs()?[\u0027body/cp_statementstgid\u0027]",
+                        "item/cp_stagingentrystatus": 778230004,
+                        "item/statecode": 1,
+                        "item/statuscode": 2,
+                      "item/cp_submissionerror": "@string(outputs(\u0027Create_a_new_Statement_row\u0027)?[\u0027body/cp_statementid\u0027])"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  }
+                },
+                "runAfter": {
+                  "Try_(Execute_Transactions)": [
+                    "Succeeded"
+                  ]
+                },
+                "type": "Scope"
+              }
+            }
+          },
+          "expression": {
+            "not": {
+              "equals": [
+                "@empty(variables(\u0027Error Message\u0027))",
+                "@true"
+              ]
+            }
+          },
+          "type": "If"
+        },
+        "Initialize_Witness_Statement_Not_Available_variable": {
+          "runAfter": {
+            "Initialize_Error_Message_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Witness Dates Not Available",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Update_Staging_Record_Lookup_Fields": {
+          "runAfter": {
+            "Append_Incident_Errors_in_Error_Message_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "UpdateRecord",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_statementstgs",
+            "recordId": "@triggerOutputs()?[\u0027body/cp_statementstgid\u0027]",
+            "item/cp_CounterAdditionalNameTypeValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_counteradditionalnametype\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_counteradditionalnametype\u0027], \u0027)\u0027))",
+            "item/cp_CounterTitleValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_countertitle\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_countertitle\u0027], \u0027)\u0027))",
+            "item/cp_CounterWitnessRelationshipValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_counterwitnessrelationship\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_counterwitnessrelationship\u0027], \u0027)\u0027))",
+            "item/cp_EnteredByValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/_createdby_value\u0027]), null, concat(\u0027/systemusers(\u0027, triggerOutputs()?[\u0027body/_createdby_value\u0027], \u0027)\u0027))",
+            "item/cp_StatementTypeValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_statementtype\u0027]), null, concat(\u0027/cp_statementtypes(\u0027, triggerOutputs()?[\u0027body/cp_statementtype\u0027], \u0027)\u0027))",
+            "item/cp_TemplateValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_template\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_template\u0027], \u0027)\u0027))",
+            "item/cp_WitnessAdditionalNameTypeValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_witnessadditionalnametype\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_witnessadditionalnametype\u0027], \u0027)\u0027))",
+            "item/cp_WitnessCountryValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_witnesscountry\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_witnesscountry\u0027], \u0027)\u0027))",
+            "item/cp_WitnessEthnicityCodeValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_witnessethnicitycode\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_witnessethnicitycode\u0027], \u0027)\u0027))",
+            "item/cp_WitnessGenderValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_witnessgender\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_witnessgender\u0027], \u0027)\u0027))",
+            "item/cp_WitnessOccupationValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_witnessoccupation\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_witnessoccupation\u0027], \u0027)\u0027))",
+            "item/cp_WitnessPreferredContactMethodValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_witnesspreferredcontactmethod\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_witnesspreferredcontactmethod\u0027], \u0027)\u0027))",
+            "item/cp_WitnessTitleValue@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_witnesstitle\u0027]), null, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_witnesstitle\u0027], \u0027)\u0027))"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Condition_Witness_Special_Needs_EXIST": {
+          "actions": {
+            
+          },
+          "runAfter": {
+            "Update_Staging_Record_Lookup_Fields": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Split_Witness_Needs_2": {
+                "runAfter": {
+                  
+                },
+                "type": "Compose",
+              "inputs": "@split(triggerOutputs()?[\u0027body/cp_witnessneeds\u0027], \u0027,\u0027)"
+              },
+              "Apply_to_each_2": {
+                "foreach": "@outputs(\u0027Split_Witness_Needs_2\u0027)",
+                "actions": {
+                  "If_Value_Exists_2": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      
+                    },
+                    "else": {
+                      "actions": {
+                        "Relate_rows_(Add_to_many-many_relationships)_2": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "AssociateEntities",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_statementwitnessneeds",
+                              "recordId": "@items(\u0027Apply_to_each_2\u0027)",
+                              "associationEntityRelationship": "cp_statementstg_cp_StatementWitnessNeed_c",
+                            "item/@odata.id": "@outputs(\u0027Update_Staging_Record_Lookup_Fields\u0027)?[\u0027body/@odata.id\u0027]"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                        "@empty(items(\u0027Apply_to_each_2\u0027))",
+                        "@true"
+                      ]
+                    },
+                    "type": "If"
+                  }
+                },
+                "runAfter": {
+                  "Split_Witness_Needs_2": [
+                    "Succeeded"
+                  ]
+                },
+                "type": "Foreach"
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+            "@empty(triggerOutputs()?[\u0027body/cp_witnessneeds\u0027])",
+              "@true"
+            ]
+          },
+          "type": "If"
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

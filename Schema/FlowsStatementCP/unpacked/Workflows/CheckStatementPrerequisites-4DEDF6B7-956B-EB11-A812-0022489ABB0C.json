@@ -1,0 +1,499 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_9993c"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "Staging Table Entry Id.",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Initialize_Error_Message_variable": {
+          "runAfter": {
+            
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Error Message",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Get_Statement_STG_row": {
+          "runAfter": {
+            "Initialize_Error_Message_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_1",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_statementstgs",
+            "recordId": "@triggerBody()[\u0027text\u0027]"
+            },
+            "authentication": {
+              "type": "Raw",
+            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+            }
+          }
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "Check_Consent_Signature_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "statementcheckerrors": "@variables(\u0027Error Message\u0027)"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "statementcheckerrors": {
+                  "title": "StatementCheckErrors",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Check_Witness_Statement_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_5": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Witness Statement cannot be blank\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_Witness_Preferred_Contact_Method_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_witnessstatement\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_Witness_Details_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_8": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Witness Details are missing\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Get_Statement_STG_row": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "or": [
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_witnesstitle\u0027]",
+                  "@null"
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_witnesssurname\u0027]",
+                  "@null"
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_witnessforename\u0027]",
+                  "@null"
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_witnessotheroccupation\u0027]",
+                  "@null"
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_witnessplaceofbirth\u0027]",
+                  "@null"
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_witnesspostcode\u0027]",
+                  "@null"
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_witnesscountry\u0027]",
+                  "@null"
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_witnessethnicitycode\u0027]",
+                  "@null"
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_witnesscountry\u0027]",
+                  "@null"
+                ]
+              }
+            ]
+          },
+          "type": "If"
+        },
+        "Check_Witness_Phone_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_9": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "At least a Witness Phone should be provided\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_Witness_Details_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "and": [
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_witnessphonenumber\u0027]",
+                  "@null"
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_witnesseveningtelephone\u0027]",
+                  "@null"
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_witnessworktelephone\u0027]",
+                  "@null"
+                ]
+              }
+            ]
+          },
+          "type": "If"
+        },
+        "Check_Witness_Preferred_Contact_Method_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_11": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Witness Preferred means of Contact cannot be blank\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_Witness_Phone_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "or": [
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_witnesspreferredcontactmethod\u0027]",
+                  "@null"
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_witnesspreferredcontacttime\u0027]",
+                  "@null"
+                ]
+              }
+            ]
+          },
+          "type": "If"
+        },
+        "Check_Care_Fields_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_12": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Care mandatory fields cannot be blank\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_Witness_Statement_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "or": [
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_witnesswillingattendcourt\u0027]",
+                  "@null"
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_witnessrequirespecialmeasures\u0027]",
+                  "@null"
+                ]
+              }
+            ]
+          },
+          "type": "If"
+        },
+        "Check_Consent_Fields_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_13": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Consent mandatory fields cannot be blank\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_Care_Fields_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "or": [
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_consentvictimleaflet\u0027]",
+                  "@null"
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_consentvictimprovided\u0027]",
+                  "@null"
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_consentwitnessleaflet\u0027]",
+                  "@null"
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_consentpoliceaccessmedicalrecords\u0027]",
+                  "@null"
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_consentmedicalrecorddisclosed\u0027]",
+                  "@null"
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_consentstatementdisclosure\u0027]",
+                  "@null"
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_consentchildwitness\u0027]",
+                  "@null"
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_consentcps\u0027]",
+                  "@null"
+                ]
+              },
+              {
+                "equals": [
+                "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_consentableread\u0027]",
+                  "@null"
+                ]
+              }
+            ]
+          },
+          "type": "If"
+        },
+        "Check_Statement_Been_Read_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_14": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Statement Has Been Read to Witness cannot be blank\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_Consent_Fields_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_statementreadtowitness\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_Witness_Signature_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_15": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Witness Signature cannot be blank\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_Statement_Been_Read_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_witnesssignatureid\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_Consent_Signature_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_16": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Consent Signature cannot be blank\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_Witness_Signature_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Statement_STG_row\u0027)?[\u0027body/cp_consentsignatureid\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

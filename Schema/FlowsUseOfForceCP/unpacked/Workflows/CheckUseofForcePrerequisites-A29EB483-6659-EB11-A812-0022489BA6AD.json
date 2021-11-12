@@ -1,0 +1,301 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_ce4a8"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "Staging Table Entry Id.",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Get_Use_of_Force_STG_record": {
+          "runAfter": {
+            "Initialize_Error_Message_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_useofforce_stgs",
+            "recordId": "@triggerBody()[\u0027text\u0027]"
+            },
+            "authentication": {
+              "type": "Raw",
+            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+            }
+          }
+        },
+        "Initialize_Error_Message_variable": {
+          "runAfter": {
+            
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Error Message",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Check_if_Place_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_variable": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Place could not be Empty.\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Get_Use_of_Force_STG_record": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Use_of_Force_STG_record\u0027)?[\u0027body/cp_place\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_if_Officer_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_variable_2": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Officer could not be Empty.\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_Place_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Use_of_Force_STG_record\u0027)?[\u0027body/cp_officer\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_if_Officer_Assaulted_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_variable_3": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Officer Assaulted could not be Empty.\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_Officer_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Use_of_Force_STG_record\u0027)?[\u0027body/cp_officerassaulted\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "Check_if_Subject_Behaviour_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "useofforceerrors": "@variables(\u0027Error Message\u0027)"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "useofforceerrors": {
+                  "title": "UseOfForceErrors",
+                  "x-ms-dynamically-added": true,
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "Check_if_Subject_Behaviour_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_variable_5": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Subject Behaviour could not be Empty.\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_Subject_Role_Is_Know_And_Subject_Name_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Use_of_Force_STG_record\u0027)?[\u0027body/cp_subjectbehaviour\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_if_Subject_Role_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_variable_4": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Subject Role could not be Empty.\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_Officer_Assaulted_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+            "@outputs(\u0027Get_Use_of_Force_STG_record\u0027)?[\u0027body/cp_subjectrole\u0027]",
+              "@null"
+            ]
+          },
+          "type": "If"
+        },
+        "Check_if_Subject_Role_Is_Know_And_Subject_Name_ISNULL": {
+          "actions": {
+            "Append_to_Error_Message_variable_6": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+                "value": "Subject Surename or Forename could not be Empty for Known Subject.\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Check_if_Subject_Role_ISNULL": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "and": [
+              {
+                "equals": [
+                "@outputs(\u0027Get_Use_of_Force_STG_record\u0027)?[\u0027body/cp_subjectrole\u0027]",
+                  "5cb5308b-a258-eb11-a812-0022489ba6ad"
+                ]
+              },
+              {
+                "or": [
+                  {
+                    "equals": [
+                    "@outputs(\u0027Get_Use_of_Force_STG_record\u0027)?[\u0027body/cp_subjectsurename\u0027]",
+                      "@null"
+                    ]
+                  },
+                  {
+                    "equals": [
+                    "@outputs(\u0027Get_Use_of_Force_STG_record\u0027)?[\u0027body/cp_subjectforename\u0027]",
+                      "@null"
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          "type": "If"
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

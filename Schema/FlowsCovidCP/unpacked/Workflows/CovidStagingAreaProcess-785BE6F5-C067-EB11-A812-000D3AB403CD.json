@@ -1,0 +1,1042 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_b542f"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedcommondataserviceforapps_3a446"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_a_row_is_created,_updated_or_deleted": {
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "cp_covidstg",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filterexpression": "cp_stagingentrystatus eq 778230001"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        }
+      },
+      "actions": {
+        "Initialize_variable": {
+          "runAfter": {
+            
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Error Message",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Run_a_Child_Flow_(Incident_Prerequisites_check)": {
+          "runAfter": {
+            "Initialize_variable_2": [
+              "Succeeded"
+            ]
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "f43a6a1c-f766-eb11-a812-000d3ab403cd"
+            },
+            "body": {
+            "text": "@triggerOutputs()?[\u0027body/cp_covidstgid\u0027]"
+            }
+          }
+        },
+        "Append_Incident_Prerequisites_Errors_in_Error_Message_Variable": {
+          "actions": {
+            "Append_to_string_variable": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+              "value": "@outputs(\u0027Run_a_Child_Flow_(Incident_Prerequisites_check)\u0027)?[\u0027Body\u0027]?[\u0027incidentcheckerror\u0027]"
+              }
+            }
+          },
+          "runAfter": {
+            "Run_a_Child_Flow_(Incident_Prerequisites_check)": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "not": {
+              "equals": [
+              "@empty(outputs(\u0027Run_a_Child_Flow_(Incident_Prerequisites_check)\u0027)?[\u0027Body\u0027]?[\u0027incidentcheckerror\u0027])",
+                "@true"
+              ]
+            }
+          },
+          "type": "If"
+        },
+        "Run_a_Child_Flow_(Covid_Prerequisites_Check)": {
+          "runAfter": {
+            "Append_Incident_Prerequisites_Errors_in_Error_Message_Variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "08977fa4-b367-eb11-a812-000d3ab40f79"
+            },
+            "body": {
+            "text": "@triggerOutputs()?[\u0027body/cp_covidstgid\u0027]"
+            }
+          },
+          "description": "Comment"
+        },
+        "Append_Covid_Prerequisite_Error_in_Error_Message_Variable_": {
+          "actions": {
+            "Append_to_string_variable_2": {
+              "runAfter": {
+                
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+              "value": "@outputs(\u0027Run_a_Child_Flow_(Covid_Prerequisites_Check)\u0027)?[\u0027Body\u0027]?[\u0027covidprerequisite\u0027]"
+              }
+            }
+          },
+          "runAfter": {
+            "Run_a_Child_Flow_(Covid_Prerequisites_Check)": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "not": {
+              "equals": [
+              "@empty(outputs(\u0027Run_a_Child_Flow_(Covid_Prerequisites_Check)\u0027)?[\u0027Body\u0027]?[\u0027covidprerequisite\u0027])",
+                "@true"
+              ]
+            }
+          },
+          "type": "If"
+        },
+        "If_Error_found_procced_accordingly": {
+          "actions": {
+            "Update_Covid_STG_record_(Status,_Submission_Error)": {
+              "runAfter": {
+                
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps",
+                  "operationId": "UpdateRecord",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "cp_covidstgs",
+                "recordId": "@triggerOutputs()?[\u0027body/cp_covidstgid\u0027]",
+                  "item/cp_stagingentrystatus": 778230002,
+                  "item/cp_submissionerrors": "@variables(\u0027Error Message\u0027)"
+                },
+                "authentication": "@parameters(\u0027$authentication\u0027)"
+              }
+            }
+          },
+          "runAfter": {
+            "Append_Covid_Prerequisite_Error_in_Error_Message_Variable_": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Try_(Execute_Transactions)": {
+                "actions": {
+                  "Run_a_Child_Flow_(Create_Incident)": {
+                    "runAfter": {
+                      
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "71ab4fd1-7959-eb11-a812-000d3a654f72"
+                      },
+                      "body": {
+                      "text": "@triggerOutputs()?[\u0027body/cp_incidentnumber\u0027]",
+                        "text_2": "cc1f6a07-6966-eb11-a812-000d3ab40f79",
+                      "text_4": "@triggerOutputs()?[\u0027body/_createdby_value\u0027]",
+                      "text_1": "@triggerOutputs()?[\u0027body/cp_incidentsuffix\u0027]",
+                      "text_5": "@triggerOutputs()?[\u0027body/cp_incidentdate\u0027]"
+                      }
+                    }
+                  },
+                  "Create_a_Covid_Record": {
+                    "runAfter": {
+                      "Update_Contact_(Ethnicity)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps",
+                        "operationId": "CreateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_covids",
+                      "item/cp_circumstances": "@triggerOutputs()?[\u0027body/cp_circumstances\u0027]",
+                      "item/cp_name": "@triggerOutputs()?[\u0027body/cp_incidentnumber\u0027]",
+                      "item/cp_pnccheck": "@triggerOutputs()?[\u0027body/cp_pnchheck\u0027]",
+                      "item/cp_replytocaution": "@triggerOutputs()?[\u0027body/cp_replytocaution\u0027]",
+                      "item/cp_TPA@odata.bind": "/cp_territorialpolicingareas(@{triggerOutputs()?[\u0027body/cp_tpa\u0027]})",
+                      "item/cp_bmv": "@triggerOutputs()?[\u0027body/cp_bwvused\u0027]",
+                      "item/cp_contact@odata.bind": "/contacts(@{outputs(\u0027Run_a_Child_Flow_(Create_New_Contact)\u0027)?[\u0027Body\u0027]?[\u0027contactid\u0027]})",
+                      "item/cp_documentcheck@odata.bind": "/cp_lookupvalues(@{triggerOutputs()?[\u0027body/cp_documentid\u0027]})",
+                      "item/cp_documentid": "@triggerOutputs()?[\u0027body/cp_documentcheck\u0027]",
+                      "item/cp_hasforcebeenused": "@triggerOutputs()?[\u0027body/cp_hasforcebeenused\u0027]",
+                      "item/cp_incident@odata.bind": "/cp_incidents(@{outputs(\u0027Run_a_Child_Flow_(Create_Incident)\u0027)?[\u0027Body\u0027]?[\u0027incidentid\u0027]})",
+                      "item/cp_offence@odata.bind": "/cp_covidoffenceses(@{triggerOutputs()?[\u0027body/cp_offencecode\u0027]})",
+                      "item/cp_offencedatetime": "@triggerOutputs()?[\u0027body/cp_offencedateandtime\u0027]",
+                      "item/ownerid@odata.bind": "/systemusers(@{triggerOutputs()?[\u0027body/_createdby_value\u0027]})",
+                      "item/cp_recordofpowerorissueFine@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_useofpowerorissuefine\u0027]), \u0027\u0027, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_useofpowerorissuefine\u0027], \u0027)\u0027))",
+                        "item/statuscode": 778230001
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  },
+                  "Run_a_Child_Flow_(Create_New_Contact)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Create_Location)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "0cd014f7-3e5a-eb11-a812-0022489ba6ad"
+                      },
+                      "body": {
+                      "text": "@triggerOutputs()?[\u0027body/cp_forename\u0027]",
+                      "text_1": "@triggerOutputs()?[\u0027body/cp_surname\u0027]",
+                      "text_6": "@if(empty(triggerOutputs()?[\u0027body/cp_gender\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_gender\u0027])",
+                      "text_9": "@if(empty(triggerOutputs()?[\u0027body/cp_newdateofbirth\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_newdateofbirth\u0027])",
+                      "text_10": "@if(empty(triggerOutputs()?[\u0027body/cp_title\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_title\u0027])",
+                      "text_12": "@if(empty(triggerOutputs()?[\u0027body/cp_housename\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_housename\u0027])\r\n",
+                      "text_13": "@if(empty(triggerOutputs()?[\u0027body/cp_housenumber\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_housenumber\u0027])",
+                      "text_14": "@if(empty(triggerOutputs()?[\u0027body/cp_district\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_district\u0027])",
+                        "text_15": "0bf9d2f2-b867-eb11-a812-000d3ab403cd",
+                      "text_19": "@if(empty(triggerOutputs()?[\u0027body/cp_postcode\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_postcode\u0027])",
+                        "location": {
+                          "address": {
+                          "street": "@if(empty(triggerOutputs()?[\u0027body/cp_street\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_street\u0027])",
+                          "city": "@if(empty(triggerOutputs()?[\u0027body/cp_town\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_town\u0027])"
+                          }
+                        },
+                        "text_16": "\u0027\u0027"
+                      }
+                    }
+                  },
+                  "Run_a_Child_Flow_(Update_Contact_Email_and_Marital_Status)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Create_New_Contact)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "ac004de4-6061-eb11-a812-0022489c7676"
+                      },
+                      "body": {
+                      "text": "@outputs(\u0027Run_a_Child_Flow_(Create_New_Contact)\u0027)?[\u0027Body\u0027]?[\u0027contactid\u0027]",
+                        "text_3": "@\u0027\u0027",
+                      "text_6": "@if(empty(triggerOutputs()?[\u0027body/cp_telephonenumber\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_telephonenumber\u0027])",
+                      "text_7": "@if(empty(triggerOutputs()?[\u0027body/cp_email\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_email\u0027])"
+                      }
+                    }
+                  },
+                  "Update_Contact_(Ethnicity)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Update_Contact_Email_and_Marital_Status)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps",
+                        "operationId": "UpdateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "contacts",
+                      "recordId": "@outputs(\u0027Run_a_Child_Flow_(Create_New_Contact)\u0027)?[\u0027Body\u0027]?[\u0027contactid\u0027]",
+                      "item/cp_OfficerDefinedEthnicity@odata.bind": "/cp_lookupvalues(@{triggerOutputs()?[\u0027body/cp_officerdefinedethnicity\u0027]})",
+                      "item/cp_SelfDefinedEthnicity@odata.bind": "/cp_lookupvalues(@{triggerOutputs()?[\u0027body/cp_selfdefinedethnicity\u0027]})"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  },
+                  "Run_a_Child_Flow_(Create_Location)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Create_Incident)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "b11a6067-a363-eb11-a812-000d3ab40f79"
+                      },
+                      "body": {
+                      "text": "@triggerOutputs()?[\u0027body/cp_description\u0027]",
+                      "text_4": "@outputs(\u0027Run_a_Child_Flow_(Create_Incident)\u0027)?[\u0027Body\u0027]?[\u0027incidentid\u0027]",
+                        "location": {
+                          "address": {
+                          "city": "@triggerOutputs()?[\u0027body/cp_locationtown\u0027]",
+                            "countryOrRegion": "@\u0027\u0027",
+                          "street": "@triggerOutputs()?[\u0027body/cp_locationstreet\u0027]"
+                          }
+                        },
+                      "text_5": "@triggerOutputs()?[\u0027body/cp_locationcounty\u0027]",
+                      "number": "@if(empty(string(triggerOutputs()?[\u0027body/cp_lat\u0027])), 0, triggerOutputs()?[\u0027body/cp_lat\u0027])",
+                      "number_1": "@if(empty(string(triggerOutputs()?[\u0027body/cp_long\u0027])), 0, triggerOutputs()?[\u0027body/cp_long\u0027])",
+                        "text_7": "\u0027create this row\u0027"
+                      }
+                    }
+                  },
+                  "Process_Photo_1_if_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Create_a_Covid_Record": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Get_Photo_1_content_from_Covid_STG": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_covidstgs",
+                            "recordId": "@triggerOutputs()?[\u0027body/cp_covidstgid\u0027]",
+                              "fileImageFieldName": "cp_photo1",
+                              "size": "full"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Upload_file_or_image_content_Photo_1": {
+                          "runAfter": {
+                            "Create_a_new_record_in_Photos_for_Photo_1": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "recordId": "@outputs(\u0027Create_a_new_record_in_Photos_for_Photo_1\u0027)?[\u0027body/cp_photoid\u0027]",
+                              "fileImageFieldName": "cp_image",
+                            "item": "@outputs(\u0027Get_Photo_1_content_from_Covid_STG\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Create_a_new_record_in_Photos_for_Photo_1": {
+                          "runAfter": {
+                            "Get_Photo_1_content_from_Covid_STG": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "CreateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "item/cp_Covid@odata.bind": "/cp_covids(@{outputs(\u0027Create_a_Covid_Record\u0027)?[\u0027body/cp_covidid\u0027]})",
+                            "item/ownerid@odata.bind": "/systemusers(@{outputs(\u0027Create_a_Covid_Record\u0027)?[\u0027body/_ownerid_value\u0027]})",
+                            "item/cp_phototitle": "@\r\nIf(empty(triggerOutputs()?[\u0027body/cp_photo1caption\u0027]),\u0027Vehicle Ticket Photo 1\u0027,triggerOutputs()?[\u0027body/cp_photo1caption\u0027])"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_photo1id\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "Process_Photo_2_if_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Process_Photo_1_if_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Get_Photo_2_content_from_Covid_STG": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_covidstgs",
+                            "recordId": "@triggerOutputs()?[\u0027body/cp_covidstgid\u0027]",
+                              "fileImageFieldName": "cp_photo2",
+                              "size": "full"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Upload_file_or_image_content_Photo_2": {
+                          "runAfter": {
+                            "Create_a_new_record_in_Photos_for_Photo_2": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "recordId": "@outputs(\u0027Create_a_new_record_in_Photos_for_Photo_2\u0027)?[\u0027body/cp_photoid\u0027]",
+                              "fileImageFieldName": "cp_image",
+                            "item": "@outputs(\u0027Get_Photo_2_content_from_Covid_STG\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Create_a_new_record_in_Photos_for_Photo_2": {
+                          "runAfter": {
+                            "Get_Photo_2_content_from_Covid_STG": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "CreateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "item/cp_Covid@odata.bind": "/cp_covids(@{outputs(\u0027Create_a_Covid_Record\u0027)?[\u0027body/cp_covidid\u0027]})",
+                            "item/ownerid@odata.bind": "/systemusers(@{outputs(\u0027Create_a_Covid_Record\u0027)?[\u0027body/_ownerid_value\u0027]})",
+                            "item/cp_phototitle": "@If(empty(triggerOutputs()?[\u0027body/cp_photo2caption\u0027]),\u0027Vehicle Ticket Photo 2\u0027,triggerOutputs()?[\u0027body/cp_photo2caption\u0027])"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_photo2id\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "Process_Photo_3_if_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Process_Photo_2_if_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Get_Photo_3_content_from_Covid_STG": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_covidstgs",
+                            "recordId": "@triggerOutputs()?[\u0027body/cp_covidstgid\u0027]",
+                              "fileImageFieldName": "cp_photo3",
+                              "size": "full"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Upload_file_or_image_content_Photo_3": {
+                          "runAfter": {
+                            "Create_a_new_record_in_Photos_for_Photo_3": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "recordId": "@outputs(\u0027Create_a_new_record_in_Photos_for_Photo_3\u0027)?[\u0027body/cp_photoid\u0027]",
+                              "fileImageFieldName": "cp_image",
+                            "item": "@outputs(\u0027Get_Photo_3_content_from_Covid_STG\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Create_a_new_record_in_Photos_for_Photo_3": {
+                          "runAfter": {
+                            "Get_Photo_3_content_from_Covid_STG": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "CreateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "item/cp_Covid@odata.bind": "/cp_covids(@{outputs(\u0027Create_a_Covid_Record\u0027)?[\u0027body/cp_covidid\u0027]})",
+                            "item/ownerid@odata.bind": "/systemusers(@{outputs(\u0027Create_a_Covid_Record\u0027)?[\u0027body/_ownerid_value\u0027]})",
+                            "item/cp_phototitle": "@If(empty(triggerOutputs()?[\u0027body/cp_photo3caption\u0027]),\u0027Vehicle Ticket Photo 3\u0027,triggerOutputs()?[\u0027body/cp_photo3caption\u0027])"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_photo3id\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "Process_Photo_4_if_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Process_Photo_3_if_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Get_Photo_4_content_from_Covid_STG": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_covidstgs",
+                            "recordId": "@triggerOutputs()?[\u0027body/cp_covidstgid\u0027]",
+                              "fileImageFieldName": "cp_photo4",
+                              "size": "full"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Upload_file_or_image_content_Photo_4": {
+                          "runAfter": {
+                            "Create_a_new_record_in_Photos_for_Photo_4": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "recordId": "@outputs(\u0027Create_a_new_record_in_Photos_for_Photo_4\u0027)?[\u0027body/cp_photoid\u0027]",
+                              "fileImageFieldName": "cp_image",
+                            "item": "@outputs(\u0027Get_Photo_4_content_from_Covid_STG\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Create_a_new_record_in_Photos_for_Photo_4": {
+                          "runAfter": {
+                            "Get_Photo_4_content_from_Covid_STG": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "CreateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "item/cp_Covid@odata.bind": "/cp_covids(@{outputs(\u0027Create_a_Covid_Record\u0027)?[\u0027body/cp_covidid\u0027]})",
+                            "item/ownerid@odata.bind": "/systemusers(@{outputs(\u0027Create_a_Covid_Record\u0027)?[\u0027body/_ownerid_value\u0027]})",
+                            "item/cp_phototitle": "@If(empty(triggerOutputs()?[\u0027body/cp_photo4caption\u0027]),\u0027Vehicle Ticket Photo 4\u0027,triggerOutputs()?[\u0027body/cp_photo4caption\u0027])"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_photo4id\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "Process_Photo_5_if_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Process_Photo_4_if_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Get_Photo_5_content_from_Covid_STG": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_covidstgs",
+                            "recordId": "@triggerOutputs()?[\u0027body/cp_covidstgid\u0027]",
+                              "fileImageFieldName": "cp_photo5",
+                              "size": "full"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Upload_file_or_image_content_Photo_5": {
+                          "runAfter": {
+                            "Create_a_new_record_in_Photos_for_Photo_5": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "recordId": "@outputs(\u0027Create_a_new_record_in_Photos_for_Photo_5\u0027)?[\u0027body/cp_photoid\u0027]",
+                              "fileImageFieldName": "cp_image",
+                            "item": "@outputs(\u0027Get_Photo_5_content_from_Covid_STG\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Create_a_new_record_in_Photos_for_Photo_5": {
+                          "runAfter": {
+                            "Get_Photo_5_content_from_Covid_STG": [
+                              "Succeeded"
+                            ]
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "CreateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_photos",
+                            "item/cp_Covid@odata.bind": "/cp_covids(@{outputs(\u0027Create_a_Covid_Record\u0027)?[\u0027body/cp_covidid\u0027]})",
+                            "item/ownerid@odata.bind": "/systemusers(@{outputs(\u0027Create_a_Covid_Record\u0027)?[\u0027body/_ownerid_value\u0027]})",
+                            "item/cp_phototitle": "@If(empty(triggerOutputs()?[\u0027body/cp_photo5caption\u0027]),\u0027Vehicle Ticket Photo 5\u0027,triggerOutputs()?[\u0027body/cp_photo5caption\u0027])"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_photo5id\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "List_rows": {
+                    "runAfter": {
+                      "Process_Photo_5_if_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps_1",
+                        "operationId": "ListRecords",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_covidoffenceverificationstgs",
+                      "$filter": "_cp_covidstg_value eq \u0027@{triggerOutputs()?[\u0027body/cp_covidstgid\u0027]}\u0027  "
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  },
+                  "Check_if_the_record_is_not_verified": {
+                    "actions": {
+                      "Update_Status_Reason_to_Not_Verified": {
+                        "runAfter": {
+                          
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps_1",
+                            "operationId": "UpdateRecord",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "cp_covids",
+                          "recordId": "@outputs(\u0027Create_a_Covid_Record\u0027)?[\u0027body/cp_covidid\u0027]",
+                            "item/statuscode": 778230001
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      }
+                    },
+                    "runAfter": {
+                      "Add_Verification_Record_and_Increment_Verification_Variable": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Update_Status_Reason_to_Verified": {
+                          "runAfter": {
+                            
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps_1",
+                              "operationId": "UpdateRecord",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_covids",
+                            "recordId": "@outputs(\u0027Create_a_Covid_Record\u0027)?[\u0027body/cp_covidid\u0027]",
+                              "item/statuscode": 778230000
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "greater": [
+                        "@variables(\u0027Verified\u0027)",
+                        0
+                      ]
+                    },
+                    "type": "If"
+                  },
+                  "Add_Verification_Record_and_Increment_Verification_Variable": {
+                  "foreach": "@outputs(\u0027List_rows\u0027)?[\u0027body/value\u0027]",
+                    "actions": {
+                      "Add_a_new_row": {
+                        "runAfter": {
+                          
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps_1",
+                            "operationId": "CreateRecord",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "cp_covidoffenceverifications",
+                          "item/cp_covid@odata.bind": "/cp_covids(@{outputs(\u0027Create_a_Covid_Record\u0027)?[\u0027body/cp_covidid\u0027]})",
+                          "item/cp_LabelText@odata.bind": "/cp_covidoffenceverificationtexts(@{items(\u0027Add_Verification_Record_and_Increment_Verification_Variable\u0027)?[\u0027_cp_labeltext_value\u0027]})",
+                          "item/cp_verified": "@items(\u0027Add_Verification_Record_and_Increment_Verification_Variable\u0027)?[\u0027cp_verified\u0027]",
+                            "item/cp_name": "",
+                          "item/ownerid@odata.bind": "/systemusers(@{triggerOutputs()?[\u0027body/_createdby_value\u0027]})"
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      },
+                      "Condition": {
+                        "actions": {
+                          "Increment_variable": {
+                            "runAfter": {
+                              
+                            },
+                            "type": "IncrementVariable",
+                            "inputs": {
+                              "name": "Verified",
+                              "value": 1
+                            }
+                          }
+                        },
+                        "runAfter": {
+                          "Add_a_new_row": [
+                            "Succeeded"
+                          ]
+                        },
+                        "expression": {
+                          "equals": [
+                          "@outputs(\u0027Add_a_new_row\u0027)?[\u0027body/cp_verified\u0027]",
+                            "@false"
+                          ]
+                        },
+                        "type": "If"
+                      }
+                    },
+                    "runAfter": {
+                      "List_rows": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "Foreach"
+                  }
+                },
+                "runAfter": {
+                  
+                },
+                "type": "Scope"
+              },
+              "Catch_(Clear_Staging_Area)": {
+                "actions": {
+                  "Update_a_row": {
+                    "runAfter": {
+                      
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps_1",
+                        "operationId": "UpdateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_covidstgs",
+                      "recordId": "@triggerOutputs()?[\u0027body/cp_covidstgid\u0027]",
+                        "item/cp_stagingentrystatus": 778230004,
+                        "item/statecode": 1,
+                        "item/statuscode": 2,
+                      "item/cp_submissionerrors": "@string(outputs(\u0027Create_a_Covid_Record\u0027)?[\u0027body/cp_covidid\u0027])"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  },
+                  "List_Offence_Verification_STG_Records": {
+                    "runAfter": {
+                      "Update_a_row": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps_1",
+                        "operationId": "ListRecords",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_covidoffenceverificationstgs",
+                      "$filter": "_cp_covidstg_value eq \u0027@{triggerOutputs()?[\u0027body/cp_covidstgid\u0027]}\u0027"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  },
+                  "Apply_to_each": {
+                  "foreach": "@outputs(\u0027List_Offence_Verification_STG_Records\u0027)?[\u0027body/value\u0027]",
+                    "actions": {
+                      "Update_a_row_2": {
+                        "runAfter": {
+                          
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps_1",
+                            "operationId": "UpdateRecord",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "cp_covidoffenceverificationstgs",
+                          "recordId": "@items(\u0027Apply_to_each\u0027)?[\u0027cp_covidoffenceverificationstgid\u0027]",
+                            "item/statecode": 1,
+                            "item/statuscode": 2
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      }
+                    },
+                    "runAfter": {
+                      "List_Offence_Verification_STG_Records": [
+                        "Succeeded"
+                      ]
+                    },
+                    "type": "Foreach"
+                  }
+                },
+                "runAfter": {
+                  "Try_(Execute_Transactions)": [
+                    "Succeeded"
+                  ]
+                },
+                "type": "Scope"
+              }
+            }
+          },
+          "expression": {
+            "not": {
+              "equals": [
+                "@empty(variables(\u0027Error Message\u0027))",
+                "@true"
+              ]
+            }
+          },
+          "type": "If"
+        },
+        "Initialize_variable_2": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Verified",
+                "type": "integer",
+                "value": 0
+              }
+            ]
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

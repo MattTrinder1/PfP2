@@ -1,0 +1,697 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_1": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_37dad"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_commondataserviceforapps_2": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedcommondataserviceforapps_3a446"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_9993c"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {
+            
+          },
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "When_a_row_is_created,_updated_or_deleted": {
+          "metadata": {
+            "operationMetadataId": "cbeb9393-fe4e-4b0f-ab4e-ccbf8b62acfe"
+          },
+          "type": "OpenApiConnectionWebhook",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "SubscribeWebhookTrigger",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "subscriptionRequest/message": 3,
+              "subscriptionRequest/entityname": "cp_itsyourchoicestg",
+              "subscriptionRequest/scope": 4,
+              "subscriptionRequest/filterexpression": "cp_stagingentrystatus eq 778230001",
+              "subscriptionRequest/name": "f228c389-2e70-eb11-a812-000d3ab01cf7"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        }
+      },
+      "actions": {
+        "Initialize_Error_Message_variable": {
+          "runAfter": {
+            
+          },
+          "metadata": {
+            "operationMetadataId": "ecf64c73-286a-49b8-9ad4-ea658aea1165"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Error Message",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Run_a_Child_Flow_(IYC_Prerequisites_Check)": {
+          "runAfter": {
+            "Initialize_Guardian_Id_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2448df17-cdaf-47ea-95f6-c503db0d5e1c"
+          },
+          "type": "Workflow",
+          "inputs": {
+            "host": {
+              "workflowReferenceName": "7f7fb88f-3570-eb11-a812-000d3ab02051"
+            },
+            "body": {
+            "text": "@triggerOutputs()?[\u0027body/cp_itsyourchoicestgid\u0027]"
+            }
+          }
+        },
+        "Append_STG_Errors_in_Error_Message_variable": {
+          "actions": {
+            "Append_to_Error_Message_variable": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "74266950-0d3a-401d-acb9-59b31ba79541"
+              },
+              "type": "AppendToStringVariable",
+              "inputs": {
+                "name": "Error Message",
+              "value": "@{outputs(\u0027Run_a_Child_Flow_(IYC_Prerequisites_Check)\u0027)?[\u0027Body\u0027]?[\u0027iyccheckerrors\u0027]}\n"
+              }
+            }
+          },
+          "runAfter": {
+            "Run_a_Child_Flow_(IYC_Prerequisites_Check)": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "not": {
+              "equals": [
+              "@empty(outputs(\u0027Run_a_Child_Flow_(IYC_Prerequisites_Check)\u0027)?[\u0027Body\u0027]?[\u0027IYCcheckerrors\u0027])",
+                "@true"
+              ]
+            }
+          },
+          "metadata": {
+            "operationMetadataId": "b413ea19-e1e2-4298-82d8-9f98a86a645c"
+          },
+          "type": "If"
+        },
+        "If_Errors_found_proceed_accordingly": {
+          "actions": {
+            "Update_IYC_STG_record_(Status,Submission_Error)": {
+              "runAfter": {
+                
+              },
+              "metadata": {
+                "operationMetadataId": "7f463fb4-9ead-4ff4-8eee-073023026aed"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps_1",
+                  "operationId": "UpdateRecord",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "cp_itsyourchoicestgs",
+                "recordId": "@triggerOutputs()?[\u0027body/cp_itsyourchoicestgid\u0027]",
+                  "item/cp_stagingentrystatus": 778230002,
+                  "item/cp_submissionerror": "@variables(\u0027Error Message\u0027)"
+                },
+                "authentication": "@parameters(\u0027$authentication\u0027)"
+              }
+            }
+          },
+          "runAfter": {
+            "Append_STG_Errors_in_Error_Message_variable": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Try_(Execute_Transactions)": {
+                "actions": {
+                  "Run_a_Child_Flow_(Create_Incident)": {
+                    "runAfter": {
+                      
+                    },
+                    "metadata": {
+                      "operationMetadataId": "8ccb559d-07f7-4503-b1ce-a0b94d5bb869"
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "71ab4fd1-7959-eb11-a812-000d3a654f72"
+                      },
+                      "body": {
+                      "text": "@if(empty(triggerOutputs()?[\u0027body/cp_incidentnumber\u0027]), concat(\u0027Its Your Choice Without Incident Number submitted on \u0027, formatDateTime(triggerOutputs()?[\u0027body/createdon\u0027], \u0027dd/MM/yyyy h:mm tt\u0027)), triggerOutputs()?[\u0027body/cp_incidentnumber\u0027])",
+                        "text_2": "4b30fbe9-236d-eb11-a812-0022489abb0c",
+                      "text_4": "@triggerOutputs()?[\u0027body/_createdby_value\u0027]",
+                      "text_1": "@if(empty(triggerOutputs()?[\u0027body/cp_incidentsuffix\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_incidentsuffix\u0027])",
+                      "text_3": "@if(empty(triggerOutputs()?[\u0027body/cp_additionalofficer\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_additionalofficer\u0027])",
+                      "text_5": "@if(empty(triggerOutputs()?[\u0027body/cp_incidentdate\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_incidentdate\u0027])",
+                      "text_6": "@string(triggerOutputs()?[\u0027body/cp_singleofficer\u0027])",
+                      "text_7": "@string(triggerOutputs()?[\u0027body/cp_reportingofficer\u0027])"
+                      }
+                    }
+                  },
+                  "Run_a_Child_Flow_(Create_Youth_Involved_Contact)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Create_Location)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "a0eb2b9e-be77-4b28-83d6-bd8f37fc4e78"
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "0cd014f7-3e5a-eb11-a812-0022489ba6ad"
+                      },
+                      "body": {
+                      "text": "@triggerOutputs()?[\u0027body/cp_involvedforename\u0027]",
+                      "text_1": "@triggerOutputs()?[\u0027body/cp_involvedsurname\u0027]",
+                      "text_6": "@if(empty(triggerOutputs()?[\u0027body/cp_involvedgender\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_involvedgender\u0027])",
+                      "text_9": "@if(empty(triggerOutputs()?[\u0027body/cp_involvedbirthdate\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_involvedbirthdate\u0027])",
+                      "text_12": "@if(empty(triggerOutputs()?[\u0027body/cp_involvedhousename\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_involvedhousename\u0027])",
+                      "text_13": "@if(empty(triggerOutputs()?[\u0027body/cp_involvedhousenumber\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_involvedhousenumber\u0027])",
+                      "text_14": "@if(empty(triggerOutputs()?[\u0027body/cp_involveddistrict\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_involveddistrict\u0027])",
+                        "text_15": "40303c8e-5270-eb11-a812-000d3ab01cf7",
+                      "text_17": "@if(empty(triggerOutputs()?[\u0027body/cp_involvedcounty\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_involvedcounty\u0027])",
+                      "text_19": "@if(empty(triggerOutputs()?[\u0027body/cp_involvedpostcode\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_involvedpostcode\u0027])",
+                        "location": {
+                          "address": {
+                          "street": "@if(empty(triggerOutputs()?[\u0027body/cp_involvedstreet\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_involvedstreet\u0027])",
+                          "city": "@if(empty(triggerOutputs()?[\u0027body/cp_involvedtown\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_involvedtown\u0027])"
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "Update_Youth_Contact_(Additional_Fields)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Create_Youth_Involved_Contact)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "1681c4a5-15eb-427c-b5df-4476af1d0332"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps_1",
+                        "operationId": "UpdateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "contacts",
+                      "recordId": "@outputs(\u0027Run_a_Child_Flow_(Create_Youth_Involved_Contact)\u0027)?[\u0027Body\u0027]?[\u0027contactid\u0027]",
+                      "item/cp_OfficerDefinedEthnicity@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_involvedofficerdefinedethnicity\u0027]), \u0027\u0027, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_involvedofficerdefinedethnicity\u0027], \u0027)\u0027))",
+                      "item/cp_SelfDefinedEthnicity@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_involvedselfdefinedethnicity\u0027]), \u0027\u0027, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_involvedselfdefinedethnicity\u0027], \u0027)\u0027))"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  },
+                  "If_Guardian_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Update_Youth_Contact_(Additional_Fields)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Gurdian_Address_same_with_Youth": {
+                          "actions": {
+                            "Run_a_Child_Flow_(Create_Guardian_Contact_with_same_Address)": {
+                              "runAfter": {
+                                
+                              },
+                              "metadata": {
+                                "operationMetadataId": "069336f0-0598-4f8b-81b1-dde9f65b2b10"
+                              },
+                              "type": "Workflow",
+                              "inputs": {
+                                "host": {
+                                  "workflowReferenceName": "0cd014f7-3e5a-eb11-a812-0022489ba6ad"
+                                },
+                                "body": {
+                                "text": "@triggerOutputs()?[\u0027body/cp_guardianforename\u0027]",
+                                "text_1": "@triggerOutputs()?[\u0027body/cp_guardiansurename\u0027]",
+                                "text_10": "@if(empty(triggerOutputs()?[\u0027body/cp_guardiantitle\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_guardiantitle\u0027])",
+                                "text_12": "@if(empty(triggerOutputs()?[\u0027body/cp_involvedhousename\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_involvedhousename\u0027])",
+                                "text_13": "@if(empty(triggerOutputs()?[\u0027body/cp_involvedhousenumber\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_involvedhousenumber\u0027])",
+                                "text_14": "@if(empty(triggerOutputs()?[\u0027body/cp_involveddistrict\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_involveddistrict\u0027])",
+                                  "text_15": "322a4ffe-4374-eb11-a812-000d3adc97fc",
+                                "text_17": "@if(empty(triggerOutputs()?[\u0027body/cp_involvedcounty\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_involvedcounty\u0027])",
+                                "text_19": "@if(empty(triggerOutputs()?[\u0027body/cp_involvedpostcode\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_involvedpostcode\u0027])",
+                                  "location": {
+                                    "address": {
+                                    "street": "@if(empty(triggerOutputs()?[\u0027body/cp_involvedstreet\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_involvedstreet\u0027])",
+                                    "city": "@if(empty(triggerOutputs()?[\u0027body/cp_involvedtown\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_involvedtown\u0027])"
+                                    }
+                                  }
+                                }
+                              }
+                            },
+                            "Set_Guardian_Id_variable_2": {
+                              "runAfter": {
+                                "Run_a_Child_Flow_(Create_Guardian_Contact_with_same_Address)": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "2f3fef9a-f1e4-43a1-a200-868231bba210"
+                              },
+                              "type": "SetVariable",
+                              "inputs": {
+                                "name": "Guardian",
+                              "value": "@outputs(\u0027Run_a_Child_Flow_(Create_Guardian_Contact_with_same_Address)\u0027)?[\u0027Body\u0027]?[\u0027contactid\u0027]"
+                              }
+                            }
+                          },
+                          "runAfter": {
+                            
+                          },
+                          "else": {
+                            "actions": {
+                              "Run_a_Child_Flow_(Create_Guardian_Contact)": {
+                                "runAfter": {
+                                  
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "3a270336-d8ba-43f3-ab61-d80046d77a88"
+                                },
+                                "type": "Workflow",
+                                "inputs": {
+                                  "host": {
+                                    "workflowReferenceName": "0cd014f7-3e5a-eb11-a812-0022489ba6ad"
+                                  },
+                                  "body": {
+                                  "text": "@triggerOutputs()?[\u0027body/cp_guardianforename\u0027]",
+                                  "text_1": "@triggerOutputs()?[\u0027body/cp_guardiansurename\u0027]",
+                                  "text_10": "@if(empty(triggerOutputs()?[\u0027body/cp_guardiantitle\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_guardiantitle\u0027])",
+                                  "text_12": "@if(empty(triggerOutputs()?[\u0027body/cp_guardianhousename\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_guardianhousename\u0027])",
+                                  "text_13": "@if(empty(triggerOutputs()?[\u0027body/cp_guardianhousenumber\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_guardianhousenumber\u0027])",
+                                  "text_14": "@if(empty(triggerOutputs()?[\u0027body/cp_guardiandistrict\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_guardiandistrict\u0027])",
+                                    "text_15": "322a4ffe-4374-eb11-a812-000d3adc97fc",
+                                  "text_17": "@if(empty(triggerOutputs()?[\u0027body/cp_guardiancounty\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_guardiancounty\u0027])",
+                                  "text_18": "@if(empty(triggerOutputs()?[\u0027body/cp_guardiancountry\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_guardiancountry\u0027])",
+                                  "text_19": "@if(empty(triggerOutputs()?[\u0027body/cp_guardianpostcode\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_guardianpostcode\u0027])",
+                                    "location": {
+                                      "address": {
+                                      "street": "@if(empty(triggerOutputs()?[\u0027body/cp_guardianstreet\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_guardianstreet\u0027])",
+                                      "city": "@if(empty(triggerOutputs()?[\u0027body/cp_guardiantown\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_guardiantown\u0027])"
+                                      }
+                                    }
+                                  }
+                                }
+                              },
+                              "Set_Guardian_Id_variable": {
+                                "runAfter": {
+                                  "Run_a_Child_Flow_(Create_Guardian_Contact)": [
+                                    "Succeeded"
+                                  ]
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "5a4b62b0-1e03-4473-bd61-cc70cca76ddb"
+                                },
+                                "type": "SetVariable",
+                                "inputs": {
+                                  "name": "Guardian",
+                                "value": "@outputs(\u0027Run_a_Child_Flow_(Create_Guardian_Contact)\u0027)?[\u0027Body\u0027]?[\u0027contactid\u0027]"
+                                }
+                              }
+                            }
+                          },
+                          "expression": {
+                            "equals": [
+                            "@triggerOutputs()?[\u0027body/cp_guardianlivessameaddress\u0027]",
+                              "@true"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "ed13b9c3-048a-452a-82a8-8a0536912502"
+                          },
+                          "type": "If"
+                        },
+                        "Run_a_Child_Flow_(Update_Guardian_Additional_Fields)": {
+                          "runAfter": {
+                            "Gurdian_Address_same_with_Youth": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "5f3ce3f6-77c7-4bdb-a784-e0fc502ab883"
+                          },
+                          "type": "Workflow",
+                          "inputs": {
+                            "host": {
+                              "workflowReferenceName": "ac004de4-6061-eb11-a812-0022489c7676"
+                            },
+                            "body": {
+                              "text": "@variables(\u0027Guardian\u0027)",
+                              "text_3": "@\u0027\u0027",
+                            "text_6": "@if(empty(triggerOutputs()?[\u0027body/cp_guardianphonenumber\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_guardianphonenumber\u0027])"
+                            }
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_guardiansurename\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "5845880d-2011-404f-afad-88246de41c01"
+                    },
+                    "type": "If"
+                  },
+                  "Run_a_Child_Flow_(Get_Choice_Id_for_Alcohol_Seized)": {
+                    "runAfter": {
+                      "If_Guardian_Exists": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "25307539-b21e-45c3-a740-9c6018cc50be"
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "79674c64-ee92-eb11-b1ac-000d3adb2fd2"
+                      },
+                      "body": {
+                      "text": "@if(empty(triggerOutputs()?[\u0027body/cp_alcoholseized\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_alcoholseized\u0027])"
+                      }
+                    }
+                  },
+                  "Run_a_Child_Flow_(Get_Choice_Id_for_Tobacco_Seized)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Get_Choice_Id_for_Alcohol_Seized)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "3d1a7707-d0d0-4e1b-91f3-9634979356ae"
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "79674c64-ee92-eb11-b1ac-000d3adb2fd2"
+                      },
+                      "body": {
+                      "text": "@if(empty(triggerOutputs()?[\u0027body/cp_tobaccoseized\u0027]), \u0027\u0027, triggerOutputs()?[\u0027body/cp_tobaccoseized\u0027])"
+                      }
+                    }
+                  },
+                  "Create_a_new_Its_Your_Choice_row": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Get_Choice_Id_for_Tobacco_Seized)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "58a435b4-075a-4f95-9cc2-f42f57d4a95a"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps_1",
+                        "operationId": "CreateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_itsyourchoices",
+                      "item/cp_alcoholrelated": "@triggerOutputs()?[\u0027body/cp_alcoholrelated\u0027]",
+                      "item/cp_description": "@triggerOutputs()?[\u0027body/cp_itsyourchoicedescription\u0027]",
+                      "item/cp_Incident@odata.bind": "/cp_incidents(@{outputs(\u0027Run_a_Child_Flow_(Create_Incident)\u0027)?[\u0027Body\u0027]?[\u0027incidentid\u0027]})",
+                      "item/cp_intelsubmitted": "@triggerOutputs()?[\u0027body/cp_intelsubmitted\u0027]",
+                      "item/cp_leafletgiven": "@triggerOutputs()?[\u0027body/cp_leafletgiven\u0027]",
+                      "item/cp_stopsearchsubmitted": "@triggerOutputs()?[\u0027body/cp_stopsearchsubmitted\u0027]",
+                      "item/cp_TPA@odata.bind": "/cp_territorialpolicingareas(@{triggerOutputs()?[\u0027body/cp_tpa\u0027]})",
+                      "item/cp_YouthInvolved@odata.bind": "/contacts(@{outputs(\u0027Run_a_Child_Flow_(Create_Youth_Involved_Contact)\u0027)?[\u0027Body\u0027]?[\u0027contactid\u0027]})",
+                      "item/cp_actiontaken": "@triggerOutputs()?[\u0027body/cp_actiontaken\u0027]",
+                      "item/cp_alcoholdescriptionquantity": "@triggerOutputs()?[\u0027body/cp_alcoholdescquantity\u0027]",
+                      "item/cp_alcoholseized": "@outputs(\u0027Run_a_Child_Flow_(Get_Choice_Id_for_Alcohol_Seized)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]",
+                      "item/cp_fulldetails": "@triggerOutputs()?[\u0027body/cp_fulldetails\u0027]",
+                      "item/cp_leafletnotgivenreason": "@triggerOutputs()?[\u0027body/cp_leafletreasonnotoffered\u0027]",
+                      "item/ownerid@odata.bind": "/systemusers(@{triggerOutputs()?[\u0027body/_createdby_value\u0027]})",
+                      "item/cp_ParentGuardian@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_guardiansurename\u0027]), \u0027\u0027, concat(\u0027/contacts(\u0027, variables(\u0027Guardian\u0027), \u0027)\u0027))",
+                      "item/cp_ParentGuardianRelationshipToYouth@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_guardianrelationshiptoinvolved\u0027]), \u0027\u0027, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_guardianrelationshiptoinvolved\u0027], \u0027)\u0027))",
+                      "item/cp_PowerUtilised@odata.bind": "@if(empty(triggerOutputs()?[\u0027body/cp_powerutilised\u0027]), \u0027\u0027, concat(\u0027/cp_lookupvalues(\u0027, triggerOutputs()?[\u0027body/cp_powerutilised\u0027], \u0027)\u0027))",
+                      "item/cp_reasonyouthbirthdatenotrecorded": "@triggerOutputs()?[\u0027body/cp_involvedbirthdatenotrecorded\u0027]",
+                      "item/cp_reasonyouthonlog": "@triggerOutputs()?[\u0027body/cp_youthonlogreason\u0027]",
+                      "item/cp_searchforalcoholtobacco": "@triggerOutputs()?[\u0027body/cp_searchforalcoholtobacco\u0027]",
+                        "item/statuscode": 1,
+                      "item/cp_tobaccoseized": "@outputs(\u0027Run_a_Child_Flow_(Get_Choice_Id_for_Tobacco_Seized)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]",
+                      "item/cp_victimwishes": "@triggerOutputs()?[\u0027body/cp_victimwishes\u0027]",
+                      "item/cp_youthcollege_new": "@triggerOutputs()?[\u0027body/cp_involvedschool\u0027]",
+                      "item/cp_youthonlog": "@triggerOutputs()?[\u0027body/cp_youthonlog\u0027]"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  },
+                  "Run_a_Child_Flow_(Create_Location)": {
+                    "runAfter": {
+                      "Run_a_Child_Flow_(Create_Incident)": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "81de8a50-2471-4a2f-b6e5-792fffa0273a"
+                    },
+                    "type": "Workflow",
+                    "inputs": {
+                      "host": {
+                        "workflowReferenceName": "b11a6067-a363-eb11-a812-000d3ab40f79"
+                      },
+                      "body": {
+                      "text": "@triggerOutputs()?[\u0027body/cp_incidentlocation\u0027]",
+                      "text_4": "@outputs(\u0027Run_a_Child_Flow_(Create_Incident)\u0027)?[\u0027Body\u0027]?[\u0027incidentid\u0027]",
+                        "location": {
+                          "address": {
+                            "city": "@\u0027\u0027",
+                            "countryOrRegion": "@\u0027\u0027",
+                            "street": "@\u0027\u0027"
+                          }
+                        },
+                      "number": "@if(empty(string(triggerOutputs()?[\u0027body/cp_locationlatitude\u0027])), 0, triggerOutputs()?[\u0027body/cp_locationlatitude\u0027])",
+                      "number_1": "@if(empty(string(triggerOutputs()?[\u0027body/cp_locationlongitude\u0027])), 0, triggerOutputs()?[\u0027body/cp_locationlongitude\u0027])"
+                      }
+                    }
+                  },
+                  "If_Seized_Alcohol_Photo_Exists": {
+                    "actions": {
+                      
+                    },
+                    "runAfter": {
+                      "Create_a_new_Its_Your_Choice_row": [
+                        "Succeeded"
+                      ]
+                    },
+                    "else": {
+                      "actions": {
+                        "Get_file_or_image_content": {
+                          "runAfter": {
+                            
+                          },
+                          "metadata": {
+                            "operationMetadataId": "267b921e-a7e0-496b-b477-6d432e9ee4d6"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps_1",
+                              "operationId": "GetEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_itsyourchoicestgs",
+                            "recordId": "@triggerOutputs()?[\u0027body/cp_itsyourchoicestgid\u0027]",
+                              "fileImageFieldName": "cp_alcoholseizedphoto",
+                              "size": "full"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Upload_file_or_image_content": {
+                          "runAfter": {
+                            "Get_file_or_image_content": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "c8e3d008-faa2-404f-b870-a36b4d19c9eb"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps_1",
+                              "operationId": "UpdateEntityFileImageFieldContent",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_itsyourchoices",
+                            "recordId": "@outputs(\u0027Create_a_new_Its_Your_Choice_row\u0027)?[\u0027body/cp_itsyourchoiceid\u0027]",
+                              "fileImageFieldName": "cp_alcoholseizedphoto",
+                            "item": "@outputs(\u0027Get_file_or_image_content\u0027)?[\u0027body\u0027]",
+                              "x-ms-file-name": "Untitled"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        }
+                      }
+                    },
+                    "expression": {
+                      "equals": [
+                      "@empty(triggerOutputs()?[\u0027body/cp_alcoholseizedphotoid\u0027])",
+                        "@true"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "e7c5043f-626d-4fdb-a85f-8616337c80cb"
+                    },
+                    "type": "If"
+                  }
+                },
+                "runAfter": {
+                  
+                },
+                "metadata": {
+                  "operationMetadataId": "40b31013-9596-40c2-b671-bfe37d8b21a0"
+                },
+                "type": "Scope"
+              },
+              "Catch_(Clear_Staging_Area)": {
+                "actions": {
+                  "Update_a_row": {
+                    "runAfter": {
+                      
+                    },
+                    "metadata": {
+                      "operationMetadataId": "f0a8f32a-4f26-4b2f-8f97-449a12929be2"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps_2",
+                        "operationId": "UpdateRecord",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_itsyourchoicestgs",
+                      "recordId": "@triggerOutputs()?[\u0027body/cp_itsyourchoicestgid\u0027]",
+                        "item/cp_stagingentrystatus": 778230004,
+                        "item/statecode": 1,
+                        "item/statuscode": 2,
+                      "item/cp_submissionerror": "@string(outputs(\u0027Create_a_new_Its_Your_Choice_row\u0027)?[\u0027body/cp_itsyourchoiceid\u0027])"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  }
+                },
+                "runAfter": {
+                  "Try_(Execute_Transactions)": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "71af32a5-8e7e-4ec1-a0d4-f3ffaf879028"
+                },
+                "type": "Scope"
+              }
+            }
+          },
+          "expression": {
+            "not": {
+              "equals": [
+                "@empty(variables(\u0027Error Message\u0027))",
+                "@true"
+              ]
+            }
+          },
+          "metadata": {
+            "operationMetadataId": "8eb02ad4-fe54-4803-8d90-1476314642c3"
+          },
+          "type": "If"
+        },
+        "Initialize_Guardian_Id_variable": {
+          "runAfter": {
+            "Initialize_Error_Message_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "3a66cda8-8233-4f54-9911-ebe4362da247"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Guardian",
+                "type": "string",
+              "value": "@{null}"
+              }
+            ]
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}

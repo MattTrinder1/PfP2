@@ -1,0 +1,234 @@
+{
+  "properties": {
+    "connectionReferences": {
+      
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$authentication": {
+          "defaultValue": {
+            
+          },
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "date": {
+                  "title": "DateOfBirth",
+                  "type": "string",
+                  "format": "date",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter or select a date (YYYY-MM-DD)",
+                  "x-ms-content-hint": "DATE"
+                }
+              },
+              "required": [
+                "date"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "GetBirthYear": {
+          "runAfter": {
+            
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "BirthYear",
+                "type": "integer",
+              "value": "@int(formatDateTime(triggerBody()[\u0027date\u0027],\u0027yyyy\u0027))"
+              }
+            ]
+          }
+        },
+        "GetCurrentYear": {
+          "runAfter": {
+            "GetBirthDay": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "CurrentYear",
+                "type": "integer",
+                "value": "@int(formatDateTime(utcNow(),\u0027yyyy\u0027))"
+              }
+            ]
+          }
+        },
+        "GetYearDifference": {
+          "runAfter": {
+            "GetCurrentDay": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "YearDifference",
+                "type": "integer",
+                "value": "@sub(variables(\u0027CurrentYear\u0027),variables(\u0027BirthYear\u0027))"
+              }
+            ]
+          }
+        },
+        "GetHadBirthdayYet": {
+          "runAfter": {
+            "GetYearDifference": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "HadBirthdayYet",
+                "type": "boolean",
+                "value": "@if\r\n\t(greater(variables(\u0027CurrentMonth\u0027),variables(\u0027BirthMonth\u0027))\r\n\t\t,true\r\n\t\t,if(less(variables(\u0027CurrentMonth\u0027),variables(\u0027BirthMonth\u0027))\r\n\t\t\t,false\r\n\t\t\t,if(less(variables(\u0027CurrentDay\u0027),variables(\u0027BirthDay\u0027)),\r\n\t\t\tfalse,\r\n\t\t\ttrue)))"
+              }
+            ]
+          }
+        },
+        "GetBirthMonth": {
+          "runAfter": {
+            "GetBirthYear": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "BirthMonth",
+                "type": "integer",
+              "value": "@int(formatDateTime(triggerBody()[\u0027date\u0027], \u0027MM\u0027))"
+              }
+            ]
+          }
+        },
+        "GetBirthDay": {
+          "runAfter": {
+            "GetBirthMonth": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "BirthDay",
+                "type": "integer",
+              "value": "@int(formatDateTime(triggerBody()[\u0027date\u0027], \u0027dd\u0027))"
+              }
+            ]
+          }
+        },
+        "GetCurrentMonth": {
+          "runAfter": {
+            "GetCurrentYear": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "CurrentMonth",
+                "type": "integer",
+                "value": "@int(formatDateTime(utcNow(), \u0027MM\u0027))"
+              }
+            ]
+          }
+        },
+        "GetCurrentDay": {
+          "runAfter": {
+            "GetCurrentMonth": [
+              "Succeeded"
+            ]
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "CurrentDay",
+                "type": "integer",
+                "value": "@int(formatDateTime(utcNow(), \u0027dd\u0027))"
+              }
+            ]
+          }
+        },
+        "Condition": {
+          "actions": {
+            "Decrement_variable": {
+              "runAfter": {
+                
+              },
+              "type": "DecrementVariable",
+              "inputs": {
+                "name": "YearDifference",
+                "value": 1
+              }
+            }
+          },
+          "runAfter": {
+            "GetHadBirthdayYet": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "equals": [
+              "@variables(\u0027HadBirthdayYet\u0027)",
+              false
+            ]
+          },
+          "type": "If"
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "Condition": [
+              "Succeeded"
+            ]
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+            "age": "@{variables(\u0027YearDifference\u0027)}"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "age": {
+                  "title": "Age",
+                  "x-ms-dynamically-added": true,
+                  "type": "number"
+                }
+              }
+            }
+          }
+        }
+      },
+      "outputs": {
+        
+      }
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}
