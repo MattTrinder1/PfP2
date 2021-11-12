@@ -1,0 +1,1303 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps_2": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedcommondataserviceforapps_3a446"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_wordonlinebusiness": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedwordonlinebusiness_7acb8"
+        },
+        "api": {
+          "name": "shared_wordonlinebusiness"
+        }
+      },
+      "shared_onedriveforbusiness": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "new_sharedonedriveforbusiness_b9dab"
+        },
+        "api": {
+          "name": "shared_onedriveforbusiness"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "ed9c105b-6571-46bc-a405-bdb00375de28"
+          },
+          "type": "Request",
+          "kind": "Http",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "recordId": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "actions": {
+        "FetchedCovid": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "69763e02-34a5-4a31-bcc9-75e6e75aa743"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_2",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_covids",
+              "recordId": "@triggerBody()?[\u0027recordId\u0027]",
+              "$expand": "cp_TPA($select=cp_name),cp_documentcheck($select=cp_name),cp_offence($select=cp_offencecode,cp_offenceact,cp_offencedescription),cp_recordofpowerorissueFine($select=cp_name)\n\n"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Fetch_Owner": {
+          "runAfter": {
+            "FetchedCovid": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d4b12a73-5440-4fa0-b1e1-1db9962cf787"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_2",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "systemusers",
+              "recordId": "@outputs(\u0027FetchedCovid\u0027)?[\u0027body/_ownerid_value\u0027]"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Check_Incident_Number": {
+          "actions": {
+            "Get_Incident_No": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "1653f6c9-3615-4c41-8dcf-ee40864eeb63"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps_2",
+                  "operationId": "GetItem",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "cp_incidents",
+                  "recordId": "@outputs(\u0027FetchedCovid\u0027)?[\u0027body/_cp_incident_value\u0027]",
+                  "$expand": "cp_IncidentLocation($select=cp_name,cp_description,cp_street,cp_latitude,cp_longitude,cp_city,cp_county)"
+                },
+                "authentication": "@parameters(\u0027$authentication\u0027)"
+              }
+            }
+          },
+          "runAfter": {
+            "FetchOffender": [
+              "Succeeded"
+            ]
+          },
+          "expression": {
+            "not": {
+              "equals": [
+                "@outputs(\u0027FetchedCovid\u0027)?[\u0027body/_cp_incident_value@Microsoft.Dynamics.CRM.lookuplogicalname\u0027]",
+                "@null"
+              ]
+            }
+          },
+          "metadata": {
+            "operationMetadataId": "008bf060-d613-404f-b920-960dc443c974"
+          },
+          "type": "If"
+        },
+        "Initialize_WorkflowEnvironmentltd": {
+          "runAfter": {
+            "Initialize_variable__Age": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "9baef78a-deb7-4c1a-a944-5a6b57de374f"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "WorkflowEnvironmentId",
+                "type": "string",
+                "value": "@{workflow()[\u0027tags\u0027][\u0027environmentName\u0027]}"
+              }
+            ]
+          }
+        },
+        "List_rows_Environement": {
+          "runAfter": {
+            "Check_Contact_BirthDate": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8a2a3f29-b107-455d-8045-0fbceca70694"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_2",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_environments",
+              "$filter": "cp_workflowenvironmentid eq \u0027 @{variables(\u0027WorkflowEnvironmentId\u0027)}\u0027"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Initialize_variable_environment_Name": {
+          "runAfter": {
+            "List_rows_Environement": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "7cade905-e99c-4311-81bc-f8ea523adeac"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "EnvironmentName",
+                "type": "string",
+                "value": "@{first(body(\u0027List_rows_Environement\u0027)?[\u0027value\u0027])?[\u0027cp_name\u0027]}"
+              }
+            ]
+          }
+        },
+        "List_rows_System_Settings_Document_Library": {
+          "runAfter": {
+            "Initialize_variable-_template_name": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "617847e5-3075-4741-9783-0edf7204fae9"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_2",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_systemsettings"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Initialize_variable_EnvironmentConfigID": {
+          "runAfter": {
+            "Initialize_variable_environment_Name": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "00eddf9e-99fc-44f2-9669-a09bc634fa36"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "EnvironmentConfigId",
+                "type": "string",
+                "value": "@{first(body(\u0027List_rows_Environement\u0027)?[\u0027value\u0027])?[\u0027cp_environmentid\u0027]}"
+              }
+            ]
+          }
+        },
+        "List_rows-_System_Settings_template_name": {
+          "runAfter": {
+            "Initialize_variable_EnvironmentConfigID": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8cad8db2-b73a-487f-9a87-4b46afaac39f"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_2",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_systemsettings"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Initialize_variable-_template_name": {
+          "runAfter": {
+            "List_rows-_System_Settings_template_name": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "699a814c-1f7f-4256-9a80-cec78a03abb5"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "TemplateName",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_Document_Library": {
+          "runAfter": {
+            "List_rows_System_Settings_Document_Library": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "40b94f5e-961e-41d0-9b5b-f2103f6888ce"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "DocumentLibrary",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "Populate_a_Microsoft_Word_template": {
+          "runAfter": {
+            "If_Photos_Exist": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "01DHY4AP5PGHZE4V2TCFAJO5GZSJ6EKQMZ": "/Covid PDF/Covid Template.docx",
+            "014YZTY75MJFSXQ625GJG37UFQV2W7GLLQ": "/Templates/Covid/Covid Template.docx",
+            "operationMetadataId": "e9931296-dba1-4ef1-84ed-91cd4df2bf91"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_wordonlinebusiness",
+              "operationId": "CreateFileItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+            },
+            "parameters": {
+              "source": "sites/tisskilimited.sharepoint.com,5891e259-4b18-4e57-872a-76a7432bb0b6,0e904291-9378-4ff1-b183-6c7236bd194f",
+              "drive": "b!WeKRWBhLV06HKnanQyuwtpFCkA54k_FPsYNscja9GU-_YgpLYOi6T49L6ZbolPrM",
+              "file": "areibfsdfdas",
+              "dynamicFileSchema/127604699": "@variables(\u0027PhotoCaption1\u0027)",
+              "dynamicFileSchema/257723314": "@variables(\u0027Photo3\u0027)",
+              "dynamicFileSchema/276536389": "@outputs(\u0027FetchOffender\u0027)?[\u0027body/birthdate\u0027]",
+              "dynamicFileSchema/291556923": "@outputs(\u0027FetchOffender\u0027)?[\u0027body/address1_line1\u0027]",
+              "dynamicFileSchema/304592549": "@outputs(\u0027Fetch_Owner\u0027)?[\u0027body/fullname\u0027]",
+              "dynamicFileSchema/410128124": "@outputs(\u0027FetchOffender\u0027)?[\u0027body/cp_housename\u0027]",
+              "dynamicFileSchema/449908334": "@outputs(\u0027FetchOffender\u0027)?[\u0027body/cp_housenumber\u0027]",
+              "dynamicFileSchema/466008600": "@outputs(\u0027Fetch_Owner\u0027)?[\u0027body/cp_badgenumber\u0027]",
+              "dynamicFileSchema/703524036": "@outputs(\u0027FetchedCovid\u0027)?[\u0027body/cp_circumstances\u0027]",
+              "dynamicFileSchema/742921448": "@outputs(\u0027FetchedCovid\u0027)?[\u0027body/cp_offence/cp_offencedescription\u0027]",
+              "dynamicFileSchema/753864431": "@outputs(\u0027Get_Incident_No\u0027)?[\u0027body/cp_incidentlocation/cp_city\u0027]",
+              "dynamicFileSchema/985822218": "@variables(\u0027Photo4\u0027)",
+              "dynamicFileSchema/1036783496": "@variables(\u0027PhotoCaption2\u0027)",
+              "dynamicFileSchema/1102146827": "@formatDateTime(convertTimeZone(outputs(\u0027Get_Incident_No\u0027)?[\u0027body/cp_incidentdate\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy\u0027)",
+              "dynamicFileSchema/1126046464": "@outputs(\u0027Get_Incident_No\u0027)?[\u0027body/cp_incidentlocation/cp_name\u0027]",
+              "dynamicFileSchema/1160573482": "@formatDateTime(convertTimeZone(outputs(\u0027FetchedCovid\u0027)?[\u0027body/createdon\u0027], \u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy HH:mm:ss\u0027)",
+              "dynamicFileSchema/1162044679": "@outputs(\u0027Get_Incident_No\u0027)?[\u0027body/cp_incidentlocation/cp_street\u0027]",
+              "dynamicFileSchema/1301266794": "@outputs(\u0027Get_Incident_No\u0027)?[\u0027body/cp_incidentnumber\u0027]",
+              "dynamicFileSchema/1308359921": "@outputs(\u0027FetchOffender\u0027)?[\u0027body/address1_postalcode\u0027]",
+              "dynamicFileSchema/1327089767": "@outputs(\u0027FetchOffender\u0027)?[\u0027body/cp_contacttitle/cp_name\u0027]",
+              "dynamicFileSchema/1349527709": "@formatDateTime(convertTimeZone(outputs(\u0027FetchedCovid\u0027)?[\u0027body/cp_offencedatetime\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy HH:mm:ss\u0027)",
+              "dynamicFileSchema/1363482192": "@outputs(\u0027FetchOffender\u0027)?[\u0027body/cp_officerdefinedethnicity/cp_name\u0027]",
+              "dynamicFileSchema/1471559203": "@outputs(\u0027FetchOffender\u0027)?[\u0027body/cp_district\u0027]",
+              "dynamicFileSchema/1610850380": "@outputs(\u0027Get_Incident_No\u0027)?[\u0027body/cp_incidentlocation/cp_county\u0027]",
+              "dynamicFileSchema/1736201185": "@outputs(\u0027FetchOffender\u0027)?[\u0027body/cp_selfdefinedethnicity/cp_name\u0027]",
+              "dynamicFileSchema/1754701982": "@outputs(\u0027FetchedCovid\u0027)?[\u0027body/cp_tpa/cp_name\u0027]",
+              "dynamicFileSchema/1839271706": "@outputs(\u0027FetchOffender\u0027)?[\u0027body/address1_city\u0027]",
+              "dynamicFileSchema/1894613885": "@outputs(\u0027FetchOffender\u0027)?[\u0027body/address1_telephone1\u0027]",
+              "dynamicFileSchema/1930696208": "@{outputs(\u0027Get_Incident_No\u0027)?[\u0027body/cp_incidentlocation/cp_latitude\u0027]} @{outputs(\u0027Get_Incident_No\u0027)?[\u0027body/cp_incidentlocation/cp_longitude\u0027]}",
+              "dynamicFileSchema/2014409161": "@outputs(\u0027FetchedCovid\u0027)?[\u0027body/cp_documentid\u0027]",
+              "dynamicFileSchema/2037151868": "@outputs(\u0027FetchOffender\u0027)?[\u0027body/firstname\u0027]",
+              "dynamicFileSchema/2064434336": "@int(first(split(string(variables(\u0027Age\u0027)), \u0027.\u0027)))",
+              "dynamicFileSchema/-649131477": "@outputs(\u0027Get_Incident_No\u0027)?[\u0027body/cp_incidentsuffix\u0027]",
+              "dynamicFileSchema/-1095637561": "Cumbria",
+              "dynamicFileSchema/-1592933551": "@outputs(\u0027FetchOffender\u0027)?[\u0027body/lastname\u0027]",
+              "dynamicFileSchema/-1451312232": "@outputs(\u0027FetchOffender\u0027)?[\u0027body/cp_gender/cp_name\u0027]",
+              "dynamicFileSchema/-1755582337": "@outputs(\u0027FetchedCovid\u0027)?[\u0027body/cp_documentcheck/cp_name\u0027]",
+              "dynamicFileSchema/-1523320051": "@outputs(\u0027FetchedCovid\u0027)?[\u0027body/cp_pnccheck\u0027]",
+              "dynamicFileSchema/-593934662": "@outputs(\u0027FetchOffender\u0027)?[\u0027body/emailaddress1\u0027]",
+              "dynamicFileSchema/-925501610": "@outputs(\u0027FetchedCovid\u0027)?[\u0027body/cp_offence/cp_offencecode\u0027]",
+              "dynamicFileSchema/-337857921": "@outputs(\u0027FetchedCovid\u0027)?[\u0027body/cp_offence/cp_offenceact\u0027]",
+              "dynamicFileSchema/-1616047833": "@outputs(\u0027FetchedCovid\u0027)?[\u0027body/cp_replytocaution\u0027]",
+              "dynamicFileSchema/-2048215017": "@outputs(\u0027FetchedCovid\u0027)?[\u0027body/cp_bmv\u0027]",
+              "dynamicFileSchema/-638344857": "@outputs(\u0027FetchedCovid\u0027)?[\u0027body/cp_hasforcebeenused\u0027]",
+              "dynamicFileSchema/-2142946657": "@variables(\u0027Photo1\u0027)",
+              "dynamicFileSchema/-1585071427": "@variables(\u0027Photo2\u0027)",
+              "dynamicFileSchema/-2066876374": "@variables(\u0027PhotoCaption3\u0027)",
+              "dynamicFileSchema/-210344956": "@variables(\u0027PhotoCaption4\u0027)",
+              "dynamicFileSchema/-750423932": "@variables(\u0027PhotoCaption5\u0027)",
+              "dynamicFileSchema/-491407965": "@variables(\u0027Photo5\u0027)"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Initialize_variable": {
+          "runAfter": {
+            "Populate_a_Microsoft_Word_template": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "9f5350d5-15af-48aa-bc8a-4a22fba5e3f5"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "TempFileName",
+                "type": "string",
+                "value": "@{concat(guid(),\u0027.docx\u0027)}"
+              }
+            ]
+          }
+        },
+        "Create_file": {
+          "runAfter": {
+            "Initialize_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "79d92b82-7200-4bb8-b942-a4743fce78ff"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_onedriveforbusiness",
+              "operationId": "CreateFile",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+            },
+            "parameters": {
+              "folderPath": "/temp",
+              "name": "tempf@{variables(\u0027TempFileName\u0027)}",
+              "body": "@outputs(\u0027Populate_a_Microsoft_Word_template\u0027)?[\u0027body\u0027]"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          },
+          "runtimeConfiguration": {
+            "contentTransfer": {
+              "transferMode": "Chunked"
+            }
+          }
+        },
+        "Convert_file": {
+          "runAfter": {
+            "Create_file": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "3e72d07b-6898-4c6f-8fc6-efb294a57f07"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_onedriveforbusiness",
+              "operationId": "ConvertFile",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+            },
+            "parameters": {
+              "id": "@outputs(\u0027Create_file\u0027)?[\u0027body/Id\u0027]",
+              "type": "PDF"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Perform_a_changeset_request": {
+          "actions": {
+            "Add_a_new_row": {
+              "metadata": {
+                "operationMetadataId": "07b7c61e-7e12-421c-827b-c957de8876e4"
+              },
+              "type": "OpenApiConnection",
+              "inputs": {
+                "host": {
+                  "connectionName": "shared_commondataserviceforapps_2",
+                  "operationId": "CreateRecord",
+                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                },
+                "parameters": {
+                  "entityName": "annotations",
+                  "item/subject": "Generated Note @{convertTimeZone(utcNow(),\u0027UTC\u0027, \u0027GMT Standard Time\u0027, \u0027dd/MM/yyyy HH:mm:ss\u0027)}",
+                  "item/notetext": "Generated Note @{formatDateTime(utcNow(),\u0027dd/MM/yyyy\u0027)}",
+                  "item/isdocument": true,
+                  "item/documentbody": "@body(\u0027Convert_file\u0027)?[\u0027$content\u0027]",
+                  "item/filename": "Generated Note @{formatDateTime(utcNow(),\u0027dd/MM/yyyy\u0027)}",
+                  "item/mimetype": "@body(\u0027Convert_file\u0027)?[\u0027$content-type\u0027]",
+                  "item/ownerid@odata.bind": "/systemusers(@{outputs(\u0027FetchedCovid\u0027)?[\u0027body/_ownerid_value\u0027]})",
+                  "item/objectid_cp_covid@odata.bind": "/cp_covids(@{outputs(\u0027FetchedCovid\u0027)?[\u0027body/cp_covidid\u0027]})"
+                },
+                "authentication": "@parameters(\u0027$authentication\u0027)"
+              }
+            }
+          },
+          "runAfter": {
+            "Convert_file": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "32c32e3e-8c79-4f85-991c-0ef9759832ac"
+          },
+          "type": "Changeset",
+          "kind": "ODataOpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_2",
+              "operationId": "ExecuteChangeset",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            }
+          }
+        },
+        "Initialize_variable__Age": {
+          "runAfter": {
+            "Check_Incident_Number": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "701bb042-6c70-40a9-8207-3382582f570a"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Age",
+                "type": "float",
+                "value": 0
+              }
+            ]
+          }
+        },
+        "Check_Contact_BirthDate": {
+          "actions": {},
+          "runAfter": {
+            "Initialize_WorkflowEnvironmentltd": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Set_Age_variable": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "634bba19-2638-4585-9d27-edd78b7d856a"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "Age",
+                  "value": "@div(div(sub(ticks(utcNow(\u0027yyyy-MM-dd\u0027)),ticks(outputs(\u0027FetchOffender\u0027)?[\u0027body/birthdate\u0027])),864000000000),365.25)"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@empty(outputs(\u0027FetchOffender\u0027)?[\u0027body/birthdate\u0027])",
+              "@true"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "242cf89c-0f80-43ce-9b15-f4ac4ad5e2f3"
+          },
+          "type": "If"
+        },
+        "FetchOffender": {
+          "runAfter": {
+            "Fetch_Owner": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "1cff8168-a4e6-4fbe-a274-eab8480eda25"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_2",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "contacts",
+              "recordId": "@outputs(\u0027FetchedCovid\u0027)?[\u0027body/_cp_contact_value\u0027]",
+              "$expand": "cp_ContactTitle($select=cp_name),cp_Gender($select=cp_name),cp_OfficerDefinedEthnicity($select=cp_name),cp_SelfDefinedEthnicity($select=cp_name)"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "List_Photos": {
+          "runAfter": {
+            "Initialize_variable_Document_Library": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "e7fc1e39-9ab9-4ca0-95bd-47e1e7dc7049"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps_2",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_photos",
+              "$filter": "(_cp_covid_value eq @{outputs(\u0027FetchedCovid\u0027)?[\u0027body/cp_covidid\u0027]})\n"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "If_Photos_Exist": {
+          "actions": {},
+          "runAfter": {
+            "Initialize_Photo5_Object": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Apply_to_each_Photo": {
+                "foreach": "@outputs(\u0027List_Photos\u0027)?[\u0027body/value\u0027]",
+                "actions": {
+                  "DownloadPhoto": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "95296906-dca6-42b0-8ee2-3ea19caf7c39"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps_2",
+                        "operationId": "GetEntityFileImageFieldContent",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_photos",
+                        "recordId": "@items(\u0027Apply_to_each_Photo\u0027)?[\u0027cp_photoid\u0027]",
+                        "fileImageFieldName": "cp_image"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  },
+                  "Compose_Photo": {
+                    "runAfter": {
+                      "DownloadPhoto": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "98644084-91b7-41ff-bd4e-813d7b0597f0"
+                    },
+                    "type": "Compose",
+                    "inputs": {
+                      "$content-type": "image/jpeg",
+                      "$content": "@base64(outputs(\u0027DownloadPhoto\u0027)?[\u0027body\u0027])"
+                    }
+                  },
+                  "Append_to_array_variable": {
+                    "runAfter": {
+                      "Compose_Photo": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "63dd1df0-5848-453f-8804-264226a496a1"
+                    },
+                    "type": "AppendToArrayVariable",
+                    "inputs": {
+                      "name": "Photos",
+                      "value": {
+                        "PhotoCaption": "@items(\u0027Apply_to_each_Photo\u0027)?[\u0027cp_phototitle\u0027]",
+                        "Photo": "@outputs(\u0027Compose_Photo\u0027)"
+                      }
+                    }
+                  }
+                },
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "be042005-9178-4b1b-9148-4400103c7b3a"
+                },
+                "type": "Foreach"
+              },
+              "Condition_Photo_1": {
+                "actions": {},
+                "runAfter": {
+                  "Apply_to_each_Photo": [
+                    "Succeeded"
+                  ]
+                },
+                "else": {
+                  "actions": {
+                    "Set_variable": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "1059f02d-400c-4d97-b49b-ccb691e97c3e"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "PhotoCaption1",
+                        "value": "@{body(\u0027List_Photos\u0027)?[\u0027value\u0027]?[0]?.cp_phototitle}"
+                      }
+                    },
+                    "Download_Photo_1": {
+                      "runAfter": {
+                        "Set_variable": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "73e96d36-9649-4eba-81ef-1306b0ba8fac"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps_2",
+                          "operationId": "GetEntityFileImageFieldContent",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_photos",
+                          "recordId": "@body(\u0027List_Photos\u0027)?[\u0027value\u0027]?[0]?.cp_photoid",
+                          "fileImageFieldName": "cp_image"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    },
+                    "Compose": {
+                      "runAfter": {
+                        "Download_Photo_1": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "2ec4eee3-b9f9-434b-8316-8f4fa84ab9ec"
+                      },
+                      "type": "Compose",
+                      "inputs": {
+                        "$content-type": "image/jpeg",
+                        "$content": "@{base64(outputs(\u0027Download_Photo_1\u0027)?[\u0027body\u0027])}"
+                      }
+                    },
+                    "Set_variable_2": {
+                      "runAfter": {
+                        "Compose": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "1bc7e954-6e4a-4e32-bbee-b9a1b698441e"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "Photo1",
+                        "value": "@outputs(\u0027Compose\u0027)"
+                      }
+                    }
+                  }
+                },
+                "expression": {
+                  "equals": [
+                    "@empty(body(\u0027List_Photos\u0027)?[\u0027value\u0027]?[0]?.cp_imageid)",
+                    "@true"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "1f6bf6ec-36db-4e0f-b85a-dbd2dde5518c"
+                },
+                "type": "If"
+              },
+              "Condition_Photo_2": {
+                "actions": {},
+                "runAfter": {
+                  "Condition_Photo_1": [
+                    "Succeeded"
+                  ]
+                },
+                "else": {
+                  "actions": {
+                    "Set_variable_3": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "d314ac43-f5b2-4ed6-b33a-cad41c5bff60"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "PhotoCaption2",
+                        "value": "@{body(\u0027List_Photos\u0027)?[\u0027value\u0027]?[1]?.cp_phototitle}"
+                      }
+                    },
+                    "Download_Photo": {
+                      "runAfter": {
+                        "Set_variable_3": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "c24ba6d1-4fb2-4090-b7ac-acc2992f12d9"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps_2",
+                          "operationId": "GetEntityFileImageFieldContent",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_photos",
+                          "recordId": "@body(\u0027List_Photos\u0027)?[\u0027value\u0027]?[1]?.cp_photoid",
+                          "fileImageFieldName": "cp_image"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    },
+                    "Compose_2": {
+                      "runAfter": {
+                        "Download_Photo": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "fe98e1af-e07a-4a94-aba5-45fdca01bee2"
+                      },
+                      "type": "Compose",
+                      "inputs": {
+                        "$content-type": "image/jpeg",
+                        "$content": "@{base64(outputs(\u0027Download_Photo\u0027)?[\u0027body\u0027])}"
+                      }
+                    },
+                    "Set_variable_4": {
+                      "runAfter": {
+                        "Compose_2": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "5a8be53d-d233-4813-ac65-bd1d6368681b"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "Photo2",
+                        "value": "@outputs(\u0027Compose_2\u0027)"
+                      }
+                    }
+                  }
+                },
+                "expression": {
+                  "equals": [
+                    "@empty(body(\u0027List_Photos\u0027)?[\u0027value\u0027]?[1]?.cp_imageid)",
+                    "@true"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "6485e2da-ef3e-44c0-96b8-9ecd656f1123"
+                },
+                "type": "If"
+              },
+              "Condition_Photo_3": {
+                "actions": {},
+                "runAfter": {
+                  "Condition_Photo_2": [
+                    "Succeeded"
+                  ]
+                },
+                "else": {
+                  "actions": {
+                    "Set_variable_5": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "486701bf-e9b7-4766-a374-21c31640f49a"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "PhotoCaption3",
+                        "value": "@{body(\u0027List_Photos\u0027)?[\u0027value\u0027]?[2]?.cp_phototitle}"
+                      }
+                    },
+                    "Download_Photo_2": {
+                      "runAfter": {
+                        "Set_variable_5": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "893d00fe-0ae6-40a1-9f15-7485ef82f346"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps_2",
+                          "operationId": "GetEntityFileImageFieldContent",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_photos",
+                          "recordId": "@body(\u0027List_Photos\u0027)?[\u0027value\u0027]?[2]?.cp_photoid",
+                          "fileImageFieldName": "cp_image"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    },
+                    "Compose_3": {
+                      "runAfter": {
+                        "Download_Photo_2": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "4147ce31-ae27-4220-b988-8b54b5041050"
+                      },
+                      "type": "Compose",
+                      "inputs": {
+                        "$content-type": "image/jpeg",
+                        "$content": "@{base64(outputs(\u0027Download_Photo_2\u0027)?[\u0027body\u0027])}"
+                      }
+                    },
+                    "Set_variable_6": {
+                      "runAfter": {
+                        "Compose_3": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "1aa6ea3f-80f8-4a12-a42b-566d24f24cd6"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "Photo3",
+                        "value": "@outputs(\u0027Compose_3\u0027)"
+                      }
+                    }
+                  }
+                },
+                "expression": {
+                  "equals": [
+                    "@empty(body(\u0027List_Photos\u0027)?[\u0027value\u0027]?[2]?.cp_imageid)",
+                    "@true"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "1a965766-14a6-4012-bc41-d03b003fb840"
+                },
+                "type": "If"
+              },
+              "Condition_Photo_4": {
+                "actions": {},
+                "runAfter": {
+                  "Condition_Photo_3": [
+                    "Succeeded"
+                  ]
+                },
+                "else": {
+                  "actions": {
+                    "Set_variable_7": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "b475fc62-c0b0-4198-a7ee-b8b0330a9315"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "PhotoCaption4",
+                        "value": "@{body(\u0027List_Photos\u0027)?[\u0027value\u0027]?[3]?.cp_phototitle}"
+                      }
+                    },
+                    "Download_Photo_3": {
+                      "runAfter": {
+                        "Set_variable_7": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "61dc75f9-d5d5-4b7b-8281-ca0747b80cc7"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps_2",
+                          "operationId": "GetEntityFileImageFieldContent",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_photos",
+                          "recordId": "@body(\u0027List_Photos\u0027)?[\u0027value\u0027]?[3]?.cp_photoid",
+                          "fileImageFieldName": "cp_image"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    },
+                    "Compose_4": {
+                      "runAfter": {
+                        "Download_Photo_3": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "0d608e5e-8a59-4c1a-bb97-f742c4434a90"
+                      },
+                      "type": "Compose",
+                      "inputs": {
+                        "$content-type": "image/jpeg",
+                        "$content": "@{base64(outputs(\u0027Download_Photo_3\u0027)?[\u0027body\u0027])}"
+                      }
+                    },
+                    "Set_variable_8": {
+                      "runAfter": {
+                        "Compose_4": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "7d56056d-63d5-4839-8651-bdcddcf76a57"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "Photo4",
+                        "value": "@outputs(\u0027Compose_4\u0027)"
+                      }
+                    }
+                  }
+                },
+                "expression": {
+                  "equals": [
+                    "@empty(body(\u0027List_Photos\u0027)?[\u0027value\u0027]?[3]?.cp_imageid)",
+                    "@true"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "35d8ece7-72ba-40f6-b78c-d35181bcba2f"
+                },
+                "type": "If"
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@empty(outputs(\u0027List_Photos\u0027)?[\u0027body/value\u0027])",
+              "@true"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "00263a87-d01c-437e-ba80-0da37c98bf6b"
+          },
+          "type": "If"
+        },
+        "Initialize_Photos_array": {
+          "runAfter": {
+            "List_Photos": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d4eb16b5-d457-4013-a96c-53ae4887b23f"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Photos",
+                "type": "array",
+                "value": "@null"
+              }
+            ]
+          }
+        },
+        "Initialize_Photo1_Variable": {
+          "runAfter": {
+            "Initialize_Photos_array": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "72e623f9-266f-4ff0-9a9a-2d2b11f29dc7"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "PhotoCaption1",
+                "type": "string",
+                "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Initialize_Photo2_Variable": {
+          "runAfter": {
+            "Initialize_Photo1_Variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d7bfdddd-4f64-4cb0-8615-e080940fa38c"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "PhotoCaption2",
+                "type": "string",
+                "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Initialize_Photo3_Variable": {
+          "runAfter": {
+            "Initialize_Photo2_Variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "f23c5c97-0a2b-45a8-9283-c5a3e6f570f2"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "PhotoCaption3",
+                "type": "string",
+                "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Initialize_Photo4_Variable": {
+          "runAfter": {
+            "Initialize_Photo3_Variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6cced509-8626-415a-85b5-91c63ffdc677"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "PhotoCaption4",
+                "type": "string",
+                "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Initialize_Photo5_Variable": {
+          "runAfter": {
+            "Initialize_Photo4_Variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "1c437d28-518e-4e69-9fe3-191857827bd7"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "PhotoCaption5",
+                "type": "string",
+                "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Initialize_Photo1_Object": {
+          "runAfter": {
+            "Initialize_Photo5_Variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "4d820b65-de70-4552-b7ea-8d58bf5ff61c"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Photo1",
+                "type": "object",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            ]
+          }
+        },
+        "Initialize_Photo2_Object": {
+          "runAfter": {
+            "Initialize_Photo1_Object": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2c7e731f-3525-4d1c-ad97-e0ec0d3318ec"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Photo2",
+                "type": "object",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            ]
+          }
+        },
+        "Initialize_Photo3_Object": {
+          "runAfter": {
+            "Initialize_Photo2_Object": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a6967b87-4436-4ebc-aa8f-4649528fcd10"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Photo3",
+                "type": "object",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            ]
+          }
+        },
+        "Initialize_Photo4_Object": {
+          "runAfter": {
+            "Initialize_Photo3_Object": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "4e25b3aa-924e-4c70-837b-a3eb470883f3"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Photo4",
+                "type": "object",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            ]
+          }
+        },
+        "Initialize_Photo5_Object": {
+          "runAfter": {
+            "Initialize_Photo4_Object": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "c334faae-8fbb-49e1-990a-b2a2e4c3d29b"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Photo5",
+                "type": "object",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            ]
+          }
+        },
+        "Delete_file": {
+          "runAfter": {
+            "Perform_a_changeset_request": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "053d6ca6-a10f-4253-a5a1-8717e80786d4"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_onedriveforbusiness",
+              "operationId": "DeleteFile",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+            },
+            "parameters": {
+              "id": "@outputs(\u0027Create_file\u0027)?[\u0027body/Id\u0027]"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        }
+      },
+      "outputs": {}
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}
