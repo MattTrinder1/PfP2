@@ -38,14 +38,8 @@ steps:
     condition: eq(variables['FolderExists'], True)
 
 
- # - task: CopyFiles@2
- #   displayName: Copy to Live folder
- #   inputs:
- #     sourceFolder: '$(Build.BinariesDirectory)'
- #     contents: '$(GeneratedSolutionFileName)' 
- #     targetFolder: '$(Build.BinariesDirectory)\Live'
- #     overWrite: true 
- #     flattenFolders: true
+ 
+#if this is not a base level solution, copy it to the environemnt specific folder, and then delete the base version
 
   - task: CopyFiles@2
     inputs:
@@ -57,15 +51,12 @@ steps:
       flattenFolders: true
     condition: and(eq(variables['FolderExists'], True),ne('${{parameters.customerName}}', 'Base'))
 
- # - task: CopyFiles@2
- #   displayName: Copy to UAT folder
- #   inputs:
- #     sourceFolder: '$(Build.BinariesDirectory)'
- #     contents: '$(GeneratedSolutionFileName)' 
- #     targetFolder: '$(Build.BinariesDirectory)\UAT'
- #     overWrite: true 
- #     flattenFolders: true
+  - task: DeleteFiles@1
+    inputs:
+      Contents: '$(GeneratedSolutionFileName)' 
+    condition: and(eq(variables['FolderExists'], True),ne('${{parameters.customerName}}', 'Base'))
 
+ 
 
   #- task: Dynamics Solution Checker@0
   #  displayName: 'Check ${{parameters.solutionName}} Solution'
