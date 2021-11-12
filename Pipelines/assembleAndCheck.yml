@@ -55,7 +55,7 @@ steps:
       targetFolder: '$(Build.BinariesDirectory)\${{parameters.customerName}}\${{parameters.environmentName}}'
       overWrite: true 
       flattenFolders: true
-    condition: and(eq(variables['FolderExists'], True),ne(${{parameters.customerName}}, 'Base'))
+    condition: and(eq(variables['FolderExists'], True),ne('${{parameters.customerName}}', 'Base'))
 
  # - task: CopyFiles@2
  #   displayName: Copy to UAT folder
