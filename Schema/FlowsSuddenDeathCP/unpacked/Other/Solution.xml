@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ImportExportXml version="9.2.21103.129" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ImportExportXml version="9.2.21104.132" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SolutionManifest>
     <UniqueName>CPFlowsSuddenDeath</UniqueName>
     <LocalizedNames>
       <LocalizedName description="134 - Flows - Sudden Death" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.0.0.60</Version>
+    <Version>1.0.0.61</Version>
     <Managed>1</Managed>
     <Publisher>
       <UniqueName>cumbriapolicepublisher</UniqueName>
@@ -89,7 +89,6 @@
       <RootComponent type="29" id="{79674c64-ee92-eb11-b1ac-000d3adb2fd2}" behavior="0" />
       <RootComponent type="29" id="{80542e71-ac88-eb11-a812-000d3ab52ab6}" behavior="0" />
       <RootComponent type="29" id="{856a01f6-b160-eb11-a812-0022489c7676}" behavior="0" />
-      <RootComponent type="29" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" behavior="0" />
       <RootComponent type="29" id="{ac004de4-6061-eb11-a812-0022489c7676}" behavior="0" />
       <RootComponent type="29" id="{aeb3867f-af60-eb11-a812-0022489c7676}" behavior="0" />
       <RootComponent type="29" id="{b11a6067-a363-eb11-a812-000d3ab40f79}" behavior="0" />
@@ -97,10 +96,6 @@
       <RootComponent type="29" id="{ccb264c3-3762-eb11-a812-0022489c79d7}" behavior="0" />
     </RootComponents>
     <MissingDependencies>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_coroner" displayName="Coroner" solution="Active" />
-        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
-      </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_coroner" displayName="Coroner" solution="Active" />
         <Dependent type="29" displayName="Coroner Email PDF Process" id="{c2e3044e-f5b3-eb11-8236-000d3ad7eb5d}" />
@@ -115,43 +110,19 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_incident" displayName="Incident" solution="Active" />
-        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_incident" displayName="Incident" solution="Active" />
         <Dependent type="29" displayName="Create New Location" id="{b11a6067-a363-eb11-a812-000d3ab40f79}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_investigationstatus" displayName="Investigation Status" solution="Active" />
-        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_location" displayName="Location" solution="Active" />
         <Dependent type="29" displayName="Create New Location" id="{b11a6067-a363-eb11-a812-000d3ab40f79}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="1" schemaName="cp_lookupvalue" displayName="Lookup Value" solution="Active" />
-        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
-      </MissingDependency>
-      <MissingDependency>
         <Required type="1" schemaName="cp_medicalhistory" displayName="Medical History" solution="Active" />
         <Dependent type="29" displayName="Process Sudden Death Contact Roles" id="{77be556d-eb63-eb11-a812-000d3ab403cd}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="1" schemaName="cp_medicalhistory" displayName="Medical History" solution="Active" />
-        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_photo" displayName="Photo" solution="Active" />
-        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
-      </MissingDependency>
-      <MissingDependency>
         <Required type="1" schemaName="cp_photo" displayName="Photo" solution="Active" />
         <Dependent type="29" displayName="Sudden Death Staging Area Process" id="{aeb3867f-af60-eb11-a812-0022489c7676}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_pncbureau" displayName="PNC bureau" solution="Active" />
-        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_suddendeath" displayName="Sudden Death" solution="Active" />
@@ -175,10 +146,6 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_suddendeath" displayName="Sudden Death" solution="Active" />
-        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_suddendeath" displayName="Sudden Death" solution="Active" />
         <Dependent type="29" displayName="Sudden Death Staging Area Process" id="{aeb3867f-af60-eb11-a812-0022489c7676}" />
       </MissingDependency>
       <MissingDependency>
@@ -190,16 +157,8 @@
         <Dependent type="29" displayName="Process Sudden Death Contact Roles" id="{77be556d-eb63-eb11-a812-000d3ab403cd}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="1" schemaName="cp_suddendeathinvolvedcontact" displayName="Sudden Death Other Involved Contact" solution="Active" />
-        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
-      </MissingDependency>
-      <MissingDependency>
         <Required type="1" schemaName="cp_suddendeathinvolvedcontactstg" displayName="Sudden Death Involved Contact STG" solution="Active" />
         <Dependent type="29" displayName="Process Sudden Death Contact Roles" id="{77be556d-eb63-eb11-a812-000d3ab403cd}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_suddendeathproperty" displayName="Sudden Death Property" solution="Active" />
-        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_suddendeathproperty" displayName="Sudden Death Property" solution="Active" />
@@ -234,16 +193,20 @@
         <Dependent type="29" displayName="ReStart Sudden Death Approval Process after resubmission,Send to Queue" id="{80542e71-ac88-eb11-a812-000d3ab52ab6}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="1" schemaName="cp_territorialpolicingarea" displayName="Territorial Policing Area" solution="Active" />
-        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
-      </MissingDependency>
-      <MissingDependency>
         <Required type="2" schemaName="cp_approvalstatus" displayName="Approval Status" parentSchemaName="cp_suddendeath" parentDisplayName="Sudden Death" solution="Active" />
         <Dependent type="29" displayName="Coroner Email PDF Process" id="{c2e3044e-f5b3-eb11-8236-000d3ad7eb5d}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="2" schemaName="cp_stagingentrystatus" displayName="Staging Entry Status" parentSchemaName="cp_suddendeathstg" parentDisplayName="Sudden Death STG" solution="Active" />
         <Dependent type="29" displayName="Sudden Death Staging Area Process" id="{aeb3867f-af60-eb11-a812-0022489c7676}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="29" displayName="Generate Sudden Death PDF" solution="Active" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
+        <Dependent type="29" displayName="Generate SD PDF And Attach" id="{340e88f0-f0b3-eb11-8236-000d3ad7ebe5}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="29" displayName="Generate Sudden Death PDF" solution="Active" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
+        <Dependent type="29" displayName="Coroner Email PDF Process" id="{c2e3044e-f5b3-eb11-8236-000d3ad7eb5d}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="connectionreference" displayName="cp_sharedcommondataserviceforapps_37dad" solution="Active" id.connectionreferencelogicalname="cp_sharedcommondataserviceforapps_37dad" />
@@ -299,15 +262,7 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="connectionreference" displayName="cp_sharedonedriveforbusiness_fc480" solution="Active" id.connectionreferencelogicalname="cp_sharedonedriveforbusiness_fc480" />
-        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="connectionreference" displayName="cp_sharedonedriveforbusiness_fc480" solution="Active" id.connectionreferencelogicalname="cp_sharedonedriveforbusiness_fc480" />
         <Dependent type="29" displayName="Coroner Email PDF Process" id="{c2e3044e-f5b3-eb11-8236-000d3ad7eb5d}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="connectionreference" displayName="cp_sharedwordonlinebusiness_7a2a4" solution="Active" id.connectionreferencelogicalname="cp_sharedwordonlinebusiness_7a2a4" />
-        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="connectionreference" displayName="new_sharedcommondataserviceforapps_3a446" solution="Active" id.connectionreferencelogicalname="new_sharedcommondataserviceforapps_3a446" />

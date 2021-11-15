@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ImportExportXml version="9.2.21103.129" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ImportExportXml version="9.2.21104.132" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SolutionManifest>
     <UniqueName>CPFlowsItsYourChoice</UniqueName>
     <LocalizedNames>
       <LocalizedName description="132 - Flows - It's Your Choice" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.0.0.21</Version>
+    <Version>1.0.0.22</Version>
     <Managed>1</Managed>
     <Publisher>
       <UniqueName>cumbriapolicepublisher</UniqueName>
@@ -85,15 +85,10 @@
       <RootComponent type="29" id="{7f7fb88f-3570-eb11-a812-000d3ab02051}" behavior="0" />
       <RootComponent type="29" id="{ac004de4-6061-eb11-a812-0022489c7676}" behavior="0" />
       <RootComponent type="29" id="{b11a6067-a363-eb11-a812-000d3ab40f79}" behavior="0" />
-      <RootComponent type="29" id="{cc1fa276-dc88-eb11-a812-000d3ab52ab6}" behavior="0" />
       <RootComponent type="29" id="{ccb264c3-3762-eb11-a812-0022489c79d7}" behavior="0" />
       <RootComponent type="29" id="{f228c389-2e70-eb11-a812-000d3ab01cf7}" behavior="0" />
     </RootComponents>
     <MissingDependencies>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_environment" displayName="Environment" solution="Active" />
-        <Dependent type="29" displayName="IYC Generate 1st Warning Letter - HTTP Trigger" id="{cc1fa276-dc88-eb11-a812-000d3ab52ab6}" />
-      </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_incident" displayName="Incident" solution="Active" />
         <Dependent type="29" displayName="Check if Incident exists AND-OR Create" id="{71ab4fd1-7959-eb11-a812-000d3a654f72}" />
@@ -103,24 +98,8 @@
         <Dependent type="29" displayName="Create New Location" id="{b11a6067-a363-eb11-a812-000d3ab40f79}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="1" schemaName="cp_incident" displayName="Incident" solution="Active" />
-        <Dependent type="29" displayName="IYC Generate 1st Warning Letter - HTTP Trigger" id="{cc1fa276-dc88-eb11-a812-000d3ab52ab6}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_itsyourchoice" displayName="Its Your Choice" solution="Active" />
-        <Dependent type="29" displayName="IYC Generate 1st Warning Letter - HTTP Trigger" id="{cc1fa276-dc88-eb11-a812-000d3ab52ab6}" />
-      </MissingDependency>
-      <MissingDependency>
         <Required type="1" schemaName="cp_itsyourchoice" displayName="Its Your Choice" solution="Active" />
         <Dependent type="29" displayName="IYC Staging Area Process" id="{f228c389-2e70-eb11-a812-000d3ab01cf7}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_itsyourchoiceletterhistory" displayName="Its Your Choice Letter History" solution="Active" />
-        <Dependent type="29" displayName="IYC Generate 1st Warning Letter - HTTP Trigger" id="{cc1fa276-dc88-eb11-a812-000d3ab52ab6}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_itsyourchoicesetup" displayName="Its Your Choice Setup" solution="Active" />
-        <Dependent type="29" displayName="IYC Generate 1st Warning Letter - HTTP Trigger" id="{cc1fa276-dc88-eb11-a812-000d3ab52ab6}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_itsyourchoicestg" displayName="Its Your Choice STG" solution="Active" />
@@ -133,14 +112,6 @@
       <MissingDependency>
         <Required type="1" schemaName="cp_location" displayName="Location" solution="Active" />
         <Dependent type="29" displayName="Create New Location" id="{b11a6067-a363-eb11-a812-000d3ab40f79}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_location" displayName="Location" solution="Active" />
-        <Dependent type="29" displayName="IYC Generate 1st Warning Letter - HTTP Trigger" id="{cc1fa276-dc88-eb11-a812-000d3ab52ab6}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="connectionreference" displayName="cp_sharedcommondataserviceforapps_36190" solution="Active" id.connectionreferencelogicalname="cp_sharedcommondataserviceforapps_36190" />
-        <Dependent type="29" displayName="IYC Generate 1st Warning Letter - HTTP Trigger" id="{cc1fa276-dc88-eb11-a812-000d3ab52ab6}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="connectionreference" displayName="cp_sharedcommondataserviceforapps_37dad" solution="Active" id.connectionreferencelogicalname="cp_sharedcommondataserviceforapps_37dad" />
@@ -173,10 +144,6 @@
       <MissingDependency>
         <Required type="connectionreference" displayName="cp_sharedcommondataserviceforapps_ef737" solution="Active" id.connectionreferencelogicalname="cp_sharedcommondataserviceforapps_ef737" />
         <Dependent type="29" displayName="Create New Location" id="{b11a6067-a363-eb11-a812-000d3ab40f79}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="connectionreference" displayName="cp_sharedwordonlinebusiness_7a2a4" solution="Active" id.connectionreferencelogicalname="cp_sharedwordonlinebusiness_7a2a4" />
-        <Dependent type="29" displayName="IYC Generate 1st Warning Letter - HTTP Trigger" id="{cc1fa276-dc88-eb11-a812-000d3ab52ab6}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="connectionreference" displayName="new_sharedcommondataserviceforapps_3a446" solution="Active" id.connectionreferencelogicalname="new_sharedcommondataserviceforapps_3a446" />

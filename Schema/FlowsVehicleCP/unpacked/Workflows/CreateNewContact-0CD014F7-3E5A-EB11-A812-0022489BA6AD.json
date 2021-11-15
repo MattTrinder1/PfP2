@@ -30,6 +30,9 @@
       },
       "triggers": {
         "manual": {
+          "metadata": {
+            "operationMetadataId": "11ed94ae-c578-4318-9d6f-475b2f18e246"
+          },
           "type": "Request",
           "kind": "Button",
           "inputs": {
@@ -217,6 +220,9 @@
               "Succeeded"
             ]
           },
+          "metadata": {
+            "operationMetadataId": "1e67715d-95b0-466a-baf6-d13895beee05"
+          },
           "type": "OpenApiConnection",
           "inputs": {
             "host": {
@@ -249,10 +255,7 @@
             "item/cp_perceivedphysicalimpairment": "@outputs(\u0027Run_a_Child_Flow_(Get_Choice_Id_for_Perceived_Physical_Impairement)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]",
             "item/cp_pncno": "@triggerBody()?[\u0027text_11\u0027]"
             },
-            "authentication": {
-              "type": "Raw",
-            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
-            }
+            "authentication": "@parameters(\u0027$authentication\u0027)"
           }
         },
         "Respond_to_a_PowerApp_or_flow": {
@@ -260,6 +263,9 @@
             "Create_a_new_Contact_record": [
               "Succeeded"
             ]
+          },
+          "metadata": {
+            "operationMetadataId": "4c3646c5-1d7c-4219-8b4a-a56e539d822c"
           },
           "type": "Response",
           "kind": "PowerApp",
@@ -286,6 +292,9 @@
               "Succeeded"
             ]
           },
+          "metadata": {
+            "operationMetadataId": "327b7405-bbf5-402c-b599-f24489d5b5f7"
+          },
           "type": "Workflow",
           "inputs": {
             "host": {
@@ -302,6 +311,9 @@
               "Succeeded"
             ]
           },
+          "metadata": {
+            "operationMetadataId": "127c5b49-1e97-4e5b-a658-dd784a368d38"
+          },
           "type": "Workflow",
           "inputs": {
             "host": {
@@ -315,6 +327,9 @@
         "Compose_BirthDate": {
           "runAfter": {
             
+          },
+          "metadata": {
+            "operationMetadataId": "a2ef9031-9bf8-47e1-80bf-0b9d370a822b"
           },
           "type": "Compose",
         "inputs": "@if(empty(triggerBody()?[\u0027text_9\u0027]),null,triggerBody()?[\u0027text_9\u0027])"

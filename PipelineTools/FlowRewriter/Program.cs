@@ -18,7 +18,9 @@ namespace FlowRewriter
 
             json = File.ReadAllText("../../../../../Schema/FlowsPDFCP/unpacked/Workflows/GenerateCovidPDFs-67CA08CD-5D8D-EB11-B1AC-000D3ADB469C.json");
             j = JObject.Parse(json);
-            j["properties"]["definition"]["actions"]["Populate_a_Microsoft_Word_template"]["inputs"]["parameters"]["file"] = "wibble";
+            j["properties"]["definition"]["actions"]["Populate_a_Microsoft_Word_template"]["inputs"]["parameters"]["source"] = "me";
+            j["properties"]["definition"]["actions"]["Populate_a_Microsoft_Word_template"]["inputs"]["parameters"]["drive"] = "b!k32VxZOE5U-HwWt6Ey23yGSuL7xVALpHlDcSd7uGMIo67u-9iOaWRrln1WJDTm3I";
+            j["properties"]["definition"]["actions"]["Populate_a_Microsoft_Word_template"]["inputs"]["parameters"]["file"] = "01JPJUSCL4ROCWG4HJZ5BZCEGFUO2EHHKI";
             Save("../../../RewrittenFlows/Durham/SystemTest/Schema/FlowsPDFCP/unpacked/Workflows/GenerateCovidPDFs-67CA08CD-5D8D-EB11-B1AC-000D3ADB469C.json", j.ToString().Replace("'", @"\u0027"));
 
             json = File.ReadAllText("../../../../../Schema/FlowsPDFCP/unpacked/Workflows/GenerateCovidPDFs-67CA08CD-5D8D-EB11-B1AC-000D3ADB469C.json");
@@ -48,12 +50,27 @@ namespace FlowRewriter
 
 
             Console.WriteLine("Rewriting UoF PDF FLow");
-            json = File.ReadAllText("../../../../../Schema/FlowsUseOfForceCP/unpacked/Workflows/GenerateUoFPDF-BDAE81A8-29EE-EB11-BACB-0022489C5E28.json");
+            json = File.ReadAllText("../../../../../Schema/FlowsPDFCP/unpacked/Workflows/GenerateUoFPDF-BDAE81A8-29EE-EB11-BACB-0022489C5E28.json");
             j = JObject.Parse(json);
             j["properties"]["definition"]["actions"]["Populate_a_Microsoft_Word_template"]["inputs"]["parameters"]["source"] = "me";
             j["properties"]["definition"]["actions"]["Populate_a_Microsoft_Word_template"]["inputs"]["parameters"]["drive"] = "b!k32VxZOE5U-HwWt6Ey23yGSuL7xVALpHlDcSd7uGMIo67u-9iOaWRrln1WJDTm3I";
             j["properties"]["definition"]["actions"]["Populate_a_Microsoft_Word_template"]["inputs"]["parameters"]["file"] = "01JPJUSCPQL76JG7BTPVG2OGRLZTRSDHLU";
             Save("../../../RewrittenFlows/Cumbria/UAT/Schema/FlowsUseOfForce/unpacked/Workflows/GenerateUoFPDF-BDAE81A8-29EE-EB11-BACB-0022489C5E28.json", j.ToString().Replace("'", @"\u0027"));
+
+            json = File.ReadAllText("../../../../../Schema/FlowsPDFCP/unpacked/Workflows/GenerateUoFPDF-BDAE81A8-29EE-EB11-BACB-0022489C5E28.json");
+            j = JObject.Parse(json);
+            j["properties"]["definition"]["actions"]["Populate_a_Microsoft_Word_template"]["inputs"]["parameters"]["source"] = "groups/0557c153-0304-4b39-b877-06bd78eefbab";
+            j["properties"]["definition"]["actions"]["Populate_a_Microsoft_Word_template"]["inputs"]["parameters"]["drive"] = "b!WeKRWBhLV06HKnanQyuwtpFCkA54k_FPsYNscja9GU-_YgpLYOi6T49L6ZbolPrM";
+            j["properties"]["definition"]["actions"]["Populate_a_Microsoft_Word_template"]["inputs"]["parameters"]["file"] = "014YZTY7YS5AQQM355X5CKRB4JFXG6W562";
+            Save("../../../RewrittenFlows/Durham/SystemTest/Schema/FlowsPDFCP/unpacked/Workflows/GenerateUoFPDF-BDAE81A8-29EE-EB11-BACB-0022489C5E28.json", j.ToString().Replace("'", @"\u0027"));
+
+            json = File.ReadAllText("../../../../../Schema/FlowsPDFCP/unpacked/Workflows/GenerateUoFPDF-BDAE81A8-29EE-EB11-BACB-0022489C5E28.json");
+            j = JObject.Parse(json);
+            j["properties"]["definition"]["actions"]["Populate_a_Microsoft_Word_template"]["inputs"]["parameters"]["source"] = "groups/0557c153-0304-4b39-b877-06bd78eefbab";
+            j["properties"]["definition"]["actions"]["Populate_a_Microsoft_Word_template"]["inputs"]["parameters"]["drive"] = "b!WeKRWBhLV06HKnanQyuwtpFCkA54k_FPsYNscja9GU-_YgpLYOi6T49L6ZbolPrM";
+            j["properties"]["definition"]["actions"]["Populate_a_Microsoft_Word_template"]["inputs"]["parameters"]["file"] = "014YZTY7YS5AQQM355X5CKRB4JFXG6W562";
+            Save("../../../RewrittenFlows/Cumbria/SystemTest/Schema/FlowsPDFCP/unpacked/Workflows/GenerateUoFPDF-BDAE81A8-29EE-EB11-BACB-0022489C5E28.json", j.ToString().Replace("'", @"\u0027"));
+
 
 
         }

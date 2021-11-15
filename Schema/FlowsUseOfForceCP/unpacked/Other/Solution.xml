@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ImportExportXml version="9.2.21103.129" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ImportExportXml version="9.2.21104.132" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SolutionManifest>
     <UniqueName>CPFlowsUseOfForce</UniqueName>
     <LocalizedNames>
       <LocalizedName description="135 - Flows - Use Of Force" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.0.0.27</Version>
+    <Version>1.0.0.28</Version>
     <Managed>1</Managed>
     <Publisher>
       <UniqueName>cumbriapolicepublisher</UniqueName>
@@ -85,7 +85,6 @@
       <RootComponent type="29" id="{92c744a8-6159-eb11-a812-0022489ba6ad}" behavior="0" />
       <RootComponent type="29" id="{a29eb483-6659-eb11-a812-0022489ba6ad}" behavior="0" />
       <RootComponent type="29" id="{b11a6067-a363-eb11-a812-000d3ab40f79}" behavior="0" />
-      <RootComponent type="29" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" behavior="0" />
       <RootComponent type="29" id="{c5bccf14-f358-eb11-a812-0022489ba6ad}" behavior="0" />
       <RootComponent type="29" id="{e1a21fdc-6b5a-eb11-a812-000d3a654f72}" behavior="0" />
     </RootComponents>
@@ -97,10 +96,6 @@
       <MissingDependency>
         <Required type="1" schemaName="cp_incident" displayName="Incident" solution="Active" />
         <Dependent type="29" displayName="Create New Location" id="{b11a6067-a363-eb11-a812-000d3ab40f79}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_incident" displayName="Incident" solution="Active" />
-        <Dependent type="29" displayName="Generate UoF PDF" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_location" displayName="Location" solution="Active" />
@@ -115,16 +110,8 @@
         <Dependent type="29" displayName="Use Of Force Staging Area Process" id="{92c744a8-6159-eb11-a812-0022489ba6ad}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="1" schemaName="cp_photo" displayName="Photo" solution="Active" />
-        <Dependent type="29" displayName="Generate UoF PDF" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" />
-      </MissingDependency>
-      <MissingDependency>
         <Required type="1" schemaName="cp_tactic" displayName="Tactic" solution="Active" />
         <Dependent type="29" displayName="Use Of Force Staging Area Process" id="{92c744a8-6159-eb11-a812-0022489ba6ad}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_tactic" displayName="Tactic" solution="Active" />
-        <Dependent type="29" displayName="Generate UoF PDF" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_taserusage" displayName="Taser Usage" solution="Active" />
@@ -143,16 +130,8 @@
         <Dependent type="29" displayName="Use Of Force Staging Area Process" id="{92c744a8-6159-eb11-a812-0022489ba6ad}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="1" schemaName="cp_useforceoutcome" displayName="Use Force Outcome" solution="Active" />
-        <Dependent type="29" displayName="Generate UoF PDF" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" />
-      </MissingDependency>
-      <MissingDependency>
         <Required type="1" schemaName="cp_useforcereason" displayName="Use Force Reason" solution="Active" />
         <Dependent type="29" displayName="Use Of Force Staging Area Process" id="{92c744a8-6159-eb11-a812-0022489ba6ad}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_useforcereason" displayName="Use Force Reason" solution="Active" />
-        <Dependent type="29" displayName="Generate UoF PDF" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_useofforce" displayName="Use of Force" solution="Active" />
@@ -161,10 +140,6 @@
       <MissingDependency>
         <Required type="1" schemaName="cp_useofforce" displayName="Use of Force" solution="Active" />
         <Dependent type="29" displayName="Use Of Force Staging Area Process" id="{92c744a8-6159-eb11-a812-0022489ba6ad}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_useofforce" displayName="Use of Force" solution="Active" />
-        <Dependent type="29" displayName="Generate UoF PDF" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_useofforce_stg" displayName="Use of Force STG" solution="Active" />
@@ -181,10 +156,6 @@
       <MissingDependency>
         <Required type="1" schemaName="cp_useofforceimpactfactor" displayName="Use of Force Impact Factor" solution="Active" />
         <Dependent type="29" displayName="Use Of Force Staging Area Process" id="{92c744a8-6159-eb11-a812-0022489ba6ad}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_useofforceimpactfactor" displayName="Use of Force Impact Factor" solution="Active" />
-        <Dependent type="29" displayName="Generate UoF PDF" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_useofforcetactics_stg" displayName="Use of Force Tactics STG" solution="Active" />
@@ -205,6 +176,10 @@
       <MissingDependency>
         <Required type="29" displayName="Return Choice Id for Choice No, Yes, N/A" solution="Active" id="{79674c64-ee92-eb11-b1ac-000d3adb2fd2}" />
         <Dependent type="29" displayName="Check if Incident exists AND-OR Create" id="{71ab4fd1-7959-eb11-a812-000d3a654f72}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="29" displayName="Generate UoF PDF" solution="Active" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" />
+        <Dependent type="29" displayName="Generate UoF PDF and attach" id="{538d37c2-28ee-eb11-bacb-0022489c555a}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="connectionreference" displayName="cp_sharedcommondataserviceforapps_4c4b9" solution="Active" id.connectionreferencelogicalname="cp_sharedcommondataserviceforapps_4c4b9" />
@@ -244,23 +219,11 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="connectionreference" displayName="cp_sharedcommondataserviceforapps_ef737" solution="Active" id.connectionreferencelogicalname="cp_sharedcommondataserviceforapps_ef737" />
-        <Dependent type="29" displayName="Generate UoF PDF" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="connectionreference" displayName="cp_sharedcommondataserviceforapps_ef737" solution="Active" id.connectionreferencelogicalname="cp_sharedcommondataserviceforapps_ef737" />
         <Dependent type="29" displayName="Check Incident Prerequisites (UoF)" id="{c5bccf14-f358-eb11-a812-0022489ba6ad}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="connectionreference" displayName="cp_sharedonedriveforbusiness_fc480" solution="Active" id.connectionreferencelogicalname="cp_sharedonedriveforbusiness_fc480" />
         <Dependent type="29" displayName="Generate UoF PDF and attach" id="{538d37c2-28ee-eb11-bacb-0022489c555a}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="connectionreference" displayName="cp_sharedonedriveforbusiness_fc480" solution="Active" id.connectionreferencelogicalname="cp_sharedonedriveforbusiness_fc480" />
-        <Dependent type="29" displayName="Generate UoF PDF" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="connectionreference" displayName="cp_sharedwordonlinebusiness_7a2a4" solution="Active" id.connectionreferencelogicalname="cp_sharedwordonlinebusiness_7a2a4" />
-        <Dependent type="29" displayName="Generate UoF PDF" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="connectionreference" displayName="new_sharedcommondataserviceforapps_3a446" solution="Active" id.connectionreferencelogicalname="new_sharedcommondataserviceforapps_3a446" />

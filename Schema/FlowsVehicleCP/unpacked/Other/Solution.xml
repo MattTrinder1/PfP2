@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ImportExportXml version="9.2.21103.129" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ImportExportXml version="9.2.21104.132" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SolutionManifest>
     <UniqueName>CPFlowsVehicle</UniqueName>
     <LocalizedNames>
       <LocalizedName description="137 -  Flows - Vehicle" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.0.0.50</Version>
+    <Version>1.0.0.51</Version>
     <Managed>1</Managed>
     <Publisher>
       <UniqueName>cumbriapolicepublisher</UniqueName>
@@ -90,7 +90,6 @@
       <RootComponent type="29" id="{b11a6067-a363-eb11-a812-000d3ab40f79}" behavior="0" />
       <RootComponent type="29" id="{c5ee4234-1a66-eb11-a812-000d3ab403cd}" behavior="0" />
       <RootComponent type="29" id="{ccb264c3-3762-eb11-a812-0022489c79d7}" behavior="0" />
-      <RootComponent type="29" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" behavior="0" />
     </RootComponents>
     <MissingDependencies>
       <MissingDependency>
@@ -102,16 +101,8 @@
         <Dependent type="29" displayName="Create New Location" id="{b11a6067-a363-eb11-a812-000d3ab40f79}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="1" schemaName="cp_incident" displayName="Incident" solution="Active" />
-        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
-      </MissingDependency>
-      <MissingDependency>
         <Required type="1" schemaName="cp_licencecategory" displayName="Licence Category" solution="Active" />
         <Dependent type="29" displayName="Vehicle Staging Area Process" id="{2a5cb575-1666-eb11-a812-000d3ab403cd}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_licencecategory" displayName="Licence Category" solution="Active" />
-        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_location" displayName="Location" solution="Active" />
@@ -130,76 +121,36 @@
         <Dependent type="29" displayName="Check Vehicle Ticket Prerequisites" id="{c5ee4234-1a66-eb11-a812-000d3ab403cd}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="1" schemaName="cp_offencecode" displayName="Offence Code" solution="Active" />
-        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
-      </MissingDependency>
-      <MissingDependency>
         <Required type="1" schemaName="cp_photo" displayName="Photo" solution="Active" />
         <Dependent type="29" displayName="Vehicle Staging Area Process" id="{2a5cb575-1666-eb11-a812-000d3ab403cd}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_photo" displayName="Photo" solution="Active" />
-        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_territorialpolicingarea" displayName="Territorial Policing Area" solution="Active" />
-        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_tickettypehort1" displayName="Ticket Type - HORT1" solution="Active" />
         <Dependent type="29" displayName="Vehicle Staging Area Process" id="{2a5cb575-1666-eb11-a812-000d3ab403cd}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="1" schemaName="cp_tickettypehort1" displayName="Ticket Type - HORT1" solution="Active" />
-        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
-      </MissingDependency>
-      <MissingDependency>
         <Required type="1" schemaName="cp_tickettypesection163" displayName="Ticket Type - Section 163" solution="Active" />
         <Dependent type="29" displayName="Vehicle Staging Area Process" id="{2a5cb575-1666-eb11-a812-000d3ab403cd}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_tickettypesection163" displayName="Ticket Type - Section 163" solution="Active" />
-        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_tickettypesection165" displayName="Ticket Type - Section 165" solution="Active" />
         <Dependent type="29" displayName="Vehicle Staging Area Process" id="{2a5cb575-1666-eb11-a812-000d3ab403cd}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="1" schemaName="cp_tickettypesection165" displayName="Ticket Type - Section 165" solution="Active" />
-        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
-      </MissingDependency>
-      <MissingDependency>
         <Required type="1" schemaName="cp_tickettypesection59" displayName="Ticket Type - Section 59" solution="Active" />
         <Dependent type="29" displayName="Vehicle Staging Area Process" id="{2a5cb575-1666-eb11-a812-000d3ab403cd}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_tickettypesection59" displayName="Ticket Type - Section 59" solution="Active" />
-        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_tickettypetrafficoffence" displayName="Ticket Type - Traffic Offence" solution="Active" />
         <Dependent type="29" displayName="Vehicle Staging Area Process" id="{2a5cb575-1666-eb11-a812-000d3ab403cd}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="1" schemaName="cp_tickettypetrafficoffence" displayName="Ticket Type - Traffic Offence" solution="Active" />
-        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
-      </MissingDependency>
-      <MissingDependency>
         <Required type="1" schemaName="cp_tickettypevdrs" displayName="Ticket Type - VDRS " solution="Active" />
         <Dependent type="29" displayName="Vehicle Staging Area Process" id="{2a5cb575-1666-eb11-a812-000d3ab403cd}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="1" schemaName="cp_tickettypevdrs" displayName="Ticket Type - VDRS " solution="Active" />
-        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
-      </MissingDependency>
-      <MissingDependency>
         <Required type="1" schemaName="cp_vehicledetails" displayName="Vehicle Details" solution="Active" />
         <Dependent type="29" displayName="Vehicle Staging Area Process" id="{2a5cb575-1666-eb11-a812-000d3ab403cd}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_vehicledetails" displayName="Vehicle Details" solution="Active" />
-        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_vehicledocument" displayName="Vehicle Document" solution="Active" />
@@ -210,20 +161,12 @@
         <Dependent type="29" displayName="Fill Lookup Values for Invalid Submissions" id="{823507cd-e787-eb11-a812-000d3ab52ab6}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="1" schemaName="cp_vehicledocument" displayName="Vehicle Document" solution="Active" />
-        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
-      </MissingDependency>
-      <MissingDependency>
         <Required type="1" schemaName="cp_vehicleticket" displayName="Vehicle Ticket" solution="Active" />
         <Dependent type="29" displayName="Vehicle Staging Area Process" id="{2a5cb575-1666-eb11-a812-000d3ab403cd}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_vehicleticket" displayName="Vehicle Ticket" solution="Active" />
         <Dependent type="29" displayName="Vehicle Ticket PDF and Attach" id="{6650edbf-a6c3-eb11-bacc-000d3ab9f7b1}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="1" schemaName="cp_vehicleticket" displayName="Vehicle Ticket" solution="Active" />
-        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_vehicleticketoffencesstg" displayName="Vehicle Ticket Offences STG" solution="Active" />
@@ -260,6 +203,10 @@
       <MissingDependency>
         <Required type="2" schemaName="cp_stagingentrystatus" displayName="Staging Entry Status" parentSchemaName="cp_vehicleticketstg" parentDisplayName="Vehicle Ticket STG" solution="Active" />
         <Dependent type="29" displayName="Fill Lookup Values for Invalid Submissions" id="{823507cd-e787-eb11-a812-000d3ab52ab6}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="29" displayName="Generate Vehicle Ticket PDF" solution="Active" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
+        <Dependent type="29" displayName="Vehicle Ticket PDF and Attach" id="{6650edbf-a6c3-eb11-bacc-000d3ab9f7b1}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="connectionreference" displayName="cp_sharedcommondataserviceforapps_4c4b9" solution="Active" id.connectionreferencelogicalname="cp_sharedcommondataserviceforapps_4c4b9" />
@@ -306,20 +253,8 @@
         <Dependent type="29" displayName="Check Vehicle Ticket Prerequisites" id="{c5ee4234-1a66-eb11-a812-000d3ab403cd}" />
       </MissingDependency>
       <MissingDependency>
-        <Required type="connectionreference" displayName="cp_sharedcommondataserviceforapps_ef737" solution="Active" id.connectionreferencelogicalname="cp_sharedcommondataserviceforapps_ef737" />
-        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
-      </MissingDependency>
-      <MissingDependency>
         <Required type="connectionreference" displayName="cp_sharedonedriveforbusiness_fc4ed" solution="Active" id.connectionreferencelogicalname="cp_sharedonedriveforbusiness_fc4ed" />
         <Dependent type="29" displayName="Vehicle Ticket PDF and Attach" id="{6650edbf-a6c3-eb11-bacc-000d3ab9f7b1}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="connectionreference" displayName="cp_sharedonedriveforbusiness_fc4ed" solution="Active" id.connectionreferencelogicalname="cp_sharedonedriveforbusiness_fc4ed" />
-        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
-      </MissingDependency>
-      <MissingDependency>
-        <Required type="connectionreference" displayName="cp_sharedwordonlinebusiness_d8ad7" solution="Active" id.connectionreferencelogicalname="cp_sharedwordonlinebusiness_d8ad7" />
-        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="connectionreference" displayName="new_sharedcommondataserviceforapps_3a446" solution="Active" id.connectionreferencelogicalname="new_sharedcommondataserviceforapps_3a446" />

@@ -30,6 +30,9 @@
       },
       "triggers": {
         "manual": {
+          "metadata": {
+            "operationMetadataId": "c13a81c5-bad1-4c92-b420-eff8590d6155"
+          },
           "type": "Request",
           "kind": "Button",
           "inputs": {
@@ -170,6 +173,9 @@
               "Succeeded"
             ]
           },
+          "metadata": {
+            "operationMetadataId": "45edf4a2-fecd-4b0f-97b0-13f1a36c5aa6"
+          },
           "type": "Workflow",
           "inputs": {
             "host": {
@@ -185,6 +191,9 @@
             "Run_a_Child_Flow_(Get_Choice_Id_for_Marital_Status)": [
               "Succeeded"
             ]
+          },
+          "metadata": {
+            "operationMetadataId": "2be5164f-db13-4a96-acbb-3a7643a6d215"
           },
           "type": "OpenApiConnection",
           "inputs": {
@@ -212,10 +221,7 @@
             "item/cp_otheroccupation": "@triggerBody()?[\u0027text_14\u0027]",
             "item/cp_retired": "@outputs(\u0027Run_a_Child_Flow_(Get_Choice_Id_for_Is_Retired)\u0027)?[\u0027Body\u0027]?[\u0027choice_id\u0027]"
             },
-            "authentication": {
-              "type": "Raw",
-            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
-            }
+            "authentication": "@parameters(\u0027$authentication\u0027)"
           }
         },
         "Respond_to_a_PowerApp_or_flow": {
@@ -223,6 +229,9 @@
             "Update_Contact_with_additional_fields": [
               "Succeeded"
             ]
+          },
+          "metadata": {
+            "operationMetadataId": "3253083e-f30f-4c10-969d-12eca0af8eee"
           },
           "type": "Response",
           "kind": "PowerApp",
@@ -249,6 +258,9 @@
               "Succeeded"
             ]
           },
+          "metadata": {
+            "operationMetadataId": "39861b02-3710-42b8-9b6e-4f30eb585bbd"
+          },
           "type": "Workflow",
           "inputs": {
             "host": {
@@ -262,6 +274,9 @@
         "ComposePreferedContactMethod": {
           "runAfter": {
             
+          },
+          "metadata": {
+            "operationMetadataId": "48b25bd5-3066-4427-96f6-5bb1fbc50aee"
           },
           "type": "Compose",
         "inputs": "@if(empty(triggerBody()?[\u0027text_5\u0027]),null,triggerBody()?[\u0027text_5\u0027])"

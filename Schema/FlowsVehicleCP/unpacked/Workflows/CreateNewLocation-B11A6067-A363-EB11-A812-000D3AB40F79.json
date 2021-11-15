@@ -39,6 +39,9 @@
       },
       "triggers": {
         "manual": {
+          "metadata": {
+            "operationMetadataId": "a63dae5c-dbba-43f6-96f8-4ec0f31f8d14"
+          },
           "type": "Request",
           "kind": "Button",
           "inputs": {
@@ -161,6 +164,9 @@
               "Succeeded"
             ]
           },
+          "metadata": {
+            "operationMetadataId": "6490fbf8-7abf-402e-92b9-116027c2a7ca"
+          },
           "type": "Response",
           "kind": "PowerApp",
           "inputs": {
@@ -186,6 +192,9 @@
               "runAfter": {
                 
               },
+              "metadata": {
+                "operationMetadataId": "85f2e183-5dc9-490c-86bd-f79957b2ffa3"
+              },
               "type": "OpenApiConnection",
               "inputs": {
                 "host": {
@@ -208,10 +217,7 @@
                 "item/cp_longitude": "@triggerBody()[\u0027number_1\u0027]",
                 "item/cp_street": "@triggerBody()[\u0027location\u0027][\u0027address\u0027][\u0027street\u0027]"
                 },
-                "authentication": {
-                  "type": "Raw",
-                "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
-                }
+                "authentication": "@parameters(\u0027$authentication\u0027)"
               }
             },
             "Set_Location_Id_variable": {
@@ -219,6 +225,9 @@
                 "Create_a_new_Location": [
                   "Succeeded"
                 ]
+              },
+              "metadata": {
+                "operationMetadataId": "9c6629f5-f89e-4ecd-854e-3db5a6dcca34"
               },
               "type": "SetVariable",
               "inputs": {
@@ -238,6 +247,9 @@
                 "runAfter": {
                   
                 },
+                "metadata": {
+                  "operationMetadataId": "764255b1-7b22-4c9a-9149-eda7afeaa882"
+                },
                 "type": "OpenApiConnection",
                 "inputs": {
                   "host": {
@@ -249,10 +261,7 @@
                     "entityName": "cp_incidents",
                   "recordId": "@triggerBody()?[\u0027text_4\u0027]"
                   },
-                  "authentication": {
-                    "type": "Raw",
-                  "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
-                  }
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
                 }
               },
               "If_Incident_has_not_Location": {
@@ -260,6 +269,9 @@
                   "Create_a_new_Location_2": {
                     "runAfter": {
                       
+                    },
+                    "metadata": {
+                      "operationMetadataId": "c0d84ed5-a9b2-4721-9571-a4ce373ebcc6"
                     },
                     "type": "OpenApiConnection",
                     "inputs": {
@@ -283,10 +295,7 @@
                       "item/cp_longitude": "@triggerBody()?[\u0027number_1\u0027]",
                       "item/cp_street": "@triggerBody()[\u0027location\u0027][\u0027address\u0027][\u0027street\u0027]"
                       },
-                      "authentication": {
-                        "type": "Raw",
-                      "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
-                      }
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
                     }
                   },
                   "Set_Location_Id_variable_2": {
@@ -294,6 +303,9 @@
                       "Create_a_new_Location_2": [
                         "Succeeded"
                       ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "9ffcf983-3951-4760-bd94-e73e6d15a49c"
                     },
                     "type": "SetVariable",
                     "inputs": {
@@ -307,6 +319,9 @@
                         "Succeeded"
                       ]
                     },
+                    "metadata": {
+                      "operationMetadataId": "839b1246-0353-48c5-99dc-487a7b55dd9e"
+                    },
                     "type": "OpenApiConnection",
                     "inputs": {
                       "host": {
@@ -319,10 +334,7 @@
                       "recordId": "@outputs(\u0027Get_Incident\u0027)?[\u0027body/cp_incidentid\u0027]",
                       "item/cp_IncidentLocation@odata.bind": "/cp_locations(@{variables(\u0027LocationId\u0027)})"
                       },
-                      "authentication": {
-                        "type": "Raw",
-                      "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
-                      }
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
                     }
                   }
                 },
@@ -336,6 +348,9 @@
                     "Update_the_existing_Incident_Location_with_new_details": {
                       "runAfter": {
                         
+                      },
+                      "metadata": {
+                        "operationMetadataId": "ec697c24-c781-4b00-9273-9db49754cad5"
                       },
                       "type": "OpenApiConnection",
                       "inputs": {
@@ -359,10 +374,7 @@
                         "item/cp_longitude": "@triggerBody()?[\u0027number_1\u0027]",
                         "item/cp_street": "@triggerBody()[\u0027location\u0027][\u0027address\u0027][\u0027street\u0027]"
                         },
-                        "authentication": {
-                          "type": "Raw",
-                        "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
-                        }
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
                       }
                     },
                     "Set_Location_Id_variable_3": {
@@ -370,6 +382,9 @@
                         "Update_the_existing_Incident_Location_with_new_details": [
                           "Succeeded"
                         ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "b11e4128-4a11-40ca-82df-d2d128dc1502"
                       },
                       "type": "SetVariable",
                       "inputs": {
@@ -385,6 +400,9 @@
                     "@true"
                   ]
                 },
+                "metadata": {
+                  "operationMetadataId": "a1f26a6a-9ac8-47bb-b4e3-1c08d6822f1f"
+                },
                 "type": "If"
               }
             }
@@ -395,11 +413,17 @@
               "@true"
             ]
           },
+          "metadata": {
+            "operationMetadataId": "aa6660ea-1f37-46b5-b945-3ed4f19c7d62"
+          },
           "type": "If"
         },
         "Initialize_LocationId_variable": {
           "runAfter": {
             
+          },
+          "metadata": {
+            "operationMetadataId": "4c392459-36bf-4866-9faa-4fb5baaa6a1f"
           },
           "type": "InitializeVariable",
           "inputs": {

@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ImportExportXml version="9.2.21103.129" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ImportExportXml version="9.2.21104.132" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SolutionManifest>
     <UniqueName>CPFlowsPDF</UniqueName>
     <LocalizedNames>
       <LocalizedName description="139 - Flows - PDF" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.0.0.35</Version>
+    <Version>1.0.0.36</Version>
     <Managed>1</Managed>
     <Publisher>
       <UniqueName>cumbriapolicepublisher</UniqueName>
@@ -80,11 +80,18 @@
     <RootComponents>
       <RootComponent type="29" id="{0b1e0c3c-588a-eb11-b1ac-000d3adc17e3}" behavior="0" />
       <RootComponent type="29" id="{67ca08cd-5d8d-eb11-b1ac-000d3adb469c}" behavior="0" />
+      <RootComponent type="29" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" behavior="0" />
+      <RootComponent type="29" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" behavior="0" />
       <RootComponent type="29" id="{c699214c-d196-eb11-b1ac-000d3ade994b}" behavior="0" />
       <RootComponent type="29" id="{cc1fa276-dc88-eb11-a812-000d3ab52ab6}" behavior="0" />
       <RootComponent type="29" id="{cf274eb7-4a77-eb11-a812-000d3add6f2f}" behavior="0" />
+      <RootComponent type="29" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" behavior="0" />
     </RootComponents>
     <MissingDependencies>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_coroner" displayName="Coroner" solution="Active" />
+        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
+      </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_covid" displayName="Covid" solution="Active" />
         <Dependent type="29" displayName="Generate Covid PDFs" id="{67ca08cd-5d8d-eb11-b1ac-000d3adb469c}" />
@@ -131,6 +138,14 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_incident" displayName="Incident" solution="Active" />
+        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_incident" displayName="Incident" solution="Active" />
+        <Dependent type="29" displayName="Generate UoF PDF" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_incident" displayName="Incident" solution="Active" />
         <Dependent type="29" displayName="Covid Email Flow with PDF attached " id="{c699214c-d196-eb11-b1ac-000d3ade994b}" />
       </MissingDependency>
       <MissingDependency>
@@ -140,6 +155,14 @@
       <MissingDependency>
         <Required type="1" schemaName="cp_incident" displayName="Incident" solution="Active" />
         <Dependent type="29" displayName="Generate Witness Statement PDFs" id="{cf274eb7-4a77-eb11-a812-000d3add6f2f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_incident" displayName="Incident" solution="Active" />
+        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_investigationstatus" displayName="Investigation Status" solution="Active" />
+        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_itsyourchoice" displayName="Its Your Choice" solution="Active" />
@@ -154,12 +177,28 @@
         <Dependent type="29" displayName="IYC Generate 1st Warning Letter - HTTP Trigger" id="{cc1fa276-dc88-eb11-a812-000d3ab52ab6}" />
       </MissingDependency>
       <MissingDependency>
+        <Required type="1" schemaName="cp_licencecategory" displayName="Licence Category" solution="Active" />
+        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
+      </MissingDependency>
+      <MissingDependency>
         <Required type="1" schemaName="cp_location" displayName="Location" solution="Active" />
         <Dependent type="29" displayName="IYC Generate 1st Warning Letter - HTTP Trigger" id="{cc1fa276-dc88-eb11-a812-000d3ab52ab6}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_lookupvalue" displayName="Lookup Value" solution="Active" />
+        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_lookupvalue" displayName="Lookup Value" solution="Active" />
         <Dependent type="29" displayName="Generate Witness Statement PDFs" id="{cf274eb7-4a77-eb11-a812-000d3add6f2f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_medicalhistory" displayName="Medical History" solution="Active" />
+        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_offencecode" displayName="Offence Code" solution="Active" />
+        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_photo" displayName="Photo" solution="Active" />
@@ -171,7 +210,23 @@
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_photo" displayName="Photo" solution="Active" />
+        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_photo" displayName="Photo" solution="Active" />
+        <Dependent type="29" displayName="Generate UoF PDF" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_photo" displayName="Photo" solution="Active" />
         <Dependent type="29" displayName="Covid Email Flow with PDF attached " id="{c699214c-d196-eb11-b1ac-000d3ade994b}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_photo" displayName="Photo" solution="Active" />
+        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_pncbureau" displayName="PNC bureau" solution="Active" />
+        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_pocketnotebook" displayName="Pocket Notebook" solution="Active" />
@@ -190,12 +245,92 @@
         <Dependent type="29" displayName="Generate Witness Statement PDFs" id="{cf274eb7-4a77-eb11-a812-000d3add6f2f}" />
       </MissingDependency>
       <MissingDependency>
+        <Required type="1" schemaName="cp_suddendeath" displayName="Sudden Death" solution="Active" />
+        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_suddendeathinvolvedcontact" displayName="Sudden Death Other Involved Contact" solution="Active" />
+        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_suddendeathproperty" displayName="Sudden Death Property" solution="Active" />
+        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
+      </MissingDependency>
+      <MissingDependency>
         <Required type="1" schemaName="cp_systemsetting" displayName="System Setting" solution="Active" />
         <Dependent type="29" displayName="Generate PNB PDF" id="{0b1e0c3c-588a-eb11-b1ac-000d3adc17e3}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_systemsetting" displayName="System Setting" solution="Active" />
         <Dependent type="29" displayName="Generate Covid PDFs" id="{67ca08cd-5d8d-eb11-b1ac-000d3adb469c}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_tactic" displayName="Tactic" solution="Active" />
+        <Dependent type="29" displayName="Generate UoF PDF" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_territorialpolicingarea" displayName="Territorial Policing Area" solution="Active" />
+        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_territorialpolicingarea" displayName="Territorial Policing Area" solution="Active" />
+        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_tickettypehort1" displayName="Ticket Type - HORT1" solution="Active" />
+        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_tickettypesection163" displayName="Ticket Type - Section 163" solution="Active" />
+        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_tickettypesection165" displayName="Ticket Type - Section 165" solution="Active" />
+        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_tickettypesection59" displayName="Ticket Type - Section 59" solution="Active" />
+        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_tickettypetrafficoffence" displayName="Ticket Type - Traffic Offence" solution="Active" />
+        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_tickettypevdrs" displayName="Ticket Type - VDRS " solution="Active" />
+        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_useforceoutcome" displayName="Use Force Outcome" solution="Active" />
+        <Dependent type="29" displayName="Generate UoF PDF" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_useforcereason" displayName="Use Force Reason" solution="Active" />
+        <Dependent type="29" displayName="Generate UoF PDF" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_useofforce" displayName="Use of Force" solution="Active" />
+        <Dependent type="29" displayName="Generate UoF PDF" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_useofforceimpactfactor" displayName="Use of Force Impact Factor" solution="Active" />
+        <Dependent type="29" displayName="Generate UoF PDF" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_vehicledetails" displayName="Vehicle Details" solution="Active" />
+        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_vehicledocument" displayName="Vehicle Document" solution="Active" />
+        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_vehicleticket" displayName="Vehicle Ticket" solution="Active" />
+        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cp_sharedcommondataserviceforapps_36190" solution="Active" id.connectionreferencelogicalname="cp_sharedcommondataserviceforapps_36190" />
+        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="connectionreference" displayName="cp_sharedcommondataserviceforapps_36190" solution="Active" id.connectionreferencelogicalname="cp_sharedcommondataserviceforapps_36190" />
@@ -206,12 +341,40 @@
         <Dependent type="29" displayName="Generate Witness Statement PDFs" id="{cf274eb7-4a77-eb11-a812-000d3add6f2f}" />
       </MissingDependency>
       <MissingDependency>
+        <Required type="connectionreference" displayName="cp_sharedcommondataserviceforapps_ef737" solution="Active" id.connectionreferencelogicalname="cp_sharedcommondataserviceforapps_ef737" />
+        <Dependent type="29" displayName="Generate UoF PDF" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cp_sharedcommondataserviceforapps_ef737" solution="Active" id.connectionreferencelogicalname="cp_sharedcommondataserviceforapps_ef737" />
+        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
+      </MissingDependency>
+      <MissingDependency>
         <Required type="connectionreference" displayName="cp_sharedonedriveforbusiness_b61ca" solution="Active" id.connectionreferencelogicalname="cp_sharedonedriveforbusiness_b61ca" />
         <Dependent type="29" displayName="Generate PNB PDF" id="{0b1e0c3c-588a-eb11-b1ac-000d3adc17e3}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="connectionreference" displayName="cp_sharedonedriveforbusiness_fc480" solution="Active" id.connectionreferencelogicalname="cp_sharedonedriveforbusiness_fc480" />
+        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cp_sharedonedriveforbusiness_fc480" solution="Active" id.connectionreferencelogicalname="cp_sharedonedriveforbusiness_fc480" />
+        <Dependent type="29" displayName="Generate UoF PDF" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cp_sharedonedriveforbusiness_fc480" solution="Active" id.connectionreferencelogicalname="cp_sharedonedriveforbusiness_fc480" />
         <Dependent type="29" displayName="Generate Witness Statement PDFs" id="{cf274eb7-4a77-eb11-a812-000d3add6f2f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cp_sharedonedriveforbusiness_fc4ed" solution="Active" id.connectionreferencelogicalname="cp_sharedonedriveforbusiness_fc4ed" />
+        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cp_sharedwordonlinebusiness_7a2a4" solution="Active" id.connectionreferencelogicalname="cp_sharedwordonlinebusiness_7a2a4" />
+        <Dependent type="29" displayName="Generate Sudden Death PDF" id="{9de7b140-61b2-eb11-8236-000d3ad7eb5d}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cp_sharedwordonlinebusiness_7a2a4" solution="Active" id.connectionreferencelogicalname="cp_sharedwordonlinebusiness_7a2a4" />
+        <Dependent type="29" displayName="Generate UoF PDF" id="{bdae81a8-29ee-eb11-bacb-0022489c5e28}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="connectionreference" displayName="cp_sharedwordonlinebusiness_7a2a4" solution="Active" id.connectionreferencelogicalname="cp_sharedwordonlinebusiness_7a2a4" />
@@ -228,6 +391,10 @@
       <MissingDependency>
         <Required type="connectionreference" displayName="cp_sharedwordonlinebusiness_d8ad7" solution="Active" id.connectionreferencelogicalname="cp_sharedwordonlinebusiness_d8ad7" />
         <Dependent type="29" displayName="Generate Witness Statement PDFs" id="{cf274eb7-4a77-eb11-a812-000d3add6f2f}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="connectionreference" displayName="cp_sharedwordonlinebusiness_d8ad7" solution="Active" id.connectionreferencelogicalname="cp_sharedwordonlinebusiness_d8ad7" />
+        <Dependent type="29" displayName="Generate Vehicle Ticket PDF" id="{fe26a830-aec3-eb11-bacc-000d3ab9f7b1}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="connectionreference" displayName="new_sharedcommondataserviceforapps_3a446" solution="Active" id.connectionreferencelogicalname="new_sharedcommondataserviceforapps_3a446" />
