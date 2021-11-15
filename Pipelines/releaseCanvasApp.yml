@@ -30,6 +30,43 @@ variables:
 
 stages: 
 #----------------------------------Start Stage-------------------------------------------------------------------
+  - stage: RewriteFiles
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - job: BuildRewriteTools
+      steps:
+      - task: UseDotNet@2
+        displayName: 'Use .NET Core sdk 5.0.100'
+        inputs:
+          packageType: 'sdk'
+          version: '5.0.100'
+          includePreviewVersions: true
+                
+      - task: DotNetCoreCLI@2
+        displayName: Build App Rewriter Tool
+        inputs:
+          command: 'build'
+          projects: 'PipelineTools/CanvasAppRewriter/CanvasAppRewriter.csproj'
+            
+      - task: CmdLine@2
+        displayName: Run CanvasApp Rewriter Tool
+        inputs:
+          workingDirectory: $(build.sourcesdirectory)/PipelineTools/CanvasAppRewriter/bin/Debug/net5.0
+          script: |
+            $(build.sourcesdirectory)/PipelineTools/CanvasAppRewriter/bin/Debug/net5.0/CanvasAppRewriter.exe
+      - task: PublishBuildArtifacts@1
+        displayName: Publish Rewritten CanvasApps
+        inputs:
+          PathtoPublish: '$(build.sourcesdirectory)/PipelineTools/CanvasAppRewriter/RewrittenCanvasApp'
+          ArtifactName: 'CanvasApp'
+          publishLocation: 'Container'
+      
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
+#----------------------------------Start Stage-------------------------------------------------------------------
   - stage: AssembleRelease
     jobs:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -61,6 +98,11 @@ stages:
           deploy:
             
             steps:
+            - task: DownloadPipelineArtifact@2
+              inputs:
+                artifact: 'RewrittenCanvasApps'
+                path: $(Build.SourcesDirectory)/RewrittenCanvasApps
+
             - template: deployCanvasAppSolution.yml
               parameters:
                 minorversion : $(minor.version)
