@@ -28,8 +28,8 @@ steps:
 
   - ${{ if and(startsWith(parameters.solutionName,'Flows'), ne(parameters.customerName, 'Base')) }}:
     - task: CopyFiles@2
+      displayName: Copy Rewritten Flows over Schema
       inputs:
-        displayName: Copy Rewritten Flows over Schema
         sourceFolder: '$(Build.SourcesDirectory)\RewrittenFlows\${{parameters.customerName}}\${{parameters.environmentName}}\Schema'
         contents: '**' 
         targetFolder: '$(Build.SourcesDirectory)\Schema'
@@ -38,8 +38,8 @@ steps:
 
   - ${{ if and(startsWith(parameters.solutionName,'CanvasApps'), ne(parameters.customerName, 'Base')) }}:
     - task: CopyFiles@2
+      displayName: Copy Rewritten CanvasApps over Schema
       inputs:
-        displayName: Copy Rewritten CanvasApps over Schema
         sourceFolder: '$(Build.SourcesDirectory)\RewrittenCanvasApps\${{parameters.customerName}}\${{parameters.environmentName}}\Schema'
         contents: '**' 
         targetFolder: '$(Build.SourcesDirectory)\Schema'
