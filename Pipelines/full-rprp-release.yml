@@ -98,7 +98,7 @@ variables:
 - template: connectionStrings.yml
 
 
-name: $(Build.DefinitionName) - $(Build.BuildId) 
+name: $(Build.DefinitionName) - $(solution.prefix) - $(Build.BuildId) 
 
 stages: 
 #----------------------------------Start Stage-------------------------------------------------------------------
