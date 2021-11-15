@@ -67,6 +67,11 @@ stages:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     - job: Assemble
       steps:
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          artifact: 'RewrittenCanvasApps'
+          path: $(Build.SourcesDirectory)/RewrittenCanvasApps
+
       - template: assembleReleaseForApp.yml
         parameters:
           managed: Managed
@@ -95,10 +100,6 @@ stages:
           deploy:
             
             steps:
-            - task: DownloadPipelineArtifact@2
-              inputs:
-                artifact: 'RewrittenCanvasApps'
-                path: $(Build.SourcesDirectory)/RewrittenCanvasApps
 
             - template: deployCanvasAppSolution.yml
               parameters:
