@@ -13,8 +13,10 @@ steps:
         $version = Select-String -Path $inputpath -Pattern $regex -AllMatches | % { $_.Matches } | % { $_.Value }
         $version = $version.Split(".")[3]
         Write-Output "##vso[task.setvariable variable=projectVersion]$version"
+    displayName: Get current version number
           
   - task: ReplaceInFilesTextByText@2
+    displayName: Replace version number
     inputs:
       parameterSearchDirectory: '$(Build.SourcesDirectory)/Schema\${{parameters.appFolderName}}${{parameters.solutionprefix}}\unpackedapp\Src\'
       parameterSearchText: '//Set(glbAppVersion,1);'
@@ -24,6 +26,7 @@ steps:
       parameterFilesList: 'App.fx.yaml'
 
   - task: ReplaceInFilesTextByText@2
+    displayName: Replace glbDebug
     inputs:
       parameterSearchDirectory: '$(Build.SourcesDirectory)/Schema\${{parameters.appFolderName}}${{parameters.solutionprefix}}\unpackedapp\Src\'
       parameterSearchText: '//Set(glbDebug,false);'
@@ -37,11 +40,14 @@ steps:
                 $MSAPPFile = get-childitem -path "$(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}${{parameters.solutionprefix}}\unpacked\CanvasApps\*.msapp"
                 $MSAPPFileName = $MSAPPFile.Name
                 Write-Host "##vso[task.setvariable variable=MSAPPFileName]$MSAPPFileName"
+    displayName: Get existing MSAPP file name
 
   - task: DeleteFiles@1
+    displayName: Delete existing app file
     inputs:
       SourceFolder: $(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}${{parameters.solutionprefix}}\unpacked\CanvasApps\
       Contents: $(MSAPPFileName)
 
   - powershell: |
           $(Build.SourcesDirectory)\365Tools\Tools\PasOpa\PASopa.exe -pack $(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}${{parameters.solutionprefix}}\unpacked\CanvasApps\$(MSAPPFileName) $(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}${{parameters.solutionprefix}}\unpackedapp 
+    displayName: Pack app
