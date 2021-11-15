@@ -33,6 +33,5 @@ steps:
 
 - template: install-managed-solution.yml
   parameters:
-    pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-CanvasApps${{parameters.canvasApp}}
     connectionstring : ${{parameters.connectionString}}
     SolutionFileName : $(CanvasApps${{parameters.canvasApp}}SolutionFileName)
