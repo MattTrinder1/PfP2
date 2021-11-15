@@ -8,7 +8,7 @@ steps:
 
   - powershell:
           |
-          $fileExists = (${{parameters.SolutionFileName}}) -and (Test-Path -Path '${{parameters.SolutionFileName}}' -PathType leaf)
+          $fileExists = ('${{parameters.SolutionFileName}}'.length -gt 0) -and (Test-Path -Path '${{parameters.SolutionFileName}}' -PathType leaf)
           Write-Output "##vso[task.setvariable variable=FileExists]$fileExists"
     displayName: CheckFileExists
 
