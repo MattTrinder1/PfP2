@@ -98,55 +98,58 @@ steps:
                 $ConnectionReferencesSolutionFileName = $ConnectionReferencesSolutionFile.FullName
                 Write-Host "##vso[task.setvariable variable=ConnectionReferencesSolutionFileName]$ConnectionReferencesSolutionFileName"
 
-                $FlowsSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}Flows_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
-                $FlowsSolutionFileName = $FlowsSolutionFile.FullName
-                Write-Host "##vso[task.setvariable variable=FlowsSolutionFileName]$FlowsSolutionFileName"
-
-                $FlowsCovidSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}FlowsCovid_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
-                $FlowsCovidSolutionFileName = $FlowsCovidSolutionFile.FullName
-                Write-Host "##vso[task.setvariable variable=FlowsCovidSolutionFileName]$FlowsCovidSolutionFileName"
-
-                $FlowsItsYourChoiceSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}FlowsItsYourChoice_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
-                $FlowsItsYourChoiceSolutionFileName = $FlowsItsYourChoiceSolutionFile.FullName
-                Write-Host "##vso[task.setvariable variable=FlowsItsYourChoiceSolutionFileName]$FlowsItsYourChoiceSolutionFileName"
-
-                $FlowsStatementSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}FlowsStatement_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
-                $FlowsStatementSolutionFileName = $FlowsStatementSolutionFile.FullName
-                Write-Host "##vso[task.setvariable variable=FlowsStatementSolutionFileName]$FlowsStatementSolutionFileName"
-
-                $FlowsSuddenDeathSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}FlowsSuddenDeath_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
-                $FlowsSuddenDeathSolutionFileName = $FlowsSuddenDeathSolutionFile.FullName
-                Write-Host "##vso[task.setvariable variable=FlowsSuddenDeathSolutionFileName]$FlowsSuddenDeathSolutionFileName"
-
-                $FlowsUseOfForceSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}FlowsUseOfForce_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
-                $FlowsUseOfForceSolutionFileName = $FlowsUseOfForceSolutionFile.FullName
-                Write-Host "##vso[task.setvariable variable=FlowsUseOfForceSolutionFileName]$FlowsUseOfForceSolutionFileName"
-
-                $FlowsPocketNotebookSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}FlowsPocketNotebook_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
-                $FlowsPocketNotebookSolutionFileName = $FlowsPocketNotebookSolutionFile.FullName
-                Write-Host "##vso[task.setvariable variable=FlowsPocketNotebookSolutionFileName]$FlowsPocketNotebookSolutionFileName"
-
-                $FlowsVehicleSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}FlowsVehicle_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
-                $FlowsVehicleSolutionFileName = $FlowsVehicleSolutionFile.FullName
-                Write-Host "##vso[task.setvariable variable=FlowsVehicleSolutionFileName]$FlowsVehicleSolutionFileName"
-
-                $FlowsPNCSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}FlowsPNC_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
-                $FlowsPNCSolutionFileName = $FlowsPNCSolutionFile.FullName
-                Write-Host "##vso[task.setvariable variable=FlowsPNCSolutionFileName]$FlowsPNCSolutionFileName"
-
-                $FlowsPDFSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}FlowsPDF_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
-                $FlowsPDFSolutionFileName = $FlowsPDFSolutionFile.FullName
-                if($FlowsPDFSolutionFileName)
+                if(${{parameters.solutionprefix}} eq 'CP')
                 {
-                  Write-Host "##vso[task.setvariable variable=FlowsPDFSolutionFileName]$FlowsPDFSolutionFileName"
-                }
-                else
-                {
-                  $FlowsPDFSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.customerName}}/${{parameters.environmentName}}/${{parameters.solutionprefix}}FlowsPDF_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
+                  $FlowsSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}Flows_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
+                  $FlowsSolutionFileName = $FlowsSolutionFile.FullName
+                  Write-Host "##vso[task.setvariable variable=FlowsSolutionFileName]$FlowsSolutionFileName"
+
+                  $FlowsCovidSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}FlowsCovid_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
+                  $FlowsCovidSolutionFileName = $FlowsCovidSolutionFile.FullName
+                  Write-Host "##vso[task.setvariable variable=FlowsCovidSolutionFileName]$FlowsCovidSolutionFileName"
+
+                  $FlowsItsYourChoiceSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}FlowsItsYourChoice_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
+                  $FlowsItsYourChoiceSolutionFileName = $FlowsItsYourChoiceSolutionFile.FullName
+                  Write-Host "##vso[task.setvariable variable=FlowsItsYourChoiceSolutionFileName]$FlowsItsYourChoiceSolutionFileName"
+
+                  $FlowsStatementSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}FlowsStatement_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
+                  $FlowsStatementSolutionFileName = $FlowsStatementSolutionFile.FullName
+                  Write-Host "##vso[task.setvariable variable=FlowsStatementSolutionFileName]$FlowsStatementSolutionFileName"
+
+                  $FlowsSuddenDeathSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}FlowsSuddenDeath_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
+                  $FlowsSuddenDeathSolutionFileName = $FlowsSuddenDeathSolutionFile.FullName
+                  Write-Host "##vso[task.setvariable variable=FlowsSuddenDeathSolutionFileName]$FlowsSuddenDeathSolutionFileName"
+
+                  $FlowsUseOfForceSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}FlowsUseOfForce_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
+                  $FlowsUseOfForceSolutionFileName = $FlowsUseOfForceSolutionFile.FullName
+                  Write-Host "##vso[task.setvariable variable=FlowsUseOfForceSolutionFileName]$FlowsUseOfForceSolutionFileName"
+
+                  $FlowsPocketNotebookSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}FlowsPocketNotebook_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
+                  $FlowsPocketNotebookSolutionFileName = $FlowsPocketNotebookSolutionFile.FullName
+                  Write-Host "##vso[task.setvariable variable=FlowsPocketNotebookSolutionFileName]$FlowsPocketNotebookSolutionFileName"
+
+                  $FlowsVehicleSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}FlowsVehicle_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
+                  $FlowsVehicleSolutionFileName = $FlowsVehicleSolutionFile.FullName
+                  Write-Host "##vso[task.setvariable variable=FlowsVehicleSolutionFileName]$FlowsVehicleSolutionFileName"
+
+                  $FlowsPNCSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}FlowsPNC_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
+                  $FlowsPNCSolutionFileName = $FlowsPNCSolutionFile.FullName
+                  Write-Host "##vso[task.setvariable variable=FlowsPNCSolutionFileName]$FlowsPNCSolutionFileName"
+
+                  $FlowsPDFSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}FlowsPDF_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
                   $FlowsPDFSolutionFileName = $FlowsPDFSolutionFile.FullName
                   if($FlowsPDFSolutionFileName)
                   {
                     Write-Host "##vso[task.setvariable variable=FlowsPDFSolutionFileName]$FlowsPDFSolutionFileName"
+                  }
+                  else
+                  {
+                    $FlowsPDFSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.customerName}}/${{parameters.environmentName}}/${{parameters.solutionprefix}}FlowsPDF_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
+                    $FlowsPDFSolutionFileName = $FlowsPDFSolutionFile.FullName
+                    if($FlowsPDFSolutionFileName)
+                    {
+                      Write-Host "##vso[task.setvariable variable=FlowsPDFSolutionFileName]$FlowsPDFSolutionFileName"
+                    }
                   }
                 }
                 
