@@ -1,0 +1,3428 @@
+{
+  "properties": {
+    "connectionReferences": {
+      "shared_commondataserviceforapps": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedcommondataserviceforapps_ef737"
+        },
+        "api": {
+          "name": "shared_commondataserviceforapps"
+        }
+      },
+      "shared_wordonlinebusiness": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedwordonlinebusiness_d8ad7"
+        },
+        "api": {
+          "name": "shared_wordonlinebusiness"
+        }
+      },
+      "shared_onedriveforbusiness": {
+        "runtimeSource": "embedded",
+        "connection": {
+          "connectionReferenceLogicalName": "cp_sharedonedriveforbusiness_fc4ed"
+        },
+        "api": {
+          "name": "shared_onedriveforbusiness"
+        }
+      }
+    },
+    "definition": {
+      "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+      "contentVersion": "1.0.0.0",
+      "parameters": {
+        "$connections": {
+          "defaultValue": {},
+          "type": "Object"
+        },
+        "$authentication": {
+          "defaultValue": {},
+          "type": "SecureObject"
+        }
+      },
+      "triggers": {
+        "manual": {
+          "metadata": {
+            "operationMetadataId": "abed2d2a-6e6e-4404-8bac-2140210dbee6"
+          },
+          "type": "Request",
+          "kind": "Button",
+          "inputs": {
+            "schema": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "title": "VehicleTicketID",
+                  "type": "string",
+                  "x-ms-dynamically-added": true,
+                  "description": "Please enter your input",
+                  "x-ms-content-hint": "TEXT"
+                }
+              },
+              "required": [
+                "text"
+              ]
+            }
+          }
+        }
+      },
+      "actions": {
+        "Get_Vehicle_Ticket_Record": {
+          "runAfter": {},
+          "metadata": {
+            "operationMetadataId": "0f34e64c-c31e-4bfd-a7b8-9d15cec2af10"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_vehicletickets",
+              "recordId": "@triggerBody()[\u0027text\u0027]",
+              "$expand": "cp_vehicledetails($select=cp_name),cp_speeddetectionmethod($select=cp_name),cp_driverobserver($select=cp_name),cp_vehicleuse($select=cp_name),cp_daylight($select=cp_name),cp_vehiclewasseen($select=cp_name),cp_reasonforstopping($select=cp_name),cp_speedlimit($select=cp_name),cp_informationfrom($select=cp_name),cp_visibility($select=cp_name),cp_markedunmarked($select=cp_name),cp_weather($select=cp_name),cp_streetlighting($select=cp_name),cp_issuedto($select=cp_name),cp_tpa($select=cp_name)\n"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Get_a_row_by_ID_(TPA)": {
+          "runAfter": {
+            "If_there_is_an_Evidence_officer": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "c719eabb-835c-4745-89da-8850ab37e074"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_territorialpolicingareas",
+              "recordId": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/_cp_tpa_value\u0027]"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Get_a_row_by_ID_(officer_from_user)": {
+          "runAfter": {
+            "IS_there_an_offender": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "35a49565-9d2d-43dd-aa50-8b64229f6302"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "systemusers",
+              "recordId": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/_ownerid_value\u0027]",
+              "$expand": "positionid($select=name)"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "List_rows(Traffic_Offences)": {
+          "runAfter": {
+            "Initialize_variable_Repeating_table_VDRS_Offences": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "10cf78be-bc5c-42b8-b120-6ac185b9c9cd"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_tickettypetrafficoffences",
+              "$filter": "_cp_vehicleticket_value eq  \u0027@{triggerBody()[\u0027text\u0027]}\u0027"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "List_rows_(HORT1)": {
+          "runAfter": {
+            "IF_TRAFFIC_OFFENCE_EXISTS": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "448544dd-39f5-4500-996b-374e56ba5ffa"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_tickettypehort1s",
+              "$filter": "_cp_vehicleticket_value eq  \u0027@{triggerBody()[\u0027text\u0027]}\u0027"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "List_rows(VDRS)": {
+          "runAfter": {
+            "IF_HORT1_EXISTS_": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "0214815a-7dc6-40eb-b2f6-5544bafc4849"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_tickettypevdrses",
+              "$filter": "_cp_vehicleticket_value eq  \u0027@{triggerBody()[\u0027text\u0027]}\u0027"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "List_rows(S163)": {
+          "runAfter": {
+            "IF_VDRS_EXISTS__": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "1b4cd9b1-f82d-4bbe-8692-e2faca353b79"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_tickettypesection163s",
+              "$filter": "_cp_vehicleticket_value eq  \u0027@{triggerBody()[\u0027text\u0027]}\u0027"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "List_rows(S165)": {
+          "runAfter": {
+            "IF_S163_EXISTS": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "86c4e192-91da-4d0b-875d-7f4233f0acfa"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_tickettypesection165s",
+              "$filter": "_cp_vehicleticket_value eq  \u0027@{triggerBody()[\u0027text\u0027]}\u0027"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "List_rows(S59)": {
+          "runAfter": {
+            "IF_S165_EXISTS": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "7248dfc1-2067-4e06-897c-8d39ab17fe1d"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_tickettypesection59s",
+              "$filter": "_cp_vehicleticket_value eq  \u0027@{triggerBody()[\u0027text\u0027]}\u0027"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Initialize_Photo_1_Object": {
+          "runAfter": {
+            "Initialize_Photos_Array": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2b1aa733-bee2-4650-83de-e5ce53c709e2"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Photo1",
+                "type": "object",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            ]
+          }
+        },
+        "Initialize_Photo_2_Object": {
+          "runAfter": {
+            "Initialize_Photo_1_Object": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "2c5812ed-5b49-4902-b06a-cdacadc9a80e"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Photo2",
+                "type": "object",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            ]
+          }
+        },
+        "Initialize_Photo_3_Object": {
+          "runAfter": {
+            "Initialize_Photo_2_Object": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5ec0bef5-964e-4803-8709-b0591c21f86e"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Photo3",
+                "type": "object",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            ]
+          }
+        },
+        "Initialize_Photo_4_Object": {
+          "runAfter": {
+            "Initialize_Photo_3_Object": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "566fdfc1-3dfc-4de0-ade9-c2945f1bfd7b"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Photo4",
+                "type": "object",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            ]
+          }
+        },
+        "Initialize_Photo_5_Object": {
+          "runAfter": {
+            "Initialize_Photo_4_Object": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "bfec0025-6427-4c0b-ae96-52ce90f80489"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Photo5",
+                "type": "object",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            ]
+          }
+        },
+        "IF_TRAFFIC_OFFENCE_EXISTS": {
+          "actions": {
+            "Set_variable_TO_Signature_2": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "21fe8ba4-6bbe-4eed-b632-433f2da8dc39"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "TO offender Signature",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "List_rows(Traffic_Offences)": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Get_a_row_by_ID_first_row_of_TO": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "859d33d6-81ac-494d-b088-9a4f05a2b23f"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "GetItem",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cp_tickettypetrafficoffences",
+                    "recordId": "@first(body(\u0027List_rows(Traffic_Offences)\u0027)?[\u0027value\u0027])?[\u0027cp_tickettypetrafficoffenceid\u0027]"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              },
+              "Download_a_file_or_an_image_TO_signature": {
+                "runAfter": {
+                  "Get_a_row_by_ID_first_row_of_TO": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "33a156d2-5a30-42e8-a5d5-96d5c34d583c"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "GetEntityFileImageFieldContent",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cp_tickettypetrafficoffences",
+                    "recordId": "@outputs(\u0027Get_a_row_by_ID_first_row_of_TO\u0027)?[\u0027body/cp_tickettypetrafficoffenceid\u0027]",
+                    "fileImageFieldName": "cp_offendersignature",
+                    "size": "full"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              },
+              "Compose_TO_Signature": {
+                "runAfter": {
+                  "Download_a_file_or_an_image_TO_signature": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "20893f28-f9ab-49f3-8d5f-5b40321d67de"
+                },
+                "type": "Compose",
+                "inputs": {
+                  "$content-type": "image/jpeg",
+                  "$content": "@{base64(outputs(\u0027Download_a_file_or_an_image_TO_signature\u0027)?[\u0027body\u0027])}"
+                }
+              },
+              "Set_variable_TO_Signature": {
+                "runAfter": {
+                  "Compose_TO_Signature": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "ddb6bc9c-db85-475d-b7d9-5f37b0aa1b98"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "TO offender Signature",
+                  "value": "@outputs(\u0027Compose_TO_Signature\u0027)"
+                }
+              },
+              "Check_if_there_are_any_Traffic_Offence_Codes": {
+                "actions": {},
+                "runAfter": {
+                  "List_rows_all_traffic_offences": [
+                    "Succeeded"
+                  ]
+                },
+                "else": {
+                  "actions": {
+                    "Apply_to_each_Traffic_Offence_codes_": {
+                      "foreach": "@outputs(\u0027List_rows_all_traffic_offences\u0027)?[\u0027body/value\u0027]",
+                      "actions": {
+                        "List_rows_Offence_Codes": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "d2fd269c-7da6-4a33-aa08-a8f8d177110f"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "ListRecords",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_offencecodes",
+                              "$filter": "cp_offencecodeid eq @{items(\u0027Apply_to_each_Traffic_Offence_codes_\u0027)?[\u0027cp_offencecodeid\u0027]}"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Apply_to_each_Codes_Found": {
+                          "foreach": "@outputs(\u0027List_rows_Offence_Codes\u0027)?[\u0027body/value\u0027]",
+                          "actions": {
+                            "Get_a_row_by_ID_Offence_Codes": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "3768c071-e46a-4242-8a77-5f91ac2f36b8"
+                              },
+                              "type": "OpenApiConnection",
+                              "inputs": {
+                                "host": {
+                                  "connectionName": "shared_commondataserviceforapps",
+                                  "operationId": "GetItem",
+                                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                },
+                                "parameters": {
+                                  "entityName": "cp_offencecodes",
+                                  "recordId": "@items(\u0027Apply_to_each_Codes_Found\u0027)?[\u0027cp_offencecodeid\u0027]",
+                                  "$expand": "cp_offencecategoryid($select=cp_name)"
+                                },
+                                "authentication": "@parameters(\u0027$authentication\u0027)"
+                              }
+                            },
+                            "Append_to_array_variable_Reapting_table_traffic_Offences_": {
+                              "runAfter": {
+                                "Get_a_row_by_ID_Offence_Codes": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "dcf3709c-95c3-4c9d-9bf3-2df0914dac04"
+                              },
+                              "type": "AppendToArrayVariable",
+                              "inputs": {
+                                "name": "Repeating table  Traffic Offence Codes",
+                                "value": {
+                                  "TO CATEGORY": "@{outputs(\u0027Get_a_row_by_ID_Offence_Codes\u0027)?[\u0027body/cp_offencecategoryid/cp_name\u0027]}",
+                                  "TO CODE": "@{outputs(\u0027Get_a_row_by_ID_Offence_Codes\u0027)?[\u0027body/cp_name\u0027]}",
+                                  "TO DESCRIPTION": "@{outputs(\u0027Get_a_row_by_ID_Offence_Codes\u0027)?[\u0027body/cp_offencedescription\u0027]}"
+                                }
+                              }
+                            }
+                          },
+                          "runAfter": {
+                            "List_rows_Offence_Codes": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "e514052b-8283-49ff-b53d-f99a957ea712"
+                          },
+                          "type": "Foreach"
+                        }
+                      },
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "111fa177-48c4-4140-b05d-49acd8922160"
+                      },
+                      "type": "Foreach"
+                    }
+                  }
+                },
+                "expression": {
+                  "equals": [
+                    "@empty(outputs(\u0027List_rows_all_traffic_offences\u0027)?[\u0027body/value\u0027])",
+                    "@true"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "1f399b81-e82b-4a83-ad49-fa12a0a0073d"
+                },
+                "type": "If"
+              },
+              "List_rows_all_traffic_offences": {
+                "runAfter": {
+                  "Set_variable_TO_Signature": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "694ee72f-f40b-4d7c-9eda-1ddc0d20ec50"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "ListRecords",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cp_trafficoffence_cp_offencecodeset",
+                    "$filter": "cp_tickettypetrafficoffenceid eq \u0027@{outputs(\u0027Get_a_row_by_ID_first_row_of_TO\u0027)?[\u0027body/cp_tickettypetrafficoffenceid\u0027]}\u0027"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@empty(outputs(\u0027List_rows(Traffic_Offences)\u0027)?[\u0027body/value\u0027])",
+              "@true"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "18f7165f-8ae8-45ba-b07a-4049b99bfe41"
+          },
+          "type": "If"
+        },
+        "Initialize_variable_TO_offender_Signature": {
+          "runAfter": {
+            "If_Vehicle_Details_not_empty": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "1975e9b7-eb42-47fa-8392-33f05b19bd87"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "TO offender Signature",
+                "type": "object",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            ]
+          }
+        },
+        "Initialize_variable_HORT1_Offender_Signature_": {
+          "runAfter": {
+            "Initialize_variable_TO_offender_Signature": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "bc57cdb9-9c1d-4e30-996e-0c0d969f7d87"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "HORT1 Offender SIgnature",
+                "type": "object",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            ]
+          }
+        },
+        "Get_a_row_by_ID_Incident_Details": {
+          "runAfter": {
+            "Get_Vehicle_Ticket_Record": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "26ea0935-5cee-42b8-884a-aa7d435a0437"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "GetItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_incidents",
+              "recordId": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/_cp_incident_value\u0027]",
+              "$expand": "cp_EnteredBy($select=fullname,cp_badgenumber),cp_IncidentLocation"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Initialize_variable_VDRS_offender_Signature": {
+          "runAfter": {
+            "Initialize_variable_HORT1_Offender_Signature_": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "1c74018e-d6dc-49d5-b454-8c5b68795453"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "VDRS offender Signature",
+                "type": "object",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            ]
+          }
+        },
+        "Initialize_variable_S59_Offender_Signature": {
+          "runAfter": {
+            "Initialize_variable_S165_Offender_Signature": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "011df657-ed1a-48cd-840d-9d1a57904c25"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "S59 Offender Signature",
+                "type": "object",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            ]
+          }
+        },
+        "Initialize_variable_S165_Offender_Signature": {
+          "runAfter": {
+            "Initialize_variable_VDRS_offender_Signature": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d0623537-d4ab-498f-a86b-3c3cfcc104e9"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "S165 offender Signature",
+                "type": "object",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            ]
+          }
+        },
+        "Initialize_variable_Evidence_Signature": {
+          "runAfter": {
+            "Initialize_variable_S59_Offender_Signature": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d4afb293-234e-4765-9c0a-57a2fccb14ff"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Evidence Signature",
+                "type": "object",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            ]
+          }
+        },
+        "IF_HORT1_EXISTS_": {
+          "actions": {
+            "Set_variable_HORT1_Signature_3": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "8b0ac6b5-2a5c-4651-9213-d2fc2ce47965"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "HORT1 Offender SIgnature",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "List_rows_(HORT1)": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Get_a_row_by_ID_first_row_of_HORT1": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "b98456a1-41ff-4d00-8b66-77c29b486b95"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "GetItem",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cp_tickettypehort1s",
+                    "recordId": "@first(body(\u0027List_rows_(HORT1)\u0027)?[\u0027value\u0027])?[\u0027cp_tickettypehort1id\u0027]",
+                    "$expand": "cp_CheckorRecord($select=cp_name),cp_ProduceatStation($select=cp_name)"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              },
+              "Download_a_file_or_an_image_HORT1_Signature": {
+                "runAfter": {
+                  "Get_a_row_by_ID_first_row_of_HORT1": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "a14ef91f-6852-4e7b-9907-98de5dfe2271"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "GetEntityFileImageFieldContent",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cp_tickettypehort1s",
+                    "recordId": "@outputs(\u0027Get_a_row_by_ID_first_row_of_HORT1\u0027)?[\u0027body/cp_tickettypehort1id\u0027]",
+                    "fileImageFieldName": "cp_offendersignature",
+                    "size": "full"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              },
+              "Compose_HORT1__Signature": {
+                "runAfter": {
+                  "Download_a_file_or_an_image_HORT1_Signature": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "f2ef6e7e-4c13-4061-b52b-1b1ffa88b69b"
+                },
+                "type": "Compose",
+                "inputs": {
+                  "$content-type": "image/jpeg",
+                  "$content": "@{base64(outputs(\u0027Download_a_file_or_an_image_HORT1_Signature\u0027)?[\u0027body\u0027])}"
+                }
+              },
+              "Set_variable_HORT1_Signature": {
+                "runAfter": {
+                  "Compose_HORT1__Signature": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "0ba19d8f-bf36-41a7-9ec1-f9fbfa1531a3"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "HORT1 Offender SIgnature",
+                  "value": "@outputs(\u0027Compose_HORT1__Signature\u0027)"
+                }
+              },
+              "Check_if_HORT1_has_any_documents": {
+                "actions": {},
+                "runAfter": {
+                  "List_rows_HORT1_Documents": [
+                    "Succeeded"
+                  ]
+                },
+                "else": {
+                  "actions": {
+                    "Apply_to_each_Vehicle_Document": {
+                      "foreach": "@outputs(\u0027List_rows_HORT1_Documents\u0027)?[\u0027body/value\u0027]",
+                      "actions": {
+                        "List_rows_all_documents_for_HORT1_": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "73c9a874-62d0-4861-8991-e74908da53bf"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "ListRecords",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_vehicledocuments",
+                              "$filter": "cp_vehicledocumentid eq @{items(\u0027Apply_to_each_Vehicle_Document\u0027)?[\u0027cp_vehicledocumentid\u0027]}"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Apply_to_each_2": {
+                          "foreach": "@outputs(\u0027List_rows_all_documents_for_HORT1_\u0027)?[\u0027body/value\u0027]",
+                          "actions": {
+                            "Get_a_row_by_ID__HORT1_Documents": {
+                              "runAfter": {},
+                              "metadata": {
+                                "operationMetadataId": "e7ab4495-458b-4e4c-a422-2915b8d6bd44"
+                              },
+                              "type": "OpenApiConnection",
+                              "inputs": {
+                                "host": {
+                                  "connectionName": "shared_commondataserviceforapps",
+                                  "operationId": "GetItem",
+                                  "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                                },
+                                "parameters": {
+                                  "entityName": "cp_vehicledocuments",
+                                  "recordId": "@items(\u0027Apply_to_each_2\u0027)?[\u0027cp_vehicledocumentid\u0027]"
+                                },
+                                "authentication": "@parameters(\u0027$authentication\u0027)"
+                              }
+                            },
+                            "Append_to_array_variable_Repeating_Table_HORT1_Documents": {
+                              "runAfter": {
+                                "Get_a_row_by_ID__HORT1_Documents": [
+                                  "Succeeded"
+                                ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "32f44dcd-9460-47f0-85f3-0dace1b9f26b"
+                              },
+                              "type": "AppendToArrayVariable",
+                              "inputs": {
+                                "name": "Repeating table HORT1 Documents",
+                                "value": {
+                                  "HORT1 Doucments": "@{outputs(\u0027Get_a_row_by_ID__HORT1_Documents\u0027)?[\u0027body/cp_name\u0027]}"
+                                }
+                              }
+                            }
+                          },
+                          "runAfter": {
+                            "List_rows_all_documents_for_HORT1_": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "c4337b85-b322-4b88-beb5-c84864390942"
+                          },
+                          "type": "Foreach"
+                        }
+                      },
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "1c38bdab-b404-4b04-9a96-1a7e937198ba"
+                      },
+                      "type": "Foreach"
+                    }
+                  }
+                },
+                "expression": {
+                  "equals": [
+                    "@empty(outputs(\u0027List_rows_HORT1_Documents\u0027)?[\u0027body/value\u0027])",
+                    "@true"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "1a41bde6-7f35-4aa8-8a80-e193fff9d19c"
+                },
+                "type": "If"
+              },
+              "List_rows_HORT1_Documents": {
+                "runAfter": {
+                  "Set_variable_HORT1_Signature": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "4dfee08f-fe63-4eb9-9fc7-faae57112480"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "ListRecords",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cp_tickettypehort1_vehicledocumentset",
+                    "$filter": "cp_tickettypehort1id eq @{outputs(\u0027Get_a_row_by_ID_first_row_of_HORT1\u0027)?[\u0027body/cp_tickettypehort1id\u0027]}"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@empty(outputs(\u0027List_rows_(HORT1)\u0027)?[\u0027body/value\u0027])",
+              "@true"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8f34c210-bfc5-47e3-91c2-ea11d508b875"
+          },
+          "type": "If"
+        },
+        "IF_VDRS_EXISTS__": {
+          "actions": {
+            "Set_variable_VDRS_Signature_2": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "cd67a2fc-9e03-4c59-9f45-6b63822d28e1"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "VDRS offender Signature",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "List_rows(VDRS)": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Get_a_row_by_ID_first_row_of_VDRS": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "fd1c2ecc-a7b6-42e1-903b-68cfddb2c7cd"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "GetItem",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cp_tickettypevdrses",
+                    "recordId": "@first(body(\u0027List_rows(VDRS)\u0027)?[\u0027value\u0027])?[\u0027cp_tickettypevdrsid\u0027]"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              },
+              "Download_a_file_or_an_image_VDRS_Signature": {
+                "runAfter": {
+                  "Get_a_row_by_ID_first_row_of_VDRS": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "ade0d493-3dec-4829-80fd-439ddd256ded"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "GetEntityFileImageFieldContent",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cp_tickettypevdrses",
+                    "recordId": "@outputs(\u0027Get_a_row_by_ID_first_row_of_VDRS\u0027)?[\u0027body/cp_tickettypevdrsid\u0027]",
+                    "fileImageFieldName": "cp_offendersignature",
+                    "size": "full"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              },
+              "Compose_VDRS_Signature": {
+                "runAfter": {
+                  "Download_a_file_or_an_image_VDRS_Signature": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "57b10b7b-be2e-458b-ac5a-52851e20f17a"
+                },
+                "type": "Compose",
+                "inputs": {
+                  "$content-type": "image/jpeg",
+                  "$content": "@{base64(outputs(\u0027Download_a_file_or_an_image_VDRS_Signature\u0027)?[\u0027body\u0027])}"
+                }
+              },
+              "Set_variable_VDRS_Signature": {
+                "runAfter": {
+                  "Compose_VDRS_Signature": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "7066b40b-6572-4f28-af79-c69008b692f1"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "VDRS offender Signature",
+                  "value": "@outputs(\u0027Compose_VDRS_Signature\u0027)"
+                }
+              },
+              "Check_if_there_are_any_VDRS_offences_": {
+                "actions": {},
+                "runAfter": {
+                  "List_rows_VDRS_Offences": [
+                    "Succeeded"
+                  ]
+                },
+                "else": {
+                  "actions": {
+                    "Apply_to_each_VDRS_Offence_Code": {
+                      "foreach": "@outputs(\u0027List_rows_VDRS_Offences\u0027)?[\u0027body/value\u0027]",
+                      "actions": {
+                        "Get_a_row_by_ID_VDRS_offences": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "c6108325-b770-4d80-a665-f7dcd0019419"
+                          },
+                          "type": "OpenApiConnection",
+                          "inputs": {
+                            "host": {
+                              "connectionName": "shared_commondataserviceforapps",
+                              "operationId": "GetItem",
+                              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                            },
+                            "parameters": {
+                              "entityName": "cp_offencecodes",
+                              "recordId": "@items(\u0027Apply_to_each_VDRS_Offence_Code\u0027)?[\u0027cp_offencecodeid\u0027]",
+                              "$expand": "cp_offencecategoryid($select=cp_name)"
+                            },
+                            "authentication": "@parameters(\u0027$authentication\u0027)"
+                          }
+                        },
+                        "Append_to_array_variable_VDRS_Offences_Repeating_Table": {
+                          "runAfter": {
+                            "Get_a_row_by_ID_VDRS_offences": [
+                              "Succeeded"
+                            ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "b2293da7-e108-447d-932f-66eaa2e1e826"
+                          },
+                          "type": "AppendToArrayVariable",
+                          "inputs": {
+                            "name": "Repeating table VDRS Offences",
+                            "value": {
+                              "VDRS Code": "@{outputs(\u0027Get_a_row_by_ID_VDRS_offences\u0027)?[\u0027body/cp_name\u0027]}",
+                              "VDRS Category": "@{outputs(\u0027Get_a_row_by_ID_VDRS_offences\u0027)?[\u0027body/cp_offencecategoryid/cp_name\u0027]}",
+                              "VDRS Description": "@{outputs(\u0027Get_a_row_by_ID_VDRS_offences\u0027)?[\u0027body/cp_offencedescription\u0027]}"
+                            }
+                          }
+                        }
+                      },
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "751dd062-5b8a-4d6f-b0e3-ca06977bbd56"
+                      },
+                      "type": "Foreach"
+                    }
+                  }
+                },
+                "expression": {
+                  "equals": [
+                    "@empty(outputs(\u0027List_rows_VDRS_Offences\u0027)?[\u0027body/value\u0027])",
+                    "@true"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "71dde102-1550-4f80-bf48-4d2054a05691"
+                },
+                "type": "If"
+              },
+              "List_rows_VDRS_Offences": {
+                "runAfter": {
+                  "Set_variable_VDRS_Signature": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "10560c8a-5840-4a40-b55b-8027c02ccec0"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "ListRecords",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cp_vdrs_cp_offencecodeset",
+                    "$filter": "cp_tickettypevdrsid eq @{outputs(\u0027Get_a_row_by_ID_first_row_of_VDRS\u0027)?[\u0027body/cp_tickettypevdrsid\u0027]}"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@empty(outputs(\u0027List_rows(VDRS)\u0027)?[\u0027body/value\u0027])",
+              "@true"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "1b8f0b9b-32b7-4a1c-a46a-b14ca374ebd8"
+          },
+          "type": "If"
+        },
+        "IF_S163_EXISTS": {
+          "actions": {},
+          "runAfter": {
+            "List_rows(S163)": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Get_a_row_by_ID_first_row_of_S163": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "93f0bc4d-a99c-48de-b40d-aa30b1d921f1"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "GetItem",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cp_tickettypesection163s",
+                    "recordId": "@first(body(\u0027List_rows(S163)\u0027)?[\u0027value\u0027])?[\u0027cp_tickettypesection163id\u0027]",
+                    "$expand": "cp_outcomeofstopreasonforoutcome($select=cp_name),cp_reasonforusings163power($select=cp_name)"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@empty(outputs(\u0027List_rows(S163)\u0027)?[\u0027body/value\u0027])",
+              "@true"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "4c91f2ed-83b2-4b5b-b247-1ae50cc34834"
+          },
+          "type": "If"
+        },
+        "IF_S165_EXISTS": {
+          "actions": {
+            "Set_variable_S165_Signature__2": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "bd6579b0-9d84-4b85-a8aa-a239c7922397"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "S165 offender Signature",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "List_rows(S165)": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Get_a_row_by_ID_first_row_of_S165": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "91d35fd0-2806-4247-a450-7fdb1219d81b"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "GetItem",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cp_tickettypesection165s",
+                    "recordId": "@first(body(\u0027List_rows(S165)\u0027)?[\u0027value\u0027])?[\u0027cp_tickettypesection165id\u0027]",
+                    "$expand": "cp_Without($select=cp_name),cp_DesignatedStation($select=cp_name),cp_RecoveryGarage"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              },
+              "Download_a_file_or_an_image_S165_Signature": {
+                "runAfter": {
+                  "Get_a_row_by_ID_first_row_of_S165": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "7d5b3f88-e930-4611-ae56-3e4a5bfe0065"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "GetEntityFileImageFieldContent",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cp_tickettypesection165s",
+                    "recordId": "@outputs(\u0027Get_a_row_by_ID_first_row_of_S165\u0027)?[\u0027body/cp_tickettypesection165id\u0027]",
+                    "fileImageFieldName": "cp_offendersignature",
+                    "size": "full"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              },
+              "Compose_S165_Signature__": {
+                "runAfter": {
+                  "Download_a_file_or_an_image_S165_Signature": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "1b74f2d0-9a60-4441-a713-bb27e1dd55f5"
+                },
+                "type": "Compose",
+                "inputs": {
+                  "$content-type": "image/jpeg",
+                  "$content": "@{base64(outputs(\u0027Download_a_file_or_an_image_S165_Signature\u0027)?[\u0027body\u0027])}"
+                }
+              },
+              "Set_variable_S165_Signature_": {
+                "runAfter": {
+                  "Compose_S165_Signature__": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "ebd12165-ef61-42bb-8b92-4d79b4c1af4d"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "S165 offender Signature",
+                  "value": "@outputs(\u0027Compose_S165_Signature__\u0027)"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@empty(outputs(\u0027List_rows(S165)\u0027)?[\u0027body/value\u0027])",
+              "@true"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "8f3fb5c8-d0d1-4de6-9be5-bd9bb13c0a2a"
+          },
+          "type": "If"
+        },
+        "IF_S59_EXISTS_": {
+          "actions": {
+            "Set_variable_S59_Signature___2": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "f223391a-adeb-42cc-831c-6599885ff56d"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "S59 Offender Signature",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "List_rows(S59)": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Get_a_row_by_ID_First_row_of_S59": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "1ef5dcce-9169-4fd0-a086-d3b64600da4c"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "GetItem",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cp_tickettypesection59s",
+                    "recordId": "@first(body(\u0027List_rows(S59)\u0027)?[\u0027value\u0027])?[\u0027cp_tickettypesection59id\u0027]",
+                    "$expand": "cp_Section($select=cp_name),cp_warningorseizure($select=cp_name),cp_You($select=cp_name),cp_drivingtheabovevehiclein($select=cp_name),cp_You3($select=cp_name),cp_drivingmanner($select=cp_name),cp_recoverygarage"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              },
+              "Download_a_file_or_an_image_S59_Signature": {
+                "runAfter": {
+                  "Get_a_row_by_ID_First_row_of_S59": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "44d8a640-18a1-470a-8115-b1dd9d9d4833"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "GetEntityFileImageFieldContent",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cp_tickettypesection59s",
+                    "recordId": "@outputs(\u0027Get_a_row_by_ID_First_row_of_S59\u0027)?[\u0027body/cp_tickettypesection59id\u0027]",
+                    "fileImageFieldName": "cp_offendersignature",
+                    "size": "full"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              },
+              "Compose_S59_Signature__": {
+                "runAfter": {
+                  "Download_a_file_or_an_image_S59_Signature": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "8ed2989a-6506-4105-b597-09ffd9033cbb"
+                },
+                "type": "Compose",
+                "inputs": {
+                  "$content-type": "image/jpeg",
+                  "$content": "@{base64(outputs(\u0027Download_a_file_or_an_image_S59_Signature\u0027)?[\u0027body\u0027])}"
+                }
+              },
+              "Set_variable_S59_Signature__": {
+                "runAfter": {
+                  "Compose_S59_Signature__": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "dc1a52dd-5d9a-4c96-ae2a-b56addfb7b38"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "S59 Offender Signature",
+                  "value": "@outputs(\u0027Compose_S59_Signature__\u0027)"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@empty(outputs(\u0027List_rows(S59)\u0027)?[\u0027body/value\u0027])",
+              "@true"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "c893f061-fe57-44d0-8f99-bc786f4c1871"
+          },
+          "type": "If"
+        },
+        "Check_if_evidence_signature_exists_(Officer_Signature)": {
+          "actions": {
+            "Set_if_evidence_signature_=_yes": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "51dcd53e-0c1c-438f-aa6d-e6c3c41f5b98"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "Evidence Signature",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "IF_S59_EXISTS_": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Download_Officer_Signature": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "8ddd67d6-59d7-4dda-a717-a110203a6cff"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "GetEntityFileImageFieldContent",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cp_vehicletickets",
+                    "recordId": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_vehicleticketid\u0027]",
+                    "fileImageFieldName": "cp_officersignature",
+                    "size": "full"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              },
+              "Compose_Officer_Signature": {
+                "runAfter": {
+                  "Download_Officer_Signature": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "449555ff-15e4-441f-96a5-f3ad8dcae975"
+                },
+                "type": "Compose",
+                "inputs": {
+                  "$content-type": "image/jpeg",
+                  "$content": "@{base64(outputs(\u0027Download_Officer_Signature\u0027)?[\u0027body\u0027])}"
+                }
+              },
+              "Set_variable": {
+                "runAfter": {
+                  "Compose_Officer_Signature": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "ae6692c0-8c93-4737-ac40-82bd571fcd61"
+                },
+                "type": "SetVariable",
+                "inputs": {
+                  "name": "Evidence Signature",
+                  "value": "@outputs(\u0027Compose_Officer_Signature\u0027)"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@empty(outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_officersignature\u0027])",
+              "@true"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "45b1a8fe-b358-43e2-a70d-cabb8f909ff6"
+          },
+          "type": "If"
+        },
+        "List_Photos": {
+          "runAfter": {
+            "Get_a_row_by_ID_Incident_Details": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "c43ca77f-e5f7-4222-adf2-88dee42ab0c7"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_photos",
+              "$filter": "(_cp_vehicleticket_value eq @{triggerBody()[\u0027text\u0027]})"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Initialize_Photos_Array": {
+          "runAfter": {
+            "Check_if_evidence_signature_exists_(Officer_Signature)": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5fb29be7-1c14-4e54-8063-514fb40dcda2"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Photos",
+                "type": "array",
+                "value": "@null"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_Repeating_table__Traffic_Offence_Codes": {
+          "runAfter": {
+            "Initialize_variable_Evidence_Signature": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "3abe339b-59db-400e-b573-12f14a7dc115"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Repeating table  Traffic Offence Codes",
+                "type": "array"
+              }
+            ]
+          }
+        },
+        "List_rows_Vehicle_Details_": {
+          "runAfter": {
+            "Get_a_row_by_ID_(TPA)": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5e9ca2e1-5ce8-4c29-901c-b21042c50194"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_commondataserviceforapps",
+              "operationId": "ListRecords",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+            },
+            "parameters": {
+              "entityName": "cp_vehicledetailses",
+              "$filter": "cp_vehicledetailsid eq @{outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/_cp_vehicledetails_value\u0027]}"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "If_Vehicle_Details_not_empty": {
+          "actions": {},
+          "runAfter": {
+            "Check_if_there_are_Licence_Categories_for_the_Offender": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Get_a_row_by_ID_first_row_of_Vehicle_details": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "884d9aa3-ee4c-4b11-91ff-a8697ee8cb50"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "GetItem",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cp_vehicledetailses",
+                    "recordId": "@first(body(\u0027List_rows_Vehicle_Details_\u0027)?[\u0027value\u0027])?[\u0027cp_vehicledetailsid\u0027]",
+                    "$expand": "cp_make($select=cp_name),cp_VehicleRoles($select=cp_name),cp_Colour($select=cp_name)"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              },
+              "Apply_to_each": {
+                "foreach": "@outputs(\u0027List_rows_Vehicle_Details_\u0027)?[\u0027body/value\u0027]",
+                "actions": {
+                  "Get_a_row_by_ID_Vehicle": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "e0de328d-b43e-4a4f-92b8-2dd89888c632"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps",
+                        "operationId": "GetItem",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_vehicledetailses",
+                        "recordId": "@items(\u0027Apply_to_each\u0027)?[\u0027cp_vehicledetailsid\u0027]",
+                        "$expand": "cp_make($select=cp_name),cp_VehicleRoles($select=cp_name),cp_Colour($select=cp_name)"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  }
+                },
+                "runAfter": {
+                  "Get_a_row_by_ID_first_row_of_Vehicle_details": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "3ef7df25-c751-45fc-817c-f434bd659386"
+                },
+                "type": "Foreach"
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@empty(outputs(\u0027List_rows_Vehicle_Details_\u0027)?[\u0027body/value\u0027])",
+              "@true"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "a01c66a9-d484-4800-8707-65a2373d4a7a"
+          },
+          "type": "If"
+        },
+        "Initialize_GeneratedDocumentId": {
+          "runAfter": {
+            "If_photos_exists": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "41c7add5-0454-41a9-b644-29e145b36d67"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "GeneratedDocumentId",
+                "type": "string",
+                "value": "@{guid()}"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_Repeating_table_HORT1_Documents": {
+          "runAfter": {
+            "Initialize_variable_Repeating_table__Traffic_Offence_Codes": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "d8453c64-496d-44d1-8c88-f147f234d2f7"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Repeating table HORT1 Documents",
+                "type": "array"
+              }
+            ]
+          }
+        },
+        "Initialize_variable_Repeating_table_VDRS_Offences": {
+          "runAfter": {
+            "Initialize_variable_Repeating_table_HORT1_Documents": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "476ee881-07e5-40fd-aeab-b4d34f1ededb"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Repeating table VDRS Offences",
+                "type": "array"
+              }
+            ]
+          }
+        },
+        "Populate_a_Microsoft_Word_template": {
+          "runAfter": {
+            "Initialize_GeneratedDocumentId": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "01DHY4AP4SOJZFVXPZOBHKUOXOQJ2DXEGJ": "/Vehicle PDF.docx",
+            "016AAA3S63W2BCQPHKKFDKLYKW7U6JJ7ZP": "/Cumbria/Templates/Vehicle/Vehicle PDF.docx",
+            "01DHY4AP23SWJ3434UZFHLFTBMHRRJQ3HI": "/Vehicle PDF.docx",
+            "014YZTY72XYLYFFIB7HVDYVFNA7CTBJHS2": "/Templates/Vehicle/Vehicle PDF.docx",
+            "operationMetadataId": "4bcc2438-0596-4df1-99eb-7565c701a496"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_wordonlinebusiness",
+              "operationId": "CreateFileItem",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_wordonlinebusiness"
+            },
+            "parameters": {
+              "source": "sites/tisskilimited.sharepoint.com,5891e259-4b18-4e57-872a-76a7432bb0b6,0e904291-9378-4ff1-b183-6c7236bd194f",
+              "drive": "b!WeKRWBhLV06HKnanQyuwtpFCkA54k_FPsYNscja9GU-_YgpLYOi6T49L6ZbolPrM",
+              "file": "014YZTY74K622O3HSPCFC3MFOZYXXXDLEG",
+              "dynamicFileSchema/2640032": "@outputs(\u0027Get_a_row_by_ID_first_row_of_Vehicle_details\u0027)?[\u0027body/cp_name\u0027]",
+              "dynamicFileSchema/34317122": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/firstname\u0027]",
+              "dynamicFileSchema/38322505": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_haslplates\u0027]",
+              "dynamicFileSchema/79800696": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_tpa/cp_name\u0027]",
+              "dynamicFileSchema/88752176": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/cp_contacttitle/cp_name\u0027]",
+              "dynamicFileSchema/107634600": "@outputs(\u0027Get_a_row_by_ID_first_row_of_TO\u0027)?[\u0027body/cp_nipgiven\u0027]",
+              "dynamicFileSchema/226265323": "@outputs(\u0027Get_a_row_by_ID_first_row_of_Vehicle_details\u0027)?[\u0027body/cp_model\u0027]",
+              "dynamicFileSchema/308599774": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_speeddetectionmethod/cp_name\u0027]",
+              "dynamicFileSchema/324557884": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_fromreferencepoint\u0027]",
+              "dynamicFileSchema/339584266": "@outputs(\u0027Get_a_row_by_ID_First_row_of_S59\u0027)?[\u0027body/cp_recoverygarage/name\u0027]",
+              "dynamicFileSchema/340897675": "@outputs(\u0027Get_a_row_by_ID_first_row_of_S165\u0027)?[\u0027body/cp_designatedstation/cp_name\u0027]",
+              "dynamicFileSchema/384767520": "@outputs(\u0027Get_a_row_by_ID_(officer_from_user)\u0027)?[\u0027body/firstname\u0027]",
+              "dynamicFileSchema/397022665": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_toreferencepointfc\u0027]",
+              "dynamicFileSchema/405112685": "@outputs(\u0027Get_a_row_by_ID_first_row_of_S165\u0027)?[\u0027body/cp_without/cp_name\u0027]",
+              "dynamicFileSchema/440579622": "@variables(\u0027Photo1\u0027)",
+              "dynamicFileSchema/441033538": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/address1_county\u0027]",
+              "dynamicFileSchema/443973797": "@outputs(\u0027Get_a_row_by_ID_First_row_of_S59\u0027)?[\u0027body/cp_recoverygarage/telephone1\u0027]",
+              "dynamicFileSchema/487523077": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_hasinsurance\u0027]",
+              "dynamicFileSchema/553130770": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_hasmot\u0027]",
+              "dynamicFileSchema/561678578": "@outputs(\u0027Get_a_row_by_ID_Incident_Details\u0027)?[\u0027body/cp_incidentlocation/cp_city\u0027]",
+              "dynamicFileSchema/577017080": "@if(empty(outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/cp_licenceexpiry\u0027]),\u0027\u0027,formatDateTime(convertTimeZone(outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/cp_licenceexpiry\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy\u0027))",
+              "dynamicFileSchema/599224471": "@variables(\u0027Photo5\u0027)",
+              "dynamicFileSchema/630067367": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/emailaddress1\u0027]",
+              "dynamicFileSchema/638695917": "@if(empty(outputs(\u0027Get_a_row_by_ID_first_row_of_Vehicle_details\u0027)?[\u0027body/cp_validto\u0027]),\u0027\u0027,formatDateTime(convertTimeZone(outputs(\u0027Get_a_row_by_ID_first_row_of_Vehicle_details\u0027)?[\u0027body/cp_validto\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy\u0027))",
+              "dynamicFileSchema/669455124": "@if(empty(outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/birthdate\u0027]),\u0027\u0027,formatDateTime(convertTimeZone(outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/birthdate\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy\u0027))",
+              "dynamicFileSchema/690426207": "@outputs(\u0027Get_a_row_by_ID_first_row_of_HORT1\u0027)?[\u0027body/cp_hort1serialnumber\u0027]",
+              "dynamicFileSchema/705063272": "@outputs(\u0027Get_a_row_by_ID_Incident_Details\u0027)?[\u0027body/cp_incidentnumber\u0027]",
+              "dynamicFileSchema/716088659": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_recordingdistance\u0027]",
+              "dynamicFileSchema/738680570": "@outputs(\u0027Get_a_row_by_ID_Incident_Details\u0027)?[\u0027body/cp_incidentlocation/cp_name\u0027]",
+              "dynamicFileSchema/773680054": "@outputs(\u0027Get_a_row_by_ID_first_row_of_VDRS\u0027)?[\u0027body/cp_details\u0027]",
+              "dynamicFileSchema/791172011": "@{outputs(\u0027Get_a_row_by_ID_Incident_Details\u0027)?[\u0027body/cp_incidentlocation/cp_longitude\u0027]},@{outputs(\u0027Get_a_row_by_ID_Incident_Details\u0027)?[\u0027body/cp_incidentlocation/cp_latitude\u0027]}",
+              "dynamicFileSchema/811375381": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_issuedto/cp_name\u0027]",
+              "dynamicFileSchema/818852158": "@outputs(\u0027Get_a_row_by_ID_first_row_of_Vehicle_details\u0027)?[\u0027body/cp_insurancenumber\u0027]",
+              "dynamicFileSchema/821706687": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_speedlimit/cp_name\u0027]",
+              "dynamicFileSchema/858627309": "@outputs(\u0027Get_a_row_by_ID_first_row_of_Vehicle_details\u0027)?[\u0027body/cp_notes\u0027]",
+              "dynamicFileSchema/920918935": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/address1_country\u0027]",
+              "dynamicFileSchema/971479330": "@outputs(\u0027Get_a_row_by_ID_first_row_of_S163\u0027)?[\u0027body/cp_reasonforusings163power/cp_name\u0027]",
+              "dynamicFileSchema/976886622": "@outputs(\u0027Get_a_row_by_ID_first_row_of_TO\u0027)?[\u0027body/cp_offenderreply\u0027]",
+              "dynamicFileSchema/1006644347": "@outputs(\u0027Get_a_row_by_ID_first_row_of_Vehicle_details\u0027)?[\u0027body/cp_vehicleroles/cp_name\u0027]",
+              "dynamicFileSchema/1009876662": "@outputs(\u0027Get_a_row_by_ID_First_row_of_S59\u0027)?[\u0027body/cp_recoverygarage/telephone1\u0027]",
+              "dynamicFileSchema/1038544562": "@outputs(\u0027Get_a_row_by_ID_First_row_of_S59\u0027)?[\u0027body/cp_you3/cp_name\u0027]",
+              "dynamicFileSchema/1063142447": "@if(empty(outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_firstdevicecheckdateandtime\u0027]),\u0027\u0027,formatDateTime(convertTimeZone(outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_firstdevicecheckdateandtime\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy HH:mm:ss\u0027))",
+              "dynamicFileSchema/1067375735": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/cp_housenumber\u0027]",
+              "dynamicFileSchema/1084485485": "@variables(\u0027Photocaption 5\u0027)",
+              "dynamicFileSchema/1146948062": "@outputs(\u0027Get_a_row_by_ID_Incident_Details\u0027)?[\u0027body/cp_incidentsuffix\u0027]",
+              "dynamicFileSchema/1306666044": "@outputs(\u0027Get_a_row_by_ID_First_row_of_S59\u0027)?[\u0027body/cp_drivingmanner/cp_name\u0027]",
+              "dynamicFileSchema/1310527343": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/mobilephone\u0027]",
+              "dynamicFileSchema/1338108109": "@outputs(\u0027Get_a_row_by_ID_First_row_of_S59\u0027)?[\u0027body/cp_recoverygarage/name\u0027]",
+              "dynamicFileSchema/1341283403": "@outputs(\u0027Get_a_row_by_ID_first_row_of_Vehicle_details\u0027)?[\u0027body/cp_enginenumber\u0027]",
+              "dynamicFileSchema/1385673833": "@outputs(\u0027Get_a_row_by_ID_(officer_from_user)\u0027)?[\u0027body/positionid/name\u0027]",
+              "dynamicFileSchema/1407111386": "@outputs(\u0027Get_a_row_by_ID_first_row_of_Vehicle_details\u0027)?[\u0027body/cp_motexpiry\u0027]",
+              "dynamicFileSchema/1419060367": "@outputs(\u0027Get_a_row_by_ID_Incident_Details\u0027)?[\u0027body/cp_incidentlocation/cp_street\u0027]",
+              "dynamicFileSchema/1440957611": "@outputs(\u0027Get_a_row_by_ID_first_row_of_HORT1\u0027)?[\u0027body/cp_checkorrecord/cp_name\u0027]",
+              "dynamicFileSchema/1453904869": "@variables(\u0027Photo2\u0027)",
+              "dynamicFileSchema/1469014944": "@outputs(\u0027Get_a_row_by_ID_first_row_of_HORT1\u0027)?[\u0027body/cp_otherdocuments\u0027]",
+              "dynamicFileSchema/1528983046": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_vehiclestopped\u0027]",
+              "dynamicFileSchema/1538548422": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/cp_selfdefinedethnicity/cp_name\u0027]",
+              "dynamicFileSchema/1545486607": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/company\u0027]",
+              "dynamicFileSchema/1595590179": "@outputs(\u0027Get_a_row_by_ID_First_row_of_S59\u0027)?[\u0027body/cp_you/cp_name\u0027]",
+              "dynamicFileSchema/1601290704": "@outputs(\u0027Get_a_row_by_ID_first_row_of_Vehicle_details\u0027)?[\u0027body/cp_make/cp_name\u0027]",
+              "dynamicFileSchema/1610542265": "@outputs(\u0027Get_a_row_by_ID_first_row_of_S165\u0027)?[\u0027body/cp_section165printed\u0027]",
+              "dynamicFileSchema/1630364556": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_isdriversupervised\u0027]",
+              "dynamicFileSchema/1647326306": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_onmotorway\u0027]",
+              "dynamicFileSchema/1671908211": "@outputs(\u0027Get_a_row_by_ID_first_row_of_Vehicle_details\u0027)?[\u0027body/cp_chassisnumber\u0027]",
+              "dynamicFileSchema/1681159711": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_recordedspeedmphfc\u0027]",
+              "dynamicFileSchema/1695411521": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/cp_gender/cp_name\u0027]",
+              "dynamicFileSchema/1709759181": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_haspassengers\u0027]",
+              "dynamicFileSchema/1720397364": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_isdriverkeeper\u0027]",
+              "dynamicFileSchema/1723168854": "@outputs(\u0027Get_a_row_by_ID_First_row_of_S59\u0027)?[\u0027body/cp_warningorseizure/cp_name\u0027]",
+              "dynamicFileSchema/1826631395": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_policevehiclenumber\u0027]",
+              "dynamicFileSchema/1841032874": "@variables(\u0027Photo3\u0027)",
+              "dynamicFileSchema/1859004327": "@variables(\u0027Repeating table VDRS Offences\u0027)",
+              "dynamicFileSchema/1882512055": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_firstdevicedhecklocation\u0027]",
+              "dynamicFileSchema/1883671936": "@if(empty(outputs(\u0027Get_a_row_by_ID_first_row_of_Vehicle_details\u0027)?[\u0027body/cp_validfrom\u0027]),\u0027\u0027,formatDateTime(convertTimeZone(outputs(\u0027Get_a_row_by_ID_first_row_of_Vehicle_details\u0027)?[\u0027body/cp_validfrom\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy\u0027))",
+              "dynamicFileSchema/1918354257": "@variables(\u0027PhotoCaption2\u0027)",
+              "dynamicFileSchema/1928921795": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/address1_city\u0027]",
+              "dynamicFileSchema/2075395584": "@{If(empty(outputs(\u0027List_rows(Traffic_Offences)\u0027)?[\u0027body/value\u0027]),\u0027\u0027,\u0027Traffic Offence\u0027)},@{If(empty(outputs(\u0027List_rows_(HORT1)\u0027)?[\u0027body/value\u0027]),\u0027\u0027,\u0027HORT1\u0027)},@{If(empty(outputs(\u0027List_rows(VDRS)\u0027)?[\u0027body/value\u0027])\r\n,\u0027\u0027,\u0027VDRS\u0027)},@{If(empty(outputs(\u0027List_rows(S163)\u0027)?[\u0027body/value\u0027]),\u0027\u0027,\u0027S163\u0027)},@{If(empty(outputs(\u0027List_rows(S165)\u0027)?[\u0027body/value\u0027]),\u0027\u0027,\u0027S165\u0027)},@{If(empty(outputs(\u0027List_rows(S59)\u0027)?[\u0027body/value\u0027]),\u0027\u0027,\u0027S59\u0027)}",
+              "dynamicFileSchema/2080401711": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/cp_foreignlicencenumber\u0027]",
+              "dynamicFileSchema/2086793896": "@outputs(\u0027Get_a_row_by_ID_First_row_of_S59\u0027)?[\u0027body/cp_section59printed\u0027]",
+              "dynamicFileSchema/2099049052": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/address1_line1\u0027]",
+              "dynamicFileSchema/2121107768": "@variables(\u0027Repeating table HORT1 Documents\u0027)",
+              "dynamicFileSchema/-1077517368": "@if(empty(outputs(\u0027Get_a_row_by_ID_Incident_Details\u0027)?[\u0027body/cp_incidentdate\u0027]),\u0027\u0027,formatDateTime(convertTimeZone(outputs(\u0027Get_a_row_by_ID_Incident_Details\u0027)?[\u0027body/cp_incidentdate\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy\u0027))",
+              "dynamicFileSchema/-1926179932": "@outputs(\u0027Get_a_row_by_ID_(officer_from_user)\u0027)?[\u0027body/lastname\u0027]",
+              "dynamicFileSchema/-689829510": "@outputs(\u0027Get_a_row_by_ID_(officer_from_user)\u0027)?[\u0027body/cp_badgenumber\u0027]",
+              "dynamicFileSchema/-1224592114": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_tpa/cp_name\u0027]",
+              "dynamicFileSchema/-2093070233": "@if(empty(outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_offencedatetime\u0027]),\u0027\u0027,formatDateTime(convertTimeZone(outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_offencedatetime\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy HH:mm:ss\u0027))",
+              "dynamicFileSchema/-282274585": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_reasonforstopping/cp_name\u0027]",
+              "dynamicFileSchema/-221217446": "@outputs(\u0027Get_a_row_by_ID_first_row_of_Vehicle_details\u0027)?[\u0027body/cp_colour/cp_name\u0027]",
+              "dynamicFileSchema/-1120611449": "@outputs(\u0027Get_a_row_by_ID_first_row_of_Vehicle_details\u0027)?[\u0027body/cp_enginecc\u0027]",
+              "dynamicFileSchema/-1498421838": "@outputs(\u0027Get_a_row_by_ID_first_row_of_Vehicle_details\u0027)?[\u0027body/cp_insuredby\u0027]",
+              "dynamicFileSchema/-2105177803": "@outputs(\u0027Get_a_row_by_ID_first_row_of_Vehicle_details\u0027)?[\u0027body/cp_restrictedvehicle\u0027]",
+              "dynamicFileSchema/-1169550275": "@outputs(\u0027Get_a_row_by_ID_first_row_of_Vehicle_details\u0027)?[\u0027body/cp_manualtransmission\u0027]",
+              "dynamicFileSchema/-1291668971": "@if(empty(outputs(\u0027Get_a_row_by_ID_first_row_of_Vehicle_details\u0027)?[\u0027body/cp_dateofregistration\u0027]),\u0027\u0027,formatDateTime(convertTimeZone(outputs(\u0027Get_a_row_by_ID_first_row_of_Vehicle_details\u0027)?[\u0027body/cp_dateofregistration\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy\u0027))",
+              "dynamicFileSchema/-1943594606": "@outputs(\u0027Get_a_row_by_ID_first_row_of_Vehicle_details\u0027)?[\u0027body/cp_uptodateexciseduty\u0027]",
+              "dynamicFileSchema/-16008513": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/lastname\u0027]",
+              "dynamicFileSchema/-901905556": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/cp_additionalname\u0027]",
+              "dynamicFileSchema/-532039688": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/cp_housename\u0027]",
+              "dynamicFileSchema/-1733608496": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/address1_postalcode\u0027]",
+              "dynamicFileSchema/-755815217": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/address1_telephone1\u0027]",
+              "dynamicFileSchema/-1447848712": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/cp_officerdefinedethnicity/cp_name\u0027]",
+              "dynamicFileSchema/-2066631280": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/cp_otheroccupation\u0027]",
+              "dynamicFileSchema/-835147155": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/cp_licencenumber\u0027]",
+              "dynamicFileSchema/-1275391458": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/cp_licencetype/cp_name\u0027]",
+              "dynamicFileSchema/-2120832023": "@outputs(\u0027Compose_Licence_Categories\u0027)",
+              "dynamicFileSchema/-420571311": "@if(empty(outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/cp_licencevalidfrom\u0027]),\u0027\u0027,formatDateTime(convertTimeZone(outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/cp_licencevalidfrom\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy\u0027))",
+              "dynamicFileSchema/-1905680357": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/cp_penaltypoints\u0027]",
+              "dynamicFileSchema/-89092228": "@outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/cp_foreignlicencecountry/cp_name\u0027]",
+              "dynamicFileSchema/-1263984601": "@variables(\u0027Repeating table  Traffic Offence Codes\u0027)",
+              "dynamicFileSchema/-75060595": "@outputs(\u0027Get_a_row_by_ID_first_row_of_TO\u0027)?[\u0027body/cp_containsspeedlimit\u0027]",
+              "dynamicFileSchema/-1921324395": "@outputs(\u0027Get_a_row_by_ID_first_row_of_TO\u0027)?[\u0027body/cp_nipnotrequired\u0027]",
+              "dynamicFileSchema/-1235779190": "@outputs(\u0027Get_a_row_by_ID_first_row_of_TO\u0027)?[\u0027body/cp_trafficserialnumber\u0027]",
+              "dynamicFileSchema/-922420138": "@outputs(\u0027Get_a_row_by_ID_first_row_of_TO\u0027)?[\u0027body/cp_trafficoffenceprinted\u0027]",
+              "dynamicFileSchema/-625316838": "@variables(\u0027TO offender Signature\u0027)",
+              "dynamicFileSchema/-377243245": "@outputs(\u0027Get_a_row_by_ID_first_row_of_HORT1\u0027)?[\u0027body/cp_produceatstation/cp_name\u0027]",
+              "dynamicFileSchema/-1123528746": "@outputs(\u0027Get_a_row_by_ID_first_row_of_HORT1\u0027)?[\u0027body/cp_hort1printed\u0027]",
+              "dynamicFileSchema/-802145886": "@variables(\u0027HORT1 Offender SIgnature\u0027)",
+              "dynamicFileSchema/-248661453": "@variables(\u0027VDRS offender Signature\u0027)",
+              "dynamicFileSchema/-1009054717": "@outputs(\u0027Get_a_row_by_ID_first_row_of_VDRS\u0027)?[\u0027body/cp_vdrsserialnumber\u0027]",
+              "dynamicFileSchema/-1557622693": "@outputs(\u0027Get_a_row_by_ID_first_row_of_VDRS\u0027)?[\u0027body/cp_vdrsprinted\u0027]",
+              "dynamicFileSchema/-848716854": "@outputs(\u0027Get_a_row_by_ID_first_row_of_S165\u0027)?[\u0027body/cp_recoverygarage/name\u0027]",
+              "dynamicFileSchema/-226151212": "@outputs(\u0027Get_a_row_by_ID_first_row_of_S165\u0027)?[\u0027body/cp_recoverygarage/name\u0027]",
+              "dynamicFileSchema/-124543851": "@variables(\u0027S165 offender Signature\u0027)",
+              "dynamicFileSchema/-1451002287": "@outputs(\u0027Get_a_row_by_ID_First_row_of_S59\u0027)?[\u0027body/cp_section/cp_name\u0027]",
+              "dynamicFileSchema/-1859034294": "@outputs(\u0027Get_a_row_by_ID_First_row_of_S59\u0027)?[\u0027body/cp_drivingtheabovevehiclein/cp_name\u0027]",
+              "dynamicFileSchema/-1173953906": "@variables(\u0027S59 Offender Signature\u0027)",
+              "dynamicFileSchema/-1407686341": "@outputs(\u0027Get_a_row_by_ID_first_row_of_S163\u0027)?[\u0027body/cp_outcomeofstopreasonforoutcome/cp_name\u0027]",
+              "dynamicFileSchema/-1010600329": "@outputs(\u0027Get_a_row_by_ID_first_row_of_S163\u0027)?[\u0027body/cp_linkreasonforstopoutcome\u0027]",
+              "dynamicFileSchema/-1988385750": "@outputs(\u0027Get_a_row_by_ID_first_row_of_S163\u0027)?[\u0027body/cp_description\u0027]",
+              "dynamicFileSchema/-512680932": "@outputs(\u0027Get_a_row_by_ID_Evidence_Officer_Details\u0027)?[\u0027body/lastname\u0027]",
+              "dynamicFileSchema/-2077118496": "@outputs(\u0027Get_a_row_by_ID_Evidence_Officer_Details\u0027)?[\u0027body/firstname\u0027]",
+              "dynamicFileSchema/-2146027739": "@outputs(\u0027Get_a_row_by_ID_Evidence_Officer_Details\u0027)?[\u0027body/cp_badgenumber\u0027]",
+              "dynamicFileSchema/-1669318796": "@outputs(\u0027Get_a_row_by_ID_Evidence_Officer_Details\u0027)?[\u0027body/positionid/name\u0027]",
+              "dynamicFileSchema/-1245027525": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_officerstatement\u0027]",
+              "dynamicFileSchema/-843858339": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_informationfrom/cp_name\u0027]",
+              "dynamicFileSchema/-1486630637": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_daylight/cp_name\u0027]",
+              "dynamicFileSchema/-1720819760": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_visibility/cp_name\u0027]",
+              "dynamicFileSchema/-457565468": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_distancefollowed\u0027]",
+              "dynamicFileSchema/-263688593": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_fromreferencepointfc\u0027]",
+              "dynamicFileSchema/-1291965012": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_toreferencepoint\u0027]",
+              "dynamicFileSchema/-548614527": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_recordedspeed\u0027]",
+              "dynamicFileSchema/-1064184242": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_distancebehind\u0027]",
+              "dynamicFileSchema/-1845389717": "@if(empty(outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_speedometercheckdateandtime\u0027]),\u0027\u0027,formatDateTime(convertTimeZone(outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_speedometercheckdateandtime\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy HH:mm:ss\u0027))",
+              "dynamicFileSchema/-180971514": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_deviceserialnumber\u0027]",
+              "dynamicFileSchema/-734242657": "@if(empty(outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_secdevicecheckdatetime\u0027]),\u0027\u0027,formatDateTime(convertTimeZone(outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_secdevicecheckdatetime\u0027],\u0027UTC\u0027,\u0027GMT Standard Time\u0027),\u0027dd/MM/yyyy HH:mm:ss\u0027))",
+              "dynamicFileSchema/-1589152873": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_seconddevicechecklocation\u0027]",
+              "dynamicFileSchema/-439917600": "@variables(\u0027Evidence Signature\u0027)",
+              "dynamicFileSchema/-1886710728": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/cp_vehicleuse/cp_name\u0027]",
+              "dynamicFileSchema/-51547499": "@variables(\u0027PhotoCaption1\u0027)",
+              "dynamicFileSchema/-596256335": "@variables(\u0027PhotoCaption3\u0027)",
+              "dynamicFileSchema/-1303691362": "@variables(\u0027PhotoCaption4\u0027)",
+              "dynamicFileSchema/-2042349949": "@variables(\u0027Photo4\u0027)"
+            },
+            "authentication": "@parameters(\u0027$authentication\u0027)"
+          }
+        },
+        "Create_file_Report_as_Doc": {
+          "runAfter": {
+            "Populate_a_Microsoft_Word_template": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "874cc534-6006-467d-b03b-bdf266689fd4"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_onedriveforbusiness",
+              "operationId": "CreateFile",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+            },
+            "parameters": {
+              "folderPath": "/",
+              "name": "@{variables(\u0027GeneratedDocumentId\u0027)}.docx",
+              "body": "@outputs(\u0027Populate_a_Microsoft_Word_template\u0027)?[\u0027body\u0027]"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+            }
+          },
+          "runtimeConfiguration": {
+            "contentTransfer": {
+              "transferMode": "Chunked"
+            }
+          }
+        },
+        "Convert_file_report_to_PDF": {
+          "runAfter": {
+            "Create_file_Report_as_Doc": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "24460d1a-9b85-4268-a6b9-2a80390abfcb"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_onedriveforbusiness",
+              "operationId": "ConvertFile",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+            },
+            "parameters": {
+              "id": "@outputs(\u0027Create_file_Report_as_Doc\u0027)?[\u0027body/Id\u0027]",
+              "type": "PDF"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+            }
+          }
+        },
+        "Create_file_Report_as_PDF": {
+          "runAfter": {
+            "Convert_file_report_to_PDF": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "15827c58-46bd-4fe1-b580-3daef3eeaf9d"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_onedriveforbusiness",
+              "operationId": "CreateFile",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+            },
+            "parameters": {
+              "folderPath": "/",
+              "name": "Vehicle Ticket for Incident @{outputs(\u0027Get_a_row_by_ID_Incident_Details\u0027)?[\u0027body/cp_incidentnumber\u0027]}.pdf",
+              "body": "@outputs(\u0027Convert_file_report_to_PDF\u0027)?[\u0027body\u0027]"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+            }
+          },
+          "runtimeConfiguration": {
+            "contentTransfer": {
+              "transferMode": "Chunked"
+            }
+          }
+        },
+        "Delete_file": {
+          "runAfter": {
+            "Create_file_Report_as_PDF": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "b1812754-e36d-4ca8-bedc-6ab9e419b83d"
+          },
+          "type": "OpenApiConnection",
+          "inputs": {
+            "host": {
+              "connectionName": "shared_onedriveforbusiness",
+              "operationId": "DeleteFile",
+              "apiId": "/providers/Microsoft.PowerApps/apis/shared_onedriveforbusiness"
+            },
+            "parameters": {
+              "id": "@outputs(\u0027Create_file_Report_as_Doc\u0027)?[\u0027body/Id\u0027]"
+            },
+            "authentication": {
+              "type": "Raw",
+              "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
+            }
+          }
+        },
+        "Respond_to_a_PowerApp_or_flow": {
+          "runAfter": {
+            "Delete_file": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "94ddc437-7a51-47a1-a0da-9fc60cabebfd"
+          },
+          "type": "Response",
+          "kind": "PowerApp",
+          "inputs": {
+            "statusCode": 200,
+            "body": {
+              "generatedpdf": "@outputs(\u0027Create_file_Report_as_PDF\u0027)?[\u0027body/Id\u0027]"
+            },
+            "schema": {
+              "type": "object",
+              "properties": {
+                "generatedpdf": {
+                  "title": "GeneratedPDF",
+                  "x-ms-dynamically-added": true,
+                  "type": "string",
+                  "format": "byte"
+                }
+              }
+            }
+          }
+        },
+        "Check_if_there_are_Licence_Categories_for_the_Offender": {
+          "actions": {},
+          "runAfter": {
+            "Initialize_Licence_Categories": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Compose_Licence_Categories": {
+                "runAfter": {
+                  "Apply_to_each_Licence_Category": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "c0a4b018-35c1-4a83-ac07-b39fd69dad9b"
+                },
+                "type": "Compose",
+                "inputs": "@variables(\u0027Licence Categories\u0027)"
+              },
+              "List_rows_all_licence_categorys_linked_to_offender": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "803908db-325d-4f7e-963a-bb23c497a742"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "ListRecords",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cp_licencecategory_contactset",
+                    "$filter": "contactid eq @{outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/contactid\u0027]}"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              },
+              "Apply_to_each_Licence_Category": {
+                "foreach": "@outputs(\u0027List_rows_all_licence_categorys_linked_to_offender\u0027)?[\u0027body/value\u0027]",
+                "actions": {
+                  "Get_a_row_by_ID_each_Licence_Category": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "0f3f739e-d716-46ab-a590-a75f39eb01ee"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps",
+                        "operationId": "GetItem",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_licencecategories",
+                        "recordId": "@items(\u0027Apply_to_each_Licence_Category\u0027)?[\u0027cp_licencecategoryid\u0027]"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  },
+                  "Append_to_string_variable_Licence_Categories": {
+                    "runAfter": {
+                      "Get_a_row_by_ID_each_Licence_Category": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "975cf86f-858c-498b-922c-d26ae496a32d"
+                    },
+                    "type": "AppendToStringVariable",
+                    "inputs": {
+                      "name": "Licence Categories",
+                      "value": "@{outputs(\u0027Get_a_row_by_ID_each_Licence_Category\u0027)?[\u0027body/cp_licencecategoryname\u0027]};"
+                    }
+                  }
+                },
+                "runAfter": {
+                  "List_rows_all_licence_categorys_linked_to_offender": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "2cbde144-be1e-49d6-9cde-ba354e9c6265"
+                },
+                "type": "Foreach"
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@empty(outputs(\u0027List_rows_Licence_Categories_for_Offender_\u0027)?[\u0027body/value\u0027])",
+              "@true"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "dc47eacf-c021-438f-a50f-9b7551b3795e"
+          },
+          "type": "If"
+        },
+        "Initialize_Licence_Categories": {
+          "runAfter": {
+            "List_rows_Vehicle_Details_": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5587d950-47be-4e95-a2d7-898bd6b1b6f0"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Licence Categories",
+                "type": "string"
+              }
+            ]
+          }
+        },
+        "If_photos_exists": {
+          "actions": {
+            "Set_variable_10": {
+              "runAfter": {},
+              "metadata": {
+                "operationMetadataId": "2d4560c2-e0f1-4386-8c56-d19ca7e826d3"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "Photo1",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            },
+            "Set_variable_11": {
+              "runAfter": {
+                "Set_variable_10": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "8a122786-afe8-4d62-9027-0a3b35c9dfbb"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "Photo5",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            },
+            "Set_variable_12": {
+              "runAfter": {
+                "Set_variable_11": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "c0ff64aa-5448-46bb-8efa-bea2eb52ed80"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "Photo4",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            },
+            "Set_variable_13": {
+              "runAfter": {
+                "Set_variable_12": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "32916f7b-9089-4693-b47f-772f00dab188"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "Photo3",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            },
+            "Set_variable_14": {
+              "runAfter": {
+                "Set_variable_13": [
+                  "Succeeded"
+                ]
+              },
+              "metadata": {
+                "operationMetadataId": "f7e3b0c1-3a2d-4087-89d1-11cb9fef3318"
+              },
+              "type": "SetVariable",
+              "inputs": {
+                "name": "Photo2",
+                "value": {
+                  "$content-type": "image/jpeg",
+                  "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                }
+              }
+            }
+          },
+          "runAfter": {
+            "Initialize_Photo_5_variable": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Apply_to_each_Photo": {
+                "foreach": "@outputs(\u0027List_Photos\u0027)?[\u0027body/value\u0027]",
+                "actions": {
+                  "DownloadPhoto": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "c051e8f1-3bfd-4ac3-ad30-5536633a3da7"
+                    },
+                    "type": "OpenApiConnection",
+                    "inputs": {
+                      "host": {
+                        "connectionName": "shared_commondataserviceforapps",
+                        "operationId": "GetEntityFileImageFieldContent",
+                        "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                      },
+                      "parameters": {
+                        "entityName": "cp_photos",
+                        "recordId": "@items(\u0027Apply_to_each_Photo\u0027)?[\u0027cp_photoid\u0027]",
+                        "fileImageFieldName": "cp_image",
+                        "size": "full"
+                      },
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
+                    }
+                  },
+                  "Compose_Photo": {
+                    "runAfter": {
+                      "DownloadPhoto": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "107e6cf1-411e-4005-b0a5-f8e09890ed3a"
+                    },
+                    "type": "Compose",
+                    "inputs": {
+                      "$content-type": "image/jpeg",
+                      "$content": "@base64(outputs(\u0027DownloadPhoto\u0027)?[\u0027body\u0027])"
+                    }
+                  },
+                  "Append_to_array_variable": {
+                    "runAfter": {
+                      "Compose_Photo": [
+                        "Succeeded"
+                      ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "079a74e4-754d-46ef-8b6c-daeee5f8f4e9"
+                    },
+                    "type": "AppendToArrayVariable",
+                    "inputs": {
+                      "name": "Photos",
+                      "value": {
+                        "Photo": "@outputs(\u0027Compose_Photo\u0027)"
+                      }
+                    }
+                  }
+                },
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "2aaacd28-27ac-42b8-9a45-204c287b25bd"
+                },
+                "type": "Foreach"
+              },
+              "Condition_Photo_1": {
+                "actions": {
+                  "Set_variable_2": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "8327eb9b-256f-47fa-b8b9-8aef4ba3694d"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "Photo1",
+                      "value": {
+                        "$content-type": "image/jpeg",
+                        "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                      }
+                    }
+                  }
+                },
+                "runAfter": {
+                  "Apply_to_each_Photo": [
+                    "Succeeded"
+                  ]
+                },
+                "else": {
+                  "actions": {
+                    "Download_Photo_1": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "4a3d66d6-64cd-44cb-ae27-93d900f150b0"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "GetEntityFileImageFieldContent",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_photos",
+                          "recordId": "@body(\u0027List_photos\u0027)?[\u0027value\u0027]?[0]?.cp_photoid",
+                          "fileImageFieldName": "cp_image",
+                          "size": "full"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    },
+                    "Compose": {
+                      "runAfter": {
+                        "Condition_to_check_if_photo_1_has_a_caption": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "3aa33a15-9933-40e4-9e47-1b477f629343"
+                      },
+                      "type": "Compose",
+                      "inputs": {
+                        "$content-type": "image/jpeg",
+                        "$content": "@{base64(outputs(\u0027Download_Photo_1\u0027)?[\u0027body\u0027])}"
+                      }
+                    },
+                    "Set_variable_3": {
+                      "runAfter": {
+                        "Compose": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "75e360e7-d919-4297-b3ee-d0efb62aae72"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "Photo1",
+                        "value": "@outputs(\u0027Compose\u0027)"
+                      }
+                    },
+                    "Get_a_row_by_ID_Caption_for_photo_1": {
+                      "runAfter": {
+                        "Download_Photo_1": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "e34f2228-5c31-4557-9b05-79ecd58da80e"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "GetItem",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_photos",
+                          "recordId": "@body(\u0027List_Photos\u0027)?[\u0027value\u0027]?[0]?.cp_photoid"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    },
+                    "Condition_to_check_if_photo_1_has_a_caption": {
+                      "actions": {
+                        "Set_variable_15": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "b7aac62e-2a10-4d4e-ba92-95616a0adede"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "PhotoCaption1",
+                            "value": "\u0027Vehicle Ticket Photo 1\u0027"
+                          }
+                        }
+                      },
+                      "runAfter": {
+                        "Get_a_row_by_ID_Caption_for_photo_1": [
+                          "Succeeded"
+                        ]
+                      },
+                      "else": {
+                        "actions": {
+                          "Set_variable_caption_1": {
+                            "runAfter": {},
+                            "metadata": {
+                              "operationMetadataId": "a9635c21-b998-416e-91ab-4a00998288a5"
+                            },
+                            "type": "SetVariable",
+                            "inputs": {
+                              "name": "PhotoCaption1",
+                              "value": "@outputs(\u0027Get_a_row_by_ID_Caption_for_photo_1\u0027)?[\u0027body/cp_phototitle\u0027]"
+                            }
+                          }
+                        }
+                      },
+                      "expression": {
+                        "equals": [
+                          "@empty(outputs(\u0027Get_a_row_by_ID_Caption_for_photo_1\u0027)?[\u0027body/cp_phototitle\u0027])",
+                          "@true"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "766da996-0ede-440f-8ce0-97af24d6c155"
+                      },
+                      "type": "If"
+                    }
+                  }
+                },
+                "expression": {
+                  "equals": [
+                    "@empty(body(\u0027List_photos\u0027)?[\u0027value\u0027]?[0]?.cp_imageid)",
+                    "@true"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "42ef146b-0ea1-4b46-95f2-c80bc81cda78"
+                },
+                "type": "If"
+              },
+              "Condition_Photo_2": {
+                "actions": {
+                  "Set_variable_4": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "0eb86578-af73-4d10-86df-35ad30b31fc2"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "Photo2",
+                      "value": {
+                        "$content-type": "image/jpeg",
+                        "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                      }
+                    }
+                  }
+                },
+                "runAfter": {
+                  "Condition_Photo_1": [
+                    "Succeeded"
+                  ]
+                },
+                "else": {
+                  "actions": {
+                    "Download_Photo": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "8e073995-a128-49da-8455-feca0bb3fbfb"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "GetEntityFileImageFieldContent",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_photos",
+                          "recordId": "@body(\u0027List_photos\u0027)?[\u0027value\u0027]?[1]?.cp_photoid",
+                          "fileImageFieldName": "cp_image",
+                          "size": "full"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    },
+                    "Compose_2": {
+                      "runAfter": {
+                        "Condition_to_check_if_photo_2_has_a_caption_": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "fc8ce015-3bad-40c8-8bc5-23a604033aba"
+                      },
+                      "type": "Compose",
+                      "inputs": {
+                        "$content-type": "image/jpeg",
+                        "$content": "@{base64(outputs(\u0027Download_Photo\u0027)?[\u0027body\u0027])}"
+                      }
+                    },
+                    "Set_variable_5": {
+                      "runAfter": {
+                        "Compose_2": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "85d137f0-a6ce-4ba8-b263-fd9dcaf4f9f7"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "Photo2",
+                        "value": "@outputs(\u0027Compose_2\u0027)"
+                      }
+                    },
+                    "Condition_to_check_if_photo_2_has_a_caption_": {
+                      "actions": {
+                        "Set_variable_16": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "97a3fe00-7848-4d6f-9e3c-df3e5b82794c"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "PhotoCaption2",
+                            "value": "\u0027Vehicle Ticket Photo 2\u0027"
+                          }
+                        }
+                      },
+                      "runAfter": {
+                        "Get_a_row_by_ID_Caption_for_photo_2": [
+                          "Succeeded"
+                        ]
+                      },
+                      "else": {
+                        "actions": {
+                          "Set_variable_caption": {
+                            "runAfter": {},
+                            "metadata": {
+                              "operationMetadataId": "5207342e-93f5-45a2-9a90-55a9c5ecff3c"
+                            },
+                            "type": "SetVariable",
+                            "inputs": {
+                              "name": "PhotoCaption2",
+                              "value": "@outputs(\u0027Get_a_row_by_ID_Caption_for_photo_2\u0027)?[\u0027body/cp_phototitle\u0027]"
+                            }
+                          }
+                        }
+                      },
+                      "expression": {
+                        "equals": [
+                          "@empty(outputs(\u0027Get_a_row_by_ID_Caption_for_photo_2\u0027)?[\u0027body/cp_phototitle\u0027])",
+                          "@true"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "a9deba35-0eef-436b-b67c-b02db760b139"
+                      },
+                      "type": "If"
+                    },
+                    "Get_a_row_by_ID_Caption_for_photo_2": {
+                      "runAfter": {
+                        "Download_Photo": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "4acdf873-4018-49fc-b48a-024b08257db2"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "GetItem",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_photos",
+                          "recordId": "@body(\u0027List_Photos\u0027)?[\u0027value\u0027]?[1]?.cp_photoid"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    }
+                  }
+                },
+                "expression": {
+                  "equals": [
+                    "@empty(body(\u0027List_photos\u0027)?[\u0027value\u0027]?[1]?.cp_imageid)",
+                    "@true"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "9bc2e9f3-e1f7-4893-a005-1f8d45b1feb5"
+                },
+                "type": "If"
+              },
+              "Condition_Photo_3": {
+                "actions": {
+                  "Set_variable_6": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "7a4dc4ff-873d-4d98-95bb-95249e0a1e6e"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "Photo3",
+                      "value": {
+                        "$content-type": "image/jpeg",
+                        "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                      }
+                    }
+                  }
+                },
+                "runAfter": {
+                  "Condition_Photo_2": [
+                    "Succeeded"
+                  ]
+                },
+                "else": {
+                  "actions": {
+                    "Download_Photo_2": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "14d97d50-556a-4e17-ab81-2e0afe6f7096"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "GetEntityFileImageFieldContent",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_photos",
+                          "recordId": "@body(\u0027List_Photos\u0027)?[\u0027value\u0027]?[2]?.cp_photoid",
+                          "fileImageFieldName": "cp_image",
+                          "size": "full"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    },
+                    "Compose_3": {
+                      "runAfter": {
+                        "Set_variable_Caption_3": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "7abe71d2-3f85-4fc5-870d-598c2046ffb9"
+                      },
+                      "type": "Compose",
+                      "inputs": {
+                        "$content-type": "image/jpeg",
+                        "$content": "@{base64(outputs(\u0027Download_Photo_2\u0027)?[\u0027body\u0027])}"
+                      }
+                    },
+                    "Set_variable_7": {
+                      "runAfter": {
+                        "Compose_3": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "5c9b4e7c-f1d2-44e8-bd92-cfee3dc948fe"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "Photo3",
+                        "value": "@outputs(\u0027Compose_3\u0027)"
+                      }
+                    },
+                    "Set_variable_Caption_3": {
+                      "runAfter": {
+                        "Condition_to_check_if_photo_3_has_a_caption__": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "ac7b6688-5c00-434a-9152-fcec964e8c87"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "PhotoCaption3",
+                        "value": "@{body(\u0027List_Photos\u0027)?[\u0027value\u0027]?[2]?.cp_phototitle}"
+                      }
+                    },
+                    "Get_a_row_by_ID_Caption_for_photo_3": {
+                      "runAfter": {
+                        "Download_Photo_2": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "85e3e436-274b-433b-8bbe-99a2c6af8e99"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "GetItem",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_photos",
+                          "recordId": "@body(\u0027List_Photos\u0027)?[\u0027value\u0027]?[2]?.cp_photoid"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    },
+                    "Condition_to_check_if_photo_3_has_a_caption__": {
+                      "actions": {
+                        "Set_variable_17": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "202cd6fd-c995-4e93-90ae-ad51545b64b5"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "PhotoCaption3",
+                            "value": "\u0027Vehicle Ticket Photo 3\u0027"
+                          }
+                        }
+                      },
+                      "runAfter": {
+                        "Get_a_row_by_ID_Caption_for_photo_3": [
+                          "Succeeded"
+                        ]
+                      },
+                      "else": {
+                        "actions": {
+                          "Set_variable_caption_2": {
+                            "runAfter": {},
+                            "metadata": {
+                              "operationMetadataId": "0f186081-1d2a-4ac8-a327-acc2a1da99fb"
+                            },
+                            "type": "SetVariable",
+                            "inputs": {
+                              "name": "PhotoCaption3",
+                              "value": "@outputs(\u0027Get_a_row_by_ID_Caption_for_photo_3\u0027)?[\u0027body/cp_phototitle\u0027]"
+                            }
+                          }
+                        }
+                      },
+                      "expression": {
+                        "equals": [
+                          "@empty(outputs(\u0027Get_a_row_by_ID_Caption_for_photo_3\u0027)?[\u0027body/cp_phototitle\u0027])",
+                          "@true"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "b1ed867b-b8df-401b-987f-b8f4dc94d25f"
+                      },
+                      "type": "If"
+                    }
+                  }
+                },
+                "expression": {
+                  "equals": [
+                    "@empty(body(\u0027List_photos\u0027)?[\u0027value\u0027]?[2]?.cp_imageid)",
+                    "@true"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "340cbe87-ec20-4fb2-bfec-4336409ec0b0"
+                },
+                "type": "If"
+              },
+              "Condition_Photo_4": {
+                "actions": {
+                  "Set_variable_8": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "d51da992-5754-4832-b225-9a225aca6068"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "Photo4",
+                      "value": {
+                        "$content-type": "image/jpeg",
+                        "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                      }
+                    }
+                  }
+                },
+                "runAfter": {
+                  "Condition_Photo_3": [
+                    "Succeeded"
+                  ]
+                },
+                "else": {
+                  "actions": {
+                    "Download_Photo_3": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "fbe76d25-3bf9-4dde-8e5b-e0233f0495b7"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "GetEntityFileImageFieldContent",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_photos",
+                          "recordId": "@body(\u0027List_photos\u0027)?[\u0027value\u0027]?[3]?.cp_photoid",
+                          "fileImageFieldName": "cp_image",
+                          "size": "full"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    },
+                    "Compose_4": {
+                      "runAfter": {
+                        "Condition_to_check_if_photo_4_has_a_caption_": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "18448bdd-afb3-458d-889c-65eefbaca1f0"
+                      },
+                      "type": "Compose",
+                      "inputs": {
+                        "$content-type": "image/jpeg",
+                        "$content": "@{base64(outputs(\u0027Download_Photo_3\u0027)?[\u0027body\u0027])}"
+                      }
+                    },
+                    "Set_Photo4": {
+                      "runAfter": {
+                        "Compose_4": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "f3612ca8-248c-4424-b39e-2c19cccd143b"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "Photo4",
+                        "value": "@outputs(\u0027Compose_4\u0027)"
+                      }
+                    },
+                    "Condition_to_check_if_photo_4_has_a_caption_": {
+                      "actions": {
+                        "Set_variable_18": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "19d70245-62d4-4a1b-87dc-4d51ad610227"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "PhotoCaption4",
+                            "value": "\u0027Vehicle Ticket Photo 4\u0027"
+                          }
+                        }
+                      },
+                      "runAfter": {
+                        "Get_a_row_by_ID_Caption_for_photo_4": [
+                          "Succeeded"
+                        ]
+                      },
+                      "else": {
+                        "actions": {
+                          "Set_variable_caption_6": {
+                            "runAfter": {},
+                            "metadata": {
+                              "operationMetadataId": "ca4229b7-e503-4447-953e-0bf05c31ce71"
+                            },
+                            "type": "SetVariable",
+                            "inputs": {
+                              "name": "PhotoCaption4",
+                              "value": "@outputs(\u0027Get_a_row_by_ID_Caption_for_photo_4\u0027)?[\u0027body/cp_phototitle\u0027]"
+                            }
+                          }
+                        }
+                      },
+                      "expression": {
+                        "equals": [
+                          "@empty(outputs(\u0027Get_a_row_by_ID_Caption_for_photo_4\u0027)?[\u0027body/cp_phototitle\u0027])",
+                          "@true"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "e4e43cea-f576-468a-aab4-b7d008409976"
+                      },
+                      "type": "If"
+                    },
+                    "Get_a_row_by_ID_Caption_for_photo_4": {
+                      "runAfter": {
+                        "Download_Photo_3": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "b3c1c282-d008-43e7-a472-8af7ee13e266"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "GetItem",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_photos",
+                          "recordId": "@body(\u0027List_Photos\u0027)?[\u0027value\u0027]?[3]?.cp_photoid"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    }
+                  }
+                },
+                "expression": {
+                  "equals": [
+                    "@empty(body(\u0027List_photos\u0027)?[\u0027value\u0027]?[3]?.cp_imageid)",
+                    "@true"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "b88182e0-415b-45c6-90a2-d3d90b829c7e"
+                },
+                "type": "If"
+              },
+              "Condition5_Photo": {
+                "actions": {
+                  "Set_variable_9": {
+                    "runAfter": {},
+                    "metadata": {
+                      "operationMetadataId": "3e67ee26-70ff-40a2-82b4-4e671e32f7cb"
+                    },
+                    "type": "SetVariable",
+                    "inputs": {
+                      "name": "Photo5",
+                      "value": {
+                        "$content-type": "image/jpeg",
+                        "$content": "iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVQYV2NgYAAAAAMAAWgmWQ0AAAAASUVORK5CYII="
+                      }
+                    }
+                  }
+                },
+                "runAfter": {
+                  "Condition_Photo_4": [
+                    "Succeeded"
+                  ]
+                },
+                "else": {
+                  "actions": {
+                    "Download_Photo_4": {
+                      "runAfter": {},
+                      "metadata": {
+                        "operationMetadataId": "6e46deba-f307-4607-a605-8c405abb883b"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "GetEntityFileImageFieldContent",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_photos",
+                          "recordId": "@body(\u0027List_photos\u0027)?[\u0027value\u0027]?[4]?.cp_photoid",
+                          "fileImageFieldName": "cp_image",
+                          "size": "full"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    },
+                    "Compose_5": {
+                      "runAfter": {
+                        "Condition_to_check_if_photo_5_has_a_caption": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "ba1435a4-19e9-47d4-91df-9589ccc678ec"
+                      },
+                      "type": "Compose",
+                      "inputs": {
+                        "$content-type": "image/jpeg",
+                        "$content": "@{base64(outputs(\u0027Download_Photo_4\u0027)?[\u0027body\u0027])}"
+                      }
+                    },
+                    "Set_Photo4_2": {
+                      "runAfter": {
+                        "Compose_5": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "26e269ca-6102-46ec-8794-68b2f74e8a15"
+                      },
+                      "type": "SetVariable",
+                      "inputs": {
+                        "name": "Photo5",
+                        "value": "@outputs(\u0027Compose_5\u0027)"
+                      }
+                    },
+                    "Get_a_row_by_ID_Caption_for_photo_5": {
+                      "runAfter": {
+                        "Download_Photo_4": [
+                          "Succeeded"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "1c233a91-8bff-41f3-8086-6d3755a8e986"
+                      },
+                      "type": "OpenApiConnection",
+                      "inputs": {
+                        "host": {
+                          "connectionName": "shared_commondataserviceforapps",
+                          "operationId": "GetItem",
+                          "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                        },
+                        "parameters": {
+                          "entityName": "cp_photos",
+                          "recordId": "@body(\u0027List_Photos\u0027)?[\u0027value\u0027]?[4]?.cp_photoid"
+                        },
+                        "authentication": "@parameters(\u0027$authentication\u0027)"
+                      }
+                    },
+                    "Condition_to_check_if_photo_5_has_a_caption": {
+                      "actions": {
+                        "Set_variable_19": {
+                          "runAfter": {},
+                          "metadata": {
+                            "operationMetadataId": "99f9cc0e-708c-4f06-88d7-a356f4142aa9"
+                          },
+                          "type": "SetVariable",
+                          "inputs": {
+                            "name": "Photocaption 5",
+                            "value": "\u0027Vehicle Ticket Photo 5\u0027"
+                          }
+                        }
+                      },
+                      "runAfter": {
+                        "Get_a_row_by_ID_Caption_for_photo_5": [
+                          "Succeeded"
+                        ]
+                      },
+                      "else": {
+                        "actions": {
+                          "Set_variable_caption_4": {
+                            "runAfter": {},
+                            "metadata": {
+                              "operationMetadataId": "36b4c38c-a562-4d2b-909d-259bcf894958"
+                            },
+                            "type": "SetVariable",
+                            "inputs": {
+                              "name": "Photocaption 5",
+                              "value": "@outputs(\u0027Get_a_row_by_ID_Caption_for_photo_5\u0027)?[\u0027body/cp_phototitle\u0027]"
+                            }
+                          }
+                        }
+                      },
+                      "expression": {
+                        "equals": [
+                          "@empty(outputs(\u0027Get_a_row_by_ID_Caption_for_photo_5\u0027)?[\u0027body/cp_phototitle\u0027])",
+                          "@true"
+                        ]
+                      },
+                      "metadata": {
+                        "operationMetadataId": "8eb35536-bba2-4cea-9d34-7cb743130871"
+                      },
+                      "type": "If"
+                    }
+                  }
+                },
+                "expression": {
+                  "equals": [
+                    "@empty(body(\u0027List_photos\u0027)?[\u0027value\u0027]?[4]?.cp_imageid)",
+                    "@true"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "df60c1e4-1293-4efe-8267-9fb83b2e8ed2"
+                },
+                "type": "If"
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@empty(outputs(\u0027List_photos\u0027)?[\u0027body/value\u0027])",
+              "@true"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "36925a3d-9a5c-48f2-a0b7-0b656ebecc9e"
+          },
+          "type": "If"
+        },
+        "Initialize_Photo_1_variable": {
+          "runAfter": {
+            "Initialize_Photo_5_Object": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "325b4793-c305-4a7a-bdb4-b046c4e8ab0d"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "PhotoCaption1",
+                "type": "string",
+                "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Initialize_Photo_2_variable": {
+          "runAfter": {
+            "Initialize_Photo_1_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "de246053-04fa-490b-a100-66d3cd669530"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "PhotoCaption2",
+                "type": "string",
+                "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Initialize_Photo_3_variable_": {
+          "runAfter": {
+            "Initialize_Photo_2_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "99cfd60a-d877-423f-86e7-2713971a9e0c"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "PhotoCaption3",
+                "type": "string",
+                "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Initialize_Photo_4_variable": {
+          "runAfter": {
+            "Initialize_Photo_3_variable_": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "559d6f3f-99c3-4e23-abc1-a0a2405e9485"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "PhotoCaption4",
+                "type": "string",
+                "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "Initialize_Photo_5_variable": {
+          "runAfter": {
+            "Initialize_Photo_4_variable": [
+              "Succeeded"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "6c03799e-9bce-4cc6-8992-17dcccd03c14"
+          },
+          "type": "InitializeVariable",
+          "inputs": {
+            "variables": [
+              {
+                "name": "Photocaption 5",
+                "type": "string",
+                "value": "@{null}"
+              }
+            ]
+          }
+        },
+        "IS_there_an_offender": {
+          "actions": {},
+          "runAfter": {
+            "List_Photos": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Get_a_row_by_ID_Offender_Details": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "b5a7973f-10e6-4b43-b9d7-bdbd9cf036d9"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "GetItem",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "contacts",
+                    "recordId": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/_cp_offender_value\u0027]",
+                    "$expand": "cp_Gender($select=cp_name),cp_SelfDefinedEthnicity($select=cp_name),cp_ContactPreferredMethodofContact($select=cp_name),cp_LastOccupation($select=cp_name),cp_OfficerDefinedEthnicity($select=cp_name),cp_foreignlicencecountry($select=cp_name),cp_licencetype($select=cp_name),cp_ContactTitle($select=cp_name)"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              },
+              "List_rows_Licence_Categories_for_Offender_": {
+                "runAfter": {
+                  "Get_a_row_by_ID_Offender_Details": [
+                    "Succeeded"
+                  ]
+                },
+                "metadata": {
+                  "operationMetadataId": "f7eb7a02-7f4c-4caf-9661-35c4858be892"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "ListRecords",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "cp_licencecategories",
+                    "$filter": "_ownerid_value eq @{outputs(\u0027Get_a_row_by_ID_Offender_Details\u0027)?[\u0027body/_ownerid_value\u0027]}"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@empty(outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/_cp_offender_value\u0027])",
+              "@true"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "5d4bcb17-bdb0-4be7-9cc1-416c677ca27c"
+          },
+          "type": "If"
+        },
+        "If_there_is_an_Evidence_officer": {
+          "actions": {},
+          "runAfter": {
+            "Get_a_row_by_ID_(officer_from_user)": [
+              "Succeeded"
+            ]
+          },
+          "else": {
+            "actions": {
+              "Get_a_row_by_ID_Evidence_Officer_Details": {
+                "runAfter": {},
+                "metadata": {
+                  "operationMetadataId": "4c1e24ea-c9b2-44f1-a4e8-ac519d9cf57b"
+                },
+                "type": "OpenApiConnection",
+                "inputs": {
+                  "host": {
+                    "connectionName": "shared_commondataserviceforapps",
+                    "operationId": "GetItem",
+                    "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                  },
+                  "parameters": {
+                    "entityName": "systemusers",
+                    "recordId": "@outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/_cp_officerid_value\u0027]",
+                    "$expand": "positionid($select=name)"
+                  },
+                  "authentication": "@parameters(\u0027$authentication\u0027)"
+                }
+              }
+            }
+          },
+          "expression": {
+            "equals": [
+              "@empty(outputs(\u0027Get_Vehicle_Ticket_Record\u0027)?[\u0027body/_cp_officerid_value\u0027])",
+              "@true"
+            ]
+          },
+          "metadata": {
+            "operationMetadataId": "057a43c8-ba99-4f43-be85-30d384dbecb7"
+          },
+          "type": "If"
+        }
+      },
+      "outputs": {}
+    }
+  },
+  "schemaVersion": "1.0.0.0"
+}
