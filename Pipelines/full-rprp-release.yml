@@ -422,12 +422,21 @@ stages:
             - task: MSCRMToolInstaller@9
               displayName: 'MSCRM Tool Installer'
             
+            - template: get-solution-filenames.yml
+              parameters:
+                pipelineworkspace : $(pipeline.workspace)\$(artifact.name)
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
+                customerName : Cumbria
+                environmentName : UAT
+            
             - ${{ each parameter in parameters }}:
               - ${{ if contains(parameter.Key, 'SolutionName') }}:
                 - template: install-managed-solution.yml
                   parameters:
                     SolutionFileName : $(${{parameter.Value}}SolutionFileName)
-                    connectionString: $(Cumbriapfpuat.connection.string)
+                    connectionString: $(cumbriapfpuat.connection.string)
 
 
 
@@ -479,12 +488,21 @@ stages:
             - task: MSCRMToolInstaller@9
               displayName: 'MSCRM Tool Installer'
             
+            - template: get-solution-filenames.yml
+              parameters:
+                pipelineworkspace : $(pipeline.workspace)\$(artifact.name)
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
+                customerName : Cumbria
+                environmentName : UAT
+            
             - ${{ each parameter in parameters }}:
               - ${{ if contains(parameter.Key, 'SolutionName') }}:
                 - template: install-managed-solution.yml
                   parameters:
                     SolutionFileName : $(${{parameter.Value}}SolutionFileName)
-                    connectionString: $(Tisskipfpuat.connection.string)
+                    connectionString: $(tisskipfpuat.connection.string)
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
