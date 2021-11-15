@@ -56,6 +56,6 @@ steps:
     environmentname: ${{parameters.environmentname}}
 
 
-- publish: '$(build.binariesdirectory)/SystemTest'
-  artifact: CumbriaBuild-${{parameters.managed}}-${{parameters.appFolderName}}
+- publish: '$(build.binariesdirectory)'
+  artifact: PowerAppsForPolicingCanvasApp
 
