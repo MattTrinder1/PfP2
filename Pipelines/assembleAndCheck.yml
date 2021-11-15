@@ -22,13 +22,14 @@ steps:
   - powershell: |
                 $folderExists = Test-Path -Path 'Schema/${{parameters.solutionName}}${{parameters.solutionprefix}}/unpacked'
                 Write-Output "##vso[task.setvariable variable=FolderExists]$folderExists"
+    displayName: Check schema folder exists
 
 #if this is not a base level solution, copy in the environment specific folder generated in the rewrite step
 
   - ${{ if and(startsWith(parameters.solutionName,'Flows'), ne(parameters.customerName, 'Base')) }}:
     - task: CopyFiles@2
       inputs:
-        displayName: Copy to System Test folder
+        displayName: Copy Rewritten Flows over Schema
         sourceFolder: '$(Build.SourcesDirectory)\RewrittenFlows\${{parameters.customerName}}\${{parameters.environmentName}}\Schema'
         contents: '**' 
         targetFolder: '$(Build.SourcesDirectory)\Schema'
@@ -38,7 +39,7 @@ steps:
   - ${{ if and(startsWith(parameters.solutionName,'CanvasApps'), ne(parameters.customerName, 'Base')) }}:
     - task: CopyFiles@2
       inputs:
-        displayName: Copy to System Test folder
+        displayName: Copy Rewritten CanvasApps over Schema
         sourceFolder: '$(Build.SourcesDirectory)\RewrittenCanvasApps\${{parameters.customerName}}\${{parameters.environmentName}}\Schema'
         contents: '**' 
         targetFolder: '$(Build.SourcesDirectory)\Schema'
