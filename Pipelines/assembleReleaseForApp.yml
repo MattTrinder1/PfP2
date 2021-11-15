@@ -12,6 +12,10 @@ parameters:
   type: string
 - name: appFolderName
   type: string
+- name: customerName
+  type: string
+- name: environmentName
+  type: string
 
 
 steps:
@@ -48,6 +52,8 @@ steps:
     solutionprefix: ${{parameters.solutionprefix}}
     minorversion: ${{parameters.minorversion}}
     releaseversion: ${{parameters.releaseversion}}
+    customername: ${{parameters.customername}}
+    environmentname: ${{parameters.environmentname}}
 
 
 - publish: '$(build.binariesdirectory)/SystemTest'
