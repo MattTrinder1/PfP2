@@ -98,7 +98,7 @@ steps:
                 $ConnectionReferencesSolutionFileName = $ConnectionReferencesSolutionFile.FullName
                 Write-Host "##vso[task.setvariable variable=ConnectionReferencesSolutionFileName]$ConnectionReferencesSolutionFileName"
 
-                if('${{parameters.solutionprefix}}' eq 'CP')
+                if('${{parameters.solutionprefix}}' -eq 'CP')
                 {
                   $FlowsSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}Flows_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
                   $FlowsSolutionFileName = $FlowsSolutionFile.FullName
