@@ -8,11 +8,6 @@ parameters:
   - PocketNotebook
   - Vehicle
 
-- name: customer
-  type: string
-  default: Cumbria
-  values:
-  - Cumbria
   
 trigger: none
 
@@ -110,6 +105,8 @@ stages:
                 solutionprefix : $(solution.prefix)
                 canvasApp: ${{parameters.canvasApp}}
                 connectionString: $(pfpsystemtest.connection.string)
+                customername: Cumbria
+                environmentname: SystemTest
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -140,6 +137,8 @@ stages:
                 solutionprefix : $(solution.prefix)
                 canvasApp: ${{parameters.canvasApp}}
                 connectionString: $(Tisskipfpuat.connection.string)
+                customername: Cumbria
+                environmentname: UAT
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
