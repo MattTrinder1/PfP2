@@ -52,8 +52,8 @@ stages:
       - task: PublishBuildArtifacts@1
         displayName: Publish Rewritten CanvasApps
         inputs:
-          PathtoPublish: '$(build.sourcesdirectory)/PipelineTools/CanvasAppRewriter/RewrittenCanvasApp'
-          ArtifactName: 'CanvasApp'
+          PathtoPublish: '$(build.sourcesdirectory)/PipelineTools/CanvasAppRewriter/RewrittenCanvasApps'
+          ArtifactName: 'RewrittenCanvasApps'
           publishLocation: 'Container'
       
 
