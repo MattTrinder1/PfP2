@@ -28,6 +28,8 @@ steps:
     minorversion : ${{parameters.minorversion}}
     releaseversion : ${{parameters.releaseversion}}
     solutionprefix : ${{parameters.solutionprefix}}
+    customername : ${{parameters.customername}}
+    environmentname : ${{parameters.environmentname}}
 
 - template: install-managed-solution.yml
   parameters:
