@@ -36,15 +36,6 @@ steps:
         overWrite: true 
       condition: eq(variables['FolderExists'], True)
 
-  - ${{ if and(startsWith(parameters.solutionName,'CanvasApps'), ne(parameters.customerName, 'Base')) }}:
-    - task: CopyFiles@2
-      displayName: Copy Rewritten CanvasApps over Schema
-      inputs:
-        sourceFolder: '$(Build.SourcesDirectory)\RewrittenCanvasApps\${{parameters.customerName}}\${{parameters.environmentName}}\Schema'
-        contents: '**\*.json' 
-        targetFolder: '$(Build.SourcesDirectory)\Schema'
-        overWrite: true 
-      condition: eq(variables['FolderExists'], True)
 
 
   - task: MSCRMPackSolution@10
