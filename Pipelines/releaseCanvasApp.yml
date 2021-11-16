@@ -106,7 +106,7 @@ stages:
                     minorversion : $(minor.version)
                     releaseversion : $(release.version)
                     solutionprefix : $(solution.prefix)
-                    appFolderName : CanvasApps${{parameters.canvasApp}}
+                    appFolderName : CanvasApps${{replace(parameters.canvasApp,'*','')}}
                     environmentName: ${{parameter3.Value}}
                     customerName: ${{parameter2.Value}}
 
