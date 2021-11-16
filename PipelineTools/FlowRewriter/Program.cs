@@ -109,7 +109,7 @@ namespace FlowRewriter
             j["properties"]["definition"]["actions"]["Condition_If_medical_History_exists"]["actions"]["Populate_a_Microsoft_Word_template_No_Medical_History"]["inputs"]["parameters"]["drive"] = "b!k32VxZOE5U-HwWt6Ey23yGSuL7xVALpHlDcSd7uGMIo67u-9iOaWRrln1WJDTm3I";
             j["properties"]["definition"]["actions"]["Condition_If_medical_History_exists"]["actions"]["Populate_a_Microsoft_Word_template_No_Medical_History"]["inputs"]["parameters"]["file"] = "01JPJUSCOUQT5V4QTEGRE333HS2XKJWJ4J";
             j["properties"]["definition"]["actions"]["Condition_If_medical_History_exists"]["actions"]["Populate_a_Microsoft_Word_template_No_Medical_History"]["metadata"].AddAnnotation("01JPJUSCOUQT5V4QTEGRE333HS2XKJWJ4J");
-            j["properties"]["definition"]["actions"]["Condition_If_medical_History_exists"]["actions"]["Populate_a_Microsoft_Word_template_No_Medical_History"]["metadata"]["01JPJUSCOUQT5V4QTEGRE333HS2XKJWJ4J"] = "/Templates/Sudden Death/SuddenDeathTemplate.docx";
+            j["properties"]["definition"]["actions"]["Condition_If_medical_History_exists"]["actions"]["Populate_a_Microsoft_Word_template_No_Medical_History"]["metadata"]["01JPJUSCOUQT5V4QTEGRE333HS2XKJWJ4J"] = "/Templates/Sudden Death/SuddenDeathReport.docx";
             Save("../../../RewrittenFlows/Cumbria/UAT/Schema/FlowsPDFCP/unpacked/Workflows/GenerateSuddenDeathPDF-9DE7B140-61B2-EB11-8236-000D3AD7EB5D.json", j.ToString().Replace("'", @"\u0027"));
 
             json = File.ReadAllText("../../../../../Schema/FlowsPDFCP/unpacked/Workflows/GenerateSuddenDeathPDF-9DE7B140-61B2-EB11-8236-000D3AD7EB5D.json");
@@ -119,7 +119,7 @@ namespace FlowRewriter
             j["properties"]["definition"]["actions"]["Condition_If_medical_History_exists"]["actions"]["Populate_a_Microsoft_Word_template_No_Medical_History"]["inputs"]["parameters"]["drive"] = "b!k32VxZOE5U-HwWt6Ey23yGSuL7xVALpHlDcSd7uGMIo67u-9iOaWRrln1WJDTm3I";
             j["properties"]["definition"]["actions"]["Condition_If_medical_History_exists"]["actions"]["Populate_a_Microsoft_Word_template_No_Medical_History"]["inputs"]["parameters"]["file"] = "01JPJUSCOUQT5V4QTEGRE333HS2XKJWJ4J";
             j["properties"]["definition"]["actions"]["Condition_If_medical_History_exists"]["actions"]["Populate_a_Microsoft_Word_template_No_Medical_History"]["metadata"].AddAnnotation("01JPJUSCOUQT5V4QTEGRE333HS2XKJWJ4J");
-            j["properties"]["definition"]["actions"]["Condition_If_medical_History_exists"]["actions"]["Populate_a_Microsoft_Word_template_No_Medical_History"]["metadata"]["01JPJUSCOUQT5V4QTEGRE333HS2XKJWJ4J"] = "/Templates/Sudden Death/SuddenDeathTemplate.docx";
+            j["properties"]["definition"]["actions"]["Condition_If_medical_History_exists"]["actions"]["Populate_a_Microsoft_Word_template_No_Medical_History"]["metadata"]["01JPJUSCOUQT5V4QTEGRE333HS2XKJWJ4J"] = "/Templates/Sudden Death/SuddenDeathReport.docx";
             Save("../../../RewrittenFlows/Cumbria/Live/Schema/FlowsPDFCP/unpacked/Workflows/GenerateSuddenDeathPDF-9DE7B140-61B2-EB11-8236-000D3AD7EB5D.json", j.ToString().Replace("'", @"\u0027"));
 
             json = File.ReadAllText("../../../../../Schema/FlowsPDFCP/unpacked/Workflows/GenerateSuddenDeathPDF-9DE7B140-61B2-EB11-8236-000D3AD7EB5D.json");
