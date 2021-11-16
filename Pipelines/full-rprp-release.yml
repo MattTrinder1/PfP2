@@ -468,6 +468,72 @@ stages:
 #----------------------------------End Stage-------------------------------------------------------------------
 #----------------------------------Start Stage-------------------------------------------------------------------
 
+  - stage: ReleaseToCumbriaLive
+    dependsOn: ReleaseToCumbriaSystemUAT
+    displayName: Release to Cumbria Live
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: ReleaseToCumbriaLive
+      environment: CumbriaLive
+      displayName: Release To Cumbria Live
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            
+            steps:
+            
+            - checkout: none
+            - task: MSCRMToolInstaller@9
+              displayName: 'MSCRM Tool Installer'
+            
+            - template: get-solution-filenames.yml
+              parameters:
+                pipelineworkspace : $(pipeline.workspace)\$(artifact.name)
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
+                customerName : Cumbria
+                environmentName : Live
+            
+            - ${{ each parameter in parameters }}:
+              - ${{ if contains(parameter.Key, 'SolutionName') }}:
+                - template: install-managed-solution.yml
+                  parameters:
+                    SolutionFileName : $(${{parameter.Value}}SolutionFileName)
+                    connectionString: $(cumbrialive.connection.string)
+
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: DeployConfigDataToCumbriaLive
+      dependsOn: ReleaseToCumbriaLive
+      environment: CumbriaLive
+      displayName: Deploy Config Data To Cumbria Live
+     # workspace:
+     #   clean: all 
+      variables:
+      - name: configExists
+      - name: currentConfigVersion  
+      - name: newConfigVersion  
+
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - template : config-data-template.yml
+                parameters :
+                  connectionString: $(cumbrialive.connection.string)
+                  suffix: $(solution.prefix)
+                  customer: Cumbria
+              
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
+#----------------------------------Start Stage-------------------------------------------------------------------
+
   - stage: ReleaseToTisskiPfPUAT
     dependsOn: ReleaseToTisskiPfPSystemTest
     displayName: Release to Tisski PfP UAT
