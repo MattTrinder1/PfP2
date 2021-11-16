@@ -67,10 +67,11 @@ steps:
                 $GeneratedSolutionFileName = $GeneratedSolutionFile.Name
                 Write-Host "##vso[task.setvariable variable=GeneratedSolutionFileName]$GeneratedSolutionFileName"
       condition: eq(variables['FolderExists'], True)
+      displayName: Get solution file name
 
     - task: CopyFiles@2
+      displayName: Copy to Customer/Env folder        
       inputs:
-        displayName: Copy to System Test folder
         sourceFolder: '$(Build.BinariesDirectory)'
         contents: '$(GeneratedSolutionFileName)' 
         targetFolder: '$(Build.BinariesDirectory)\${{parameters.customerName}}\${{parameters.environmentName}}'
@@ -79,6 +80,7 @@ steps:
       condition: eq(variables['FolderExists'], True)
 
     - task: DeleteFiles@1
+      displayName: Delete original solution file
       inputs:
         sourceFolder: '$(Build.BinariesDirectory)'
         Contents: '$(GeneratedSolutionFileName)' 
