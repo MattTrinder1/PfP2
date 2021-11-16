@@ -53,5 +53,12 @@ variables:
   value: https://$(cumbriauat.instancename).crm11.dynamics.com
 - name: cumbriapfpuat.connection.string
   value: RequireNewInstance=True;AuthType=Office365;Username=$(cumbria.username);Password=$(cumbria.password);Url=$(cumbriauat.url)
-  
+
+- name: cumbrialive.instancename
+  value: cops
+- name: cumbrialive.url
+  value: https://$(cumbrialive.instancename).crm11.dynamics.com
+- name: cumbrialive.connection.string
+  value: RequireNewInstance=True;AuthType=Office365;Username=$(cumbria.username);Password=$(cumbria.password);Url=$(cumbrialive.url)
+
 
