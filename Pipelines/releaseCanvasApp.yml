@@ -110,7 +110,7 @@ stages:
                     environmentName: ${{parameter3.Value}}
                     customerName: ${{parameter2.Value}}
 
-      - ${{ if not endsWith(parameters.canvasApp,'*') }}:
+      - ${{ if not ( endsWith(parameters.canvasApp,'*')) }}:
         - template: assembleReleaseForApp.yml
           parameters:
             managed: Managed
