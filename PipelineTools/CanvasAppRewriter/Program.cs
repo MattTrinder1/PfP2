@@ -13,11 +13,13 @@ namespace CanvasAppRewriter
 
             string json = File.ReadAllText(@"../../../../../Schema/CanvasAppsVehicleCP/unpackedapp/Connections/Connections.json");
             var j = JObject.Parse(json);
+            //Save("../../../RewrittenCanvasApps/Cumbria/UAT/Schema/CanvasAppsVehicleCP/unpackedapp/Connections/Connections.json", j.ToString());
 
             Console.WriteLine("Rewriting Vehicle App NDIWrapper-Vehicle");
 
             //[JSON].
             j["15a9e74b-4a8e-4609-a8ed-b26f140fc6a2"].Parent.Remove();
+            //Save("../../../RewrittenCanvasApps/Cumbria/UAT/Schema/CanvasAppsVehicleCP/unpackedapp/Connections/Connections.json", j.ToString());
             string replacement = File.ReadAllText(@"../../../NDIWrapperVehicle.json");
             var replacementJ = JObject.Parse(replacement);
             //j.AddAfterSelf(replacementJ.ToString()) ;
