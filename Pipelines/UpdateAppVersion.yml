@@ -47,6 +47,7 @@ steps:
     inputs:
       SourceFolder: $(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}${{parameters.solutionprefix}}\unpacked\CanvasApps\
       Contents: $(MSAPPFileName)
+    condition: gt(length(variables['MSAPPFileName']),0)
 
   - powershell: |
           $(Build.SourcesDirectory)\365Tools\Tools\PasOpa\PASopa.exe -pack $(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}${{parameters.solutionprefix}}\unpacked\CanvasApps\$(MSAPPFileName) $(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}${{parameters.solutionprefix}}\unpackedapp 
