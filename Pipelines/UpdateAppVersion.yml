@@ -48,7 +48,6 @@ steps:
         contents: '**\*.json' 
         targetFolder: '$(Build.SourcesDirectory)\Schema'
         overWrite: true 
-      condition: eq(variables['FolderExists'], True)
 
 
   #get the canvas app .msapp file name
