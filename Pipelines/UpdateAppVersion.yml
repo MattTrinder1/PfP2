@@ -3,6 +3,10 @@ parameters:
   type: string
 - name: solutionprefix
   type: string
+- name: customerName
+  type: string
+- name: environmentName
+  type: string
 
 steps:
   - powershell: |
@@ -34,6 +38,18 @@ steps:
       parameterTypeOfSearch: 'filesList'
       parameterFilesPattern: 
       parameterFilesList: 'App.fx.yaml'
+
+
+  - ${{ if and(startsWith(parameters.appFolderName,'CanvasApps'), ne(parameters.customerName, 'Base')) }}:
+    - task: CopyFiles@2
+      displayName: Copy Rewritten CanvasApps over Schema
+      inputs:
+        sourceFolder: '$(Build.SourcesDirectory)\RewrittenCanvasApps\${{parameters.customerName}}\${{parameters.environmentName}}\Schema'
+        contents: '**\*.json' 
+        targetFolder: '$(Build.SourcesDirectory)\Schema'
+        overWrite: true 
+      condition: eq(variables['FolderExists'], True)
+
 
   #get the canvas app .msapp file name
   - powershell: |
