@@ -6,7 +6,7 @@
       <LocalizedName description="040 - Entities" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.0.0.147</Version>
+    <Version>1.0.0.148</Version>
     <Managed>1</Managed>
     <Publisher>
       <UniqueName>cumbriapolicepublisher</UniqueName>
@@ -79,6 +79,7 @@
     </Publisher>
     <RootComponents>
       <RootComponent type="1" schemaName="account" behavior="0" />
+      <RootComponent type="1" schemaName="appointment" behavior="1" />
       <RootComponent type="1" schemaName="contact" behavior="0" />
       <RootComponent type="1" schemaName="cp_appversion" behavior="0" />
       <RootComponent type="1" schemaName="cp_configdatahistory" behavior="0" />
@@ -238,6 +239,10 @@
         <Dependent type="60" displayName="Account for Interactive experience" parentDisplayName="Account" id="{a72c7955-442b-4ea4-9499-b10cd18b4256}" />
       </MissingDependency>
       <MissingDependency>
+        <Required type="60" displayName="Appointment" parentDisplayName="Appointment" solution="msdynce_Activities (9.0.1.2033)" id="{549a8aa3-c349-4ab9-8bac-4873fa9a7a5c}" />
+        <Dependent type="60" displayName="Appointment" parentDisplayName="Appointment" id="{549a8aa3-c349-4ab9-8bac-4873fa9a7a5c}" />
+      </MissingDependency>
+      <MissingDependency>
         <Required type="60" displayName="Contact Quick Create" parentDisplayName="Contact" solution="msdynce_AppCommon (9.0.4.0066)" id="{661157fe-2fc9-4eaa-835f-5bfa2f7b64f7}">
           <package>msdynce_AppCommonAnchor (9.0.21103.10001)</package>
         </Required>
@@ -322,6 +327,10 @@
         <Dependent type="1" schemaName="cp_rprptype" displayName="RPRP Type" />
       </MissingDependency>
       <MissingDependency>
+        <Required type="61" schemaName="cp_/js/AppointmentForm" displayName="cp_/js/AppointmentForm" solution="Active" />
+        <Dependent type="60" displayName="Appointment" parentDisplayName="Appointment" id="{549a8aa3-c349-4ab9-8bac-4873fa9a7a5c}" />
+      </MissingDependency>
+      <MissingDependency>
         <Required type="61" schemaName="cp_/js/RPRPForm" displayName="cp_/js/RPRPForm" solution="Active" />
         <Dependent type="60" displayName="Information" parentDisplayName="RPRP" id="{d6cacc76-7ec8-4011-a42c-ed186eeef45d}" />
       </MissingDependency>
@@ -396,6 +405,10 @@
       <MissingDependency>
         <Required type="66" schemaName="MscrmControls.ModelForm.ModelFormControl" displayName="MscrmControls.ModelForm.ModelFormControl" solution="BaseCustomControlsCore (9.0.2110.4017)" />
         <Dependent type="60" displayName="Information" parentDisplayName="Sudden Death Identification" id="{1f74b8a7-cbea-4861-825b-8b2fc4dc3b98}" />
+      </MissingDependency>
+      <MissingDependency>
+        <Required type="66" schemaName="MscrmControls.RichTextEditor.RichTextEditorControl" displayName="MscrmControls.RichTextEditor.RichTextEditorControl" solution="msdyn_RichTextEditor (1.0.0.1342)" />
+        <Dependent type="60" displayName="Appointment" parentDisplayName="Appointment" id="{549a8aa3-c349-4ab9-8bac-4873fa9a7a5c}" />
       </MissingDependency>
       <MissingDependency>
         <Required type="9" schemaName="cp_acceptreject" displayName="Accept, Reject" solution="Active" />
