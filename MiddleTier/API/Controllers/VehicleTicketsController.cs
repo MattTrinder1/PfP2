@@ -29,6 +29,8 @@ namespace API.Controllers
 
         [JsonPropertyName("image")]
         public string Image { get; set; }
+
+        public string ErrorReason { get; set; }
     }
 
     [Route("api/[controller]")]
@@ -46,7 +48,7 @@ namespace API.Controllers
         [HttpGet("licensephoto/{driverNumber}")]
         public ActionResult<LicensePhoto> GetLicensePhoto(string driverNumber)
         {
-            //TODO: Get all these from config file.
+            //TODO: Get all these from Azure env variables.
             const string authenticateUri = "https://uat.driver-vehicle-licensing.api.gov.uk/thirdparty-access/v1/authenticate";
             const string pwd = "viWUCJJD4YgAlUXpaVJ@R54C";
             const string userName = "cumbriapolice";
@@ -95,12 +97,20 @@ namespace API.Controllers
                         }
                         else
                         {
-                            //TODO: Exception
+                            licensePhoto = new LicensePhoto()
+                            {
+                                DriverNumber = driverNumber,
+                                ErrorReason = getResponse.ReasonPhrase
+                            };
                         }
                     }
                     else
                     {
-                        //TODO: Exception
+                        licensePhoto = new LicensePhoto()
+                        {
+                            DriverNumber = driverNumber,
+                            ErrorReason = authenticateResponse.ReasonPhrase
+                        };
                     }
                 }
 
