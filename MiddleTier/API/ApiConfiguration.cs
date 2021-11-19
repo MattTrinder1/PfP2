@@ -26,7 +26,7 @@ namespace API
         /// <summary>
         /// Retrieves a value from process env variables, with fallback to appsettings.
         /// </summary>
-        public string GetValue(string key, string defaultValue = null)
+        private string GetValue(string key, string defaultValue = null, bool throwException = false)
         {
             string value = Environment.GetEnvironmentVariable(key);
             if (value == null)
@@ -35,9 +35,40 @@ namespace API
             }
             if (value == null)
             {
-                value = defaultValue;
+                if (throwException)
+                {
+                    throw new ArgumentException($"Cannot find a configuration value with key, {key}");
+                }
+                else
+                {
+                    value = defaultValue;
+                }
             }
             return value;
+        }
+
+        /// <summary>
+        /// Retrieves a value from process env variables, with fallback to appsettings, returning a default value if not found.
+        /// </summary>
+        public string GetValue(string key, string defaultValue)
+        {
+            return GetValue(key, defaultValue, false);
+        }
+
+        /// <summary>
+        /// Retrieves a value from process env variables, with fallback to appsettings and option to throw an exception if not found.
+        /// </summary>
+        public string GetValue(string key, bool throwException)
+        {
+            return GetValue(key, null, throwException);
+        }
+
+        /// <summary>
+        /// Retrieves a value from process env variables, with fallback to appsettings, returning null if not found.
+        /// </summary>
+        public string GetValue(string key)
+        {
+            return GetValue(key, null, false);
         }
     }
 }

@@ -48,13 +48,20 @@ namespace API.Controllers
         [HttpGet("licensephoto/{driverNumber}")]
         public ActionResult<LicensePhoto> GetLicensePhoto(string driverNumber)
         {
-            string authenticateUri = this.configuration.GetValue("DvlaConnection:AuthenticateUri");
-            string userName = this.configuration.GetValue("DvlaConnection:UserName");
-            string password = this.configuration.GetValue("DvlaConnection:Password");
-            string apiKey = this.configuration.GetValue("DvlaConnection:ApiKey");
-            string retrieveUri = this.configuration.GetValue("DvlaConnection:RetrieveUri");
-            string testDriverNumber = this.configuration.GetValue("DvlaConnection:TestDriverNumber");
+            const string idTokenCacheKey = "DvlaIdToken";
+            const string idTokenCachedOnCacheKey = "DvlaIdTokenCachedOn";
 
+            int tokenValidMinutes = 30;
+            string tokenValidMinutesAsString = this.configuration.GetValue("DvlaConnection:TokenValidMinutes");
+            if (!string.IsNullOrWhiteSpace(tokenValidMinutesAsString))
+            {
+                if (!int.TryParse(tokenValidMinutesAsString, out tokenValidMinutes))
+                {
+                    throw new ArgumentException($"{tokenValidMinutesAsString} is not a valid TokenValidMinutes value.");
+                }
+            }
+
+            string testDriverNumber = this.configuration.GetValue("DvlaConnection:TestDriverNumber");
             if (!string.IsNullOrWhiteSpace(testDriverNumber)) driverNumber = testDriverNumber;
 
             try
@@ -63,25 +70,66 @@ namespace API.Controllers
 
                 using (var client = new HttpClient())
                 {
-                    string authBody = "{\"userName\":\"" + userName + "\",\"password\":\"" + password + "\"}";
-                    StringContent authContent = new StringContent(authBody, Encoding.UTF8, "application/json");
-
-                    var taskAuthenticate = Task.Run(() => client.PostAsync(authenticateUri, authContent));
-                    taskAuthenticate.Wait();
-
-                    HttpResponseMessage authenticateResponse = taskAuthenticate.Result;
-                    if (authenticateResponse != null && authenticateResponse.IsSuccessStatusCode)
+                    bool gotValidIdToken = false;
+                    string idToken = null;
+                    if (cache.TryGetValue(idTokenCacheKey, out idToken))
                     {
-                        var taskReadAuthenticateResponse = Task.Run(() => authenticateResponse.Content.ReadAsStringAsync());
-                        taskReadAuthenticateResponse.Wait();
-                        string authTokenJson = taskReadAuthenticateResponse.Result;
+                        if (!string.IsNullOrWhiteSpace(idToken))
+                        {
+                            DateTime idTokenCachedOn;
+                            if (cache.TryGetValue(idTokenCachedOnCacheKey, out idTokenCachedOn))
+                            {
+                                gotValidIdToken = (idTokenCachedOn > DateTime.Now - TimeSpan.FromMinutes(tokenValidMinutes));
+                            }
+                        }
+                    }
 
-                        DvlaAuthToken authToken = JsonSerializer.Deserialize<DvlaAuthToken>(authTokenJson);
+                    if (!gotValidIdToken)
+                    {
+                        string authenticateUri = this.configuration.GetValue("DvlaConnection:AuthenticateUri", true);
+                        string userName = this.configuration.GetValue("DvlaConnection:UserName", true);
+                        string password = this.configuration.GetValue("DvlaConnection:Password", true);
+
+                        string authBody = "{\"userName\":\"" + userName + "\",\"password\":\"" + password + "\"}";
+                        StringContent authContent = new StringContent(authBody, Encoding.UTF8, "application/json");
+
+                        var taskAuthenticate = Task.Run(() => client.PostAsync(authenticateUri, authContent));
+                        taskAuthenticate.Wait();
+
+                        HttpResponseMessage authenticateResponse = taskAuthenticate.Result;
+                        if (authenticateResponse != null && authenticateResponse.IsSuccessStatusCode)
+                        {
+                            var taskReadAuthenticateResponse = Task.Run(() => authenticateResponse.Content.ReadAsStringAsync());
+                            taskReadAuthenticateResponse.Wait();
+                            string authTokenJson = taskReadAuthenticateResponse.Result;
+
+                            DvlaAuthToken authToken = JsonSerializer.Deserialize<DvlaAuthToken>(authTokenJson);
+
+                            idToken = authToken.IdToken;
+                            gotValidIdToken = true;
+
+                            cache.Set(idTokenCacheKey, idToken);
+                            cache.Set(idTokenCachedOnCacheKey, DateTime.Now);
+                        }
+                        else
+                        {
+                            licensePhoto = new LicensePhoto()
+                            {
+                                DriverNumber = driverNumber,
+                                ErrorReason = authenticateResponse.ReasonPhrase
+                            };
+                        }
+                    }
+
+                    if (gotValidIdToken)
+                    {
+                        string apiKey = this.configuration.GetValue("DvlaConnection:ApiKey", true);
+                        string retrieveUri = this.configuration.GetValue("DvlaConnection:RetrieveUri", true);
 
                         string body = "{\"driverNumber\":\"" + driverNumber + "\"}";
                         StringContent content = new StringContent(body, Encoding.UTF8, "application/json");
 
-                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(authToken.IdToken);
+                        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(idToken);
                         content.Headers.Add("x-api-key", apiKey);
                         content.Headers.Add("timestamp", DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffK"));
 
@@ -105,14 +153,6 @@ namespace API.Controllers
                                 ErrorReason = getResponse.ReasonPhrase
                             };
                         }
-                    }
-                    else
-                    {
-                        licensePhoto = new LicensePhoto()
-                        {
-                            DriverNumber = driverNumber,
-                            ErrorReason = authenticateResponse.ReasonPhrase
-                        };
                     }
                 }
 
