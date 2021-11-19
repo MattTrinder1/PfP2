@@ -17,20 +17,20 @@ parameters:
 steps:
   - powershell: |
                 $CanvasAppFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}${{parameters.solutionName}}_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
-                $CanvasAppFileFileName = $CanvasAppFile.FullName
+                $CanvasAppFileName = $CanvasAppFile.FullName
 
-                if($CanvasAppFileFileName)
+                if($CanvasAppFileName)
                 {
-                    Write-Host "##vso[task.setvariable variable=CanvasAppFileFileName]$CanvasAppFileFileName"
+                    Write-Host "##vso[task.setvariable variable=CanvasAppFileName]$CanvasAppFileName"
                 }
                 else
                 {
                     $CanvasAppFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.customerName}}/${{parameters.environmentName}}/${{parameters.solutionprefix}}${{parameters.solutionName}}_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
-                    $CanvasAppFileFileName = $CanvasAppFile.FullName
-                    if($CanvasAppFileFileName)
+                    $CanvasAppFileName = $CanvasAppFile.FullName
+                    if($CanvasAppFileName)
                     {
-                        Write-Host "##vso[task.setvariable variable=CanvasAppFileFileName]$CanvasAppFileFileName"
+                        Write-Host "##vso[task.setvariable variable=CanvasAppFileName]$CanvasAppFileName"
                     }
                 }
                 
-    displayName: GetSolutionFileNames
+    displayName: Get Canvas App Solution File Name
