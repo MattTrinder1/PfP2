@@ -30,7 +30,7 @@ steps:
     solutionprefix : ${{parameters.solutionprefix}}
     customername : ${{parameters.customername}}
     environmentname : ${{parameters.environmentname}}
-    solutionName: ${{ replace(parameters.canvasApp,'*','') }}
+    solutionName: CanvasApps${{ replace(parameters.canvasApp,'*','') }}
 
 - template: install-managed-solution.yml
   parameters:
