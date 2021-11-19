@@ -161,6 +161,39 @@ stages:
 
 #----------------------------------Start Stage-------------------------------------------------------------------
 
+  - stage: ReleaseToCumbriaSystemTest
+    dependsOn: AssembleRelease
+    displayName: Deploy Cumbria System Test
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: ReleaseToCumbriaSystemTest
+      environment: CumbriaSystemTest
+      displayName: Deploy Solutions
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            
+            steps:
+
+            - template: deployCanvasAppSolution.yml
+              parameters:
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
+                canvasApp: ${{parameters.canvasApp}}
+                connectionString: $(cumbriasystemtest.connection.string)
+                customername: Cumbria
+                environmentname: SystemTest
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
+
+#----------------------------------Start Stage-------------------------------------------------------------------
+
   - stage: ReleaseToUAT
     dependsOn: ReleaseToPfPSystemTest
     displayName: Deploy to PfP UAT
