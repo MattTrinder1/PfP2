@@ -94,6 +94,12 @@ stages:
           artifact: 'RewrittenCanvasApps'
           path: $(Build.SourcesDirectory)/RewrittenCanvasApps
 
+      - task: DeleteFiles@1
+        displayName: 'Delete files from $(build.binariesdirectory)'
+        inputs:
+          SourceFolder: '$(build.binariesdirectory)'
+          Contents: '**'
+
       - ${{ if endsWith(parameters.canvasApp,'*') }}:
         - ${{ each parameter2 in parameters }}:
           - ${{ if contains(parameter2.Key, 'CustomerName') }}:
