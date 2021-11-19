@@ -48,12 +48,14 @@ namespace API.Controllers
         [HttpGet("licensephoto/{driverNumber}")]
         public ActionResult<LicensePhoto> GetLicensePhoto(string driverNumber)
         {
-            //TODO: Get all these from Azure env variables.
-            const string authenticateUri = "https://uat.driver-vehicle-licensing.api.gov.uk/thirdparty-access/v1/authenticate";
-            const string pwd = "viWUCJJD4YgAlUXpaVJ@R54C";
-            const string userName = "cumbriapolice";
-            const string apiKey = "OeJHkYTswJK8Rlun5T5X6pIequYj0lC5XlsaT1xj";
-            const string retrieveUri = "https://uat.driver-vehicle-licensing.api.gov.uk/driver-photo-at-the-roadside/v1/drivers/driver-details/s";
+            string authenticateUri = this.configuration.GetValue("DvlaConnection:AuthenticateUri");
+            string userName = this.configuration.GetValue("DvlaConnection:UserName");
+            string password = this.configuration.GetValue("DvlaConnection:Password");
+            string apiKey = this.configuration.GetValue("DvlaConnection:ApiKey");
+            string retrieveUri = this.configuration.GetValue("DvlaConnection:RetrieveUri");
+            string testDriverNumber = this.configuration.GetValue("DvlaConnection:TestDriverNumber");
+
+            if (!string.IsNullOrWhiteSpace(testDriverNumber)) driverNumber = testDriverNumber;
 
             try
             {
@@ -61,7 +63,7 @@ namespace API.Controllers
 
                 using (var client = new HttpClient())
                 {
-                    string authBody = "{\"userName\":\"" + userName + "\",\"password\":\"" + pwd + "\"}";
+                    string authBody = "{\"userName\":\"" + userName + "\",\"password\":\"" + password + "\"}";
                     StringContent authContent = new StringContent(authBody, Encoding.UTF8, "application/json");
 
                     var taskAuthenticate = Task.Run(() => client.PostAsync(authenticateUri, authContent));
