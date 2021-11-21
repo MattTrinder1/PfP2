@@ -1,0 +1,13 @@
+parameters:
+- name: serviceConnectionName
+  type: string
+
+steps:
+
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: '${{parameters.serviceConnectionName}}ResourceGroupConnection'
+    appType: 'webApp'
+    WebAppName: '${{parameters.serviceConnectionName}}-APIWebApp'
+    Package: $(Pipeline.Workspace)/PNCAPI/**/*.zip
