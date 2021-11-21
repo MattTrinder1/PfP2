@@ -9,5 +9,5 @@ steps:
     ConnectionType: 'AzureRM'
     azureSubscription: '${{parameters.serviceConnectionName}}ResourceGroupConnection'
     appType: 'webApp'
-    WebAppName: '${{parameters.serviceConnectionName}}-APIWebApp'
+    WebAppName: '${{parameters.serviceConnectionName}}-MockNDIPNCAPI'
     Package: $(Pipeline.Workspace)/PNCAPI/**/*.zip
