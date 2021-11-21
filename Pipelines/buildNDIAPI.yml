@@ -1,0 +1,21 @@
+parameters:
+- name: configuration
+  type: string
+
+steps:
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'publish'
+    publishWebProjects: false
+    projects: 'PNC/NDIApiWrapper/NDIApiWrapper.csproj'
+    arguments: '-o $(Build.ArtifactStagingDirectory)/NDIApiWrapper -c ${{parameters.configuration}}'
+    zipAfterPublish: true
+    modifyOutputPath: false
+
+#Production of Artifact is optional!
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/NDIApiWrapper'
+    ArtifactName: 'API'
+    publishLocation: 'Container'
+
