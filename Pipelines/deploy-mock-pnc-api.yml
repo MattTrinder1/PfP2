@@ -1,0 +1,23 @@
+trigger:
+  batch: true
+  branches: 
+      include:
+      - master
+  paths:
+    include:
+    - PNC/*
+
+
+pool:
+  vmImage: windows-latest
+
+stages:
+
+  - stage: BuildMockPNCAPI
+    displayName: Build Mock PNC API
+    jobs:
+    - job: BuildMockPNCAPI
+      steps:
+        - template: buildNDIAPI.yml
+          parameters:
+            configuration: Mock
