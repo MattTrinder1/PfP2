@@ -1,5 +1,4 @@
-﻿#if !MOCK
-
+﻿#if MOCK
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,139 +13,72 @@ using NDIXML;
 
 namespace NDIApiWrapper.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/vehicle")]
     [ApiController]
-    public class VehicleController : ControllerBase
+    public class MockVehicleController : ControllerBase
     {
         IConfiguration config;
         ILogger log;
 
-        public VehicleController(IConfiguration configuration,ILogger<VehicleController> logger)
-        {
-            config = configuration;
-            log = logger;
-        }
+
         //getbypncid/{pncid}"
-        [HttpGet("getbyvrn/{vrn}")] 
-        public ActionResult<Vehicle> GetByVRN(string vrn, string reason,bool includeInsurance)
+        [HttpGet("getbyvrn/{vrn}")]
+        public ActionResult<Vehicle> GetByVRN(string vrn, string reason, bool includeInsurance)
         {
 
-            using (var sessionWrapper = new SessionWrapper(config.GetValue<string>("Url"), config.GetValue<string>("User"), config.GetValue<string>("Session")))
-            {
-                var sw = new Stopwatch();
-                sw.Start();
+            var v = new Vehicle();
+            v.VrnReg = vrn;
+            v.Make = "Ford(UK)";
+            v.Model = "Mondeo";
+            v.Colour = "Silver";
+            v.Style = "Sedan";
+            v.Registered = "1992";
+            v.cc = "2000";
+            v.ChassisNo = "1234dfdsfds";
+            v.EngineNo = "3434";
+            v.Stolen = "no";
+            v.VELNumber = "123";
+            v.VELDate = "1123232";
+            v.VROLit = "";
+            v.KeeperNotify = "";
+            v.PreviousVRNReg = "";
+            v.MOTExpiry = "1003";
+            v.InsuranceText = "asdf"; ;
+            v.InsuranceText2 = ""; ;
+            v.InsuranceFlag = ""; ;
+            v.HazardsFlag = ""; ;
+            v.TagNumber = "";
+            v.NoOfReports = 2;
+
+            var i = new InsuranceDetails();
+            v.Insurance.Add(i);
+            i.Address1 = "11 CLARENCE ROAD,STONY STRATFORD";
+            i.Address2 = "MILTON KEYNES,MK11 1JE";
+            i.AllowedOthers = "Yes";
+            i.ClassLine1 = "Public";
+            i.InsuranceHeld = "FULLY COMPREHENSIVE";
+            i.MakeModel = "FORD MONDEO";
+            i.PermittedDrivers1 = "Insured and Spouse";
 
 
+            var r = new Report();
+            r.ReportNum = "1";
+            r.ReportType = "THEFT";
+            r.Text1 = "STOLEN";
+            v.Reports = new List<Report>() { r }.ToArray();
+            v.NoOfReports = 1;
 
-                //run quer
-                var screen = sessionWrapper.logonResponse.TCODEScreen;
-                screen.Data.FieldData = vrn;
-                screen.Originator.FieldData = config.GetValue<string>("Origin");
-                screen.ReasonCode.FieldData = reason;
+            var k = new Keeper();
+            k.ad1 = "100 WOLVERTON ROAD";
+            k.RegKeeper = "MATT TRINDER";
+            v.Keepers.Add(k);
 
-                var s = new PNCScreen();
-                s.TCODEScreen = screen;
-                s.Session = sessionWrapper.connectResponse.Session;
+            var m = new Marker();
+            m.Text = "Marker 1";
+            v.Markers.Add(m);
 
-                var vehicleResponse = sessionWrapper.client.HashVE(s);
+            return v;
 
-                log.LogDebug($"PNC HashVE : {sw.ElapsedMilliseconds.ToString()}");
-                sw.Reset(); sw.Start();
-
-                var vehicles = new List<Vehicle>();
-
-                if (vehicleResponse.Rawscreen.Line3.Trim().Contains("NO TRACE OF VRM"))
-                {
-                    return new Vehicle();
-                }
-
-                int reportIndex = 0;
-                int reportCount = 0;
-                if (!vehicleResponse.Rawscreen.Line17.Contains("NO REPORTS PRESENT"))
-                {
-                    reportIndex = Convert.ToInt32(vehicleResponse.Rawscreen.Line17.Substring(44, 1));
-                    reportCount = Convert.ToInt32(vehicleResponse.Rawscreen.Line17.Substring(49, 1));
-                }
-
-                Vehicle v = GetVehicleFromResponse(vehicleResponse);
-
-                if (!string.IsNullOrEmpty(v.HazardsFlag))
-                {
-                    var a = 1;
-                }
-
-                if (includeInsurance)
-                {
-                    var ins = sessionWrapper.client.GetInsuranceDetails(sessionWrapper.connectResponse.Session.SessionInfo);
-                    log.LogDebug($"PNC Insurance : {sw.ElapsedMilliseconds.ToString()}");
-                    sw.Reset(); sw.Start();
-                    // v.Insurance.a = ins.
-                    if (ins.Control.Reason.ToLower() != "no insurance data available")
-                    {
-                        var b = 2;
-                        var insurance = new InsuranceDetails();
-                        insurance.InsuranceHeld = v.InsuranceText;
-                        insurance.VRM = ins.VEInsurance.VRM.FieldData;
-                        insurance.MakeModel = ins.VEInsurance.MakeModel.FieldData;
-                        insurance.Holder = ins.VEInsurance.Holder.FieldData;
-                        insurance.Address1 = ins.VEInsurance.Address1.FieldData;
-                        insurance.Address2 = ins.VEInsurance.Address2.FieldData;
-                        insurance.Insurer = ins.VEInsurance.Insurer.FieldData;
-                        insurance.ClassLine1 = ins.VEInsurance.ClassLine1.FieldData;
-                        insurance.ClassLine2 = ins.VEInsurance.ClassLine2.FieldData;
-                        insurance.PolicyNumber = ins.VEInsurance.PolicyNumber.FieldData;
-                        insurance.AllowedOthers = ins.VEInsurance.AllowedOthers.FieldData;
-                        insurance.StartDate = ins.VEInsurance.StartDate.FieldData;
-                        insurance.StartTime = ins.VEInsurance.StartTime.FieldData;
-                        insurance.ExpDate = ins.VEInsurance.ExpDate.FieldData;
-                        insurance.ExpTime = ins.VEInsurance.ExpTime.FieldData;
-                        insurance.PermittedDrivers1 = ins.VEInsurance.PermittedDrivers1.FieldData;
-                        insurance.PermittedDrivers2 = ins.VEInsurance.PermittedDrivers2.FieldData;
-
-                        GetNamedDriver(insurance, ins.VEInsurance.NamedDriversExcl1);
-                        GetNamedDriver(insurance, ins.VEInsurance.NamedDriversExcl2);
-                        GetNamedDriver(insurance, ins.VEInsurance.NamedDriversExcl3);
-                        GetNamedDriver(insurance, ins.VEInsurance.NamedDriversExcl4);
-                        GetNamedDriver(insurance, ins.VEInsurance.NamedDriversExcl5);
-
-
-                        //insurance.NamedDriver1 = ins.VEInsurance.NamedDriversExcl1.FieldData;
-                        //insurance.NamedDriver2 = ins.VEInsurance.NamedDriversExcl2.FieldData;
-                        //insurance.NamedDriver3 = ins.VEInsurance.NamedDriversExcl3.FieldData;
-                        //insurance.NamedDriver4 = ins.VEInsurance.NamedDriversExcl4.FieldData;
-                        //insurance.NamedDriver5 = ins.VEInsurance.NamedDriversExcl5.FieldData;
-
-
-
-                        v.Insurance.Add(insurance);
-                    }
-
-
-                }
-
-                var reports = new List<Report>();
-                if (reportCount > 0)
-                {
-                    var report1 = GetReport(vehicleResponse.Rawscreen);
-                    reports.Add(report1);
-
-                    while (reportIndex < reportCount)
-                    {
-                        var resp = sessionWrapper.client.NextVEReport(sessionWrapper.connectResponse.Session.SessionInfo);
-                        log.LogDebug($"PNC NextVE : {sw.ElapsedMilliseconds.ToString()}");
-                        sw.Reset(); sw.Start();
-
-                        var reportNext = GetReport(resp.Rawscreen);
-                        reports.Add(reportNext);
-
-                        reportIndex++;
-                    }
-                }
-                v.Reports = reports.ToArray();
-                v.NoOfReports = reportCount;
-
-                return v;
-            }
         }
 
         private static void GetNamedDriver(InsuranceDetails insurance, Field namedDriverExcl)
@@ -326,7 +258,7 @@ namespace NDIApiWrapper.Controllers
         }
 
     }
-    
+
     
 }
 #endif

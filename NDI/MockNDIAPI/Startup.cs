@@ -1,14 +1,17 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Primitives;
 using Microsoft.OpenApi.Models;
 using Models;
 using SoapCore;
+using SoapCore.Extensibility;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +20,28 @@ using System.Threading.Tasks;
 
 namespace MockNDIAPI
 {
+    public class MyServiceOperationTuner : IServiceOperationTuner
+    {
+        public void Tune(HttpContext httpContext, object serviceInstance, SoapCore.ServiceModel.OperationDescription operation)
+        {
+            if (operation.Name.Equals("HostConnect2"))
+            {
+                var service = serviceInstance as consolidataws;
+                string result = string.Empty;
+
+                StringValues paramValue;
+                if (httpContext.Request.Headers.TryGetValue("some_parameter", out paramValue))
+                {
+                    result = paramValue[0];
+                }
+
+                service.SetParameterForSomeOperation(result);
+
+                httpContext.Response.Headers.Add("content-type", "application/soap+xml");
+            }
+        }
+    }
+
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -35,7 +60,8 @@ namespace MockNDIAPI
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "MockNDIAPI", Version = "v1" });
             });
-            services.AddSingleton<ISampleService, SampleService>();
+            services.AddSingleton<Iconsolidataws, consolidataws>();
+            services.AddSoapServiceOperationTuner(new MyServiceOperationTuner());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -53,8 +79,19 @@ namespace MockNDIAPI
             app.UseRouting();
 
             app.UseAuthorization();
-            
-            app.UseSoapEndpoint<ISampleService>("/Service.asmx", new BasicHttpBinding(), SoapSerializer.XmlSerializer,false,null,null,false,false);
+
+            app.Use(async (context, nextMiddleware) =>
+            {
+                context.Response.OnStarting(() =>
+                {
+                    context.Response.Headers["content-type"]= "application/soap+xml;charset=utf-8";
+                    return Task.FromResult(0);
+                });
+                await nextMiddleware();
+            });
+
+            app.UseSoapEndpoint<Iconsolidataws>("/consolidataws.asmx", new BasicHttpBinding(), SoapSerializer.XmlSerializer,false,null,null,false,false);
+
 
             app.UseEndpoints(endpoints =>
             {

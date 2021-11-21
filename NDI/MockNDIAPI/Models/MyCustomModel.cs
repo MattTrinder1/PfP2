@@ -16,4 +16,6 @@ namespace Models
         [DataMember]
         public string Email { get; set; }
     }
+
+
 }
