@@ -1,6 +1,6 @@
 Scr_traffic_offence As screen:
     OnHidden: =Reset(PenInput_Traffic_offence)
-    OnVisible: |-
+    OnVisible: |
         =Set(
             madcolto,
             LightGoldenRodYellow
@@ -186,14 +186,15 @@ Scr_traffic_offence As screen:
                 DisplayMode.Disabled
             )
         );
-        
-        UpdateContext({hasBeenSigned:true});
-        If(LookUp(
+        UpdateContext({hasBeenSigned: true});
+        If(
+            LookUp(
                 TrOffOffline,
                 TicketTypename = "Traffic Offence" And OffenceKey = Dropdown_traffic_offence_1.Selected.Key
-            ).TrafficOffenceSigned <> Blank() ,UpdateContext({hasBeenSigned:true}),UpdateContext({hasBeenSigned:false}));
-        
-        
+            ).TrafficOffenceSigned <> Blank(),
+            UpdateContext({hasBeenSigned: true}),
+            UpdateContext({hasBeenSigned: false})
+        );
         Set(
             ymulti,
             Last(
@@ -210,7 +211,12 @@ Scr_traffic_offence As screen:
             ).Offenceorder > 0,
             UpdateContext({yaddoffence: 330 * ymulti}),
             UpdateContext({yaddoffence: 0})
-        )
+        );
+        Set(
+            editSignature,
+            true
+        );
+        UpdateContext({editSignature:true});
 
     Label_Header_TrafficOffence As label:
         Align: =Align.Center
@@ -842,7 +848,7 @@ Scr_traffic_offence As screen:
             BorderStyle: =BorderStyle.Solid
             DisplayMode: =DisplayMode.Edit
             Fill: =RGBA(0, 0, 0, 0)
-            Height: =1381
+            Height: =1455
             Visible: =true
             Width: =640
             X: =0
@@ -958,7 +964,10 @@ Scr_traffic_offence As screen:
                                     And(
                                         !IsBlank(rec.NIPGiven),
                                         !IsBlank(rec.OffenderReply),
-                                        !IsBlank(rec.TrafficOffenceSigned),
+                                        And(
+                                            !IsBlank(rec.TrafficOffenceSigned),
+                                            Checkbox_Signature_Refused.Value = false
+                                        ),
                                         !IsBlank(rec.AcknowledgedTrafficOffence)
                                     ),
                                     true
@@ -982,7 +991,7 @@ Scr_traffic_offence As screen:
                 Text: ="Save & Continue"
                 Width: =545
                 X: =40
-                Y: =1284
+                Y: =1389
                 ZIndex: =1
 
             Label1_19 As label:
@@ -1009,7 +1018,7 @@ Scr_traffic_offence As screen:
                     Visible: =If(LookUp(TrOffOffline,TicketTypename = "Traffic Offence" And OffenceKey=Dropdown_traffic_offence_1.Selected.Key).TrafficOffenceSigned = Blank() ,false,true)
                     Width: =545
                     X: =40
-                    Y: =854
+                    Y: =959
                     ZIndex: =2
 
                 TextInput_Sign_and_Submit_SignatureDateTime_1 As text:
@@ -1023,12 +1032,12 @@ Scr_traffic_offence As screen:
                     Size: =21
                     Width: =545
                     X: =40
-                    Y: =1186
+                    Y: =1291
                     ZIndex: =3
 
                 PenInput_Traffic_offence As inkControl:
                     BorderColor: =RGBA(153, 153, 153, 1)
-                    DisplayMode: =	If(!IsBlank(TextInput_Offender_after_caution_1.Text) And !IsBlank(Radio_TrafficOffence_NIP_Given_1.Selected.Value) ,DisplayMode.Edit,DisplayMode.Disabled)
+                    DisplayMode: =If((!IsBlank(TextInput_Offender_after_caution_1.Text) And !IsBlank(Radio_TrafficOffence_NIP_Given_1.Selected.Value)) Or editSignature ,DisplayMode.Edit,DisplayMode.Disabled)
                     Height: =282
                     OnSelect: |-
                         =UpdateContext({hasBeenSigned:true})
@@ -1036,7 +1045,7 @@ Scr_traffic_offence As screen:
                     Visible: =If(LookUp(TrOffOffline,TicketTypename = "Traffic Offence" And OffenceKey=Dropdown_traffic_offence_1.Selected.Key).TrafficOffenceSigned = Blank() ,true,false)
                     Width: =545
                     X: =40
-                    Y: =886
+                    Y: =991
                     ZIndex: =4
 
                 Label_Sign_and_Submit_TFOffenderSignature_1 As label:
@@ -1046,7 +1055,7 @@ Scr_traffic_offence As screen:
                     Text: ="Offender Signature"
                     Width: =545
                     X: =40
-                    Y: =817
+                    Y: =922
                     ZIndex: =5
 
             TextInput_Traffic_Offence_SerialNo_1 As text:
@@ -1107,11 +1116,21 @@ Scr_traffic_offence As screen:
                 Y: =343
                 ZIndex: =10
 
-            Rectangle10 As rectangle:
-                Fill: =RGBA(255, 255, 255, 0.7)
-                Height: =1381
-                Visible: =If(CountRows(Gallery_multipleoffences.AllItems) >0,false,true)
-                Width: =616
+            Checkbox_Signature_Refused As checkbox:
+                BorderColor: =RGBA(0, 0, 0, 1)
+                CheckboxBorderColor: =RGBA(0, 0, 0, 1)
+                Height: =85
+                OnCheck: |-
+                    =UpdateContext({editSignature: false});
+                    UpdateContext({hasBeenSigned:true})
+                OnUncheck: |-
+                    =UpdateContext({editSignature: true});
+                    UpdateContext({hasBeenSigned:false})
+                Size: =21
+                Text: ="Offender Signature Refused"
+                Width: =545
+                X: =40
+                Y: =833
                 ZIndex: =14
 
             Group16 As group:
@@ -1192,6 +1211,13 @@ Scr_traffic_offence As screen:
                     X: =565
                     Y: =4
                     ZIndex: =13
+
+            Rectangle10 As rectangle:
+                Fill: =RGBA(255, 255, 255, 0.7)
+                Height: =1381
+                Visible: =If(CountRows(Gallery_multipleoffences.AllItems) >0,false,true)
+                Width: =616
+                ZIndex: =15
 
         DataCard3 As dataCard.blankCard:
             BorderColor: =RGBA(0, 0, 0, 1)

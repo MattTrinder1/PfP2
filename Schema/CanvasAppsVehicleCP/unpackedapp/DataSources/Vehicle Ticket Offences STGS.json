@@ -31,6 +31,7 @@
       "cp_nipnotrequired": "NIP Not Required",
       "cp_offencecode": "Offence Code",
       "cp_offenderreply": "Offender Reply",
+      "cp_offendersignaturerefused": "Offender Signature Refused",
       "cp_otherdocuments": "Other Documents",
       "cp_outcomedescription": "Outcome Description",
       "cp_outcomeofstop": "Outcome of Stop",
@@ -298,6 +299,26 @@
     },
     "OptionSetTypeKey": "BooleanType",
     "RelatedColumnInvariantName": "cp_vdrsprinted",
+    "RelatedEntityName": "Vehicle Ticket Offences STGS",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Offender Signature Refused (Vehicle Ticket Offences STGS)",
+    "Name": "cp_offendersignaturerefused_cp_vehicleticketoffencesstg",
+    "OptionSetInfoNameMapping": {
+      "0": "No",
+      "1": "Yes"
+    },
+    "OptionSetIsBooleanValued": true,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "cp_offendersignaturerefused",
+        "OptionSetReferenceEntityName": "Vehicle Ticket Offences STGS"
+      }
+    },
+    "OptionSetTypeKey": "BooleanType",
+    "RelatedColumnInvariantName": "cp_offendersignaturerefused",
     "RelatedEntityName": "Vehicle Ticket Offences STGS",
     "Type": "OptionSetInfo"
   },

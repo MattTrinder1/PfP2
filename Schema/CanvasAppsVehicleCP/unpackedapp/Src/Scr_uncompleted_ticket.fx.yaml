@@ -1201,6 +1201,7 @@ Scr_uncompleted_ticket As screen:
                                 'HORT1 Printed (Vehicle Ticket Offences STGS)'.No
                             ),
                             cp_trafficoffencesignature: TrafficOffenceSigned,
+                            cp_offendersignaturerefused: If(TrafficOffenceSigned = Blank(), true, false),
                             /*HORT1 ends here */
                             'Reason For Using S163 Power': 'Reason for using s163 power',
                             'Outcome Description': 'Description: Outcome of stop / reason for outcome',

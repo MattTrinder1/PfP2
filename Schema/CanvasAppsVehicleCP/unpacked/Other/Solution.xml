@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<ImportExportXml version="9.2.21103.129" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<ImportExportXml version="9.2.21111.141" SolutionPackageVersion="9.2" languagecode="1033" generatedBy="CrmLive" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
   <SolutionManifest>
     <UniqueName>CPCanvasAppsVehicle</UniqueName>
     <LocalizedNames>
       <LocalizedName description="127 - Canvas Apps - Vehicle" languagecode="1033" />
     </LocalizedNames>
     <Descriptions />
-    <Version>1.0.0.118</Version>
+    <Version>1.0.0.120</Version>
     <Managed>1</Managed>
     <Publisher>
       <UniqueName>cumbriapolicepublisher</UniqueName>
@@ -81,6 +81,10 @@
       <RootComponent type="300" schemaName="cp_vehicletickets_8a92b" behavior="0" />
     </RootComponents>
     <MissingDependencies>
+      <MissingDependency>
+        <Required type="1" schemaName="cp_customersetting" displayName="Customer Setting" solution="Active" />
+        <Dependent type="300" schemaName="cp_vehicletickets_8a92b" displayName="Vehicle Tickets" />
+      </MissingDependency>
       <MissingDependency>
         <Required type="1" schemaName="cp_licencecategory" displayName="Licence Category" solution="Active" />
         <Dependent type="300" schemaName="cp_vehicletickets_8a92b" displayName="Vehicle Tickets" />

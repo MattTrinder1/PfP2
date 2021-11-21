@@ -762,7 +762,10 @@ Scr_home As screen:
                 Height: =50
                 HoverFill: =ColorFade(RGBA(100, 118, 132, 1), -20%)
                 OnSelect: |
-                    =Set(gblLoading1,true);
+                    =Set(
+                        gblLoading1,
+                        true
+                    );
                     Refresh(Users);
                     Refresh('Lookup Fields');
                     Refresh('Lookup Values');
@@ -774,6 +777,7 @@ Scr_home As screen:
                     Refresh('Vehicle Ticket STGS');
                     Refresh('Vehicle Tickets');
                     Refresh('Ticket Type - VDRS');
+                    Refresh('Customer Settings');
                     Refresh(Accounts);
                     Refresh('Licence Categories');
                     UpdateContext(
@@ -790,7 +794,7 @@ Scr_home As screen:
                             Usermaillocal: User().Email,
                             Collarnumber: LookUp(
                                 Users,
-                                'Primary Email'= officermail
+                                'Primary Email' = officermail
                             ).'Collar Number',
                             Name: LookUp(
                                 Users,
@@ -808,12 +812,14 @@ Scr_home As screen:
                     );
                     ClearCollect(
                         Usersalllocal,
-                        ShowColumns(Filter(
+                        ShowColumns(
+                            Filter(
                                 Users,
                                 StartsWith (
                                     cp_badgenumber,
                                     "0"
-                                )),
+                                )
+                            ),
                             "cp_StaffTitle",
                             "cp_badgenumber",
                             "firstname",
@@ -837,12 +843,14 @@ Scr_home As screen:
                     );
                     ClearCollect(
                         Usersalllocal,
-                        ShowColumns(Filter(
+                        ShowColumns(
+                            Filter(
                                 Users,
                                 StartsWith (
                                     cp_badgenumber,
                                     "1"
-                                )),
+                                )
+                            ),
                             "cp_StaffTitle",
                             "cp_badgenumber",
                             "firstname",
@@ -866,12 +874,14 @@ Scr_home As screen:
                     );
                     ClearCollect(
                         Usersalllocal,
-                        ShowColumns(Filter(
+                        ShowColumns(
+                            Filter(
                                 Users,
                                 StartsWith (
                                     cp_badgenumber,
                                     "2"
-                                )),
+                                )
+                            ),
                             "cp_StaffTitle",
                             "cp_badgenumber",
                             "firstname",
@@ -895,12 +905,14 @@ Scr_home As screen:
                     );
                     ClearCollect(
                         Usersalllocal,
-                        ShowColumns(Filter(
+                        ShowColumns(
+                            Filter(
                                 Users,
                                 StartsWith (
                                     cp_badgenumber,
                                     "3"
-                                )),
+                                )
+                            ),
                             "cp_StaffTitle",
                             "cp_badgenumber",
                             "firstname",
@@ -924,12 +936,14 @@ Scr_home As screen:
                     );
                     ClearCollect(
                         Usersalllocal,
-                        ShowColumns(Filter(
+                        ShowColumns(
+                            Filter(
                                 Users,
                                 StartsWith (
                                     cp_badgenumber,
                                     "4"
-                                )),
+                                )
+                            ),
                             "cp_StaffTitle",
                             "cp_badgenumber",
                             "firstname",
@@ -947,18 +961,20 @@ Scr_home As screen:
                             "fullname"
                         )
                     );
-                    
                     SaveData(
                         Usersalllocal,
                         "Usersalllocal"
-                    );ClearCollect(
+                    );
+                    ClearCollect(
                         Usersalllocal,
-                        ShowColumns(Filter(
+                        ShowColumns(
+                            Filter(
                                 Users,
                                 StartsWith (
                                     cp_badgenumber,
                                     "5"
-                                )),
+                                )
+                            ),
                             "cp_StaffTitle",
                             "cp_badgenumber",
                             "firstname",
@@ -982,12 +998,14 @@ Scr_home As screen:
                     );
                     ClearCollect(
                         Usersalllocal,
-                        ShowColumns(Filter(
+                        ShowColumns(
+                            Filter(
                                 Users,
                                 StartsWith (
                                     cp_badgenumber,
                                     "6"
-                                )),
+                                )
+                            ),
                             "cp_StaffTitle",
                             "cp_badgenumber",
                             "firstname",
@@ -1011,12 +1029,14 @@ Scr_home As screen:
                     );
                     ClearCollect(
                         Usersalllocal,
-                        ShowColumns(Filter(
+                        ShowColumns(
+                            Filter(
                                 Users,
                                 StartsWith (
                                     cp_badgenumber,
                                     "7"
-                                )),
+                                )
+                            ),
                             "cp_StaffTitle",
                             "cp_badgenumber",
                             "firstname",
@@ -1040,40 +1060,14 @@ Scr_home As screen:
                     );
                     ClearCollect(
                         Usersalllocal,
-                        ShowColumns(Filter(
+                        ShowColumns(
+                            Filter(
                                 Users,
                                 StartsWith (
                                     cp_badgenumber,
                                     "8"
-                                )),
-                            "cp_StaffTitle",
-                            "cp_badgenumber",
-                            "firstname",
-                            "lastname",
-                            "cp_birthdate",
-                            "internalemailaddress",
-                            "cp_officerrank",
-                            "cp_officeryype",
-                            "cp_detective",
-                            "cp_PSUTraining",
-                            "cp_SafetyTraining",
-                            "cp_ServiceLength",
-                            "cp_Gender",
-                            "systemuserid",
-                            "fullname"
-                        )
-                    );
-                    SaveData(
-                        Usersalllocal,
-                        "Usersalllocal"
-                    );ClearCollect(
-                        Usersalllocal,
-                        ShowColumns(Filter(
-                                Users,
-                                StartsWith (
-                                    cp_badgenumber,
-                                    "9"
-                                )),
+                                )
+                            ),
                             "cp_StaffTitle",
                             "cp_badgenumber",
                             "firstname",
@@ -1097,12 +1091,14 @@ Scr_home As screen:
                     );
                     ClearCollect(
                         Usersalllocal,
-                        ShowColumns(Filter(
+                        ShowColumns(
+                            Filter(
                                 Users,
-                                
-                                    IsBlank(cp_badgenumber)
-                                    
-                                ),
+                                StartsWith (
+                                    cp_badgenumber,
+                                    "9"
+                                )
+                            ),
                             "cp_StaffTitle",
                             "cp_badgenumber",
                             "firstname",
@@ -1123,6 +1119,56 @@ Scr_home As screen:
                     SaveData(
                         Usersalllocal,
                         "Usersalllocal"
+                    );
+                    ClearCollect(
+                        Usersalllocal,
+                        ShowColumns(
+                            Filter(
+                                Users,
+                                IsBlank(cp_badgenumber)
+                            ),
+                            "cp_StaffTitle",
+                            "cp_badgenumber",
+                            "firstname",
+                            "lastname",
+                            "cp_birthdate",
+                            "internalemailaddress",
+                            "cp_officerrank",
+                            "cp_officeryype",
+                            "cp_detective",
+                            "cp_PSUTraining",
+                            "cp_SafetyTraining",
+                            "cp_ServiceLength",
+                            "cp_Gender",
+                            "systemuserid",
+                            "fullname"
+                        )
+                    );
+                    SaveData(
+                        Usersalllocal,
+                        "Usersalllocal"
+                    );
+                    ClearCollect(
+                        ActiveCustomerSettingsOffline,
+                        ShowColumns(
+                            Filter(
+                                'Customer Settings',
+                                Active = 'Active (Customer Settings)'.Yes
+                            ),
+                            "cp_incidentprefix",
+                            "cp_policingareatext",
+                            "cp_customersettingid",
+                            "cp_areacode",
+                            "cp_produceatstation"
+                        )
+                    );
+                    Set (
+                        IncidentNumberPrefix,
+                        First(ActiveCustomerSettingsOffline).cp_incidentprefix
+                    );
+                    SaveData(
+                        ActiveCustomerSettingsOffline,
+                        "ActiveCustomerSettingsOffline"
                     );
                     // Ticket pt1 section look ups
                     ClearCollect(
@@ -1692,7 +1738,6 @@ Scr_home As screen:
                             "cp_name",
                             "cp_offencecodeid",
                             "cp_personnotmandatory"
-                        
                         )
                     );
                     SaveData(
@@ -1707,27 +1752,26 @@ Scr_home As screen:
                             LookUp(
                                 OffenceCatOffline,
                                 OffenceCodeOffline[@cp_offencecategoryid].'Offence Category' = cp_offencecategoryid,
-                                cp_offencecategoryid 
-                                
+                                cp_offencecategoryid
                             ),
                             "cp_ticket_type_id",
-                            LookUp(OffenceCatOffline,
-                            OffenceCodeOffline[@cp_offencecategoryid].'Offence Category' = OffenceCatOffline[@cp_offencecategoryid],
-                            cp_tickettypeid),
-                    
-                    
+                            LookUp(
+                                OffenceCatOffline,
+                                OffenceCodeOffline[@cp_offencecategoryid].'Offence Category' = OffenceCatOffline[@cp_offencecategoryid],
+                                cp_tickettypeid
+                            ),
                             "cp_category_name",
-                            LookUp(OffenceCatOffline,
-                            OffenceCodeOffline[@cp_offencecategoryid].'Offence Category' = OffenceCatOffline[@cp_offencecategoryid],
-                            cp_name)
+                            LookUp(
+                                OffenceCatOffline,
+                                OffenceCodeOffline[@cp_offencecategoryid].'Offence Category' = OffenceCatOffline[@cp_offencecategoryid],
+                                cp_name
+                            )
                         )
-                        
                     );
                     SaveData(
                         'Offence Cat and Code',
                         "Offence Cat and Code"
                     );
-                    
                     //End of Traffic Offence Lookups
                     //HORT1 Lookups
                     ClearCollect(
@@ -1756,7 +1800,7 @@ Scr_home As screen:
                         ProduceStationid,
                         LookUp(
                             'Lookup Fields',
-                            cp_id = "44"
+                            cp_id = Text(First(ActiveCustomerSettingsOffline).cp_produceatstation)
                         ).cp_id
                     );
                     ClearCollect(
@@ -2022,10 +2066,14 @@ Scr_home As screen:
                         TPA,
                         {
                             cp_name: "",
+                            cp_territorialpolicingareaid: "",
                             cp_displaysequenceno: 0
                         },
                         ShowColumns(
-                            'Territorial Policing Areas',
+                            Filter(
+                                'Territorial Policing Areas',
+                                Customer.'Customer Setting' = First(ActiveCustomerSettingsOffline).cp_customersettingid
+                            ),
                             "cp_name",
                             "cp_territorialpolicingareaid"
                         )
@@ -2181,7 +2229,8 @@ Scr_home As screen:
                         ShowColumns(
                             Filter(
                                 Accounts,
-                                cp_isrecoverygarage = 'Is Recovery Garage (Accounts)'.'1'
+                                cp_isrecoverygarage = 'Is Recovery Garage (Accounts)'.'1',
+                                Customer.'Customer Setting' = First(ActiveCustomerSettingsOffline).cp_customersettingid
                             ),
                             "name",
                             "accountid",
@@ -2209,7 +2258,8 @@ Scr_home As screen:
                         ShowColumns(
                             Filter(
                                 Accounts,
-                                cp_isrecoverygaragecompany = 'Is Recovery Garage Company (Accounts)'.'1'
+                                cp_isrecoverygaragecompany = 'Is Recovery Garage Company (Accounts)'.'1',
+                                Customer.'Customer Setting' = First(ActiveCustomerSettingsOffline).cp_customersettingid
                             ),
                             "name",
                             "accountid",
@@ -2793,7 +2843,10 @@ Scr_home As screen:
                         Outcomeofstopoffline,
                         "Outcomeofstopoffline"
                     );
-                    Set(gblLoading1,false);
+                    Set(
+                        gblLoading1,
+                        false
+                    );
                 RadiusBottomLeft: =0
                 RadiusBottomRight: =0
                 RadiusTopLeft: =0

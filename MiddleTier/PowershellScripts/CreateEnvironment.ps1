@@ -14,9 +14,12 @@ $Context = New-AzStorageContext -StorageAccountName $storageAccountName -UseConn
 New-AzStorageQueue -Name "onlinecheckqueue" -Context $Context
 New-AzStorageQueue -Name "pocketnotebookqueue" -Context $Context
 New-AzStorageQueue -Name "pocketnotebookqueue-archive" -Context $Context
+New-AzStorageQueue -Name "pocketnotebookblobqueue" -Context $Context
+New-AzStorageQueue -Name "pocketnotebookblobqueue-archive" -Context $Context
 New-AzStorageQueue -Name "suddendeathqueue" -Context $Context
-New-AzStorageQueue -Name "suddendeathqueue-blob" -Context $Context
 New-AzStorageQueue -Name "suddendeathqueue-archive" -Context $Context
+New-AzStorageQueue -Name "suddendeathblobqueue" -Context $Context
+New-AzStorageQueue -Name "suddendeathblobqueue-archive" -Context $Context
 
 New-AzStorageContainer -Name "pnb" -Context $Context
 New-AzStorageContainer -Name "suddendeath" -Context $Context
@@ -26,6 +29,7 @@ New-AzAppServicePlan -ResourceGroupName $environmentName-$guid -Name $Environmen
 New-AzWebApp -ResourceGroupName $environmentName-$guid -Name $EnvironmentName"-"$guid"-APIWebApp" -Location "UK South" -AppServicePlan $EnvironmentName"-"$guid"-AppServicePlan"
 Set-AzWebApp -ResourceGroupName $environmentName-$guid -Name $EnvironmentName"-"$guid"-APIWebApp" -NetFrameworkVersion 5.0 -AppSettings @{"ASPNETCORE_ENVIRONMENT" ="$environmentType"}
 
+New-AzWebApp -ResourceGroupName $environmentName-$guid -Name $EnvironmentName"-"$guid"-MockNDIPNCAPI" -Location "UK South" -AppServicePlan $EnvironmentName"-"$guid"-AppServicePlan"
 
 New-AzFunctionAppPlan -ResourceGroupName $environmentName-$guid -Name $environmentName-$guid"-FunctionAppPlan" -Sku "EP2" -Location "UK South" -WorkerType Windows
 

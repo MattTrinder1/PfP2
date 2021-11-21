@@ -471,7 +471,7 @@
             );
             UpdateContext(
                 {
-                    incidentnumbervar: "CP" & "-" & Text(
+                    incidentnumbervar: IncidentNumberPrefix & Text(
                         DateAdd(
                             DatePicker_incident.SelectedDate,
                             0
@@ -656,7 +656,7 @@
         OnChange: |
             =UpdateContext(
                 {
-                    incidentnumbervar: "CP" & "-" & Text(
+                    incidentnumbervar: IncidentNumberPrefix & Text(
                         DateAdd(
                             DatePicker_incident.SelectedDate,
                             0

@@ -106,6 +106,7 @@
       "cp_OffenderSelfDefinedEthnicityValue": "Offender Self Defined Ethnicity Value",
       "cp_offendersignature": "Offender Signature",
       "cp_offendersignatureid": "cp_OffenderSignatureId",
+      "cp_offendersignaturerefused": "Offender Signature Refused",
       "cp_officer": "Officer",
       "cp_officerdefinedethnicity": "Offender Officer Defined Ethnicity",
       "cp_officersignature": "Officer Signature",
@@ -641,6 +642,26 @@
     },
     "OptionSetTypeKey": "BooleanType",
     "RelatedColumnInvariantName": "cp_vehiclestopped",
+    "RelatedEntityName": "Vehicle Ticket STGS",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Offender Signature Refused (Vehicle Ticket STGS)",
+    "Name": "cp_offendersignaturerefused_cp_vehicleticketstg",
+    "OptionSetInfoNameMapping": {
+      "0": "No",
+      "1": "Yes"
+    },
+    "OptionSetIsBooleanValued": true,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "cp_offendersignaturerefused",
+        "OptionSetReferenceEntityName": "Vehicle Ticket STGS"
+      }
+    },
+    "OptionSetTypeKey": "BooleanType",
+    "RelatedColumnInvariantName": "cp_offendersignaturerefused",
     "RelatedEntityName": "Vehicle Ticket STGS",
     "Type": "OptionSetInfo"
   },
