@@ -21,3 +21,19 @@ stages:
         - template: buildNDIAPI.yml
           parameters:
             configuration: Mock
+  
+  - stage: DeployMockPNCAPIToDev
+    displayName: Deploy Mock PNC API to Dev
+    jobs:
+    - deployment: DeployMockPNCAPIToPfPDev
+      environment: PfPDevAzure
+      displayName: Deploy Mock PNC API
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - template: deployPNCAPI.yml
+                parameters:
+                  serviceConnectionName: PfPDev-ab46c5b7b4fa            
