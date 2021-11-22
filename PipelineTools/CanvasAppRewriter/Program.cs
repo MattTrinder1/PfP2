@@ -36,6 +36,8 @@ namespace CanvasAppRewriter
             Console.WriteLine("Rewriting Vehicle App NDI PNC API Connection");
 
 
+            var xml = File.ReadAllText(@"../../../../../Schema/CanvasAppsVehicleCP/unpackedapp/pkgs/wadl/ndipncapi.xml");
+
         }
 
         private static void Save(string filePath, string contents)
