@@ -1,4 +1,4 @@
-﻿#if !MOCK
+﻿#if MOCK
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
@@ -11,13 +11,13 @@ using System.Linq;
 
 namespace NDIApiWrapper.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/person")]
     [ApiController]
-    public class PersonController : ControllerBase
+    public class MockPersonController : ControllerBase
     {
         IConfiguration config;
         ILogger log;
-        public PersonController(IConfiguration configuration,ILogger<PersonController> logger )
+        public MockPersonController(IConfiguration configuration,ILogger<MockPersonController> logger )
         {
             config = configuration;
             log = logger;
@@ -31,289 +31,24 @@ namespace NDIApiWrapper.Controllers
             var sw = new Stopwatch();
             sw.Start();
 
-            using (var sessionWrapper = new SessionWrapper(config.GetValue<string>("Url"), config.GetValue<string>("User"), config.GetValue<string>("Session")))
-            { 
 
-                sw.Start();
+            var person = new Person();
+            person.DriverNumber = driverNumber;
+            person.FirstName = "MATT";
+            person.LastName = "TRINDER";
+            person.PostCode = "MK11 1DW";
 
-                if (sessionWrapper.logonResponse.Control.Result != "SUCCESS")
-                {
-                    return NotFound();
-                }
+            person.Endorsements.Add(new Endorsement());
+            person.FullEntitlement.Add(new Entitlement());
+            person.ProvisionalEntitlement.Add(new Entitlement());
+            person.Unclaimeds.Add(new Unclaimed());
+            person.StopsMarkers.Add(new StopMarker());
+            person.DocumentTrail.Add(new Document());
+            person.CrossRefs.Add(new CrossRef());
 
-                var screen = sessionWrapper.logonResponse.TCODEScreen;
-                screen.Data.FieldData = driverNumber;
-                screen.Originator.FieldData = config.GetValue<string>("Origin");
-                screen.ReasonCode.FieldData = reason;
-
-                var s = new PNCScreen();
-                s.TCODEScreen = screen;
-                s.Session = sessionWrapper.connectResponse.Session;
-
-                var wrap = new PersonWrapper();
-
-
-                var personResponse = sessionWrapper.client.HashDL(s);
-
-                if (personResponse.DLResult == null)
-                {
-                    return null;
-                }
-                else
-                {
-                    //should be only one
-                    var pers = personResponse.DLResult;
-                    var person = new Person();
-                    person.FirstName = pers.Name.FieldData;
-                    person.LastName = pers.Name.FieldData;
-                    person.Title = pers.Title.FieldData;
-                    person.DateOfBirth = pers.Birth.FieldData;
-                    person.DriverNumber = pers.DriverNo.FieldData;
-                    person.Gender = pers.Sex.FieldData;
-                    person.LicenceStatus = pers.LicenceStatus.FieldData;
-                    person.Disqualification = pers.Disqualification.FieldData;
-                    person.Address1 = pers.FullAddress1.FieldData;
-                    person.Address2 = pers.FullAddress2.FieldData;
-                    person.Address3 = pers.FullAddress3.FieldData;
-                    if (!string.IsNullOrEmpty(pers.FullAddress4.FieldData))
-                    {
-                        person.Address3 += "," + pers.FullAddress4.FieldData;
-                    }
-                    if (!string.IsNullOrEmpty(pers.FullAddress5.FieldData))
-                    {
-                        person.Address3 += "," + pers.FullAddress5.FieldData;
-                    }
-
-
-                    person.PostCode = pers.PostCode.FieldData;
-                    person.LicenceType = pers.LicenceType.FieldData;
-                    person.LicenceIssue = pers.LicenceIssue.FieldData;
-                    person.CounterPartIssue = pers.CounterpartIssue.FieldData;
-                    person.CommencementDate = pers.CommencementDate.FieldData;
-                    person.ExpiryDate = pers.ExpiryDate.FieldData;
-                    person.Birthplace = pers.Birthplace.FieldData;
-
-
-                    PNCScreen menuResult;
-                    menuResult = sessionWrapper.client.LicenceMenuParsed(s.Session.SessionInfo, "ED");
-                    if (menuResult.DLMenuED != null)
-                    {
-                        person.Endorsements.Add(GetEndorsementFromMenu(menuResult));
-                        menuResult = sessionWrapper.client.LicenceMenuParsedMore(s.Session.SessionInfo);
-                        while (menuResult.DLMenuED != null)
-                        {
-                            person.Endorsements.Add(GetEndorsementFromMenu(menuResult));
-                            menuResult = sessionWrapper.client.LicenceMenuParsedMore(s.Session.SessionInfo);
-                        }
-                    }
-
-
-                    menuResult = sessionWrapper.client.LicenceMenuParsed(s.Session.SessionInfo, "ES");
-                    person.DrivingSummary = GetDrivingSummaryFromMenu(menuResult);
-
-                    menuResult = sessionWrapper.client.LicenceMenuParsed(s.Session.SessionInfo, "FE");
-                    person.FullEntitlement.Add(GetFullEntitlementFromMenu(menuResult));
-                    menuResult = sessionWrapper.client.LicenceMenuParsedMore(s.Session.SessionInfo);
-                    while (menuResult.DLMenuFE != null)
-                    {
-                        person.FullEntitlement.Add(GetFullEntitlementFromMenu(menuResult));
-                        menuResult = sessionWrapper.client.LicenceMenuParsedMore(s.Session.SessionInfo);
-                    }
-
-
-                    menuResult = sessionWrapper.client.LicenceMenuParsed(s.Session.SessionInfo, "PE");
-                    person.ProvisionalEntitlement.Add(GetProvisionalEntitlementFromMenu(menuResult));
-                    menuResult = sessionWrapper.client.LicenceMenuParsedMore(s.Session.SessionInfo);
-                    while (menuResult.DLMenuPE != null)
-                    {
-                        person.ProvisionalEntitlement.Add(GetProvisionalEntitlementFromMenu(menuResult));
-                        menuResult = sessionWrapper.client.LicenceMenuParsedMore(s.Session.SessionInfo);
-                    }
-
-                    menuResult = sessionWrapper.client.LicenceMenuParsed(s.Session.SessionInfo, "UT");
-                    if (menuResult.DLMenuUT != null)
-                    {
-                        person.Unclaimeds.Add(GetUnclaimedFromMenu(menuResult));
-                        menuResult = sessionWrapper.client.LicenceMenuParsedMore(s.Session.SessionInfo);
-                        while (menuResult.DLMenuUT != null)
-                        {
-                            person.Unclaimeds.Add(GetUnclaimedFromMenu(menuResult));
-                            menuResult = sessionWrapper.client.LicenceMenuParsedMore(s.Session.SessionInfo);
-                        }
-                    }
-
-                    menuResult = sessionWrapper.client.LicenceMenuParsed(s.Session.SessionInfo, "SM");
-                    if (menuResult.DLMenuSM != null)
-                    {
-                        person.StopsMarkers.Add(GetStopMarkerFromMenu(menuResult));
-                        menuResult = sessionWrapper.client.LicenceMenuParsedMore(s.Session.SessionInfo);
-                        while (menuResult.DLMenuSM != null)
-                        {
-                            person.StopsMarkers.Add(GetStopMarkerFromMenu(menuResult));
-                            menuResult = sessionWrapper.client.LicenceMenuParsedMore(s.Session.SessionInfo);
-                        }
-                    }
-
-                    //docuemnt trail
-                    menuResult = sessionWrapper.client.LicenceMenuParsed(s.Session.SessionInfo, "DT");
-                    var doc = GetDocumentFromMenu(menuResult);
-                    person.DocumentTrail.Add(doc);
-                    menuResult = sessionWrapper.client.LicenceMenuParsedMore(s.Session.SessionInfo);
-                    while (menuResult.DLMenuDT != null)
-                    {
-                        doc = GetDocumentFromMenu(menuResult);
-                        person.DocumentTrail.Add(doc);
-                        menuResult = sessionWrapper.client.LicenceMenuParsedMore(s.Session.SessionInfo);
-
-                    }
-
-
-                    menuResult = sessionWrapper.client.LicenceMenuParsed(s.Session.SessionInfo, "XR");
-                    if (menuResult.DLMenuXR != null)
-                    {
-                        person.CrossRefs.Add(GetCrossRefFromMenu(menuResult));
-                        menuResult = sessionWrapper.client.LicenceMenuParsedMore(s.Session.SessionInfo);
-                        while (menuResult.DLMenuXR != null)
-                        {
-                            person.CrossRefs.Add(GetCrossRefFromMenu(menuResult));
-                            menuResult = sessionWrapper.client.LicenceMenuParsedMore(s.Session.SessionInfo);
-                        }
-                    }
-
-
-                    log.LogDebug($"PNC Query : {sw.ElapsedMilliseconds.ToString()}");
-                    sw.Reset(); sw.Start();
-
-                    return person;
-                }
-            }
+            return person;
         }
 
-        private static CrossRef GetCrossRefFromMenu(PNCScreen menuResult)
-        {
-            CrossRef doc = new CrossRef();
-            doc.Driver = menuResult.DLMenuXR.Driver.FieldData;
-            doc.Date = menuResult.DLMenuXR.Date.FieldData;
-            doc.Name1 = menuResult.DLMenuXR.Name1.FieldData;
-            doc.Name2 = menuResult.DLMenuXR.Name2.FieldData;
-            doc.Name3 = menuResult.DLMenuXR.Name3.FieldData;
-            doc.Name4 = menuResult.DLMenuXR.Name4.FieldData;
-            
-            return doc;
-        }
-
-            private static Endorsement GetEndorsementFromMenu(PNCScreen menuResult)
-        {
-            Endorsement doc = new Endorsement();
-            doc.AppealCourt = menuResult.DLMenuED.AppealCourt.FieldData;
-            doc.AppealDate = menuResult.DLMenuED.AppealDate.FieldData;
-            doc.ConvictionCourt = menuResult.DLMenuED.ConvictionCourt.FieldData;
-            doc.ConvictionDate = menuResult.DLMenuED.ConvictionDate.FieldData;
-            doc.DateDisqRemoved = menuResult.DLMenuED.DateDisqRemoved.FieldData;
-            doc.DisqPendAppeal = menuResult.DLMenuED.DisqPendAppeal.FieldData;
-            doc.DisqPendSentence= menuResult.DLMenuED.DisqPendSentence.FieldData;
-            doc.DisqPeriod = menuResult.DLMenuED.DisqPeriod.FieldData;
-            doc.DisqReimposed = menuResult.DLMenuED.DisqReimposed.FieldData;
-            doc.DTTPorDPS = menuResult.DLMenuED.DTTPorDPS.FieldData;
-            doc.Fine = menuResult.DLMenuED.Fine.FieldData;
-            doc.OffenceCode = menuResult.DLMenuED.OffenceCode.FieldData;
-            doc.OffenceDate = menuResult.DLMenuED.OffenceDate.FieldData;
-            doc.OtherSentence = menuResult.DLMenuED.OtherSentence.FieldData;
-            doc.Points = menuResult.DLMenuED.Points.FieldData;
-            doc.RehabReduction = menuResult.DLMenuED.RehabReduction.FieldData;
-            doc.SentencingCourt = menuResult.DLMenuED.SentencingCourt.FieldData;
-            doc.SentencingDate = menuResult.DLMenuED.SentencingDate.FieldData;
-            doc.SuspendSentence = menuResult.DLMenuED.SuspendSentence.FieldData;
-            return doc;
-        }
-        private static DrivingSummary GetDrivingSummaryFromMenu(PNCScreen menuResult)
-        {
-            DrivingSummary doc = new DrivingSummary();
-            if (menuResult.DLMenuES != null)
-            {
-                doc.Disqualified = menuResult.DLMenuES.Disqualified.FieldData;
-                doc.DrinkDrug = menuResult.DLMenuES.DrinkDrug.FieldData;
-                doc.Other = menuResult.DLMenuES.Other.FieldData;
-                doc.Points = menuResult.DLMenuES.Points.FieldData;
-            }
-            return doc;
-        }
-        private static Document GetDocumentFromMenu(PNCScreen menuResult)
-        {
-            Document doc = new Document();
-            doc.DocumentRef = menuResult.DLMenuDT.Document.FieldData;
-            doc.Date = menuResult.DLMenuDT.Date.FieldData;
-            doc.Description1 = menuResult.DLMenuDT.Description1.FieldData;
-            doc.Description2 = menuResult.DLMenuDT.Description2.FieldData;
-            doc.Description3 = menuResult.DLMenuDT.Description3.FieldData;
-            doc.Description4 = menuResult.DLMenuDT.Description4.FieldData;
-            return doc;
-        }
-
-        private static StopMarker GetStopMarkerFromMenu(PNCScreen menuResult)
-        {
-            StopMarker doc = new StopMarker();
-            doc.Description = menuResult.DLMenuSM.Description.FieldData;
-
-            return doc;
-        }
-        private static Entitlement GetFullEntitlementFromMenu(PNCScreen menuResult)
-        {
-            Entitlement doc = new Entitlement();
-            doc.Category = menuResult.DLMenuFE.Category.FieldData;
-            doc.From = menuResult.DLMenuFE.From.FieldData;
-            doc.Until = menuResult.DLMenuFE.Until.FieldData;
-            doc.Description1 = menuResult.DLMenuFE.Description1.FieldData;
-            doc.Description2 = menuResult.DLMenuFE.Description2.FieldData;
-            doc.Description3 = menuResult.DLMenuFE.Description3.FieldData;
-            doc.Description4 = menuResult.DLMenuFE.Description4.FieldData;
-            doc.Description5 = menuResult.DLMenuFE.Description5.FieldData;
-            doc.Restriction1 = menuResult.DLMenuFE.Restriction1.FieldData;
-            doc.Restriction2 = menuResult.DLMenuFE.Restriction2.FieldData;
-            doc.Restriction3 = menuResult.DLMenuFE.Restriction3.FieldData;
-            doc.Restriction4 = menuResult.DLMenuFE.Restriction4.FieldData;
-            doc.EU3D = menuResult.DLMenuFE.Description1.FieldData;
-
-            return doc;
-        }
-        private static Unclaimed GetUnclaimedFromMenu(PNCScreen menuResult)
-        {
-            Unclaimed doc = new Unclaimed();
-            doc.Category = menuResult.DLMenuFE.Category.FieldData;
-            doc.Harm = menuResult.DLMenuFE.From.FieldData;
-            doc.Date = menuResult.DLMenuFE.Until.FieldData;
-            doc.Description1 = menuResult.DLMenuFE.Description1.FieldData;
-            doc.Description2 = menuResult.DLMenuFE.Description2.FieldData;
-            doc.Description3 = menuResult.DLMenuFE.Description3.FieldData;
-            doc.Description4 = menuResult.DLMenuFE.Description4.FieldData;
-            doc.Description5 = menuResult.DLMenuFE.Description5.FieldData;
-            doc.Restriction1 = menuResult.DLMenuFE.Restriction1.FieldData;
-            doc.Restriction2 = menuResult.DLMenuFE.Restriction2.FieldData;
-            doc.Restriction3 = menuResult.DLMenuFE.Restriction3.FieldData;
-            doc.Restriction4 = menuResult.DLMenuFE.Restriction4.FieldData;
-            doc.EU3D = menuResult.DLMenuFE.Description1.FieldData;
-
-            return doc;
-        }
-        private static Entitlement GetProvisionalEntitlementFromMenu(PNCScreen menuResult)
-        {
-            Entitlement doc = new Entitlement();
-            doc.Category = menuResult.DLMenuPE.Category.FieldData;
-            doc.From = menuResult.DLMenuPE.From.FieldData;
-            doc.Until = menuResult.DLMenuPE.Until.FieldData;
-            doc.Description1 = menuResult.DLMenuPE.Description1.FieldData;
-            doc.Description2 = menuResult.DLMenuPE.Description2.FieldData;
-            doc.Description3 = menuResult.DLMenuPE.Description3.FieldData;
-            doc.Description4 = menuResult.DLMenuPE.Description4.FieldData;
-            doc.Description5 = menuResult.DLMenuPE.Description5.FieldData;
-            doc.Restriction1 = menuResult.DLMenuPE.Restriction1.FieldData;
-            doc.Restriction2 = menuResult.DLMenuPE.Restriction2.FieldData;
-            doc.Restriction3 = menuResult.DLMenuPE.Restriction3.FieldData;
-            doc.Restriction4 = menuResult.DLMenuPE.Restriction4.FieldData;
-            doc.EU3D = menuResult.DLMenuPE.Description1.FieldData;
-
-            return doc;
-        }
 
         [HttpGet("getbydl/{surname}/{forename1}")]
         public ActionResult<PersonWrapper> GetByDL(string surname, string forename1, string forename2, string dateofbirth, string gender, string ethnicity, string reason, string postcode)
