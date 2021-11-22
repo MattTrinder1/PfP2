@@ -60,6 +60,8 @@ namespace NDIApiWrapper.Controllers
             i.MakeModel = "FORD MONDEO";
             i.PermittedDrivers1 = "Insured and Spouse";
 
+            i.NamedDrivers.Add(new NamedDriver() { Number = 1, Name = "MATT TRINDER", DOB = "10/03/1971" });
+
 
             var r = new Report();
             r.ReportNum = "1";

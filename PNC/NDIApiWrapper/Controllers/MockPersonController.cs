@@ -138,6 +138,7 @@ namespace NDIApiWrapper.Controllers
             person.StopsMarkers.Add(new StopMarker());
             person.DocumentTrail.Add(new Document());
             person.CrossRefs.Add(new CrossRef());
+            
 
             person.MarkScars.Add(new MarkScar() { Type = "TATTOO", Detail = "SPIDER WEB", Location = "NECK" });
             person.InformationMarkers.Add(new InformationMarker());
