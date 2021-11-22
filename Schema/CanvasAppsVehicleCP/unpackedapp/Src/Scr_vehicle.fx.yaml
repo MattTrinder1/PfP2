@@ -1382,7 +1382,7 @@ Scr_vehicle As screen:
                     Errors = false,
                     Set(
                         VEResult1,
-                        'NDIWrapper-Vehicle'.Run(
+                        /*'NDIWrapper-Vehicle'.Run(
                             textInputVRM_1.Text,
                             drpdwn_PNCSearchReason_1.Selected.ReasonCode,
                             If(
@@ -1390,7 +1390,18 @@ Scr_vehicle As screen:
                                 "true",
                                 "false"
                             )
-                        )
+                        )*/
+                        NDIPNCAPI.GetByVRN(
+                            textInputVRM_1.Text,
+                            {
+                                reason: drpdwn_PNCSearchReason_1.Selected.ReasonCode,
+                                includeInsurance: If(
+                                    Checkbox1.Value = true,
+                                    "true",
+                                    "false"
+                                )
+                            }
+                        );
                     )
                 );
                 Set(

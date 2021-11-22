@@ -8,15 +8,15 @@ Scr_PNC As screen:
         UpdateContext({HZ: false});
         UpdateContext({ID: false});
 
-    PNCVehicleDetailsComponent_1 As PNCVehicleDetailsComponent:
-        tableValue: =Table(VEResult1)
-        Visible: =VE
-        Y: =151
-
     PNCVehicleInsuranceComponent_1 As PNCVehicleInsuranceComponent:
         namedDrivers: =First(VEResult1.insurance).namedDrivers
         tableValue: =VEResult1.insurance
         Visible: =ID
+        Y: =119
+
+    PNCVehicleDetailsComponent_1 As PNCVehicleDetailsComponent:
+        tableValue: =Table(VEResult1)
+        Visible: =VE
         Y: =151
 
     Label7 As label:

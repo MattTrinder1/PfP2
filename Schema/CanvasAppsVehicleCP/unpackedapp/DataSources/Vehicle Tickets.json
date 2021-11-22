@@ -42,6 +42,7 @@
       "cp_offendersignature": "Offender Signature",
       "cp_offendersignaturedateandtime": "Offender Signature Date and Time",
       "cp_offendersignatureid": "cp_offendersignatureId",
+      "cp_offendersignaturerefused": "Offender Signature Refused",
       "cp_officerid": "Officer Name",
       "cp_officersignature": "Officer Signature",
       "cp_officersignaturedateandtime": "Officer Signature Date and Time",
@@ -361,6 +362,26 @@
     },
     "OptionSetTypeKey": "BooleanType",
     "RelatedColumnInvariantName": "cp_vehiclestopped",
+    "RelatedEntityName": "Vehicle Tickets",
+    "Type": "OptionSetInfo"
+  },
+  {
+    "DisplayName": "Offender Signature Refused (Vehicle Tickets)",
+    "Name": "cp_offendersignaturerefused_cp_vehicleticket",
+    "OptionSetInfoNameMapping": {
+      "0": "No",
+      "1": "Yes"
+    },
+    "OptionSetIsBooleanValued": true,
+    "OptionSetIsGlobal": false,
+    "OptionSetReference": {
+      "OptionSetReferenceItem0": {
+        "OptionSetReferenceColumnName": "cp_offendersignaturerefused",
+        "OptionSetReferenceEntityName": "Vehicle Tickets"
+      }
+    },
+    "OptionSetTypeKey": "BooleanType",
+    "RelatedColumnInvariantName": "cp_offendersignaturerefused",
     "RelatedEntityName": "Vehicle Tickets",
     "Type": "OptionSetInfo"
   },

@@ -299,7 +299,7 @@
                 Or(gblResultFrom = "PNC",gblResultFrom = "PNC/DL"),
                 Set(
                     PNCPersonDetails,
-                    'NDIWrapper-PesonDetails'.Run(
+                    NDIPNCAPI.GetByPNCId(
                         Substitute(
                             VARCheckedItem,
                             "/",
@@ -309,8 +309,8 @@
                 ),
                 Set(
                     PNCPersonDetails,
-                    'NDIWrapper-DriverNumber'.Run(
-                        Text(drpdwn_PNCSearchReason.Selected.ReasonCode),
+                    NDIPNCAPI.GetByDriverNumber(
+                        
                         VARCheckedItem
                     )
                 )

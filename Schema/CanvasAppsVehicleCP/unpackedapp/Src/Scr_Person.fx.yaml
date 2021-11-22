@@ -2727,27 +2727,34 @@ Scr_Person As screen:
                             NotificationType.Error
                         )
                     );
-                    If(And(chkbox_DrivingLicence.Value = true,IsBlank(Dropdown_Gender_1.Selected.Value)),
-                     Set(
+                    If(
+                        And(
+                            chkbox_DrivingLicence.Value = true,
+                            IsBlank(Dropdown_Gender_1.Selected.Value)
+                        ),
+                        Set(
                             Errors,
                             true
                         );
                         Notify(
                             "If driver details are required, Gender is mandatory",
                             NotificationType.Error
-                        ));
-                    If(And(chkbox_DrivingLicence.Value = true, IsBlank(DatePicker_dob_1.SelectedDate)),
-                     Set(
+                        )
+                    );
+                    If(
+                        And(
+                            chkbox_DrivingLicence.Value = true,
+                            IsBlank(DatePicker_dob_1.SelectedDate)
+                        ),
+                        Set(
                             Errors,
                             true
                         );
                         Notify(
                             "If driver details are required, date of birth is mandatory",
                             NotificationType.Error
-                        ));
-                        
-                
-                
+                        )
+                    );
                     If(
                         And(
                             chkbox_Gender.Value = true,
@@ -2782,9 +2789,9 @@ Scr_Person As screen:
                                         " "
                                     )
                                 );
-                                Set(
+                               /* Set(
                                     NEREsult,
-                                    'NDIWrapper-Name'.Run(
+                                    NDIPNCAPI.PersonSearch(
                                         Upper(
                                             Trim(
                                                 Concatenate(
@@ -2858,19 +2865,67 @@ Scr_Person As screen:
                                             "false"
                                         )
                                     )
-                                ),
+                                )*/,
                                 Set(
                                     NEREsult,
-                                    'NDIWrapper-Name'.Run(
-                                        Upper(
-                                            Trim(
-                                                Concatenate(
-                                                    Txt_person_surname_1.Text,
-                                                    "/",
-                                                    txt_person_forename_1.Text
-                                                )
+                                    NDIPNCAPI.PersonSearch(
+                                        Upper(Trim(Txt_person_surname_1.Text)),
+                                        Upper(Trim(txt_person_forename_1.Text)),
+                                        {
+                                            dateofbirth: If(
+                                                chkbox_DOB.Value = true,
+                                                If(
+                                                    IsBlank(DatePicker_dob_1.SelectedDate),
+                                                    "",
+                                                    Text(
+                                                        DatePicker_dob_1.SelectedDate,
+                                                        "ddmmyyyy"
+                                                    )
+                                                ),
+                                                ""
+                                            ),
+                                            gender: If(
+                                                chkbox_Gender.Value = true,
+                                                Switch(
+                                                    Dropdown_Gender_1.Selected.Value,
+                                                    "Male",
+                                                    "M",
+                                                    "Female",
+                                                    "F",
+                                                    "Unknown",
+                                                    "U",
+                                                    ""
+                                                ),
+                                                ""
+                                            ),
+                                            ethnicity: Switch(
+                                                Dropdown_Self_defined_ethnicity_1.Selected.Value,
+                                                "White",
+                                                "W",
+                                                "Non-White",
+                                                "NW",
+                                                "Unknown",
+                                                "U",
+                                                ""
+                                            ),
+                                            reason: Concatenate(
+                                                "0",
+                                                Text(drpdwn_PNCSearchReason.Selected.ReasonCode)
+                                            ),
+                                            isnominal: If(
+                                                chkbox_Nominal.Value = true,
+                                                "true",
+                                                "false"
+                                            ),
+                                            isdrivinglicense: If(
+                                                chkbox_DrivingLicence.Value = true,
+                                                "true",
+                                                "false"
                                             )
-                                        ),
+                                        }
+                                    );
+                                        /*,
+                                        { }
                                         Concatenate(
                                             "0",
                                             Text(drpdwn_PNCSearchReason.Selected.ReasonCode)
@@ -2921,7 +2976,7 @@ Scr_Person As screen:
                                             "true",
                                             "false"
                                         )
-                                    )
+                                    )*/
                                 );
                                 Set(
                                     Check1,
@@ -3012,10 +3067,7 @@ Scr_Person As screen:
                         Errors = false,
                         Set(
                             PNCPersonDetails,
-                            'NDIWrapper-DriverNumber'.Run(
-                                Text(drpdwn_PNCSearchReason.Selected.ReasonCode),
-                                txtDrivingLicenseNumber.Text
-                            )
+                            NDIPNCAPI.GetByDriverNumber(txtDrivingLicenseNumber.Text)
                         )
                     );
                     If(
@@ -3052,8 +3104,8 @@ Scr_Person As screen:
             Text: ="Search"
             Visible: =PNCSearchReason
             Width: =152
-            X: =444
-            Y: =1043
+            X: =451
+            Y: =1050
             ZIndex: =8
 
         drpdwn_PNCSearchReason As dropdown:
