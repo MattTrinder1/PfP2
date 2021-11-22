@@ -125,96 +125,40 @@ namespace NDIApiWrapper.Controllers
                 sw.Start();
 
 
-                //logon
-               
-                var screen = sessionWrapper.logonResponse.TCODEScreen;
-                screen.Data.FieldData = pncId.Replace("-", "/");
-                screen.Originator.FieldData = config.GetValue<string>("Origin");
-                screen.ReasonCode.FieldData = "06";
-
-                var s = new PNCScreen();
-                s.TCODEScreen = screen;
-                s.Session = sessionWrapper.connectResponse.Session;
-
-                var personResponse = sessionWrapper.client.HashNE(s);
-                log.LogDebug($"PNC HashNE Query : {sw.ElapsedMilliseconds.ToString()}");
-                sw.Reset(); sw.Start();
+                var person = new Person();
+                person.PNCId = pncId;
+                person.DriverNumber = "TRIND703101M99SV";
+                person.FirstName = "MATT";
+                person.LastName = "TRINDER";
+                person.PostCode = "MK11 1DW";
 
 
-                if (personResponse.NEResult == null)
-                {
-                    return NotFound();
-                }
+                person.Endorsements.Add(new Endorsement());
+                person.FullEntitlement.Add(new Entitlement());
+                person.ProvisionalEntitlement.Add(new Entitlement());
+                person.Unclaimeds.Add(new Unclaimed());
+                person.StopsMarkers.Add(new StopMarker());
+                person.DocumentTrail.Add(new Document());
+                person.CrossRefs.Add(new CrossRef());
 
-                var p = new Person();
-                var res = personResponse.NEResult;
-                p.WarningSignalsText = res.WSAlert1.FieldData + " " + res.WSAlert2.FieldData;
-                p.FirstName = res.ForeNames.FieldData;
-                p.LastName = res.Surname.FieldData;
-                p.FileDOB = res.Birth.FieldData;
-                p.StatusSum = res.StatusSum.FieldData;
+                person.MarkScars.Add(new MarkScar() { Type = "TATTOO", Detail = "SPIDER WEB", Location = "NECK" });
+                person.InformationMarkers.Add(new InformationMarker());
+                person.WarningSignals.Add(new WarningSignal());
+                person.AliasNames.Add(new AliasName() { Name = "KEV SPIDER" });
+                person.AliasDOBs.Add(new AliasDateOfBirth());
+                person.Nicknames.Add(new Nickname() { Date = "01012001", Name = "SPIDER" });
+                person.Descriptions.Add(new Description());
+                person.DisposalSummaries.Add(new DisposalSummary());
+                person.Addresses.Add(new Address());
+                person.BailConditons.Add(new BailCondition());
+                person.WantedMissings.Add(new WantedMissing());
+                person.OperationalInfos.Add(new OperationalInfo());
+                person.Disqualifieds.Add(new Disqualified());
+                person.OtherDetails.Add(new OtherDetail());
 
-                if (!string.IsNullOrEmpty(res.Birth.FieldData))
-                {
-                    p.Birthplace = res.Birth.FieldData.Substring(8, res.Birth.FieldData.Length - 8).Trim();
-                    p.DateOfBirth = res.Birth.FieldData.Substring(0, 8);
-                }
+                return person;
 
-                p.CRONumber = res.CRO.FieldData;
-                p.Gender = res.Sex.FieldData;
-                p.Ethnicity = res.Colour.FieldData;
-                //p.Nationality =res.n
-                p.FileName = res.Filename.FieldData;
-                p.Address1 = res.FullAddress1.FieldData;
-                p.Address2 = res.FullAddress2.FieldData;
-                p.Address3 = res.FullAddress3.FieldData;
-                p.AddressDate = res.AddrDate.FieldData;
-                p.DriverNumber = res.DriverNo.FieldData.Replace("/", "");
-
-                PopulateRelated<NEMenuMS, MarkScar>(sessionWrapper.client, sessionWrapper.connectResponse, res, "MS", p.MarkScars, GetMarkScarFromMenu);
-                PopulateRelated<NEMenuIM, InformationMarker>(sessionWrapper.client, sessionWrapper.connectResponse, res, "IM", p.InformationMarkers, GetInformationMarkerFromMenu);
-                PopulateRelated<NEMenuWS, WarningSignal>(sessionWrapper.client, sessionWrapper.connectResponse, res, "WS", p.WarningSignals, GetWarningSignalFromMenu);
-                PopulateRelated<NEMenuAL, AliasName>(sessionWrapper.client, sessionWrapper.connectResponse, res, "AL", p.AliasNames, GetAliasFromMenu);
-                PopulateRelated<NEMenuAB, AliasDateOfBirth>(sessionWrapper.client, sessionWrapper.connectResponse, res, "AB", p.AliasDOBs, GetAliasDOBFromMenu);
-                PopulateRelated<NEMenuNK, Nickname>(sessionWrapper.client, sessionWrapper.connectResponse, res, "NK", p.Nicknames, GetNicknameFromMenu);
-                PopulateRelated<NEMenuDE, Description>(sessionWrapper.client, sessionWrapper.connectResponse, res, "DE", p.Descriptions, GetDescriptionFromMenu);
-                PopulateRelated<NEMenuDS, DisposalSummary>(sessionWrapper.client, sessionWrapper.connectResponse, res, "DS", p.DisposalSummaries, GetDisposalSummaryFromMenu);
-                PopulateRelated<NEMenuAD, Address>(sessionWrapper.client, sessionWrapper.connectResponse, res, "AD", p.Addresses, GetAddressFromMenu);
-                PopulateRelated<NEMenuBC, BailCondition>(sessionWrapper.client, sessionWrapper.connectResponse, res, "BC", p.BailConditons, GetBailConditionsFromMenu);
-                PopulateRelated<NEMenuWM2, WantedMissing>(sessionWrapper.client, sessionWrapper.connectResponse, res, "WM", p.WantedMissings, GetWantedMissingFromMenu);
-                PopulateRelated<NEMenuOI, OperationalInfo>(sessionWrapper.client, sessionWrapper.connectResponse, res, "OI", p.OperationalInfos, GetOperationalInfoFromMenu);
-                PopulateRelated<NEMenuDD, Disqualified>(sessionWrapper.client, sessionWrapper.connectResponse, res, "DD", p.Disqualifieds, GetDisqualifiedsFromMenu);
-                PopulateRelated<NEMenuOD, OtherDetail>(sessionWrapper.client, sessionWrapper.connectResponse, res, "OD", p.OtherDetails, GetOtherDetailsFromMenu);
-
-                log.LogDebug($"PNC Related Queries : {sw.ElapsedMilliseconds.ToString()}");
-                sw.Reset(); sw.Start();
-
-
-                if (!string.IsNullOrEmpty(p.DriverNumber))
-                {
-                    var driver = GetByDriverNumber(p.DriverNumber, "06");
-                    if (driver != null && driver.Value != null)
-                    {
-                        p.LicenceIssue = driver.Value.LicenceIssue;
-                        p.LicenceStatus = driver.Value.LicenceStatus;
-                        p.LicenceType = driver.Value.LicenceType;
-                        p.Disqualification = driver.Value.Disqualification;
-                        p.CounterPartIssue = driver.Value.CounterPartIssue;
-                        p.CommencementDate = driver.Value.CommencementDate;
-                        p.ExpiryDate = driver.Value.ExpiryDate;
-                        p.Endorsements = driver.Value.Endorsements;
-                        p.DrivingSummary = driver.Value.DrivingSummary;
-                        p.ProvisionalEntitlement = driver.Value.ProvisionalEntitlement;
-                        p.FullEntitlement = driver.Value.FullEntitlement;
-                        p.Unclaimeds = driver.Value.Unclaimeds;
-                        p.StopsMarkers = driver.Value.StopsMarkers;
-                        p.DocumentTrail = driver.Value.DocumentTrail;
-                        p.CrossRefs = driver.Value.CrossRefs;
-                    }
-
-                }
-
-                return p;
+                
             }
 
 
