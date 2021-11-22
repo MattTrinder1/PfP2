@@ -31,7 +31,7 @@ steps:
       displayName: Copy Rewritten Flows over Schema
       inputs:
         sourceFolder: '$(Build.SourcesDirectory)\RewrittenFlows\${{parameters.customerName}}\${{parameters.environmentName}}\Schema'
-        contents: '**' 
+        contents: '**\*.json' 
         targetFolder: '$(Build.SourcesDirectory)\Schema'
         overWrite: true 
       condition: eq(variables['FolderExists'], True)
