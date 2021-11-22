@@ -29,7 +29,7 @@ namespace CanvasAppRewriter
             string json2 = File.ReadAllText(@"../../../../../Schema/CanvasAppsVehicleCP/unpackedapp/DataSources/NDIPNCAPI.json");
             var j2 = JArray.Parse(json2);
 
-            j2[0]["ApiId"] = "/providers/microsoft.powerapps/apis/shared_ndi-20pnc-20api-5fec56f3da3c70054e-5fec37e65b69cd854d";
+            j2[0]["ApiId"] = "/providers/microsoft.powerapps/apis/shared_ndi-20pnc-20api-5f65d572cd5285e38f-5fec37e65b69cd854d";
 
             Save("../../../RewrittenCanvasApps/Cumbria/SystemTest/Schema/CanvasAppsVehicleCP/unpackedapp/DataSources/NDIPNCAPI.json", j2.ToString());
 
