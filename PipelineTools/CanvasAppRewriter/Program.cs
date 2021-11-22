@@ -21,8 +21,13 @@ namespace CanvasAppRewriter
             j["01fea641-8b1b-4cec-9cba-f87f7ad1d4e8"].Parent.Remove();
             string replacement = File.ReadAllText(@"../../../Cumbria/SystemTest/VehicleTickets/NDIPNCAPIConnection.json");
             var replacementJ = JObject.Parse(replacement);
-            //j.AddAfterSelf(replacementJ.ToString()) ;
             j["5b186da5-eb85-4c38-9ea0-bab7f14c7eaa"] = new JObject(replacementJ);
+
+            j["f891a58d-bb9a-4e98-87da-f5ab5c8dfbda"].Parent.Remove();
+            replacement = File.ReadAllText(@"../../../Cumbria/SystemTest/VehicleTickets/PfPVehicleTickets.json");
+            replacementJ = JObject.Parse(replacement);
+            j["107cd446-f700-4759-ac44-ca0e698943ee"] = new JObject(replacementJ);
+
 
             Save("../../../RewrittenCanvasApps/Cumbria/SystemTest/Schema/CanvasAppsVehicleCP/unpackedapp/Connections/Connections.json", j.ToString());
 
@@ -46,6 +51,9 @@ namespace CanvasAppRewriter
             Save("../../../RewrittenCanvasApps/Cumbria/SystemTest/Schema/CanvasAppsVehicleCP/unpacked/CanvasApps/cp_vehicletickets_8a92b.meta.xml", xml2);
 
             Console.WriteLine("Rewriting Vehicle App NDI PNC API NDIPNCAPI.xml");
+
+
+            //107cd446-f700-4759-ac44-ca0e698943ee
 
         }
 
