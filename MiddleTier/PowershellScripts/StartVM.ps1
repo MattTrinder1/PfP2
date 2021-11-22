@@ -11,3 +11,5 @@ start-azvm -Name powerappdev2 -ResourceGroupName CumbriaDevVMS -NoWait
 
 start-azvm -Name modtesthost -ResourceGroupName MOD -NoWait
 start-azvm -Name modtesthost2 -ResourceGroupName MOD -NoWait
+
+#stop-azvm -Name modtesthost -ResourceGroupName MOD -NoWait
