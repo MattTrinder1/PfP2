@@ -6,15 +6,28 @@ parameters:
   - PocketNotebookAzure
   - SuddenDeathAzure
   - PocketNotebook
-  - Vehicle
-  - SuddenDeath
-  - ItsYourChoice
+  - Vehicle*
 
-- name: customer
+- name: CumbriaCustomerName
   type: string
   default: Cumbria
-  values:
-  - Cumbria
+
+- name: DurhamCustomerName
+  type: string
+  default: Durham
+
+- name: SystemTestEnvironmentName
+  type: string
+  default: SystemTest
+
+- name: UATEnvironmentName
+  type: string
+  default: UAT
+
+- name: LiveEnvironmentName
+  type: string
+  default: Live
+
   
 trigger: none
 
@@ -30,20 +43,93 @@ variables:
   value: CP
 - template: connectionStrings.yml
 
+
+
 stages: 
+#----------------------------------Start Stage-------------------------------------------------------------------
+  - stage: RewriteFiles
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - job: BuildRewriteTools
+      steps:
+      - task: UseDotNet@2
+        displayName: 'Use .NET Core sdk 5.0.100'
+        inputs:
+          packageType: 'sdk'
+          version: '5.0.100'
+          includePreviewVersions: true
+                
+      - task: DotNetCoreCLI@2
+        displayName: Build App Rewriter Tool
+        inputs:
+          command: 'build'
+          projects: 'PipelineTools/CanvasAppRewriter/CanvasAppRewriter.csproj'
+            
+      - task: CmdLine@2
+        displayName: Run CanvasApp Rewriter Tool
+        inputs:
+          workingDirectory: $(build.sourcesdirectory)/PipelineTools/CanvasAppRewriter/bin/Debug/net5.0
+          script: |
+            $(build.sourcesdirectory)/PipelineTools/CanvasAppRewriter/bin/Debug/net5.0/CanvasAppRewriter.exe
+      - task: PublishBuildArtifacts@1
+        displayName: Publish Rewritten CanvasApps
+        inputs:
+          PathtoPublish: '$(build.sourcesdirectory)/PipelineTools/CanvasAppRewriter/RewrittenCanvasApps'
+          ArtifactName: 'RewrittenCanvasApps'
+          publishLocation: 'Container'
+      
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
 #----------------------------------Start Stage-------------------------------------------------------------------
   - stage: AssembleRelease
     jobs:
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     - job: Assemble
       steps:
-      - template: assembleReleaseForApp.yml
-        parameters:
-          managed: Managed
-          minorversion : $(minor.version)
-          releaseversion : $(release.version)
-          solutionprefix : $(solution.prefix)
-          appFolderName : CanvasApps${{parameters.canvasApp}}
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          artifact: 'RewrittenCanvasApps'
+          path: $(Build.SourcesDirectory)/RewrittenCanvasApps
+
+      - task: DeleteFiles@1
+        displayName: 'Delete files from $(build.binariesdirectory)'
+        inputs:
+          SourceFolder: '$(build.binariesdirectory)'
+          Contents: '**'
+
+      - ${{ if endsWith(parameters.canvasApp,'*') }}:
+        - ${{ each parameter2 in parameters }}:
+          - ${{ if contains(parameter2.Key, 'CustomerName') }}:
+            - ${{ each parameter3 in parameters }}:
+              - ${{ if contains(parameter3.Key, 'EnvironmentName') }}:
+
+                - template: assembleReleaseForApp.yml
+                  parameters:
+                    managed: Managed
+                    minorversion : $(minor.version)
+                    releaseversion : $(release.version)
+                    solutionprefix : $(solution.prefix)
+                    appFolderName : CanvasApps${{replace(parameters.canvasApp,'*','')}}
+                    environmentName: ${{parameter3.Value}}
+                    customerName: ${{parameter2.Value}}
+
+      - ${{ if not(endsWith(parameters.canvasApp,'*')) }}:
+        - template: assembleReleaseForApp.yml
+          parameters:
+            managed: Managed
+            minorversion : $(minor.version)
+            releaseversion : $(release.version)
+            solutionprefix : $(solution.prefix)
+            appFolderName : CanvasApps${{parameters.canvasApp}}
+            environmentName: Base
+            customerName: Base
+
+      - publish: '$(build.binariesdirectory)'
+        artifact: PowerAppsForPolicingCanvasApp
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #----------------------------------End Stage-------------------------------------------------------------------
 #----------------------------------Start Stage-------------------------------------------------------------------
@@ -63,6 +149,7 @@ stages:
           deploy:
             
             steps:
+
             - template: deployCanvasAppSolution.yml
               parameters:
                 minorversion : $(minor.version)
@@ -70,6 +157,41 @@ stages:
                 solutionprefix : $(solution.prefix)
                 canvasApp: ${{parameters.canvasApp}}
                 connectionString: $(pfpsystemtest.connection.string)
+                customername: Cumbria
+                environmentname: SystemTest
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
+
+#----------------------------------Start Stage-------------------------------------------------------------------
+
+  - stage: ReleaseToCumbriaSystemTest
+    dependsOn: AssembleRelease
+    displayName: Deploy Cumbria System Test
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: ReleaseToCumbriaSystemTest
+      environment: CumbriaSystemTest
+      displayName: Deploy Solutions
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            
+            steps:
+
+            - template: deployCanvasAppSolution.yml
+              parameters:
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
+                canvasApp: ${{parameters.canvasApp}}
+                connectionString: $(cumbriasystemtest.connection.string)
+                customername: Cumbria
+                environmentname: SystemTest
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -100,6 +222,8 @@ stages:
                 solutionprefix : $(solution.prefix)
                 canvasApp: ${{parameters.canvasApp}}
                 connectionString: $(Tisskipfpuat.connection.string)
+                customername: Cumbria
+                environmentname: UAT
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

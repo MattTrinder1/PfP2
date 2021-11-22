@@ -760,14 +760,14 @@ Scr_section59 As screen:
                     Fill: =madcols59
                     Height: =70
                     Items: =Sectionoffline
-                    OnChange: |
+                    OnChange: |+
                         =If(Len(Dropdown_S59_Section3or34.Selected.cp_name)>0,UpdateContext({madcols59:White});,UpdateContext({section3vis:false});UpdateContext({madcols59:LightGoldenRodYellow});UpdateContext({Section34vis:false}););
                         
                         If(Dropdown_S59_Section3or34.Selected.cp_name ="Section 34",UpdateContext({Section34vis:true});Set(s59,s59+600),UpdateContext({Section34vis:false});Set(s59,0));
                         
                         If(Dropdown_S59_Section3or34.Selected.cp_name ="Section 3",Set(s591,s591+400);UpdateContext({section3vis:true}),Set(s591,0);UpdateContext({section3vis:false}));
                         
-                    OnSelect: |
+                    OnSelect: |+
                         =If(Len(Dropdown_S59_Section3or34.Selected.cp_name)>0,UpdateContext({madcols59:White});,UpdateContext({section3vis:false});UpdateContext({madcols59:LightGoldenRodYellow});UpdateContext({Section34vis:false}););
                         
                         If(Dropdown_S59_Section3or34.Selected.cp_name ="Section 34",UpdateContext({Section34vis:true});Set(s59,s59+600),UpdateContext({Section34vis:false});Set(s59,0));

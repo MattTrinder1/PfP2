@@ -22,18 +22,20 @@ steps:
   - powershell: |
                 $folderExists = Test-Path -Path 'Schema/${{parameters.solutionName}}${{parameters.solutionprefix}}/unpacked'
                 Write-Output "##vso[task.setvariable variable=FolderExists]$folderExists"
+    displayName: Check schema folder exists
 
 #if this is not a base level solution, copy in the environment specific folder generated in the rewrite step
 
-  - ${{ if ne(parameters.customerName, 'Base') }}:
+  - ${{ if and(startsWith(parameters.solutionName,'Flows'), ne(parameters.customerName, 'Base')) }}:
     - task: CopyFiles@2
+      displayName: Copy Rewritten Flows over Schema
       inputs:
-        displayName: Copy to System Test folder
         sourceFolder: '$(Build.SourcesDirectory)\RewrittenFlows\${{parameters.customerName}}\${{parameters.environmentName}}\Schema'
         contents: '**' 
         targetFolder: '$(Build.SourcesDirectory)\Schema'
         overWrite: true 
       condition: eq(variables['FolderExists'], True)
+
 
 
   - task: MSCRMPackSolution@10
@@ -56,10 +58,11 @@ steps:
                 $GeneratedSolutionFileName = $GeneratedSolutionFile.Name
                 Write-Host "##vso[task.setvariable variable=GeneratedSolutionFileName]$GeneratedSolutionFileName"
       condition: eq(variables['FolderExists'], True)
+      displayName: Get solution file name
 
     - task: CopyFiles@2
+      displayName: Copy to Customer/Env folder        
       inputs:
-        displayName: Copy to System Test folder
         sourceFolder: '$(Build.BinariesDirectory)'
         contents: '$(GeneratedSolutionFileName)' 
         targetFolder: '$(Build.BinariesDirectory)\${{parameters.customerName}}\${{parameters.environmentName}}'
@@ -68,6 +71,7 @@ steps:
       condition: eq(variables['FolderExists'], True)
 
     - task: DeleteFiles@1
+      displayName: Delete original solution file
       inputs:
         sourceFolder: '$(Build.BinariesDirectory)'
         Contents: '$(GeneratedSolutionFileName)' 

@@ -9,6 +9,10 @@ parameters:
   type: string
 - name: connectionString
   type: string
+- name: customername
+  type: string
+- name: environmentname
+  type: string
 
 steps:
 - checkout: none
@@ -18,15 +22,17 @@ steps:
     nugetFeed: 'official'
     psFeed: 'official'   
     
-- template: get-solution-filenames.yml
+- template: get_canvasapp_solution_filename.yml
   parameters:
-    pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-CanvasApps${{parameters.canvasApp}}
+    pipelineworkspace : $(pipeline.workspace)\PowerAppsForPolicingCanvasApp
     minorversion : ${{parameters.minorversion}}
     releaseversion : ${{parameters.releaseversion}}
     solutionprefix : ${{parameters.solutionprefix}}
+    customername : ${{parameters.customername}}
+    environmentname : ${{parameters.environmentname}}
+    solutionName: CanvasApps${{ replace(parameters.canvasApp,'*','') }}
 
 - template: install-managed-solution.yml
   parameters:
-    pipelineworkspace : $(pipeline.workspace)\CumbriaBuild-Managed-CanvasApps${{parameters.canvasApp}}
     connectionstring : ${{parameters.connectionString}}
-    SolutionFileName : $(CanvasApps${{parameters.canvasApp}}SolutionFileName)
+    SolutionFileName : $(CanvasAppFileName)

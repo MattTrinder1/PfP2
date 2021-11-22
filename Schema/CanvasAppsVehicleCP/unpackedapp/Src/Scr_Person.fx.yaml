@@ -1081,7 +1081,7 @@ Scr_Person As screen:
                 Fill: =If(IsBlank(Self.Text),LightGoldenRodYellow,White)
                 Height: =70
                 HintText: =""
-                OnChange: |
+                OnChange: |+
                     =If(Len(TextInput_Person_Town.Text)>0,UpdateContext({madcoltown:White}),UpdateContext({madcoltown:LightGoldenRodYellow}));
                     
                 Reset: =resetall
@@ -3135,7 +3135,7 @@ Scr_Person As screen:
             InputTextPlaceholder: =
             IsEditable: =true
             Language: ="en-GB"
-            OnChange: |
+            OnChange: |+
                 =If(IsBlank(DatePicker_dob_1),
                     UpdateContext({personc: LightGoldenRodYellow}),
                     UpdateContext({personc: White })
@@ -3150,7 +3150,7 @@ Scr_Person As screen:
                     }
                 );
                 
-            OnSelect: |
+            OnSelect: |+
                 =If(IsBlank(DatePicker_dob_1),
                     UpdateContext({personc: LightGoldenRodYellow}),
                     UpdateContext({personc: White })

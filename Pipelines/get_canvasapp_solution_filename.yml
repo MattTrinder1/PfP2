@@ -1,0 +1,36 @@
+parameters:
+- name: pipelineworkspace
+  type: string
+- name: minorversion
+  type: string
+- name: releaseversion
+  type: string
+- name: solutionprefix
+  type: string
+- name: customerName
+  type: string
+- name: environmentName
+  type: string
+- name: solutionName
+  type: string
+  
+steps:
+  - powershell: |
+                $CanvasAppFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}${{parameters.solutionName}}_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
+                $CanvasAppFileName = $CanvasAppFile.FullName
+
+                if($CanvasAppFileName)
+                {
+                    Write-Host "##vso[task.setvariable variable=CanvasAppFileName]$CanvasAppFileName"
+                }
+                else
+                {
+                    $CanvasAppFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.customerName}}/${{parameters.environmentName}}/${{parameters.solutionprefix}}${{parameters.solutionName}}_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
+                    $CanvasAppFileName = $CanvasAppFile.FullName
+                    if($CanvasAppFileName)
+                    {
+                        Write-Host "##vso[task.setvariable variable=CanvasAppFileName]$CanvasAppFileName"
+                    }
+                }
+                
+    displayName: Get Canvas App Solution File Name

@@ -3,6 +3,10 @@ parameters:
   type: string
 - name: solutionprefix
   type: string
+- name: customerName
+  type: string
+- name: environmentName
+  type: string
 
 steps:
   - powershell: |
@@ -13,8 +17,10 @@ steps:
         $version = Select-String -Path $inputpath -Pattern $regex -AllMatches | % { $_.Matches } | % { $_.Value }
         $version = $version.Split(".")[3]
         Write-Output "##vso[task.setvariable variable=projectVersion]$version"
+    displayName: Get current version number
           
   - task: ReplaceInFilesTextByText@2
+    displayName: Replace version number
     inputs:
       parameterSearchDirectory: '$(Build.SourcesDirectory)/Schema\${{parameters.appFolderName}}${{parameters.solutionprefix}}\unpackedapp\Src\'
       parameterSearchText: '//Set(glbAppVersion,1);'
@@ -24,6 +30,7 @@ steps:
       parameterFilesList: 'App.fx.yaml'
 
   - task: ReplaceInFilesTextByText@2
+    displayName: Replace glbDebug
     inputs:
       parameterSearchDirectory: '$(Build.SourcesDirectory)/Schema\${{parameters.appFolderName}}${{parameters.solutionprefix}}\unpackedapp\Src\'
       parameterSearchText: '//Set(glbDebug,false);'
@@ -32,16 +39,31 @@ steps:
       parameterFilesPattern: 
       parameterFilesList: 'App.fx.yaml'
 
+
+  - ${{ if and(startsWith(parameters.appFolderName,'CanvasApps'), ne(parameters.customerName, 'Base')) }}:
+    - task: CopyFiles@2
+      displayName: Copy Rewritten CanvasApps over Schema
+      inputs:
+        sourceFolder: '$(Build.SourcesDirectory)\RewrittenCanvasApps\${{parameters.customerName}}\${{parameters.environmentName}}\Schema'
+        contents: '**\*.json' 
+        targetFolder: '$(Build.SourcesDirectory)\Schema'
+        overWrite: true 
+
+
   #get the canvas app .msapp file name
   - powershell: |
                 $MSAPPFile = get-childitem -path "$(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}${{parameters.solutionprefix}}\unpacked\CanvasApps\*.msapp"
                 $MSAPPFileName = $MSAPPFile.Name
                 Write-Host "##vso[task.setvariable variable=MSAPPFileName]$MSAPPFileName"
+    displayName: Get existing MSAPP file name
 
   - task: DeleteFiles@1
+    displayName: Delete existing app file
     inputs:
       SourceFolder: $(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}${{parameters.solutionprefix}}\unpacked\CanvasApps\
       Contents: $(MSAPPFileName)
+    condition: gt(length(variables['MSAPPFileName']),0)
 
   - powershell: |
           $(Build.SourcesDirectory)\365Tools\Tools\PasOpa\PASopa.exe -pack $(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}${{parameters.solutionprefix}}\unpacked\CanvasApps\$(MSAPPFileName) $(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}${{parameters.solutionprefix}}\unpackedapp 
+    displayName: Pack app

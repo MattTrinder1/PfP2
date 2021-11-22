@@ -1,6 +1,6 @@
 Scr_hort1 As screen:
     OnHidden: =Reset(PenInput_HORT1_sign);
-    OnVisible: |
+    OnVisible: |+
         =Set(
             madcolHort,
             LightGoldenRodYellow
@@ -404,7 +404,7 @@ Scr_hort1 As screen:
                 Fill: =madcolHort4
                 Height: =146
                 Mode: =TextMode.MultiLine
-                OnChange: |
+                OnChange: |+
                     =If(Len(TextInput_Hort1_OutwithForceStation.Text)>0,UpdateContext({madcolHort4:White}),UpdateContext({madcolHort4:LightGoldenRodYellow}));
                     
                     
@@ -498,7 +498,7 @@ Scr_hort1 As screen:
                     If(ComboBox_Hort1_DocumentType.Selected.cp_name in selection,
                     UpdateContext({H1:250});UpdateContext({docuvis:true}));If(ComboBox_Hort1_DocumentType.Selected.cp_name<>selection,
                     UpdateContext({H1:0});UpdateContext({docuvis:false}));If(Find(selection,Concat(ComboBox_Hort1_DocumentType.SelectedItems.cp_name,cp_name&","))>0,UpdateContext({H1:250});UpdateContext({docuvis:true}));
-                OnSelect: |
+                OnSelect: |+
                     =If(Len(ComboBox_Hort1_DocumentType.Selected.cp_name)>0,UpdateContext({madcolHort:White}),UpdateContext({madcolHort:LightGoldenRodYellow}));
                     
                 Reset: =resetall

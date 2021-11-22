@@ -12,6 +12,10 @@ parameters:
   type: string
 - name: appFolderName
   type: string
+- name: customerName
+  type: string
+- name: environmentName
+  type: string
 
 
 steps:
@@ -21,11 +25,6 @@ steps:
 - task: MSCRMToolInstaller@9
   displayName: 'MSCRM Tool Installer'
 
-- task: DeleteFiles@1
-  displayName: 'Delete files from $(build.binariesdirectory)'
-  inputs:
-    SourceFolder: '$(build.binariesdirectory)'
-    Contents: '**'
 
 - template: UpdateAppVersion.yml
   parameters:
@@ -33,6 +32,8 @@ steps:
     #msappname: pocketnotebooknew_3e93c
     appFolderName: ${{parameters.appFolderName}}
     solutionPrefix: ${{parameters.solutionprefix}}
+    customername: ${{parameters.customername}}
+    environmentname: ${{parameters.environmentname}}
     
 
 #- template: UpdateAppVersion.yml
@@ -48,8 +49,8 @@ steps:
     solutionprefix: ${{parameters.solutionprefix}}
     minorversion: ${{parameters.minorversion}}
     releaseversion: ${{parameters.releaseversion}}
+    customername: ${{parameters.customername}}
+    environmentname: ${{parameters.environmentname}}
 
 
-- publish: '$(build.binariesdirectory)/SystemTest'
-  artifact: CumbriaBuild-${{parameters.managed}}-${{parameters.appFolderName}}
 
