@@ -26,6 +26,10 @@ namespace CanvasAppRewriter
 
             Save("../../../RewrittenCanvasApps/Cumbria/SystemTest/Schema/CanvasAppsVehicleCP/unpackedapp/Connections/Connections.json", j.ToString());
 
+            string json2 = File.ReadAllText(@"../../../../../Schema/CanvasAppsVehicleCP/unpackedapp/DataSources/NDIPNCAPI.json");
+
+
+
             Console.WriteLine("Rewriting Vehicle App NDI PNC API Connection");
 
 
