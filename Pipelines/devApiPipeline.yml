@@ -41,6 +41,7 @@ stages:
 
   - stage: DeployAPIToTest
     displayName: Deploy API to SysTest
+    dependsOn: BuildAPI
     jobs:
     - deployment: DeployAPIToPfPSysTest
       environment: PfPSysTestAzure
@@ -57,6 +58,7 @@ stages:
 
   - stage: DeployAPIToCumbriaSystemTest
     displayName: Deploy API to Cumbria SysTest
+    dependsOn: BuildAPI
     jobs:
     - deployment: DeployAPIToCumbriaSysTest
       environment: CumbriaSysTestAzure
@@ -72,6 +74,7 @@ stages:
                   serviceConnectionName: CumbriaSysTest-b51c
 
   - stage: DeployAPIToUAT
+    dependsOn: DeployAPIToTest
     displayName: Deploy API to UAT
     jobs:
     - deployment: DeployAPIToPfPUAT
