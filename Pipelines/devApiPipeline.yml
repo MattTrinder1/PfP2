@@ -55,6 +55,21 @@ stages:
                 parameters:
                   serviceConnectionName: PfPSysTest-ec70
 
+  - stage: DeployAPIToCumbriaSystemTest
+    displayName: Deploy API to Cumbria SysTest
+    jobs:
+    - deployment: DeployAPIToCumbriaSysTest
+      environment: CumbriaSysTestAzure
+      displayName: Deploy API
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - template: deployAPI.yml
+                parameters:
+                  serviceConnectionName: CumbriaSysTest-b51c
 
   - stage: DeployAPIToUAT
     displayName: Deploy API to UAT
