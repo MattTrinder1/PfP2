@@ -119,50 +119,44 @@ namespace NDIApiWrapper.Controllers
         public ActionResult<Person> GetByPNCID(string pncId)
         {
 
-            using (var sessionWrapper = new SessionWrapper(config.GetValue<string>("Url"), config.GetValue<string>("User"), config.GetValue<string>("Session")))
-            {
-                var sw = new Stopwatch();
-                sw.Start();
+            var sw = new Stopwatch();
+            sw.Start();
 
 
-                var person = new Person();
-                person.PNCId = pncId;
-                person.DriverNumber = "TRIND703101M99SV";
-                person.FirstName = "MATT";
-                person.LastName = "TRINDER";
-                person.PostCode = "MK11 1DW";
+            var person = new Person();
+            person.PNCId = pncId;
+            person.DriverNumber = "TRIND703101M99SV";
+            person.FirstName = "MATT";
+            person.LastName = "TRINDER";
+            person.PostCode = "MK11 1DW";
 
 
-                person.Endorsements.Add(new Endorsement());
-                person.FullEntitlement.Add(new Entitlement());
-                person.ProvisionalEntitlement.Add(new Entitlement());
-                person.Unclaimeds.Add(new Unclaimed());
-                person.StopsMarkers.Add(new StopMarker());
-                person.DocumentTrail.Add(new Document());
-                person.CrossRefs.Add(new CrossRef());
+            person.Endorsements.Add(new Endorsement());
+            person.FullEntitlement.Add(new Entitlement());
+            person.ProvisionalEntitlement.Add(new Entitlement());
+            person.Unclaimeds.Add(new Unclaimed());
+            person.StopsMarkers.Add(new StopMarker());
+            person.DocumentTrail.Add(new Document());
+            person.CrossRefs.Add(new CrossRef());
 
-                person.MarkScars.Add(new MarkScar() { Type = "TATTOO", Detail = "SPIDER WEB", Location = "NECK" });
-                person.InformationMarkers.Add(new InformationMarker());
-                person.WarningSignals.Add(new WarningSignal());
-                person.AliasNames.Add(new AliasName() { Name = "KEV SPIDER" });
-                person.AliasDOBs.Add(new AliasDateOfBirth());
-                person.Nicknames.Add(new Nickname() { Date = "01012001", Name = "SPIDER" });
-                person.Descriptions.Add(new Description());
-                person.DisposalSummaries.Add(new DisposalSummary());
-                person.Addresses.Add(new Address());
-                person.BailConditons.Add(new BailCondition());
-                person.WantedMissings.Add(new WantedMissing());
-                person.OperationalInfos.Add(new OperationalInfo());
-                person.Disqualifieds.Add(new Disqualified());
-                person.OtherDetails.Add(new OtherDetail());
+            person.MarkScars.Add(new MarkScar() { Type = "TATTOO", Detail = "SPIDER WEB", Location = "NECK" });
+            person.InformationMarkers.Add(new InformationMarker());
+            person.WarningSignals.Add(new WarningSignal());
+            person.AliasNames.Add(new AliasName() { Name = "KEV SPIDER" });
+            person.AliasDOBs.Add(new AliasDateOfBirth());
+            person.Nicknames.Add(new Nickname() { Date = "01012001", Name = "SPIDER" });
+            person.Descriptions.Add(new Description());
+            person.DisposalSummaries.Add(new DisposalSummary());
+            person.Addresses.Add(new Address());
+            person.BailConditons.Add(new BailCondition());
+            person.WantedMissings.Add(new WantedMissing());
+            person.OperationalInfos.Add(new OperationalInfo());
+            person.Disqualifieds.Add(new Disqualified());
+            person.OtherDetails.Add(new OtherDetail());
 
-                return person;
+            return person;
 
                 
-            }
-
-
-            //            return new Person() { FirstName = HttpUtility.UrlDecode(pncId) };
         }
 
         private void PopulateRelated<TMenu,TRecordType>(ConsoliDataWSSoapClient client, PNCScreen connectResponse,  NEResult res,string suffix,List<TRecordType> list,Func<TMenu,TRecordType> extractMethod)
