@@ -53,88 +53,48 @@ namespace NDIApiWrapper.Controllers
         [HttpGet("getbydl/{surname}/{forename1}")]
         public ActionResult<PersonWrapper> GetByDL(string surname, string forename1, string forename2, string dateofbirth, string gender, string ethnicity, string reason, string postcode)
         {
-            using (var sessionWrapper = new SessionWrapper(config.GetValue<string>("Url"), config.GetValue<string>("User"), config.GetValue<string>("Session")))
-            {
-                var sw = new Stopwatch();
-                sw.Start();
 
-                if (sessionWrapper.logonResponse.Control.Result != "SUCCESS")
-                {
-                    return NotFound();
-                }
+            var wrap = new PersonWrapper();
 
-                var screen = sessionWrapper.logonResponse.TCODEScreen;
-                string query = $"{surname}/{forename1}";
-                //screen.Data.FieldData = $"{surname}/{forename1}:03031996:M:N::Y:N";
+            var p1 = new PersonQueryResult();
+            p1.Address1 = "100 WOLVERTON ROAD";
+            p1.Address2 = "STONY STRATFORD";
+            p1.Address3 = "MILTON KEYNES";
+            p1.DateOfBirth = "10/03/1971";
+            p1.DriverNumber = "TRIND703101M99SV";
+            p1.Ethnicity = "W";
+            p1.Forenames = "MATT";
+            p1.Gender = "M";
+            p1.Name = "MATT TRINDER";
+            p1.PlaceOfBirth = "WALLINGFORD";
+            p1.PNCId = "";
+            p1.Postcode = "MK11 1DW";
+            p1.ResultFrom = "DL";
+            p1.Surname = "TRINDER";
 
-                query += ":";
-                if (!String.IsNullOrEmpty(dateofbirth))
-                {
-                    query += dateofbirth;
-                }
-                query += ":";
-                if (!String.IsNullOrEmpty(gender))
-                {
-                    query += gender;
-                }
-                query += ":N";
-                query += ":";
-                if (!String.IsNullOrEmpty(postcode))
-                {
-                    query += postcode;
-                }
+            wrap.Records.Add(p1);
 
-                query += ":Y:N";
-                screen.Data.FieldData = query;
-                screen.Originator.FieldData = config.GetValue<string>("Origin");
-                screen.ReasonCode.FieldData = reason;
+            var p2 = new PersonQueryResult();
+            p2.Address1 = "101 SMITH STREET";
+            p2.Address2 = "WOLVERTON";
+            p2.Address3 = "MILTON KEYNES";
+            p2.DateOfBirth = "11/04/1972";
+            p2.DriverNumber = "JONES123456M99SV";
+            p2.Ethnicity = "W";
+            p2.Forenames = "WALT";
+            p2.Gender = "M";
+            p2.Name = "WALT JONES";
+            p2.PlaceOfBirth = "LEEDS";
+            p2.PNCId = "";
+            p2.Postcode = "MK12 2DD";
+            p2.ResultFrom = "DL";
+            p2.Surname = "JONES";
 
-                var s = new PNCScreen();
-                s.TCODEScreen = screen;
-                s.Session = sessionWrapper.connectResponse.Session;
+            wrap.Records.Add(p2);
 
-                var wrap = new PersonWrapper();
-
-
-                var personResponse = sessionWrapper.client.HashDL(s);
-
-                if (personResponse.DLPossibles != null && personResponse.DLPossibles.DLPossibleList.Length > 0)
-                {
-                    foreach (var poss in personResponse.DLPossibles.DLPossibleList)
-                    {
-                        var a = sessionWrapper.client.LicenceSelectPossible(sessionWrapper.connectResponse.Session.SessionInfo, Convert.ToInt32(poss.Identifier.FieldData));
-                        var pers = a.DLResult;
-
-                        PersonQueryResult res = GetPersonQueryResultFromDLResult(pers);
-
-                        wrap.Records.Add(res);
+            return wrap;
 
 
-                        a = sessionWrapper.client.NextLicenceList(sessionWrapper.connectResponse.Session.SessionInfo);
-
-                    }
-                }
-                else if (personResponse.DLResult == null)
-                {
-                    return wrap;
-                }
-                else
-                {
-                    //should be only one
-                    var pers = personResponse.DLResult;
-                    PersonQueryResult res = GetPersonQueryResultFromDLResult(pers);
-                    wrap.Records.Add(res);
-
-                }
-
-
-
-                log.LogDebug($"PNC Query : {sw.ElapsedMilliseconds.ToString()}");
-                sw.Reset(); sw.Start();
-
-
-                return wrap;
-            }
         }
 
         private static PersonQueryResult GetPersonQueryResultFromDLResult(DLResult pers)
