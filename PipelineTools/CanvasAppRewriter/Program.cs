@@ -15,18 +15,18 @@ namespace CanvasAppRewriter
             var j = JObject.Parse(json);
             //Save("../../../RewrittenCanvasApps/Cumbria/UAT/Schema/CanvasAppsVehicleCP/unpackedapp/Connections/Connections.json", j.ToString());
 
-            Console.WriteLine("Rewriting Vehicle App NDIWrapper-Vehicle");
+            Console.WriteLine("Rewriting Vehicle App NDI PNC API Connection");
 
             //[JSON].
-            j["15a9e74b-4a8e-4609-a8ed-b26f140fc6a2"].Parent.Remove();
-            string replacement = File.ReadAllText(@"../../../Cumbria/SystemTest/VehicleTickets/NDIWrapperVehicle.json");
+            j["01fea641-8b1b-4cec-9cba-f87f7ad1d4e8"].Parent.Remove();
+            string replacement = File.ReadAllText(@"../../../Cumbria/SystemTest/VehicleTickets/NDIPNCAPIConnection.json");
             var replacementJ = JObject.Parse(replacement);
             //j.AddAfterSelf(replacementJ.ToString()) ;
-            j["65f4024a-b0be-4e0f-8eff-d53e7df3055d"] = new JObject(replacementJ);
+            j["13bff99a-3b95-4c86-8cd3-8c5e717d3a74"] = new JObject(replacementJ);
 
             Save("../../../RewrittenCanvasApps/Cumbria/SystemTest/Schema/CanvasAppsVehicleCP/unpackedapp/Connections/Connections.json", j.ToString());
 
-            Console.WriteLine("Rewriting Vehicle App NDIWrapper-Vehicle Done");
+            Console.WriteLine("Rewriting Vehicle App NDI PNC API Connection");
 
 
         }
