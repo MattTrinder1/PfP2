@@ -46,8 +46,8 @@ steps:
       inputs:
         sourceFolder: '$(Build.SourcesDirectory)\RewrittenCanvasApps\${{parameters.customerName}}\${{parameters.environmentName}}\Schema'
         contents: |
-            '**\*.json' 
-            '**\*.xml' 
+            **\*.json
+            **\*.xml
         targetFolder: '$(Build.SourcesDirectory)\Schema'
         overWrite: true 
 
