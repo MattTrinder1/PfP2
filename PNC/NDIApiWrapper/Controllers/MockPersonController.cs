@@ -607,144 +607,47 @@ namespace NDIApiWrapper.Controllers
         private ActionResult<PersonWrapper> NominalSearch(string surname, string forename1, string forename2, string dateofbirth, string gender, string ethnicity, string reason)
         {
 
-            //connect terminal session
-            using (var sessionWrapper = new SessionWrapper(config.GetValue<string>("Url"), config.GetValue<string>("User"), config.GetValue<string>("Session")))
-            {
-                var sw = new Stopwatch();
-                sw.Start();
+            var wrap = new PersonWrapper();
+
+            var p1 = new PersonQueryResult();
+            p1.Address1 = "DORMER COTTAGE";
+            p1.Address2 = "TOOT BALDON";
+            p1.Address3 = "OXFORD";
+            p1.DateOfBirth = "10031945";
+            p1.DriverNumber = "SMITH703101M99SV";
+            p1.Ethnicity = "W";
+            p1.Forenames = "FRED";
+            p1.Gender = "M";
+            p1.Name = "FRED SMITH";
+            p1.PlaceOfBirth = "ABINGDON";
+            p1.PNCId = "1234/D";
+            p1.Postcode = "OX44 9HG";
+            p1.ResultFrom = "PNC";
+            p1.Surname = "SMITH";
+
+            wrap.Records.Add(p1);
+
+            var p2 = new PersonQueryResult();
+            p2.Address1 = "11 CLARENCE ROAD";
+            p2.Address2 = "NEWPORT PAGNELL";
+            p2.Address3 = "MILTON KEYNES";
+            p2.DateOfBirth = "10/08/1245";
+            p2.DriverNumber = "ADAMS123456M99SV";
+            p2.Ethnicity = "W";
+            p2.Forenames = "CHARLES";
+            p2.Gender = "M";
+            p2.Name = "CHARLES ADAMS";
+            p2.PlaceOfBirth = "DEADWOOD";
+            p2.PNCId = "ADA/123";
+            p2.Postcode = "MN12 3DS";
+            p2.ResultFrom = "PNC";
+            p2.Surname = "ADAMS";
+
+            wrap.Records.Add(p2);
+
+            return wrap;
 
 
-                //run quer
-                var screen = sessionWrapper.logonResponse.TCODEScreen;
-                var query = surname;
-                if (!string.IsNullOrEmpty(forename1))
-                {
-                    query += "/" + forename1;
-                }
-                if (!string.IsNullOrEmpty(forename2))
-                {
-                    query += "/" + forename2;
-                }
-                query += ":";
-                if (!String.IsNullOrEmpty(dateofbirth))
-                {
-                    query += dateofbirth;
-                }
-                query += ":";
-                if (!String.IsNullOrEmpty(gender))
-                {
-                    query += gender;
-                }
-                query += ":";
-                if (!String.IsNullOrEmpty(ethnicity))
-                {
-                    query += ethnicity;
-                }
-                query += ":";
-
-
-                screen.Data.FieldData = query;
-                screen.Originator.FieldData = config.GetValue<string>("Origin");
-                screen.ReasonCode.FieldData = reason;
-
-                var s = new PNCScreen();
-                s.TCODEScreen = screen;
-                s.Session = sessionWrapper.connectResponse.Session;
-
-                var personResponse = sessionWrapper.client.HashNQ(s);
-                log.LogDebug($"PNC HashNQ Query : {sw.ElapsedMilliseconds.ToString()}");
-                sw.Reset(); sw.Start();
-
-
-                //foreach (var menu in personResponse.NEResult.NEMenuAvailableList)
-                //{
-
-                //   var m = client.NominalMenuParsed2(connectResponse.Session.SessionInfo, menu.NEMenuShort.FieldData);
-                //   while (m.Control.State != "NOMINAL")
-                //  {
-                //     m = client.NominalMenuParsedMore(connectResponse.Session.SessionInfo);
-
-                //}
-                // }
-                List<PersonQueryResult> persons = new List<PersonQueryResult>();
-                if (personResponse.NEResult != null)
-                {
-                    var person = new PersonQueryResult();
-                    person.Name = personResponse.NEResult.Surname.FieldData + ", " + personResponse.NEResult.ForeNames.FieldData;
-                    //if (!string.IsNullOrEmpty(personResponse.NEResult.Birth.FieldData))
-                    //{
-                    //person.DateOfBirth = Convert.ToDateTime((personResponse.NEResult.Birth.FieldData).Substring(0,8));
-                    person.DateOfBirth = personResponse.NEResult.Birth.FieldData.Substring(0, 8);
-                    //}
-                    person.Gender = personResponse.NEResult.Sex.FieldData;
-                    person.Ethnicity = personResponse.NEResult.Colour.FieldData;
-                    person.PlaceOfBirth = personResponse.NEResult.Birth.FieldData.Substring(8, personResponse.NEResult.Birth.FieldData.Length - 8).Trim();
-
-                    person.Address1 = personResponse.NEResult.FullAddress1.FieldData;
-                    person.Address2 = personResponse.NEResult.FullAddress2.FieldData;
-                    person.Address3 = personResponse.NEResult.FullAddress3.FieldData;
-                    person.DriverNumber = personResponse.NEResult.DriverNo.FieldData.Replace("/", "");
-                    person.Forenames = personResponse.NEResult.ForeNames.FieldData;
-                    person.Surname = personResponse.NEResult.Surname.FieldData;
-                    person.ResultFrom = "PNC";
-
-                    person.PNCId = personResponse.NEResult.PNCID.FieldData;
-                    persons.Add(person);
-
-                }
-                else
-                {
-                    int page = 1;
-                    if (personResponse.NEPossibles == null)
-                    {
-                        return new PersonWrapper();
-                    }
-                    foreach (var p in personResponse.NEPossibles.NEPossibleList)
-                    {
-                        var next = sessionWrapper.client.SelectPossible(sessionWrapper.connectResponse.Session.SessionInfo, Convert.ToInt32(p.Identifier.FieldData));
-                        log.LogDebug($"PNC SelectPossible : {sw.ElapsedMilliseconds.ToString()}");
-                        sw.Reset(); sw.Start();
-                        PersonQueryResult person = GetPersonQueryResult(p, next);
-
-
-                        sessionWrapper.client.NextNominalList2(sessionWrapper.connectResponse.Session.SessionInfo, page);
-                        log.LogDebug($"PNC NextNominal : {sw.ElapsedMilliseconds.ToString()}");
-                        sw.Reset(); sw.Start();
-
-                        persons.Add(person);
-                    }
-
-
-                    page++;
-                    personResponse = sessionWrapper.client.NextNominalList2(sessionWrapper.connectResponse.Session.SessionInfo, page);
-                    while (personResponse.NEPossibles != null)
-                    {
-
-                        foreach (var p in personResponse.NEPossibles.NEPossibleList)
-                        {
-                            var next = sessionWrapper.client.SelectPossible(sessionWrapper.connectResponse.Session.SessionInfo, Convert.ToInt32(p.Identifier.FieldData));
-                            log.LogDebug($"PNC SelectPossible : {sw.ElapsedMilliseconds.ToString()}");
-                            sw.Reset(); sw.Start();
-                            PersonQueryResult person = GetPersonQueryResult(p, next);
-
-                            sessionWrapper.client.NextNominalList2(sessionWrapper.connectResponse.Session.SessionInfo, page);
-                            log.LogDebug($"PNC NextNominal : {sw.ElapsedMilliseconds.ToString()}");
-                            sw.Reset(); sw.Start();
-
-                            persons.Add(person);
-                        }
-
-                        page++;
-                        personResponse = sessionWrapper.client.NextNominalList2(sessionWrapper.connectResponse.Session.SessionInfo, page);
-                    }
-                }
-
-
-
-                var r = new PersonWrapper();
-                r.Records = persons;
-                return r;
-            }
            
         }
 
