@@ -37,3 +37,19 @@ stages:
               - template: deployPNCAPI.yml
                 parameters:
                   serviceConnectionName: PfPDev-ab46c5b7b4fa            
+
+  - stage: DeployMockPNCAPIToTest
+    displayName: Deploy Mock PNC API to SysTest
+    jobs:
+    - deployment: DeployMockPNCAPIToPfPSysTest
+      environment: PfPSysTestAzure
+      displayName: Deploy MOCK PNC API
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - template: deployPNCAPI.yml
+                parameters:
+                  serviceConnectionName: PfPSysTest-ec70                  
