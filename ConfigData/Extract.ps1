@@ -46,6 +46,35 @@ $package = Get-CrmDataPackage -Conn $conn -Fetches @("
 </fetch>"
 ,
 "<fetch version='1.0' output-format='xml-platform' mapping='logical' distinct='false'>
+  <entity name='account'>
+    <attribute name='name' />
+    <attribute name='accountid' />
+    <attribute name='address1_line1' />
+    <attribute name='cp_isrecoverygaragecompany' />
+    <attribute name='cp_isrecoverygarage' />
+    <attribute name='parentaccountid' />
+    <attribute name='cp_customer' />
+    <attribute name='address1_line2' />
+    <attribute name='address1_city' />
+    <attribute name='address1_postalcode' />
+    <attribute name='address1_stateorprovince' />
+    <order attribute='name' descending='false' />
+    <filter type='and'>
+      <condition attribute='statecode' operator='eq' value='0' />
+      <filter type='or'>
+        <condition attribute='cp_isrecoverygarage' operator='eq' value='1' />
+        <condition attribute='cp_isrecoverygaragecompany' operator='eq' value='1' />
+      </filter>
+    </filter>
+    <link-entity name='cp_customersetting' from='cp_customersettingid' to='cp_customer' link-type='inner' alias='ab'>
+      <filter type='and'>
+        <condition attribute='cp_customername' operator='eq' value='$customer' />
+      </filter>
+    </link-entity>
+  </entity>
+</fetch>"
+,
+"<fetch version='1.0' output-format='xml-platform' mapping='logical' distinct='false'>
   <entity name='cp_incidenttype'>
     <attribute name='cp_incidenttypeid' />
     <attribute name='cp_incidenttypename' />
