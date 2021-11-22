@@ -37,6 +37,8 @@ namespace CanvasAppRewriter
 
 
             var xml = File.ReadAllText(@"../../../../../Schema/CanvasAppsVehicleCP/unpackedapp/pkgs/wadl/ndipncapi.xml");
+            xml = xml.Replace("5fec56f3da3c70054e-5fec37e65b69cd854d", "5f65d572cd5285e38f-5fec37e65b69cd854d");
+            Save("../../../RewrittenCanvasApps/Cumbria/SystemTest/Schema/CanvasAppsVehicleCP/unpackedapp/pkgs/wadl/NDIPNCAPI.xml", xml);
 
         }
 
