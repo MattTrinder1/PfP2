@@ -27,8 +27,11 @@ namespace CanvasAppRewriter
             Save("../../../RewrittenCanvasApps/Cumbria/SystemTest/Schema/CanvasAppsVehicleCP/unpackedapp/Connections/Connections.json", j.ToString());
 
             string json2 = File.ReadAllText(@"../../../../../Schema/CanvasAppsVehicleCP/unpackedapp/DataSources/NDIPNCAPI.json");
+            var j2 = JArray.Parse(json2);
 
+            j2[0]["ApiId"] = "/providers/microsoft.powerapps/apis/shared_ndi-20pnc-20api-5fec56f3da3c70054e-5fec37e65b69cd854d";
 
+            Save("../../../RewrittenCanvasApps/Cumbria/SystemTest/Schema/CanvasAppsVehicleCP/unpackedapp/DataSources/NDIPNCAPI.json", j2.ToString());
 
             Console.WriteLine("Rewriting Vehicle App NDI PNC API Connection");
 
