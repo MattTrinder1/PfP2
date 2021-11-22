@@ -45,7 +45,9 @@ steps:
       displayName: Copy Rewritten CanvasApps over Schema
       inputs:
         sourceFolder: '$(Build.SourcesDirectory)\RewrittenCanvasApps\${{parameters.customerName}}\${{parameters.environmentName}}\Schema'
-        contents: '**\*.json' 
+        contents: |
+            '**\*.json' 
+            '**\*.xml' 
         targetFolder: '$(Build.SourcesDirectory)\Schema'
         overWrite: true 
 
