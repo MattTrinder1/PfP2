@@ -22,7 +22,7 @@ namespace CanvasAppRewriter
             string replacement = File.ReadAllText(@"../../../Cumbria/SystemTest/VehicleTickets/NDIPNCAPIConnection.json");
             var replacementJ = JObject.Parse(replacement);
             //j.AddAfterSelf(replacementJ.ToString()) ;
-            j["13bff99a-3b95-4c86-8cd3-8c5e717d3a74"] = new JObject(replacementJ);
+            j["5b186da5-eb85-4c38-9ea0-bab7f14c7eaa"] = new JObject(replacementJ);
 
             Save("../../../RewrittenCanvasApps/Cumbria/SystemTest/Schema/CanvasAppsVehicleCP/unpackedapp/Connections/Connections.json", j.ToString());
 
