@@ -38,6 +38,13 @@ namespace CanvasAppRewriter
 
             Save("../../../RewrittenCanvasApps/Cumbria/SystemTest/Schema/CanvasAppsVehicleCP/unpackedapp/DataSources/NDIPNCAPI.json", j2.ToString());
 
+             json2 = File.ReadAllText(@"../../../../../Schema/CanvasAppsVehicleCP/unpackedapp/DataSources/PoliceAPI.json");
+            j2 = JArray.Parse(json2);
+
+            j2[0]["ApiId"] = "/providers/microsoft.powerapps/apis/shared_pfp-20vehicle-20tickets-5f65d572cd5285e38f-5ff0f85a3e2578d081";
+
+            Save("../../../RewrittenCanvasApps/Cumbria/SystemTest/Schema/CanvasAppsVehicleCP/unpackedapp/DataSources/PoliceAPI.json", j2.ToString());
+
             Console.WriteLine("Rewriting Vehicle App NDI PNC API NDIPNCAPI.json");
 
 
@@ -45,9 +52,15 @@ namespace CanvasAppRewriter
             xml = xml.Replace("5fec56f3da3c70054e-5fec37e65b69cd854d", "5f65d572cd5285e38f-5fec37e65b69cd854d");
             Save("../../../RewrittenCanvasApps/Cumbria/SystemTest/Schema/CanvasAppsVehicleCP/unpackedapp/pkgs/wadl/NDIPNCAPI.xml", xml);
 
+            xml = File.ReadAllText(@"../../../../../Schema/CanvasAppsVehicleCP/unpackedapp/pkgs/wadl/policeapi.xml");
+            xml = xml.Replace("5fec56f3da3c70054e-5f68dcef26c4a019c7", "5f65d572cd5285e38f-5ff0f85a3e2578d081");
+            Save("../../../RewrittenCanvasApps/Cumbria/SystemTest/Schema/CanvasAppsVehicleCP/unpackedapp/pkgs/wadl/policeapi.xml", xml);
+
             var xml2 = File.ReadAllText(@"../../../../../Schema/CanvasAppsVehicleCP/unpacked/CanvasApps/cp_vehicletickets_8a92b.meta.xml");
             xml2 = xml2.Replace("5fec56f3da3c70054e-5fec37e65b69cd854d", "5f65d572cd5285e38f-5fec37e65b69cd854d");
             xml2 = xml2.Replace("01fea641-8b1b-4cec-9cba-f87f7ad1d4e8", "5b186da5-eb85-4c38-9ea0-bab7f14c7eaa");
+            xml2 = xml2.Replace("5fec56f3da3c70054e-5f68dcef26c4a019c7", "5f65d572cd5285e38f-5ff0f85a3e2578d081");
+            xml2 = xml2.Replace("f891a58d-bb9a-4e98-87da-f5ab5c8dfbda", "107cd446-f700-4759-ac44-ca0e698943ee");
             Save("../../../RewrittenCanvasApps/Cumbria/SystemTest/Schema/CanvasAppsVehicleCP/unpacked/CanvasApps/cp_vehicletickets_8a92b.meta.xml", xml2);
 
             Console.WriteLine("Rewriting Vehicle App NDI PNC API NDIPNCAPI.xml");
