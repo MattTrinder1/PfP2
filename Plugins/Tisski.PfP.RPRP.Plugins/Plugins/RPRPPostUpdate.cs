@@ -36,6 +36,21 @@ namespace Tisski.PfP.RPRP.Plugins
 
             tracingService.Trace($"Attributes in target: {Helpers.GetAttributeNamesCsv(entity)}");
 
+            Entity retrievedRprp = serviceAsAdmin.Retrieve(
+                    entity.LogicalName,
+                    entity.Id,
+                    new ColumnSet(
+                        "cp_participant",
+                        "cp_nextstepsfollowup",
+                        "cp_participantaccepted",
+                        "cp_participantnotifiedon",
+                        "cp_participantrespondedon",
+                        "cp_reflectivereviewendedon",
+                        "cp_reflectivereviewscheduledstart",
+                        "cp_reviewer",
+                        "cp_reviewercompletedon",
+                        "cp_completionapprovedby"));
+
             //Handle Reviewer access.
             if (entity.Attributes.Contains("cp_reviewer"))
             {
@@ -57,6 +72,22 @@ namespace Tisski.PfP.RPRP.Plugins
                 }
             }
 
+            //Handle Participant access.
+            if (entity.Attributes.Contains("cp_participantnotifiedon"))
+            {
+                var participantGrantAccessRequest = new GrantAccessRequest
+                {
+                    PrincipalAccess = new PrincipalAccess
+                    {
+                        AccessMask = AccessRights.ReadAccess,
+                        Principal = retrievedRprp.GetAttributeValue<EntityReference>("cp_participant")
+                    },
+                    Target = entity.ToEntityReference()
+                };
+                serviceAsAdmin.Execute(participantGrantAccessRequest);
+            }
+
+            //Automatically progress the BPF.
             //Get the BPF instance associated to this RPRP.
             QueryExpression rprpBpfQuery = new QueryExpression("cp_rprpbpf");
             rprpBpfQuery.Criteria.AddCondition("bpf_cp_rprpid", ConditionOperator.Equal, entity.Id);
@@ -87,21 +118,6 @@ namespace Tisski.PfP.RPRP.Plugins
 
                 Guid activeStageId = rprpBpf.GetAttributeValue<EntityReference>("activestageid").Id;
                 tracingService.Trace($"activestageid = {activeStageId}");
-
-                Entity retrievedRprp = serviceAsAdmin.Retrieve(
-                    entity.LogicalName,
-                    entity.Id,
-                    new ColumnSet(
-                        "cp_nextstepsfollowup",
-                        "cp_participantaccepted",
-                        "cp_participantnotifiedon",
-                        "cp_participantrespondedon",
-                        "cp_reflectivereviewendedon",
-                        "cp_reflectivereviewscheduledstart",
-                        "cp_reviewer",
-                        "cp_reviewercompletedon",
-                        "cp_completionapprovedby")
-                    );
 
                 Guid nextStageId = Guid.Empty;
                 if (activeStageId == initiateStageId)

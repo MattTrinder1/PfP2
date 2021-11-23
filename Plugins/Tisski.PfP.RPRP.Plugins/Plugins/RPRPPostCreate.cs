@@ -34,23 +34,6 @@ namespace Tisski.PfP.RPRP.Plugins
             IOrganizationServiceFactory serviceFactory = (IOrganizationServiceFactory)serviceProvider.GetService(typeof(IOrganizationServiceFactory));
             IOrganizationService serviceAsAdmin = serviceFactory.CreateOrganizationService(null);
 
-            //Share RPRP with Participant with Read access.
-            if (!entity.Attributes.Contains("cp_participant"))
-            {
-                throw new InvalidPluginExecutionException("Participant must be set on create of RPRP.");
-            }
-
-            var participantGrantAccessRequest = new GrantAccessRequest
-            {
-                PrincipalAccess = new PrincipalAccess
-                {
-                    AccessMask = AccessRights.ReadAccess,
-                    Principal = entity.GetAttributeValue<EntityReference>("cp_participant")
-                },
-                Target = entity.ToEntityReference()
-            };
-            serviceAsAdmin.Execute(participantGrantAccessRequest);
-
             if (entity.Attributes.Contains("cp_reviewer"))
             {
                 EntityReference reviewerRef = entity.GetAttributeValue<EntityReference>("cp_reviewer");
