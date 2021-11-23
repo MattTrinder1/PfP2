@@ -9,7 +9,6 @@ $conn = Get-CrmConnection -ConnectionString "RequireNewInstance=True;AuthType=Cl
 
 
 $package = Get-CrmDataPackage -Conn $conn `
--Identifiers  @{ "cp_customersetting" = @("cp_customername", "cp_policingareatext", "cp_incidentprefix","cp_areacode","cp_produceatstation") } `
 -Fetches @("
 <fetch>
   <entity name='cp_customersetting'>
