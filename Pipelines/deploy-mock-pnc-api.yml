@@ -53,3 +53,37 @@ stages:
               - template: deployPNCAPI.yml
                 parameters:
                   serviceConnectionName: PfPSysTest-ec70                  
+  
+  - stage: DeployMockPNCAPIToCumbriaSystemTest
+    dependsOn: BuildMockPNCAPI
+    displayName: Deploy Mock PNC API to Cumbria SysTest
+    jobs:
+    - deployment: DeployMockPNCAPIToCumbriaSysTest
+      environment: CumbriaSysTestAzure
+      displayName: Deploy MOCK PNC API
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - template: deployPNCAPI.yml
+                parameters:
+                  serviceConnectionName: CumbriaSysTest-b51c                                    
+
+  - stage: DeployMockPNCAPIToDurhamSystemTest
+    dependsOn: BuildMockPNCAPI
+    displayName: Deploy Mock PNC API to Durham SysTest
+    jobs:
+    - deployment: DeployMockPNCAPIToDurhamSysTest
+      environment: DurhamSysTestAzure
+      displayName: Deploy MOCK PNC API
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - template: deployPNCAPI.yml
+                parameters:
+                  serviceConnectionName: DurhamSysTest-8b8e                                    
