@@ -33,9 +33,10 @@ steps:
 
 - task: CopyFiles2
   displayName: 'Copy in App Files from source'
-  sourceFolder: $(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}${{parameters.solutionprefix}}
-  targetFolder: '$(build.binariesdirectory)'
-  contents: '**'
+  inputs:
+    sourceFolder: $(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}${{parameters.solutionprefix}}
+    targetFolder: '$(build.binariesdirectory)'
+    contents: '**'
 
 - template: UpdateAppVersion.yml
   parameters:
