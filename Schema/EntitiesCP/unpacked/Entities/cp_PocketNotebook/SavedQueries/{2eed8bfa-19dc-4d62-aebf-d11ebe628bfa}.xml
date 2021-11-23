@@ -19,16 +19,16 @@
     </layoutxml>
     <querytype>0</querytype>
     <fetchxml>
-      <fetch version="1.0" mapping="logical">
+      <fetch version="1.0" output-format="xml-platform" mapping="logical" distinct="false">
         <entity name="cp_pocketnotebook">
-          <filter type="and">
-            <condition attribute="statecode" operator="eq" value="0" />
-          </filter>
           <attribute name="cp_incidentno" />
-          <order attribute="cp_notedateandtime" descending="true" />
           <attribute name="cp_enteredby" />
           <attribute name="cp_notes" />
           <attribute name="cp_notedateandtime" />
+          <order attribute="cp_notedateandtime" descending="true" />
+          <filter type="and">
+            <condition attribute="statuscode" operator="eq" value="1" />
+          </filter>
           <attribute name="cp_pocketnotebookid" />
         </entity>
       </fetch>

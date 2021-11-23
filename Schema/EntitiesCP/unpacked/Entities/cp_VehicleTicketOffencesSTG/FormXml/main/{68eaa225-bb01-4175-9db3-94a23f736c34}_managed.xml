@@ -191,6 +191,14 @@
                       </cell>
                     </row>
                     <row>
+                      <cell id="{bd42f4cc-e5b7-49db-b318-1b04e0434619}" locklevel="0" colspan="1" rowspan="1">
+                        <labels>
+                          <label description="Offender Signature Refused" languagecode="1033" />
+                        </labels>
+                        <control id="cp_offendersignaturerefused" classid="{67FAC785-CD58-4F9F-ABB3-4B7DDC6ED5ED}" datafieldname="cp_offendersignaturerefused" disabled="false" />
+                      </cell>
+                    </row>
+                    <row>
                       <cell id="{22bbda12-6dd0-49c5-8443-ee3e54ec2ff9}" locklevel="0">
                         <labels>
                           <label description="Traffic Offence Signature" languagecode="1033" />
@@ -768,7 +776,7 @@
         </rows>
       </footer>
       <Navigation>
-        <NavBar></NavBar>
+        <NavBar />
         <NavBarAreas>
           <NavBarArea Id="Info">
             <Titles>
@@ -802,11 +810,6 @@
         <Library name="cp_setLookupValue" libraryUniqueId="{a96e9a75-e589-4b9f-bbfd-5cfea6a2bf00}" />
       </formLibraries>
       <events>
-        <event name="onchange" application="true" active="true" attribute="cp_documenttypevalue">
-          <Handlers>
-            <Handler functionName="setLookupId" libraryName="cp_setLookupValue" handlerUniqueId="{026304a6-2425-4e0e-8678-44548d994fa1}" enabled="true" parameters="&quot;cp_documenttypevalue&quot;,&quot;cp_documenttype&quot;" passExecutionContext="true" />
-          </Handlers>
-        </event>
         <event name="onchange" application="true" active="true" attribute="cp_checkorrecordvalue">
           <Handlers>
             <Handler functionName="setLookupId" libraryName="cp_setLookupValue" handlerUniqueId="{f51b659a-73ba-4a5c-be5a-5ce2c793ff68}" enabled="true" parameters="&quot;cp_checkorrecordvalue&quot;,&quot;cp_checkorrecord&quot;" passExecutionContext="true" />

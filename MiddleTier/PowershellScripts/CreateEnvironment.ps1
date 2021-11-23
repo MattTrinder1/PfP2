@@ -27,7 +27,7 @@ New-AzStorageContainer -Name "suddendeath" -Context $Context
 New-AzAppServicePlan -ResourceGroupName $environmentName-$guid -Name $EnvironmentName"-"$guid"-AppServicePlan" -Location "UK South"
 
 New-AzWebApp -ResourceGroupName $environmentName-$guid -Name $EnvironmentName"-"$guid"-APIWebApp" -Location "UK South" -AppServicePlan $EnvironmentName"-"$guid"-AppServicePlan"
-Set-AzWebApp -ResourceGroupName $environmentName-$guid -Name $EnvironmentName"-"$guid"-APIWebApp" -NetFrameworkVersion 5.0 -AppSettings @{"ASPNETCORE_ENVIRONMENT" ="$environmentType"}
+Set-AzWebApp -ResourceGroupName $environmentName-$guid -Name $EnvironmentName"-"$guid"-APIWebApp" -NetFrameworkVersion 5.0 -AppSettings @{"ASPNETCORE_ENVIRONMENT" ="$environmentType";"DvlaConnection:ApiKey"="OeJHkYTswJK8Rlun5T5X6pIequYj0lC5XlsaT1xj";"DvlaConnection:AuthenticateUri"="https://uat.driver-vehicle-licensing.api.gov.uk/thirdparty-access/v1/authenticate";"DvlaConnection:Password"="viWUCJJD4YgAlUXpaVJ@R54C";"DvlaConnection:RetrieveUri"="https://uat.driver-vehicle-licensing.api.gov.uk/driver-photo-at-the-roadside/v1/drivers/driver-details/s";"DvlaConnection:TestDriverNumber"="AMRSH652170JX8PD";"DvlaConnection:TokenValidMinutes"="55";"DvlaConnection:UserName"="cumbriapolice"}
 
 New-AzWebApp -ResourceGroupName $environmentName-$guid -Name $EnvironmentName"-"$guid"-MockNDIPNCAPI" -Location "UK South" -AppServicePlan $EnvironmentName"-"$guid"-AppServicePlan"
 
