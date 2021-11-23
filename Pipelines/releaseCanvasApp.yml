@@ -201,6 +201,39 @@ stages:
 
 #----------------------------------Start Stage-------------------------------------------------------------------
 
+  - stage: ReleaseToDurhamSystemTest
+    dependsOn: AssembleRelease
+    displayName: Deploy Durham System Test
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: ReleaseToDurhamSystemTest
+      environment: DurhamSystemTest
+      displayName: Deploy Solutions
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            
+            steps:
+
+            - template: deployCanvasAppSolution.yml
+              parameters:
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
+                canvasApp: ${{parameters.canvasApp}}
+                connectionString: $(durhamsystemtest.connection.string)
+                customername: Durham
+                environmentname: SystemTest
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
+
+#----------------------------------Start Stage-------------------------------------------------------------------
+
   - stage: ReleaseToUAT
     dependsOn: ReleaseToPfPSystemTest
     displayName: Deploy to PfP UAT
