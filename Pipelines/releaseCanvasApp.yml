@@ -201,6 +201,71 @@ stages:
 
 #----------------------------------Start Stage-------------------------------------------------------------------
 
+  - stage: ReleaseToCumbriaUAT
+    dependsOn: ReleaseToCumbriaSystemTest
+    displayName: Deploy Cumbria UAT
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: ReleaseToCumbriaUAT
+      environment: CumbriaUAT
+      displayName: Deploy Solutions
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            
+            steps:
+
+            - template: deployCanvasAppSolution.yml
+              parameters:
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
+                canvasApp: ${{parameters.canvasApp}}
+                connectionString: $(cumbriauat.connection.string)
+                customername: Cumbria
+                environmentname: UAT
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
+#----------------------------------Start Stage-------------------------------------------------------------------
+
+  - stage: ReleaseToCumbriaLive
+    dependsOn: ReleaseToCumbriaUAT
+    displayName: Deploy Cumbria Live
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: ReleaseToCumbriaLive
+      environment: CumbriaLive
+      displayName: Deploy Solutions
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            
+            steps:
+
+            - template: deployCanvasAppSolution.yml
+              parameters:
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
+                canvasApp: ${{parameters.canvasApp}}
+                connectionString: $(cumbrialive.connection.string)
+                customername: Cumbria
+                environmentname: Live
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
+
+#----------------------------------Start Stage-------------------------------------------------------------------
+
   - stage: ReleaseToDurhamSystemTest
     dependsOn: AssembleRelease
     displayName: Deploy Durham System Test
