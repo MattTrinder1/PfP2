@@ -30,6 +30,9 @@
       },
       "triggers": {
         "manual": {
+          "metadata": {
+            "operationMetadataId": "86d11b22-d351-44b2-8a8f-7ade483ca913"
+          },
           "type": "Request",
           "kind": "Button",
           "inputs": {
@@ -56,6 +59,9 @@
           "runAfter": {
             
           },
+          "metadata": {
+            "operationMetadataId": "e0c6428c-c6c1-4b7c-b27f-fe8232a3569e"
+          },
           "type": "InitializeVariable",
           "inputs": {
             "variables": [
@@ -72,6 +78,9 @@
             "Get_Vehicle_Ticket_STG_record": [
               "Succeeded"
             ]
+          },
+          "metadata": {
+            "operationMetadataId": "a9f15d5d-6ae5-4bd7-8b8c-02cffd7aa886"
           },
           "type": "Response",
           "kind": "PowerApp",
@@ -98,6 +107,9 @@
               "Succeeded"
             ]
           },
+          "metadata": {
+            "operationMetadataId": "12a822c4-e64f-4121-86b8-5adeaf1220cc"
+          },
           "type": "OpenApiConnection",
           "inputs": {
             "host": {
@@ -109,10 +121,7 @@
               "entityName": "cp_vehicleticketstgs",
             "recordId": "@triggerBody()[\u0027text\u0027]"
             },
-            "authentication": {
-              "type": "Raw",
-            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
-            }
+            "authentication": "@parameters(\u0027$authentication\u0027)"
           }
         }
       },

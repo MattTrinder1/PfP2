@@ -39,6 +39,9 @@
       },
       "triggers": {
         "When_a_row_is_created,_updated_or_deleted": {
+          "metadata": {
+            "operationMetadataId": "e26b9986-6828-401e-a3e8-b89e4380d455"
+          },
           "type": "OpenApiConnectionWebhook",
           "inputs": {
             "host": {
@@ -62,6 +65,9 @@
           "runAfter": {
             
           },
+          "metadata": {
+            "operationMetadataId": "3d5058c6-7461-4ff9-9ef9-bddb99815b5b"
+          },
           "type": "InitializeVariable",
           "inputs": {
             "variables": [
@@ -78,6 +84,9 @@
             "Initialize_Vehicle_Id_variable": [
               "Succeeded"
             ]
+          },
+          "metadata": {
+            "operationMetadataId": "beb820cf-9e01-470b-9e5a-a904a396f195"
           },
           "type": "InitializeVariable",
           "inputs": {
@@ -96,6 +105,9 @@
               "Succeeded"
             ]
           },
+          "metadata": {
+            "operationMetadataId": "ce87b9aa-b56d-4dbb-9622-677b91a8c565"
+          },
           "type": "Workflow",
           "inputs": {
             "host": {
@@ -111,6 +123,9 @@
             "Append_to_Error_Message_variable": {
               "runAfter": {
                 
+              },
+              "metadata": {
+                "operationMetadataId": "af5307ed-25dc-4bbe-bde4-6c21121f0a20"
               },
               "type": "AppendToStringVariable",
               "inputs": {
@@ -132,6 +147,9 @@
               ]
             }
           },
+          "metadata": {
+            "operationMetadataId": "4d8231d8-2901-4e09-af5e-f2ee5d97fc98"
+          },
           "type": "If"
         },
         "Run_a_Child_Flow_(Vehicle_Tickets_Prerequisites_check)": {
@@ -139,6 +157,9 @@
             "Append_Incident_Errors_in_Error_Message_variable": [
               "Succeeded"
             ]
+          },
+          "metadata": {
+            "operationMetadataId": "6065a163-9cf2-4993-9469-d759d1b17f6e"
           },
           "type": "Workflow",
           "inputs": {
@@ -155,6 +176,9 @@
             "Append_to_Error_Message_variable_2": {
               "runAfter": {
                 
+              },
+              "metadata": {
+                "operationMetadataId": "8bd94b80-a919-4711-b99d-5df6a5f39908"
               },
               "type": "AppendToStringVariable",
               "inputs": {
@@ -176,6 +200,9 @@
               ]
             }
           },
+          "metadata": {
+            "operationMetadataId": "a407cf9c-1a26-4767-a16b-2909ec796d9b"
+          },
           "type": "If"
         },
         "If_Errors_found_proceed_accordingly": {
@@ -183,6 +210,9 @@
             "Update_Vehicle_Ticket_STG_record_(Status,Submission_Error)": {
               "runAfter": {
                 
+              },
+              "metadata": {
+                "operationMetadataId": "307a1ded-1ab6-4ff8-83b3-465061cb032b"
               },
               "type": "OpenApiConnection",
               "inputs": {
@@ -214,6 +244,9 @@
                     "runAfter": {
                       
                     },
+                    "metadata": {
+                      "operationMetadataId": "95df1280-c219-4976-9dd2-0f44a02baf35"
+                    },
                     "type": "Workflow",
                     "inputs": {
                       "host": {
@@ -236,6 +269,9 @@
                       "Run_a_Child_Flow_(Create_Incident)": [
                         "Succeeded"
                       ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "b9402eca-836a-4ba1-b0d8-2784435bef75"
                     },
                     "type": "Workflow",
                     "inputs": {
@@ -277,6 +313,9 @@
                           "runAfter": {
                             
                           },
+                          "metadata": {
+                            "operationMetadataId": "ebc93f6a-902a-4652-bd80-1488cdb25c5e"
+                          },
                           "type": "OpenApiConnection",
                           "inputs": {
                             "host": {
@@ -298,6 +337,9 @@
                             "Create_new_record_in_Photos_for_Photo_1": [
                               "Succeeded"
                             ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "1f831dce-b528-4fda-b129-db2c11e77cba"
                           },
                           "type": "OpenApiConnection",
                           "inputs": {
@@ -321,6 +363,9 @@
                             "Get_Photo1_image_content_from_Vehicle_Ticket_STG": [
                               "Succeeded"
                             ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "43046536-6f62-4efd-b4b0-f5c9dbff9a7d"
                           },
                           "type": "OpenApiConnection",
                           "inputs": {
@@ -346,11 +391,36 @@
                         "@true"
                       ]
                     },
+                    "metadata": {
+                      "operationMetadataId": "3f9cf55b-c0cc-48f5-b665-2ee4dc479d1e"
+                    },
                     "type": "If"
                   },
                   "If_Offender_Signature_Exists": {
                     "actions": {
-                      
+                      "Offender_Signature_Refused": {
+                        "runAfter": {
+                          
+                        },
+                        "metadata": {
+                          "operationMetadataId": "ddd72e74-22c8-4bad-927e-00ca2ac5a83e"
+                        },
+                        "type": "OpenApiConnection",
+                        "inputs": {
+                          "host": {
+                            "connectionName": "shared_commondataserviceforapps_1",
+                            "operationId": "UpdateRecord",
+                            "apiId": "/providers/Microsoft.PowerApps/apis/shared_commondataserviceforapps"
+                          },
+                          "parameters": {
+                            "entityName": "cp_vehicletickets",
+                          "recordId": "@outputs(\u0027Create_a_Vehicle_Ticket_row\u0027)?[\u0027body/cp_vehicleticketid\u0027]",
+                            "item/cp_offendersignaturerefused": true,
+                          "item/cp_vehicledetails@odata.bind": "/cp_vehicledetailses(@{variables(\u0027VehicleId\u0027)})"
+                          },
+                          "authentication": "@parameters(\u0027$authentication\u0027)"
+                        }
+                      }
                     },
                     "runAfter": {
                       "If_Photo_5_Exists__": [
@@ -362,6 +432,9 @@
                         "Get_Offender_Signature_image_content_from_Vehicle_Ticket_STG": {
                           "runAfter": {
                             
+                          },
+                          "metadata": {
+                            "operationMetadataId": "a73a8326-ab25-45a4-97ab-d11e4743017d"
                           },
                           "type": "OpenApiConnection",
                           "inputs": {
@@ -385,6 +458,9 @@
                               "Succeeded"
                             ]
                           },
+                          "metadata": {
+                            "operationMetadataId": "cef68619-9c77-45ce-8061-6a6ae3a23473"
+                          },
                           "type": "OpenApiConnection",
                           "inputs": {
                             "host": {
@@ -405,10 +481,23 @@
                       }
                     },
                     "expression": {
-                      "equals": [
-                      "@empty(triggerOutputs()?[\u0027body/cp_offendersignatureid\u0027])",
-                        "@true"
+                      "or": [
+                        {
+                          "equals": [
+                          "@empty(triggerOutputs()?[\u0027body/cp_offendersignatureid\u0027])",
+                            "@true"
+                          ]
+                        },
+                        {
+                          "equals": [
+                          "@triggerOutputs()?[\u0027body/cp_offendersignaturerefused\u0027]",
+                            "@true"
+                          ]
+                        }
                       ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "0937ba97-c878-45c3-97fb-6a83974c258c"
                     },
                     "type": "If"
                   },
@@ -426,6 +515,9 @@
                         "Get_Officer_Signature_image_content_from_Vehicle_Ticket_STG": {
                           "runAfter": {
                             
+                          },
+                          "metadata": {
+                            "operationMetadataId": "913b854a-ec25-4c8b-bd8c-d12a63144b57"
                           },
                           "type": "OpenApiConnection",
                           "inputs": {
@@ -447,6 +539,9 @@
                             "Get_Officer_Signature_image_content_from_Vehicle_Ticket_STG": [
                               "Succeeded"
                             ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "3bfef101-7554-4555-8101-fd584ca29de5"
                           },
                           "type": "OpenApiConnection",
                           "inputs": {
@@ -473,6 +568,9 @@
                         "@true"
                       ]
                     },
+                    "metadata": {
+                      "operationMetadataId": "93897cf4-0f06-4cb0-b8e3-05c6df240a3f"
+                    },
                     "type": "If"
                   },
                   "List_Vehicle_Ticket_Offenses_STG": {
@@ -480,6 +578,9 @@
                       "If_Officer_Signature_Exists": [
                         "Succeeded"
                       ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "8884eac5-4dab-4857-ae4d-3f1259491851"
                     },
                     "type": "OpenApiConnection",
                     "inputs": {
@@ -515,6 +616,9 @@
                                   "runAfter": {
                                     
                                   },
+                                  "metadata": {
+                                    "operationMetadataId": "e126c3be-b18c-4c45-80c9-31b942e7dfd3"
+                                  },
                                   "type": "OpenApiConnection",
                                   "inputs": {
                                     "host": {
@@ -531,6 +635,7 @@
                                     "item/cp_VehicleTicket@odata.bind": "/cp_vehicletickets(@{outputs(\u0027Create_a_Vehicle_Ticket_row\u0027)?[\u0027body/cp_vehicleticketid\u0027]})",
                                     "item/cp_containsspeedlimit": "@items(\u0027Apply_to_each\u0027)?[\u0027cp_containsspeedlimit\u0027]",
                                     "item/cp_nipnotrequired": "@items(\u0027Apply_to_each\u0027)?[\u0027cp_nipnotrequired\u0027]",
+                                    "item/cp_offendersignaturerefused": "@triggerOutputs()?[\u0027body/cp_offendersignaturerefused\u0027]",
                                     "item/ownerid@odata.bind": "/systemusers(@{triggerOutputs()?[\u0027body/_createdby_value\u0027]})",
                                     "item/cp_trafficoffenceprinted": "@items(\u0027Apply_to_each\u0027)?[\u0027cp_trafficoffenceprinted\u0027]",
                                     "item/cp_trafficserialnumber": "@items(\u0027Apply_to_each\u0027)?[\u0027cp_trafficoffenceserialnumber\u0027]"
@@ -553,6 +658,9 @@
                                         "runAfter": {
                                           
                                         },
+                                        "metadata": {
+                                          "operationMetadataId": "ad5a3c31-1e63-4348-98bb-addfecf2cf6a"
+                                        },
                                         "type": "Compose",
                                       "inputs": "@split(items(\u0027Apply_to_each\u0027)?[\u0027cp_offencecode\u0027], \u0027,\u0027)"
                                       },
@@ -562,6 +670,9 @@
                                           "Relate_rows_(Add_to_many-many_relationships)": {
                                             "runAfter": {
                                               
+                                            },
+                                            "metadata": {
+                                              "operationMetadataId": "3caefd26-831a-4c22-a7bc-d2c5bc4bb8ce"
                                             },
                                             "type": "OpenApiConnection",
                                             "inputs": {
@@ -585,6 +696,9 @@
                                             "Succeeded"
                                           ]
                                         },
+                                        "metadata": {
+                                          "operationMetadataId": "eda07faa-ce2d-49c7-b57c-f58e1372ae4f"
+                                        },
                                         "type": "Foreach"
                                       }
                                     }
@@ -595,6 +709,9 @@
                                       "@true"
                                     ]
                                   },
+                                  "metadata": {
+                                    "operationMetadataId": "35aa8133-6685-4564-900c-d4a2cf65edd0"
+                                  },
                                   "type": "If"
                                 },
                                 "If_Traffic_Offender_Signature_ISNULL": {
@@ -602,6 +719,9 @@
                                     "Download_Traffic_Offence_Signature": {
                                       "runAfter": {
                                         
+                                      },
+                                      "metadata": {
+                                        "operationMetadataId": "8d6ab025-a58c-435b-a0d2-9966f6fbc386"
                                       },
                                       "type": "OpenApiConnection",
                                       "inputs": {
@@ -624,6 +744,9 @@
                                         "Download_Traffic_Offence_Signature": [
                                           "Succeeded"
                                         ]
+                                      },
+                                      "metadata": {
+                                        "operationMetadataId": "994c6940-fa93-4c24-98ed-36992e5299f6"
                                       },
                                       "type": "OpenApiConnection",
                                       "inputs": {
@@ -656,6 +779,9 @@
                                       ]
                                     }
                                   },
+                                  "metadata": {
+                                    "operationMetadataId": "c45feb1c-6599-450c-9057-b0c8cb36a9b9"
+                                  },
                                   "type": "If"
                                 }
                               },
@@ -668,6 +794,9 @@
                                   "6245096f-5b39-eb11-bf68-000d3a654276"
                                 ]
                               },
+                              "metadata": {
+                                "operationMetadataId": "4ee5c983-0040-4ec4-8a12-9d98d57c4b2a"
+                              },
                               "type": "If"
                             },
                             "Case_-_VDRS": {
@@ -675,6 +804,9 @@
                                 "Create_a_new_VDRS_row": {
                                   "runAfter": {
                                     
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "01113802-5e66-45d6-9607-34206a304f12"
                                   },
                                   "type": "OpenApiConnection",
                                   "inputs": {
@@ -711,6 +843,9 @@
                                         "runAfter": {
                                           
                                         },
+                                        "metadata": {
+                                          "operationMetadataId": "50eefb16-6e6e-4275-b2ae-6b5ae2134a9b"
+                                        },
                                         "type": "Compose",
                                       "inputs": "@split(items(\u0027Apply_to_each\u0027)?[\u0027cp_vdroffencecode\u0027], \u0027,\u0027)"
                                       },
@@ -720,6 +855,9 @@
                                           "Relate_rows_(Add_to_many-many_relationships)_2": {
                                             "runAfter": {
                                               
+                                            },
+                                            "metadata": {
+                                              "operationMetadataId": "84f590ef-ec2f-416c-8c1c-1d87821b991e"
                                             },
                                             "type": "OpenApiConnection",
                                             "inputs": {
@@ -743,6 +881,9 @@
                                             "Succeeded"
                                           ]
                                         },
+                                        "metadata": {
+                                          "operationMetadataId": "5c685642-e981-46b6-81fd-7257b913aeb2"
+                                        },
                                         "type": "Foreach"
                                       }
                                     }
@@ -753,6 +894,9 @@
                                       "@true"
                                     ]
                                   },
+                                  "metadata": {
+                                    "operationMetadataId": "3ea0ffec-5a87-4fc9-8ed6-21a90a9fcc5b"
+                                  },
                                   "type": "If"
                                 },
                                 "If_VDRS_Offender_Signature_ISNULL": {
@@ -760,6 +904,9 @@
                                     "Download_VDRS_Offence_Signature": {
                                       "runAfter": {
                                         
+                                      },
+                                      "metadata": {
+                                        "operationMetadataId": "fb41fc88-68cd-48e4-9d23-a8c7ae1d2a80"
                                       },
                                       "type": "OpenApiConnection",
                                       "inputs": {
@@ -782,6 +929,9 @@
                                         "Download_VDRS_Offence_Signature": [
                                           "Succeeded"
                                         ]
+                                      },
+                                      "metadata": {
+                                        "operationMetadataId": "74072dcc-331d-4345-9ed3-32a33bb9bc12"
                                       },
                                       "type": "OpenApiConnection",
                                       "inputs": {
@@ -814,6 +964,9 @@
                                       ]
                                     }
                                   },
+                                  "metadata": {
+                                    "operationMetadataId": "db253a18-5884-413e-8bea-51581ea24549"
+                                  },
                                   "type": "If"
                                 }
                               },
@@ -828,6 +981,9 @@
                                   "6445096f-5b39-eb11-bf68-000d3a654276"
                                 ]
                               },
+                              "metadata": {
+                                "operationMetadataId": "b2a1d89b-0744-4516-94b3-9ba5208c85ac"
+                              },
                               "type": "If"
                             },
                             "Case_-_HORT1": {
@@ -835,6 +991,9 @@
                                 "Create_a_new_HORT1_row": {
                                   "runAfter": {
                                     
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "7b0a8f31-3df7-47b9-9974-b56ec57af05b"
                                   },
                                   "type": "OpenApiConnection",
                                   "inputs": {
@@ -873,6 +1032,9 @@
                                         "runAfter": {
                                           
                                         },
+                                        "metadata": {
+                                          "operationMetadataId": "df5a391b-6d66-49fe-8ca4-e52da3fb503c"
+                                        },
                                         "type": "Compose",
                                       "inputs": "@split(items(\u0027Apply_to_each\u0027)?[\u0027cp_documenttype\u0027], \u0027,\u0027)"
                                       },
@@ -882,6 +1044,9 @@
                                           "Relate_rows_(Vehicle_Documents_-_Ticket_Type)": {
                                             "runAfter": {
                                               
+                                            },
+                                            "metadata": {
+                                              "operationMetadataId": "b3b7b347-6d13-440d-8746-e50228fe9aad"
                                             },
                                             "type": "OpenApiConnection",
                                             "inputs": {
@@ -905,6 +1070,9 @@
                                             "Succeeded"
                                           ]
                                         },
+                                        "metadata": {
+                                          "operationMetadataId": "b4d36f64-c188-444f-a5b5-5268fb184816"
+                                        },
                                         "type": "Foreach"
                                       }
                                     }
@@ -915,6 +1083,9 @@
                                       "@true"
                                     ]
                                   },
+                                  "metadata": {
+                                    "operationMetadataId": "e1dd76ea-9fc1-441a-8b56-e627fae81038"
+                                  },
                                   "type": "If"
                                 },
                                 "If_HORT1_Offender_Signature_ISNULL": {
@@ -922,6 +1093,9 @@
                                     "Download_HORT1_Offence_Signature": {
                                       "runAfter": {
                                         
+                                      },
+                                      "metadata": {
+                                        "operationMetadataId": "476b3a68-f079-42af-b0ea-7a2957edf870"
                                       },
                                       "type": "OpenApiConnection",
                                       "inputs": {
@@ -944,6 +1118,9 @@
                                         "Download_HORT1_Offence_Signature": [
                                           "Succeeded"
                                         ]
+                                      },
+                                      "metadata": {
+                                        "operationMetadataId": "6ef03f68-5925-4b3e-834d-616e9b4af036"
                                       },
                                       "type": "OpenApiConnection",
                                       "inputs": {
@@ -976,6 +1153,9 @@
                                       ]
                                     }
                                   },
+                                  "metadata": {
+                                    "operationMetadataId": "89c77434-2405-429e-9276-db91e9e13745"
+                                  },
                                   "type": "If"
                                 }
                               },
@@ -990,6 +1170,9 @@
                                   "5c45096f-5b39-eb11-bf68-000d3a654276"
                                 ]
                               },
+                              "metadata": {
+                                "operationMetadataId": "793bf777-b481-49be-8e8d-d4c61590e36d"
+                              },
                               "type": "If"
                             },
                             "Case_-_Section_59": {
@@ -997,6 +1180,9 @@
                                 "Create_a_new_Section_59_row": {
                                   "runAfter": {
                                     
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "ca5ca623-2bb2-4b33-b3ce-9d6ef19533bb"
                                   },
                                   "type": "OpenApiConnection",
                                   "inputs": {
@@ -1029,6 +1215,9 @@
                                       "runAfter": {
                                         
                                       },
+                                      "metadata": {
+                                        "operationMetadataId": "b8ed4e5f-7da4-4366-ad96-fc7a60150706"
+                                      },
                                       "type": "OpenApiConnection",
                                       "inputs": {
                                         "host": {
@@ -1050,6 +1239,9 @@
                                         "Download_Section59_Offence_Signature": [
                                           "Succeeded"
                                         ]
+                                      },
+                                      "metadata": {
+                                        "operationMetadataId": "dae9fe3a-cf16-4b8f-a6ad-f46fdbc07a45"
                                       },
                                       "type": "OpenApiConnection",
                                       "inputs": {
@@ -1082,6 +1274,9 @@
                                       ]
                                     }
                                   },
+                                  "metadata": {
+                                    "operationMetadataId": "a9032b25-d678-4f6e-b1bb-859569d51123"
+                                  },
                                   "type": "If"
                                 }
                               },
@@ -1096,6 +1291,9 @@
                                   "6045096f-5b39-eb11-bf68-000d3a654276"
                                 ]
                               },
+                              "metadata": {
+                                "operationMetadataId": "d4e00452-6bc5-4535-bd8f-6293b45dd31c"
+                              },
                               "type": "If"
                             },
                             "Case_-_Section_163": {
@@ -1103,6 +1301,9 @@
                                 "Create_a_new_Section_163_row": {
                                   "runAfter": {
                                     
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "d45d04d7-3137-4663-be46-ddea61ba50ce"
                                   },
                                   "type": "OpenApiConnection",
                                   "inputs": {
@@ -1137,6 +1338,9 @@
                                   "9bdd1977-de5f-eb11-a812-0022489c79d7"
                                 ]
                               },
+                              "metadata": {
+                                "operationMetadataId": "b67e4abd-a81b-4f7f-987a-7a2e56f416fa"
+                              },
                               "type": "If"
                             },
                             "Case_-_Section_165": {
@@ -1144,6 +1348,9 @@
                                 "Create_a_new_Section_165_row": {
                                   "runAfter": {
                                     
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "1ef773da-4df3-4531-b2e3-163609f9f5bd"
                                   },
                                   "type": "OpenApiConnection",
                                   "inputs": {
@@ -1172,6 +1379,9 @@
                                       "runAfter": {
                                         
                                       },
+                                      "metadata": {
+                                        "operationMetadataId": "ce8e2b89-7d37-4c6a-8cf0-17b209882d69"
+                                      },
                                       "type": "OpenApiConnection",
                                       "inputs": {
                                         "host": {
@@ -1193,6 +1403,9 @@
                                         "Download_Section165_Offence_Signature": [
                                           "Succeeded"
                                         ]
+                                      },
+                                      "metadata": {
+                                        "operationMetadataId": "7953818e-0b04-45b5-b1a3-cfb8abad39a6"
                                       },
                                       "type": "OpenApiConnection",
                                       "inputs": {
@@ -1225,6 +1438,9 @@
                                       ]
                                     }
                                   },
+                                  "metadata": {
+                                    "operationMetadataId": "44b5a12e-336c-4cb6-99d6-632c2208f020"
+                                  },
                                   "type": "If"
                                 }
                               },
@@ -1239,11 +1455,17 @@
                                   "5e45096f-5b39-eb11-bf68-000d3a654276"
                                 ]
                               },
+                              "metadata": {
+                                "operationMetadataId": "e0c81d24-26f4-456b-b23a-ca79ae47780f"
+                              },
                               "type": "If"
                             }
                           },
                           "runAfter": {
                             
+                          },
+                          "metadata": {
+                            "operationMetadataId": "06b6aa50-9217-4f93-b24c-8f18ca0653da"
                           },
                           "type": "Foreach"
                         }
@@ -1254,6 +1476,9 @@
                       "@empty(outputs(\u0027List_Vehicle_Ticket_Offenses_STG\u0027)?[\u0027body/value\u0027])",
                         "@true"
                       ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "3b53c59f-6aaa-4634-9429-9c0d19620ccf"
                     },
                     "type": "If"
                   },
@@ -1271,6 +1496,9 @@
                         "Get_Photo2_image_content_from_Vehicle_Ticket_STG_": {
                           "runAfter": {
                             
+                          },
+                          "metadata": {
+                            "operationMetadataId": "574fa441-7a13-4873-95f5-832f068f97b8"
                           },
                           "type": "OpenApiConnection",
                           "inputs": {
@@ -1294,6 +1522,9 @@
                               "Succeeded"
                             ]
                           },
+                          "metadata": {
+                            "operationMetadataId": "9fa64c2e-f6c9-4b07-8c55-7ff5d321dd8d"
+                          },
                           "type": "OpenApiConnection",
                           "inputs": {
                             "host": {
@@ -1316,6 +1547,9 @@
                             "Get_Photo2_image_content_from_Vehicle_Ticket_STG_": [
                               "Succeeded"
                             ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "1ca6e0fc-e602-487f-9ff3-d039b7c87599"
                           },
                           "type": "OpenApiConnection",
                           "inputs": {
@@ -1341,6 +1575,9 @@
                         "@true"
                       ]
                     },
+                    "metadata": {
+                      "operationMetadataId": "bf70b846-a789-4807-b588-c430fc88b410"
+                    },
                     "type": "If"
                   },
                   "If_Photo_3_Exists_": {
@@ -1357,6 +1594,9 @@
                         "Get_Photo_3_image_content_from_Vehicle_Ticket_STG__": {
                           "runAfter": {
                             
+                          },
+                          "metadata": {
+                            "operationMetadataId": "71b1e579-d354-4916-a7d8-34f9a7224fdc"
                           },
                           "type": "OpenApiConnection",
                           "inputs": {
@@ -1380,6 +1620,9 @@
                               "Succeeded"
                             ]
                           },
+                          "metadata": {
+                            "operationMetadataId": "ebb99714-20c0-4f57-81b4-d42bfe112480"
+                          },
                           "type": "OpenApiConnection",
                           "inputs": {
                             "host": {
@@ -1402,6 +1645,9 @@
                             "Get_Photo_3_image_content_from_Vehicle_Ticket_STG__": [
                               "Succeeded"
                             ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "76813ad5-9dfe-4c14-9b25-8183bf452f60"
                           },
                           "type": "OpenApiConnection",
                           "inputs": {
@@ -1427,6 +1673,9 @@
                         "@true"
                       ]
                     },
+                    "metadata": {
+                      "operationMetadataId": "b91e69b2-c5d3-4e2a-8e0d-c900e4d90103"
+                    },
                     "type": "If"
                   },
                   "If_Photo_4_Exists__": {
@@ -1443,6 +1692,9 @@
                         "Get_Photo_4_image_content_from_Vehicle_Ticket_STG___": {
                           "runAfter": {
                             
+                          },
+                          "metadata": {
+                            "operationMetadataId": "dd594227-57d5-4507-bb95-fc01db5089fd"
                           },
                           "type": "OpenApiConnection",
                           "inputs": {
@@ -1466,6 +1718,9 @@
                               "Succeeded"
                             ]
                           },
+                          "metadata": {
+                            "operationMetadataId": "82c3a444-8d20-4cc2-a6d2-c38d6b3bf34c"
+                          },
                           "type": "OpenApiConnection",
                           "inputs": {
                             "host": {
@@ -1488,6 +1743,9 @@
                             "Get_Photo_4_image_content_from_Vehicle_Ticket_STG___": [
                               "Succeeded"
                             ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "989cc3f8-efb7-4ed1-a86e-cea9e5170bed"
                           },
                           "type": "OpenApiConnection",
                           "inputs": {
@@ -1513,6 +1771,9 @@
                         "@true"
                       ]
                     },
+                    "metadata": {
+                      "operationMetadataId": "8bf31dda-316d-4ca0-923e-913f701c6eec"
+                    },
                     "type": "If"
                   },
                   "If_Photo_5_Exists__": {
@@ -1529,6 +1790,9 @@
                         "Get_Photo_5_image_content_from_Vehicle_Ticket_STG____": {
                           "runAfter": {
                             
+                          },
+                          "metadata": {
+                            "operationMetadataId": "8b27d1a9-f042-45b8-8173-bedce863d52c"
                           },
                           "type": "OpenApiConnection",
                           "inputs": {
@@ -1552,6 +1816,9 @@
                               "Succeeded"
                             ]
                           },
+                          "metadata": {
+                            "operationMetadataId": "9581a7d0-ab45-44be-a0c1-6fb405abb476"
+                          },
                           "type": "OpenApiConnection",
                           "inputs": {
                             "host": {
@@ -1574,6 +1841,9 @@
                             "Get_Photo_5_image_content_from_Vehicle_Ticket_STG____": [
                               "Succeeded"
                             ]
+                          },
+                          "metadata": {
+                            "operationMetadataId": "34e544c7-0d34-4473-a4f8-b3ec1a677ecf"
                           },
                           "type": "OpenApiConnection",
                           "inputs": {
@@ -1599,6 +1869,9 @@
                         "@true"
                       ]
                     },
+                    "metadata": {
+                      "operationMetadataId": "195c2860-0d8a-40dd-877f-9a5993eb5d7c"
+                    },
                     "type": "If"
                   },
                   "Reload_Staging_Row": {
@@ -1606,6 +1879,9 @@
                       "Run_a_Child_Flow_(Create_Location)": [
                         "Succeeded"
                       ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "72c76feb-6839-49ef-a3a2-8fee540963aa"
                     },
                     "type": "OpenApiConnection",
                     "inputs": {
@@ -1628,6 +1904,9 @@
                           "Run_a_Child_Flow_(Create_Offender_as_Contact_without_Birthdate)": {
                             "runAfter": {
                               
+                            },
+                            "metadata": {
+                              "operationMetadataId": "4349f3c3-f542-4bb6-b430-94ded34f0f37"
                             },
                             "type": "Workflow",
                             "inputs": {
@@ -1664,6 +1943,9 @@
                                 "Succeeded"
                               ]
                             },
+                            "metadata": {
+                              "operationMetadataId": "aa315cf9-40a4-455c-9412-eb6ab0841ca7"
+                            },
                             "type": "SetVariable",
                             "inputs": {
                               "name": "ContactId",
@@ -1679,6 +1961,9 @@
                             "Run_a_Child_Flow_(Create_Offender_as_Contact)": {
                               "runAfter": {
                                 
+                              },
+                              "metadata": {
+                                "operationMetadataId": "2d0c70c4-42d6-464d-aaee-1c5a0c55940e"
                               },
                               "type": "Workflow",
                               "inputs": {
@@ -1716,6 +2001,9 @@
                                   "Succeeded"
                                 ]
                               },
+                              "metadata": {
+                                "operationMetadataId": "c94623e3-853f-4108-8c10-f8d16c8ed979"
+                              },
                               "type": "SetVariable",
                               "inputs": {
                                 "name": "ContactId",
@@ -1730,6 +2018,9 @@
                             "@true"
                           ]
                         },
+                        "metadata": {
+                          "operationMetadataId": "7068d9eb-83f5-46eb-ba9f-b579750d3f14"
+                        },
                         "type": "If"
                       },
                       "Run_a_Child_Flow_(Update_Contact_Additional_Fields)": {
@@ -1737,6 +2028,9 @@
                           "Create_Offender_Contact": [
                             "Succeeded"
                           ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "5c4709ce-865e-4836-b90e-061a2e67bc74"
                         },
                         "type": "Workflow",
                         "inputs": {
@@ -1764,6 +2058,9 @@
                           "Run_a_Child_Flow_(Update_Contact_Additional_Fields)": [
                             "Succeeded"
                           ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "dec52fab-a809-4584-8ebb-104dbe7c261f"
                         },
                         "type": "OpenApiConnection",
                         "inputs": {
@@ -1801,6 +2098,9 @@
                               "runAfter": {
                                 
                               },
+                              "metadata": {
+                                "operationMetadataId": "a33f66f9-8b74-4f20-a293-f97367150a88"
+                              },
                               "type": "Compose",
                             "inputs": "@split(triggerOutputs()?[\u0027body/cp_licencecategory\u0027], \u0027,\u0027)"
                             },
@@ -1810,6 +2110,9 @@
                                 "Relate_rows_(Contact_with_Licence_Categories)": {
                                   "runAfter": {
                                     
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "eea818ac-8ccb-43b7-ba98-2f126e000519"
                                   },
                                   "type": "OpenApiConnection",
                                   "inputs": {
@@ -1833,6 +2136,9 @@
                                   "Succeeded"
                                 ]
                               },
+                              "metadata": {
+                                "operationMetadataId": "18e75554-47cc-460c-8583-70d996e0309e"
+                              },
                               "type": "Foreach"
                             }
                           }
@@ -1842,6 +2148,9 @@
                           "@empty(triggerOutputs()?[\u0027body/cp_licencecategory\u0027])",
                             "@true"
                           ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "c91c2143-b105-4a37-aa6f-a651fd4240a5"
                         },
                         "type": "If"
                       }
@@ -1859,6 +2168,9 @@
                         ]
                       }
                     },
+                    "metadata": {
+                      "operationMetadataId": "75651913-109d-4cca-8c9e-1f88792e0e6d"
+                    },
                     "type": "If"
                   },
                   "If_issued_to_!=_\"rider_of_bicycle\"": {
@@ -1866,6 +2178,9 @@
                       "Filter_Vehicles_with_VRM_2": {
                         "runAfter": {
                           
+                        },
+                        "metadata": {
+                          "operationMetadataId": "0426183f-8eaa-48af-a291-f9cfd2a5f874"
                         },
                         "type": "OpenApiConnection",
                         "inputs": {
@@ -1887,6 +2202,9 @@
                           "Create_a_new_Vehicle_Detail_row_2": {
                             "runAfter": {
                               
+                            },
+                            "metadata": {
+                              "operationMetadataId": "52f4c4e2-c102-4f3c-854e-6924713e171e"
                             },
                             "type": "OpenApiConnection",
                             "inputs": {
@@ -1927,6 +2245,9 @@
                                 "Succeeded"
                               ]
                             },
+                            "metadata": {
+                              "operationMetadataId": "de42c75f-f5e6-4a78-852f-b75e72c07401"
+                            },
                             "type": "SetVariable",
                             "inputs": {
                               "name": "VehicleId",
@@ -1945,6 +2266,9 @@
                               "runAfter": {
                                 
                               },
+                              "metadata": {
+                                "operationMetadataId": "f51d1aa8-e8f0-4724-b11a-49c84b71a28e"
+                              },
                               "type": "SetVariable",
                               "inputs": {
                                 "name": "VehicleId",
@@ -1956,6 +2280,9 @@
                                 "Store_Vehicle_Id_2": [
                                   "Succeeded"
                                 ]
+                              },
+                              "metadata": {
+                                "operationMetadataId": "6cdd3079-d701-44d6-aa8e-96c541f2f23c"
                               },
                               "type": "OpenApiConnection",
                               "inputs": {
@@ -1996,6 +2323,9 @@
                             "@true"
                           ]
                         },
+                        "metadata": {
+                          "operationMetadataId": "098dc36c-f29e-4df5-8541-ba661b5e82e2"
+                        },
                         "type": "If"
                       },
                       "Update_a_row_2": {
@@ -2003,6 +2333,9 @@
                           "According_to_Retrieved_results_2": [
                             "Succeeded"
                           ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "12ec4ec8-57d5-49f2-a317-ad7fedae8777"
                         },
                         "type": "OpenApiConnection",
                         "inputs": {
@@ -2033,6 +2366,9 @@
                         ]
                       }
                     },
+                    "metadata": {
+                      "operationMetadataId": "715b9c18-2ec5-402a-91cc-aaf01c1b9473"
+                    },
                     "type": "If"
                   },
                   "Create_a_Vehicle_Ticket_row": {
@@ -2040,6 +2376,9 @@
                       "Condition": [
                         "Succeeded"
                       ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "6a891462-a588-426f-918e-5cd63a4a9656"
                     },
                     "type": "OpenApiConnection",
                     "inputs": {
@@ -2107,6 +2446,9 @@
                 "runAfter": {
                   
                 },
+                "metadata": {
+                  "operationMetadataId": "01be8514-03ad-4038-9038-59b6c52cca6a"
+                },
                 "type": "Scope"
               },
               "Catch_(Clear_Staging_Area)": {
@@ -2114,6 +2456,9 @@
                   "Update_a_row": {
                     "runAfter": {
                       
+                    },
+                    "metadata": {
+                      "operationMetadataId": "2fef8d15-4874-43a8-8232-2f76222fbe5e"
                     },
                     "type": "OpenApiConnection",
                     "inputs": {
@@ -2139,6 +2484,9 @@
                     "Succeeded"
                   ]
                 },
+                "metadata": {
+                  "operationMetadataId": "dfee0f91-f838-49ef-b2ab-c98fc7dfba42"
+                },
                 "type": "Scope"
               }
             }
@@ -2151,6 +2499,9 @@
               ]
             }
           },
+          "metadata": {
+            "operationMetadataId": "1f2f884d-53cb-4921-9bb2-e560a1e4f7ff"
+          },
           "type": "If"
         },
         "Initialize_Vehicle_Id_variable": {
@@ -2158,6 +2509,9 @@
             "Initialize_Contact_Id_variable": [
               "Succeeded"
             ]
+          },
+          "metadata": {
+            "operationMetadataId": "ed3aa3e1-9bc6-4265-82ba-0899765e0e42"
           },
           "type": "InitializeVariable",
           "inputs": {
@@ -2175,6 +2529,9 @@
             "Append_Vehicle_Ticket_Errors_in_Error_Message_variable": [
               "Succeeded"
             ]
+          },
+          "metadata": {
+            "operationMetadataId": "2f2ddeeb-6680-4e84-9646-827c259c470b"
           },
           "type": "OpenApiConnection",
           "inputs": {
@@ -2225,6 +2582,9 @@
               "Succeeded"
             ]
           },
+          "metadata": {
+            "operationMetadataId": "14bb68ba-a34e-4e2e-bd2c-b34ea87d5f3c"
+          },
           "type": "OpenApiConnection",
           "inputs": {
             "host": {
@@ -2250,6 +2610,9 @@
                       "runAfter": {
                         
                       },
+                      "metadata": {
+                        "operationMetadataId": "b61a1872-8402-4f55-b597-56a9786cf6ec"
+                      },
                       "type": "OpenApiConnection",
                       "inputs": {
                         "host": {
@@ -2271,6 +2634,9 @@
                           "runAfter": {
                             
                           },
+                          "metadata": {
+                            "operationMetadataId": "22783115-d3a9-46be-82aa-253c84ba3a6f"
+                          },
                           "type": "Compose",
                         "inputs": "@split(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_offencecode\u0027], \u0027,\u0027)"
                         },
@@ -2280,6 +2646,9 @@
                             "Relate_rows_(Traffic_Offence_-_Offence_Codes)": {
                               "runAfter": {
                                 
+                              },
+                              "metadata": {
+                                "operationMetadataId": "25e7c1cc-ad51-4220-b16b-2fbcdaead6b9"
                               },
                               "type": "OpenApiConnection",
                               "inputs": {
@@ -2303,6 +2672,9 @@
                               "Succeeded"
                             ]
                           },
+                          "metadata": {
+                            "operationMetadataId": "49860023-d550-40c3-b698-3db8bc33e6e6"
+                          },
                           "type": "Foreach"
                         }
                       },
@@ -2319,6 +2691,9 @@
                           ]
                         }
                       },
+                      "metadata": {
+                        "operationMetadataId": "3152cefe-b4f0-47c2-ae83-dd268de7b9d2"
+                      },
                       "type": "If"
                     }
                   },
@@ -2331,6 +2706,9 @@
                       "6245096f-5b39-eb11-bf68-000d3a654276"
                     ]
                   },
+                  "metadata": {
+                    "operationMetadataId": "89b759bf-8617-4b2a-ad8d-15a75c83f97d"
+                  },
                   "type": "If"
                 },
                 "Case_-_HORT": {
@@ -2338,6 +2716,9 @@
                     "Update_the_HORT_row": {
                       "runAfter": {
                         
+                      },
+                      "metadata": {
+                        "operationMetadataId": "0ca83db1-9bac-4e0e-b402-f51fb8c108b1"
                       },
                       "type": "OpenApiConnection",
                       "inputs": {
@@ -2362,6 +2743,9 @@
                           "runAfter": {
                             
                           },
+                          "metadata": {
+                            "operationMetadataId": "e50f40a6-4ecf-448f-b777-3d281b28850a"
+                          },
                           "type": "Compose",
                         "inputs": "@split(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_documenttype\u0027], \u0027,\u0027)"
                         },
@@ -2371,6 +2755,9 @@
                             "Relate_rows_(Traffic_Offence_-_Document_Type)": {
                               "runAfter": {
                                 
+                              },
+                              "metadata": {
+                                "operationMetadataId": "dc2470e0-bc42-43f4-8ea9-95b1370b997a"
                               },
                               "type": "OpenApiConnection",
                               "inputs": {
@@ -2394,6 +2781,9 @@
                               "Succeeded"
                             ]
                           },
+                          "metadata": {
+                            "operationMetadataId": "ca741ec3-9fe9-45b5-975b-d596f89a2bf3"
+                          },
                           "type": "Foreach"
                         }
                       },
@@ -2410,6 +2800,9 @@
                           ]
                         }
                       },
+                      "metadata": {
+                        "operationMetadataId": "b6399095-32b2-45e4-8729-5b6423d46d74"
+                      },
                       "type": "If"
                     }
                   },
@@ -2424,6 +2817,9 @@
                       "5c45096f-5b39-eb11-bf68-000d3a654276"
                     ]
                   },
+                  "metadata": {
+                    "operationMetadataId": "cd9c3f5a-54e3-41a3-a562-01a37701af6d"
+                  },
                   "type": "If"
                 },
                 "VDRS": {
@@ -2431,6 +2827,9 @@
                     "Update_VDRS_row": {
                       "runAfter": {
                         
+                      },
+                      "metadata": {
+                        "operationMetadataId": "d6110c6d-3aa4-4992-9c44-eb0bd9d2754b"
                       },
                       "type": "OpenApiConnection",
                       "inputs": {
@@ -2453,6 +2852,9 @@
                           "runAfter": {
                             
                           },
+                          "metadata": {
+                            "operationMetadataId": "d63c56c7-5754-400e-afcc-e423a83f37a6"
+                          },
                           "type": "Compose",
                         "inputs": "@split(items(\u0027Apply_to_each_Offence\u0027)?[\u0027cp_vdroffencecode\u0027], \u0027,\u0027)"
                         },
@@ -2462,6 +2864,9 @@
                             "Relate_rows_(Traffic_Offence_-_VDRS_Offence_Codes)": {
                               "runAfter": {
                                 
+                              },
+                              "metadata": {
+                                "operationMetadataId": "50e5a0ee-b726-44f8-a203-160d56ae7974"
                               },
                               "type": "OpenApiConnection",
                               "inputs": {
@@ -2485,6 +2890,9 @@
                               "Succeeded"
                             ]
                           },
+                          "metadata": {
+                            "operationMetadataId": "b0429e2e-037f-43ae-97fd-800caf2bd71c"
+                          },
                           "type": "Foreach"
                         }
                       },
@@ -2501,6 +2909,9 @@
                           ]
                         }
                       },
+                      "metadata": {
+                        "operationMetadataId": "b5bf2718-ab35-4d4f-a347-a7f2df599b50"
+                      },
                       "type": "If"
                     }
                   },
@@ -2515,6 +2926,9 @@
                       "6445096f-5b39-eb11-bf68-000d3a654276"
                     ]
                   },
+                  "metadata": {
+                    "operationMetadataId": "37e936b1-12d4-4243-9847-0f6dfe5055c5"
+                  },
                   "type": "If"
                 },
                 "Section_165": {
@@ -2522,6 +2936,9 @@
                     "Update_the_Section_165_row_2": {
                       "runAfter": {
                         
+                      },
+                      "metadata": {
+                        "operationMetadataId": "a5e0387a-f736-485c-94c8-5e0c0d9a0a82"
                       },
                       "type": "OpenApiConnection",
                       "inputs": {
@@ -2553,6 +2970,9 @@
                       "5e45096f-5b39-eb11-bf68-000d3a654276"
                     ]
                   },
+                  "metadata": {
+                    "operationMetadataId": "29601419-5912-49a6-af5d-c09823ba4d02"
+                  },
                   "type": "If"
                 },
                 "Section_163": {
@@ -2560,6 +2980,9 @@
                     "Update_the_Section_163_row": {
                       "runAfter": {
                         
+                      },
+                      "metadata": {
+                        "operationMetadataId": "651ed5d4-fecb-46bb-901d-486c9b6b800a"
                       },
                       "type": "OpenApiConnection",
                       "inputs": {
@@ -2590,6 +3013,9 @@
                       "9bdd1977-de5f-eb11-a812-0022489c79d7"
                     ]
                   },
+                  "metadata": {
+                    "operationMetadataId": "a599473a-61be-463a-b878-53486766ce17"
+                  },
                   "type": "If"
                 },
                 "Section_59": {
@@ -2597,6 +3023,9 @@
                     "Update_the_Section_59_row_2": {
                       "runAfter": {
                         
+                      },
+                      "metadata": {
+                        "operationMetadataId": "31d244bf-95d4-4fd8-a43f-12c2a4b666d8"
                       },
                       "type": "OpenApiConnection",
                       "inputs": {
@@ -2632,11 +3061,17 @@
                       "6045096f-5b39-eb11-bf68-000d3a654276"
                     ]
                   },
+                  "metadata": {
+                    "operationMetadataId": "70ecbc8b-320e-41d6-8c0a-55aa568817f9"
+                  },
                   "type": "If"
                 }
               },
               "runAfter": {
                 
+              },
+              "metadata": {
+                "operationMetadataId": "fba87517-9d85-4f97-be21-645419f1b9c0"
               },
               "type": "Foreach"
             }
@@ -2653,6 +3088,9 @@
                 "@true"
               ]
             }
+          },
+          "metadata": {
+            "operationMetadataId": "bb43b276-f517-4949-a10d-fa7ffad5ba11"
           },
           "type": "If"
         }

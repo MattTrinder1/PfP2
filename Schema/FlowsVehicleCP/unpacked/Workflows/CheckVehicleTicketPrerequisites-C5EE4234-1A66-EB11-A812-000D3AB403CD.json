@@ -48,6 +48,9 @@
       },
       "triggers": {
         "manual": {
+          "metadata": {
+            "operationMetadataId": "85200b7c-f097-489c-b2d2-0f9bd00d54c3"
+          },
           "type": "Request",
           "kind": "Button",
           "inputs": {
@@ -74,6 +77,9 @@
           "runAfter": {
             
           },
+          "metadata": {
+            "operationMetadataId": "5ee812ef-228c-4b7e-a351-4798b9f7d33e"
+          },
           "type": "InitializeVariable",
           "inputs": {
             "variables": [
@@ -90,6 +96,9 @@
             "If_Vehicle_Ticket_Offences_Exist": [
               "Succeeded"
             ]
+          },
+          "metadata": {
+            "operationMetadataId": "dacdc8da-6051-41ab-bc09-bf85d1efec3e"
           },
           "type": "Response",
           "kind": "PowerApp",
@@ -116,6 +125,9 @@
               "Succeeded"
             ]
           },
+          "metadata": {
+            "operationMetadataId": "7d1ff490-d699-4e4f-8c68-2eb7c13a72bc"
+          },
           "type": "OpenApiConnection",
           "inputs": {
             "host": {
@@ -127,10 +139,7 @@
               "entityName": "cp_vehicleticketstgs",
             "recordId": "@triggerBody()[\u0027text\u0027]"
             },
-            "authentication": {
-              "type": "Raw",
-            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
-            }
+            "authentication": "@parameters(\u0027$authentication\u0027)"
           }
         },
         "Check_Speed_Detection_Method_ISNULL": {
@@ -138,6 +147,9 @@
             "Append_to_Error_Message_9": {
               "runAfter": {
                 
+              },
+              "metadata": {
+                "operationMetadataId": "2b74d46e-9ea2-43b4-b93f-a88efec2fb09"
               },
               "type": "AppendToStringVariable",
               "inputs": {
@@ -157,6 +169,9 @@
               "@null"
             ]
           },
+          "metadata": {
+            "operationMetadataId": "a6e74cab-0700-4e03-b67f-47d91f1fa903"
+          },
           "type": "If"
         },
         "List_Vehicle_Ticket_Offenses_STG": {
@@ -164,6 +179,9 @@
             "Check_Speed_Detection_Method_ISNULL": [
               "Succeeded"
             ]
+          },
+          "metadata": {
+            "operationMetadataId": "3956b86b-b084-4d96-8b31-dbf8780d436a"
           },
           "type": "OpenApiConnection",
           "inputs": {
@@ -176,10 +194,7 @@
               "entityName": "cp_vehicleticketoffencesstgs",
             "$filter": "(_cp_vehicleticketstgid_value eq @{outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_vehicleticketstgid\u0027]})"
             },
-            "authentication": {
-              "type": "Raw",
-            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
-            }
+            "authentication": "@parameters(\u0027$authentication\u0027)"
           }
         },
         "If_Vehicle_Ticket_Offences_Exist": {
@@ -187,6 +202,9 @@
             "Append_to_Error_Message_10": {
               "runAfter": {
                 
+              },
+              "metadata": {
+                "operationMetadataId": "036c2b8e-c237-4396-93fd-05278410a0cf"
               },
               "type": "AppendToStringVariable",
               "inputs": {
@@ -213,6 +231,9 @@
                             "runAfter": {
                               
                             },
+                            "metadata": {
+                              "operationMetadataId": "2404c6d1-904c-4b81-ad31-a74846456706"
+                            },
                             "type": "OpenApiConnection",
                             "inputs": {
                               "host": {
@@ -226,10 +247,7 @@
                                 "item/cp_stagingentrystatus": 778230002,
                                 "item/cp_submissionerror": "@variables(\u0027Line Error\u0027)"
                               },
-                              "authentication": {
-                                "type": "Raw",
-                              "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
-                              }
+                              "authentication": "@parameters(\u0027$authentication\u0027)"
                             }
                           },
                           "Set_Line_Error_Found_variable": {
@@ -237,6 +255,9 @@
                               "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)": [
                                 "Succeeded"
                               ]
+                            },
+                            "metadata": {
+                              "operationMetadataId": "554564b5-60d1-47aa-98fe-9d895a69b5f2"
                             },
                             "type": "SetVariable",
                             "inputs": {
@@ -258,6 +279,9 @@
                             ]
                           }
                         },
+                        "metadata": {
+                          "operationMetadataId": "a5725200-5c11-4f0b-82c2-1c6c384cf317"
+                        },
                         "type": "If"
                       },
                       "Check_Offence_Code_ISNULL": {
@@ -265,6 +289,9 @@
                           "Append_to_Line_Error_Message": {
                             "runAfter": {
                               
+                            },
+                            "metadata": {
+                              "operationMetadataId": "7c2237ee-e1a4-45fe-b7ad-ba2c52e62366"
                             },
                             "type": "AppendToStringVariable",
                             "inputs": {
@@ -284,6 +311,9 @@
                             "@null"
                           ]
                         },
+                        "metadata": {
+                          "operationMetadataId": "3ba52b73-fbf8-441e-a270-d5ec7aa8c968"
+                        },
                         "type": "If"
                       },
                       "Condition_2": {
@@ -293,6 +323,9 @@
                               "Append_to_Line_Error_Message_5": {
                                 "runAfter": {
                                   
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "0eebaf7e-e048-44f7-81ca-8ee16839b56a"
                                 },
                                 "type": "AppendToStringVariable",
                                 "inputs": {
@@ -310,6 +343,9 @@
                                 "@null"
                               ]
                             },
+                            "metadata": {
+                              "operationMetadataId": "6f33147b-3eeb-4ff8-9c99-523b595bb86f"
+                            },
                             "type": "If"
                           },
                           "Check_NIP_Given_ISNULL_2": {
@@ -317,6 +353,9 @@
                               "Append_to_Line_Error_Message_2": {
                                 "runAfter": {
                                   
+                                },
+                                "metadata": {
+                                  "operationMetadataId": "e6c7c61f-f7aa-4366-a1b2-453c21befc4b"
                                 },
                                 "type": "AppendToStringVariable",
                                 "inputs": {
@@ -336,6 +375,9 @@
                                 "@null"
                               ]
                             },
+                            "metadata": {
+                              "operationMetadataId": "8f434451-eb2b-4f04-b59c-8d7ceb47ba85"
+                            },
                             "type": "If"
                           }
                         },
@@ -349,6 +391,9 @@
                               "@variables(\u0027PersonNotMandatoryCount\u0027)"
                             ]
                           }
+                        },
+                        "metadata": {
+                          "operationMetadataId": "8b08b800-8d86-47d8-85c2-8267d53cea0e"
                         },
                         "type": "If"
                       }
@@ -364,11 +409,17 @@
                         "6245096f-5b39-eb11-bf68-000d3a654276"
                       ]
                     },
+                    "metadata": {
+                      "operationMetadataId": "c237a99a-244f-4692-bbca-a5f9c1b63206"
+                    },
                     "type": "If"
                   },
                   "Reset_Line_Error_variable": {
                     "runAfter": {
                       
+                    },
+                    "metadata": {
+                      "operationMetadataId": "6a050269-cf6d-46dd-b342-cb6fe2e69653"
                     },
                     "type": "SetVariable",
                     "inputs": {
@@ -383,6 +434,9 @@
                           "Append_to_Line_Error_Message_7": {
                             "runAfter": {
                               
+                            },
+                            "metadata": {
+                              "operationMetadataId": "dafa5759-8006-4f3f-a245-e0d8b8f85daa"
                             },
                             "type": "AppendToStringVariable",
                             "inputs": {
@@ -400,6 +454,9 @@
                             "@null"
                           ]
                         },
+                        "metadata": {
+                          "operationMetadataId": "24d93755-52cd-4338-a3cb-f43a600963c5"
+                        },
                         "type": "If"
                       },
                       "If_Line_Error_Found_1": {
@@ -407,6 +464,9 @@
                           "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)_6": {
                             "runAfter": {
                               
+                            },
+                            "metadata": {
+                              "operationMetadataId": "2674b811-eb9c-4e3c-a41f-8dc5651e7a83"
                             },
                             "type": "OpenApiConnection",
                             "inputs": {
@@ -421,10 +481,7 @@
                                 "item/cp_stagingentrystatus": 778230002,
                                 "item/cp_submissionerror": "@variables(\u0027Line Error\u0027)"
                               },
-                              "authentication": {
-                                "type": "Raw",
-                              "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
-                              }
+                              "authentication": "@parameters(\u0027$authentication\u0027)"
                             }
                           },
                           "Set_Line_Error_Found_variable_6": {
@@ -432,6 +489,9 @@
                               "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)_6": [
                                 "Succeeded"
                               ]
+                            },
+                            "metadata": {
+                              "operationMetadataId": "cbb6b81e-2a78-4a22-b91a-a9d9d130ac67"
                             },
                             "type": "SetVariable",
                             "inputs": {
@@ -453,6 +513,9 @@
                             ]
                           }
                         },
+                        "metadata": {
+                          "operationMetadataId": "7e13afe5-2d7f-46ef-a8f0-91b0a8005595"
+                        },
                         "type": "If"
                       }
                     },
@@ -467,6 +530,9 @@
                         "6445096f-5b39-eb11-bf68-000d3a654276"
                       ]
                     },
+                    "metadata": {
+                      "operationMetadataId": "b7f08b16-e1f2-4b7e-acc1-7b0971a0fee0"
+                    },
                     "type": "If"
                   },
                   "Case_-_HORT1": {
@@ -476,6 +542,9 @@
                           "Append_to_Line_Error_Message_9": {
                             "runAfter": {
                               
+                            },
+                            "metadata": {
+                              "operationMetadataId": "d4eda39b-05ff-4a2f-add2-cc9a4f8d45ab"
                             },
                             "type": "AppendToStringVariable",
                             "inputs": {
@@ -495,6 +564,9 @@
                             "@null"
                           ]
                         },
+                        "metadata": {
+                          "operationMetadataId": "4b5b9d83-20b3-4fd7-904a-5361d64b1b78"
+                        },
                         "type": "If"
                       },
                       "Check_Produce_At_Station_ISNULL": {
@@ -502,6 +574,9 @@
                           "Append_to_Line_Error_Message_12": {
                             "runAfter": {
                               
+                            },
+                            "metadata": {
+                              "operationMetadataId": "884f4c18-6870-42f3-85dc-d4b9e41cc6ed"
                             },
                             "type": "AppendToStringVariable",
                             "inputs": {
@@ -521,6 +596,9 @@
                             "@null"
                           ]
                         },
+                        "metadata": {
+                          "operationMetadataId": "013896e8-8662-45bf-b9c0-e8255a614b99"
+                        },
                         "type": "If"
                       },
                       "If_Line_Error_Found_2": {
@@ -528,6 +606,9 @@
                           "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)_2": {
                             "runAfter": {
                               
+                            },
+                            "metadata": {
+                              "operationMetadataId": "1fc4b715-6fd5-4354-adc7-045bc1fccc26"
                             },
                             "type": "OpenApiConnection",
                             "inputs": {
@@ -542,10 +623,7 @@
                                 "item/cp_stagingentrystatus": 778230002,
                                 "item/cp_submissionerror": "@variables(\u0027Line Error\u0027)"
                               },
-                              "authentication": {
-                                "type": "Raw",
-                              "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
-                              }
+                              "authentication": "@parameters(\u0027$authentication\u0027)"
                             }
                           },
                           "Set_Line_Error_Found_variable_2": {
@@ -553,6 +631,9 @@
                               "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)_2": [
                                 "Succeeded"
                               ]
+                            },
+                            "metadata": {
+                              "operationMetadataId": "76707b52-606f-4777-b266-05a8739d1038"
                             },
                             "type": "SetVariable",
                             "inputs": {
@@ -574,6 +655,9 @@
                             ]
                           }
                         },
+                        "metadata": {
+                          "operationMetadataId": "aa7e5224-b268-4b80-aa30-e720808849d5"
+                        },
                         "type": "If"
                       },
                       "Check_Document_Type__ISNULL": {
@@ -581,6 +665,9 @@
                           "Append_to_Line_Error_Message_8": {
                             "runAfter": {
                               
+                            },
+                            "metadata": {
+                              "operationMetadataId": "b50c4cb7-532b-41fd-bac8-e2e127dce5d2"
                             },
                             "type": "AppendToStringVariable",
                             "inputs": {
@@ -598,6 +685,9 @@
                             "@null"
                           ]
                         },
+                        "metadata": {
+                          "operationMetadataId": "3c7738f6-f014-4c03-ae7b-533dd3fdafa0"
+                        },
                         "type": "If"
                       }
                     },
@@ -612,6 +702,9 @@
                         "5c45096f-5b39-eb11-bf68-000d3a654276"
                       ]
                     },
+                    "metadata": {
+                      "operationMetadataId": "b8d7b120-5f2a-4b7c-bd3a-f273ba3c19ef"
+                    },
                     "type": "If"
                   },
                   "Case_-_Section_59": {
@@ -621,6 +714,9 @@
                           "Append_to_Line_Error_Message_14": {
                             "runAfter": {
                               
+                            },
+                            "metadata": {
+                              "operationMetadataId": "250d32d9-a8ad-4d46-b472-acb0f91b6c09"
                             },
                             "type": "AppendToStringVariable",
                             "inputs": {
@@ -638,6 +734,9 @@
                             "@null"
                           ]
                         },
+                        "metadata": {
+                          "operationMetadataId": "c9038c40-c94e-427b-bc21-ef17c15a2e4e"
+                        },
                         "type": "If"
                       },
                       "If_Line_Error_Found_3": {
@@ -645,6 +744,9 @@
                           "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)_3": {
                             "runAfter": {
                               
+                            },
+                            "metadata": {
+                              "operationMetadataId": "2a8ac04d-3281-4de0-981d-3a793924ea7d"
                             },
                             "type": "OpenApiConnection",
                             "inputs": {
@@ -659,10 +761,7 @@
                                 "item/cp_stagingentrystatus": 778230002,
                                 "item/cp_submissionerror": "@variables(\u0027Line Error\u0027)"
                               },
-                              "authentication": {
-                                "type": "Raw",
-                              "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
-                              }
+                              "authentication": "@parameters(\u0027$authentication\u0027)"
                             }
                           },
                           "Set_Line_Error_Found_variable_3": {
@@ -670,6 +769,9 @@
                               "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)_3": [
                                 "Succeeded"
                               ]
+                            },
+                            "metadata": {
+                              "operationMetadataId": "59e0bf6a-a01a-4dbe-9388-94b1f5b7e364"
                             },
                             "type": "SetVariable",
                             "inputs": {
@@ -691,6 +793,9 @@
                             ]
                           }
                         },
+                        "metadata": {
+                          "operationMetadataId": "1db6eacf-453d-4235-80ca-101831b4d8ca"
+                        },
                         "type": "If"
                       }
                     },
@@ -705,6 +810,9 @@
                         "6045096f-5b39-eb11-bf68-000d3a654276"
                       ]
                     },
+                    "metadata": {
+                      "operationMetadataId": "d59ce026-ee07-4cb1-8e71-ca1c058b4c61"
+                    },
                     "type": "If"
                   },
                   "Case_-_Section_163": {
@@ -714,6 +822,9 @@
                           "Append_to_Line_Error_Message_17": {
                             "runAfter": {
                               
+                            },
+                            "metadata": {
+                              "operationMetadataId": "31e3f6ff-0835-40b9-a254-ab4036e323e7"
                             },
                             "type": "AppendToStringVariable",
                             "inputs": {
@@ -733,6 +844,9 @@
                             "@null"
                           ]
                         },
+                        "metadata": {
+                          "operationMetadataId": "92b76c38-0e96-4588-9730-08e91f1ff00e"
+                        },
                         "type": "If"
                       },
                       "Check_Outcome_of_Stop_ISNULL": {
@@ -740,6 +854,9 @@
                           "Append_to_Line_Error_Message_16": {
                             "runAfter": {
                               
+                            },
+                            "metadata": {
+                              "operationMetadataId": "0a7a43cd-e3fe-48ed-a91b-2589dbcf6fcc"
                             },
                             "type": "AppendToStringVariable",
                             "inputs": {
@@ -757,6 +874,9 @@
                             "@null"
                           ]
                         },
+                        "metadata": {
+                          "operationMetadataId": "8fe94224-679a-4871-9851-f778ce89f2f3"
+                        },
                         "type": "If"
                       },
                       "If_Line_Error_Found_4": {
@@ -764,6 +884,9 @@
                           "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)_4": {
                             "runAfter": {
                               
+                            },
+                            "metadata": {
+                              "operationMetadataId": "fc45d737-30c9-4877-8fd1-2fc335492101"
                             },
                             "type": "OpenApiConnection",
                             "inputs": {
@@ -778,10 +901,7 @@
                                 "item/cp_stagingentrystatus": 778230002,
                                 "item/cp_submissionerror": "@variables(\u0027Line Error\u0027)"
                               },
-                              "authentication": {
-                                "type": "Raw",
-                              "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
-                              }
+                              "authentication": "@parameters(\u0027$authentication\u0027)"
                             }
                           },
                           "Set_Line_Error_Found_variable_4": {
@@ -789,6 +909,9 @@
                               "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)_4": [
                                 "Succeeded"
                               ]
+                            },
+                            "metadata": {
+                              "operationMetadataId": "ef0db9e0-a2e9-46b3-9e0d-00a59aa5ae33"
                             },
                             "type": "SetVariable",
                             "inputs": {
@@ -810,6 +933,9 @@
                             ]
                           }
                         },
+                        "metadata": {
+                          "operationMetadataId": "869a47ed-9eec-4dc6-8c0a-7dda00edbb62"
+                        },
                         "type": "If"
                       }
                     },
@@ -824,6 +950,9 @@
                         "9bdd1977-de5f-eb11-a812-0022489c79d7"
                       ]
                     },
+                    "metadata": {
+                      "operationMetadataId": "37eb2f43-35d7-4996-b764-a6046d49f7dc"
+                    },
                     "type": "If"
                   },
                   "Case_-_Section_165": {
@@ -833,6 +962,9 @@
                           "Append_to_Line_Error_Message_19": {
                             "runAfter": {
                               
+                            },
+                            "metadata": {
+                              "operationMetadataId": "e5fbe5cd-b1cd-4de4-b5e1-64164957f42c"
                             },
                             "type": "AppendToStringVariable",
                             "inputs": {
@@ -850,6 +982,9 @@
                             "@null"
                           ]
                         },
+                        "metadata": {
+                          "operationMetadataId": "83605e3f-4da4-40a6-a8ec-eac3614516e8"
+                        },
                         "type": "If"
                       },
                       "If_Line_Error_Found_5": {
@@ -857,6 +992,9 @@
                           "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)_5": {
                             "runAfter": {
                               
+                            },
+                            "metadata": {
+                              "operationMetadataId": "5f37ba8f-1793-4854-9a7e-e43611f9f19b"
                             },
                             "type": "OpenApiConnection",
                             "inputs": {
@@ -871,10 +1009,7 @@
                                 "item/cp_stagingentrystatus": 778230002,
                                 "item/cp_submissionerror": "@variables(\u0027Line Error\u0027)"
                               },
-                              "authentication": {
-                                "type": "Raw",
-                              "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
-                              }
+                              "authentication": "@parameters(\u0027$authentication\u0027)"
                             }
                           },
                           "Set_Line_Error_Found_variable_5": {
@@ -882,6 +1017,9 @@
                               "Update_Vehicle_Ticket_Offence_STG_row_(Staging_Entry_Status,_Submittion_Error)_5": [
                                 "Succeeded"
                               ]
+                            },
+                            "metadata": {
+                              "operationMetadataId": "b909f404-6d09-47c1-8cd3-99a0da04bfd7"
                             },
                             "type": "SetVariable",
                             "inputs": {
@@ -903,6 +1041,9 @@
                             ]
                           }
                         },
+                        "metadata": {
+                          "operationMetadataId": "3813abf7-2c70-4bf9-ab11-886f095681ce"
+                        },
                         "type": "If"
                       },
                       "Check_Designated_Station_ISNULL": {
@@ -910,6 +1051,9 @@
                           "Append_to_Line_Error_Message_20": {
                             "runAfter": {
                               
+                            },
+                            "metadata": {
+                              "operationMetadataId": "00f83107-7fa5-407c-bc1d-859911855f8f"
                             },
                             "type": "AppendToStringVariable",
                             "inputs": {
@@ -929,6 +1073,9 @@
                             "@null"
                           ]
                         },
+                        "metadata": {
+                          "operationMetadataId": "4293ce75-b468-4611-b583-f69be48d1843"
+                        },
                         "type": "If"
                       },
                       "Check_Without_ISNULL": {
@@ -936,6 +1083,9 @@
                           "Append_to_Line_Error_Message_21": {
                             "runAfter": {
                               
+                            },
+                            "metadata": {
+                              "operationMetadataId": "efb36840-d597-4ade-b5f7-131c8c28812e"
                             },
                             "type": "AppendToStringVariable",
                             "inputs": {
@@ -955,6 +1105,9 @@
                             "@null"
                           ]
                         },
+                        "metadata": {
+                          "operationMetadataId": "49ce2f6b-9776-4905-bada-aa77bff78adb"
+                        },
                         "type": "If"
                       }
                     },
@@ -969,6 +1122,9 @@
                         "5e45096f-5b39-eb11-bf68-000d3a654276"
                       ]
                     },
+                    "metadata": {
+                      "operationMetadataId": "4ba6d50f-6942-44e0-ab1d-d0e739725e73"
+                    },
                     "type": "If"
                   },
                   "Update_Staging_Entry_-_Clear_Staging_Entry_Status,_Submission_Error": {
@@ -976,6 +1132,9 @@
                       "Reset_Line_Error_variable": [
                         "Succeeded"
                       ]
+                    },
+                    "metadata": {
+                      "operationMetadataId": "9ec19300-305b-4937-8ced-b7f2ee903d2d"
                     },
                     "type": "OpenApiConnection",
                     "inputs": {
@@ -990,15 +1149,15 @@
                         "item/cp_stagingentrystatus": 778230001,
                         "item/cp_submissionerror": "@null"
                       },
-                      "authentication": {
-                        "type": "Raw",
-                      "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
-                      }
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
                     }
                   }
                 },
                 "runAfter": {
                   
+                },
+                "metadata": {
+                  "operationMetadataId": "458444fc-c7e0-47cf-8b57-d0a73549f217"
                 },
                 "type": "Foreach"
               },
@@ -1007,6 +1166,9 @@
                   "Append_to_global_Error_Message_variable": {
                     "runAfter": {
                       
+                    },
+                    "metadata": {
+                      "operationMetadataId": "0e913510-ca07-4a88-a713-370182c9c163"
                     },
                     "type": "AppendToStringVariable",
                     "inputs": {
@@ -1026,6 +1188,9 @@
                     "@true"
                   ]
                 },
+                "metadata": {
+                  "operationMetadataId": "ed95af85-0780-4e4f-b1c7-10592638ca47"
+                },
                 "type": "If"
               }
             }
@@ -1036,6 +1201,9 @@
               "@true"
             ]
           },
+          "metadata": {
+            "operationMetadataId": "49b72916-6367-4093-8fd7-925f69b01b32"
+          },
           "type": "If"
         },
         "Initialize_Line_Error_Found_variable": {
@@ -1043,6 +1211,9 @@
             "Initialize_Error_Message_variable": [
               "Succeeded"
             ]
+          },
+          "metadata": {
+            "operationMetadataId": "5d632802-53b8-4df6-8e63-f0cb0390cb78"
           },
           "type": "InitializeVariable",
           "inputs": {
@@ -1061,6 +1232,9 @@
               "Succeeded"
             ]
           },
+          "metadata": {
+            "operationMetadataId": "8eb4dc8d-cf8a-4870-af28-40c02d9279b3"
+          },
           "type": "InitializeVariable",
           "inputs": {
             "variables": [
@@ -1077,6 +1251,9 @@
             "Append_to_Error_Message_7": {
               "runAfter": {
                 
+              },
+              "metadata": {
+                "operationMetadataId": "b12961ce-9b66-4cc8-b3f2-513dbcef0ef3"
               },
               "type": "AppendToStringVariable",
               "inputs": {
@@ -1096,6 +1273,9 @@
               "@null"
             ]
           },
+          "metadata": {
+            "operationMetadataId": "b6878e29-e977-4c1e-9c91-ab89f235b721"
+          },
           "type": "If"
         },
         "Check_Reason_for_Stopping_ISNULL": {
@@ -1103,6 +1283,9 @@
             "Append_to_Error_Message_8": {
               "runAfter": {
                 
+              },
+              "metadata": {
+                "operationMetadataId": "ffb6b94d-6831-4f4d-82b8-07d1276185bb"
               },
               "type": "AppendToStringVariable",
               "inputs": {
@@ -1122,6 +1305,9 @@
               "@null"
             ]
           },
+          "metadata": {
+            "operationMetadataId": "239b8f04-ff1d-4da0-ac35-5eccec5979bd"
+          },
           "type": "If"
         },
         "Check_Issued_To_ISNULL": {
@@ -1129,6 +1315,9 @@
             "Append_to_Error_Message_6": {
               "runAfter": {
                 
+              },
+              "metadata": {
+                "operationMetadataId": "a4e1453f-d950-49c3-aed1-5136c773492d"
               },
               "type": "AppendToStringVariable",
               "inputs": {
@@ -1148,6 +1337,9 @@
               "@null"
             ]
           },
+          "metadata": {
+            "operationMetadataId": "ac7c8959-d98f-48c6-b044-c8709a868fc3"
+          },
           "type": "If"
         },
         "Check_Location_Details_ISNULL": {
@@ -1155,6 +1347,9 @@
             "Append_to_Error_Message_16": {
               "runAfter": {
                 
+              },
+              "metadata": {
+                "operationMetadataId": "4f1580cd-6e5e-42a2-b718-7bd918c4bc38"
               },
               "type": "AppendToStringVariable",
               "inputs": {
@@ -1190,6 +1385,9 @@
               }
             ]
           },
+          "metadata": {
+            "operationMetadataId": "6671c0b2-4a2d-413f-85fb-452cb9bc4512"
+          },
           "type": "If"
         },
         "Check_TPA_ISNULL": {
@@ -1197,6 +1395,9 @@
             "Append_to_Error_Message_17": {
               "runAfter": {
                 
+              },
+              "metadata": {
+                "operationMetadataId": "c84064cb-71a6-4771-be3f-c4f127e0c815"
               },
               "type": "AppendToStringVariable",
               "inputs": {
@@ -1216,6 +1417,9 @@
               "@null"
             ]
           },
+          "metadata": {
+            "operationMetadataId": "1abcdebd-b512-41db-b109-9f570c61e12e"
+          },
           "type": "If"
         },
         "List_Vehicle_Ticket_Offenses_STG_2": {
@@ -1223,6 +1427,9 @@
             "Initialize_VehicleMandatory_to_true": [
               "Succeeded"
             ]
+          },
+          "metadata": {
+            "operationMetadataId": "0f928454-6363-4834-add8-5eef875b74a9"
           },
           "type": "OpenApiConnection",
           "inputs": {
@@ -1235,10 +1442,7 @@
               "entityName": "cp_vehicleticketoffencesstgs",
             "$filter": "(_cp_vehicleticketstgid_value eq @{outputs(\u0027Get_Vehicle_Ticket_STG_row\u0027)?[\u0027body/cp_vehicleticketstgid\u0027]} and cp_tickettype eq \u00276245096f-5b39-eb11-bf68-000d3a654276\u0027)"
             },
-            "authentication": {
-              "type": "Raw",
-            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
-            }
+            "authentication": "@parameters(\u0027$authentication\u0027)"
           }
         },
         "Initialize_variable": {
@@ -1246,6 +1450,9 @@
             "Check_Issued_To_ISNULL": [
               "Succeeded"
             ]
+          },
+          "metadata": {
+            "operationMetadataId": "ece2a46f-4a83-4895-8f61-f2da9e2a0507"
           },
           "type": "InitializeVariable",
           "inputs": {
@@ -1280,6 +1487,9 @@
                             "runAfter": {
                               
                             },
+                            "metadata": {
+                              "operationMetadataId": "666df940-2917-43d7-bd79-69f9d55b2a11"
+                            },
                             "type": "SetVariable",
                             "inputs": {
                               "name": "OffenceCodeMissing",
@@ -1296,6 +1506,9 @@
                               "runAfter": {
                                 
                               },
+                              "metadata": {
+                                "operationMetadataId": "f6c926ba-c0b1-4d49-8ba4-2bba989f1b55"
+                              },
                               "type": "Compose",
                             "inputs": "@split(items(\u0027Apply_to_each_2\u0027)?[\u0027cp_offencecode\u0027], \u0027,\u0027)"
                             },
@@ -1305,6 +1518,9 @@
                                 "List_rows": {
                                   "runAfter": {
                                     
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "7d2b997b-403d-4d85-aaae-8d99c7e90dd7"
                                   },
                                   "type": "OpenApiConnection",
                                   "inputs": {
@@ -1317,10 +1533,7 @@
                                       "entityName": "cp_offencecodes",
                                     "$filter": "cp_offencecodeid eq @{items(\u0027Apply_to_each_3\u0027)}"
                                     },
-                                    "authentication": {
-                                      "type": "Raw",
-                                    "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
-                                    }
+                                    "authentication": "@parameters(\u0027$authentication\u0027)"
                                   }
                                 },
                                 "Apply_to_each_4": {
@@ -1331,6 +1544,9 @@
                                         "Increment_variable_2": {
                                           "runAfter": {
                                             
+                                          },
+                                          "metadata": {
+                                            "operationMetadataId": "047be58f-b205-4643-8856-63b7b2a0b395"
                                           },
                                           "type": "IncrementVariable",
                                           "inputs": {
@@ -1348,6 +1564,9 @@
                                           true
                                         ]
                                       },
+                                      "metadata": {
+                                        "operationMetadataId": "593beb63-6cc8-478d-b113-92e73cc59b53"
+                                      },
                                       "type": "If"
                                     }
                                   },
@@ -1356,6 +1575,9 @@
                                       "Succeeded"
                                     ]
                                   },
+                                  "metadata": {
+                                    "operationMetadataId": "51215e8d-f411-4a8c-b3f9-ebea11ced5d0"
+                                  },
                                   "type": "Foreach"
                                 },
                                 "Increment_variable": {
@@ -1363,6 +1585,9 @@
                                     "List_rows": [
                                       "Succeeded"
                                     ]
+                                  },
+                                  "metadata": {
+                                    "operationMetadataId": "46e8a410-2dfc-45e7-a8b0-2bc06c86043e"
                                   },
                                   "type": "IncrementVariable",
                                   "inputs": {
@@ -1376,6 +1601,9 @@
                                   "Succeeded"
                                 ]
                               },
+                              "metadata": {
+                                "operationMetadataId": "47ad7652-9151-46a3-a493-8b430b4ab47e"
+                              },
                               "type": "Foreach"
                             }
                           }
@@ -1385,6 +1613,9 @@
                           "@items(\u0027Apply_to_each_2\u0027)?[\u0027cp_offencecode\u0027]",
                             "@null"
                           ]
+                        },
+                        "metadata": {
+                          "operationMetadataId": "2da2a716-5aa2-4b3d-a2a1-4af92aabe382"
                         },
                         "type": "If"
                       }
@@ -1398,11 +1629,17 @@
                         "6245096f-5b39-eb11-bf68-000d3a654276"
                       ]
                     },
+                    "metadata": {
+                      "operationMetadataId": "a939edfd-7961-4c22-b3b1-e4074908657b"
+                    },
                     "type": "If"
                   }
                 },
                 "runAfter": {
                   
+                },
+                "metadata": {
+                  "operationMetadataId": "4a5e2d9e-2988-44cd-871e-1d13aaf196cc"
                 },
                 "type": "Foreach"
               }
@@ -1414,6 +1651,9 @@
               "@true"
             ]
           },
+          "metadata": {
+            "operationMetadataId": "561d7a4f-3b71-4f35-8909-df944b90147b"
+          },
           "type": "If"
         },
         "Initialize_variable_2": {
@@ -1421,6 +1661,9 @@
             "Initialize_variable": [
               "Succeeded"
             ]
+          },
+          "metadata": {
+            "operationMetadataId": "704469df-6dfd-42a0-8d7d-25d31f0b52f3"
           },
           "type": "InitializeVariable",
           "inputs": {
@@ -1438,6 +1681,9 @@
             "Initialize_variable_2": [
               "Succeeded"
             ]
+          },
+          "metadata": {
+            "operationMetadataId": "b54b1358-ab9c-4c0e-86da-2914432c7082"
           },
           "type": "InitializeVariable",
           "inputs": {
@@ -1457,6 +1703,9 @@
                 "Append_to_Error_Message_11": {
                   "runAfter": {
                     
+                  },
+                  "metadata": {
+                    "operationMetadataId": "8eaf6a3b-775e-42c8-8172-8c76de1d7e9a"
                   },
                   "type": "AppendToStringVariable",
                   "inputs": {
@@ -1514,6 +1763,9 @@
                   }
                 ]
               },
+              "metadata": {
+                "operationMetadataId": "607ef5d4-2788-45c3-a65c-d74ff20b3ff6"
+              },
               "type": "If"
             },
             "Update_a_row": {
@@ -1521,6 +1773,9 @@
                 "Check_Offender_Details_ISNULL": [
                   "Succeeded"
                 ]
+              },
+              "metadata": {
+                "operationMetadataId": "46c3e544-eb0e-46ba-9e2c-07c6ace4645c"
               },
               "type": "OpenApiConnection",
               "inputs": {
@@ -1534,10 +1789,7 @@
                 "recordId": "@triggerBody()[\u0027text\u0027]",
                   "item/cp_personnotmandatory": false
                 },
-                "authentication": {
-                  "type": "Raw",
-                "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
-                }
+                "authentication": "@parameters(\u0027$authentication\u0027)"
               }
             }
           },
@@ -1554,6 +1806,9 @@
                     "runAfter": {
                       
                     },
+                    "metadata": {
+                      "operationMetadataId": "48345332-44a5-4621-9b0c-afe9b17b78dd"
+                    },
                     "type": "OpenApiConnection",
                     "inputs": {
                       "host": {
@@ -1566,10 +1821,7 @@
                       "recordId": "@triggerBody()[\u0027text\u0027]",
                         "item/cp_personnotmandatory": true
                       },
-                      "authentication": {
-                        "type": "Raw",
-                      "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
-                      }
+                      "authentication": "@parameters(\u0027$authentication\u0027)"
                     }
                   }
                 },
@@ -1581,6 +1833,9 @@
                     "@variables(\u0027OffenceCodeMissing\u0027)",
                     false
                   ]
+                },
+                "metadata": {
+                  "operationMetadataId": "fcbeb61a-7859-4276-ac5e-93e14f6cbd86"
                 },
                 "type": "If"
               }
@@ -1604,6 +1859,9 @@
               }
             ]
           },
+          "metadata": {
+            "operationMetadataId": "8d88f5cd-0343-4d6b-9795-f5c744ac4df4"
+          },
           "type": "If"
         },
         "Initialize_variable_4": {
@@ -1611,6 +1869,9 @@
             "Initialize_variable_3": [
               "Succeeded"
             ]
+          },
+          "metadata": {
+            "operationMetadataId": "a42ff088-f0c9-438f-afdd-5ce0f37f8223"
           },
           "type": "InitializeVariable",
           "inputs": {
@@ -1629,6 +1890,9 @@
               "Succeeded"
             ]
           },
+          "metadata": {
+            "operationMetadataId": "db9ec43a-8b7a-4a74-bb82-c18fc83a1f0f"
+          },
           "type": "OpenApiConnection",
           "inputs": {
             "host": {
@@ -1641,10 +1905,7 @@
             "recordId": "@triggerBody()[\u0027text\u0027]",
               "item/cp_personnotmandatory": false
             },
-            "authentication": {
-              "type": "Raw",
-            "value": "@json(decodeBase64(triggerOutputs().headers[\u0027X-MS-APIM-Tokens\u0027]))[\u0027$ConnectionKey\u0027]"
-            }
+            "authentication": "@parameters(\u0027$authentication\u0027)"
           }
         },
         "Initialize_VehicleMandatory_to_true": {
@@ -1652,6 +1913,9 @@
             "Initialize_variable_4": [
               "Succeeded"
             ]
+          },
+          "metadata": {
+            "operationMetadataId": "c04e9419-a26d-452a-b41e-7806c729841d"
           },
           "type": "InitializeVariable",
           "inputs": {
@@ -1672,6 +1936,9 @@
                   "runAfter": {
                     
                   },
+                  "metadata": {
+                    "operationMetadataId": "820f8d5c-e362-476c-bdb0-8904457022cb"
+                  },
                   "type": "AppendToStringVariable",
                   "inputs": {
                     "name": "Error Message",
@@ -1688,6 +1955,9 @@
                   "@null"
                 ]
               },
+              "metadata": {
+                "operationMetadataId": "12b23d7d-2c11-482c-a290-b39853c85919"
+              },
               "type": "If"
             },
             "Check_Vehicle_Make_ISNULL_2": {
@@ -1695,6 +1965,9 @@
                 "Append_to_Error_Message": {
                   "runAfter": {
                     
+                  },
+                  "metadata": {
+                    "operationMetadataId": "2d325227-2a34-4439-bb6b-97620333ae3a"
                   },
                   "type": "AppendToStringVariable",
                   "inputs": {
@@ -1714,6 +1987,9 @@
                   "@null"
                 ]
               },
+              "metadata": {
+                "operationMetadataId": "59f71b92-68d1-4ff0-9cee-5db753711f1c"
+              },
               "type": "If"
             },
             "Check_Vehicle_Make__Other_ISNULL_2": {
@@ -1721,6 +1997,9 @@
                 "Append_to_Error_Message_15": {
                   "runAfter": {
                     
+                  },
+                  "metadata": {
+                    "operationMetadataId": "bb9f37e7-8535-4a63-9e9b-8c23e957c1f2"
                   },
                   "type": "AppendToStringVariable",
                   "inputs": {
@@ -1750,6 +2029,9 @@
                   }
                 ]
               },
+              "metadata": {
+                "operationMetadataId": "0cd86149-1aa8-4d09-a7f3-4fc389f10008"
+              },
               "type": "If"
             },
             "Check_Vehicle_Model_ISNULL_2": {
@@ -1757,6 +2039,9 @@
                 "Append_to_Error_Message_18": {
                   "runAfter": {
                     
+                  },
+                  "metadata": {
+                    "operationMetadataId": "3ee85a63-9cdf-40c1-ae60-40c827fc6bac"
                   },
                   "type": "AppendToStringVariable",
                   "inputs": {
@@ -1776,6 +2061,9 @@
                   "@null"
                 ]
               },
+              "metadata": {
+                "operationMetadataId": "12d7a71d-b733-4525-aea8-31d29ca8aeab"
+              },
               "type": "If"
             },
             "Check_Vehicle_Color_ISNULL_2": {
@@ -1783,6 +2071,9 @@
                 "Append_to_Error_Message_19": {
                   "runAfter": {
                     
+                  },
+                  "metadata": {
+                    "operationMetadataId": "83597b1f-d654-4535-803d-117cde62269f"
                   },
                   "type": "AppendToStringVariable",
                   "inputs": {
@@ -1802,6 +2093,9 @@
                   "@null"
                 ]
               },
+              "metadata": {
+                "operationMetadataId": "166ab2c4-cef1-4ec4-b229-6b27f9b1c093"
+              },
               "type": "If"
             },
             "Check_Restricted_Vehicle_ISNULL_2": {
@@ -1809,6 +2103,9 @@
                 "Append_to_Error_Message_20": {
                   "runAfter": {
                     
+                  },
+                  "metadata": {
+                    "operationMetadataId": "9184dbe1-aceb-4b85-9d21-501e5f054fb2"
                   },
                   "type": "AppendToStringVariable",
                   "inputs": {
@@ -1828,6 +2125,9 @@
                   "@null"
                 ]
               },
+              "metadata": {
+                "operationMetadataId": "f53da93e-032e-4cec-9463-f7edb3225abe"
+              },
               "type": "If"
             },
             "Check_Manual_Transmission_ISNULL_2": {
@@ -1835,6 +2135,9 @@
                 "Append_to_Error_Message_21": {
                   "runAfter": {
                     
+                  },
+                  "metadata": {
+                    "operationMetadataId": "02287000-2d53-4efd-ba8b-21e908c360bf"
                   },
                   "type": "AppendToStringVariable",
                   "inputs": {
@@ -1854,6 +2157,9 @@
                   "@null"
                 ]
               },
+              "metadata": {
+                "operationMetadataId": "94b01ec2-ac78-4ac0-89c6-0448a00baab1"
+              },
               "type": "If"
             }
           },
@@ -1869,6 +2175,9 @@
                 "fca53c6e-cf5f-eb11-89f5-000d3a654276"
               ]
             }
+          },
+          "metadata": {
+            "operationMetadataId": "d70f1713-6c3d-46b1-8772-4686b670cef2"
           },
           "type": "If"
         }
