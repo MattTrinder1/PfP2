@@ -73,6 +73,23 @@ stages:
                 parameters:
                   serviceConnectionName: CumbriaSysTest-b51c
 
+  - stage: DeployAPIToDurhamSystemTest
+    displayName: Deploy API to Durham SysTest
+    dependsOn: BuildAPI
+    jobs:
+    - deployment: DeployAPIToDurhamSysTest
+      environment: DurhamSysTestAzure
+      displayName: Deploy API
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            steps:
+              - template: deployAPI.yml
+                parameters:
+                  serviceConnectionName: DurhamSysTest-8b8e
+
   - stage: DeployAPIToUAT
     dependsOn: DeployAPIToTest
     displayName: Deploy API to UAT
