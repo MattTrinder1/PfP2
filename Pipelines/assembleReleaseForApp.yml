@@ -31,7 +31,7 @@ steps:
     SourceFolder: '$(build.binariesdirectory)'
     Contents: '**'
 
-- task: CopyFiles2
+- task: CopyFiles@2
   displayName: 'Copy in App Files from source'
   inputs:
     sourceFolder: $(Build.SourcesDirectory)\Schema\${{parameters.appFolderName}}${{parameters.solutionprefix}}
