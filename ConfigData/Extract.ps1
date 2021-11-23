@@ -16,6 +16,8 @@ $package = Get-CrmDataPackage -Conn $conn -Fetches @("
     <attribute name='cp_policingareatext' />
     <attribute name='cp_incidentprefix' />
     <attribute name='cp_active' />
+    <attribute name='cp_areacode' />
+    <attribute name='cp_produceatstation' />
     <order attribute='cp_customername' descending='false' />
     <filter type='and'>
       <condition attribute='cp_customername' operator='eq' value='$customer' />
