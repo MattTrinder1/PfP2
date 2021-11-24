@@ -43,15 +43,23 @@ namespace Tisski.PfP.RPRP.Plugins
                 string notAllowed = "";
                 foreach (var attrib in entity.Attributes)
                 {
-                    if (attrib.Key != "cp_participantresponse")
+                    if (attrib.Key != "cp_rprpid" && 
+                        attrib.Key != "cp_participantresponse" && 
+                        attrib.Key != "statecode" && 
+                        attrib.Key != "statuscode")
                     {
                         notAllowed += $"{attrib.Key},";
                     }
-                    if (notAllowed != "")
-                    {
-                        notAllowed = notAllowed.TrimEnd(',');
-                        throw new InvalidPluginExecutionException($"Participant can only update Participant's Response. (Cannot update: {notAllowed})");
-                    }
+                }
+                if (notAllowed != "")
+                {
+                    notAllowed = notAllowed.TrimEnd(',');
+                    throw new InvalidPluginExecutionException($"Participant can only update Participant's Response. (Cannot update: {notAllowed})");
+                }
+                else if (entity.Attributes.Contains("statuscode") && 
+                    entity.GetAttributeValue<OptionSetValue>("statuscode").Value != 778230005 /* Review Required */)
+                {
+                    throw new InvalidPluginExecutionException($"Participant can only change state to Review Required.");
                 }
             }
             else if (entity.Attributes.Contains("cp_participantresponse") && entity.GetAttributeValue<OptionSetValue>("cp_participantresponse") != null)

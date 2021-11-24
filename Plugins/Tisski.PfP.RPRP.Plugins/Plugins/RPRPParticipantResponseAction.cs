@@ -29,14 +29,20 @@ namespace Tisski.PfP.RPRP.Plugins
                 throw new InvalidPluginExecutionException($"{pluginName} requires a Target Entity Reference parameter of type {targetEntityName}.");
             }
 
-            bool accept = false;
+            if (!context.InputParameters.Contains("Accept") && !context.InputParameters.Contains("ReviewRequired"))
+            {
+                throw new InvalidPluginExecutionException($"{pluginName} requires an Accept or ReviewRequired boolean parameter.");
+            }
+
+            bool? accept = null;
             if (context.InputParameters.Contains("Accept"))
             {
                 accept = (bool)context.InputParameters["Accept"];
             }
-            else
+            bool? reviewRequired = null;
+            if (context.InputParameters.Contains("ReviewRequired"))
             {
-                throw new InvalidPluginExecutionException($"{pluginName} requires an Accept boolean parameter.");
+                reviewRequired = (bool)context.InputParameters["ReviewRequired"];
             }
 
             IOrganizationServiceFactory serviceFactory = (IOrganizationServiceFactory)serviceProvider.GetService(typeof(IOrganizationServiceFactory));
@@ -51,9 +57,17 @@ namespace Tisski.PfP.RPRP.Plugins
             }
 
             Entity updateRprp = new Entity(rprpRef.LogicalName, rprpRef.Id);
-            updateRprp["cp_participantresponse"] = new OptionSetValue((accept ? 1 : 0));
-
-            serviceAsAdmin.Update(updateRprp);
+            if (accept != null)
+            {
+                updateRprp["cp_participantresponse"] = new OptionSetValue((accept.Value ? 1 : 0));
+                serviceAsAdmin.Update(updateRprp);
+            } 
+            else if (reviewRequired != null && reviewRequired.Value == true)
+            {
+                updateRprp["statecode"] = new OptionSetValue(0);
+                updateRprp["statuscode"] = new OptionSetValue(778230005) /* Review Required */;
+                serviceAsAdmin.Update(updateRprp);
+            }
         }
     }
 }
