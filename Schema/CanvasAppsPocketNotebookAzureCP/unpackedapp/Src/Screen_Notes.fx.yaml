@@ -23,9 +23,19 @@ Screen_Notes As screen:
     Btn_save_Continue As button:
         DisplayMode: |-
             =If(
-                IsBlank(txtNotes.Text),
-                DisplayMode.Disabled,
-                DisplayMode.Edit
+                And(
+                    !IsBlank(txtNotes.Text),
+                    If(chkAddIncident.Value,Len(Txt_incident_no_1.Text)=16,true),
+                    CountRows(
+                        Filter(
+                            blobsToSave,
+                            noteId = newNoteId,
+                            editCaption = true
+                        )
+                    ) = 0
+                ),
+                DisplayMode.Edit,
+                DisplayMode.Disabled
             )
         Fill: =RGBA(153, 153, 153, 1)
         FontWeight: =FontWeight.Normal
@@ -435,6 +445,7 @@ Screen_Notes As screen:
                             ) < 10,
                             UpdateContext({photoId: GUID()});
                             
+                            
                             Collect(
                                 blobsToSave,
                                 {
@@ -452,9 +463,19 @@ Screen_Notes As screen:
                                     blob: UploadedImage1.Image,
                                     blobId: "",
                                     queued: false,
-                                    deleted: false
+                                    deleted: false,
+                                    editCaption:false
                                 }
                             );
+                            
+                            Collect(
+                                photoCaptions,
+                                {
+                                    caption: "",
+                                    id: photoId
+                                }
+                            );
+                            
                             UpdateIf(
                                 'Notebook Offline',
                                 Id = newNoteId,
@@ -499,18 +520,20 @@ Screen_Notes As screen:
                 Layout: =Layout.Vertical
                 ShowScrollbar: =false
                 TemplatePadding: =0
-                TemplateSize: =132
+                TemplateSize: |+
+                    =300
+                    
                 Width: =545
                 X: =40
                 Y: =20  
                 ZIndex: =1
 
                 Image1 As image:
-                    Height: =128
+                    Height: =240
                     Image: =ThisItem.blob
                     OnSelect: =Select(Parent)
-                    Width: =128
-                    Y: =4
+                    Width: =251
+                    X: =147
                     ZIndex: =1
 
                 Separator1 As rectangle:
@@ -525,25 +548,25 @@ Screen_Notes As screen:
                 TextInput_picture_Caption As text:
                     BorderColor: =RGBA(116, 116, 116, 1)
                     Clear: =true
-                    Default: =ThisItem.caption
+                    Default: =LookUp(photoCaptions,Text(id) = ThisItem.id).caption
                     EnableSpellCheck: =true
-                    Height: =64
+                    Height: =50
                     HintText: ="Exhibit caption"
                     OnChange: |-
-                        =Patch(
+                        =/*Patch(
                             blobsToSave,
                             ThisItem,
                             {
                                 caption: Self.Text,
                                 queued: false
                             }
-                        )
+                        )*/
                     OnSelect: =Select(Parent)
                     Size: =16
-                    Visible: =If(IsBlank('Notebook Offline'),false,true)
-                    Width: =301
-                    X: =157
-                    Y: =29
+                    Visible: =ThisItem.editCaption
+                    Width: =430
+                    X: =7
+                    Y: =243
                     ZIndex: =6
 
                 Icon10 As icon.Cancel:
@@ -575,8 +598,69 @@ Screen_Notes As screen:
                         );
                     Width: =73
                     X: =472
-                    Y: =29
                     ZIndex: =7
+
+                Icon7 As icon.Add:
+                    Color: =RGBA(0, 121, 187, 1)
+                    Height: =50
+                    Icon: =Icon.Edit
+                    OnSelect: |-
+                        =Patch(blobsToSave,ThisItem,{editCaption:true});
+                    Visible: =!ThisItem.editCaption
+                    Width: =50
+                    X: =444
+                    Y: =244
+                    ZIndex: =9
+
+                Icon8 As icon.Add:
+                    Color: =RGBA(54, 176, 75, 1)
+                    Height: =55
+                    Icon: =Icon.Check
+                    OnSelect: |-
+                        =Patch(blobsToSave,ThisItem,{editCaption:false,queued:false});
+                        UpdateIf(photoCaptions,Text(id) = ThisItem.id,{caption : TextInput_picture_Caption.Text});
+                    Visible: =ThisItem.editCaption
+                    Width: =55
+                    X: =440
+                    Y: =240
+                    ZIndex: =10
+
+                Icon9 As icon.Add:
+                    Color: =RGBA(221, 79, 14, 1)
+                    Height: =45
+                    Icon: =Icon.CancelBadge
+                    OnSelect: |-
+                        =Patch(blobsToSave,ThisItem,{editCaption:false});
+                    Visible: =ThisItem.editCaption
+                    Width: =45
+                    X: =494
+                    Y: =246
+                    ZIndex: =11
+
+                txtPhotoCaption As text:
+                    BorderColor: =RGBA(116, 116, 116, 1)
+                    Clear: =true
+                    Default: =LookUp(photoCaptions,Text(id) = ThisItem.id).caption
+                    DisplayMode: =DisplayMode.Disabled
+                    EnableSpellCheck: =true
+                    Height: =50
+                    HintText: ="Exhibit caption"
+                    OnChange: |-
+                        =/*Patch(
+                            blobsToSave,
+                            ThisItem,
+                            {
+                                caption: Self.Text,
+                                queued: false
+                            }
+                        )*/
+                    OnSelect: =Select(Parent)
+                    Size: =16
+                    Visible: =!ThisItem.editCaption
+                    Width: =430
+                    X: =TextInput_picture_Caption.X
+                    Y: =TextInput_picture_Caption.Y
+                    ZIndex: =12
 
         DataCard7 As dataCard.blankCard:
             BorderColor: =RGBA(0, 0, 0, 1)
@@ -686,6 +770,7 @@ Screen_Notes As screen:
                 BorderColor: =RGBA(128, 128, 128, 1)
                 BorderThickness: =2   
                 DefaultDate: =
+                Fill: =If(chkAddIncident.Value And IsBlank(Self.SelectedDate),LightGoldenRodYellow,White)
                 Height: =55
                 IconBackground: =RGBA(128, 128, 128, 1)
                 InputTextPlaceholder: ="DD/MM/YYYY"
@@ -702,6 +787,7 @@ Screen_Notes As screen:
             Txt_incident_suffix_1 As text:
                 BorderColor: =RGBA(128, 128, 128, 1)
                 Default: =
+                Fill: =If(chkAddIncident.Value And IsBlank(Self.Text),LightGoldenRodYellow,White)
                 Format: =TextFormat.Number
                 Height: =55
                 HintText: =""
@@ -786,6 +872,28 @@ Screen_Notes As screen:
                 X: =40
                 Y: =101
                 ZIndex: =6
+
+            Label2_2 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Visible: =chkAddIncident.Value
+                Width: =24
+                X: =561
+                Y: =9
+                ZIndex: =7
+
+            Label2_3 As label:
+                Color: =RGBA(255, 0, 0, 1)
+                Height: =32
+                Size: =21
+                Text: ="*"
+                Visible: =chkAddIncident.Value
+                Width: =24
+                X: =561
+                Y: =119
+                ZIndex: =8
 
         DataCard17 As dataCard.blankCard:
             BorderColor: =RGBA(0, 0, 0, 1)

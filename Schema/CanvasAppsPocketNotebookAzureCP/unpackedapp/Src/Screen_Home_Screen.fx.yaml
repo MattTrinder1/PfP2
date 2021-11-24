@@ -392,7 +392,10 @@ Screen_Home_Screen As screen:
                             If(
                                 AzureQueues.PutMessage(
                                     "pocketnotebookqueue",
-                                    JSON(unsavedNote,JSONFormat.IgnoreBinaryData)
+                                    JSON(
+                                        unsavedNote,
+                                        JSONFormat.IgnoreBinaryData
+                                    )
                                 ),
                                 Patch(
                                     'Notebook Offline',
@@ -408,47 +411,100 @@ Screen_Home_Screen As screen:
                     );
                     
             //post any images to the blob store and to the queue
-            With (
-                        {
-                            unsavedBlobs: Filter(
+            //skip posting blobs to the queue if any are in the process of having their caption edited, as the reset causes the gallery to lose the text which has been entered
+            If(
+                        CountRows(
+                            Filter(
                                 blobsToSave,
-                                blobId = ""
+                                editCaption = true
                             )
-                        },
-                        ForAll(
-                            unsavedBlobs As unsavedBlob,
-                            Patch(
-                                blobsToSave,
-                                unsavedBlob,
-                                {
-                                    blobId: If(
-                                        IsError(
-                                            AzureBlobStorage.CreateFile(
-                                                "pnb",
-                                                unsavedBlob.noteId & "-" & unsavedBlob.id & "-" & unsavedBlob.type & "-" & unsavedBlob.index,
-                                                unsavedBlob.blob
-                                            )
+                        ) = 0,
+                        With (
+                            {
+                                unsavedBlobs: Filter(
+                                    blobsToSave,
+                                    blobId = ""
+                                )
+                            },
+                            ForAll(
+                                unsavedBlobs As unsavedBlob,
+                                Patch(
+                                    blobsToSave,
+                                    unsavedBlob,
+                                    {
+                                        blobId: If(
+                                            IsError(
+                                                AzureBlobStorage.CreateFile(
+                                                    "pnb",
+                                                    unsavedBlob.noteId & "-" & unsavedBlob.id & "-" & unsavedBlob.type & "-" & unsavedBlob.index,
+                                                    unsavedBlob.blob
+                                                )
+                                            ),
+                                            "",
+                                            unsavedBlob.noteId & "-" & unsavedBlob.id & "-" & unsavedBlob.type & "-" & unsavedBlob.index
+                                        )
+                                    }
+                                );
+                                SaveData(
+                                    blobsToSave,
+                                    "blobsToSaveCache"
+                                );
+                                If(
+                                    !IsBlank(
+                                        LookUp(
+                                            blobsToSave,
+                                            id = unsavedBlob.id
+                                        ).blobId
+                                    ),
+                                    If(
+                                        AzureQueues.PutMessage(
+                                            "pocketnotebookblobqueue",
+                                            User().Email & ":" & unsavedBlob.noteId & ":" & unsavedBlob.blobId & "*&^%$" & LookUp(
+                                                photoCaptions,
+                                                Text(id) = unsavedBlob.id
+                                            ).caption & "*&^%$" & unsavedBlob.deleted
                                         ),
-                                        "",
-                                        unsavedBlob.noteId & "-" & unsavedBlob.id & "-" & unsavedBlob.type & "-" & unsavedBlob.index
-                                    )
-                                }
-                            );
-                            SaveData(
+                                        Patch(
+                                            blobsToSave,
+                                            unsavedBlob,
+                                            {queued: true}
+                                        );
+                                        SaveData(
+                                            blobsToSave,
+                                            "blobsToSaveCache"
+                                        );
+                                    );
+                                );
+                            )
+                        );
+                    );
+                    
+            //update any images which have had their blob saved, but where queued is false - this is because their cpaions will have been edited
+            //skip posting blobs to the queue if any are in the process of having their caption edited, as the reset causes the gallery to lose the text which has been entered
+            If(
+                        CountRows(
+                            Filter(
                                 blobsToSave,
-                                "blobsToSaveCache"
-                            );
-                            If(
-                                !IsBlank(
-                                    LookUp(
-                                        blobsToSave,
-                                        id = unsavedBlob.id
-                                    ).blobId
-                                ),
+                                editCaption = true
+                            )
+                        ) = 0,
+                        With (
+                            {
+                                unsavedBlobs: Filter(
+                                    blobsToSave,
+                                    !IsBlank(blobId),
+                                    queued = false
+                                )
+                            },
+                            ForAll(
+                                unsavedBlobs As unsavedBlob,
                                 If(
                                     AzureQueues.PutMessage(
                                         "pocketnotebookblobqueue",
-                                        User().Email & ":" & unsavedBlob.noteId & ":" & unsavedBlob.blobId & "*&^%$" & unsavedBlob.caption & "*&^%$" & unsavedBlob.deleted
+                                        User().Email & ":" & unsavedBlob.noteId & ":" & unsavedBlob.blobId & "*&^%$" & LookUp(
+                                            photoCaptions,
+                                            Text(id) = unsavedBlob.id
+                                        ).caption & "*&^%$" & unsavedBlob.deleted
                                     ),
                                     Patch(
                                         blobsToSave,
@@ -460,8 +516,8 @@ Screen_Home_Screen As screen:
                                         "blobsToSaveCache"
                                     );
                                 );
-                            );
-                        )
+                            )
+                        );
                     );
                     
             //remove posted photos from the local collections
@@ -482,8 +538,7 @@ Screen_Home_Screen As screen:
                                 LookUp(
                                     'Notebook Offline',
                                     Id = completeBlob.noteId
-                                ).queued = true
-                                ,
+                                ).queued = true,
                                 LookUp(
                                     'Notebook Offline',
                                     Id = completeBlob.noteId

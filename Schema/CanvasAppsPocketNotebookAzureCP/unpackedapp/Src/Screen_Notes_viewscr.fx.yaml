@@ -18,7 +18,7 @@ Screen_Notes_viewscr As screen:
         Color: =RGBA(255, 255, 255, 1)
         Height: =67
         Icon: =Icon.ArrowLeft
-        OnSelect: |
+        OnSelect: |+
             =Navigate(Screen_Search_notes);
             
             
@@ -375,7 +375,7 @@ Screen_Notes_viewscr As screen:
                 BorderColor: =RGBA(128, 128, 128, 1)
                 BorderThickness: =2
                 Height: =545
-                Image: |
+                Image: |+
                     =LookUp(blobsToSave, noteId = ViewNoteId And type = "sketch").blob
                     
                 Width: =545
