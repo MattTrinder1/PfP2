@@ -1,7 +1,7 @@
-<application xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:service="https://uk-001.azure-apim.net/apim/pfp-20vehicle-20tickets-5f65d572cd5285e38f-5ff0f85a3e2578d081" xmlns:siena="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11" siena:serviceId="PoliceAPI" xmlns="http://wadl.dev.java.net/2009/02">
+<application xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:service="https://uk-001.azure-apim.net/apim/pfp-20vehicle-20tickets-5fe418214eeea4bce9-5fec37e65b69cd854d" xmlns:siena="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11" siena:serviceId="PoliceAPI" xmlns="http://wadl.dev.java.net/2009/02">
   <doc title="PoliceAPI" />
   <grammars>
-    <jsonTypes targetNamespace="https://uk-001.azure-apim.net/apim/pfp-20vehicle-20tickets-5f65d572cd5285e38f-5ff0f85a3e2578d081" xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
+    <jsonTypes targetNamespace="https://uk-001.azure-apim.net/apim/pfp-20vehicle-20tickets-5fe418214eeea4bce9-5fec37e65b69cd854d" xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
       <string name="LicensePhoto_driverNumber_def" />
       <string name="LicensePhoto_image_def" />
       <string name="LicensePhoto_errorReason_def" />
@@ -12,7 +12,7 @@
       </object>
     </jsonTypes>
   </grammars>
-  <resources siena:authenticationProviderHref="#PowerAppAuth" base="https://uk-001.azure-apim.net/apim/pfp-20vehicle-20tickets-5f65d572cd5285e38f-5ff0f85a3e2578d081">
+  <resources siena:authenticationProviderHref="#PowerAppAuth" base="https://uk-001.azure-apim.net/apim/pfp-20vehicle-20tickets-5fe418214eeea4bce9-5fec37e65b69cd854d">
     <resource path="/{connectionId}/api/VehicleTickets/licensephoto/{driverNumber}">
       <param style="template" name="connectionId" type="xs:string" required="true" />
       <param style="template" name="driverNumber" type="xs:string" required="true" />
@@ -29,7 +29,7 @@
     </resource>
   </resources>
   <authenticationProviders xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
-    <connectionProvider id="PowerAppAuth" siena:connectionProviderId="shared_pfp-20vehicle-20tickets-5f65d572cd5285e38f-5ff0f85a3e2578d081" />
+    <connectionProvider id="PowerAppAuth" siena:connectionProviderId="shared_pfp-20vehicle-20tickets-5fe418214eeea4bce9-5fec37e65b69cd854d" />
   </authenticationProviders>
   <template xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
     <variable name="connectionId">

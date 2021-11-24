@@ -5,12 +5,13 @@ parameters:
   values:
   - PocketNotebookAzure
   - SuddenDeathAzure
+  - SuddenDeath
   - PocketNotebook
   - Vehicle*
 
-#- name: CumbriaCustomerName
-#  type: string
-#  default: Cumbria
+- name: CumbriaCustomerName
+  type: string
+  default: Cumbria
 
 - name: DurhamCustomerName
   type: string
@@ -20,13 +21,13 @@ parameters:
   type: string
   default: SystemTest
 
-#- name: UATEnvironmentName
-#  type: string
-#  default: UAT
+- name: UATEnvironmentName
+  type: string
+  default: UAT
 
-#- name: LiveEnvironmentName
-#  type: string
-#  default: Live
+- name: LiveEnvironmentName
+  type: string
+  default: Live
 
   
 trigger: none
@@ -93,13 +94,12 @@ stages:
         inputs:
           artifact: 'RewrittenCanvasApps'
           path: $(Build.SourcesDirectory)/RewrittenCanvasApps
-
       - task: DeleteFiles@1
         displayName: 'Delete files from $(build.binariesdirectory)'
         inputs:
           SourceFolder: '$(build.binariesdirectory)'
           Contents: '**'
-
+          RemoveSourceFolder: true
 
       - ${{ if endsWith(parameters.canvasApp,'*') }}:
         - ${{ each parameter2 in parameters }}:
@@ -127,6 +127,12 @@ stages:
             appFolderName : CanvasApps${{parameters.canvasApp}}
             environmentName: Base
             customerName: Base
+      - task: DeleteFiles@1
+        displayName: 'Delete files from $(build.binariesdirectory)'
+        inputs:
+          SourceFolder: '$(build.binariesdirectory)\Schema'
+          Contents: '**'
+          RemoveSourceFolder: true
 
       - publish: '$(build.binariesdirectory)'
         artifact: PowerAppsForPolicingCanvasApp
@@ -193,6 +199,71 @@ stages:
                 connectionString: $(cumbriasystemtest.connection.string)
                 customername: Cumbria
                 environmentname: SystemTest
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
+
+#----------------------------------Start Stage-------------------------------------------------------------------
+
+  - stage: ReleaseToCumbriaUAT
+    dependsOn: ReleaseToCumbriaSystemTest
+    displayName: Deploy Cumbria UAT
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: ReleaseToCumbriaUAT
+      environment: CumbriaUAT
+      displayName: Deploy Solutions
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            
+            steps:
+
+            - template: deployCanvasAppSolution.yml
+              parameters:
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
+                canvasApp: ${{parameters.canvasApp}}
+                connectionString: $(cumbriauat.connection.string)
+                customername: Cumbria
+                environmentname: UAT
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#----------------------------------End Stage-------------------------------------------------------------------
+#----------------------------------Start Stage-------------------------------------------------------------------
+
+  - stage: ReleaseToCumbriaLive
+    dependsOn: ReleaseToCumbriaUAT
+    displayName: Deploy Cumbria Live
+    jobs:
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~Start Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    - deployment: ReleaseToCumbriaLive
+      environment: CumbriaLive
+      displayName: Deploy Solutions
+      workspace:
+        clean: all 
+      strategy:
+        runOnce:
+          deploy:
+            
+            steps:
+
+            - template: deployCanvasAppSolution.yml
+              parameters:
+                minorversion : $(minor.version)
+                releaseversion : $(release.version)
+                solutionprefix : $(solution.prefix)
+                canvasApp: ${{parameters.canvasApp}}
+                connectionString: $(cumbrialive.connection.string)
+                customername: Cumbria
+                environmentname: Live
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
