@@ -11,5 +11,7 @@ namespace Common.Models.Business
         public string Notes { get; set; }
 
         public DateTime NoteDateAndTime { get; set; }
+
+        public int PhotoCount { get; set; }
     }
 }
