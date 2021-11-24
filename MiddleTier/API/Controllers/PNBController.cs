@@ -33,7 +33,7 @@ namespace API.Controllers
 
                 logger.LogDebug(userId.ToString());
 
-                ICollection<DVPocketNotebook> pnb = UserDataAccess.GetAll<DVPocketNotebook>("ownerid", userId, "cp_notedateandtime");
+                ICollection<DVPocketNotebook> pnb = UserDataAccess.GetAll<DVPocketNotebook>("ownerid", userId, "cp_notedateandtime",SelectColumns.AllTypeProperties);
 
                 return mapper.Map<List<PocketNotebookListEntry>>(pnb);
             }

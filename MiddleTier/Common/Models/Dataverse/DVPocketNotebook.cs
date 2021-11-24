@@ -27,7 +27,9 @@ namespace Common.Models.Dataverse
         public int cp_photocount { get { return this.GetAttributeValue<int>(nameof(cp_photocount)); } set { this.Attributes[nameof(cp_photocount)] = value; } }
         public bool cp_hassketch { get { return this.GetAttributeValue<bool>(nameof(cp_hassketch)); } set { this.Attributes[nameof(cp_hassketch)] = value; } }
         public bool cp_hassignature { get { return this.GetAttributeValue<bool>(nameof(cp_hassignature)); } set { this.Attributes[nameof(cp_hassignature)] = value; } }
-        
+        public byte[] cp_sketch { get { return this.GetAttributeValue<byte[]>(nameof(cp_sketch)); } set { this.Attributes[nameof(cp_sketch)] = value; } }
+        public byte[] cp_signature { get { return this.GetAttributeValue<byte[]>(nameof(cp_signature)); } set { this.Attributes[nameof(cp_signature)] = value; } }
+
 
     }
 }
