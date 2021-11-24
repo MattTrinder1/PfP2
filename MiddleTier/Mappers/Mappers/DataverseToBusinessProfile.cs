@@ -29,6 +29,12 @@ namespace API.Mappers
                 .ForMember(dest => dest.Blob, map => map.MapFrom(src => Convert.ToBase64String(src.cp_image)))
             ;
 
+            CreateMap<DVPhoto, PocketNotebookPhotoDetail>()
+                .ForMember(dest => dest.Caption, map => map.MapFrom(src => src.cp_phototitle))
+                .ForMember(dest => dest.PocketNotebookId, map => map.MapFrom(src => src.cp_pocketnotebook.Id))
+                .ForMember(dest => dest.PhotoId, map => map.MapFrom(src => src.Id))
+            ;
+
             CreateMap<DVPocketNotebook, PocketNotebookListEntry>()
                 .ForMember(dest => dest.Sketch, map => map.MapFrom(src => Convert.ToBase64String(src.cp_sketch)))
                 .ForMember(dest => dest.Signature, map => map.MapFrom(src => Convert.ToBase64String(src.cp_signature)))

@@ -33,9 +33,30 @@ namespace API.Controllers
 
                 logger.LogDebug(userId.ToString());
 
-                ICollection<DVPocketNotebook> pnb = UserDataAccess.GetAll<DVPocketNotebook>("ownerid", userId, "cp_notedateandtime",SelectColumns.AllTypeProperties);
+                ICollection<DVPocketNotebook> pnb = UserDataAccess.GetAll<DVPocketNotebook>("ownerid", userId, "cp_notedateandtime", SelectColumns.AllTypeProperties);
 
                 return mapper.Map<List<PocketNotebookListEntry>>(pnb);
+            }
+            catch (Exception e)
+            {
+                return StatusCode((int)HttpStatusCode.InternalServerError, new ApiError(e.Message));
+            }
+        }
+
+        [HttpGet("photodetails/{pnbId}")]
+        public ActionResult<List<PocketNotebookPhotoDetail>> GetPhotoDetailsForPNB(Guid pnbId)
+        {
+            try
+            {
+                if (!VerifyIntegrationKey("PNB:GET:photodetails")) return new StatusCodeResult((int)HttpStatusCode.Unauthorized);
+
+                var userId = AdminDataAccess.GetUserId(Request.Headers["UserEmail"].ToString());
+
+                logger.LogDebug(userId.ToString());
+
+                var photos = UserDataAccess.GetAll<DVPhoto>("cp_pocketnotebook", pnbId, null, SelectColumns.TypePropertiesWithoutImages);
+
+                return mapper.Map<List<PocketNotebookPhotoDetail>>(photos);
             }
             catch (Exception e)
             {
