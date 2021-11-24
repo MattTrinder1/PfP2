@@ -204,6 +204,24 @@ namespace API.Controllers
                 typeof(T).GetProperty("ownerid").SetValue(dvEntity, new EntityReference("systemuser", ownerId.Value));
             }
 
+            //remove any 0 length byte arrays
+            foreach (var property in typeof(T).GetProperties())
+            {
+                //if (property.PropertyType == typeof(EntityReference)) continue;
+                if (property.DeclaringType != typeof(T)) continue;
+
+                bool isImage = (property.PropertyType == typeof(byte[]));
+                if (isImage)
+                {
+                    var value = property.GetValue(dvEntity) as byte[];
+                    if (value.Length == 0)
+                    {
+                        property.SetValue(dvEntity, null);
+                        dvEntity.Attributes.Remove(property.Name);
+                    }
+                }
+            }
+
             return dvEntity;
         }
     }

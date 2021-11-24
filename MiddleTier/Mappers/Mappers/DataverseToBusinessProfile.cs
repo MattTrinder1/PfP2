@@ -32,6 +32,7 @@ namespace API.Mappers
             CreateMap<DVPocketNotebook, PocketNotebookListEntry>()
                 .ForMember(dest => dest.Sketch, map => map.MapFrom(src => Convert.ToBase64String(src.cp_sketch)))
                 .ForMember(dest => dest.Signature, map => map.MapFrom(src => Convert.ToBase64String(src.cp_signature)))
+                .ForMember(dest => dest.IncidentNumber, map => map.MapFrom(src => src.cp_incidentno.Name))
             ;
 
             CreateMap<DVLookupField, LookupField>()

@@ -15,5 +15,9 @@ namespace Common.Models.Business
         public int PhotoCount { get; set; }
         public string Sketch { get; set; }
         public string Signature { get; set; }
+        public string SignatoryName { get; set; }
+        public DateTime? SignatureDateAndTime { get; set; }
+
+        
     }
 }
