@@ -459,10 +459,7 @@ Screen_Home_Screen As screen:
                                     If(
                                         AzureQueues.PutMessage(
                                             "pocketnotebookblobqueue",
-                                            User().Email & ":" & unsavedBlob.noteId & ":" & unsavedBlob.blobId & "*&^%$" & LookUp(
-                                                photoCaptions,
-                                                Text(id) = unsavedBlob.id
-                                            ).caption & "*&^%$" & unsavedBlob.deleted
+                                            User().Email & ":" & unsavedBlob.noteId & ":" & unsavedBlob.blobId & "*&^%$" & unsavedBlob.caption & "*&^%$" & unsavedBlob.deleted
                                         ),
                                         Patch(
                                             blobsToSave,
@@ -501,10 +498,7 @@ Screen_Home_Screen As screen:
                                 If(
                                     AzureQueues.PutMessage(
                                         "pocketnotebookblobqueue",
-                                        User().Email & ":" & unsavedBlob.noteId & ":" & unsavedBlob.blobId & "*&^%$" & LookUp(
-                                            photoCaptions,
-                                            Text(id) = unsavedBlob.id
-                                        ).caption & "*&^%$" & unsavedBlob.deleted
+                                        User().Email & ":" & unsavedBlob.noteId & ":" & unsavedBlob.blobId & "*&^%$" & unsavedBlob.caption & "*&^%$" & unsavedBlob.deleted
                                     ),
                                     Patch(
                                         blobsToSave,
@@ -736,4 +730,16 @@ Screen_Home_Screen As screen:
         X: =320
         Y: =446
         ZIndex: =36
+
+    Label6_1 As label:
+        Align: =Align.Center
+        Color: =RGBA(255, 255, 255, 1)
+        Fill: =If(glbOnline,Green,Red)
+        FontWeight: =FontWeight.Bold
+        Size: =15
+        Text: ="Syncing"
+        Visible: =glbInTimerLoop
+        Width: =108
+        X: =65
+        ZIndex: =37
 

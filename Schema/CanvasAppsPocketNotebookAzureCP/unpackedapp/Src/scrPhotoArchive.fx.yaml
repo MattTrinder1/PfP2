@@ -51,7 +51,7 @@ scrPhotoArchive As screen:
             PaddingLeft: =0
             PaddingRight: =0
             PaddingTop: =0
-            Text: =ThisItem.blob
+            Text: =ThisItem.caption
             VerticalAlign: =VerticalAlign.Top
             Width: =Parent.TemplateWidth - Image6.Width - 104
             X: =Image6.X + Image6.Width + 24
@@ -102,19 +102,10 @@ scrPhotoArchive As screen:
             PaddingLeft: =0
             PaddingRight: =0
             PaddingTop: =0
-            Text: =ThisItem.caption
+            Text: =ThisItem.blob
             VerticalAlign: =VerticalAlign.Top
             Width: =Parent.TemplateWidth - Image6.Width - 104
             X: =Image6.X + Image6.Width + 24
-            Y: =84
+            Y: =116
             ZIndex: =6
-
-    Image7 As image:
-        Height: =320
-        Image: |-
-            ="data:image;application/octet-stream;base64," & PhotoGet.GetPhotoThumbnail(GUID("ab8a2503-c449-4e87-8df1-8c6436bc8ddf"),"matt.trinder@tisski.com").blob
-        Width: =320
-        X: =252
-        Y: =88
-        ZIndex: =9
 

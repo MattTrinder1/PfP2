@@ -99,10 +99,12 @@ Screen_Notes As screen:
                     ),
                     "noteId",
                     "id",
-                    "caption",
-                    "index"
+                    "index",
+                    "blob",
+                    "caption"
                 )
             );
+            
             SaveData(
                 notePhotos,
                 "notePhotosCache"
@@ -211,7 +213,7 @@ Screen_Notes As screen:
         Visible: =!noteSaved
         Width: =545
         X: =47
-        Y: =1058
+        Y: =1071
         ZIndex: =1
 
     Label1_3 As label:
@@ -468,13 +470,6 @@ Screen_Notes As screen:
                                 }
                             );
                             
-                            Collect(
-                                photoCaptions,
-                                {
-                                    caption: "",
-                                    id: photoId
-                                }
-                            );
                             
                             UpdateIf(
                                 'Notebook Offline',
@@ -547,8 +542,7 @@ Screen_Notes As screen:
 
                 TextInput_picture_Caption As text:
                     BorderColor: =RGBA(116, 116, 116, 1)
-                    Clear: =true
-                    Default: =LookUp(photoCaptions,Text(id) = ThisItem.id).caption
+                    Default: =ThisItem.caption
                     EnableSpellCheck: =true
                     Height: =50
                     HintText: =""
@@ -617,8 +611,8 @@ Screen_Notes As screen:
                     Height: =55
                     Icon: =Icon.Check
                     OnSelect: |-
-                        =Patch(blobsToSave,ThisItem,{editCaption:false,queued:false});
-                        UpdateIf(photoCaptions,Text(id) = ThisItem.id,{caption : TextInput_picture_Caption.Text});
+                        =Patch(blobsToSave,ThisItem,{editCaption:false,queued:false,caption : TextInput_picture_Caption.Text});
+                        //UpdateIf(photoCaptions,Text(id) = ThisItem.id,{caption : TextInput_picture_Caption.Text});
                     Visible: =ThisItem.editCaption
                     Width: =55
                     X: =440
@@ -640,7 +634,7 @@ Screen_Notes As screen:
                 txtPhotoCaption As text:
                     BorderColor: =RGBA(116, 116, 116, 1)
                     Clear: =true
-                    Default: =LookUp(photoCaptions,Text(id) = ThisItem.id).caption
+                    Default: =ThisItem.caption
                     DisplayMode: =DisplayMode.Disabled
                     EnableSpellCheck: =true
                     Height: =50
