@@ -151,6 +151,21 @@ steps:
                       Write-Host "##vso[task.setvariable variable=FlowsPDFSolutionFileName]$FlowsPDFSolutionFileName"
                     }
                   }
+                  $CustomConnectorsSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.solutionprefix}}CustomConnectors_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
+                  $CustomConnectorsSolutionFileName = $CustomConnectorsSolutionFile.FullName
+                  if($CustomConnectorsSolutionFileName)
+                  {
+                    Write-Host "##vso[task.setvariable variable=CustomConnectorsSolutionFileName]$CustomConnectorsSolutionFileName"
+                  }
+                  else
+                  {
+                    $CustomConnectorsSolutionFile = get-childitem -path "${{parameters.pipelineworkspace}}/${{parameters.customerName}}/${{parameters.environmentName}}/${{parameters.solutionprefix}}CustomConnectors_1_${{parameters.minorversion}}_${{parameters.releaseversion}}_*_managed.zip"
+                    $CustomConnectorsSolutionFileName = $CustomConnectorsSolutionFile.FullName
+                    if($CustomConnectorsSolutionFileName)
+                    {
+                      Write-Host "##vso[task.setvariable variable=CustomConnectorsSolutionFileName]$CustomConnectorsSolutionFileName"
+                    }
+                  }
                 }
                 
     displayName: GetSolutionFileNames
