@@ -38,9 +38,9 @@ steps:
 
   - ${{ if and(startsWith(parameters.solutionName,'CustomConnectors'), ne(parameters.customerName, 'Base')) }}:
     - task: CopyFiles@2
-      displayName: Copy Rewritten Flows over Schema
+      displayName: Copy Rewritten CustomConnectors over Schema
       inputs:
-        sourceFolder: '$(Build.SourcesDirectory)\RewrittenConnectors\${{parameters.customerName}}\${{parameters.environmentName}}\Schema'
+        sourceFolder: '$(Build.SourcesDirectory)\RewrittenCustomConnectors\${{parameters.customerName}}\${{parameters.environmentName}}\Schema'
         contents: '**'
         targetFolder: '$(Build.BinariesDirectory)/Schema'
         overWrite: true 
