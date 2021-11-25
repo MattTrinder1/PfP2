@@ -36,6 +36,16 @@ steps:
         overWrite: true 
       condition: eq(variables['FolderExists'], True)
 
+  - ${{ if and(startsWith(parameters.solutionName,'CustomConnectors'), ne(parameters.customerName, 'Base')) }}:
+    - task: CopyFiles@2
+      displayName: Copy Rewritten Flows over Schema
+      inputs:
+        sourceFolder: '$(Build.SourcesDirectory)\RewrittenConnectors\${{parameters.customerName}}\${{parameters.environmentName}}\Schema'
+        contents: '**'
+        targetFolder: '$(Build.BinariesDirectory)/Schema'
+        overWrite: true 
+      condition: eq(variables['FolderExists'], True)
+
 
 
   - task: MSCRMPackSolution@10
