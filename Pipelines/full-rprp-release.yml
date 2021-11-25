@@ -119,6 +119,11 @@ stages:
         inputs:
           command: 'build'
           projects: 'PipelineTools/FlowRewriter/FlowRewriter.csproj'
+      - task: DotNetCoreCLI@2
+        displayName: Build CustomConnector Rewriter Tool
+        inputs:
+          command: 'build'
+          projects: 'PipelineTools/CustomConnectorRewriter/CustomConnectorRewriter.csproj'
             
       - task: CmdLine@2
         displayName: Run Flow Rewriter Tool
@@ -126,13 +131,27 @@ stages:
           workingDirectory: $(build.sourcesdirectory)/PipelineTools/FlowRewriter/bin/Debug/net5.0
           script: |
             $(build.sourcesdirectory)/PipelineTools/FlowRewriter/bin/Debug/net5.0/FlowRewriter.exe
+
+      - task: CmdLine@2
+        displayName: Run CustomConnector Rewriter Tool
+        inputs:
+          workingDirectory: $(build.sourcesdirectory)/PipelineTools/CustomConnectorRewriter/bin/Debug/net5.0
+          script: |
+            $(build.sourcesdirectory)/PipelineTools/CustomConnectorRewriter/bin/Debug/net5.0/CustomConnectorRewriter.exe
       - task: PublishBuildArtifacts@1
         displayName: Publish Rewritten Flows
         inputs:
           PathtoPublish: '$(build.sourcesdirectory)/PipelineTools/FlowRewriter/RewrittenFlows'
           ArtifactName: 'RewrittenFlows'
           publishLocation: 'Container'
-      
+
+      - task: PublishBuildArtifacts@1
+        displayName: Publish Rewritten Custom Connectors
+        inputs:
+          PathtoPublish: '$(build.sourcesdirectory)/PipelineTools/CustomConnectorRewriter/RewrittenConnectors'
+          ArtifactName: 'RewrittenCustomConnectors'
+          publishLocation: 'Container'
+
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~End Job~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
