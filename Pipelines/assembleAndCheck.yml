@@ -28,6 +28,12 @@ steps:
 #if this is not a base level solution, copy in the environment specific folder generated in the rewrite step
 
   - ${{ if and(startsWith(parameters.solutionName,'Flows'), ne(parameters.customerName, 'Base')) }}:
+    - powershell: |
+                  $flowsSourcefolderExists = Test-Path -Path '$(Build.SourcesDirectory)\RewrittenFlows\${{parameters.customerName}}\${{parameters.environmentName}}\Schema'
+                  Write-Output "##vso[task.setvariable variable=FlowsSourceFolderExists]$flowsSourcefolderExists"
+      displayName: Check schema folder exists
+
+  - ${{ if and(startsWith(parameters.solutionName,'Flows'), ne(parameters.customerName, 'Base')) }}:
     - task: CopyFiles@2
       displayName: Copy Rewritten Flows over Schema
       inputs:
@@ -35,7 +41,7 @@ steps:
         contents: '**'
         targetFolder: '$(Build.BinariesDirectory)/Schema'
         overWrite: true 
-      condition: eq(variables['FolderExists'], True)
+      condition: eq(variables['FlowsSourceFolderExists'], True)
 
   - ${{ if and(startsWith(parameters.solutionName,'CustomConnectors'), ne(parameters.customerName, 'Base')) }}:
     - powershell: |
