@@ -191,7 +191,7 @@ stages:
           path: $(Build.SourcesDirectory)/RewrittenFlows
       - task: DownloadPipelineArtifact@2
         inputs:
-          artifact: 'RewrittenFlows'
+          artifact: 'RewrittenCustomConnectors'
           path: $(Build.SourcesDirectory)/RewrittenCustomConnectors
 
       - ${{ each parameter in parameters }}:
