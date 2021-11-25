@@ -224,6 +224,13 @@ stages:
               minorversion: $(minor.version)
               releaseversion: $(release.version)
 
+      - task: DeleteFiles@1
+        displayName: 'Delete files from $(build.binariesdirectory)\Schema'
+        inputs:
+          SourceFolder: '$(build.binariesdirectory)\Schema'
+          Contents: '**'
+          RemoveSourceFolder: true
+
 
       - publish: '$(build.binariesdirectory)'
         artifact: $(artifact.name)
