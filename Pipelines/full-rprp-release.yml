@@ -178,10 +178,21 @@ stages:
         inputs:
           SourceFolder: '$(build.binariesdirectory)'
           Contents: '**'
+      - task: CopyFiles@2
+        displayName: 'Copy in Files from source'
+        inputs:
+          sourceFolder: $(Build.SourcesDirectory)\Schema\
+          targetFolder: $(build.binariesdirectory)\Schema\
+          contents: '**'
+
       - task: DownloadPipelineArtifact@2
         inputs:
           artifact: 'RewrittenFlows'
           path: $(Build.SourcesDirectory)/RewrittenFlows
+      - task: DownloadPipelineArtifact@2
+        inputs:
+          artifact: 'RewrittenFlows'
+          path: $(Build.SourcesDirectory)/RewrittenCustomConnectors
 
       - ${{ each parameter in parameters }}:
         - ${{ if and(contains(parameter.Key, 'SolutionName'),endsWith(parameter.Key,'*')) }}:
