@@ -1,7 +1,7 @@
-<application xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:service="https://uk-001.azure-apim.net/apim/pnb-20get-5fec56f3da3c70054e-5fec37e65b69cd854d" xmlns:siena="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11" siena:serviceId="PoliceAPI" xmlns="http://wadl.dev.java.net/2009/02">
-  <doc title="PoliceAPI" />
+<application xmlns:xml="http://www.w3.org/XML/1998/namespace" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:service="https://uk-001.azure-apim.net/apim/cp-5fpnb-20get-5fec56f3da3c70054e" xmlns:siena="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11" siena:serviceId="PNBGet" xmlns="http://wadl.dev.java.net/2009/02">
+  <doc title="PNBGet" />
   <grammars>
-    <jsonTypes targetNamespace="https://uk-001.azure-apim.net/apim/pnb-20get-5fec56f3da3c70054e-5fec37e65b69cd854d" xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
+    <jsonTypes targetNamespace="https://uk-001.azure-apim.net/apim/cp-5fpnb-20get-5fec56f3da3c70054e" xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
       <string name="Photo_id_def" />
       <string name="Photo_name_def" />
       <string name="Photo_pocketNotebookId_def" />
@@ -42,16 +42,41 @@
       <string name="PocketNotebookListEntry_name_def" />
       <string name="PocketNotebookListEntry_notes_def" />
       <dateTimeString name="PocketNotebookListEntry_noteDateAndTime_def" />
+      <integer name="PocketNotebookListEntry_photoCount_def" />
+      <string name="PocketNotebookListEntry_sketch_def" />
+      <string name="PocketNotebookListEntry_signature_def" />
+      <string name="PocketNotebookListEntry_incidentNumber_def" />
+      <dateTimeString name="PocketNotebookListEntry_signatureDateAndTime_def" />
+      <string name="PocketNotebookListEntry_signatoryName_def" />
       <object name="PocketNotebookListEntry">
         <property name="id" type="string" />
         <property name="name" type="string" />
         <property name="notes" type="string" />
         <property name="noteDateAndTime" typeRef="PocketNotebookListEntry_noteDateAndTime_def" />
+        <property name="photoCount" type="integer" />
+        <property name="sketch" type="string" />
+        <property name="signature" type="string" />
+        <property name="incidentNumber" type="string" />
+        <property name="signatureDateAndTime" typeRef="PocketNotebookListEntry_signatureDateAndTime_def" />
+        <property name="signatoryName" type="string" />
       </object>
       <array typeRef="PocketNotebookListEntry" name="GetUserPNB_responses_200_def" />
+      <string name="GetPhotoDetails_responses_default_def_items_def_pocketNotebookId_def" />
+      <string name="GetPhotoDetails_responses_default_def_items_def_photoId_def" />
+      <string name="GetPhotoDetails_responses_default_def_items_def_caption_def" />
+      <string name="GetPhotoDetails_responses_default_def_items_def_id_def" />
+      <string name="GetPhotoDetails_responses_default_def_items_def_name_def" />
+      <object name="GetPhotoDetails_responses_default_def_items_def">
+        <property name="pocketNotebookId" type="string" />
+        <property name="photoId" type="string" />
+        <property name="caption" type="string" />
+        <property name="id" type="string" />
+        <property name="name" type="string" />
+      </object>
+      <array typeRef="GetPhotoDetails_responses_default_def_items_def" name="GetPhotoDetails_responses_default_def" />
     </jsonTypes>
   </grammars>
-  <resources siena:authenticationProviderHref="#PowerAppAuth" base="https://uk-001.azure-apim.net/apim/pnb-20get-5fec56f3da3c70054e-5fec37e65b69cd854d">
+  <resources siena:authenticationProviderHref="#PowerAppAuth" base="https://uk-001.azure-apim.net/apim/cp-5fpnb-20get-5fec56f3da3c70054e">
     <resource path="/{connectionId}/api/PNB/getwhereowner">
       <param style="template" name="connectionId" type="xs:string" required="true" />
       <method siena:requiresAuthentication="true" name="GET" id="GetUserPNB" siena:isDeprecated="false">
@@ -79,9 +104,23 @@
         </response>
       </method>
     </resource>
+    <resource path="/{connectionId}/api/PNB/photodetails/{pnbId}">
+      <param style="template" name="connectionId" type="xs:string" required="true" />
+      <param style="template" name="pnbId" type="xs:string" required="true" />
+      <method siena:requiresAuthentication="true" name="GET" id="GetPhotoDetails" siena:isDeprecated="false">
+        <doc title="Get Photo Details&#xA;Get Photo Details" />
+        <request>
+          <param style="header" name="IntegrationKey" type="xs:string" required="true" fixed="35C87175-6BF7-EB11-94EF-0022489CC1DC" />
+          <param style="header" name="UserEmail" type="xs:string" required="true" />
+        </request>
+        <response>
+          <representation mediaType="application/json" element="service:GetPhotoDetails_responses_default_def" />
+        </response>
+      </method>
+    </resource>
   </resources>
   <authenticationProviders xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
-    <connectionProvider id="PowerAppAuth" siena:connectionProviderId="shared_pnb-20get-5fec56f3da3c70054e-5fec37e65b69cd854d" />
+    <connectionProvider id="PowerAppAuth" siena:connectionProviderId="shared_cp-5fpnb-20get-5fec56f3da3c70054e" />
   </authenticationProviders>
   <template xmlns="http://schemas.microsoft.com/MicrosoftProjectSiena/WADL/2014/11">
     <variable name="connectionId">

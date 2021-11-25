@@ -141,11 +141,12 @@ Screen_Search_notes As screen:
                     true
                 )
             );
-            
-            
             If(
                 glbOnline,
-                Set(gblDoneSync, true);
+                Set(
+                    gblDoneSync,
+                    true
+                );
                 ClearCollect(
                     UserPNBs,
                     PNBGet.GetUserPNB(Lower(User().Email))
@@ -159,28 +160,67 @@ Screen_Search_notes As screen:
                                 Id = GUID(userNote.id)
                             )
                         ) = 0,
+                        If (
+                            !IsBlank(userNote.sketch),
+                            Collect(
+                                blobsToSave,
+                                {
+                                    noteId: GUID(userNote.id),
+                                    id: ViewNoteId & "-sketch-1",
+                                    blob: "data:image;application/octet-stream;base64," & userNote.sketch,
+                                    type: "sketch",
+                                    queued: true
+                                }
+                            )
+                        );
+                        If (
+                            !IsBlank(userNote.signature),
+                            Collect(
+                                blobsToSave,
+                                {
+                                    noteId: GUID(userNote.id),
+                                    id: ViewNoteId & "-signature-1",
+                                    blob: "data:image;application/octet-stream;base64," & userNote.signature,
+                                    type: "signature",
+                                    queued: true
+                                }
+                            )
+                        );
                         Collect(
                             'Notebook Offline',
                             {
                                 Id: GUID(userNote.id),
                                 NoteDateAndTime: userNote.noteDateAndTime,
                                 Notes: userNote.notes,
+                                IncidentNumber: userNote.incidentNumber,
+                                'Signature Date and Time': userNote.signatureDateAndTime,
+                                SignatoryName: userNote.signatoryName,
                                 complete: true,
                                 readyToSync: true,
                                 queued: true,
                                 inDataverse: true,
-                                fullyPopulated: false
+                                fullyPopulated: false,
+                                photoCount: userNote.photoCount,
+                                hasSketch: !IsBlank(userNote.sketch),
+                                SketchId: (If(
+                                    !IsBlank(userNote.sketch),
+                                    ViewNoteId & "-sketch-1"
+                                )),
+                                hasSignature: !IsBlank(userNote.signature),
+                                SignatureId: (If(
+                                    !IsBlank(userNote.signature),
+                                    ViewNoteId & "-signature-1"
+                                ))
                             }
-                        ),
+                        );
+                        ,
                         Patch(
                             'Notebook Offline',
                             LookUp(
                                 'Notebook Offline',
                                 Id = GUID(userNote.id)
                             ),
-                            {
-                                inDataverse: true
-                            }
+                            {inDataverse: true}
                         )
                     )
                 );
@@ -188,6 +228,7 @@ Screen_Search_notes As screen:
                     'Notebook Offline',
                     "NotebookOfflineCache"
                 );
+                
             )
         X: =561
         Y: =11

@@ -17,26 +17,49 @@ scrPhotoArchive As screen:
         X: =351
         ZIndex: =5
 
+    Button1 As button:
+        Height: =70
+        OnSelect: =LoadData(PhotoArchive,"PhotoArchiveCache");
+        Size: =24
+        Text: ="Load"
+        Width: =157
+        X: =180
+        ZIndex: =7
+
     "Gallery3 As gallery.'BrowseLayout_Vertical_TwoTextOneImageVariant_ver4.0'":
-        Height: =1036
-        Items: =PhotoArchive
+        Items: =notePhotos
         Layout: =Layout.Vertical
         TemplatePadding: =0
         TemplateSize: =Min(160, Self.Height - 60)
-        Y: =81
-        ZIndex: =6
+        Y: =341
+        ZIndex: =8
 
         Image6 As image:
             Height: =128
-            Image: =ThisItem.blob
+            Image: |-
+                ="data:image;application/octet-stream;base64," & ThisItem.blob
             OnSelect: =Select(Parent)
             Width: =128
             X: =16
             Y: =(Parent.TemplateHeight / 2) - (Self.Height / 2)
             ZIndex: =1
 
+        Title2 As label:
+            Height: =Self.Size * 1.8
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Text: =ThisItem.blob
+            VerticalAlign: =VerticalAlign.Top
+            Width: =Parent.TemplateWidth - Image6.Width - 104
+            X: =Image6.X + Image6.Width + 24
+            Y: =44
+            ZIndex: =2
+
         Subtitle2 As label:
-            Height: =49
+            Height: =Self.Size * 1.8
             OnSelect: =Select(Parent)
             PaddingBottom: =0
             PaddingLeft: =0
@@ -44,9 +67,9 @@ scrPhotoArchive As screen:
             PaddingTop: =0
             Text: =ThisItem.id
             VerticalAlign: =VerticalAlign.Top
-            Width: =455
-            X: =180
-            Y: =110
+            Width: =Title2.Width
+            X: =Title2.X
+            Y: =Title2.Y + Title2.Height + 4
             ZIndex: =3
 
         NextArrow2 As icon.ChevronRight:
@@ -72,12 +95,26 @@ scrPhotoArchive As screen:
             Y: =Parent.TemplateHeight - 1
             ZIndex: =5
 
-    Button1 As button:
-        Height: =70
-        OnSelect: =LoadData(PhotoArchive,"PhotoArchiveCache");
-        Size: =24
-        Text: ="Load"
-        Width: =157
-        X: =180
-        ZIndex: =7
+        Title2_1 As label:
+            Height: =Self.Size * 1.8
+            OnSelect: =Select(Parent)
+            PaddingBottom: =0
+            PaddingLeft: =0
+            PaddingRight: =0
+            PaddingTop: =0
+            Text: =ThisItem.caption
+            VerticalAlign: =VerticalAlign.Top
+            Width: =Parent.TemplateWidth - Image6.Width - 104
+            X: =Image6.X + Image6.Width + 24
+            Y: =84
+            ZIndex: =6
+
+    Image7 As image:
+        Height: =320
+        Image: |-
+            ="data:image;application/octet-stream;base64," & PhotoGet.GetPhotoThumbnail(GUID("ab8a2503-c449-4e87-8df1-8c6436bc8ddf"),"matt.trinder@tisski.com").blob
+        Width: =320
+        X: =252
+        Y: =88
+        ZIndex: =9
 

@@ -236,7 +236,32 @@ Screen_Notes_viewscr As screen:
                         )
                     );
                     If(
-                        glbOnline,
+                        glbOnline And (! LookUp(
+                            'Notebook Offline',
+                            Id = ViewNoteId
+                        ).fullyPopulated),
+                        ClearCollect(
+                            PNBPhotoDetails,
+                            PNBGet.GetPhotoDetails(
+                                ViewNoteId,
+                                Lower(User().Email)
+                            )
+                        );
+                        RemoveIf(
+                            notePhotos,
+                            noteId = ViewNoteId
+                        );
+                        ForAll(
+                            PNBPhotoDetails,
+                            Collect(
+                                notePhotos,
+                                {
+                                    noteId: ViewNoteId,
+                                    id: GUID(ThisRecord.photoId),
+                                    caption: ThisRecord.caption
+                                }
+                            )
+                        );
                         ForAll(
                             Filter(
                                 notePhotos,
@@ -258,6 +283,11 @@ Screen_Notes_viewscr As screen:
                             notePhotos,
                             "notePhotosCache"
                         );
+                        UpdateIf(
+                            'Notebook Offline',
+                            Id = ViewNoteId,
+                            {fullyPopulated: true}
+                        );
                         
                     )
                 Visible: |-
@@ -268,7 +298,7 @@ Screen_Notes_viewscr As screen:
                     ).photoCount > 0
                 Width: =50
                 X: =544
-                Y: =8
+                Y: =15
                 ZIndex: =2
 
         DataCard12 As dataCard.blankCard:
