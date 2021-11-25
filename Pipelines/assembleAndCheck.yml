@@ -24,10 +24,6 @@ steps:
                 Write-Output "##vso[task.setvariable variable=FolderExists]$folderExists"
     displayName: Check schema folder exists
 
-  - powershell: |
-                $sourcefolderExists = Test-Path -Path '$(Build.SourcesDirectory)\RewrittenCustomConnectors\${{parameters.customerName}}\${{parameters.environmentName}}\Schema'
-                Write-Output "##vso[task.setvariable variable=SourceFolderExists]$sourcefolderExists"
-    displayName: Check schema folder exists
 
 #if this is not a base level solution, copy in the environment specific folder generated in the rewrite step
 
@@ -40,6 +36,12 @@ steps:
         targetFolder: '$(Build.BinariesDirectory)/Schema'
         overWrite: true 
       condition: eq(variables['FolderExists'], True)
+
+  - ${{ if and(startsWith(parameters.solutionName,'CustomConnectors'), ne(parameters.customerName, 'Base')) }}:
+    - powershell: |
+                  $sourcefolderExists = Test-Path -Path '$(Build.SourcesDirectory)\RewrittenCustomConnectors\${{parameters.customerName}}\${{parameters.environmentName}}\Schema'
+                  Write-Output "##vso[task.setvariable variable=SourceFolderExists]$sourcefolderExists"
+      displayName: Check schema folder exists
 
   - ${{ if and(startsWith(parameters.solutionName,'CustomConnectors'), ne(parameters.customerName, 'Base')) }}:
     - task: CopyFiles@2
