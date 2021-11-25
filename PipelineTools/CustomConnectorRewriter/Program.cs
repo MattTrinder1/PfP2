@@ -16,20 +16,38 @@ namespace CustomConnectorRewriter
             var files = new List<FileToModify>();
 
 
-            var pnbGetFile = new FileToModify("../../Schema/CustomConnectorsCP/unpacked/Connectors/cp_5Fpnb-20get_openapidefinition.json", "RewrittenConnectors/Cumbria/SystemTest/Schema/CustomConnectorsCP/unpacked/Connectors/cp_5Fpnb-20get_openapidefinition.json", false, true);
-            pnbGetFile.ReplaceStrings.Add(new ReplaceString("pfpdev-ab46c5b7b4fa-apiwebapp.azurewebsites.net", "cumbriasystest-bc51-apiwebapp.azurewebsites.net"));
-            pnbGetFile.ReplaceStrings.Add(new ReplaceString("35C87175-6BF7-EB11-94EF-0022489CC1DC", "systestguid"));
-            files.Add(pnbGetFile);
+            //var pnbGetFile = new FileToModify("../../Schema/CustomConnectorsCP/unpacked/Connectors/cp_5Fpnb-20get_openapidefinition.json", "RewrittenConnectors/Cumbria/SystemTest/Schema/CustomConnectorsCP/unpacked/Connectors/cp_5Fpnb-20get_openapidefinition.json", false, true);
+            //pnbGetFile.ReplaceStrings.Add(new ReplaceString("pfpdev-ab46c5b7b4fa-apiwebapp.azurewebsites.net", "cumbriasystest-bc51-apiwebapp.azurewebsites.net"));
+            //pnbGetFile.ReplaceStrings.Add(new ReplaceString("35C87175-6BF7-EB11-94EF-0022489CC1DC", "605D60F6-DF4D-EC11-8F8E-000D3A0CE7B7"));
+            //files.Add(pnbGetFile);
 
             var pnbGetFile2 = new FileToModify("../../Schema/CustomConnectorsCP/unpacked/Connectors/cp_5Fpnb-20get_openapidefinition.json", "RewrittenConnectors/PfP/SystemTest/Schema/CustomConnectorsCP/unpacked/Connectors/cp_5Fpnb-20get_openapidefinition.json", false, true);
             pnbGetFile2.ReplaceStrings.Add(new ReplaceString("pfpdev-ab46c5b7b4fa-apiwebapp.azurewebsites.net", "pfpsystest-ec70-apiwebapp.azurewebsites.net"));
-            pnbGetFile2.ReplaceStrings.Add(new ReplaceString("35C87175-6BF7-EB11-94EF-0022489CC1DC", "systestguid"));
+            pnbGetFile2.ReplaceStrings.Add(new ReplaceString("35C87175-6BF7-EB11-94EF-0022489CC1DC", "605D60F6-DF4D-EC11-8F8E-000D3A0CE7B7"));
             files.Add(pnbGetFile2);
 
             var pnbGetFile3 = new FileToModify("../../Schema/CustomConnectorsCP/unpacked/Connectors/cp_5Fpnb-20get_openapidefinition.json", "RewrittenConnectors/PfP/UAT/Schema/CustomConnectorsCP/unpacked/Connectors/cp_5Fpnb-20get_openapidefinition.json", false, true);
             pnbGetFile3.ReplaceStrings.Add(new ReplaceString("pfpdev-ab46c5b7b4fa-apiwebapp.azurewebsites.net", "pfpuat-8975-apiwebapp.azurewebsites.net"));
-            pnbGetFile3.ReplaceStrings.Add(new ReplaceString("35C87175-6BF7-EB11-94EF-0022489CC1DC", "systestguid"));
+            pnbGetFile3.ReplaceStrings.Add(new ReplaceString("35C87175-6BF7-EB11-94EF-0022489CC1DC", "00E3095A-AB11-EC11-B6E6-002248422C2A"));
             files.Add(pnbGetFile3);
+
+            //var pnbGetFile4 = new FileToModify("../../Schema/CustomConnectorsCP/unpacked/Connectors/cp_5Fphoto-20get_openapidefinition.json", "RewrittenConnectors/Cumbria/SystemTest/Schema/CustomConnectorsCP/unpacked/Connectors/cp_5Fphoto-20get_openapidefinition.json", false, true);
+            //pnbGetFile4.ReplaceStrings.Add(new ReplaceString("pfpdev-ab46c5b7b4fa-apiwebapp.azurewebsites.net", "cumbriasystest-bc51-apiwebapp.azurewebsites.net"));
+            //pnbGetFile4.ReplaceStrings.Add(new ReplaceString("35C87175-6BF7-EB11-94EF-0022489CC1DC", "605D60F6-DF4D-EC11-8F8E-000D3A0CE7B7"));
+            //files.Add(pnbGetFile4);
+
+            var pnbGetFile5 = new FileToModify("../../Schema/CustomConnectorsCP/unpacked/Connectors/cp_5Fphoto-20get_openapidefinition.json", "RewrittenConnectors/PfP/SystemTest/Schema/CustomConnectorsCP/unpacked/Connectors/cp_5Fphoto-20get_openapidefinition.json", false, true);
+            pnbGetFile5.ReplaceStrings.Add(new ReplaceString("pfpdev-ab46c5b7b4fa-apiwebapp.azurewebsites.net", "pfpsystest-ec70-apiwebapp.azurewebsites.net"));
+            pnbGetFile5.ReplaceStrings.Add(new ReplaceString("35C87175-6BF7-EB11-94EF-0022489CC1DC", "605D60F6-DF4D-EC11-8F8E-000D3A0CE7B7"));
+            files.Add(pnbGetFile5);
+
+            var pnbGetFile6 = new FileToModify("../../Schema/CustomConnectorsCP/unpacked/Connectors/cp_5Fphoto-20get_openapidefinition.json", "RewrittenConnectors/PfP/UAT/Schema/CustomConnectorsCP/unpacked/Connectors/cp_5Fphoto-20get_openapidefinition.json", false, true);
+            pnbGetFile6.ReplaceStrings.Add(new ReplaceString("pfpdev-ab46c5b7b4fa-apiwebapp.azurewebsites.net", "pfpuat-8975-apiwebapp.azurewebsites.net"));
+            pnbGetFile6.ReplaceStrings.Add(new ReplaceString("35C87175-6BF7-EB11-94EF-0022489CC1DC", "00E3095A-AB11-EC11-B6E6-002248422C2A"));
+            files.Add(pnbGetFile6);
+
+
+            //cp_5Fphoto-20get_openapidefinition.json
 
             foreach (var file in files)
             {
