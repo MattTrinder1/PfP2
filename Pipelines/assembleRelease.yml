@@ -25,12 +25,6 @@ steps:
     SourceFolder: '$(build.binariesdirectory)'
     Contents: '**'
 
-- task: CopyFiles@2
-  displayName: 'Copy in Files from source'
-  inputs:
-    sourceFolder: $(Build.SourcesDirectory)\Schema\
-    targetFolder: $(build.binariesdirectory)\Schema\
-    contents: '**'
 
 #- task: NuGetCommand@2
 #  displayName: 'NuGet restore - all solutions'
